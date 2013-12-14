@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>全二重接続を終了する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.stream-socket-server.html">stream_socket_server</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.stream-supports-lock.html">stream_supports_lock</a></div>
+ <div class="up"><a href="ref.stream.html">ストリーム 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.stream-socket-shutdown" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">stream_socket_shutdown</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.2.1)</p><p class="refpurpose"><span class="refname">stream_socket_shutdown</span> &mdash; <span class="dc-title">全二重接続を終了する</span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-function.stream-socket-shutdown-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>stream_socket_shutdown</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$stream</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$how</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   全二重接続を (一時的あるいはそうでなく) 終了します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.stream-socket-shutdown-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">stream</code></em></span>
+     <dd>
+
+      <p class="para">
+       オープンしているストリーム (たとえば  <span class="function"><a href="function.stream-socket-client.html" class="function">stream_socket_client()</a></span>
+       でオープンしたものなど)。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">how</code></em></span>
+     <dd>
+
+      <p class="para">
+       以下の定数のいずれか。<strong><code>STREAM_SHUT_RD</code></strong>
+       (それ以降の受信を無効にする)、<strong><code>STREAM_SHUT_WR</code></strong>
+       (それ以降の送信を無効にする) あるいは
+       <strong><code>STREAM_SHUT_RDWR</code></strong> (それ以降の送受信を無効にする)。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues" id="refsect1-function.stream-socket-shutdown-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.stream-socket-shutdown-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-4022">
+    <p><strong>例1  <span class="function"><strong>stream_socket_shutdown()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$server&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">stream_socket_server</span><span style="color: #007700">(</span><span style="color: #DD0000">'tcp://127.0.0.1:1337'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$client&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">stream_socket_client</span><span style="color: #007700">(</span><span style="color: #DD0000">'tcp://127.0.0.1:1337'</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">fputs</span><span style="color: #007700">(</span><span style="color: #0000BB">$client</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"hello"</span><span style="color: #007700">));<br /><br /></span><span style="color: #0000BB">stream_socket_shutdown</span><span style="color: #007700">(</span><span style="color: #0000BB">$client</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">STREAM_SHUT_WR</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">fputs</span><span style="color: #007700">(</span><span style="color: #0000BB">$client</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"hello"</span><span style="color: #007700">));&nbsp;</span><span style="color: #FF8000">//&nbsp;ここでは動作しません<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+int(5)
+
+Notice: fputs(): send of 5 bytes failed with errno=32 Broken pipe in test.php on line 9
+int(0)
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.stream-socket-shutdown-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="function.fclose.html" class="function" rel="rdfs-seeAlso">fclose()</a> - オープンされたファイルポインタをクローズする</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="109982""></a>
+  <div class="note">
+   <strong class="user">jgotti</strong>
+   <a href="#109982" class="date">08-Sep-2012 03:22</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Just a note to say that if you encounter problem closing some sockets using fclose in a multi client server, you should really&nbsp; give this one a try.<br />
+<br />
+Spent a full day trying to resolve this issue using stream_socket_shutdown($clientStream,STREAM_SHUT_RDWR);<br />
+finally do the trick.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.stream-socket-server.html">stream_socket_server</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.stream-supports-lock.html">stream_supports_lock</a></div>
+ <div class="up"><a href="ref.stream.html">ストリーム 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

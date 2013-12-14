@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>署名済みテキストを検証する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.gnupg-sign.html">gnupg_sign</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="book.haru.html">haru</a></div>
+ <div class="up"><a href="ref.gnupg.html">GnuPG 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.gnupg-verify" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">gnupg_verify</h1>
+  <p class="verinfo">(PECL gnupg &gt;= 0.1)</p><p class="refpurpose"><span class="refname">gnupg_verify</span> &mdash; <span class="dc-title">署名済みテキストを検証する</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.gnupg-verify-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">array</span> <span class="methodname"><strong>gnupg_verify</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$identifier</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$signed_text</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$signature</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter reference">&$plaintext</code></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+   指定した <em><code class="parameter">signed_text</code></em> を検証し、署名についての情報を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.gnupg-verify-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">identifier</code></em></span>
+     <dd>
+
+      <p class="para"> <span class="function"><a href="function.gnupg-init.html" class="function">gnupg_init()</a></span>
+あるいは <strong class="classname">gnupg</strong> のコールで得られた gnupg ID。</p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">signed_text</code></em></span>
+     <dd>
+
+      <p class="para">
+       The signed text.
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">signature</code></em></span>
+     <dd>
+
+      <p class="para">
+       署名。clearsign で署名されたテキストを検証するには、
+       signature に <strong><code>FALSE</code></strong> を設定します。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">plaintext</code></em></span>
+     <dd>
+
+      <p class="para">
+       平文テキスト。
+       このオプションのパラメータを渡すと、
+       復号されたテキストがそこに保存されます。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.gnupg-verify-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合、この関数は署名についての情報を返します。
+   失敗した場合、この関数は <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.gnupg-verify-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-3514">
+    <p><strong>例1 手続き型の  <span class="function"><strong>gnupg_verify()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$plaintext&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">""</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$res&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">gnupg_init</span><span style="color: #007700">();<br /></span><span style="color: #FF8000">//&nbsp;clearsigned<br /></span><span style="color: #0000BB">$info&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">gnupg_verify</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">,</span><span style="color: #0000BB">$signed_text</span><span style="color: #007700">,</span><span style="color: #0000BB">false</span><span style="color: #007700">,</span><span style="color: #0000BB">$plaintext</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$info</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;detached&nbsp;signature<br /></span><span style="color: #0000BB">$info&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">gnupg_verify</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">,</span><span style="color: #0000BB">$signed_text</span><span style="color: #007700">,</span><span style="color: #0000BB">$signature</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$info</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   <div class="example" id="example-3515">
+    <p><strong>例2 オブジェクト指向の  <span class="function"><strong>gnupg_verify()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$plaintext&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">""</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$gpg&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">gnupg</span><span style="color: #007700">();<br /></span><span style="color: #FF8000">//&nbsp;clearsigned<br /></span><span style="color: #0000BB">$info&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$gpg&nbsp;</span><span style="color: #007700">-&gt;&nbsp;</span><span style="color: #0000BB">verify</span><span style="color: #007700">(</span><span style="color: #0000BB">$signed_text</span><span style="color: #007700">,</span><span style="color: #0000BB">false</span><span style="color: #007700">,</span><span style="color: #0000BB">$plaintext</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$info</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;detached&nbsp;signature<br /></span><span style="color: #0000BB">$info&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$gpg&nbsp;</span><span style="color: #007700">-&gt;&nbsp;</span><span style="color: #0000BB">verify</span><span style="color: #007700">(</span><span style="color: #0000BB">$signed_text</span><span style="color: #007700">,</span><span style="color: #0000BB">$signature</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$info</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="85829""></a>
+  <div class="note">
+   <strong class="user">kae at verens dot com</strong>
+   <a href="#85829" class="date">19-Sep-2008 01:27</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+You can see who made the signature by checking its fingerprint:<br />
+<br />
+<span class="default">&lt;?php<br />
+$res </span><span class="keyword">= </span><span class="default">gnupg_init</span><span class="keyword">();<br />
+</span><span class="default">$info </span><span class="keyword">= </span><span class="default">gnupg_verify</span><span class="keyword">(</span><span class="default">$res</span><span class="keyword">,</span><span class="default">$signed_text</span><span class="keyword">,</span><span class="default">$signature</span><span class="keyword">);<br />
+if(</span><span class="default">$info </span><span class="keyword">!== </span><span class="default">false</span><span class="keyword">){<br />
+&nbsp; </span><span class="default">$fingerprint </span><span class="keyword">= </span><span class="default">$info</span><span class="keyword">[</span><span class="string">'fingerprint'</span><span class="keyword">];<br />
+&nbsp; </span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">gnupg_keyinfo</span><span class="keyword">(</span><span class="default">$res</span><span class="keyword">, </span><span class="default">$fingerprint</span><span class="keyword">));<br />
+}</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.gnupg-sign.html">gnupg_sign</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="book.haru.html">haru</a></div>
+ <div class="up"><a href="ref.gnupg.html">GnuPG 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

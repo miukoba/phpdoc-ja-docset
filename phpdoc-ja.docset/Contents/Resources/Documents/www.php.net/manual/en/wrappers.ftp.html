@@ -1,0 +1,284 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>FTP(s) URL へのアクセス</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="wrappers.http.html">http://</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="wrappers.php.html">php://</a></div>
+ <div class="up"><a href="wrappers.html">サポートするプロトコル/ラッパー</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="wrappers.ftp" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ftp://</h1>
+  <h1 class="refname">ftps://</h1>
+  <p class="refpurpose"><span class="refname">ftp://</span> -- <span class="refname">ftps://</span> &mdash; <span class="dc-title">FTP(s) URL へのアクセス</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-wrappers.ftp-description">
+  <h3 class="title">説明</h3>
+  <p class="para">
+   FTP 経由でのファイルの読み込みと新しいファイルの作成を許可します。
+   サーバーがパッシブモードの FTP をサポートしていない場合、接続は失敗します。
+  </p>
+  <p class="simpara">
+   読み込み用または書き込み用のどちらかでファイルをオープンすることが
+   可能ですが、それらを両方同時に指定することはできません。FTP サーバー上の
+   既存のファイルを書き込み用にオープンしようとした場合、もし
+   コンテキストオプション <em>overwrite</em> が指定されていなければ
+   接続は失敗します。既存のファイルを FTP 越しに上書きしたい場合は、
+   コンテキストオプション <em>overwrite</em> を指定したうえで
+   書き込み用にファイルをオープンします。別の方法としては、
+   <a href="ref.ftp.html" class="link">FTP 拡張モジュール</a> を使用することも可能です。
+  </p>
+  <p class="simpara">
+   <a href="filesystem.configuration.html#ini.from" class="link">from</a> ディレクティブを
+   <var class="filename">php.ini</var> で設定した場合、この値が
+   anonymous FTP のパスワードとして送信されます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 usage" id="refsect1-wrappers.ftp-usage"> 
+  <h3 class="title">利用法</h3>
+  <ul class="itemizedlist">
+   <li class="listitem"><span class="simpara"><var class="filename">ftp://example.com/pub/file.txt</var></span></li>
+   <li class="listitem"><span class="simpara"><var class="filename">ftp://user:password@example.com/pub/file.txt</var></span></li>
+   <li class="listitem"><span class="simpara"><var class="filename">ftps://example.com/pub/file.txt</var></span></li>
+   <li class="listitem"><span class="simpara"><var class="filename">ftps://user:password@example.com/pub/file.txt</var></span></li>
+  </ul>
+ </div>
+ 
+
+ <div class="refsect1 options" id="refsect1-wrappers.ftp-options">
+  <h3 class="title">オプション</h3>
+  <p class="para">
+   <table class="doctable table">
+    <caption><strong>ラッパーの概要</strong></caption>
+    
+     <thead>
+      <tr>
+       <th>属性</th>
+       <th>PHP 4</th>
+       <th>PHP 5</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td><a href="filesystem.configuration.html#ini.allow-url-fopen" class="link">allow_url_fopen</a> で制約される</td>
+       <td>Yes</td>
+       <td>Yes</td>
+      </tr>
+
+      <tr>
+       <td>読み込み許可</td>
+       <td>Yes</td>
+       <td>Yes</td>
+      </tr>
+
+      <tr>
+       <td>書き込み許可</td>
+       <td>Yes（新規ファイルのみ）</td>
+       <td>Yes（新規ファイル あるいは 既存のファイルで <em><code class="parameter">overwrite</code></em> を指定）</td>
+      </tr>
+
+      <tr>
+       <td>追加許可</td>
+       <td>No</td>
+       <td>Yes</td>
+      </tr>
+
+      <tr>
+       <td>同時読み書き許可</td>
+       <td>No</td>
+       <td>No</td>
+      </tr>
+
+      <tr>
+       <td> <span class="function"><a href="function.stat.html" class="function">stat()</a></span> のサポート</td>
+       <td>No</td>
+       <td>
+        PHP 5.0.0 では  <span class="function"><a href="function.filesize.html" class="function">filesize()</a></span>、
+         <span class="function"><a href="function.filetype.html" class="function">filetype()</a></span>、 <span class="function"><a href="function.file-exists.html" class="function">file_exists()</a></span>、
+         <span class="function"><a href="function.is-file.html" class="function">is_file()</a></span> および  <span class="function"><a href="function.is-dir.html" class="function">is_dir()</a></span> のみ。
+        PHP 5.1.0 で  <span class="function"><a href="function.filemtime.html" class="function">filemtime()</a></span>。
+       </td>
+      </tr>
+
+      <tr>
+       <td> <span class="function"><a href="function.unlink.html" class="function">unlink()</a></span> のサポート</td>
+       <td>No</td>
+       <td>Yes</td>
+      </tr>
+
+      <tr>
+       <td> <span class="function"><a href="function.rename.html" class="function">rename()</a></span> のサポート</td>
+       <td>No</td>
+       <td>Yes</td>
+      </tr>
+
+      <tr>
+       <td> <span class="function"><a href="function.mkdir.html" class="function">mkdir()</a></span> のサポート</td>
+       <td>No</td>
+       <td>Yes</td>
+      </tr>
+
+      <tr>
+       <td> <span class="function"><a href="function.rmdir.html" class="function">rmdir()</a></span> のサポート</td>
+       <td>No</td>
+       <td>Yes</td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+ 
+
+ <div class="refsect1 changelog" id="refsect1-wrappers.ftp-changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>4.3.0</td>
+       <td>
+        <em>ftps://</em> が追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes" id="refsect1-wrappers.ftp-notes">
+  <h3 class="title">注意</h3>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    FTPS がサポートされるのは、<a href="book.openssl.html" class="link">openssl</a>
+    拡張モジュールが有効な場合のみです。
+   </p>
+   <span class="simpara">
+    もしサーバーが SSL をサポートして
+    いなければ、通常の（暗号化されない）FTP を使用します。
+   </span>
+  </p></blockquote>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <strong>追記</strong><br />
+   <span class="simpara">
+    PHP 5.0.0 では、<em>ftp://</em> URL ラッパー経由での
+    ファイルの追記が可能となりました。それ以前のバージョンでは
+    <em>ftp://</em> 経由でのファイルの追記は失敗していました。
+   </span>
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-wrappers.ftp-seealso">
+  <h3 class="title">参考</h3>
+  <ul class="simplelist">
+   <li class="member"><a href="context.ftp.html" class="xref">FTP コンテキストオプション</a></li>
+  </ul>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="82794""></a>
+  <div class="note">
+   <strong class="user">fazil dot stormhammer dot nospam at gmail dot com</strong>
+   <a href="#82794" class="date">25-Apr-2008 10:41</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Document says "Allows read access to existing files and creation of new files via FTP. If the server does not support passive mode ftp, the connection will fail. "<br />
+<br />
+As of version 5.2.5 at least fopen("<a href="ftp://..." rel="nofollow" target="_blank">ftp://...</a>") uses an ACTIVE mode connection by default (it issues an FTP PORT command but not a PASV command).&nbsp; To force passive mode:<br />
+<br />
+$f = fopen("<a href="ftp://..." rel="nofollow" target="_blank">ftp://...</a>");<br />
+ftp_pasv($f, true);</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="70269""></a>
+  <div class="note">
+   <strong class="user">wlangdon at essex dot ac dot uk</strong>
+   <a href="#70269" class="date">09-Oct-2006 06:32</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+old fashioned FTP servers may not be compatible with ftp_connect().</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="57168""></a>
+  <div class="note">
+   
+   <a href="#57168" class="date">26-Sep-2005 05:33</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+&lt;?<br />
+$str ="replace all contenents";<br />
+$filew="<a href="ftp://gufo:gufo@192.168.1.55:21/jj.php" rel="nofollow" target="_blank">ftp://gufo:gufo@192.168.1.55:21/jj.php</a>";<br />
+$opts = array('ftp' =&gt; array('overwrite' =&gt; true));<br />
+$context = stream_context_create($opts);<br />
+$strwri = file_put_contents($filew,$str,LOCK_EX,$context);<br />
+?&gt;</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="43797""></a>
+  <div class="note">
+   <strong class="user">php at f00n dot com</strong>
+   <a href="#43797" class="date">04-Jul-2004 09:39</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+For Intranet purposes I found I preferred to move my file via ftp functions to match the session user's ftp account and put the file in a holding bay so I knew who it was from.<br />
+<br />
+The FTP wrapper method will NOT do this if your ftp server does NOT support passive mode.<br />
+<br />
+eg.&nbsp; an ftp server behind NAT/routing</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="wrappers.http.html">http://</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="wrappers.php.html">php://</a></div>
+ <div class="up"><a href="wrappers.html">サポートするプロトコル/ラッパー</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,567 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>MongoClient クラス</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongo.core.html">コアクラス群</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongo.close.html">Mongo::close</a></div>
+ <div class="up"><a href="mongo.core.html">コアクラス群</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="class.mongoclient" class="reference">
+
+ <h1 class="title">MongoClient クラス</h1>
+ 
+
+ <div class="partintro"><p class="verinfo">(PECL mongoclient &gt;=1.3.0)</p>
+  
+  <div class="section" id="mongoclient.intro">
+   <h2 class="title">導入</h2>
+   <p class="para">
+    PHP と MongoDB の接続を管理します。
+   </p>
+   <p class="para">
+    このクラスを使って、接続を作ったり管理したりします。典型的な使いかたは、このようになります。
+    <div class="example" id="mongoclient.intro-example">
+     <p><strong>例1 <strong class="classname">MongoClient</strong> の基本的な使いかた</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;接続します<br /></span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">foo</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;"foo"&nbsp;というデータベースを取得します<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="para">
+    接続の作成に関する詳細な情報は、
+     <span class="function"><strong>MongoClient::__construct()</strong></span> および
+    <a href="mongo.connecting.html" class="link">接続</a> のセクションを参照ください。
+   </p>
+  </div>
+  
+
+  <div class="section" id="mongoclient.synopsis">
+   <h2 class="title">クラス概要</h2>
+
+   
+   <div class="classsynopsis">
+    <div class="ooclass"></div>
+
+    
+    <div class="classsynopsisinfo">
+     <span class="ooclass">
+      <strong class="classname">MongoClient</strong>
+     </span>
+     {</div>
+    
+
+    <div class="classsynopsisinfo classsynopsisinfo_comment">/* 定数 */</div>
+    <div class="fieldsynopsis">
+     <span class="modifier">const</span>
+     <span class="type">string</span>
+      <var class="fieldsynopsis_varname"><a href="class.mongoclient.html#mongoclient.constants.version"><var class="varname">VERSION</var></a></var>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">const</span>
+     <span class="type">string</span>
+      <var class="fieldsynopsis_varname"><a href="class.mongoclient.html#mongoclient.constants.defaulthost"><var class="varname">DEFAULT_HOST</var></a></var>
+     <span class="initializer"> = &quot;localhost&quot;</span>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">const</span>
+     <span class="type">int</span>
+      <var class="fieldsynopsis_varname"><a href="class.mongoclient.html#mongoclient.constants.defaultport"><var class="varname">DEFAULT_PORT</var></a></var>
+     <span class="initializer"> = 27017</span>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">const</span>
+     <span class="type">string</span>
+      <var class="fieldsynopsis_varname"><a href="class.mongoclient.html#mongoclient.constants.rpprimary"><var class="varname">RP_PRIMARY</var></a></var>
+     <span class="initializer"> = &quot;primary&quot;</span>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">const</span>
+     <span class="type">string</span>
+      <var class="fieldsynopsis_varname"><a href="class.mongoclient.html#mongoclient.constants.rpprimarypreferred"><var class="varname">RP_PRIMARY_PREFERRED</var></a></var>
+     <span class="initializer"> = &quot;primaryPreferred&quot;</span>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">const</span>
+     <span class="type">string</span>
+      <var class="fieldsynopsis_varname"><a href="class.mongoclient.html#mongoclient.constants.rpsecondary"><var class="varname">RP_SECONDARY</var></a></var>
+     <span class="initializer"> = &quot;secondary&quot;</span>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">const</span>
+     <span class="type">string</span>
+      <var class="fieldsynopsis_varname"><a href="class.mongoclient.html#mongoclient.constants.rpsecondary"><var class="varname">RP_SECONDARY_PREFERRED</var></a></var>
+     <span class="initializer"> = &quot;secondaryPreferred&quot;</span>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">const</span>
+     <span class="type">string</span>
+      <var class="fieldsynopsis_varname"><a href="class.mongoclient.html#mongoclient.constants.rpsecondary"><var class="varname">RP_NEAREST</var></a></var>
+     <span class="initializer"> = &quot;nearest&quot;</span>
+    ;</div>
+
+
+    <div class="classsynopsisinfo classsynopsisinfo_comment">/* プロパティ */</div>
+    <div class="fieldsynopsis">
+     <span class="modifier">public</span>
+     <span class="type">boolean</span>
+      <var class="varname"><a href="class.mongoclient.html#mongoclient.props.connected">$<var class="varname">connected</var></a></var>
+     <span class="initializer"> = <strong><code>FALSE</code></strong></span>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">public</span>
+     <span class="type">string</span>
+      <var class="varname"><a href="class.mongoclient.html#mongoclient.props.status">$<var class="varname">status</var></a></var>
+     <span class="initializer"> = <strong><code>NULL</code></strong></span>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">protected</span>
+     <span class="type">string</span>
+      <var class="varname">$<var class="varname">server</var></var>
+     <span class="initializer"> = <strong><code>NULL</code></strong></span>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">protected</span>
+     <span class="type">boolean</span>
+      <var class="varname">$<var class="varname">persistent</var></var>
+     <span class="initializer"> = <strong><code>NULL</code></strong></span>
+    ;</div>
+
+
+    <div class="classsynopsisinfo classsynopsisinfo_comment">/* メソッド */</div>
+    <div class="constructorsynopsis dc-description">
+   <span class="modifier">public</span>  <span class="methodname"><strong>__construct</strong></span>
+    ([ <span class="methodparam"><span class="type">string</span> <code class="parameter">$server</code><span class="initializer"> = &quot;mongodb://localhost:27017&quot;</span></span>
+   [, <span class="methodparam"><span class="type">array</span> <code class="parameter">$options</code><span class="initializer"> = array(&quot;connect&quot; =&gt; <strong><code>TRUE</code></strong>)</span></span>
+  ]] )</div>
+
+    <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><a href="mongo.close.html" class="methodname">Mongo::close</a></span>
+    ([ <span class="methodparam"><span class="type"><span class="type boolean|string">boolean|string</span></span> <code class="parameter">$connection</code></span>
+  ] )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><a href="mongo.connect.html" class="methodname">Mongo::connect</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">array</span> <span class="methodname"><a href="mongo.dropdb.html" class="methodname">Mongo::dropDB</a></span>
+    ( <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter">$db</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">MongoDB</span> <span class="methodname"><a href="mongo.get.html" class="methodname">Mongo::__get</a></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$dbname</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="modifier">static</span> <span class="type">array</span> <span class="methodname"><a href="mongoclient.getconnections.html" class="methodname">getConnections</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">array</span> <span class="methodname"><a href="mongo.gethosts.html" class="methodname">Mongo::getHosts</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">array</span> <span class="methodname"><a href="mongoclient.getreadpreference.html" class="methodname">getReadPreference</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><a href="mongoclient.killcursor.html" class="methodname">killCursor</a></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$server_hash</code></span>
+   , <span class="methodparam"><span class="type"><span class="type int|MongoInt64">int|MongoInt64</span></span> <code class="parameter">$id</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">array</span> <span class="methodname"><a href="mongo.listdbs.html" class="methodname">Mongo::listDBs</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">MongoCollection</span> <span class="methodname"><a href="mongo.selectcollection.html" class="methodname">Mongo::selectCollection</a></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$db</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$collection</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">MongoDB</span> <span class="methodname"><a href="mongo.selectdb.html" class="methodname">Mongo::selectDB</a></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$name</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><a href="mongoclient.setreadpreference.html" class="methodname">setReadPreference</a></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$read_preference</code></span>
+   [, <span class="methodparam"><span class="type">array</span> <code class="parameter">$tags</code></span>
+  ] )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">string</span> <span class="methodname"><a href="mongo.tostring.html" class="methodname">Mongo::__toString</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+   }</div>
+   
+
+  </div>
+
+
+  <div class="section" id="mongoclient.constants">
+   <h2 class="title">定義済み定数</h2>
+   <div class="section" id="mongoclient.constants.types">
+    <h2 class="title">MongoClient 定数</h2>
+    <dl>
+
+     <dt id="mongoclient.constants.version">
+      <span class="term"><strong><code>MongoClient::VERSION</code></strong></span>
+      <dd>
+
+       <span class="simpara">
+        PHP ドライバのバージョン。中間バージョンの場合は最後に &quot;dev&quot; や &quot;+&quot;、そして &quot;-&quot;
+        がつくことがあります。
+       </span>
+      </dd>
+
+     </dt>
+
+     <dt id="mongoclient.constants.defaulthost">
+      <span class="term"><strong><code>MongoClient::DEFAULT_HOST</code></strong></span>
+      <br /><span class="term"><strong><code>&quot;localhost&quot;</code></strong></span>
+      <dd>
+
+       <span class="simpara">
+        ホストを指定しない場合に接続するホスト。
+       </span>
+      </dd>
+
+     </dt>
+
+     <dt id="mongoclient.constants.defaultport">
+      <span class="term"><strong><code>MongoClient::DEFAULT_PORT</code></strong></span>
+      <br /><span class="term"><strong><code>27017</code></strong></span>
+      <dd>
+
+       <span class="simpara">
+        ポートを指定しない場合に接続するポート。
+       </span>
+      </dd>
+
+     </dt>
+
+     <dt id="mongoclient.constants.rpprimary">
+      <span class="term"><strong><code>MongoClient::RP_PRIMARY</code></strong></span>
+      <br /><span class="term"><strong><code>&quot;primary&quot;</code></strong></span>
+      <dd>
+
+       <span class="simpara">
+        プライマリのレプリカセットメンバーを
+        <a href="mongo.readpreferences.html" class="link">優先読み込み</a>
+        する。
+       </span>
+      </dd>
+
+     </dt>
+
+     <dt id="mongoclient.constants.rpprimarypreferred">
+      <span class="term"><strong><code>MongoClient::RP_PRIMARY_PREFERRED</code></strong></span>
+      <br /><span class="term"><strong><code>&quot;primaryPreferred&quot;</code></strong></span>
+      <dd>
+
+       <span class="simpara">
+        プライマリのレプリカセットメンバーのほうを優先して
+        <a href="mongo.readpreferences.html" class="link">優先読み込み</a>
+        する。
+       </span>
+      </dd>
+
+     </dt>
+
+     <dt id="mongoclient.constants.rpsecondary">
+      <span class="term"><strong><code>MongoClient::RP_SECONDARY</code></strong></span>
+      <br /><span class="term"><strong><code>&quot;secondary&quot;</code></strong></span>
+      <dd>
+
+       <span class="simpara">
+        セカンダリのレプリカセットメンバーを
+        <a href="mongo.readpreferences.html" class="link">優先読み込み</a>
+        する。
+       </span>
+      </dd>
+
+     </dt>
+
+     <dt id="mongoclient.constants.rpsecondarypreferred">
+      <span class="term"><strong><code>MongoClient::RP_SECONDARY_PREFERRED</code></strong></span>
+      <br /><span class="term"><strong><code>&quot;secondaryPreferred&quot;</code></strong></span>
+      <dd>
+
+       <span class="simpara">
+        セカンダリのレプリカセットメンバーの方を優先して
+        <a href="mongo.readpreferences.html" class="link">優先読み込み</a>
+        する。
+       </span>
+      </dd>
+
+     </dt>
+
+     <dt id="mongoclient.constants.rpnearest">
+      <span class="term"><strong><code>MongoClient::RP_NEAREST</code></strong></span>
+      <br /><span class="term"><strong><code>&quot;nearest&quot;</code></strong></span>
+      <dd>
+
+       <span class="simpara">
+        最も近いレプリカセットメンバーを
+        <a href="mongo.readpreferences.html" class="link">優先読み込み</a>
+        する。
+       </span>
+      </dd>
+
+     </dt>
+
+    </dl>
+
+   </div>
+  </div>
+
+  <div class="section" id="mongoclient.fields">
+   <h2 class="title">フィールド</h2>
+   <dl>
+
+    <dt id="mongoclient.props.connected">
+     <span class="term"><var class="varname"><var class="varname">connected</var></var></span>
+     <dd>
+
+      <span class="simpara">
+       このプロパティに <strong><code>TRUE</code></strong> を設定するのは、
+       ReadPreference およびタグセット (レプリカセット接続の場合)
+       に基づいたデータベース接続がオープンしている場合です。
+       それ以外の場合は <strong><code>FALSE</code></strong> を設定します。
+       このプロパティは、認証を考慮しません。
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt id="mongoclient.props.status">
+     <span class="term"><var class="varname"><var class="varname">status</var></var></span>
+     <dd>
+
+      <span class="simpara">
+       このプロパティはもう使われておらず、値は <strong><code>NULL</code></strong> に設定されます。
+       バージョン 1.1.x より前のドライバでは、持続的接続を使う場合にここに文字列
+       (<em>&quot;recycled&quot;</em> や <em>&quot;new&quot;</em> など)
+       が設定されていました。
+      </span>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </div>
+
+  <div class="section" id="mongoclient.seealso">
+   <h2 class="title">参考</h2>
+   <ul class="simplelist">
+    <li class="member"><a href="mongo.readpreferences.html" class="xref">優先読み込み</a></li>
+    <li class="member"><a href="mongo.writeconcerns.html" class="xref">書き込み確認</a></li>
+    <li class="member"><a href="mongo.connecting.html" class="xref">接続</a></li>
+    <li class="member">MongoDB コアドキュメントの <a href="http://docs.mongodb.org/manual/reference/connection-string/" class="link external" title="Link : http://docs.mongodb.org/manual/reference/connection-string/">&raquo;&nbsp;connecting</a></li>
+   </ul>
+  </div>
+
+
+ </div>
+
+ 
+
+
+
+
+ 
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+<h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="mongo.close.html">Mongo::close</a> — 接続を閉じる</li><li><a href="mongo.connect.html">Mongo::connect</a> — データベースサーバーに接続する</li><li><a href="mongoclient.construct.html">Mongo::__construct</a> — 新しいデータベース接続オブジェクトを作成する</li><li><a href="mongo.dropdb.html">Mongo::dropDB</a> — データベースを削除する [非推奨]</li><li><a href="mongo.get.html">Mongo::__get</a> — データベースを取得する</li><li><a href="mongoclient.getconnections.html">MongoClient::getConnections</a> — 開いているすべての接続の情報を返す</li><li><a href="mongo.gethosts.html">Mongo::getHosts</a> — 関連づけられたすべてのホストの状態を更新する</li><li><a href="mongoclient.getreadpreference.html">MongoClient::getReadPreference</a> — この接続の優先読み込みを取得する</li><li><a href="mongoclient.killcursor.html">MongoClient::killCursor</a> — サーバー上の指定したカーソルを削除する</li><li><a href="mongo.listdbs.html">Mongo::listDBs</a> — すべてのデータベースの一覧を取得する</li><li><a href="mongo.selectcollection.html">Mongo::selectCollection</a> — データベースコレクションを取得する</li><li><a href="mongo.selectdb.html">Mongo::selectDB</a> — データベースを取得する</li><li><a href="mongoclient.setreadpreference.html">MongoClient::setReadPreference</a> — この接続の優先読み込みを設定する</li><li><a href="mongo.tostring.html">Mongo::__toString</a> — この接続の文字列表現</li></ul>
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="111600""></a>
+  <div class="note">
+   <strong class="user">mike at eastghost dot com</strong>
+   <a href="#111600" class="date">07-Mar-2013 06:35</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This will help maintain sanity while debugging replicaSet connectivity problems:<br />
+<br />
+error_reporting( E_ALL )<br />
+// print every log message possible<br />
+\MongoLog::setLevel(\MongoLog::ALL); // all log levels<br />
+\MongoLog::setModule(\MongoLog::ALL); // all parts of the driver</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="111599""></a>
+  <div class="note">
+   <strong class="user">mike at eastghost dot com</strong>
+   <a href="#111599" class="date">07-Mar-2013 06:34</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+php monogo driver 1.3.4<br />
+feb 2013<br />
+<br />
+After demoting old replicaset primary to secondary, and promoting old replicaset second into primary, we began seeing "No candidate servers found" MongoException at initial attempt to connect to (new) replicaset primary (via this hint in the /etc/mongo.conf: replSet = rs1/pri.eastghost.com)<br />
+<br />
+Fix seems to be<br />
+<br />
+1. NEVER list "localhost" in the bind= line of /etc/mongo.conf<br />
+<br />
+2. ALWAYS list every replica set member in every member's /etc/hosts file -- there seems to be something wrong with DNS lookup timing.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="110718""></a>
+  <div class="note">
+   <strong class="user">jazz at funkynerd dot com</strong>
+   <a href="#110718" class="date">28-Nov-2012 10:36</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Seeing as the Mongo class has been deprecated, I'm using the following code to allow compatibility with the pre 1.3.0 driver successfully.<br />
+<br />
+<span class="default">&lt;?php<br />
+$class </span><span class="keyword">= </span><span class="string">'MongoClient'</span><span class="keyword">;<br />
+&nbsp;<br />
+if(!</span><span class="default">class_exists</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">)){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$class </span><span class="keyword">= </span><span class="string">'Mongo'</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <br />
+}<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <br />
+</span><span class="default">$conn </span><span class="keyword">= new </span><span class="default">$class</span><span class="keyword">(</span><span class="default">$hosts</span><span class="keyword">, </span><span class="default">$args</span><span class="keyword">);<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongo.core.html">コアクラス群</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongo.close.html">Mongo::close</a></div>
+ <div class="up"><a href="mongo.core.html">コアクラス群</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

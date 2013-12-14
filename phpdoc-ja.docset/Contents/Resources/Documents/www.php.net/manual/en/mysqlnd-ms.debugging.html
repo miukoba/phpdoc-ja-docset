@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Debugging and Tracing</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqlnd-ms.testing.html">Testing</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd-ms.monitoring.html">Monitoring</a></div>
+ <div class="up"><a href="mysqlnd-ms.setup.html">インストール/設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mysqlnd-ms.debugging" class="section">
+  <h2 class="title">Debugging and Tracing</h2>
+  <p class="para">
+   The mysqlnd debug log can be used to debug and trace the actitivities of
+   PECL/mysqlnd_ms. As a mysqlnd PECL/mysqlnd_ms adds trace information to the
+   mysqlnd library debug file. Please, see the
+   <a href="mysqlnd.config.html#ini.mysqlnd.debug" class="link"><em>mysqlnd.debug</em></a>
+   PHP configuration directive documentation for a detailed description
+   on how to configure the debug log.
+  </p>
+  <p class="para">
+  Configuration setting example to activate the debug log:
+  <div class="example-contents">
+<div class="cdata"><pre>
+mysqlnd.debug=d:t:x:O,/tmp/mysqlnd.trace
+</pre></div>
+  </div>
+
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+    <p class="para">
+     This feature is only available with a debug build of PHP. Works
+     on Microsoft Windows if using a debug build of PHP and PHP was
+     built using Microsoft Visual C version 9 and above.
+    </p>
+   </p></blockquote>
+  </p>
+  <p class="para">
+   The debug log shows mysqlnd library and PECL/mysqlnd_ms plugin function calls,
+   similar to a trace log. Mysqlnd library calls are usually prefixed with
+   <em>mysqlnd_</em>. PECL/mysqlnd internal calls begin with
+   <em>mysqlnd_ms</em>.
+  </p>
+  <p class="para">
+   Example excerpt from the debug log (connect):
+   <div class="example-contents">
+<div class="cdata"><pre>
+[...]
+&gt;mysqlnd_connect
+| info : host=myapp user=root db=test port=3306 flags=131072
+| &gt;mysqlnd_ms::connect
+| | &gt;mysqlnd_ms_config_json_section_exists
+| | | info : section=[myapp] len=[5]
+| | | &gt;mysqlnd_ms_config_json_sub_section_exists
+| | | | info : section=[myapp] len=[5]
+| | | | info : ret=1
+| | | &lt;mysqlnd_ms_config_json_sub_section_exists
+| | | info : ret=1
+| | &lt;mysqlnd_ms_config_json_section_exists
+[...]
+</pre></div>
+   </div>
+
+  </p>
+  <p class="para">
+   The debug log is not only useful for plugin developers but also to find the
+   cause of user errors. For example, if your application does not do proper
+   error handling and fails to record error messages, checking the debug
+   and trace log may help finding the cause. Use of the debug log
+   to debug application issues should be considered only if no other
+   option is available. Writing the debug log to disk is a slow
+   operation and may have negative impact on the application
+   performance.
+  </p>
+  <p class="para">
+   Example excerpt from the debug log (connection failure):
+   <div class="example-contents">
+<div class="cdata"><pre>
+[...]
+| | | | | | | info : adding error [Access denied for user &#039;root&#039;@&#039;localhost&#039; (using password: YES)] to the list
+| | | | | | | info : PACKET_FREE(0)
+| | | | | | | info : PACKET_FREE(0x7f3ef6323f50)
+| | | | | | | info : PACKET_FREE(0x7f3ef6324080)
+| | | | | | &lt;mysqlnd_auth_handshake
+| | | | | | info : switch_to_auth_protocol=n/a
+| | | | | | info : conn-&gt;error_info.error_no = 1045
+| | | | | &lt;mysqlnd_connect_run_authentication
+| | | | | info : PACKET_FREE(0x7f3ef63236d8)
+| | | | | &gt;mysqlnd_conn::free_contents
+| | | | | | &gt;mysqlnd_net::free_contents
+| | | | | | &lt;mysqlnd_net::free_contents
+| | | | | | info : Freeing memory of members
+| | | | | | info : scheme=unix:///tmp/mysql.sock
+| | | | | | &gt;mysqlnd_error_list_pdtor
+| | | | | | &lt;mysqlnd_error_list_pdtor
+| | | | | &lt;mysqlnd_conn::free_contents
+| | | | &lt;mysqlnd_conn::connect
+[...]
+</pre></div>
+   </div>
+
+  </p>
+  <p class="para">
+   The trace log can also be used to verify correct behaviour
+   of PECL/mysqlnd_ms itself, for example, to check which server has been
+   selected for query execution and why.
+  </p>
+  <p class="para">
+   Example excerpt from the debug log (plugin decision):
+   <div class="example-contents">
+<div class="cdata"><pre>
+[...]
+&gt;mysqlnd_ms::query
+| info : query=DROP TABLE IF EXISTS test
+| &gt;_mysqlnd_plugin_get_plugin_connection_data
+| | info : plugin_id=5
+| &lt;_mysqlnd_plugin_get_plugin_connection_data
+| &gt;mysqlnd_ms_pick_server_ex
+| | info : conn_data=0x7fb6a7d3e5a0 *conn_data=0x7fb6a7d410d0
+| | &gt;mysqlnd_ms_select_servers_all
+| | &lt;mysqlnd_ms_select_servers_all
+| | &gt;mysqlnd_ms_choose_connection_rr
+| | | &gt;mysqlnd_ms_query_is_select
+[...]
+| | | &lt;mysqlnd_ms_query_is_select
+[...]
+| | | info : Init the master context
+| | | info : list(0x7fb6a7d3f598) has 1
+| | | info : Using master connection
+| | | &gt;mysqlnd_ms_advanced_connect
+| | | | &gt;mysqlnd_conn::connect
+| | | | | info : host=localhost user=root db=test port=3306 flags=131072 persistent=0 state=0
+</pre></div>
+   </div>
+
+  </p>
+  <p class="para">
+   In this case the statement <em>DROP TABLE IF EXISTS test</em> has been
+   executed. Note that the statement string is shown in the log file. You may want
+   to take measures to restrict access to the log for security considerations.
+  </p>
+  <p class="para">
+    The statement has been load balanced using round robin policy,
+    as you can easily guess from the functions name <em>&gt;mysqlnd_ms_choose_connection_rr</em>.
+    It has been sent to a master server running on
+    <em>host=localhost user=root db=test port=3306 flags=131072 persistent=0 state=0</em>.
+  </p>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqlnd-ms.testing.html">Testing</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd-ms.monitoring.html">Monitoring</a></div>
+ <div class="up"><a href="mysqlnd-ms.setup.html">インストール/設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

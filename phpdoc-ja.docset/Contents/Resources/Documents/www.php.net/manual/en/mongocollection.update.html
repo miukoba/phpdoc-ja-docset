@@ -1,0 +1,517 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>指定した条件にもとづいてレコードを更新する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongocollection.--tostring.html">MongoCollection::__toString</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongocollection.validate.html">MongoCollection::validate</a></div>
+ <div class="up"><a href="class.mongocollection.html">MongoCollection</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mongocollection.update" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">MongoCollection::update</h1>
+  <p class="verinfo">(PECL mongo &gt;=0.9.0)</p><p class="refpurpose"><span class="refname">MongoCollection::update</span> &mdash; <span class="dc-title">指定した条件にもとづいてレコードを更新する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-mongocollection.update-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type"><span class="type bool|array">bool|array</span></span> <span class="methodname"><strong>MongoCollection::update</strong></span>
+    ( <span class="methodparam"><span class="type">array</span> <code class="parameter">$criteria</code></span>
+   , <span class="methodparam"><span class="type">array</span> <code class="parameter">$new_object</code></span>
+   [, <span class="methodparam"><span class="type">array</span> <code class="parameter">$options</code><span class="initializer"> = array()</span></span>
+  ] )</div>
+
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-mongocollection.update-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term">
+      <em><code class="parameter">criteria</code></em>
+     </span>
+     <dd>
+
+      <p class="para">
+       更新したいオブジェクトの条件。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <em><code class="parameter">new_object</code></em>
+     </span>
+     <dd>
+
+      <p class="para">
+       マッチするレコードを更新するオブジェクト。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <em><code class="parameter">options</code></em>
+     </span>
+     <dd>
+
+      <p class="para">
+       このパラメータは
+       <em>array(&quot;optionname&quot; =&gt; &lt;boolean&gt;, ...)</em>
+       形式の連想配列で、現在サポートしているオプションは次の通りです。
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;upsert&quot;</em>
+         </p>
+         <p class="para">
+          <em><code class="parameter">$criteria</code></em> にマッチするレコードが見つからない場合に
+          新しいドキュメントを追加します。
+         </p>
+         <p class="para">
+          新しいドキュメントを追加するときに
+          <em><code class="parameter">$new_object</code></em> にアトミックな修正子
+          (<em>$</em> 演算子) が含まれていれば、この操作を
+          <em><code class="parameter">$criteria</code></em> パラメータに適用して新しいドキュメントを作ります。
+          <em><code class="parameter">$new_object</code></em> がアトミックな修正子を含まない場合は、
+          そのままの形式で新しいドキュメントに使います。
+          詳細は、以下の upsert の例を参照ください。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;multiple&quot;</em>
+         </p>
+         <p class="para">
+          $criteria にマッチするすべてのドキュメントを更新します。
+           <span class="function"><strong>MongoCollection::update()</strong></span> は
+           <span class="function"><a href="mongocollection.remove.html" class="function">MongoCollection::remove()</a></span> と正反対の動きをします。
+          デフォルトでは、マッチするすべてのドキュメントではなく
+          ひとつのドキュメントだけを更新するのです。
+          <em class="emphasis">複数ドキュメントを更新したいのかそうでないのかは、
+          常に指定しておくことを推奨します。</em>
+          将来、データベースのデフォルトの挙動が変わる可能性があるからです。
+         </p>
+        </li>
+        <li class="listitem">
+<p class="para"><em>&quot;fsync&quot;</em></p>
+<p class="para">デフォルトは <strong><code>FALSE</code></strong> です。
+これを指定すると、追加をディスクに同期させるまで成功したと見なさないようになります。
+<strong><code>TRUE</code></strong> にすると、<em>w</em> の設定を <em>0</em> に上書きします。</p>
+</li>
+        <li class="listitem"><p class="para"><em>&quot;j&quot;</em></p>
+<p class="para">デフォルトは <strong><code>FALSE</code></strong> です。
+これを指定すると、追加をジャーナルに同期させるまで成功したと見なさないようになります。
+<strong><code>TRUE</code></strong> にすると確認付き書き込みと見なされ、<em>w</em> の設定を <em>0</em> に上書きします。</p></li>
+
+        <li class="listitem">
+<p class="para"><em>&quot;w&quot;</em></p>
+<p class="para"><a href="mongo.writeconcerns.html" class="link">WriteConcerns</a> を参照ください。<a href="class.mongoclient.html" class="classname">MongoClient</a> でのデフォルト値は <em>1</em> です。
+</p></li>
+        <li class="listitem"><p class="para"><em>&quot;wtimeout&quot;</em></p>
+<p class="para"><a href="mongo.writeconcerns.html" class="link">WriteConcern</a> の確認をいつまで待つか。
+<a href="class.mongoclient.html" class="classname">MongoClient</a> のデフォルトは <em>10000</em> ミリ秒です。</p></li>
+        <li class="listitem"><p class="para"><em>&quot;safe&quot;</em></p><p class="para"><em class="emphasis">非推奨</em>。<a href="mongo.writeconcerns.html" class="link">WriteConcern</a> の <em>w</em> オプションを使いましょう。</p></li>
+        <li class="listitem"><p class="para"><em>&quot;timeout&quot;</em></p>
+<p class="para">整数で、デフォルトは <em>MongoCursor::$timeout</em> です。
+確認付き書き込みを使っている場合、これはクライアントがデータベースからのレスポンスを待ち続ける時間 (ミリ秒) を表します。
+この時間内にデータベースからの反応がなければ、<a href="class.mongocursortimeoutexception.html" class="classname">MongoCursorTimeoutException</a> をスローします。</p></li>
+       </ul>
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-mongocollection.update-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <em>&quot;w&quot;</em> が設定されていれば、更新の状態を表す配列を返します。
+   それ以外の場合は <strong><code>TRUE</code></strong> を返します。
+  </p>
+  <p class="para">
+   状態を表す配列のフィールドについては  <span class="function"><a href="mongocollection.insert.html" class="function">MongoCollection::insert()</a></span> のドキュメントを参照ください。
+  </p>
+ </div>
+
+
+ <div class="refsect1 errors" id="refsect1-mongocollection.update-errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">&quot;w&quot; オプションが設定されていて書き込みが失敗した場合に <a href="class.mongocursorexception.html" class="classname">MongoCursorException</a> をスローします。</p><p class="para">&quot;w&quot; オプションの値が 1 より大きく設定されていて、操作の完了までの時間が <var class="varname"><var class="varname">MongoCursor::$timeout</var></var> ミリ秒をこえた場合に <a href="class.mongocursortimeoutexception.html" class="classname">MongoCursorTimeoutException</a> をスローします。サーバー上での操作は止めません。これはクライアント側でのタイムアウトです。<em>MongoCollection::$wtimeout</em> はミリ秒です。</p>
+ </div>
+
+
+ <div class="refsect1 changelog" id="refsect1-mongocollection.update-changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+
+      <tr>
+       <td>1.3.0</td>
+       <td>
+        <em><code class="parameter">options</code></em> パラメータで、boolean
+        だけを渡して upsert を指定することができなくなりました。
+        同じことをするには <em>array(&#039;upsert&#039;&#039; =&gt; true)</em>
+        としなければなりません。
+       </td>
+      </tr>
+
+      <tr>
+       <td>1.2.11</td>
+       <td>
+        <em><code class="parameter">options</code></em> が <span class="type"><span class="type scalar">scalar</span></span> のときに <strong><code>E_DEPRECATED</code></strong> を発行するようになりました。
+       </td>
+      </tr>
+
+      <tr>
+       <td>1.2.0</td>
+       <td><em>&quot;timeout&quot;</em> オプションが追加されました。</td>
+      </tr>
+
+      <tr>
+       <td>1.0.11</td>
+       <td>
+        <em>&quot;safe&quot;</em> が設定されている場合は、&quot;not master&quot; エラーで接続を切断するようになりました。
+       </td>
+      </tr>
+
+      <tr>
+       <td>1.0.9</td>
+       <td>
+        <p class="para">
+         <em>&quot;safe&quot;</em> オプションに整数値がわたせるようになりました (以前は boolean のみでした)。
+        </p>
+        <p class="para">
+         <em>&quot;fsync&quot;</em> オプションが追加されました。
+        </p>
+        <p class="para">
+         <em>&quot;safe&quot;</em> オプションを使っている場合の返り値の型が配列に変わりました。
+         配列にはエラー情報が含まれています。&quot;safe&quot; オプションを使わない場合は、今までどおり
+         boolean のままです。
+        </p>
+       </td>
+      </tr>
+
+      <tr>
+       <td>1.0.5</td>
+       <td><em>&quot;safe&quot;</em> オプションが追加されました。</td>
+      </tr>
+
+      <tr>
+       <td>1.0.1</td>
+       <td>
+        <em><code class="parameter">options</code></em> パラメータが boolean から配列に変わりました。
+        1.0.1 より前のバージョンでは二番目のパラメータはオプションの boolean
+        値で、upsert を指定するものでした。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-mongocollection.update-examples">
+  <h3 class="title">例</h3>
+  <div class="example" id="example-1466">
+   <p><strong>例1  <span class="function"><strong>MongoCollection::update()</strong></span></strong></p>
+   <div class="example-contents"><p>
+    address フィールドをドキュメントに追加します。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"firstname"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Bob"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"lastname"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Jones"&nbsp;</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">$newdata&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">'$set'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(</span><span style="color: #DD0000">"address"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"1&nbsp;Smith&nbsp;Lane"</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">update</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"firstname"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Bob"</span><span style="color: #007700">),&nbsp;</span><span style="color: #0000BB">$newdata</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">findOne</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"firstname"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Bob"</span><span style="color: #007700">)));<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+array(4) {
+  [&quot;_id&quot;]=&gt;
+  object(MongoId)#6 (0) {
+  }
+  [&quot;firstname&quot;]=&gt;
+  string(3) &quot;Bob&quot;
+  [&quot;lastname&quot;]=&gt;
+  string(5) &quot;Jones&quot;
+  [&quot;address&quot;]=&gt;
+  string(12) &quot;1 Smith Lane&quot;
+}
+</pre></div>
+   </div>
+  </div>
+  <div class="example" id="example-1467">
+   <p><strong>例2  <span class="function"><strong>MongoCollection::update()</strong></span> での upsert</strong></p>
+   <div class="example-contents"><p>
+    upsert を使うとコードを簡潔にすることができます。
+    オブジェクトが存在しない (<em><code class="parameter">$criteria</code></em> に基づく) 場合は新たに作成し、
+    存在する場合はそれを更新するという操作を一行で書けるからです。
+   </p></div>
+   <div class="example-contents"><p>
+    次の例では、<em><code class="parameter">$new_object</code></em> にアトミックな修正子が含まれています。
+    コレクションは空なので upsert は新たなドキュメントを追加することになり、
+    これらの操作を
+    <em><code class="parameter">$criteria</code></em> パラメータに適用してドキュメントを作ります。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">drop</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">update</span><span style="color: #007700">(<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">"uri"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"/summer_pics"</span><span style="color: #007700">),<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">'$inc'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(</span><span style="color: #DD0000">"page&nbsp;hits"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">)),<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">"upsert"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">)<br />);<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">findOne</span><span style="color: #007700">());<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+array(3) {
+  [&quot;_id&quot;]=&gt;
+  object(MongoId)#9 (0) {
+  }
+  [&quot;uri&quot;]=&gt;
+  string(12) &quot;/summer_pics&quot;
+  [&quot;page hits&quot;]=&gt;
+  int(1)
+}
+</pre></div>
+   </div>
+   <div class="example-contents"><p>
+    <em><code class="parameter">$new_object</code></em> がアトミックな修正子
+    (<em>$</em> 演算子) を含まない場合、upsert は
+    <em><code class="parameter">$new_object</code></em> をそのままの形式で新しいドキュメントに使います。
+    これは通常の update の挙動と同じです。
+    アトミックな修正子を使わなければ、ドキュメント全体が上書きされます。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">drop</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">update</span><span style="color: #007700">(<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">"name"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"joe"</span><span style="color: #007700">),<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">"username"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"joe312"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"createdAt"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoDate</span><span style="color: #007700">()),&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">"upsert"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">)<br />);<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">findOne</span><span style="color: #007700">());<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+array(3) {
+  [&quot;_id&quot;]=&gt;
+  object(MongoId)#10 (0) {
+  }
+  [&quot;username&quot;]=&gt;
+  string(6) &quot;joe312&quot;
+  [&quot;createdAt&quot;]=&gt;
+  object(MongoDate)#4 (0) {
+  }
+}
+</pre></div>
+   </div>
+  </div>
+  <div class="example" id="example-1468">
+   <p><strong>例3  <span class="function"><strong>MongoCollection::update()</strong></span> での複数更新</strong></p>
+   <div class="example-contents"><p>
+    デフォルトでは  <span class="function"><strong>MongoCollection::update()</strong></span> は、
+    <em><code class="parameter">$criteria</code></em> にマッチするドキュメントが複数見つかっても最初のものだけを更新します。
+    必要なら、&quot;multiple&quot; オプションでその挙動を変えることができます。
+   </p></div>
+   <div class="example-contents"><p>
+    この例は、翌日が誕生日である全員に &quot;gift&quot; フィールドを追加します。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$today&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">'$gt'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoDate</span><span style="color: #007700">(),&nbsp;</span><span style="color: #DD0000">'$lt'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoDate</span><span style="color: #007700">(</span><span style="color: #0000BB">strtotime</span><span style="color: #007700">(</span><span style="color: #DD0000">"+1&nbsp;day"</span><span style="color: #007700">)));<br /></span><span style="color: #0000BB">$people</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">update</span><span style="color: #007700">(<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">"birthday"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$today</span><span style="color: #007700">),<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">'$set'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(</span><span style="color: #DD0000">'gift'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$surprise</span><span style="color: #007700">)),<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">"multiple"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">)<br />);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-mongocollection.update-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <a href="mongo.updates.html" class="link">更新に関するドキュメント</a> および
+   <a href="http://docs.mongodb.org/manual/applications/update/" class="link external" title="Link : http://docs.mongodb.org/manual/applications/update/">&raquo;&nbsp;MongoDB コアメント</a>
+   を参照ください。
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="112254""></a>
+  <div class="note">
+   <strong class="user">Vasiliy Makogon</strong>
+   <a href="#112254" class="date">24-May-2013 12:30</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+if you want emulate on mongoDb "insert on duplicate key update" in SQL notation, you must use flag "upsert" with "$set" in "update" operation.<br />
+<br />
+In this sample uses unique key (user id and product id) and date user visit&nbsp; product:page. Each execute this code make update 'lasttime' field:<br />
+<br />
+<span class="default">&lt;?php<br />
+$client </span><span class="keyword">= new \</span><span class="default">MongoClient</span><span class="keyword">(</span><span class="default">MONGO_DB</span><span class="keyword">);<br />
+</span><span class="default">$users </span><span class="keyword">= </span><span class="default">$client</span><span class="keyword">-&gt;</span><span class="default">users</span><span class="keyword">;<br />
+</span><span class="default">$last_views </span><span class="keyword">= </span><span class="default">$users</span><span class="keyword">-&gt;</span><span class="default">createCollection</span><span class="keyword">(</span><span class="string">'last_views'</span><span class="keyword">);<br />
+</span><span class="comment">// create unique index<br />
+</span><span class="default">$result </span><span class="keyword">= </span><span class="default">$last_views</span><span class="keyword">-&gt;</span><span class="default">ensureIndex</span><span class="keyword">(<br />
+&nbsp;&nbsp;&nbsp; array(</span><span class="string">"user_id" </span><span class="keyword">=&gt; </span><span class="default">1</span><span class="keyword">, </span><span class="string">"warecode" </span><span class="keyword">=&gt; </span><span class="default">1</span><span class="keyword">),<br />
+&nbsp;&nbsp;&nbsp; array(</span><span class="string">"unique" </span><span class="keyword">=&gt; </span><span class="default">1</span><span class="keyword">)<br />
+);<br />
+<br />
+</span><span class="default">$uviews </span><span class="keyword">= new \</span><span class="default">stdClass</span><span class="keyword">();<br />
+</span><span class="default">$uviews</span><span class="keyword">-&gt;</span><span class="default">user_id </span><span class="keyword">= </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">user_id</span><span class="keyword">;<br />
+</span><span class="default">$uviews</span><span class="keyword">-&gt;</span><span class="default">warecode </span><span class="keyword">= </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">warecode</span><span class="keyword">;<br />
+<br />
+</span><span class="default">$res </span><span class="keyword">= </span><span class="default">$users</span><span class="keyword">-&gt;</span><span class="default">last_views</span><span class="keyword">-&gt;</span><span class="default">update</span><span class="keyword">(<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$uviews</span><span class="keyword">, <br />
+&nbsp;&nbsp;&nbsp; array(</span><span class="string">'$set' </span><span class="keyword">=&gt; array(</span><span class="string">'lasttime' </span><span class="keyword">=&gt; new \</span><span class="default">MongoTimestamp</span><span class="keyword">())),<br />
+&nbsp;&nbsp;&nbsp; array(</span><span class="string">'upsert' </span><span class="keyword">=&gt; </span><span class="default">true</span><span class="keyword">)<br />
+);<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="105485""></a>
+  <div class="note">
+   <strong class="user">nerds at limeworks dot com dot au</strong>
+   <a href="#105485" class="date">22-Aug-2011 11:39</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+For anyone referencing records by the Mongo _id object, it's important to recognise that it is in fact an object, and not a string. <br />
+<br />
+If you have a record with a Mongo ID of say "4e519d5118617e88f27ea8cd" that you are trying to retrieve or update, you cannot search for it using something like:<br />
+<span class="default">&lt;?php<br />
+$m </span><span class="keyword">= new </span><span class="default">Mongo</span><span class="keyword">();<br />
+</span><span class="default">$db </span><span class="keyword">= </span><span class="default">$m</span><span class="keyword">-&gt;</span><span class="default">selectDB</span><span class="keyword">(</span><span class="string">'db'</span><span class="keyword">);<br />
+</span><span class="default">$collection </span><span class="keyword">= </span><span class="string">'collection'</span><span class="keyword">;<br />
+</span><span class="default">$db</span><span class="keyword">-&gt;</span><span class="default">$collection</span><span class="keyword">-&gt;</span><span class="default">findOne</span><span class="keyword">(array(</span><span class="string">'_id'</span><span class="keyword">, </span><span class="string">'4e519d5118617e88f27ea8cd'</span><span class="keyword">));<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+There is some documentation that mentions simple conversion to string will solve this, but I have found the only reliable way to locate records based on their ID is to first pass it to MondoID(), then use that for reference.<br />
+<br />
+Something like this will be far more reliable:<br />
+<span class="default">&lt;?php<br />
+$m </span><span class="keyword">= new </span><span class="default">Mongo</span><span class="keyword">();<br />
+</span><span class="default">$db </span><span class="keyword">= </span><span class="default">$m</span><span class="keyword">-&gt;</span><span class="default">selectDB</span><span class="keyword">(</span><span class="string">'db'</span><span class="keyword">);<br />
+</span><span class="default">$collection </span><span class="keyword">= </span><span class="string">'collection'</span><span class="keyword">;<br />
+</span><span class="default">$mongoID </span><span class="keyword">= new </span><span class="default">MongoID</span><span class="keyword">(</span><span class="string">'4e519d5118617e88f27ea8cd'</span><span class="keyword">);<br />
+</span><span class="default">$db</span><span class="keyword">-&gt;</span><span class="default">$collection</span><span class="keyword">-&gt;</span><span class="default">findOne</span><span class="keyword">(array(</span><span class="string">'_id'</span><span class="keyword">, </span><span class="default">$mongoID</span><span class="keyword">));<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+This may prove useful for anyone using the ID object like an auto-increment database key would be used in MySQL or similar.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="100814""></a>
+  <div class="note">
+   <strong class="user">joshuadburns at hotmail dot com</strong>
+   <a href="#100814" class="date">08-Nov-2010 09:51</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Please note under optional third parameter "options":<br />
+<br />
+While the official MongoDB documentation references the keyword "multi" to flag the use of multiple updates, the PHP implementation uses the key "multiple" instead.<br />
+<br />
+This may cause a little confusion if you're basing your keys on the OFFICIAL MongoDB documentation.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="100719""></a>
+  <div class="note">
+   <strong class="user">rithish[at]gmail[dot]com</strong>
+   <a href="#100719" class="date">02-Nov-2010 02:22</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Do note, for incrementing a value using $inc, typecast the value to an integer before passing the new object to update().<br />
+<br />
+<span class="default">&lt;?php<br />
+$votes </span><span class="keyword">= (int) </span><span class="default">$votes</span><span class="keyword">;<br />
+</span><span class="default">$newData </span><span class="keyword">= array(</span><span class="string">'$inc' </span><span class="keyword">=&gt; array(</span><span class="string">'votes'</span><span class="keyword">=&gt;</span><span class="default">$votes</span><span class="keyword">));<br />
+</span><span class="default">$c</span><span class="keyword">-&gt;</span><span class="default">update</span><span class="keyword">(array(</span><span class="string">"firstname" </span><span class="keyword">=&gt; </span><span class="string">"Bob"</span><span class="keyword">), </span><span class="default">$newData</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+This is especially noteworthy, if you are taking values from $_GET and pushing them for increment.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="99986""></a>
+  <div class="note">
+   <strong class="user">jeff at canuckistani dot ca</strong>
+   <a href="#99986" class="date">18-Sep-2010 12:05</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The return type of update changed in 1.09 if you are using safe =&gt; TRUE. It now returns something that looks like the info returned by MongoDB::lastError:<br />
+<br />
+Array<br />
+(<br />
+&nbsp;&nbsp;&nbsp; [err] =&gt; <br />
+&nbsp;&nbsp;&nbsp; [updatedExisting] =&gt; 1<br />
+&nbsp;&nbsp;&nbsp; [n] =&gt; 1<br />
+&nbsp;&nbsp;&nbsp; [ok] =&gt; 1<br />
+)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongocollection.--tostring.html">MongoCollection::__toString</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongocollection.validate.html">MongoCollection::validate</a></div>
+ <div class="up"><a href="class.mongocollection.html">MongoCollection</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

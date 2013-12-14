@@ -1,0 +1,497 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>データベースコマンドを実行する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongodb.authenticate.html">MongoDB::authenticate</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongodb.construct.html">MongoDB::__construct</a></div>
+ <div class="up"><a href="class.mongodb.html">MongoDB</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mongodb.command" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">MongoDB::command</h1>
+  <p class="verinfo">(PECL mongo &gt;=0.9.2)</p><p class="refpurpose"><span class="refname">MongoDB::command</span> &mdash; <span class="dc-title">データベースコマンドを実行する</span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-mongodb.command-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">array</span> <span class="methodname"><strong>MongoDB::command</strong></span>
+    ( <span class="methodparam"><span class="type">array</span> <code class="parameter">$command</code></span>
+   [, <span class="methodparam"><span class="type">array</span> <code class="parameter">$options</code><span class="initializer"> = array()</span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+   CRUD 操作以外のほとんどすべての操作は、データベースコマンドで行います。
+   データベースのバージョンを知りたい? それ用のコマンドがあります。
+   集約が必要ですって? そのためのコマンドがあります。
+   ログを記録したい? もちろん可能です。
+  </p>
+  <p class="para">
+   このメソッドは、次のような関数と同じ働きをします。
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #007700">public&nbsp;function&nbsp;</span><span style="color: #0000BB">command</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">selectCollection</span><span style="color: #007700">(</span><span style="color: #DD0000">'$cmd'</span><span style="color: #007700">)-&gt;</span><span style="color: #0000BB">findOne</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </p>
+ </div>
+
+ <div class="refsect1 parameters" id="refsect1-mongodb.command-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term">
+      <em><code class="parameter">command</code></em>
+     </span>
+     <dd>
+
+      <p class="para">
+       送信したいクエリ。
+      </p>
+     </dd>
+
+    </dt>
+   
+    <dt>
+
+     <span class="term">
+      <em><code class="parameter">options</code></em>
+     </span>
+     <dd>
+
+      <p class="para">
+       <em>array(&quot;オプション名&quot; =&gt; &lt;boolean&gt;, ...)</em>
+       形式の連想配列です。現在サポートするオプションは次のとおりです。
+       <ul class="itemizedlist">
+        <li class="listitem"><p class="para"><em>&quot;timeout&quot;</em></p>
+<p class="para">整数で、デフォルトは <em>MongoCursor::$timeout</em> です。
+確認付き書き込みを使っている場合、これはクライアントがデータベースからのレスポンスを待ち続ける時間 (ミリ秒) を表します。
+この時間内にデータベースからの反応がなければ、<a href="class.mongocursortimeoutexception.html" class="classname">MongoCursorTimeoutException</a> をスローします。</p></li>
+       </ul>
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog" id="refsect1-mongodb.command-changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>1.2.0</td>
+       <td>
+        <em>options</em> パラメータと、そのオプション
+        <em>&quot;timeout&quot;</em> が追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-mongodb.command-returnvalues">
+  <h3 class="title">返り値</h3>  
+  <p class="para">
+   データベースの応答を返します。データベースの応答はすべて、
+   最大で 1 件のドキュメントになります。つまり、データベースへのコマンドの結果は決して
+   16MB を超えないということです。結果のドキュメントの構造はコマンドによって異なりますが、
+   大半の結果には <em>ok</em> フィールドがあって、これが成功したか失敗したかを表します。
+   また、同じく大半の結果には <em>results</em> フィールドもあって、
+   ここにドキュメントの配列が含まれます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-mongodb.command-examples">
+  <h3 class="title">例</h3>
+  <div class="example" id="example-1407">
+   <p><strong>例1  <span class="function"><strong>MongoDB::command()</strong></span> による &quot;distinct&quot; の例</strong></p>
+   <div class="example-contents"><p>
+    あるキーの、すべての異なる値を探します。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$people&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$db</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">people</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$people</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"name"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Joe"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"age"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">$people</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"name"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Sally"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"age"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">22</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">$people</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"name"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Dave"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"age"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">22</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">$people</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"name"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Molly"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"age"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">87</span><span style="color: #007700">));<br /><br /></span><span style="color: #0000BB">$ages&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$db</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">command</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"distinct"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"people"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"key"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"age"</span><span style="color: #007700">));<br /><br />foreach&nbsp;(</span><span style="color: #0000BB">$ages</span><span style="color: #007700">[</span><span style="color: #DD0000">'values'</span><span style="color: #007700">]&nbsp;as&nbsp;</span><span style="color: #0000BB">$age</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$age</span><span style="color: #DD0000">\n"</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+   <div class="example-contents screen"><br />
+4<br />
+22<br />
+87<br />
+   </div>
+  </div>
+  <div class="example" id="example-1408">
+   <p><strong>例2  <span class="function"><strong>MongoDB::command()</strong></span> での &quot;distinct&quot; の例</strong></p>
+   <div class="example-contents"><p>
+    重複を排除したすべての値をキーから取得します。条件は、値が 18 以上であることです。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$people&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$db</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">people</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$people</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"name"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Joe"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"age"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">$people</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"name"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Sally"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"age"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">22</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">$people</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"name"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Dave"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"age"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">22</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">$people</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"name"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Molly"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"age"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">87</span><span style="color: #007700">));<br /><br /></span><span style="color: #0000BB">$ages&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$db</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">command</span><span style="color: #007700">(<br />&nbsp;&nbsp;&nbsp;&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"distinct"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"people"</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"key"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"age"</span><span style="color: #007700">,&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"query"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(</span><span style="color: #DD0000">"age"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(</span><span style="color: #DD0000">'$gte'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">18</span><span style="color: #007700">))<br />&nbsp;&nbsp;&nbsp;&nbsp;)<br />);&nbsp;&nbsp;<br /><br />foreach&nbsp;(</span><span style="color: #0000BB">$ages</span><span style="color: #007700">[</span><span style="color: #DD0000">'values'</span><span style="color: #007700">]&nbsp;as&nbsp;</span><span style="color: #0000BB">$age</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$age</span><span style="color: #DD0000">\n"</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+   <div class="example-contents screen"><br />
+22<br />
+87<br />
+   </div>
+  </div>
+
+  <div class="example" id="example-1409">
+   <p><strong>例3  <span class="function"><strong>MongoDB::command()</strong></span> での MapReduce の例</strong></p>
+   <div class="example-contents"><p>
+    &quot;sale&quot; イベント上のすべてのユーザーと、各ユーザーが何回販売したかを取得します。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;サンプルイベントドキュメント<br /></span><span style="color: #0000BB">$events</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"user_id"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$id</span><span style="color: #007700">,&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"type"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$type</span><span style="color: #007700">,&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"time"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoDate</span><span style="color: #007700">(),&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"desc"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$description</span><span style="color: #007700">));<br /><br /></span><span style="color: #FF8000">//&nbsp;map&nbsp;関数と&nbsp;reduce&nbsp;関数を作ります<br /></span><span style="color: #0000BB">$map&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoCode</span><span style="color: #007700">(</span><span style="color: #DD0000">"function()&nbsp;{&nbsp;emit(this.user_id,1);&nbsp;}"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$reduce&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoCode</span><span style="color: #007700">(</span><span style="color: #DD0000">"function(k,&nbsp;vals)&nbsp;{&nbsp;"</span><span style="color: #007700">.<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"var&nbsp;sum&nbsp;=&nbsp;0;"</span><span style="color: #007700">.<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"for&nbsp;(var&nbsp;i&nbsp;in&nbsp;vals)&nbsp;{"</span><span style="color: #007700">.<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"sum&nbsp;+=&nbsp;vals[i];"</span><span style="color: #007700">.&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"}"</span><span style="color: #007700">.<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"return&nbsp;sum;&nbsp;}"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$sales&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$db</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">command</span><span style="color: #007700">(array(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"mapreduce"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"events"</span><span style="color: #007700">,&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"map"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$map</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"reduce"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$reduce</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"query"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(</span><span style="color: #DD0000">"type"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"sale"</span><span style="color: #007700">),<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"out"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(</span><span style="color: #DD0000">"merge"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"eventCounts"</span><span style="color: #007700">)));<br /><br /></span><span style="color: #0000BB">$users&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$db</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">selectCollection</span><span style="color: #007700">(</span><span style="color: #0000BB">$sales</span><span style="color: #007700">[</span><span style="color: #DD0000">'result'</span><span style="color: #007700">])-&gt;</span><span style="color: #0000BB">find</span><span style="color: #007700">();<br /><br />foreach&nbsp;(</span><span style="color: #0000BB">$users&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$user</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #007700">{</span><span style="color: #0000BB">$user</span><span style="color: #007700">[</span><span style="color: #DD0000">'_id'</span><span style="color: #007700">]}</span><span style="color: #DD0000">&nbsp;had&nbsp;</span><span style="color: #007700">{</span><span style="color: #0000BB">$user</span><span style="color: #007700">[</span><span style="color: #DD0000">'value'</span><span style="color: #007700">]}</span><span style="color: #DD0000">&nbsp;sale(s).\n"</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+   <div class="example-contents screen"><br />
+User 47cc67093475061e3d9536d2 had 3 sale(s).<br />
+User 49902cde5162504500b45c2c had 14 sale(s).<br />
+User 4af467e4fd543cce7b0ea8e2 had 1 sale(s).<br />
+   </div>
+   <blockquote class="note"><p><strong class="note">注意</strong>: 
+    <strong><a href="class.mongocode.html" class="classname">MongoCode</a> の使用</strong><br />
+    <p class="para">
+     この例で使っている <a href="class.mongocode.html" class="classname">MongoCode</a>
+     には、引数でスコープを渡すこともできます。しかし現時点では、
+     MongoDB は MapReduce におけるスコープの使用に対応していません。
+     クライアントサイドの変数を MapReduce 関数で使いたい場合は、
+     データベースコマンドでオプションの scope フィールドを使って
+     グローバルスコープに追加してください。詳細な情報は
+     <a href="http://dochub.mongodb.org/core/mapreduce" class="link external" title="Link : http://dochub.mongodb.org/core/mapreduce">&raquo;&nbsp;MapReduce のドキュメント</a>
+     を参照ください。
+    </p>
+   </p></blockquote>
+   <blockquote class="note"><p><strong class="note">注意</strong>: 
+    <strong><em>out</em> 引数</strong><br />
+    <p class="para">
+     1.8.0 より前は <em>out</em> 引数がオプションでした。指定しなければ、
+     MapReduce の結果はテンポラリコレクションに書き出されます。これは、
+     接続が閉じるときに削除されます。1.8.0 以降では <em>out</em>
+     引数が必須となります。詳細な情報は
+     <a href="http://dochub.mongodb.org/core/mapreduce" class="link external" title="Link : http://dochub.mongodb.org/core/mapreduce">&raquo;&nbsp;MapReduce のドキュメント</a>
+     を参照ください。
+    </p>
+   </p></blockquote>
+   <div class="example-contents"><p>
+    MapReduce を使いたい人たちのために、Prajwal Tuladhar が Mongo PHP
+    ユーザー用の API を作成しました。これは、生のコマンドよりもよいインターフェイスを提供します。
+    <a href="http://technosophos.com/content/os-x-installing-mongodb-and-php-mongo-driver" class="link external" title="Link : http://technosophos.com/content/os-x-installing-mongodb-and-php-mongo-driver">&raquo;&nbsp;Github</a> からダウンロードしましょう。
+    使いかたは
+    <a href="http://prajwal-tuladhar.net.np/2009/11/15/496/mapreduce-api-for-mongodb/" class="link external" title="Link : http://prajwal-tuladhar.net.np/2009/11/15/496/mapreduce-api-for-mongodb/">&raquo;&nbsp;blog の記事</a>
+    を参照ください。
+   </p></div>
+  </div>
+
+  <div class="example" id="example-1410">
+   <p><strong>例4  <span class="function"><strong>MongoDB::command()</strong></span> での &quot;textSearch&quot; の例</strong></p>
+   <div class="example-contents"><p>
+    MongoDB 2.4 以降では、&quot;text search&quot; 機能を使った全文検索ができます。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$d&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">demo</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$c&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$d</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">planets</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"name"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Mercury"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"desc"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Mercury&nbsp;is&nbsp;the&nbsp;smallest&nbsp;and&nbsp;closest&nbsp;to&nbsp;the&nbsp;Sun"</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"name"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Venus"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"desc"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Venus&nbsp;is&nbsp;the&nbsp;second&nbsp;planet&nbsp;from&nbsp;the&nbsp;Sun,&nbsp;orbiting&nbsp;it&nbsp;every&nbsp;224.7&nbsp;Earth&nbsp;days."</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"name"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Earth"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"desc"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Earth&nbsp;is&nbsp;the&nbsp;the&nbsp;densest&nbsp;of&nbsp;the&nbsp;eight&nbsp;planets&nbsp;in&nbsp;the&nbsp;Solar&nbsp;System."</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"name"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Mars"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"desc"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Mars&nbsp;is&nbsp;named&nbsp;after&nbsp;the&nbsp;Roman&nbsp;god&nbsp;of&nbsp;war."</span><span style="color: #007700">));<br /><br /></span><span style="color: #0000BB">$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">ensureIndex</span><span style="color: #007700">(array(</span><span style="color: #DD0000">'desc'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'text'</span><span style="color: #007700">));<br /><br /></span><span style="color: #0000BB">$r&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$d</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">command</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"text"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"planets"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'search'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"sun"&nbsp;</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$r</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+   <div class="example-contents screen"><br />
+Array<br />
+(<br />
+    [queryDebugString] =&gt; sun||||||<br />
+    [language] =&gt; english<br />
+    [results] =&gt; Array<br />
+        (<br />
+            [0] =&gt; Array<br />
+                (<br />
+                    [score] =&gt; 0.625<br />
+                    [obj] =&gt; Array<br />
+                        (<br />
+                            [_id] =&gt; MongoId Object<br />
+                                (<br />
+                                    [$id] =&gt; 517549d944670a4a5cb3059a<br />
+                                )<br />
+<br />
+                            [name] =&gt; Mercury<br />
+                            [desc] =&gt; Mercury is the smallest and closest to the Sun<br />
+                        )<br />
+<br />
+                )<br />
+<br />
+            [1] =&gt; Array<br />
+                (<br />
+                    [score] =&gt; 0.55<br />
+                    [obj] =&gt; Array<br />
+                        (<br />
+                            [_id] =&gt; MongoId Object<br />
+                                (<br />
+                                    [$id] =&gt; 517549d944670a4a5cb3059b<br />
+                                )<br />
+<br />
+                            [name] =&gt; Venus<br />
+                            [desc] =&gt; Venus is the second planet from the Sun, orbiting it every 224.7 Earth days.<br />
+                        )<br />
+<br />
+                )<br />
+<br />
+        )<br />
+<br />
+    [stats] =&gt; Array<br />
+        (<br />
+            [nscanned] =&gt; 2<br />
+            [nscannedObjects] =&gt; 0<br />
+            [n] =&gt; 2<br />
+            [nfound] =&gt; 2<br />
+            [timeMicros] =&gt; 95<br />
+        )<br />
+<br />
+    [ok] =&gt; 1<br />
+)<br />
+   </div>
+  </div>
+
+  <div class="example" id="example-1411">
+   <p><strong>例5  <span class="function"><strong>MongoDB::command()</strong></span> での &quot;geoNear&quot; の例</strong></p>
+   <div class="example-contents"><p>
+    この例は、geoNear コマンドの使い方を示すものです。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$d&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">demo</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$c&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$d</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">poiConcat</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$r&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$d</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">command</span><span style="color: #007700">(array(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'geoNear'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"poiConcat"</span><span style="color: #007700">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;poiConcat&nbsp;コレクション内を検索します<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'near'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(-</span><span style="color: #0000BB">0.08</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">51.48</span><span style="color: #007700">),&nbsp;</span><span style="color: #FF8000">//&nbsp;北緯&nbsp;51.48°、東経&nbsp;0.08°&nbsp;近辺を検索します<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'spherical'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;球状検索を有効にします<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'num'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;最大&nbsp;5&nbsp;件までの結果を返します<br /></span><span style="color: #007700">));<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$r</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-mongodb.command-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="methodname"><a href="mongocollection.aggregate.html" class="methodname" rel="rdfs-seeAlso">MongoCollection::aggregate()</a> - aggregation フレームワークを使って集約する</span></li>
+    <li class="member"> <span class="methodname"><a href="mongocollection.findandmodify.html" class="methodname" rel="rdfs-seeAlso">MongoCollection::findAndModify()</a> - ドキュメントを更新して返す</span></li>
+    <li class="member"> <span class="methodname"><a href="mongocollection.group.html" class="methodname" rel="rdfs-seeAlso">MongoCollection::group()</a> - SQL の GROUP BY コマンドと似た処理を行う</span></li>
+   </ul>
+  </p>
+  <p class="para">
+   MongoDB コアドキュメントの <a href="http://docs.mongodb.org/manual/reference/commands/" class="link external" title="Link : http://docs.mongodb.org/manual/reference/commands/">&raquo;&nbsp;database commands</a>
+   そして各コマンドのドキュメント
+   <a href="http://docs.mongodb.org/manual/reference/command/findAndModify/" class="link external" title="Link : http://docs.mongodb.org/manual/reference/command/findAndModify/">&raquo;&nbsp;findAndModify</a>、
+   <a href="http://docs.mongodb.org/manual/reference/commands/#getLastError" class="link external" title="Link : http://docs.mongodb.org/manual/reference/commands/#getLastError">&raquo;&nbsp;getLastError</a> および
+   <a href="http://dochub.mongodb.org/core/repair" class="link external" title="Link : http://dochub.mongodb.org/core/repair">&raquo;&nbsp;repair</a>
+   (他にもたくさんあります。これは単なる例です)
+   を参照ください。
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113044""></a>
+  <div class="note">
+   <strong class="user">nanhe dot kumar at gmail dot com</strong>
+   <a href="#113044" class="date">22-Aug-2013 06:41</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+$db=new new Mongo();<br />
+<br />
+Copy old_db to new_db<br />
+<br />
+$responseCopy = $db-&gt;admin-&gt;command(array(<br />
+&nbsp;&nbsp;&nbsp; 'copydb' =&gt; 1, <br />
+&nbsp;&nbsp;&nbsp; 'fromhost' =&gt; 'localhost',<br />
+&nbsp;&nbsp;&nbsp; 'fromdb' =&gt; 'old_db',<br />
+&nbsp;&nbsp;&nbsp; 'todb' =&gt;'new_db'<br />
+&nbsp;&nbsp;&nbsp; ));<br />
+<br />
+Now drop old_db<br />
+<br />
+if($responseCopy['ok']==1){<br />
+&nbsp;$responseDrop=$db-&gt;old_db-&gt;command(array('dropDatabase' =&gt; 1));<br />
+&nbsp;//OR <br />
+&nbsp;$responseDrop =$db-&gt;old_db-&gt;drop();<br />
+}<br />
+<br />
+Show Output<br />
+<br />
+print_r($responseCopy);<br />
+print_r($responseDrop);<br />
+<br />
+Output will be something like this<br />
+<br />
+Array ( [ok] =&gt; 1 ) <br />
+Array ( [dropped] =&gt; old_db [ok] =&gt; 1 )</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="111891""></a>
+  <div class="note">
+   <strong class="user">mcuadros at gmail dot com</strong>
+   <a href="#111891" class="date">09-Apr-2013 08:13</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Command of Mongo 2.4 Text Search feature.<br />
+<br />
+<span class="default">&lt;?php<br />
+$result </span><span class="keyword">= </span><span class="default">$db</span><span class="keyword">-&gt;</span><span class="default">command</span><span class="keyword">(<br />
+&nbsp;&nbsp;&nbsp; array(<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">'text' </span><span class="keyword">=&gt; </span><span class="string">'bar'</span><span class="keyword">, </span><span class="comment">//this is the name of the collection where we are searching<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">'search' </span><span class="keyword">=&gt; </span><span class="string">'hotel'</span><span class="keyword">, </span><span class="comment">//the string to search<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">'limit' </span><span class="keyword">=&gt; </span><span class="default">5</span><span class="keyword">, </span><span class="comment">//the number of results, by default is 1000<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">'project' </span><span class="keyword">=&gt; Array( </span><span class="comment">//the fields to retrieve from db<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">'title' </span><span class="keyword">=&gt; </span><span class="default">1<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">)<br />
+&nbsp;&nbsp;&nbsp; )<br />
+);</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="104310""></a>
+  <div class="note">
+   <strong class="user">Anonymous</strong>
+   <a href="#104310" class="date">08-Jun-2011 01:18</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+&gt; Need to know the database version? There's a command for that.<br />
+<br />
+We didn't find it - ended up using either;<br />
+<br />
+<span class="default">&lt;?php<br />
+$m </span><span class="keyword">= new </span><span class="default">Mongo</span><span class="keyword">();<br />
+<br />
+</span><span class="default">$adminDB </span><span class="keyword">= </span><span class="default">$m</span><span class="keyword">-&gt;</span><span class="default">admin</span><span class="keyword">; </span><span class="comment">//require admin priviledge<br />
+<br />
+</span><span class="default">$mongodb_info </span><span class="keyword">= </span><span class="default">$adminDB</span><span class="keyword">-&gt;</span><span class="default">command</span><span class="keyword">(array(</span><span class="string">'buildinfo'</span><span class="keyword">=&gt;</span><span class="default">true</span><span class="keyword">));<br />
+</span><span class="default">$mongodb_version </span><span class="keyword">= </span><span class="default">$mongodb_info</span><span class="keyword">[</span><span class="string">'version'</span><span class="keyword">];<br />
+<br />
+</span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$mongodb_info</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+or<br />
+<br />
+<span class="default">&lt;?php<br />
+$v </span><span class="keyword">= `</span><span class="string">mongo --version</span><span class="keyword">`;<br />
+</span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$v</span><span class="keyword">);<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="103502""></a>
+  <div class="note">
+   <strong class="user">roman dot drapeko at gmail dot com</strong>
+   <a href="#103502" class="date">16-Apr-2011 11:07</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I tried to write MapReduce. Unfortunately, out =&gt; array('replace' =&gt; 'collName') did not work for me. Instead, the below code works<br />
+<br />
+<span class="default">&lt;?php<br />
+$mongo</span><span class="keyword">-&gt;</span><span class="default">command</span><span class="keyword">(array(<br />
+&nbsp;&nbsp; &nbsp; </span><span class="string">'mapreduce' </span><span class="keyword">=&gt; </span><span class="string">'events'</span><span class="keyword">,<br />
+&nbsp;&nbsp; &nbsp; </span><span class="string">'map' </span><span class="keyword">=&gt; </span><span class="default">$map</span><span class="keyword">,<br />
+&nbsp;&nbsp; &nbsp; </span><span class="string">'reduce' </span><span class="keyword">=&gt; </span><span class="default">$reduce</span><span class="keyword">,<br />
+&nbsp;&nbsp; &nbsp; </span><span class="string">'out' </span><span class="keyword">=&gt; </span><span class="string">'mapReduceEventStats'<br />
+</span><span class="keyword">));<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="98997""></a>
+  <div class="note">
+   <strong class="user">Min He</strong>
+   <a href="#98997" class="date">21-Jul-2010 01:31</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+rename a collection: <br />
+<br />
+<span class="default">&lt;?php<br />
+$m </span><span class="keyword">= new </span><span class="default">Mongo</span><span class="keyword">();<br />
+</span><span class="default">$adminDB </span><span class="keyword">= </span><span class="default">$m</span><span class="keyword">-&gt;</span><span class="default">admin</span><span class="keyword">; </span><span class="comment">//require admin priviledge<br />
+<br />
+//rename collection 'colA' in db 'yourdbA' to collection 'colB' in another db 'yourdbB'<br />
+<br />
+</span><span class="default">$res </span><span class="keyword">= </span><span class="default">$adminDB</span><span class="keyword">-&gt;</span><span class="default">command</span><span class="keyword">(array(<br />
+&nbsp;&nbsp;&nbsp; </span><span class="string">"renameCollection" </span><span class="keyword">=&gt; </span><span class="string">"yourdbA.colA"</span><span class="keyword">,<br />
+&nbsp;&nbsp;&nbsp; </span><span class="string">"to" </span><span class="keyword">=&gt; </span><span class="string">"yourdbB.colB"<br />
+</span><span class="keyword">));<br />
+<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$res</span><span class="keyword">);<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongodb.authenticate.html">MongoDB::authenticate</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongodb.construct.html">MongoDB::__construct</a></div>
+ <div class="up"><a href="class.mongodb.html">MongoDB</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>持続的接続</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqlnd.incompatibilities.html">非互換性</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd.stats.html">統計情報</a></div>
+ <div class="up"><a href="book.mysqlnd.html">Mysqlnd</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mysqlnd.persist" class="chapter">
+ <h1>持続的接続</h1>
+
+ <p class="para">
+  <em class="emphasis">持続的接続の使用</em>
+ </p>
+ <p class="para">
+  <em>mysqli</em> と <em>mysqlnd</em> の組み合わせで使っている場合は、
+  持続的接続を作るときにサーバー上で
+  <em>COM_CHANGE_USER</em> (<em>mysql_change_user()</em>)
+  を呼び出します。これで、接続の認証が再び行われることになります。
+ </p>
+ <p class="para">
+  <em>COM_CHANGE_USER</em> の呼び出しと関連するオーバーヘッドが若干あるので、
+  コンパイル時にこれをオフにすることができます。
+  持続的接続を再利用すると、接続が再利用できるかどうか簡単にテストするために、
+  <em>COM_PING</em> (<em>mysql_ping</em>)
+  の呼び出しが生成されます。
+ </p>
+ <p class="para">
+  <em>COM_CHANGE_USER</em> を呼び出さないようにするには、コンパイルのときに
+  <em>MYSQLI_NO_CHANGE_USER_ON_PCONNECT</em> フラグを使います。たとえば次のようになります。
+  例えば、
+ </p>
+<div class="example-contents">
+<div class="cdata"><pre>
+shell# CFLAGS=&quot;-DMYSQLI_NO_CHANGE_USER_ON_PCONNECT&quot; ./configure --with-mysql=/usr/local/mysql/ --with-mysqli=/usr/local/mysql/bin/mysql_config --with-pdo-mysql=/usr/local/mysql/bin/mysql_config --enable-debug &amp;&amp; make clean &amp;&amp; make -j6
+</pre></div>
+</div>
+
+ <p class="para">
+  またはその代わりに、
+ </p>
+<div class="example-contents">
+<div class="cdata"><pre>
+shell# export CFLAGS=&quot;-DMYSQLI_NO_CHANGE_USER_ON_PCONNECT&quot;
+shell# configure --whatever-option
+shell# make clean
+shell# make
+</pre></div>
+</div>
+
+ <p class="para">
+  <em>mysqlnd</em> 上の <em>mysqli</em> だけが
+  <em>COM_CHANGE_USER</em> を使用することに注意してください。
+  他のエクステンションとドライバーの組み合わせでは、持続的な接続を最初に使用する際に、
+  <em>COM_PING</em> を使用します。
+ </p>
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqlnd.incompatibilities.html">非互換性</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd.stats.html">統計情報</a></div>
+ <div class="up"><a href="book.mysqlnd.html">Mysqlnd</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

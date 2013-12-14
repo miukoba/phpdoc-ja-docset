@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>基本的な使用法</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="session.examples.html">例</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="session.idpassing.html">セッションIDの受渡し</a></div>
+ <div class="up"><a href="session.examples.html">例</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="session.examples.basic" class="section">
+  <h2 class="title">基本的な使用法</h2>
+   <p class="para">
+    セッションは、シンプルな方法で個々のユーザーのデータを格納する仕組みで、
+    個々のユーザーに対して一意なセッション ID を用意します。
+    これを用いて、複数ページにまたがるリクエストの間で状態の情報を永続させることができます。
+    セッション ID をブラウザに送信するときには、通常はセッションクッキーを利用します。
+    また、その ID を使って既存のセッションデータを取得します。
+    その ID やセッションクッキーが存在しなければ PHP に対して新たなセッションを作るよう伝え、
+    新たなセッション ID を生成します。
+   </p>
+   <p class="para">
+    セッションの処理の流れは単純です。セッションを開始すると、
+    PHP はまず、(通常はセッションクッキーから受け取る) ID を使って既存のセッションを取得しようとします。
+    ID を受け取らなかった場合は新しいセッションを作成します。
+    セッションを開始すると、PHP はスーパーグローバル <var class="varname"><var class="varname"><a href="reserved.variables.session.html" class="classname">$_SESSION</a></var></var>
+    にすべてのセッションデータを格納します。PHP スクリプトの処理が終了するときには、
+    スーパーグローバル <var class="varname"><var class="varname"><a href="reserved.variables.session.html" class="classname">$_SESSION</a></var></var> の中身を自動的に受け取ってシリアライズし、
+    ストレージに送信します。この一連の操作にはセッション保存ハンドラを使います。
+   </p>
+   <p class="para">
+    デフォルトでは、PHP が使う保存ハンドラは <em><code class="parameter">files</code></em> です。これは
+    <a href="session.configuration.html#ini.session.save-handler" class="link">session.save_handler</a> で設定します。
+    このハンドラは、サーバー上の
+    <a href="session.configuration.html#ini.session.save-path" class="link">session.save_path</a> で指定した場所にセッションデータを保存します。
+   </p>
+   <p class="para">
+    セッションを手動で開始するには  <span class="function"><a href="function.session-start.html" class="function">session_start()</a></span> 関数を使います。
+    <a href="session.configuration.html#ini.session.auto-start" class="link">session.auto_start</a> に
+    <em><code class="parameter">1</code></em> を設定している場合は、
+    リクエストの開始時に自動的にセッションを開始します。
+   </p>
+   <p class="para">
+    通常は、PHP がスクリプトの処理を終了するときに、セッションは自動的に終了します。
+    手動でセッションを終了させるには  <span class="function"><a href="function.session-write-close.html" class="function">session_write_close()</a></span> 関数を使います。
+   </p>
+  <p class="para">
+   <div class="example" id="example-4734">
+    <p><strong>例1 
+     <var class="varname"><var class="varname"><a href="reserved.variables.session.html" class="classname">$_SESSION</a></var></var>で変数を登録
+    </strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />session_start</span><span style="color: #007700">();<br />if&nbsp;(!isset(</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'count'</span><span style="color: #007700">]))&nbsp;{<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'count'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;<br />}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'count'</span><span style="color: #007700">]++;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   <div class="example" id="example-4735">
+    <p><strong>例2 
+     変数を <var class="varname"><var class="varname"><a href="reserved.variables.session.html" class="classname">$_SESSION</a></var></var> から削除する
+    </strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />session_start</span><span style="color: #007700">();<br />unset(</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'count'</span><span style="color: #007700">]);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   <div class="caution"><strong class="caution">警告</strong>
+    <p class="para">
+     <em>unset($_SESSION)</em>によって
+     全ての<var class="varname"><var class="varname"><a href="reserved.variables.session.html" class="classname">$_SESSION</a></var></var>を初期化してはいけません。
+     <var class="varname"><var class="varname"><a href="reserved.variables.session.html" class="classname">$_SESSION</a></var></var>スーパーグローバル変数を用いた
+     セッション変数の登録ができなくなってしまうからです。
+    </p>
+   </div>
+  </p>
+  <div class="warning"><strong class="warning">警告</strong>
+   <p class="para">
+    セッション変数において参照を使用することはできません。
+    他の変数への参照を復元する方法がないからです。
+   </p>
+  </div>
+  <div class="warning"><strong class="warning">警告</strong>
+   <p class="para">
+    register_globals は、セッション変数と同じ名前のグローバル変数がある場合に
+    グローバル変数をセッション変数で上書きします。
+    詳細は <a href="security.globals.html" class="link">グローバル変数の登録機能の使用法</a> を参照ください。
+   </p>
+  </div>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    ファイルベースのセッション (PHP のデフォルト) は、
+     <span class="function"><a href="function.session-start.html" class="function">session_start()</a></span> でオープンしたり
+    <a href="session.configuration.html#ini.session.auto-start" class="link">session.auto_start</a> で暗黙のうちに開始したりしたセッションのセッションファイルをロックします。
+    いったんロックがかかったら、そのスクリプトが終了するなり
+     <span class="function"><a href="function.session-write-close.html" class="function">session_write_close()</a></span> を呼んでセッションを閉じるなりしない限り、
+    他のスクリプトからはそのセッションファイルにアクセスできません。
+   </p>
+   <p class="para">
+    これは、たとえば AJAX を使いまくっていて同時に複数のリクエストが発生したりするウェブサイトで問題になります。
+    この問題への対処方法として一番お手軽なのは、セッションに対して必要な変更が終わったらすぐに
+     <span class="function"><a href="function.session-write-close.html" class="function">session_write_close()</a></span> を呼ぶことです。スクリプトの最初のほうで呼ぶほうが好ましいでしょう。
+    あるいは、ファイルではなく別のバックエンド (同時アクセスに対応しているもの) を使うという手もあります。
+   </p>
+  </p></blockquote>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113315""></a>
+  <div class="note">
+   <strong class="user">guy at syntheticwebapps dot com</strong>
+   <a href="#113315" class="date">26-Sep-2013 01:01</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Despite the warning about not being able to use references inside the session space, I've done it in the past and apparently completely successfully. That is, I can do something like this:<br />
+<br />
+<span class="default">&lt;?php<br />
+session_start</span><span class="keyword">();<br />
+if (!</span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="string">'favorite'</span><span class="keyword">]) {<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="string">'cow'</span><span class="keyword">] = </span><span class="string">"Elsie"</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="string">'favorite'</span><span class="keyword">] =&amp; </span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="string">'cow'</span><span class="keyword">];<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="string">"We set cow = '</span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="default">cow</span><span class="keyword">]</span><span class="string">' and favorite =&amp; cow (</span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="default">favorite</span><span class="keyword">]</span><span class="string">).&lt;br/&gt;Reload the page to see if both change when one changes later.&lt;br/&gt;"</span><span class="keyword">;<br />
+} else {<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="string">"Having re-entered the session after initial settings were made: cow = </span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="default">cow</span><span class="keyword">]</span><span class="string"> and favorite = </span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="default">favorite</span><span class="keyword">]</span><span class="string">.&lt;br/&gt;"</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="string">'cow'</span><span class="keyword">] = </span><span class="string">"Bessie"</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="string">"We reassigned cow = </span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="default">cow</span><span class="keyword">]</span><span class="string"> and our restored reference variable favorite = </span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="default">favorite</span><span class="keyword">]</span><span class="string">&lt;br/&gt;Note the presence of the &amp;s in the var_dump below.&lt;pre&gt;"</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$_SESSION</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="string">"&lt;/pre&gt;&lt;br/&gt;If you reload, the test will begin again."</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; unset(</span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="string">'cow'</span><span class="keyword">], </span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="string">'favorite'</span><span class="keyword">]);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">session_destroy</span><span class="keyword">();<br />
+}<br />
+</span><span class="default">?&gt;<br />
+</span>yields the following after the second request: <br />
+<br />
+Having re-entered the session after initial settings were made: cow = Elsie and favorite = Elsie.<br />
+We reassigned cow = Bessie and our restored reference variable favorite = Bessie<br />
+Note the presence of the &amp;s in the var_dump below.<br />
+array(2) {<br />
+&nbsp; ["cow"]=&gt;<br />
+&nbsp; &amp;string(6) "Bessie"<br />
+&nbsp; ["favorite"]=&gt;<br />
+&nbsp; &amp;string(6) "Bessie"<br />
+}<br />
+If you reload, the test will begin again.<br />
+<br />
+I've found this ability very useful and storage efficient in the session data.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="111200""></a>
+  <div class="note">
+   <strong class="user">AlexFBP</strong>
+   <a href="#111200" class="date">25-Jan-2013 01:50</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Regardless, if you need to set the header 'Location:' before closing the session; explicitly close the php script with "exit()" or "die()" functions. Remember that when a php script ends, the session automatically are going to be closed.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="109981""></a>
+  <div class="note">
+   <strong class="user">jpleveille at webgraphe dot com</strong>
+   <a href="#109981" class="date">08-Sep-2012 03:06</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+As mentioned in the documentation, using session_write_close() shuts down the session. It is particularly useful if you want to use header('Location: SOMEURL'); to a URL within the same scope of the current script, that will load the session. Why?<br />
+<br />
+When you use this header directive, the browser is requested to redirect the user to the given URL. If that URL is in the scope of the script where header() is called (let's say, same URL), the requested URL "COULD" load the session BEFORE it has actually been shut down in the previous script, and you might end up with the session from the previous request, reverting all modifications to session in the the last script.<br />
+<br />
+<span class="default">&lt;?php<br />
+session_start</span><span class="keyword">();<br />
+<br />
+if (!isset(</span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="string">'hello'</span><span class="keyword">]))<br />
+{<br />
+&nbsp; </span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="string">'hello'</span><span class="keyword">] = </span><span class="string">'world'</span><span class="keyword">;<br />
+<br />
+&nbsp; </span><span class="default">session_write_close</span><span class="keyword">();<br />
+&nbsp; </span><span class="comment">// session is now closed, it's safe to redirect<br />
+&nbsp; // if not closed, $_SESSION['hello'] may not be set properly<br />
+&nbsp; // when loading the page again<br />
+&nbsp; // (in this very case, calls to this script could loop for a while)<br />
+&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">'Location: ' </span><span class="keyword">. </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'PHP_SELF'</span><span class="keyword">]);<br />
+}<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="session.examples.html">例</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="session.idpassing.html">セッションIDの受渡し</a></div>
+ <div class="up"><a href="session.examples.html">例</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

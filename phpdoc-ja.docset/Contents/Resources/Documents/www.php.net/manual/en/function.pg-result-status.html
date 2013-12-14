@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>クエリ結果のステータスを取得する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.pg-result-seek.html">pg_result_seek</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.pg-select.html">pg_select</a></div>
+ <div class="up"><a href="ref.pgsql.html">PostgreSQL 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.pg-result-status" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">pg_result_status</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.2.0, PHP 5)</p><p class="refpurpose"><span class="refname">pg_result_status</span> &mdash; <span class="dc-title">
+   クエリ結果のステータスを取得する
+  </span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-function.pg-result-status-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <span class="methodname"><strong>pg_result_status</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$result</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$type</code><span class="initializer"> = PGSQL_STATUS_LONG</span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+    <span class="function"><strong>pg_result_status()</strong></span> は、結果リソースのステータス
+   あるいは結果に関するコマンド補完タグを返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.pg-result-status-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">result</code></em></span>
+     <dd>
+
+      <p class="para">
+        <span class="function"><a href="function.pg-query.html" class="function">pg_query()</a></span>,  <span class="function"><a href="function.pg-query-params.html" class="function">pg_query_params()</a></span>
+       あるいは  <span class="function"><a href="function.pg-execute.html" class="function">pg_execute()</a></span> から返される PostgreSQL の
+       クエリ結果リソース。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">type</code></em></span>
+     <dd>
+
+      <p class="para">
+       <em><code class="parameter">result</code></em> の数値ステータスを返す
+       <strong><code>PGSQL_STATUS_LONG</code></strong>、あるいは
+       <em><code class="parameter">result</code></em> のコマンドタグを返す
+       <strong><code>PGSQL_STATUS_STRING</code></strong> のいずれかです。
+       指定しない場合は <strong><code>PGSQL_STATUS_LONG</code></strong> がデフォルトです。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.pg-result-status-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <strong><code>PGSQL_STATUS_LONG</code></strong> が指定された場合の返り値は
+   以下のいずれかです。
+   <strong><code>PGSQL_EMPTY_QUERY</code></strong>、
+   <strong><code>PGSQL_COMMAND_OK</code></strong>、<strong><code>PGSQL_TUPLES_OK</code></strong>、<strong><code>PGSQL_COPY_OUT</code></strong>、
+   <strong><code>PGSQL_COPY_IN</code></strong>、<strong><code>PGSQL_BAD_RESPONSE</code></strong>、<strong><code>PGSQL_NONFATAL_ERROR</code></strong>
+   および <strong><code>PGSQL_FATAL_ERROR</code></strong> 。
+   それ以外の場合は、PostgreSQL コマンドタグを含む文字列を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog" id="refsect1-function.pg-result-status-changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>4.3.0</td>
+       <td>
+        パラメータ <em><code class="parameter">type</code></em> が追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.pg-result-status-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-2106">
+    <p><strong>例1  <span class="function"><strong>pg_result_status()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;データベースに接続する<br /></span><span style="color: #0000BB">$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">pg_pconnect</span><span style="color: #007700">(</span><span style="color: #DD0000">"dbname=publisher"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;COPY&nbsp;を実行する<br /></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">pg_query</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"COPY&nbsp;authors&nbsp;FROM&nbsp;STDIN;"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;結果ステータスを得る<br /></span><span style="color: #0000BB">$status&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">pg_result_status</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;ステータスの内容を調べる<br /></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">$status&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">PGSQL_COPY_IN</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Copy&nbsp;began."</span><span style="color: #007700">;<br />else<br />&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Copy&nbsp;failed."</span><span style="color: #007700">;<br />&nbsp;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+Copy began.
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 seealso" id="refsect1-function.pg-result-status-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="function.pg-connection-status.html" class="function" rel="rdfs-seeAlso">pg_connection_status()</a> - 接続ステータスを取得する</span></li>
+   </ul>
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="111274""></a>
+  <div class="note">
+   <strong class="user">dean at deansas dot org</strong>
+   <a href="#111274" class="date">02-Feb-2013 12:50</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The postgres docs say that PHP should never be able to return PGRES_NONFATAL_ERROR<br />
+<br />
+"A result of status PGRES_NONFATAL_ERROR will never be returned directly by PQexec or other query execution functions" <a href="http://www.postgresql.org/docs/current/static/libpq-exec.html" rel="nofollow" target="_blank">http://www.postgresql.org/docs/current/static/libpq-exec.html</a><br />
+<br />
+Therefore you cannot use this function to check if this query produced a notice.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="53675""></a>
+  <div class="note">
+   <strong class="user">Meej Vaj</strong>
+   <a href="#53675" class="date">09-Jun-2005 03:45</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If on "accident" your program passes pg_result_status a variable that is NOT a actual pg resource, it will return an empty string.<br />
+(This is important to know if you want to make sure a pg resource is "good" before attempting some operation on it).</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="26050""></a>
+  <div class="note">
+   <strong class="user">romix at gmx dot de</strong>
+   <a href="#26050" class="date">16-Oct-2002 03:29</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+0 = PGSQL_EMPTY_QUERY<br />
+1 = PGSQL_COMMAND_OK<br />
+2 = PGSQL_TUPLES_OK<br />
+3 = PGSQL_COPY_TO<br />
+4 = PGSQL_COPY_FROM<br />
+5 = PGSQL_BAD_RESPONSE<br />
+6 = PGSQL_NONFATAL_ERROR<br />
+7 = PGSQL_FATAL_ERROR</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.pg-result-seek.html">pg_result_seek</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.pg-select.html">pg_select</a></div>
+ <div class="up"><a href="ref.pgsql.html">PostgreSQL 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

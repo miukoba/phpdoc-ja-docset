@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>ドキュメントをコレクションに保存する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongocollection.remove.html">MongoCollection::remove</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongocollection.setreadpreference.html">MongoCollection::setReadPreference</a></div>
+ <div class="up"><a href="class.mongocollection.html">MongoCollection</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mongocollection.save" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">MongoCollection::save</h1>
+  <p class="verinfo">(PECL mongo &gt;=0.9.0)</p><p class="refpurpose"><span class="refname">MongoCollection::save</span> &mdash; <span class="dc-title">ドキュメントをコレクションに保存する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-mongocollection.save-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <span class="methodname"><strong>MongoCollection::save</strong></span>
+    ( <span class="methodparam"><span class="type"><span class="type array|object">array|object</span></span> <code class="parameter">$a</code></span>
+   [, <span class="methodparam"><span class="type">array</span> <code class="parameter">$options</code><span class="initializer"> = array()</span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+   データベースから取得したオブジェクトの場合はデータベース上の既存のオブジェクトを更新し、
+   それ以外の場合はオブジェクトを追加します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-mongocollection.save-parameters">
+  <h3 class="title">パラメータ</h3>    
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term">
+      <em><code class="parameter">a</code></em>
+     </span>
+     <dd>
+
+      <p class="para">
+       保存したい配列あるいはオブジェクト。オブジェクトを使う場合は、
+       protected や private のプロパティは保持できません。
+      </p>
+      <blockquote class="note"><p><strong class="note">注意</strong>: 
+       <p class="para">
+        <em>_id</em> のキーあるいはプロパティを持たない場合は、
+        新しい <a href="class.mongoid.html" class="classname">MongoId</a> インスタンスを作ってそれを代入します。
+        この挙動に関する詳しい情報は  <span class="function"><a href="mongocollection.insert.html" class="function">MongoCollection::insert()</a></span> を参照ください。
+       </p>
+      </p></blockquote>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term">
+      <em><code class="parameter">options</code></em>
+     </span>
+     <dd>
+
+      <p class="para">
+       保存時のオプション。
+       <ul class="itemizedlist">
+        <li class="listitem">
+<p class="para"><em>&quot;fsync&quot;</em></p>
+<p class="para">デフォルトは <strong><code>FALSE</code></strong> です。
+これを指定すると、追加をディスクに同期させるまで成功したと見なさないようになります。
+<strong><code>TRUE</code></strong> にすると、<em>w</em> の設定を <em>0</em> に上書きします。</p>
+</li>
+        <li class="listitem"><p class="para"><em>&quot;j&quot;</em></p>
+<p class="para">デフォルトは <strong><code>FALSE</code></strong> です。
+これを指定すると、追加をジャーナルに同期させるまで成功したと見なさないようになります。
+<strong><code>TRUE</code></strong> にすると確認付き書き込みと見なされ、<em>w</em> の設定を <em>0</em> に上書きします。</p></li>
+
+        <li class="listitem">
+<p class="para"><em>&quot;w&quot;</em></p>
+<p class="para"><a href="mongo.writeconcerns.html" class="link">WriteConcerns</a> を参照ください。<a href="class.mongoclient.html" class="classname">MongoClient</a> でのデフォルト値は <em>1</em> です。
+</p></li>
+        <li class="listitem"><p class="para"><em>&quot;wtimeout&quot;</em></p>
+<p class="para"><a href="mongo.writeconcerns.html" class="link">WriteConcern</a> の確認をいつまで待つか。
+<a href="class.mongoclient.html" class="classname">MongoClient</a> のデフォルトは <em>10000</em> ミリ秒です。</p></li>
+        <li class="listitem"><p class="para"><em>&quot;safe&quot;</em></p><p class="para"><em class="emphasis">非推奨</em>。<a href="mongo.writeconcerns.html" class="link">WriteConcern</a> の <em>w</em> オプションを使いましょう。</p></li>
+        <li class="listitem"><p class="para"><em>&quot;timeout&quot;</em></p>
+<p class="para">整数で、デフォルトは <em>MongoCursor::$timeout</em> です。
+確認付き書き込みを使っている場合、これはクライアントがデータベースからのレスポンスを待ち続ける時間 (ミリ秒) を表します。
+この時間内にデータベースからの反応がなければ、<a href="class.mongocursortimeoutexception.html" class="classname">MongoCursorTimeoutException</a> をスローします。</p></li>
+       </ul>
+      </p>
+     </dd>
+
+    </dt>
+   
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-mongocollection.save-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <em><code class="parameter">w</code></em> が設定されている場合は、
+   保存結果を含む配列を返します。設定されていない場合は、
+   配列が空でなかったかどうかをあらわす boolean 値を返します (空の配列は追加されません)。
+  </p>
+ </div>
+
+
+ <div class="refsect1 errors" id="refsect1-mongocollection.save-errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">
+   追加したドキュメントが空だったり長さがゼロのキーが含まれていたりした場合に
+   <a href="class.mongoexception.html" class="classname">MongoException</a> をスローします。
+   protected や private なプロパティを持つオブジェクトを追加しようとすると、
+   キーの長さがゼロのエラーを引き起こします。
+  </p>
+  <p class="para">&quot;w&quot; オプションが設定されていて書き込みが失敗した場合に <a href="class.mongocursorexception.html" class="classname">MongoCursorException</a> をスローします。</p><p class="para">&quot;w&quot; オプションの値が 1 より大きく設定されていて、操作の完了までの時間が <var class="varname"><var class="varname">MongoCursor::$timeout</var></var> ミリ秒をこえた場合に <a href="class.mongocursortimeoutexception.html" class="classname">MongoCursorTimeoutException</a> をスローします。サーバー上での操作は止めません。これはクライアント側でのタイムアウトです。<em>MongoCollection::$wtimeout</em> はミリ秒です。</p>
+ </div>
+
+
+ <div class="refsect1 changelog" id="refsect1-mongocollection.save-changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+
+      <tr>
+       <td>1.2.0</td>
+       <td><em>&quot;timeout&quot;</em> オプションが追加されました。</td>
+      </tr>
+
+      <tr>
+       <td>1.0.11</td>
+       <td>
+        <em>&quot;safe&quot;</em> が設定されている場合は、&quot;not master&quot; エラーで接続を切断するようになりました。
+       </td>
+      </tr>
+
+      <tr>
+       <td>1.0.9</td>
+       <td>
+        <p class="para">
+         <em>&quot;safe&quot;</em> オプションに整数値がわたせるようになりました (以前は boolean のみでした)。
+        </p>
+        <p class="para">
+         <em>&quot;fsync&quot;</em> オプションが追加されました。
+        </p>
+       </td>
+      </tr>
+
+      <tr>
+       <td>1.0.5</td>
+       <td><em><code class="parameter">options</code></em> パラメータが追加されました。</td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-mongocollection.save-examples">
+  <h3 class="title">例</h3>
+  <div class="example" id="example-1462">
+   <p><strong>例1  <span class="function"><strong>MongoCollection::save()</strong></span> の例</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$obj&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">'x'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;$obj&nbsp;を&nbsp;db&nbsp;に追加します<br /></span><span style="color: #0000BB">$collection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">save</span><span style="color: #007700">(</span><span style="color: #0000BB">$obj</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$obj</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;別のフィールドを追加します<br /></span><span style="color: #0000BB">$obj</span><span style="color: #007700">[</span><span style="color: #DD0000">'foo'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #DD0000">'bar'</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;$obj&nbsp;をもう一度追加することはできません。_id&nbsp;が重複しているからです<br /></span><span style="color: #0000BB">$collection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(</span><span style="color: #0000BB">$obj</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;新しいフィールドつきの&nbsp;$obj&nbsp;で上書きします<br /></span><span style="color: #0000BB">$collection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">save</span><span style="color: #007700">(</span><span style="color: #0000BB">$obj</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+array(2) {
+  [&quot;x&quot;]=&gt;
+  int(1)
+  [&quot;_id&quot;]=&gt;
+  object(MongoId)#4 (1) {
+    [&quot;$id&quot;]=&gt;
+    string(24) &quot;50b6afe544415ed606000000&quot;
+  }
+}
+</pre></div>
+   </div>
+  </div>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="110746""></a>
+  <div class="note">
+   <strong class="user">cuisdy at gmail dot com</strong>
+   <a href="#110746" class="date">01-Dec-2012 02:36</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Same as with method insert(), it is worth noting that creating a reference to $obj will have the same effect as $obj being a reference itself, i.e. no _id field will be added.<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+$a </span><span class="keyword">= &amp;</span><span class="default">$obj</span><span class="keyword">;<br />
+<br />
+</span><span class="default">$m </span><span class="keyword">= new </span><span class="default">MongoClient</span><span class="keyword">;<br />
+</span><span class="default">$collection </span><span class="keyword">= </span><span class="default">$m</span><span class="keyword">-&gt;</span><span class="default">test</span><span class="keyword">-&gt;</span><span class="default">phpmanual</span><span class="keyword">;<br />
+<br />
+</span><span class="default">$obj </span><span class="keyword">= array(</span><span class="string">'x' </span><span class="keyword">=&gt; </span><span class="default">1</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">// Suppose you create a reference for some reason<br />
+</span><span class="default">$a </span><span class="keyword">= &amp;</span><span class="default">$obj</span><span class="keyword">;<br />
+<br />
+</span><span class="default">$collection</span><span class="keyword">-&gt;</span><span class="default">save</span><span class="keyword">(</span><span class="default">$obj</span><span class="keyword">);<br />
+<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$obj</span><span class="keyword">);<br />
+</span><span class="comment">// prints: array(1) { ["x"]=&gt; int(1) }<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongocollection.remove.html">MongoCollection::remove</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongocollection.setreadpreference.html">MongoCollection::setReadPreference</a></div>
+ <div class="up"><a href="class.mongocollection.html">MongoCollection</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,411 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>MongoId クラス</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongo.types.html">型</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongoid.construct.html">MongoId::__construct</a></div>
+ <div class="up"><a href="mongo.types.html">型</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="class.mongoid" class="reference">
+
+ <h1 class="title">MongoId クラス</h1>
+ 
+
+ <div class="partintro"><p class="verinfo">(PECL mongo &gt;=0.8.0)</p>
+
+
+  <div class="section" id="mongoid.intro">
+   <h2 class="title">導入</h2>
+   <p class="para">
+    データベース用に作成した一意な識別子です。オブジェクトをデータベースに挿入するときに
+    _id フィールドを指定しなければ、_id フィールドが追加されてその値は
+    <strong class="classname">MongoId</strong> のインスタンスとなります。
+    データの中に必然的に一意になるフィールド (ユーザー名やタイムスタンプなど)
+    があるのなら、それを _id フィールドの代わりに使うといいでしょう。
+    この場合は <strong class="classname">MongoId</strong> で置き換えられることはありません。
+   </p>
+   <p class="para">
+    <strong class="classname">MongoId</strong> クラスのインスタンスは、
+    リレーショナルデータベースにおける自動インクリメントの役割を果たします。
+    つまり、データ自体が必然的にもつ一意なキーがない場合にそれを提供するということです。
+    自動インクリメントは共有データベースではうまく動作しません。
+    次の番号を瞬時に見つけることが不可能だからです。
+    このクラスは、共有環境であっても一意となる値をすばやく生成することができます。
+   </p>
+   <p class="para">
+    MongoId は 12 バイトです (文字列形式にすると、十六進 24 桁となります)。
+    最初の 4 バイトはタイムスタンプ、次の 3 バイトはクライアントマシンのホスト名のハッシュ、
+    その次の 2 バイトはスクリプトを動かしているプロセス ID の下位バイト、
+    そして最後の 3 バイトはインクリメントする値となります。
+   </p>
+   <p class="para">
+    <strong class="classname">MongoId</strong> はシリアライズ/アンシリアライズすることができます。
+    シリアライズした形式は、文字列形式と似ています。
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+C:7:&quot;MongoId&quot;:24:{4af9f23d8ead0e1d32000000}
+</pre></div>
+    </div>
+   </p>
+  </div>
+
+
+  <div class="section" id="mongoid.synopsis">
+   <h2 class="title">クラス概要</h2>
+
+
+   <div class="classsynopsis">
+    <div class="ooclass"></div>
+
+
+    <div class="classsynopsisinfo">
+     <span class="ooclass">
+      <strong class="classname">MongoId</strong>
+     </span>
+     {</div>
+
+
+    <div class="fieldsynopsis">
+     <span class="modifier">public</span>
+     <span class="type">string</span>
+      <var class="varname"><a href="class.mongoid.html#mongoid.props.id">$<var class="varname">id</var></a></var>
+     <span class="initializer"> = <strong><code>NULL</code></strong></span>
+    ;</div>
+
+    
+    <div class="classsynopsisinfo classsynopsisinfo_comment">/* メソッド */</div>
+    <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span>  <span class="methodname"><a href="mongoid.construct.html" class="methodname">__construct</a></span>
+    ([ <span class="methodparam"><span class="type">string</span> <code class="parameter">$id</code><span class="initializer"> = <strong><code>NULL</code></strong></span></span>
+  ] )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="modifier">static</span> <span class="type">string</span> <span class="methodname"><a href="mongoid.gethostname.html" class="methodname">getHostname</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">int</span> <span class="methodname"><a href="mongoid.getinc.html" class="methodname">getInc</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">int</span> <span class="methodname"><a href="mongoid.getpid.html" class="methodname">getPID</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">int</span> <span class="methodname"><a href="mongoid.gettimestamp.html" class="methodname">getTimestamp</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="modifier">static</span> <span class="type">MongoId</span> <span class="methodname"><a href="mongoid.set-state.html" class="methodname">__set_state</a></span>
+    ( <span class="methodparam"><span class="type">array</span> <code class="parameter">$props</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">string</span> <span class="methodname"><a href="mongoid.tostring.html" class="methodname">__toString</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+   }</div>
+
+
+  </div>
+
+  <div class="section">
+   <h2 class="title">フィールド</h2>
+   <dl>
+
+    <dt id="mongoid.props.id">
+     <span class="term"><var class="varname"><var class="varname">id</var></var></span>
+     <dd>
+
+      <span class="simpara">
+       このフィールドには、このオブジェクトの文字列表現が含まれます。
+      </span>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </div>
+
+  <div class="section">
+   <h2 class="title">参考</h2>
+   <p class="para">
+    MongoDB コアドキュメントの <a href="http://docs.mongodb.org/manual/core/object-id/" class="link external" title="Link : http://docs.mongodb.org/manual/core/object-id/">&raquo;&nbsp;id</a>
+    を参照ください。
+   </p>
+  </div>
+ </div>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="mongoid.construct.html">MongoId::__construct</a> — 新しい ID を作成する</li><li><a href="mongoid.gethostname.html">MongoId::getHostname</a> — このマシンの id に使うホスト名を取得する</li><li><a href="mongoid.getinc.html">MongoId::getInc</a> — この id を作るためにインクリメントされた値を取得する</li><li><a href="mongoid.getpid.html">MongoId::getPID</a> — プロセス ID を取得する</li><li><a href="mongoid.gettimestamp.html">MongoId::getTimestamp</a> — この id が作られたときのエポックからの経過秒数を取得する</li><li><a href="mongoid.set-state.html">MongoId::__set_state</a> — ダミー MongoId を作成する</li><li><a href="mongoid.tostring.html">MongoId::__toString</a> — この ID の 16 進表現を返す</li></ul>
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="112639""></a>
+  <div class="note">
+   <strong class="user">Lionel</strong>
+   <a href="#112639" class="date">08-Jul-2013 10:51</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Just to be careful with the strict comparison. Object inequalities holds.<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+$m1 </span><span class="keyword">= new </span><span class="default">MongoId</span><span class="keyword">(</span><span class="string">'51b14c2de8e185801f000006'</span><span class="keyword">);<br />
+</span><span class="default">$m2 </span><span class="keyword">= new </span><span class="default">MongoId</span><span class="keyword">(</span><span class="string">'51b14c2de8e185801f000006'</span><span class="keyword">);<br />
+<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$m1 </span><span class="keyword">=== </span><span class="default">$m2</span><span class="keyword">); </span><span class="comment">//gives you boolean false<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$m1 </span><span class="keyword">== </span><span class="default">$m2</span><span class="keyword">); </span><span class="comment">//gives you boolean true<br />
+<br />
+</span><span class="default">$m3 </span><span class="keyword">= new </span><span class="default">MongoId</span><span class="keyword">(</span><span class="string">'51b14c2de8e185801f000006'</span><span class="keyword">);<br />
+</span><span class="default">$m4 </span><span class="keyword">= new </span><span class="default">MongoId</span><span class="keyword">(</span><span class="string">'51b14c2de8e185801f000007'</span><span class="keyword">);<br />
+<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$m3 </span><span class="keyword">=== </span><span class="default">$m4</span><span class="keyword">); </span><span class="comment">//gives you boolean false<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$m3 </span><span class="keyword">== </span><span class="default">$m4</span><span class="keyword">); </span><span class="comment">//gives you boolean false<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="112598""></a>
+  <div class="note">
+   <strong class="user">georgedot dont spam me gmail caom</strong>
+   <a href="#112598" class="date">03-Jul-2013 04:29</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Due to Recent changes. <br />
+<br />
+* [PHP-554] - MongoId should not get constructed when passing in an invalid ID.<br />
+<br />
+Constructor will throw an exception when passing invalid ID.<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+$_id </span><span class="keyword">= new </span><span class="default">MongoId</span><span class="keyword">(); </span><span class="comment">//Generates new ID<br />
+</span><span class="default">$_id </span><span class="keyword">= new </span><span class="default">MongoId</span><span class="keyword">(</span><span class="default">null</span><span class="keyword">); </span><span class="comment">//Generates new ID<br />
+<br />
+</span><span class="default">$_id </span><span class="keyword">= new </span><span class="default">MongoId</span><span class="keyword">(</span><span class="string">"invalid id"</span><span class="keyword">); </span><span class="comment">//throws MongoException<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">//Revert to old behaviour<br />
+</span><span class="default">$_id </span><span class="keyword">= </span><span class="string">"invalid id"</span><span class="keyword">;<br />
+try {<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$_id </span><span class="keyword">= new </span><span class="default">MongoId</span><span class="keyword">(</span><span class="default">$_id</span><span class="keyword">);<br />
+} catch (</span><span class="default">MongoException $ex</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$_id </span><span class="keyword">= new </span><span class="default">MongoId</span><span class="keyword">();<br />
+}<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">//Nifty hack<br />
+</span><span class="keyword">class </span><span class="default">SafeMongoId </span><span class="keyword">extends </span><span class="default">MongoId </span><span class="keyword">{<br />
+<br />
+&nbsp;&nbsp;&nbsp; public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$id</span><span class="keyword">=</span><span class="default">null</span><span class="keyword">) {<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; try {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">parent</span><span class="keyword">::</span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$id</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; } catch (</span><span class="default">MongoException $ex</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">parent</span><span class="keyword">::</span><span class="default">__construct</span><span class="keyword">(</span><span class="default">null</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="110765""></a>
+  <div class="note">
+   <strong class="user">Ryan S</strong>
+   <a href="#110765" class="date">06-Dec-2012 02:46</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+it is important to note that<br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">array(</span><span class="string">"_id" </span><span class="keyword">=&gt; new </span><span class="default">MongoId</span><span class="keyword">(</span><span class="string">"50cf7d2841d41f4f35000000"</span><span class="keyword">))<br />
+</span><span class="comment">//&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; ≠<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">array(</span><span class="string">"_id" </span><span class="keyword">=&gt; array(</span><span class="string">"</span><span class="default">$id</span><span class="string">" </span><span class="keyword">=&gt; </span><span class="string">"50cf7d2841d41f4f35000000"</span><span class="keyword">))<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+This issue can arrise when using json_encode() and json_decode(). If not paying close enough attention one can assume due to the encoded value of the object that it is just this simple:<br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp;&nbsp;&nbsp; $item </span><span class="keyword">= </span><span class="default">$db</span><span class="keyword">-&gt;</span><span class="default">myCollection</span><span class="keyword">-&gt;</span><span class="default">findOne</span><span class="keyword">();<br />
+&nbsp;&nbsp;&nbsp; print </span><span class="default">json_encode</span><span class="keyword">(</span><span class="default">$item</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">// {"_id": {"$id": "50cf7d2841d41f4f35000000"}}<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$item </span><span class="keyword">= </span><span class="default">$db</span><span class="keyword">-&gt;</span><span class="default">myCollection</span><span class="keyword">-&gt;</span><span class="default">findOne</span><span class="keyword">(</span><span class="default">json_encode</span><span class="keyword">(</span><span class="default">$item</span><span class="keyword">));<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">// $item is empty aka not found<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Simple solution to handle these situations:<br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">class </span><span class="default">MongoId2 </span><span class="keyword">extends </span><span class="default">MongoId </span><span class="keyword">{<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$id </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if(</span><span class="default">is_array</span><span class="keyword">(</span><span class="default">$id</span><span class="keyword">)) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$id </span><span class="keyword">= (object) </span><span class="default">$id</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if(</span><span class="default">is_object</span><span class="keyword">(</span><span class="default">$id</span><span class="keyword">) &amp;&amp; isset(</span><span class="default">$id</span><span class="keyword">-&gt;{</span><span class="string">'$id'</span><span class="keyword">})) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$id </span><span class="keyword">= </span><span class="default">$id</span><span class="keyword">-&gt;{</span><span class="string">'$id'</span><span class="keyword">};<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">parent</span><span class="keyword">::</span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$id</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="110338""></a>
+  <div class="note">
+   <strong class="user">rmarscher</strong>
+   <a href="#110338" class="date">13-Oct-2012 12:11</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+You can also cast the id to a string rather than access the $id property to get a string representation of the MongoId.<br />
+<br />
+<span class="default">&lt;?php<br />
+$stringId </span><span class="keyword">= (string) </span><span class="default">$mongoId</span><span class="keyword">;<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="104850""></a>
+  <div class="note">
+   <strong class="user">alex dot turpin at gmail dot com</strong>
+   <a href="#104850" class="date">11-Jul-2011 06:15</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you need to get the actual ID string, and you try the usual way, PHP will whine because it starts with a dollar sign and it thinks it's a variable. Instead, use this notation:<br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp;&nbsp;&nbsp; $mongoid</span><span class="keyword">-&gt;{</span><span class="string">'$id'</span><span class="keyword">} </span><span class="comment">//Get the $id property of a MongoId object<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="100386""></a>
+  <div class="note">
+   <strong class="user">sararschreiber  at  gmail dot com</strong>
+   <a href="#100386" class="date">12-Oct-2010 09:23</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+this is useful for querying for an object by id, given the id's hex:<br />
+<br />
+<span class="default">&lt;?php<br />
+$userid </span><span class="keyword">= </span><span class="string">'4cb4ab6d7addf98506010000'</span><span class="keyword">;<br />
+<br />
+</span><span class="default">$theObjId </span><span class="keyword">= new </span><span class="default">MongoId</span><span class="keyword">(</span><span class="default">$userid</span><span class="keyword">);<br />
+<br />
+</span><span class="default">$connection </span><span class="keyword">= new </span><span class="default">Mongo</span><span class="keyword">();<br />
+</span><span class="default">$db </span><span class="keyword">= </span><span class="default">$connection</span><span class="keyword">-&gt;</span><span class="default">thedb</span><span class="keyword">-&gt;</span><span class="default">users</span><span class="keyword">;<br />
+<br />
+</span><span class="comment">// this will return our matching entry.<br />
+</span><span class="default">$item </span><span class="keyword">= </span><span class="default">$db</span><span class="keyword">-&gt;</span><span class="default">findOne</span><span class="keyword">(array(</span><span class="string">"_id" </span><span class="keyword">=&gt; </span><span class="default">$theObjId</span><span class="keyword">));<br />
+<br />
+</span><span class="default">$connection</span><span class="keyword">-&gt;</span><span class="default">close</span><span class="keyword">();<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongo.types.html">型</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongoid.construct.html">MongoId::__construct</a></div>
+ <div class="up"><a href="mongo.types.html">型</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

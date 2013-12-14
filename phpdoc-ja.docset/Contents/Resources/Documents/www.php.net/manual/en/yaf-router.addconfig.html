@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>設定で定義したルートをルーターに追加する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="class.yaf-router.html">Yaf_Router</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="yaf-router.addroute.html">Yaf_Router::addRoute</a></div>
+ <div class="up"><a href="class.yaf-router.html">Yaf_Router</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="yaf-router.addconfig" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">Yaf_Router::addConfig</h1>
+  <p class="verinfo">(Yaf &gt;=1.0.0)</p><p class="refpurpose"><span class="refname">Yaf_Router::addConfig</span> &mdash; <span class="dc-title">設定で定義したルートをルーターに追加する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-yaf-router.addconfig-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><strong>Yaf_Router::addConfig</strong></span>
+    ( <span class="methodparam"><span class="type"><a href="class.yaf-config-abstract.html" class="type Yaf_Config_Abstract">Yaf_Config_Abstract</a></span> <code class="parameter">$config</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+    設定で定義したルートを
+    <a href="class.yaf-router.html" class="classname">Yaf_Router</a> のスタックに追加します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-yaf-router.addconfig-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">この関数にはパラメータはありません。</p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-yaf-router.addconfig-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+     <a href="class.yaf-config-abstract.html" class="classname">Yaf_Config_Abstract</a> のインスタンスを返します。
+     ここには有効なルート設定が含まれています。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-yaf-router.addconfig-examples">
+  <h3 class="title">例</h3>
+  <div class="example" id="example-4154">
+   <p><strong>例1  <span class="function"><strong>application.ini()</strong></span> の例</strong></p>
+   <div class="example-contents">
+    <div class="inicode"><pre class="inicode">;the order is very important, the prior one will be called first
+
+;a rewrite route match request /product/*/*
+routes.route_name.type=&quot;rewrite&quot;
+routes.route_name.match=&quot;/product/:name/:value&quot;
+routes.route_name.route.controller=product
+routes.route_name.route.action=info
+
+;a regex route match request /list/*/*
+routes.route_name1.type=&quot;regex&quot;
+routes.route_name1.match=&quot;#^list/([^/]*)/([^/]*)#&quot;
+routes.route_name1.route.controller=Index
+routes.route_name1.route.action=action
+routes.route_name1.map.1=name
+routes.route_name1.map.2=value
+
+;a simple route match /**?c=controller&amp;a=action&amp;m=module
+routes.route_name2.type=&quot;simple&quot;
+routes.route_name2.controller=c
+routes.route_name2.module=m
+routes.route_name2.action=a
+
+;a simple router match /**?r=PATH_INFO
+routes.route_name3.type=&quot;supervar&quot;
+routes.route_name3.varname=r
+
+;a map route match any request to controller
+routes.route_name4.type=&quot;map&quot;
+routes.route_name4.controllerPrefer=TRUE
+routes.route_namer.delimiter=&quot;#!&quot;</pre>
+</div>
+   </div>
+
+  </div>
+  <div class="example" id="example-4155">
+   <p><strong>例2  <span class="function"><strong>Yaf_Dispatcher::autoConfig()</strong></span> の例</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">Bootstrap&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">Yaf_Bootstrap_Abstract</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">_initConfig</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$config&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Yaf_Application</span><span style="color: #007700">::</span><span style="color: #0000BB">app</span><span style="color: #007700">()-&gt;</span><span style="color: #0000BB">getConfig</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">Yaf_Registry</span><span style="color: #007700">::</span><span style="color: #0000BB">set</span><span style="color: #007700">(</span><span style="color: #DD0000">"config"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$config</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">_initRoute</span><span style="color: #007700">(</span><span style="color: #0000BB">Yaf_Dispatcher&nbsp;$dispatcher</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$router&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$dispatcher</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getRouter</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/**<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;we&nbsp;can&nbsp;add&nbsp;some&nbsp;pre-defined&nbsp;routes&nbsp;in&nbsp;application.ini<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$router</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">addConfig</span><span style="color: #007700">(</span><span style="color: #0000BB">Yaf_Registry</span><span style="color: #007700">::</span><span style="color: #0000BB">get</span><span style="color: #007700">(</span><span style="color: #DD0000">"config"</span><span style="color: #007700">)-&gt;</span><span style="color: #0000BB">routes</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-yaf-router.addconfig-seealso">
+  <h3 class="title">参考</h3>
+  <ul class="simplelist">
+   <li class="member"> <span class="methodname"><a href="yaf-router.addroute.html" class="methodname" rel="rdfs-seeAlso">Yaf_Router::addRoute()</a> - 新しいルートをルーターに追加する</span></li>
+   <li class="member"><a href="class.yaf-route-static.html" class="classname">Yaf_Route_Static</a></li>
+   <li class="member"><a href="class.yaf-route-supervar.html" class="classname">Yaf_Route_Supervar</a></li>
+   <li class="member"><a href="class.yaf-route-simple.html" class="classname">Yaf_Route_Simple</a></li>
+   <li class="member"><a href="class.yaf-route-regex.html" class="classname">Yaf_Route_Regex</a></li>
+   <li class="member"><a href="class.yaf-route-rewrite.html" class="classname">Yaf_Route_Rewrite</a></li>
+   <li class="member"><a href="class.yaf-route-map.html" class="classname">Yaf_Route_Map</a></li>
+  </ul>                       
+ </div>
+  
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="class.yaf-router.html">Yaf_Router</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="yaf-router.addroute.html">Yaf_Router::addRoute</a></div>
+ <div class="up"><a href="class.yaf-router.html">Yaf_Router</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

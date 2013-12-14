@@ -1,0 +1,230 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>フォントを読み込む</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.ps-fill.html">ps_fill</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.ps-get-buffer.html">ps_get_buffer</a></div>
+ <div class="up"><a href="ref.ps.html">PS 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.ps-findfont" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ps_findfont</h1>
+  <p class="verinfo">(PECL ps &gt;= 1.1.0)</p><p class="refpurpose"><span class="refname">ps_findfont</span> &mdash; <span class="dc-title">フォントを読み込む</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-function.ps-findfont-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">int</span> <span class="methodname"><strong>ps_findfont</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$psdoc</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$fontname</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$encoding</code></span>
+   [, <span class="methodparam"><span class="type">bool</span> <code class="parameter">$embed</code><span class="initializer"> = false</span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+    あとで使用するために、フォントを読み込みます。読み込んだフォントを実際に利用するためには、
+     <span class="function"><a href="function.ps-setfont.html" class="function">ps_setfont()</a></span> で設定しなければなりません。
+    文字の間隔を計算するため、この関数は adobe フォントメトリックファイルを必要とします。
+    ページの内部で読み込まれたフォントは、
+    そのページ内でのみ有効となります。ドキュメント全体で使われるフォントは、
+    最初の  <span class="function"><a href="function.ps-begin-page.html" class="function">ps_begin_page()</a></span> の実行より前に読み込まれなければなりません。
+    ページとページの間で  <span class="function"><strong>ps_findfont()</strong></span>
+    が呼ばれた場合は、それ以降のページでフォントが有効になります。
+  </p>
+  <p class="para">
+   afm ファイルの名前は、
+   <em><code class="parameter">fontname</code></em><em>.afm</em> でなければなりません。
+   フォントを埋め込む場合は、フォントのアウトラインを含む
+   <em><code class="parameter">fontname</code></em><em>.pfb</em>
+   が存在しなければなりません。
+  </p>
+  <p class="para">
+   最初のページを処理する前に  <span class="function"><strong>ps_findfont()</strong></span> をコール際、
+   postscript ヘッダが出力されます。ここには、ドキュメント全体に適用される
+   BoundingBox が含まれます。
+   通常は、BoundingBox を設定するのは最初に  <span class="function"><a href="function.ps-begin-page.html" class="function">ps_begin_page()</a></span>
+   がコールされたときで、これは  <span class="function"><strong>ps_findfont()</strong></span>
+   をコールした後になります。
+   したがって、 <span class="function"><strong>ps_findfont()</strong></span> のコール時にはまだ
+   BoundingBox が設定されておらず、警告が発生してしまいます。
+   こうなることを避けるため、 <span class="function"><strong>ps_findfont()</strong></span> をコールする前に
+    <span class="function"><a href="function.ps-set-parameter.html" class="function">ps_set_parameter()</a></span> をコールし、BoundingBox
+   を設定しておくべきです。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.ps-findfont-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">psdoc</code></em></span>
+     <dd>
+
+      <p class="para">
+        <span class="function"><a href="function.ps-new.html" class="function">ps_new()</a></span> が返す、postscript
+       ファイルのリソース ID。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">fontname</code></em></span>
+     <dd>
+
+      <p class="para">
+       フォントの名前。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">encoding</code></em></span>
+     <dd>
+
+      <p class="para">
+         <span class="function"><strong>ps_findfont()</strong></span> は、<em><code class="parameter">encoding</code></em>
+        で渡されたファイルを読み込もうと試みます。 エンコーディングファイルは、
+        <strong class="command">dvips(1)</strong> で使われるものと同形式です。
+        そこにはフォントエンコーディングベクタ（現在は利用されていませんが、
+        存在する必要があります）が含まれており、また afm ファイルから
+        生成されたリゲチャのリストを拡張するための拡張リゲチャが含まれています。
+      </p>
+      <p class="para">
+        <em><code class="parameter">encoding</code></em> は <strong><code>NULL</code></strong> または空文字列とすることも可能で、
+        その場合はデフォルトエンコーディング（TeXBase1）が用いられます。
+      </p>
+      <p class="para">
+        encoding が <em>builtin</em> と指定された場合は、
+        エンコード処理は行われずにフォント固有のエンコーディングがそのまま用いられます。
+        これは、記号フォントを扱う場合に便利です。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">embed</code></em></span>
+     <dd>
+
+      <p class="para">
+       0 より大きい値を設定すると、フォントがドキュメントに埋め込まれます。
+       これを使用するには、フォントのアウトライン (.pfb ファイル) が必要です。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.ps-findfont-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+    成功した場合にフォントの ID を、失敗した場合にゼロを返します。
+    ID は正の数値です。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.ps-findfont-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="function.ps-begin-page.html" class="function" rel="rdfs-seeAlso">ps_begin_page()</a> - 新しいページを開始する</span></li>
+    <li class="member"> <span class="function"><a href="function.ps-setfont.html" class="function" rel="rdfs-seeAlso">ps_setfont()</a> - 以降の出力で用いるフォントを設定する</span></li>
+   </ul>
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="82044""></a>
+  <div class="note">
+   <strong class="user">yarych at bigmir dot net</strong>
+   <a href="#82044" class="date">25-Mar-2008 09:39</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Ok, now I found the way to set the path I need for fonts - before calling ps_findfont() make a call like this:<br />
+<span class="default">&lt;?php ps_set_parameter</span><span class="keyword">(</span><span class="default">$psdoc</span><span class="keyword">, </span><span class="string">'SearchPath'</span><span class="keyword">, </span><span class="default">$fonts_dir</span><span class="keyword">); </span><span class="default">?&gt;<br />
+</span><br />
+It works for pslib 0.4.1 version. (Looks like it didn't work in some earlier versions.)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="80689""></a>
+  <div class="note">
+   <strong class="user">yarych at bigmir dot net</strong>
+   <a href="#80689" class="date">29-Jan-2008 12:40</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I've found out that pslib is searching for fonts in its data dir (/usr/share/pslib). There is no way to change the search path now.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="64388""></a>
+  <div class="note">
+   <strong class="user">pepe at dexef dot hu</strong>
+   <a href="#64388" class="date">13-Apr-2006 12:19</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I found out that you must copy the &lt;fontname&gt;.afm files next to your php because it's searched there in default.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="55093""></a>
+  <div class="note">
+   <strong class="user">zeldorblat at gmail dot com</strong>
+   <a href="#55093" class="date">25-Jul-2005 04:47</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I found that my Postscript files were taking an incredibly long time to generate and the file sizes were abnormally large.&nbsp; The problem was that, everytime I chose to set a font I would call ps_findfont() followed by ps_setfont().<br />
+<br />
+It seems that every time ps_findfont() is called, the font gets embedded in the file.&nbsp; To prevent this, I keep an array of fonts I've already loaded, keyed by the font name.&nbsp; When I go to set the font, I first check this array to see if I've already loaded the font, and, if so, return the resource handle from that array.&nbsp; Otherwise, I call ps_findfont() and store the handle in the array.<br />
+<br />
+Note that, if your call to ps_findfont() occurs while inside a page, the font will not be available on other pages.&nbsp; To get around this I just clear out the array at the end of each page.<br />
+<br />
+My PS file went from 10 M to 75 K, and the time to create the file went from around 15 seconds to less than 1 second.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.ps-fill.html">ps_fill</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.ps-get-buffer.html">ps_get_buffer</a></div>
+ <div class="up"><a href="ref.ps.html">PS 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

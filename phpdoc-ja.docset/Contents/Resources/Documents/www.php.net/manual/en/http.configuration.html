@@ -1,0 +1,291 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>実行時設定</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="http.install.html">HTTP 拡張モジュールのインストール</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="http.resources.html">リソース型</a></div>
+ <div class="up"><a href="http.setup.html">インストール/設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="http.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <table class="doctable table">
+   <caption><strong>HTTP 設定オプション</strong></caption>
+
+   
+    <thead>
+     <tr>
+      <th>名前</th>
+      <th>デフォルト</th>
+      <th>変更可能</th>
+      <th>説明</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+
+     <tr id="http.configuration.etag.mode">
+      <td>http.etag.mode</td>
+      <td>&quot;MD5&quot;</td>
+      <td>PHP_INI_ALL</td>
+      <td>
+       ETag の生成に使用するハッシュアルゴリズム。MD5、SHA1 および CRC32
+       が常に使用可能です。<a href="ref.hash.html" class="link">hash</a>
+       拡張モジュールが有効な場合は、この拡張モジュールがサポートする
+       任意のハッシュアルゴリズムを使用可能です。
+      </td>
+     </tr>
+
+
+     <tr id="http.configuration.log.cache">
+      <td>http.log.cache</td>
+      <td>&quot;&quot;</td>
+      <td>PHP_INI_ALL</td>
+      <td>
+       ログファイルへのパス (あるいはストリームラッパーの url)。
+       キャッシュにヒットした場合にここに書き込みます。
+      </td>
+     </tr>
+
+
+     <tr id="http.configuration.log.redirect">
+      <td>http.log.redirect</td>
+      <td>&quot;&quot;</td>
+      <td>PHP_INI_ALL</td>
+      <td>
+       ログファイルへのパス (あるいはストリームラッパーの url)。
+       リダイレクトした場合にここに書き込みます。
+      </td>
+     </tr>
+
+
+     <tr id="http.configuration.log.not-found">
+      <td>http.log.not_found</td>
+      <td>&quot;&quot;</td>
+      <td>PHP_INI_ALL</td>
+      <td>
+       ログファイルへのパス (あるいはストリームラッパーの url)。
+       &quot;file not found&quot; エラーが発生した場合にここに書き込みます。
+      </td>
+     </tr>
+
+
+     <tr id="http.configuration.log.allowed-methods">
+      <td>http.log.allowed_methods</td>
+      <td>&quot;&quot;</td>
+      <td>PHP_INI_ALL</td>
+      <td>
+       ログファイルへのパス (あるいはストリームラッパーの url)。
+       &quot;allowed methods&quot; に違反した場合にここに書き込みます。
+      </td>
+     </tr>
+
+
+     <tr id="http.configuration.log.composite">
+      <td>http.log.composite</td>
+      <td>&quot;&quot;</td>
+      <td>PHP_INI_ALL</td>
+      <td>
+       ログファイルへのパス (あるいはストリームラッパーの url)。
+       すべてのイベントをここに書き込みます。
+      </td>
+     </tr>
+
+
+     <tr id="http.configuration.request.methods.allowed">
+      <td>http.request.methods.allowed</td>
+      <td>&quot;&quot;</td>
+      <td>PHP_INI_ALL</td>
+      <td>
+       許可するリクエストメソッド。ここに挙げた以外のリクエストメソッドを
+       クライアントが発行した場合は、ステータス &quot;405 Method not allowed&quot;
+       で PHP が終了します。
+       &quot;終了&quot; の意味については、<a href="http.configuration.html" class="link">INI 設定</a>
+   <a href="" class="link">http.force_exit</a> を参照ください。
+      </td>
+     </tr>
+
+
+     <tr id="http.configuration.request.methods.custom">
+      <td>http.request.methods.custom</td>
+      <td>&quot;&quot;</td>
+      <td>PHP_INI_PERDIR|PHP_INI_SYSTEM</td>
+      <td>
+       独自のリクエストメソッド。非標準のリクエストメソッドを使用したい場合は、
+       これを INI 設定あるいは  <span class="function"><a href="function.http-request-method-register.html" class="function">http_request_method_register()</a></span>
+       で指定します。
+      </td>
+     </tr>
+
+
+     <tr id="http.configuration.request.datashare.cookie">
+      <td>http.request.datashare.cookie</td>
+      <td>&quot;0&quot;</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>
+       グローバルの <strong class="classname">HttpRequestDataShare</strong>
+       がデフォルトでクッキー情報を共有するかどうか。
+      </td>
+     </tr>
+
+
+     <tr id="http.configuration.request.datashare.dns">
+      <td>http.request.datashare.dns</td>
+      <td>&quot;1&quot;</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>
+       グローバルの <strong class="classname">HttpRequestDataShare</strong>
+       がデフォルトで名前解決情報を共有するかどうか。
+      </td>
+     </tr>
+
+
+     <tr id="http.configuration.request.datashare.ssl">
+      <td>http.request.datashare.ssl</td>
+      <td>&quot;0&quot;</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>
+       グローバルの <strong class="classname">HttpRequestDataShare</strong>
+       がデフォルトで SSL セッション情報を共有するかどうか。
+       これは、まだ libcurl で実装されていません。
+      </td>
+     </tr>
+
+
+     <tr id="http.configuration.request.datashare.connect">
+      <td>http.request.datashare.connect</td>
+      <td>&quot;0&quot;</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>
+       グローバルの <strong class="classname">HttpRequestDataShare</strong>
+       がデフォルトで接続情報を共有するかどうか。
+       これは、まだ libcurl で実装されていません。
+      </td>
+     </tr>
+
+
+     <tr id="http.configuration.persistent.handles.limit">
+      <td>http.persistent.handles.limit</td>
+      <td>&quot;-1&quot;</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>
+       持続させるハンドルの最大数。
+      </td>
+     </tr>
+
+
+     <tr id="http.configuration.persistent.handles.ident">
+      <td>http.persistent.handles.ident</td>
+      <td>&quot;GLOBAL&quot;</td>
+      <td>PHP_INI_ALL</td>
+      <td>
+       持続ハンドルの ident。
+      </td>
+     </tr>
+
+
+     <tr id="http.configuration.send.inflate.start-auto">
+      <td>http.send.inflate.start_auto</td>
+      <td>&quot;0&quot;</td>
+      <td>PHP_INI_PERDIR|PHP_INI_SYSTEM</td>
+      <td>
+       inflate 出力ハンドラを自動的に開始するかどうか。
+      </td>
+     </tr>
+
+
+     <tr id="http.configuration.send.inflate.start-flags">
+      <td>http.send.inflate.start_flags</td>
+      <td>&quot;0&quot;</td>
+      <td>PHP_INI_ALL</td>
+      <td>
+       inflate 出力ハンドラの初期化設定。
+      </td>
+     </tr>
+
+
+     <tr id="http.configuration.send.deflate.start-auto">
+      <td>http.send.deflate.start_auto</td>
+      <td>&quot;0&quot;</td>
+      <td>PHP_INI_PERDIR|PHP_INI_SYSTEM</td>
+      <td>
+       deflate 出力ハンドラを自動的に開始するかどうか。
+      </td>
+     </tr>
+
+
+     <tr id="http.configuration.send.deflate.start-flags">
+      <td>http.send.deflate.start_flags</td>
+      <td>&quot;0&quot;</td>
+      <td>PHP_INI_ALL</td>
+      <td>
+       deflate 出力ハンドラの初期化設定。
+       <a href="http.constants.html#http.constants.deflate" class="link">deflate 定数</a>
+       を参照ください。
+      </td>
+     </tr>
+
+
+     <tr id="http.configuration.send.not-found-404">
+      <td>http.send.not_found_404</td>
+      <td>&quot;1&quot;</td>
+      <td>PHP_INI_ALL</td>
+      <td>
+        <span class="function"><a href="function.http-send-file.html" class="function">http_send_file()</a></span> が指定したファイルを見つけられなかった場合に
+       自動的に &quot;404 Not found&quot; で終了するかどうか。
+       &quot;終了&quot; の意味については、<a href="http.configuration.html" class="link">INI 設定</a>
+   <a href="" class="link">http.force_exit</a> を参照ください。
+      </td>
+     </tr>
+
+
+     <tr id="http.configuration.only-exceptions">
+      <td>http.only_exceptions</td>
+      <td>&quot;0&quot;</td>
+      <td>PHP_INI_ALL</td>
+      <td>
+       すべての notices/warnings/errors
+       を例外としてスローするかどうか。
+      </td>
+     </tr>
+
+
+     <tr id="http.configuration.force-exit">
+      <td>http.force_exit</td>
+      <td>&quot;1&quot;</td>
+      <td>PHP_INI_ALL</td>
+      <td>
+       &quot;exits with a status of...&quot; が発生するたびに、
+       通常はスクリプトの実行を終了します。このオプションを無効にすると、
+       廃棄用 (dev/null) の出力ハンドラを開始し、
+       スクリプトをそのまま続行します。
+      </td>
+     </tr>
+
+
+    </tbody>
+   
+  </table>
+
+ </p>
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="http.install.html">HTTP 拡張モジュールのインストール</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="http.resources.html">リソース型</a></div>
+ <div class="up"><a href="http.setup.html">インストール/設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

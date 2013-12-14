@@ -1,0 +1,371 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>例</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="amqp.constants.html">定義済み定数</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="class.amqpconnection.html">AMQPConnection</a></div>
+ <div class="up"><a href="book.amqp.html">AMQP</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="amqp.examples" class="chapter">
+ <h1>例</h1>
+
+ <div class="example" id="example-4164">
+  <p><strong>例1 AMQP の例</strong></p>
+  <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;接続の作成<br /></span><span style="color: #0000BB">$cnn&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">AMQPConnection</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$cnn</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">connect</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;新しいチャネルの作成<br /></span><span style="color: #0000BB">$ch&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">AMQPChannel</span><span style="color: #007700">(</span><span style="color: #0000BB">$cnn</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;新しい&nbsp;exchange&nbsp;の宣言<br /></span><span style="color: #0000BB">$ex&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">AMQPExchange</span><span style="color: #007700">(</span><span style="color: #0000BB">$ch</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$ex</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">declare</span><span style="color: #007700">(</span><span style="color: #DD0000">'exchange1'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">AMQP_EX_TYPE_FANOUT</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;新しいキューの作成<br /></span><span style="color: #0000BB">$q&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">AMQPQueue</span><span style="color: #007700">(</span><span style="color: #0000BB">$ch</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$q</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">declare</span><span style="color: #007700">(</span><span style="color: #DD0000">'queue1'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;exchange&nbsp;上でキューを&nbsp;routing.key&nbsp;へバインド<br /></span><span style="color: #0000BB">$ex</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">bind</span><span style="color: #007700">(</span><span style="color: #DD0000">'queue1'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'routing.key'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;ルーティングキーを指定して、メッセージを&nbsp;exchange&nbsp;に公開<br /></span><span style="color: #0000BB">$ex</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">publish</span><span style="color: #007700">(</span><span style="color: #DD0000">'message'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'routing.key'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;キューからの読み込み<br /></span><span style="color: #0000BB">$msg&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$q</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">consume</span><span style="color: #007700">();<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+  </div>
+
+ </div>
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113118""></a>
+  <div class="note">
+   <strong class="user">WhatTheWhat</strong>
+   <a href="#113118" class="date">02-Sep-2013 12:54</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+How is SSL handled? I cannot find any documentation on support for SSL or how to use it.<br />
+<br />
+I am trying to connect to CloudAMQP which requires a different port for SSL (easy enough) and it also requires to use amqps:// instead of amqp:// for the AMQP URL. <br />
+<br />
+However, I cannot figure out how to specify amqps://<br />
+<br />
+Thank You</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="109772""></a>
+  <div class="note">
+   <strong class="user">bradyjvitrano at gmail dot com</strong>
+   <a href="#109772" class="date">19-Aug-2012 02:41</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This example assumes no previous queue or exchange has been declared.<br />
+<br />
+Send File<br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">/** <br />
+&nbsp;* Filename: send.php<br />
+&nbsp;* Purpose: <br />
+&nbsp;* Send messages to RabbitMQ server using AMQP extension<br />
+&nbsp;* Exchange Name: exchange1<br />
+&nbsp;* Exchange Type: fanout<br />
+&nbsp;* Queue Name: queue1<br />
+&nbsp;*/<br />
+</span><span class="default">$connection </span><span class="keyword">= new </span><span class="default">AMQPConnection</span><span class="keyword">();<br />
+</span><span class="default">$connection</span><span class="keyword">-&gt;</span><span class="default">connect</span><span class="keyword">();<br />
+if (!</span><span class="default">$connection</span><span class="keyword">-&gt;</span><span class="default">isConnected</span><span class="keyword">()) {<br />
+&nbsp;&nbsp;&nbsp; die(</span><span class="string">'Not connected :(' </span><span class="keyword">. </span><span class="default">PHP_EOL</span><span class="keyword">);<br />
+}<br />
+</span><span class="comment">// Open Channel<br />
+</span><span class="default">$channel&nbsp; &nbsp; </span><span class="keyword">= new </span><span class="default">AMQPChannel</span><span class="keyword">(</span><span class="default">$connection</span><span class="keyword">);<br />
+</span><span class="comment">// Declare exchange<br />
+</span><span class="default">$exchange&nbsp;&nbsp; </span><span class="keyword">= new </span><span class="default">AMQPExchange</span><span class="keyword">(</span><span class="default">$channel</span><span class="keyword">);<br />
+</span><span class="default">$exchange</span><span class="keyword">-&gt;</span><span class="default">setName</span><span class="keyword">(</span><span class="string">'exchange1'</span><span class="keyword">);<br />
+</span><span class="default">$exchange</span><span class="keyword">-&gt;</span><span class="default">setType</span><span class="keyword">(</span><span class="string">'fanout'</span><span class="keyword">);<br />
+</span><span class="default">$exchange</span><span class="keyword">-&gt;</span><span class="default">declare</span><span class="keyword">();<br />
+</span><span class="comment">// Create Queue<br />
+</span><span class="default">$queue&nbsp; &nbsp; &nbsp; </span><span class="keyword">= new </span><span class="default">AMQPQueue</span><span class="keyword">(</span><span class="default">$channel</span><span class="keyword">);<br />
+</span><span class="default">$queue</span><span class="keyword">-&gt;</span><span class="default">setName</span><span class="keyword">(</span><span class="string">'queue1'</span><span class="keyword">);<br />
+</span><span class="default">$queue</span><span class="keyword">-&gt;</span><span class="default">declare</span><span class="keyword">();<br />
+<br />
+</span><span class="default">$message&nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">$exchange</span><span class="keyword">-&gt;</span><span class="default">publish</span><span class="keyword">(</span><span class="string">'Custom Message (ts): '</span><span class="keyword">.</span><span class="default">time</span><span class="keyword">(), </span><span class="string">'key1'</span><span class="keyword">);<br />
+if (!</span><span class="default">$message</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="string">'Message not sent'</span><span class="keyword">, </span><span class="default">PHP_EOL</span><span class="keyword">;<br />
+} else {<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="string">'Message sent!'</span><span class="keyword">, </span><span class="default">PHP_EOL</span><span class="keyword">;<br />
+}<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Receive File<br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">/** <br />
+&nbsp;* Filename: receive.php<br />
+&nbsp;* Purpose: <br />
+&nbsp;* Receive messages from RabbitMQ server using AMQP extension<br />
+&nbsp;* Exchange Name: exchange1<br />
+&nbsp;* Exchange Type: fanout<br />
+&nbsp;* Queue Name: queue1<br />
+&nbsp;*/<br />
+</span><span class="default">$connection </span><span class="keyword">= new </span><span class="default">AMQPConnection</span><span class="keyword">();<br />
+</span><span class="default">$connection</span><span class="keyword">-&gt;</span><span class="default">connect</span><span class="keyword">();<br />
+if (!</span><span class="default">$connection</span><span class="keyword">-&gt;</span><span class="default">isConnected</span><span class="keyword">()) {<br />
+&nbsp;&nbsp;&nbsp; die(</span><span class="string">'Not connected :('</span><span class="keyword">. </span><span class="default">PHP_EOL</span><span class="keyword">);<br />
+}<br />
+</span><span class="comment">// Open channel<br />
+</span><span class="default">$channel&nbsp; &nbsp; </span><span class="keyword">= new </span><span class="default">AMQPChannel</span><span class="keyword">(</span><span class="default">$connection</span><span class="keyword">);<br />
+</span><span class="comment">// Open Queue and bind to exchange<br />
+</span><span class="default">$queue&nbsp; &nbsp; &nbsp; </span><span class="keyword">= new </span><span class="default">AMQPQueue</span><span class="keyword">(</span><span class="default">$channel</span><span class="keyword">);<br />
+</span><span class="default">$queue</span><span class="keyword">-&gt;</span><span class="default">setName</span><span class="keyword">(</span><span class="string">'queue1'</span><span class="keyword">);<br />
+</span><span class="default">$queue</span><span class="keyword">-&gt;</span><span class="default">bind</span><span class="keyword">(</span><span class="string">'exchange1'</span><span class="keyword">, </span><span class="string">'key1'</span><span class="keyword">);<br />
+</span><span class="default">$queue</span><span class="keyword">-&gt;</span><span class="default">declare</span><span class="keyword">();<br />
+</span><span class="comment">// Prevent message redelivery with AMQP_AUTOACK param<br />
+</span><span class="keyword">while (</span><span class="default">$envelope </span><span class="keyword">= </span><span class="default">$queue</span><span class="keyword">-&gt;</span><span class="default">get</span><span class="keyword">(</span><span class="default">AMQP_AUTOACK</span><span class="keyword">)) {<br />
+&nbsp;&nbsp;&nbsp; echo (</span><span class="default">$envelope</span><span class="keyword">-&gt;</span><span class="default">isRedelivery</span><span class="keyword">()) ? </span><span class="string">'Redelivery' </span><span class="keyword">: </span><span class="string">'New Message'</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="default">PHP_EOL</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="default">$envelope</span><span class="keyword">-&gt;</span><span class="default">getBody</span><span class="keyword">(), </span><span class="default">PHP_EOL</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Test It<br />
+$ php -f send.php<br />
+$ php -f receive.php</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="109024""></a>
+  <div class="note">
+   <strong class="user">jean dot weisbuch at phpnet dot org</strong>
+   <a href="#109024" class="date">14-Jun-2012 10:17</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The official documentation is not up to date as of June 2012 for the latest stable version (1.0.3) so i had to find semi-blindly how i could use the extension (thanks to some snippets on User Contributed Notes).<br />
+<br />
+Here is a simple way to publish and retrieve messages (tested using RabbitMQ as the broker) that works on the stable version of the extension :<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">amqp_connection</span><span class="keyword">() {<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$amqpConnection </span><span class="keyword">= new </span><span class="default">AMQPConnection</span><span class="keyword">();<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$amqpConnection</span><span class="keyword">-&gt;</span><span class="default">setLogin</span><span class="keyword">(</span><span class="string">"username"</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$amqpConnection</span><span class="keyword">-&gt;</span><span class="default">setPassword</span><span class="keyword">(</span><span class="string">"123456"</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$amqpConnection</span><span class="keyword">-&gt;</span><span class="default">setVhost</span><span class="keyword">(</span><span class="string">"virthost"</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$amqpConnection</span><span class="keyword">-&gt;</span><span class="default">connect</span><span class="keyword">();<br />
+<br />
+&nbsp;&nbsp;&nbsp; if(!</span><span class="default">$amqpConnection</span><span class="keyword">-&gt;</span><span class="default">isConnected</span><span class="keyword">()) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; die(</span><span class="string">"Cannot connect to the broker, exiting !\n"</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; return </span><span class="default">$amqpConnection</span><span class="keyword">;<br />
+}<br />
+<br />
+function </span><span class="default">amqp_receive</span><span class="keyword">(</span><span class="default">$exchangeName</span><span class="keyword">, </span><span class="default">$routingKey</span><span class="keyword">, </span><span class="default">$queueName</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$amqpConnection </span><span class="keyword">= </span><span class="default">amqp_connection</span><span class="keyword">();<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$channel </span><span class="keyword">= new </span><span class="default">AMQPChannel</span><span class="keyword">(</span><span class="default">$amqpConnection</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$queue </span><span class="keyword">= new </span><span class="default">AMQPQueue</span><span class="keyword">(</span><span class="default">$channel</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$queue</span><span class="keyword">-&gt;</span><span class="default">setName</span><span class="keyword">(</span><span class="default">$queueName</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$queue</span><span class="keyword">-&gt;</span><span class="default">bind</span><span class="keyword">(</span><span class="default">$exchangeName</span><span class="keyword">, </span><span class="default">$routingKey</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp;&nbsp; while(</span><span class="default">$message </span><span class="keyword">= </span><span class="default">$queue</span><span class="keyword">-&gt;</span><span class="default">get</span><span class="keyword">()) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo(</span><span class="string">"Message #"</span><span class="keyword">.</span><span class="default">$message</span><span class="keyword">-&gt;</span><span class="default">getDeliveryTag</span><span class="keyword">().</span><span class="string">" '"</span><span class="keyword">.</span><span class="default">$message</span><span class="keyword">-&gt;</span><span class="default">getBody</span><span class="keyword">().</span><span class="string">"'"</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if(</span><span class="default">$message</span><span class="keyword">-&gt;</span><span class="default">isRedelivery</span><span class="keyword">()) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; echo(</span><span class="string">"\t(this message has already been delivered)"</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// just for testing purpose, shows how to manually remove a message from queue<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if(</span><span class="default">rand</span><span class="keyword">(</span><span class="default">0</span><span class="keyword">,</span><span class="default">6</span><span class="keyword">) &gt; </span><span class="default">4</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$queue</span><span class="keyword">-&gt;</span><span class="default">ack</span><span class="keyword">(</span><span class="default">$message</span><span class="keyword">-&gt;</span><span class="default">getDeliveryTag</span><span class="keyword">());<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; echo(</span><span class="string">"\t(this message has been removed from the queue)"</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$message</span><span class="keyword">-&gt;</span><span class="default">getMessageId</span><span class="keyword">());<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="string">"\n"</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp; if(!</span><span class="default">$amqpConnection</span><span class="keyword">-&gt;</span><span class="default">disconnect</span><span class="keyword">()) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="string">"Could not disconnect !"</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+<br />
+function </span><span class="default">amqp_send</span><span class="keyword">(</span><span class="default">$text</span><span class="keyword">, </span><span class="default">$routingKey</span><span class="keyword">, </span><span class="default">$exchangeName</span><span class="keyword">){<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$amqpConnection </span><span class="keyword">= </span><span class="default">amqp_connection</span><span class="keyword">();<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$channel </span><span class="keyword">= new </span><span class="default">AMQPChannel</span><span class="keyword">(</span><span class="default">$amqpConnection</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$exchange </span><span class="keyword">= new </span><span class="default">AMQPExchange</span><span class="keyword">(</span><span class="default">$channel</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$exchange</span><span class="keyword">-&gt;</span><span class="default">setName</span><span class="keyword">(</span><span class="default">$exchangeName</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$exchange</span><span class="keyword">-&gt;</span><span class="default">setType</span><span class="keyword">(</span><span class="string">"fanout"</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$message </span><span class="keyword">= </span><span class="default">$exchange</span><span class="keyword">-&gt;</span><span class="default">publish</span><span class="keyword">(</span><span class="default">$text</span><span class="keyword">, </span><span class="default">$routingKey</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if(!</span><span class="default">$message</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="string">"Error: Message '"</span><span class="keyword">.</span><span class="default">$message</span><span class="keyword">.</span><span class="string">"' was not sent.\n"</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; } else {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="string">"Message '"</span><span class="keyword">.</span><span class="default">$message</span><span class="keyword">.</span><span class="string">"' sent.\n"</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp; if (!</span><span class="default">$amqpConnection</span><span class="keyword">-&gt;</span><span class="default">disconnect</span><span class="keyword">()) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="string">"Could not disconnect !"</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+<br />
+</span><span class="comment">// lets send a message with a "random" content (the date)<br />
+</span><span class="default">amqp_send</span><span class="keyword">(</span><span class="string">"Message added at this date: "</span><span class="keyword">.</span><span class="default">date</span><span class="keyword">(</span><span class="default">DATE_RFC822</span><span class="keyword">), </span><span class="string">"action"</span><span class="keyword">, </span><span class="string">"amq.fanout"</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">// you need to sleep for 1 sec if you want to be able to receive the message you just sent ("limitation" must be on the broker side)<br />
+</span><span class="default">sleep</span><span class="keyword">(</span><span class="default">1</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">// now we receive messages from the queue we just sent a message on<br />
+</span><span class="default">amqp_receive</span><span class="keyword">(</span><span class="string">"amq.fanout"</span><span class="keyword">,</span><span class="string">"action"</span><span class="keyword">,</span><span class="string">"action"</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+The rand() part of the script is used to make it more "lively" for testing when the script is run many times by randomly acknowledging messages (and show how to acknowledge non-automatically a message after it has been read).</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="107682""></a>
+  <div class="note">
+   <strong class="user">info at eeasoftware dot com</strong>
+   <a href="#107682" class="date">26-Feb-2012 05:54</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I spent several hours looking for some examples of sending messages to worker queues vs. fan queues.&nbsp; The documentation isn't too clear and I had to consult many sources, so here are simple methods for both types of 'producers'.&nbsp; For brevity I've left out 'safety' checks in the code dealing with whether or not a connection was established, error checking, cleanup, etc.<br />
+<br />
+As further clarification, I'm using rabbitmq as my service, with java daemons running on the server as 'consumers'.&nbsp; These examples are current with the new 1.0.0 stable AMQP release in February of 2012.<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="comment">//set your connection arguments and connect to the server<br />
+</span><span class="default">$conn_args </span><span class="keyword">= array(</span><span class="string">'host' </span><span class="keyword">=&gt; </span><span class="string">'your_host'</span><span class="keyword">, </span><span class="string">'port' </span><span class="keyword">=&gt; </span><span class="string">'your_host_port'</span><span class="keyword">, </span><span class="string">'login' </span><span class="keyword">=&gt; </span><span class="string">'your_username'</span><span class="keyword">, </span><span class="string">'password' </span><span class="keyword">=&gt; </span><span class="string">'your_password'</span><span class="keyword">);<br />
+</span><span class="default">$conn </span><span class="keyword">= new </span><span class="default">AMQPConnection</span><span class="keyword">(</span><span class="default">$conn_args</span><span class="keyword">);<br />
+</span><span class="default">$conn</span><span class="keyword">-&gt;</span><span class="default">connect</span><span class="keyword">();<br />
+<br />
+</span><span class="comment">//create your message<br />
+</span><span class="default">$message </span><span class="keyword">= </span><span class="string">'Hello World!'</span><span class="keyword">;<br />
+<br />
+</span><span class="comment">//create a channel and exchange<br />
+</span><span class="default">$channel </span><span class="keyword">= new </span><span class="default">AMQPChannel</span><span class="keyword">(</span><span class="default">$conn</span><span class="keyword">);<br />
+</span><span class="default">$exchange </span><span class="keyword">= new </span><span class="default">AMQPExchange</span><span class="keyword">(</span><span class="default">$channel</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">//Here is where the code splits for the different types of queues:<br />
+<br />
+//-------------------------------------------------<br />
+//For Fan Type Queues (One message will be consumed by many consumers - each on a queue of their own)<br />
+<br />
+//set the exchange name and publish the message<br />
+</span><span class="default">$exchange</span><span class="keyword">-&gt;</span><span class="default">setName</span><span class="keyword">(</span><span class="string">'exchange_name'</span><span class="keyword">);<br />
+</span><span class="default">$exchange</span><span class="keyword">-&gt;</span><span class="default">publish</span><span class="keyword">(</span><span class="default">$message</span><span class="keyword">, </span><span class="string">'your_routing_key'</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">//for Fan Queue calls not bound to a particular key, the 'routing_key' will simply be ignored<br />
+<br />
+//-------------------------------------------------<br />
+//For Worker Type Queues (Many consumers are listening to a single queue, and a single message will be passed only to the next available consumer waiting in line)<br />
+<br />
+//start a transaction<br />
+</span><span class="default">$channel</span><span class="keyword">-&gt;</span><span class="default">startTransaction</span><span class="keyword">();<br />
+<br />
+</span><span class="comment">//publish your message with 'your_queue_name' as the 'routing_key'<br />
+</span><span class="default">$exchange</span><span class="keyword">-&gt;</span><span class="default">publish</span><span class="keyword">(</span><span class="default">$message</span><span class="keyword">, </span><span class="string">'your_queue_name'</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">//commit your transaction<br />
+</span><span class="default">$channel</span><span class="keyword">-&gt;</span><span class="default">commitTransaction</span><span class="keyword">();<br />
+<br />
+</span><span class="comment">//-------------------------------------------------<br />
+<br />
+//psuedo code: <br />
+//clean up $channel; - probably just unset($channel) will do.<br />
+//clean up $exchange; - probably just unset($exchange) will do.<br />
+<br />
+//disconnect from server<br />
+</span><span class="default">$conn</span><span class="keyword">-&gt;</span><span class="default">disconnect</span><span class="keyword">();<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="104117""></a>
+  <div class="note">
+   <strong class="user">kurt at surfmerchants dot com</strong>
+   <a href="#104117" class="date">24-May-2011 06:05</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The docs for this extension are a little vague, so I'm adding a few things I found helpful in getting this to work.<br />
+<br />
+Helpful reading:<br />
+* <a href="http://en.wikipedia.org/wiki/AMQP" rel="nofollow" target="_blank">http://en.wikipedia.org/wiki/AMQP</a><br />
+* <a href="http://www.rabbitmq.com/getstarted.html" rel="nofollow" target="_blank">http://www.rabbitmq.com/getstarted.html</a><br />
+<br />
+Helpful tool:<br />
+/usr/sbin/rabbitmqctl list_queues<br />
+<br />
+Here I've split the usage example into a sender and receiver, because that is much more useful (at least to me):<br />
+<br />
+send.php :<br />
+#!/usr/bin/php -q<br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">// config<br />
+</span><span class="default">$exchangeName </span><span class="keyword">= </span><span class="string">'myexchange'</span><span class="keyword">;<br />
+</span><span class="default">$routingKey </span><span class="keyword">= </span><span class="string">'routing.key'</span><span class="keyword">;<br />
+</span><span class="default">$message </span><span class="keyword">= </span><span class="default">$argv</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">];<br />
+<br />
+</span><span class="comment">// connect<br />
+</span><span class="default">$connection </span><span class="keyword">= new </span><span class="default">AMQPConnection</span><span class="keyword">();<br />
+</span><span class="default">$connection</span><span class="keyword">-&gt;</span><span class="default">connect</span><span class="keyword">();<br />
+<br />
+</span><span class="comment">// setup exchange<br />
+</span><span class="default">$ex </span><span class="keyword">= new </span><span class="default">AMQPExchange</span><span class="keyword">(</span><span class="default">$connection</span><span class="keyword">);<br />
+</span><span class="default">$ex</span><span class="keyword">-&gt;</span><span class="default">declare</span><span class="keyword">(</span><span class="default">$exchangeName</span><span class="keyword">, </span><span class="default">AMQP_EX_TYPE_FANOUT</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">// Publish a message to the exchange with our routing key<br />
+</span><span class="default">$ex</span><span class="keyword">-&gt;</span><span class="default">publish</span><span class="keyword">(</span><span class="default">$message</span><span class="keyword">, </span><span class="default">$routingKey</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">// disconnect<br />
+</span><span class="default">$connection</span><span class="keyword">-&gt;</span><span class="default">disconnect</span><span class="keyword">();<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+receive.php:<br />
+#!/usr/bin/php -q<br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">// config<br />
+</span><span class="default">$exchangeName </span><span class="keyword">= </span><span class="string">'myexchange'</span><span class="keyword">;<br />
+</span><span class="default">$routingKey </span><span class="keyword">= </span><span class="string">'routing.key'</span><span class="keyword">;<br />
+</span><span class="default">$queueName </span><span class="keyword">= </span><span class="string">'myqueue'</span><span class="keyword">;<br />
+<br />
+</span><span class="comment">// connect<br />
+</span><span class="default">$connection </span><span class="keyword">= new </span><span class="default">AMQPConnection</span><span class="keyword">();<br />
+</span><span class="default">$connection</span><span class="keyword">-&gt;</span><span class="default">connect</span><span class="keyword">();<br />
+<br />
+</span><span class="comment">// setup our queue<br />
+</span><span class="default">$q </span><span class="keyword">= new </span><span class="default">AMQPQueue</span><span class="keyword">(</span><span class="default">$connection</span><span class="keyword">);<br />
+</span><span class="default">$q</span><span class="keyword">-&gt;</span><span class="default">declare</span><span class="keyword">(</span><span class="default">$queueName</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">// Bind it on the exchange to routing.key<br />
+</span><span class="default">$q</span><span class="keyword">-&gt;</span><span class="default">bind</span><span class="keyword">(</span><span class="default">$exchangeName</span><span class="keyword">, </span><span class="default">$routingKey</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">// show the message<br />
+</span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$q</span><span class="keyword">-&gt;</span><span class="default">get</span><span class="keyword">());<br />
+<br />
+</span><span class="comment">// disconnect<br />
+</span><span class="default">$connection</span><span class="keyword">-&gt;</span><span class="default">disconnect</span><span class="keyword">();<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+The first time you run "./send.php 'hello world'", then "./receive.php", you will not get the message, because the receiver creates the queue. That's OK. While you *can* create the queue in the sender, this is not so useful, because it's really the receivers that read the queue, and I've found that various clients are very picky about the details of how the queue was created (for example, if I create the queue in my php sender, then try to listen with a python receiver, it throws errors, but if I let the python receiver create the queue, all is well).<br />
+So, the second time you send a message (after running receive.php once), the queue will exist, and you will then get the message the next time you run receive.<br />
+<br />
+Another thing I noticed is that I'm using $q-&gt;get() instead of $q-&gt;consume(), because the latter seems to segfault (at least on my CentOS 5.5 system).</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="amqp.constants.html">定義済み定数</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="class.amqpconnection.html">AMQPConnection</a></div>
+ <div class="up"><a href="book.amqp.html">AMQP</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

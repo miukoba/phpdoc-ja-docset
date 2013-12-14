@@ -1,0 +1,377 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Plugin configuration file (&lt;= 1.0.x)</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqlnd-ms.plugin-ini-json.html">Plugin configuration file (&gt;=1.1.x)</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd-ms.testing.html">Testing</a></div>
+ <div class="up"><a href="mysqlnd-ms.setup.html">インストール/設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mysqlnd-ms.plugin-ini-v1" class="section">
+  <h2 class="title">Plugin configuration file (&lt;= 1.0.x)</h2>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    The below description applies to PECL/mysqlnd_ms &lt; 1.1.0-beta.
+    It is not valid for later versions.
+   </p>
+  </p></blockquote>
+  <p class="para">
+   The plugin is using its own configuration file. The configuration file
+   holds information on the MySQL replication master server,
+   the MySQL replication slave servers, the server pick (load balancing) policy,
+   the failover strategy and the use of lazy connections.
+  </p>
+  <p class="para">
+   The PHP configuration directive
+   <a href="mysqlnd-ms.configuration.html#ini.mysqlnd-ms.ini-file" class="link"><em>mysqlnd_ms.ini_file</em></a>
+   is used to set the plugins configuration file.
+  </p>
+  <p class="para">
+   The configuration file mimics standard the <em>php.ini</em> format.
+   It consists of one or more sections. Every section defines its own unit
+   of settings. There is no global section for setting defaults.
+  </p>
+  <p class="para">
+   Applications reference sections by their name. Applications use section names
+   as the host (server) parameter to the various connect methods of the
+   <a href="ref.mysqli.html" class="link">mysqli</a>,
+   <a href="ref.mysql.html" class="link">mysql</a> and
+   <a href="ref.pdo-mysql.html" class="link">PDO_MYSQL</a> extensions. Upon connect
+   the <a href="book.mysqlnd.html" class="link">mysqlnd</a> plugin compares the hostname
+   with all section names from the plugin configuration file. If hostname and
+   section name match, the plugin will load the sections settings.
+  </p>
+  <p class="para">
+   <div class="example" id="example-1830">
+    <p><strong>例1 Using section names example</strong></p>
+    <div class="example-contents">
+<div class="inicode"><pre class="inicode">[myapp]
+master[] = localhost
+slave[] = 192.168.2.27
+slave[] = 192.168.2.28:3306
+[localhost]
+master[] = localhost:/tmp/mysql/mysql.sock
+slave[] = 192.168.3.24:3305
+slave[] = 192.168.3.65:3309</pre>
+</div>
+    </div>
+
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;All&nbsp;of&nbsp;the&nbsp;following&nbsp;connections&nbsp;will&nbsp;be&nbsp;load&nbsp;balanced&nbsp;*/<br /></span><span style="color: #0000BB">$mysqli&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">mysqli</span><span style="color: #007700">(</span><span style="color: #DD0000">"myapp"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"username"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"password"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"database"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$pdo&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">(</span><span style="color: #DD0000">'mysql:host=myapp;dbname=database'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'username'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'password'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$mysql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysql_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">"myapp"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"username"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"password"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$mysqli&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">mysqli</span><span style="color: #007700">(</span><span style="color: #DD0000">"localhost"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"username"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"password"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"database"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   Section names are strings. It is valid to use a section name such as
+   <em>192.168.2.1</em>, <em>127.0.0.1</em> or
+   <em>localhost</em>. If, for example, an application
+   connects to <em>localhost</em> and a plugin
+   configuration section <em>[localhost]</em> exists, the
+   semantics of the connect operation are changed. The application will
+   no longer only use the MySQL server running on the host
+   <em>localhost</em> but the plugin will start to load balance
+   MySQL queries following the rules from the <em>[localhost]</em>
+   configuration section. This way you can load balance queries from
+   an application without changing the applications source code.
+  </p>
+  <p class="para">
+   The <em>master[]</em>, <em>slave[]</em>
+   and <em>pick[]</em> configuration directives use a list-like syntax.
+   Configuration directives supporting list-like syntax may appear multiple
+   times in a configuration section. The plugin maintains the order in
+   which entries appear when interpreting them. For example,
+   the below example shows two <em>slave[]</em> configuration
+   directives in the configuration section <em>[myapp]</em>.
+   If doing round-robin load balancing for read-only queries, the plugin
+   will send the first read-only query to the MySQL server
+   <em>mysql_slave_1</em> because it is the first in the list.
+   The second read-only query will be send to the MySQL server
+   <em>mysql_slave_2</em> because it is the second in the list.
+   Configuration directives supporting list-like syntax result are ordered
+   from top to bottom in accordance to their appearance within a configuration
+   section.
+  </p>
+  <p class="para">
+   <div class="example" id="example-1831">
+    <p><strong>例2 List-like syntax</strong></p>
+    <div class="example-contents">
+<div class="inicode"><pre class="inicode">[myapp]
+master[] = mysql_master_server
+slave[] = mysql_slave_1
+slave[] = mysql_slave_2</pre>
+</div>
+    </div>
+
+    </div>
+  </p>
+  <p class="para">
+   Here is a short explanation of the configuration directives that can be used.
+  </p>
+  <p class="para">
+  <dl>
+
+   <dt id="ini.mysqlnd-ms-plugin-config.master">
+     <span class="term">
+      <em><code class="parameter">master[]</code></em>
+      <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+     </span>
+     <dd>
+
+      <p class="para">
+       URI of a MySQL replication master server. The URI follows the syntax
+       <em>hostname[:port|unix_domain_socket]</em>.
+      </p>
+      <p class="para">
+       The plugin supports using only one master server.
+      </p>
+      <p class="para">
+       Setting a master server is mandatory. The plugin will report a
+       warning upon connect if the user has failed to provide a master
+       server for a configuration section.
+       The warning may read
+       <em>(mysqlnd_ms) Cannot find master section in config</em>.
+       Furthermore the plugin may set an error code for the connection handle such as
+       <em>HY000/2000 (CR_UNKNOWN_ERROR)</em>. The corresponding error
+       message depends on your language settings.
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt id="ini.mysqlnd-ms-plugin-config.slave">
+    <span class="term">
+      <em><code class="parameter">slave[]</code></em>
+      <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+     </span>
+     <dd>
+
+      <p class="para">
+       URI of one or more MySQL replication slave servers. The URI follows the syntax
+       <em>hostname[:port|unix_domain_socket]</em>.
+      </p>
+      <p class="para">
+       The plugin supports using one or more slave servers.
+      </p>
+      <p class="para">
+       Setting a slave server is mandatory. The plugin will report a
+       warning upon connect if the user has failed to provide at least one slave
+       server for a configuration section. The warning may read
+       <em>(mysqlnd_ms) Cannot find slaves section in config</em>.
+       Furthermore the plugin may set an error code for the connection handle such as
+       <em>HY000/2000 (CR_UNKNOWN_ERROR)</em>. The corresponding error
+       message depends on your language settings.
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt id="ini.mysqlnd-ms-plugin-config.pick">
+     <span class="term">
+      <em><code class="parameter">pick[]</code></em>
+      <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+     </span>
+     <dd>
+
+      <p class="para">
+       Load balancing (server picking) policy. Supported policies:
+       <em>random</em>, <em>random_once</em> (default),
+       <em>roundrobin</em>, <em>user</em>.
+      </p>
+      <p class="para">
+       If no load balancing policy is set, the plugin will default to
+       <em>random_once</em>. The <em>random_once</em>
+       policy picks a random slave server when running the first read-only
+       statement. The slave server will be used for all read-only
+       statements until the PHP script execution ends.
+      </p>
+     <p class="para">
+       The <em>random</em> policy will pick a random server whenever
+       a read-only statement is to be executed.
+     </p>
+     <p class="para">
+       If using
+       <em>roundrobin</em> the plugin iterates over the list of
+       configured slave servers to pick a server for statement execution.
+       If the plugin reaches the end of the list, it wraps around to the beginning
+       of the list and picks the first configured slave server.
+      </p>
+      <p class="para">
+       Setting more than one load balancing policy for a configuration
+       section makes only sense in conjunction with <em>user</em>
+       and  <span class="function"><a href="function.mysqlnd-ms-set-user-pick-server.html" class="function">mysqlnd_ms_set_user_pick_server()</a></span>. If the
+       user defined callback fails to pick a server, the plugin falls
+       back to the second configured load balancing policy.
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt id="ini.mysqlnd-ms-plugin-config.failover">
+     <span class="term">
+      <em><code class="parameter">failover</code></em>
+      <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+     </span>
+     <dd>
+
+      <p class="para">
+       Failover policy. Supported policies:
+       <em>disabled</em> (default), <em>master</em>.
+      </p>
+      <p class="para">
+       If no failover policy is set, the plugin will not do any
+       automatic failover (<em>failover=disabled</em>). Whenever
+       the plugin fails to connect a server it will emit a warning and
+       set the connections error code and message. Thereafter it is up to
+       the application to handle the error and, for example, resent the
+       last statement to trigger the selection of another server.
+      </p>
+      <p class="para">
+       If using <em>failover=master</em> the plugin will implicitly
+       failover to a slave, if available. Please check the
+       concepts documentation to learn about potential
+       pitfalls and risks of using <em>failover=master</em>.
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt id="ini.mysqlnd-ms-plugin-config.lazy-connections">
+     <span class="term">
+      <em><code class="parameter">lazy_connections</code></em>
+      <span class="type"><a href="language.types.boolean.html" class="type bool">bool</a></span>
+     </span>
+     <dd>
+
+      <p class="para">
+       Controls the use of lazy connections. Lazy connections
+       are connections which are not opened before the client sends the first
+       connection.
+      </p>
+      <p class="para">
+       It is strongly recommended to use lazy connections.
+       Lazy connections help to keep the number of open connections low.
+       If you disable lazy connections and, for example, configure one MySQL
+       replication master server and two MySQL replication slaves, the
+       plugin will open three connections upon the first call to a
+       connect function although the application might use the master
+       connection only.
+      </p>
+      <p class="para">
+       Lazy connections bare a risk if you make heavy use of actions
+       which change the state of a connection. The plugin does not dispatch
+       all state changing actions to all connections from the connection pool.
+       The few dispatched actions are applied to already opened connections
+       only. Lazy connections opened in the future are not affected.
+       If, for example, the connection character set is changed using a
+       PHP MySQL API call, the plugin will change the character set of all
+       currently opened connection. It will not remember the character set
+       change to apply it on lazy connections opened in the future. As a
+       result the internal connection pool would hold connections using
+       different character sets. This is not desired. Remember that character
+       sets are taken into account for escaping.
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt id="ini.mysqlnd-ms-plugin-config.master-on-write">
+     <span class="term">
+      <em><code class="parameter">master_on_write</code></em>
+      <span class="type"><a href="language.types.boolean.html" class="type bool">bool</a></span>
+     </span>
+     <dd>
+
+      <p class="para">
+       If set, the plugin will use the master server only after the
+       first statement has been executed on the master. Applications
+       can still send statements to the slaves using SQL hints to
+       overrule the automatic decision.
+      </p>
+      <p class="para">
+       The setting may help with replication lag. If an application runs
+       an <em>INSERT</em> the plugin will, by default, use the
+       master to execute all following statements, including
+       <em>SELECT</em> statements. This helps to avoid problems
+       with reads from slaves which have not replicated the
+       <em>INSERT</em> yet.
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt id="ini.mysqlnd-ms-plugin-config.trx-stickiness">
+     <span class="term">
+      <em><code class="parameter">trx_stickiness</code></em>
+      <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+     </span>
+     <dd>
+
+      <p class="para">
+       Transaction stickiness policy. Supported policies:
+       <em>disabled</em> (default), <em>master</em>.
+      </p>
+      <p class="para">
+       Experimental feature.
+      </p>
+      <p class="para">
+       The setting requires 5.4.0 or newer. If used with PHP older than 5.4.0,
+       the plugin will emit a warning like
+       <em>(mysqlnd_ms) trx_stickiness strategy is not supported before PHP 5.3.99</em>.
+      </p>
+      <p class="para">
+       If no transaction stickiness policy is set or,
+       if setting <em>trx_stickiness=disabled</em>,
+       the plugin is not transaction aware. Thus, the plugin may load balance
+       connections and switch connections in the middle of a transaction.
+       The plugin is not transaction safe. SQL hints must be used
+       avoid connection switches during a transaction.
+      </p>
+      <p class="para">
+       As of PHP 5.4.0 the mysqlnd library allows the plugin to monitor
+       the <em>autocommit</em> mode set by calls to the
+       libraries <em>trx_autocommit()</em> function.
+       If setting <em>trx_stickiness=master</em> and
+       <em>autocommit</em> gets disabled by a PHP MySQL extension
+       invoking the <em>mysqlnd</em> library internal
+       function call <em>trx_autocommit()</em>, the plugin is made
+       aware of the begin of a transaction. Then, the plugin stops load balancing
+       and directs all statements to the master server until
+       <em>autocommit</em> is enabled. Thus, no SQL hints are required.
+      </p>
+      <p class="para">
+       An example of a PHP MySQL API function calling the <em>mysqlnd</em>
+       library internal function call <em>trx_autocommit()</em> is
+        <span class="function"><a href="mysqli.autocommit.html" class="function">mysqli_autocommit()</a></span>.
+      </p>
+      <p class="para">
+       Although setting <em>trx_stickiness=master</em>, the plugin
+       cannot be made aware of <em>autocommit</em> mode changes caused
+       by SQL statements such as <em>SET AUTOCOMMIT=0</em>.
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqlnd-ms.plugin-ini-json.html">Plugin configuration file (&gt;=1.1.x)</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd-ms.testing.html">Testing</a></div>
+ <div class="up"><a href="mysqlnd-ms.setup.html">インストール/設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

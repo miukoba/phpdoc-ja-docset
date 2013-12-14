@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Set offset and limit of the result set</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="sphinxclient.setindexweights.html">SphinxClient::setIndexWeights</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="sphinxclient.setmatchmode.html">SphinxClient::setMatchMode</a></div>
+ <div class="up"><a href="class.sphinxclient.html">SphinxClient</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="sphinxclient.setlimits" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">SphinxClient::setLimits</h1>
+  <p class="verinfo">(PECL sphinx &gt;= 0.1.0)</p><p class="refpurpose"><span class="refname">SphinxClient::setLimits</span> &mdash; <span class="dc-title">Set offset and limit of the result set</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-sphinxclient.setlimits-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><strong>SphinxClient::setLimits</strong></span>
+    ( <span class="methodparam"><span class="type">int</span> <code class="parameter">$offset</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$limit</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$max_matches</code><span class="initializer"> = 0</span></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$cutoff</code><span class="initializer"> = 0</span></span>
+  ]] )</div>
+
+  <p class="para rdfs-comment">
+   Sets <em><code class="parameter">offset</code></em> into server-side result set and amount
+   of matches to return to client starting from that offset
+   (<em><code class="parameter">limit</code></em>). Can additionally control maximum
+   server-side result set size for current query
+   (<em><code class="parameter">max_matches</code></em>) and the threshold amount of matches
+   to stop searching at (<em><code class="parameter">cutoff</code></em>).
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-sphinxclient.setlimits-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">offset</code></em></span>
+     <dd>
+
+      <p class="para">
+       Result set offset.
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">limit</code></em></span>
+     <dd>
+
+      <p class="para">
+       Amount of matches to return.
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">max_matches</code></em></span>
+     <dd>
+
+      <p class="para">
+       Controls how much matches searchd will keep in RAM while searching.
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">cutoff</code></em></span>
+     <dd>
+
+      <p class="para">
+       Used for advanced performance control. It tells searchd to forcibly 
+       stop search query once <em><code class="parameter">cutoff</code></em> matches have been 
+       found and processed.
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-sphinxclient.setlimits-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="96901""></a>
+  <div class="note">
+   <strong class="user">xxxbunker dot com</strong>
+   <a href="#96901" class="date">22-Mar-2010 07:52</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+the max_matches / cutoff parameters are priceless.<br />
+<br />
+if you ever have a situation where you need a 'count' of the number of matches, but only need to display lets say the 'top 10', these 2 parameters are very handy.<br />
+<br />
+we used to get the occasional 'unable to connect' error with sphinx, after implementing these 2 parameters where applicable, these issues disappeared, load dropped, and the servers were much happier.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="93136""></a>
+  <div class="note">
+   <strong class="user">shoanm at users dot sourceforge dot net</strong>
+   <a href="#93136" class="date">25-Aug-2009 12:06</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I almost pulled out all my hair trying to figure this one out. After applying limits using<br />
+<br />
+$s-&gt;setLimit(10,10); <br />
+<br />
+the search kept returning only false. getLastError() and getLastWarning() contained empty strings. <br />
+<br />
+The solution, like Nayana stated, is to add a positive non-zero integer $max to setLimit.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="88427""></a>
+  <div class="note">
+   <strong class="user">Nayana Hettiarachch nayana at corp-gems dot com</strong>
+   <a href="#88427" class="date">23-Jan-2009 05:36</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you get an error <br />
+per-query max_matches=0 out of bounds (per-server max_matches=1000).<br />
+<br />
+make sure that you also set the $max to a value other than the default 0, <br />
+<br />
+there is an issue published with a patch if you feel like wanting to patch, <br />
+<br />
+the first option works well as a workaround. <br />
+<br />
+<a href="http://sphinxsearch.com/bugs/view.php?id=208" rel="nofollow" target="_blank">http://sphinxsearch.com/bugs/view.php?id=208</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="sphinxclient.setindexweights.html">SphinxClient::setIndexWeights</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="sphinxclient.setmatchmode.html">SphinxClient::setMatchMode</a></div>
+ <div class="up"><a href="class.sphinxclient.html">SphinxClient</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

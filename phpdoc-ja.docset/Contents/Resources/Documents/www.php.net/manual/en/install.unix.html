@@ -1,0 +1,383 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Unix システムへのインストール</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="install.general.html">インストールにあたっての一般的な注意事項</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="install.unix.apache.html">Apache 1.3.x (Unix システム用)</a></div>
+ <div class="up"><a href="install.html">インストールと設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="install.unix" class="chapter">
+   <h1>Unix システムへのインストール</h1>
+<h2>目次</h2><ul class="chunklist chunklist_chapter"><li><a href="install.unix.apache.html">Apache 1.3.x (Unix システム用)</a></li><li><a href="install.unix.apache2.html">Apache 2.x (Unixシステム用)</a></li><li><a href="install.unix.lighttpd-14.html">Lighttpd 1.4 (Unix システム用)</a></li><li><a href="install.unix.sun.html">Sun, iPlanet, Netscape サーバー（Sun Solaris 用）</a></li><li><a href="install.unix.commandline.html">CGI およびコマンドライン</a></li><li><a href="install.unix.hpux.html">HP-UX へのインストール</a></li><li><a href="install.unix.openbsd.html">OpenBSD へのインストール</a></li><li><a href="install.unix.solaris.html">Solaris へのインストール</a></li><li><a href="install.unix.debian.html">Debian GNU/Linux へのインストール</a></li></ul>
+
+   <p class="para">
+    本章では、UNIX 系のシステムへの PHP のインストールと設定に関する
+    手引きを示します。使用するプラットフォームや Web サーバーについての
+    セクションを参照して、インストールを行ってください。
+   </p>
+   <p class="para">
+    このマニュアルでは、
+    「<a href="install.general.html" class="link">インストールにあたっての一般的な注意事項</a>」
+    の章で述べたように、Web 用のセットアップを主に扱います。加えて、
+    コマンドラインから PHP を使うためのセットアップについても扱います。
+   </p>
+   <p class="para">
+    Unix プラットホームに PHP をインストールする方法はいくつかあり、
+    コンパイルして設定するやり方と（コンパイル済みの）パッケージを使う方法とに
+    別けられます。この手引きでは、コンパイルして設定する方法を主に取り上げます。
+    Unix 系システムには、パッケージを用いるインストールシステムを持つものも多く、
+    一般的なセットアップを行うには、パッケージが役に立つでしょう。ただし、
+    （セキュアサーバーや様々なデータベースドライバなど）少々特殊な機能が必要な場合、
+    PHP や Web サーバーをビルドする必要が有るかもしれません。ソフトウエアの
+    ビルドに不慣れな場合は、必要な機能を含めてビルドされたパッケージを
+    誰か他の人が作成済みでないかを調べてみると良いでしょう。
+   </p>
+   <p class="para">
+    コンパイルにあたって必要な知識とソフトウエアを以下に示します。
+    <ul class="itemizedlist">
+     <li class="listitem">
+      <span class="simpara">
+       UNIX に関する基本的な知識 (&quot;make&quot; および C コンパイラを使える程度)
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       ANSI C コンパイラ
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       Web サーバー
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       個別のモジュール関連のコンポーネント (<acronym title="Graphics Draw">GD</acronym> や
+       <acronym title="Portable Document Format">PDF</acronym> ライブラリなど)
+      </span>
+     </li>
+    </ul>
+   </p>
+
+   <p class="para">
+    Git から取得したソースや、自分でカスタマイズしたソースをビルドするには
+    さらにこれらが必要です。
+    <ul class="itemizedlist">
+     <li class="listitem">
+      <span class="simpara">
+       autoconf: 2.13+ (PHP &lt; 5.4.0), 2.59+ (PHP &gt;= 5.4.0)
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       automake: 1.4+
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       libtool: 1.4.x+ (ただし 1.4.2 は除く)
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       re2c: バージョン 0.13.4 以降
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       flex: バージョン 2.5.4 (PHP &lt;= 5.2 の場合)
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       bison: バージョン 1.28 (推奨)、1.35 あるいは 1.75
+      </span>
+     </li>
+    </ul>
+   </p>
+
+   <p class="para">
+    PHP の初期設定および設定プロセスは、<strong class="command">configure</strong>
+    スクリプトに与えられたコマンドラインオプションによりコントロールされます。
+    <strong class="command">./configure --help</strong> とすると、
+    オプションの一覧と簡単な解説が表示されます。
+    本マニュアルでは、オプションの種類ごとに別けて解説されています。
+    PHP 本体のオプションの一覧は <a href="configure.html" class="link">付録</a> にまとめられています。
+    各拡張モジュール特有のオプションは、関数リファレンスのページに記述されています。
+   </p>
+
+   <p class="para">
+    PHP の configure が完了していないと、
+    拡張モジュールや本体の実行ファイルのビルドができません。
+    <strong class="command">make</strong> コマンドの実行にあたっては、注意してください。
+    configure がうまく行かず原因もよくわからない場合は、
+    <a href="install.problems.html" class="link">問題が起きた場合</a>
+    についての章を参照してください。
+   </p>
+
+   
+   
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+   
+
+
+
+   
+
+
+
+   
+
+
+
+  
+
+
+
+   
+   
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+   
+   
+
+
+
+
+
+
+
+
+  </div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="102989""></a>
+  <div class="note">
+   <strong class="user">roman4e at gmail dot com</strong>
+   <a href="#102989" class="date">18-Mar-2011 03:50</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Be careful when compiling on system used with apache2 worker MPM (inl. apache-itk). It will be always compiled with ZTS implicitly when you are using --with-apxs2 and no matter how --enable-maintainer-zts configure option is set</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="78781""></a>
+  <div class="note">
+   <strong class="user">packard_bell_nec at hotmail dot com</strong>
+   <a href="#78781" class="date">27-Oct-2007 01:06</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you install PHP as an Apache module, you can consider the following. Instead of adding:<br />
+<br />
+application/x-httpd-php&nbsp; &nbsp; php<br />
+application/x-httpd-php-source&nbsp; &nbsp; phps<br />
+<br />
+into Apache mime.types, you can add: <br />
+<br />
+AddType application/x-httpd-php&nbsp; &nbsp; .php<br />
+AddType application/x-httpd-php-source&nbsp; &nbsp; .phps<br />
+<br />
+into Apache httpd.conf, OR you can add: <br />
+<br />
+AddHandler application/x-httpd-php&nbsp; &nbsp; .php<br />
+AddHandler application/x-httpd-php-source&nbsp; &nbsp; .phps<br />
+<br />
+into Apache httpd.conf. The last one is the preferred way of configuration, but it does not work in previous Apache versions.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="78566""></a>
+  <div class="note">
+   <strong class="user">phpnet at puellae dot com</strong>
+   <a href="#78566" class="date">17-Oct-2007 07:19</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Further down in the links it talks about using the fPIC option in the compiler to fix the SElinux error.&nbsp; I messed around with it and adding --with-pic to the configure will also allow the module to load.&nbsp; I have not done more testing with it but apache at least starts.&nbsp; If you have already compiled you will need to do a make clean before recompiling.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="77797""></a>
+  <div class="note">
+   <strong class="user">aryeh dot friedman at gmail dot com</strong>
+   <a href="#77797" class="date">13-Sep-2007 01:05</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+For all multi-core processors (not just Sun as noted above) you need to add --enable-shared-core to the apache config</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="71116""></a>
+  <div class="note">
+   <strong class="user">Alex at GrimMusic dot com</strong>
+   <a href="#71116" class="date">13-Nov-2006 09:49</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I am new to linux/apache/php (coming from server 2003/IIS/Asp.Net), so i was stumped as to why php/apache could only use static content. Also, it couldn't access some documents that you created somewhere else, and then dragged into the HTML directory.<br />
+<br />
+After some research, i found the problem was the SELinux context of the files. It took me forever to find the Proper command to use to change that, as all the examples on the net were out dated using old commands:<br />
+# chcon "user_u:object_r:httpd_sys_content_t" /var/www/html -Rc<br />
+<br />
+This will change the SELinux context of all the documents under the /var/www/html directory (which is the web directory under Fedora), to allow the httpd process to access them, and the '-Rc' flag will make the changes Recursive, and will output it's progress for each file that it sucessfully changes.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="68089""></a>
+  <div class="note">
+   <strong class="user">Arjan van Bentem</strong>
+   <a href="#68089" class="date">12-Jul-2006 09:29</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+When using Red Hat Fedora, beware of Security Enhanced Linux, SELinux. <br />
+<br />
+Quoted from Red Hat: "The security goal is to make sure that Apache HTTP is only reading the static Web content, and not doing anything else such as writing to the content, connecting to database sockets, reading user home directories, etc."<br />
+<br />
+These limitations include, among many other things, using mkdir to create directories, using fopen to access files, using fopen or get_headers to read URLs, or using exec to run external applications that happen to use sockets (or maybe access some files, but which will run fine when executed from the command line as Unix user apache or httpd -- such as HylaFAX "faxstat" as invoked from nweb2fax recvq.php and sendq.php).<br />
+<br />
+See /var/log/messages for any denials due to the SELinux policy. To disable it:<br />
+<br />
+- System, Administration, Security Level and Firewall<br />
+- open the SELinux tab<br />
+- click the Transition tree<br />
+- check Disable SELinux protection for Apache HTTP<br />
+- execute /etc/init.d/httpd restart<br />
+<br />
+See also <a href="http://fedora.redhat.com/docs/selinux-faq/ and http://php.net/results.php?q=selinux&amp;p=wholesite" rel="nofollow" target="_blank">http://fedora.redhat.com/docs/selinux-faq/ and http://php.net/results.php?q=selinux&amp;p=wholesite</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="38633""></a>
+  <div class="note">
+   <strong class="user">thansen at terra dot com dot br</strong>
+   <a href="#38633" class="date">31-Dec-2003 05:36</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The configure directives --with-apxs2 and --with-apxs2filter are not compatible one with other, even though the configure script will not complain about that. Each one affect the way Apache will call the php parser: If you choose the first one, you must use the traditional include:<br />
+<br />
+AddType application/x-httpd-php php<br />
+<br />
+at httpd.conf, to call the parser. If you use the --with-apxs2filter, the include will be:<br />
+<br />
+&lt;Files *.php&gt;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; SetOutputFilter PHP<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; SetInputFilter&nbsp; PHP<br />
+&lt;/Files&gt;<br />
+<br />
+, and php will be called as a filter to .php files.<br />
+<br />
+If you use both together, you will get compilation errors (duplicate symbols while linking libphp4).</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="29138""></a>
+  <div class="note">
+   <strong class="user">doug at NOSPAM dot techie dot net</strong>
+   <a href="#29138" class="date">04-Feb-2003 02:16</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Users compiling under some versions of Solaris/SunOS may encounter the following error.<br />
+&nbsp;&nbsp; symbol ap_block_alarms: referenced symbol not found<br />
+<br />
+To address this problem, add the following additional flag to the Apache build configure line:<br />
+&nbsp;&nbsp; --enable-rule=SHARED_CORE<br />
+<br />
+So, adding this to the original instructions, you'd configure your Apache build like so:<br />
+&nbsp;&nbsp; ./configure --prefix=/www --enable-module=so --enable-rule=SHARED_CORE<br />
+<br />
+Doug</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="12962""></a>
+  <div class="note">
+   <strong class="user">marshalm at ebrd dot com</strong>
+   <a href="#12962" class="date">17-May-2001 07:43</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+HP-UX 11.X PA-RISC installation with oracle (oci8). You need to install the HP-UX patch PHSS_22514 patch (updated libdld.sl), otherwise you will get errors with dlopen() and dlclose() not found during the apache integration stage.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="install.general.html">インストールにあたっての一般的な注意事項</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="install.unix.apache.html">Apache 1.3.x (Unix システム用)</a></div>
+ <div class="up"><a href="install.html">インストールと設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

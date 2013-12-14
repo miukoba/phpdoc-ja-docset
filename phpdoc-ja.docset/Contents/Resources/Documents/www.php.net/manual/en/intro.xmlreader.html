@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>導入</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="book.xmlreader.html">XMLReader</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="xmlreader.setup.html">インストール/設定</a></div>
+ <div class="up"><a href="book.xmlreader.html">XMLReader</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="intro.xmlreader" class="preface">
+  <h1 class="title">導入</h1>
+  <p class="para">
+   XMLReader 拡張モジュールは、プル型の XML パーサです。ドキュメント
+   ストリーム内をカーソル風に進んでいき、その途中の各ノードで立ち止まります。
+  </p>
+
+  <div class="section" id="xmlreader.encoding">
+   <h2 class="title">エンコーディング</h2>
+   <p class="para">
+    内部的には、libxml は UTF-8 エンコーディングを使用しています。
+    したがって、取得したデータはすべて UTF-8
+    エンコーディングに変換されます。
+   </p>
+  </div>
+
+
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="109275""></a>
+  <div class="note">
+   <strong class="user">dale</strong>
+   <a href="#109275" class="date">02-Jul-2012 09:11</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This is a very basic function based on some of the code from other users, it will find all the elements within the node $wrapperName, store them as an associative array and pass that array to the function $callback.<br />
+<br />
+Its useful for processing large files like product datafeeds for example where all information about each record is enclosed within a single wrapper tag.<br />
+<br />
+For Example:<br />
+<br />
+&lt;product&gt;<br />
+&lt;name&gt;someproduct&lt;/name&gt;<br />
+&lt;brand&gt;somebrand&lt;/brand&gt;<br />
+&lt;price&gt;someprice&lt;/price&gt;<br />
+&lt;/product&gt;<br />
+&lt;product&gt;<br />
+&lt;name&gt;someproduct&lt;/name&gt;<br />
+&lt;brand&gt;somebrand&lt;/brand&gt;<br />
+&lt;price&gt;someprice&lt;/price&gt;<br />
+&lt;/product&gt;<br />
+<br />
+Variables:<br />
+$file - The XML file to parse.<br />
+$wrapperName - The name of the parent node for each record.<br />
+$callback - The callback function.<br />
+$limit - The number of positive (TRUE) returns from the callback function before parsing terminates (otherwise the entire file is parsed).<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">xmlParse</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">,</span><span class="default">$wrapperName</span><span class="keyword">,</span><span class="default">$callback</span><span class="keyword">,</span><span class="default">$limit</span><span class="keyword">=</span><span class="default">NULL</span><span class="keyword">){<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$xml </span><span class="keyword">= new </span><span class="default">XMLReader</span><span class="keyword">();<br />
+&nbsp;&nbsp;&nbsp; if(!</span><span class="default">$xml</span><span class="keyword">-&gt;</span><span class="default">open</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">)){<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; die(</span><span class="string">"Failed to open input file."</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$n</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$x</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; while(</span><span class="default">$xml</span><span class="keyword">-&gt;</span><span class="default">read</span><span class="keyword">()){<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if(</span><span class="default">$xml</span><span class="keyword">-&gt;</span><span class="default">nodeType</span><span class="keyword">==</span><span class="default">XMLReader</span><span class="keyword">::</span><span class="default">ELEMENT </span><span class="keyword">&amp;&amp; </span><span class="default">$xml</span><span class="keyword">-&gt;</span><span class="default">name </span><span class="keyword">== </span><span class="default">$wrapperName</span><span class="keyword">){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; while(</span><span class="default">$xml</span><span class="keyword">-&gt;</span><span class="default">read</span><span class="keyword">() &amp;&amp; </span><span class="default">$xml</span><span class="keyword">-&gt;</span><span class="default">name </span><span class="keyword">!= </span><span class="default">$wrapperName</span><span class="keyword">){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if(</span><span class="default">$xml</span><span class="keyword">-&gt;</span><span class="default">nodeType</span><span class="keyword">==</span><span class="default">XMLReader</span><span class="keyword">::</span><span class="default">ELEMENT</span><span class="keyword">){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$name </span><span class="keyword">= </span><span class="default">$xml</span><span class="keyword">-&gt;</span><span class="default">name</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$xml</span><span class="keyword">-&gt;</span><span class="default">read</span><span class="keyword">();<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$value </span><span class="keyword">= </span><span class="default">$xml</span><span class="keyword">-&gt;</span><span class="default">value</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if(</span><span class="default">preg_match</span><span class="keyword">(</span><span class="string">"/[^\s]/"</span><span class="keyword">,</span><span class="default">$value</span><span class="keyword">)){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$subarray</span><span class="keyword">[</span><span class="default">$name</span><span class="keyword">] = </span><span class="default">$value</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if(</span><span class="default">$limit</span><span class="keyword">==</span><span class="default">NULL </span><span class="keyword">|| </span><span class="default">$x</span><span class="keyword">&lt;</span><span class="default">$limit</span><span class="keyword">){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if(</span><span class="default">$callback</span><span class="keyword">(</span><span class="default">$subarray</span><span class="keyword">)){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$x</span><span class="keyword">++;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; unset(</span><span class="default">$subarray</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$n</span><span class="keyword">++;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$xml</span><span class="keyword">-&gt;</span><span class="default">close</span><span class="keyword">();<br />
+}<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Sample Usage:<br />
+<br />
+xmlParse($somefile,'item_data','callback');<br />
+<br />
+For XML $somefile formatted as:<br />
+&lt;item_data&gt;<br />
+&lt;info1&gt;inf1value&lt;/info1&gt;<br />
+&lt;info2&gt;inf2value&lt;/info2&gt;<br />
+&lt;info3&gt;inf3value&lt;/info3&gt;<br />
+&lt;/item_data&gt;<br />
+&lt;item_data&gt;<br />
+&lt;info1&gt;inf1value&lt;/info1&gt;<br />
+&lt;info2&gt;inf2value&lt;/info2&gt;<br />
+&lt;info3&gt;inf3value&lt;/info3&gt;<br />
+&lt;/item_data&gt;<br />
+&lt;item_data&gt;<br />
+&lt;info1&gt;inf1value&lt;/info1&gt;<br />
+&lt;info2&gt;inf2value&lt;/info2&gt;<br />
+&lt;info3&gt;inf3value&lt;/info3&gt;<br />
+&lt;/item_data&gt;<br />
+<br />
+will send the following array to the callback function for each item where it can be processed and added to a database etc.:<br />
+<br />
+Array(<br />
+info1 =&gt; inf1value,<br />
+info2 =&gt; inf2value,<br />
+info3 =&gt; inf3value<br />
+)<br />
+<br />
+Sample Callback Function:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">callback</span><span class="keyword">(</span><span class="default">$array</span><span class="keyword">){<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">//condition and action for positive validation (increments parser limit)<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">if(</span><span class="default">$array</span><span class="keyword">[</span><span class="string">'info1'</span><span class="keyword">]!=</span><span class="string">"Out Of Stock"</span><span class="keyword">){<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">/*add to database*/<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">return </span><span class="default">TRUE</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; else {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">FALSE</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="book.xmlreader.html">XMLReader</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="xmlreader.setup.html">インストール/設定</a></div>
+ <div class="up"><a href="book.xmlreader.html">XMLReader</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

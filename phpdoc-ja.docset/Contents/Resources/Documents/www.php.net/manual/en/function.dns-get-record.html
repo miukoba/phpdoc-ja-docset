@@ -1,0 +1,724 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>ホスト名に関連する DNS リソースレコードを取得する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.dns-get-mx.html">dns_get_mx</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.fsockopen.html">fsockopen</a></div>
+ <div class="up"><a href="ref.network.html">ネットワーク 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.dns-get-record" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">dns_get_record</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose"><span class="refname">dns_get_record</span> &mdash; <span class="dc-title">ホスト名に関連する DNS リソースレコードを取得する</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.dns-get-record-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">array</span> <span class="methodname"><strong>dns_get_record</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$hostname</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$type</code><span class="initializer"> = DNS_ANY</span></span>
+   [, <span class="methodparam"><span class="type">array</span> <code class="parameter reference">&$authns</code></span>
+   [, <span class="methodparam"><span class="type">array</span> <code class="parameter reference">&$addtl</code></span>
+   [, <span class="methodparam"><span class="type">bool</span> <code class="parameter reference">&$raw</code><span class="initializer"> = false</span></span>
+  ]]]] )</div>
+
+  <p class="para rdfs-comment">
+   指定した <em><code class="parameter">hostname</code></em>
+   に関連づけられた DNS リソースレコードを取得します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.dns-get-record-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">hostname</code></em></span>
+     <dd>
+
+      <p class="para">
+       <em><code class="parameter">hostname</code></em> は、正しい DNS ホスト名、すなわち
+       &quot;<em>www.example.com</em>&quot; のようなものでなければなりません。
+       <em>in-addr.arpa</em> 形式の表記を用いた逆引き検索は可能ですが、
+       たいていは  <span class="function"><a href="function.gethostbyaddr.html" class="function">gethostbyaddr()</a></span> を用いるほうが適当です。
+      </p>
+      <blockquote class="note"><p><strong class="note">注意</strong>: 
+       <p class="para">
+        DNS の標準規格により、メールアドレスは <em>user.host</em> 形式で渡されます
+        （たとえば、<em>hostmaster.example.com</em> が <em>hostmaster@example.com</em>
+        の代わりとなります）。
+        この値をしっかり確認し、 <span class="function"><a href="function.mail.html" class="function">mail()</a></span> のような関数で
+        利用する前には必要なら変更を加えることを忘れないようにしてください。 
+       </p>
+      </p></blockquote>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">type</code></em></span>
+     <dd>
+
+      <p class="para">
+       デフォルトでは、 <span class="function"><strong>dns_get_record()</strong></span> は
+       <em><code class="parameter">hostname</code></em> に関連するすべてのリソースレコードを検索します。
+       これを制限するには、オプションの
+       <em><code class="parameter">type</code></em> パラメータを指定してください。
+       <em><code class="parameter">type</code></em> は以下のうちのいずれかです。
+       <strong><code>DNS_A</code></strong>, <strong><code>DNS_CNAME</code></strong>,
+       <strong><code>DNS_HINFO</code></strong>, <strong><code>DNS_MX</code></strong>,
+       <strong><code>DNS_NS</code></strong>, <strong><code>DNS_PTR</code></strong>,
+       <strong><code>DNS_SOA</code></strong>, <strong><code>DNS_TXT</code></strong>,
+       <strong><code>DNS_AAAA</code></strong>, <strong><code>DNS_SRV</code></strong>,
+       <strong><code>DNS_NAPTR</code></strong>, <strong><code>DNS_A6</code></strong>,
+       <strong><code>DNS_ALL</code></strong> or <strong><code>DNS_ANY</code></strong>。
+      </p>
+      <blockquote class="note"><p><strong class="note">注意</strong>: 
+       <p class="para">
+        プラットフォーム依存の libresolv のおかしな挙動のせいで、
+        <strong><code>DNS_ANY</code></strong> が常にすべてのレコードを返すとは
+        限りません。速度は遅くなりますが、<strong><code>DNS_ALL</code></strong>
+        のほうがより確実にすべてのレコードを取得できます。
+       </p>
+      </p></blockquote>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">authns</code></em></span>
+     <dd>
+
+      <p class="para">
+       参照で渡し、
+       <em class="emphasis">Authoritative Name Servers</em>
+       のリソースレコードが格納されます。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">addtl</code></em></span>
+     <dd>
+
+      <p class="para">
+       参照で渡し、
+       <em class="emphasis">Additional Records</em>
+       が格納されます。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">raw</code></em></span>
+     <dd>
+
+      <p class="para">
+       raw モードでは、各タイプをループするのではなく、
+       リクエストしたタイプだけを問い合わせて追加情報に移ります。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.dns-get-record-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   この関数は、連想配列を要素にもつ配列を返します。
+   失敗した場合に <strong><code>FALSE</code></strong> を返します。
+   それぞれの連想配列には
+   <em class="emphasis">少なくとも</em> 以下のキーが含まれています:
+   <table class="doctable table">
+    <caption><strong>基本 DNS 属性</strong></caption>
+    
+     <thead>
+      <tr>
+       <th>属性</th>
+       <th>意味</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>host</td>
+       <td>
+        これ以降の関連するデータが参照する DNS 名。
+       </td>
+      </tr>
+
+      <tr>
+       <td>class</td>
+       <td>
+         <span class="function"><strong>dns_get_record()</strong></span> は
+        Internet クラスのレコードのみを返すので、このパラメータは常に
+        <em>IN</em> を返します。
+       </td>
+      </tr>
+
+      <tr>
+       <td>type</td>
+       <td>
+        レコード型を表す文字列。type の値に応じて、
+        結果の配列には追加の属性が含まれます。以下の表を参照ください。
+       </td>
+      </tr>
+
+      <tr>
+       <td>ttl</td>
+       <td>
+        このレコードの<em>&quot;有効期限 (Time To Live)&quot;</em>。レコードの本来の ttl と一致するとは
+        <em class="emphasis">限りません</em>。むしろ、
+        ネームサーバーへのクエリにかかった時間をそこから引いたものに一致します。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+  <p class="para">
+   <table class="doctable table">
+    <caption><strong>&#039;type&#039; に応じて連想配列に追加される項目</strong></caption>
+    
+     <thead>
+      <tr>
+       <th>レコード型</th>
+       <th>追加項目</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td><em>A</em></td>
+       <td>
+        <em>ip</em>: ドット区切り 10 進数形式の IPv4 アドレス。
+       </td>
+      </tr>
+
+      <tr>
+       <td><em>MX</em></td>
+       <td>
+        <em>pri</em>: メールエクスチェンジャの優先度。
+        数字が小さいほど優先度が高い。
+        <em>target</em>: メールエクスチェンジャの FQDN 。
+         <span class="function"><a href="function.dns-get-mx.html" class="function">dns_get_mx()</a></span> も参照ください。
+       </td>
+      </tr>
+
+      <tr>
+       <td><em>CNAME</em></td>
+       <td>
+        <em>target</em>: レコードのエイリアスの対象となっている場所の FQDN 。
+       </td>
+      </tr>
+
+      <tr>
+       <td><em>NS</em></td>
+       <td>
+        <em>target</em>: このホスト名に対する権威をもっているネームサーバーの FQDN 。
+       </td>
+      </tr>
+
+      <tr>
+       <td><em>PTR</em></td>
+       <td>
+        <em>target</em>: レコードが指している、DNS 名前空間内の場所
+       </td>
+      </tr>
+
+       <tr>
+       <td><em>TXT</em></td>
+       <td>
+        <em>txt</em>: このレコードに関連付けられている任意の文字列。
+       </td>
+      </tr>
+
+      <tr>
+       <td><em>HINFO</em></td>
+       <td>
+        <em>cpu</em>: このレコードが参照しているマシンの CPU を識別する IANA 番号。
+        <em>os</em>: このレコードが参照しているマシン上の OS を識別する IANA 番号。
+        これらの値の意味については、IANA の 
+        <a href="http://www.iana.org/assignments/operating-system-names" class="link external" title="Link : http://www.iana.org/assignments/operating-system-names">&raquo;&nbsp;<em>Operating System Names</em></a>
+        を参照ください。
+       </td>
+      </tr>
+
+      <tr>
+       <td><em>SOA</em></td>
+       <td>
+        <em>mname</em>: リソースレコードの元となるマシンの FQDN 。
+        <em>rname</em>: このドメインの管理責任者の Email アドレス。
+        <em>serial</em>: ドメインのシリアル番号。
+        <em>refresh</em>:
+        セカンダリネームサーバーがこのドメインのコピーを更新する際に参照するリフレッシュ間隔（秒単位）。
+        <em>retry</em>: リフレッシュが失敗した際に
+        2 度目のリフレッシュを試みるまでの間隔（秒単位）
+        <em>expire</em>: セカンダリネームサーバーが、ゾーンデータの
+        リフレッシュに失敗した場合にコピーのデータを破棄せず持ち続ける期間
+        （秒単位）。
+        <em>minimum-ttl</em>: クライアントが、
+        一度取得したデータを再リクエストすることなしに利用できる最小期間（秒単位）。
+        個々のリソースレコードによって上書きが可能。
+       </td>
+      </tr>
+
+      <tr>
+       <td><em>AAAA</em></td>
+       <td>
+        <em>ipv6</em>: IPv6 アドレス。
+       </td>
+      </tr>
+
+      <tr>
+       <td><em>A6</em>(PHP &gt;= 5.1.0)</td>
+       <td>
+        <em>masklen</em>: <em><code class="parameter">chain</code></em>
+        で指定された対象から引き継ぐビット長。
+        <em>ipv6</em>: <em><code class="parameter">chain</code></em>
+        とマージするためのこのレコードのアドレス。
+        <em>chain</em>: <em><code class="parameter">ipv6</code></em>
+        データとマージするための親レコード。
+       </td>
+      </tr>
+
+      <tr>
+       <td><em>SRV</em></td>
+       <td>
+        <em>pri</em>: (Priority) 値が小さいものが優先されます。
+        <em>weight</em>: 同じ優先順位の
+        <em><code class="parameter">targets</code></em> からランダムに選択する際の重み。
+        <em>target</em> および <em>port</em>:
+        リクエストされたサービスが存在するホスト名とポート。
+        詳細は <a href="http://www.faqs.org/rfcs/rfc2782" class="link external" title="Link : http://www.faqs.org/rfcs/rfc2782">&raquo;&nbsp;RFC 2782</a> を参照ください。
+       </td>
+      </tr>
+
+      <tr>
+       <td><em>NAPTR</em></td>
+       <td>
+        <em>order</em> および <em>pref</em>: 上の
+        <em><code class="parameter">pri</code></em> および <em><code class="parameter">weight</code></em> と同じ。
+        <em>flags</em>, <em>services</em>, <em>regex</em>,
+        および <em>replacement</em>:
+        <a href="http://www.faqs.org/rfcs/rfc2915" class="link external" title="Link : http://www.faqs.org/rfcs/rfc2915">&raquo;&nbsp;RFC 2915</a> で定義されるパラメータ。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog" id="refsect1-function.dns-get-record-changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>5.4.0</td>
+       <td>
+        <em><code class="parameter">raw</code></em> パラメータが追加されました。
+       </td>
+      </tr>
+
+      <tr>
+       <td>5.3.0</td>
+       <td>
+         この関数は、Windows プラットフォームでも動作するようになりました。
+       </td>
+      </tr>
+
+      <tr>
+       <td>5.3.0</td>
+       <td>
+        これより前のバージョンでは、<em><code class="parameter">authns</code></em>
+        パラメータを指定したときには <em><code class="parameter">addtl</code></em>
+        パラメータも必須となっていました。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.dns-get-record-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-4450">
+    <p><strong>例1  <span class="function"><strong>dns_get_record()</strong></span> の使用</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">dns_get_record</span><span style="color: #007700">(</span><span style="color: #DD0000">"php.net"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+Array
+(
+    [0] =&gt; Array
+        (
+            [host] =&gt; php.net
+            [type] =&gt; MX
+            [pri] =&gt; 5
+            [target] =&gt; pair2.php.net
+            [class] =&gt; IN
+            [ttl] =&gt; 6765
+        )
+
+    [1] =&gt; Array
+        (
+            [host] =&gt; php.net
+            [type] =&gt; A
+            [ip] =&gt; 64.246.30.37
+            [class] =&gt; IN
+            [ttl] =&gt; 8125
+        )
+
+)
+</pre></div>
+    </div>
+   </div>
+   <div class="example" id="example-4451">
+    <p><strong>例2  <span class="function"><strong>dns_get_record()</strong></span> と DNS_ANY の使用</strong></p>
+    <div class="example-contents"><p>
+     MX レコードが解決されれば、たいていはメールサーバーの IP アドレスを
+     取得したくなるものです。そのため、 <span class="function"><strong>dns_get_record()</strong></span>
+     は <em><code class="parameter">addtl</code></em> に関連するレコードを含めて返します。
+     また、<em><code class="parameter">authns</code></em> には
+     権威のあるネームサーバーのリストを含めて返します。
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;php.net&nbsp;の&nbsp;"ANY"&nbsp;レコードを要求し、<br />&nbsp;&nbsp;&nbsp;それに付随する情報を格納した配列を<br />&nbsp;&nbsp;&nbsp;作成する。<br />&nbsp;&nbsp;&nbsp;$authns&nbsp;にはネームサーバーの一覧が、<br />&nbsp;&nbsp;&nbsp;また&nbsp;$addtl&nbsp;には追加レコードが<br />&nbsp;&nbsp;&nbsp;それぞれ格納される。&nbsp;*/<br /></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">dns_get_record</span><span style="color: #007700">(</span><span style="color: #DD0000">"php.net"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">DNS_ANY</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$authns</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$addtl</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #DD0000">"Result&nbsp;=&nbsp;"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #DD0000">"Auth&nbsp;NS&nbsp;=&nbsp;"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$authns</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #DD0000">"Additional&nbsp;=&nbsp;"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$addtl</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+Result = Array
+(
+    [0] =&gt; Array
+        (
+            [host] =&gt; php.net
+            [type] =&gt; MX
+            [pri] =&gt; 5
+            [target] =&gt; pair2.php.net
+            [class] =&gt; IN
+            [ttl] =&gt; 6765
+        )
+
+    [1] =&gt; Array
+        (
+            [host] =&gt; php.net
+            [type] =&gt; A
+            [ip] =&gt; 64.246.30.37
+            [class] =&gt; IN
+            [ttl] =&gt; 8125
+        )
+
+)
+Auth NS = Array
+(
+    [0] =&gt; Array
+        (
+            [host] =&gt; php.net
+            [type] =&gt; NS
+            [target] =&gt; remote1.easydns.com
+            [class] =&gt; IN
+            [ttl] =&gt; 10722
+        )
+
+    [1] =&gt; Array
+        (
+            [host] =&gt; php.net
+            [type] =&gt; NS
+            [target] =&gt; remote2.easydns.com
+            [class] =&gt; IN
+            [ttl] =&gt; 10722
+        )
+
+    [2] =&gt; Array
+        (
+            [host] =&gt; php.net
+            [type] =&gt; NS
+            [target] =&gt; ns1.easydns.com
+            [class] =&gt; IN
+            [ttl] =&gt; 10722
+        )
+
+    [3] =&gt; Array
+        (
+            [host] =&gt; php.net
+            [type] =&gt; NS
+            [target] =&gt; ns2.easydns.com
+            [class] =&gt; IN
+            [ttl] =&gt; 10722
+        )
+
+)
+Additional = Array
+(
+    [0] =&gt; Array
+        (
+            [host] =&gt; pair2.php.net
+            [type] =&gt; A
+            [ip] =&gt; 216.92.131.5
+            [class] =&gt; IN
+            [ttl] =&gt; 6766
+        )
+
+    [1] =&gt; Array
+        (
+            [host] =&gt; remote1.easydns.com
+            [type] =&gt; A
+            [ip] =&gt; 64.39.29.212
+            [class] =&gt; IN
+            [ttl] =&gt; 100384
+        )
+
+    [2] =&gt; Array
+        (
+            [host] =&gt; remote2.easydns.com
+            [type] =&gt; A
+            [ip] =&gt; 212.100.224.80
+            [class] =&gt; IN
+            [ttl] =&gt; 81241
+        )
+
+    [3] =&gt; Array
+        (
+            [host] =&gt; ns1.easydns.com
+            [type] =&gt; A
+            [ip] =&gt; 216.220.40.243
+            [class] =&gt; IN
+            [ttl] =&gt; 81241
+        )
+
+    [4] =&gt; Array
+        (
+            [host] =&gt; ns2.easydns.com
+            [type] =&gt; A
+            [ip] =&gt; 216.220.40.244
+            [class] =&gt; IN
+            [ttl] =&gt; 81241
+        )
+
+)
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes" id="refsect1-function.dns-get-record-notes">
+  <h3 class="title">注意</h3>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    PHP 5.3.0 より前のバージョンでは、OS によってはこの関数が実装されていませんでした。
+    そのような環境との互換生を保つには、
+    <a href="http://pear.php.net/" class="link external" title="Link : http://pear.php.net/">&raquo;&nbsp;PEAR</a> の
+    <a href="http://pear.php.net/package/Net_DNS" class="link external" title="Link : http://pear.php.net/package/Net_DNS">&raquo;&nbsp;Net_DNS</a> クラスを使いましょう。
+   </p>
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.dns-get-record-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="function.dns-get-mx.html" class="function" rel="rdfs-seeAlso">dns_get_mx()</a> - getmxrr のエイリアス</span></li>
+    <li class="member"> <span class="function"><a href="function.dns-check-record.html" class="function" rel="rdfs-seeAlso">dns_check_record()</a> - checkdnsrr のエイリアス</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="112975""></a>
+  <div class="note">
+   <strong class="user">PHP Joe</strong>
+   <a href="#112975" class="date">14-Aug-2013 08:30</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Although this works very well for general DNS queries if you want to do a direct DNS query to a specified DNS server (rather than using OS resolution) try PHPDNS: <a href="http://www.purplepixie.org/phpdns/" rel="nofollow" target="_blank">http://www.purplepixie.org/phpdns/</a><br />
+<br />
+You can do direct (TCP or UDP) low-level queries to a nameserver and recurse at will. Very useful for testing specific servers and also for walking through a recursive resolution.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="112048""></a>
+  <div class="note">
+   <strong class="user">karl at influ dot io</strong>
+   <a href="#112048" class="date">26-Apr-2013 10:38</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+There's a comment below from 7 years ago regarding BSD and MacOSX, I'd just like to follow up incase some people see that and don't think it'll work on MacOSX.<br />
+<br />
+Software:<br />
+<br />
+&nbsp;&nbsp;&nbsp; System Software Overview:<br />
+<br />
+&nbsp;&nbsp; &nbsp;&nbsp; System Version: OS X 10.8.3 (12D78)<br />
+&nbsp;&nbsp; &nbsp;&nbsp; Kernel Version: Darwin 12.3.0<br />
+&nbsp;&nbsp; &nbsp;&nbsp; Boot Volume: Macintosh HD<br />
+&nbsp;&nbsp; &nbsp;&nbsp; Boot Mode: Normal<br />
+&nbsp;&nbsp; &nbsp;&nbsp; Computer Name: Karl’s iMac<br />
+&nbsp;&nbsp; &nbsp;&nbsp; User Name: Karl Kloppenborg (karl)<br />
+&nbsp;&nbsp; &nbsp;&nbsp; Secure Virtual Memory: Enabled<br />
+&nbsp;&nbsp; &nbsp;&nbsp; Time since boot: 10 days 20:24<br />
+--------------<br />
+<br />
+# php -a<br />
+php &gt; print_r(dns_get_record('google.com', DNS_MX));<br />
+<br />
+Array<br />
+(<br />
+&nbsp;&nbsp;&nbsp; [0] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [host] =&gt; google.com<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [type] =&gt; MX<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [pri] =&gt; 10<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [target] =&gt; aspmx.l.google.com<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [class] =&gt; IN<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [ttl] =&gt; 749<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; )<br />
+<br />
+&nbsp;&nbsp;&nbsp; [1] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [host] =&gt; google.com<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [type] =&gt; MX<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [pri] =&gt; 30<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [target] =&gt; alt2.aspmx.l.google.com<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [class] =&gt; IN<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [ttl] =&gt; 749<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; )<br />
+<br />
+&nbsp;&nbsp;&nbsp; [2] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [host] =&gt; google.com<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [type] =&gt; MX<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [pri] =&gt; 50<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [target] =&gt; alt4.aspmx.l.google.com<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [class] =&gt; IN<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [ttl] =&gt; 749<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; )<br />
+<br />
+&nbsp;&nbsp;&nbsp; [3] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [host] =&gt; google.com<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [type] =&gt; MX<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [pri] =&gt; 40<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [target] =&gt; alt3.aspmx.l.google.com<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [class] =&gt; IN<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [ttl] =&gt; 749<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; )<br />
+<br />
+&nbsp;&nbsp;&nbsp; [4] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [host] =&gt; google.com<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [type] =&gt; MX<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [pri] =&gt; 20<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [target] =&gt; alt1.aspmx.l.google.com<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [class] =&gt; IN<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [ttl] =&gt; 749<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; )<br />
+<br />
+)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="89099""></a>
+  <div class="note">
+   <strong class="user">dylan at pow7 dot com</strong>
+   <a href="#89099" class="date">21-Feb-2009 08:29</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Get more than one type at once like this:<br />
+<span class="default">&lt;?php<br />
+$dnsr </span><span class="keyword">= </span><span class="default">dns_get_record</span><span class="keyword">(</span><span class="string">'php.net'</span><span class="keyword">, </span><span class="default">DNS_A </span><span class="keyword">+ </span><span class="default">DNS_NS</span><span class="keyword">);<br />
+</span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$dnsr</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Using DNS_ALL fails on some domains where DNS_ANY works. I noticed the function getting stuck on the DNS_PTR record, which caused it to return FALSE with this error:<br />
+PHP Warning:&nbsp; dns_get_record(): res_nsend() failed in ....<br />
+<br />
+This gets all records except DNS_PTR:<br />
+<span class="default">&lt;?php<br />
+$dnsr </span><span class="keyword">= </span><span class="default">dns_get_record</span><span class="keyword">(</span><span class="string">'php.net'</span><span class="keyword">, </span><span class="default">DNS_ALL </span><span class="keyword">- </span><span class="default">DNS_PTR</span><span class="keyword">);<br />
+</span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$dnsr</span><span class="keyword">);<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.dns-get-mx.html">dns_get_mx</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.fsockopen.html">fsockopen</a></div>
+ <div class="up"><a href="ref.network.html">ネットワーク 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

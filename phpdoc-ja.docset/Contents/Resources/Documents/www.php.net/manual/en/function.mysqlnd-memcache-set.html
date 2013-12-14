@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>MySQL の接続を Memcache の接続と関連づける</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.mysqlnd-memcache-get-config.html">mysqlnd_memcache_get_config</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd-memcache.changes.html">変更履歴</a></div>
+ <div class="up"><a href="ref.mysqlnd-memcache.html">Mysqlnd_memcache 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mysqlnd-memcache-set" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mysqlnd_memcache_set</h1>
+  <p class="verinfo">(PECL mysqlnd_memcache &gt;= 1.0.0)</p><p class="refpurpose"><span class="refname">mysqlnd_memcache_set</span> &mdash; <span class="dc-title">MySQL の接続を Memcache の接続と関連づける</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-function.mysqlnd-memcache-set-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span>
+    <span class="methodname"><strong>mysqlnd_memcache_set</strong></span>
+    ( <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter">$mysql_connection</code></span>
+   [, <span class="methodparam"><span class="type"><a href="class.memcached.html" class="type Memcached">Memcached</a></span> <code class="parameter">$memcache_connection</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$pattern</code></span>
+   [, <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.callback" class="type callback">callback</a></span> <code class="parameter">$callback</code></span>
+  ]]] )</div>
+
+  <p class="para rdfs-comment">
+   <em><code class="parameter">mysql_connection</code></em> と
+   <em><code class="parameter">memcache_connection</code></em> を関連づけます。
+   <em><code class="parameter">pattern</code></em> を PCRE 正規表現として使い、
+   <em><code class="parameter">callback</code></em> は通知用のコールバックとして使います。
+   あるいは、<em><code class="parameter">mysql_connection</code></em> との関連づけを解除します。
+  </p>
+  <p class="para">
+   MySQL の接続と Memcache の接続を関連づけるときに、この関数は
+   MySQL Server にその設定を問い合わせます。
+   サーバーの設定を自動検出し、InnoDB Memcache Daemon Plugin を使うのか
+   MySQL Cluster NDB Memcache をサポートするのかを判断します。
+   また、サーバーに問い合わせて、エクスポートされたテーブルやその他の設定も自動検出します。
+   これらの自動的な設定の結果を取得するには、 <span class="function"><a href="function.mysqlnd-memcache-get-config.html" class="function">mysqlnd_memcache_get_config()</a></span>
+   を使います。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.mysqlnd-memcache-set-parameters">
+  <h3 class="title">パラメータ</h3>
+  <dl>
+
+   <dt>
+
+    <span class="term"><em><code class="parameter">mysql_connection</code></em></span>
+    <dd>
+
+     <p class="para">
+      MySQL サーバーへのハンドル。
+      <a href="ref.pdo-mysql.html" class="link">PDO_MYSQL</a>、<a href="book.mysqli.html" class="link">mysqli</a> あるいは
+      <a href="book.mysql.html" class="link">ext/mysql</a> のいずれかの MySQL API 拡張モジュールを利用するもの。
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><em><code class="parameter">memcache_connection</code></em></span>
+    <dd>
+
+     <p class="para">
+      <a href="book.memcached.html" class="link">Memcached</a> のインスタンスで、
+      MySQL Memcache Daemon プラグインに接続させるもの。
+      このパラメータを省略した場合は、<em><code class="parameter">mysql_connection</code></em>
+      と memcache の接続との関連づけを解除します。すでに別の接続と関連づけされている場合は、
+      その関連づけを上書きします。
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><em><code class="parameter">pattern</code></em></span>
+    <dd>
+
+     <p class="para">
+      <a href="book.pcre.html" class="link">Perl 互換の正規表現</a> 形式のパターン。
+      memcache に渡すクエリーを見つけるときに使います。このパターンには三つのサブパターンが必要です。
+      最初のサブパターンにはリクエストするフィールドの一覧、
+      二番目のサブパターンにはクエリーが使う ID カラムの名前、
+      そして最後のサブパターンにはリクエストする値を指定します。
+      このパラメータを省略したり <strong><code>NULL</code></strong> を渡したりした場合は、
+      デフォルトのパターンを使います。
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><em><code class="parameter">callback</code></em></span>
+    <dd>
+
+     <p class="para">
+      クエリーを MySQL に送るときに使うコールバック。
+      このコールバックは <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span> のパラメータを一つ受け取ります。
+      これは、クエリが Memcache 経由で送られたかどうかを表します。
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.mysqlnd-memcache-set-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   関連づけ、あるいはその解除が成功した場合に <strong><code>TRUE</code></strong>、
+   エラーが発生した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.mysqlnd-memcache-set-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-1932">
+    <p><strong>例1 
+      <span class="function"><strong>mysqlnd_memcache_set()</strong></span> で、
+      <span class="function"><a href="function.var-dump.html" class="function">var_dump()</a></span> をデバッグ用コールバックとして使う例</strong></p>
+
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$mysqli&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">mysqli</span><span style="color: #007700">(</span><span style="color: #DD0000">"host"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"user"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"passwd"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"database"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$memc&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Memcached</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$memc</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">addServer</span><span style="color: #007700">(</span><span style="color: #DD0000">"host"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">11211</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">mysqlnd_memcache_set</span><span style="color: #007700">(</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$memc</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'var_dump'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;このクエリーは横取りされ、Memcache&nbsp;プロトコル経由で実行します&nbsp;*/<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"Sending&nbsp;query&nbsp;for&nbsp;id&nbsp;via&nbsp;Memcache:&nbsp;"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"SELECT&nbsp;f1,&nbsp;f2,&nbsp;f3&nbsp;FROM&nbsp;test&nbsp;WHERE&nbsp;id&nbsp;=&nbsp;1"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;f1&nbsp;は有効なキーフィールドとして設定されていないので、これは&nbsp;Memcache&nbsp;を使いません&nbsp;*/<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"Sending&nbsp;query&nbsp;for&nbsp;f1&nbsp;via&nbsp;Memcache:&nbsp;"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"SELECT&nbsp;id&nbsp;FROM&nbsp;test&nbsp;WHERE&nbsp;f1&nbsp;=&nbsp;1"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">mysqlnd_memcache_set</span><span style="color: #007700">(</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;これで、通常の&nbsp;MySQL&nbsp;プロトコルを使うようになります&nbsp;*/<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"var_dump&nbsp;won't&nbsp;be&nbsp;invoked:&nbsp;"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"SELECT&nbsp;f1,&nbsp;f2,&nbsp;f3&nbsp;WHERE&nbsp;id&nbsp;=&nbsp;1"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+Sending query for id via Memcache: bool(true)
+Sending query for f1 via Memcache: bool(false)
+var_dump won&#039;t be invoked: 
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.mysqlnd-memcache-set-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member">
+      <span class="function"><a href="function.mysqlnd-memcache-get-config.html" class="function" rel="rdfs-seeAlso">mysqlnd_memcache_get_config()</a> - プラグインの設定情報を返す</span>
+    </li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.mysqlnd-memcache-get-config.html">mysqlnd_memcache_get_config</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd-memcache.changes.html">変更履歴</a></div>
+ <div class="up"><a href="ref.mysqlnd-memcache.html">Mysqlnd_memcache 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

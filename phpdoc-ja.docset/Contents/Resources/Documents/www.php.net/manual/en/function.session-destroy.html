@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>セッションに登録されたデータを全て破棄する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.session-decode.html">session_decode</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.session-encode.html">session_encode</a></div>
+ <div class="up"><a href="ref.session.html">セッション関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.session-destroy" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">session_destroy</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose"><span class="refname">session_destroy</span> &mdash; <span class="dc-title">セッションに登録されたデータを全て破棄する</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.session-destroy-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>session_destroy</strong></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+  <p class="simpara">
+    <span class="function"><strong>session_destroy()</strong></span>は、現在のセッションに
+   関連づけられたすべてのデータを破棄します。この関数は、
+   セッションに関するグローバル変数を破棄しません。
+   また、セッションクッキーを破棄しません。
+   セッション変数の利用を再開するには  <span class="function"><a href="function.session-start.html" class="function">session_start()</a></span>
+   をコールする必要があります。
+  </p>
+  <p class="para">
+   ユーザーがログアウトするときのように、セッションを切断するには、
+   セッション ID の割り当ても解除する必要があります。セッション ID の受け渡しに
+   クッキーが使用されている場合（デフォルト）には、セッションクッキーも
+   削除されなければなりません。
+   そのためには  <span class="function"><a href="function.setcookie.html" class="function">setcookie()</a></span> が利用できます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.session-destroy-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.session-destroy-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-4740">
+    <p><strong>例1 <var class="varname"><var class="varname"><a href="reserved.variables.session.html" class="classname">$_SESSION</a></var></var>でセッションを破棄する</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;セッションの初期化<br />//&nbsp;session_name("something")を使用している場合は特にこれを忘れないように!<br /></span><span style="color: #0000BB">session_start</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;セッション変数を全て解除する<br /></span><span style="color: #0000BB">$_SESSION&nbsp;</span><span style="color: #007700">=&nbsp;array();<br /><br /></span><span style="color: #FF8000">//&nbsp;セッションを切断するにはセッションクッキーも削除する。<br />//&nbsp;Note:&nbsp;セッション情報だけでなくセッションを破壊する。<br /></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">ini_get</span><span style="color: #007700">(</span><span style="color: #DD0000">"session.use_cookies"</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$params&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">session_get_cookie_params</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">setcookie</span><span style="color: #007700">(</span><span style="color: #0000BB">session_name</span><span style="color: #007700">(),&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">time</span><span style="color: #007700">()&nbsp;-&nbsp;</span><span style="color: #0000BB">42000</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$params</span><span style="color: #007700">[</span><span style="color: #DD0000">"path"</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">$params</span><span style="color: #007700">[</span><span style="color: #DD0000">"domain"</span><span style="color: #007700">],<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$params</span><span style="color: #007700">[</span><span style="color: #DD0000">"secure"</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">$params</span><span style="color: #007700">[</span><span style="color: #DD0000">"httponly"</span><span style="color: #007700">]<br />&nbsp;&nbsp;&nbsp;&nbsp;);<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;最終的に、セッションを破壊する<br /></span><span style="color: #0000BB">session_destroy</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes" id="refsect1-function.session-destroy-notes">
+  <h3 class="title">注意</h3>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    <var class="varname"><var class="varname"><a href="reserved.variables.session.html" class="classname">$_SESSION</a></var></var> を使っていない古いコードでのみ
+     <span class="function"><a href="function.session-unset.html" class="function">session_unset()</a></span> を使用するようにしましょう。
+   </p>
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.session-destroy-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="function.unset.html" class="function" rel="rdfs-seeAlso">unset()</a> - 指定した変数の割当を解除する</span></li>
+    <li class="member"> <span class="function"><a href="function.setcookie.html" class="function" rel="rdfs-seeAlso">setcookie()</a> - クッキーを送信する</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113323""></a>
+  <div class="note">
+   <strong class="user">luqui at yahoo dot com</strong>
+   <a href="#113323" class="date">27-Sep-2013 09:25</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you want to destroy the session when it starts, don't forget to declare the session with your code because when you do that this will ensure that your session will be more effective. This also enhances the effieciency of you code.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="110043""></a>
+  <div class="note">
+   <strong class="user">Praveen V</strong>
+   <a href="#110043" class="date">14-Sep-2012 01:39</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you want to change the session id on each log in, make sure to use session_regenerate_id(true) during the log in process.<br />
+<br />
+<span class="default">&lt;?php<br />
+session_start</span><span class="keyword">();<br />
+</span><span class="default">session_regenerate_id</span><span class="keyword">(</span><span class="default">true</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+[Edited by moderator (googleguy at php dot net)]</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="76832""></a>
+  <div class="note">
+   <strong class="user">administrator at anorhack dot com</strong>
+   <a href="#76832" class="date">01-Aug-2007 04:34</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Destroying&nbsp; a session from a background job<br />
+<br />
+I have a thief-protection system that compares country codes from login IPs via whois. This has to run in the background as it is way too processor-hungry to be run in the browser.<br />
+<br />
+What I needed was a way to destroy the web session from the background job. For some reason, a background session_destroy APPEARS to work, but doesnt't actually destroy the web session.<br />
+<br />
+There is a work around, I set the username to NULL and the web code picks up on that, bouncing the user (thief) to a "gotcha" page where his IP is logged.<br />
+<br />
+Yes I know its nasty and dirty, but surprisingly it works.<br />
+<br />
+$sid = the session_id() of the suspicious web session, passed in $argv to the background job<br />
+<br />
+The trick is to "stuff" the $_GET array with the sid, then the session_start in the background job picks this value up (as if it were a genuine trans-sid type thing...?PHPSESSID=blah) and "connects to" the web session. All $_SESSION variable can be viewed (and CHANGED , which is how this kludge works) but for some reason (that no doubt someone will illuminate) they can't be unset...setting the particular variable to NULL works well though:<br />
+<br />
+&nbsp;<br />
+$_GET[session_name()]=$sid;<br />
+session_start();<br />
+// prove we are getting the web session data<br />
+foreach($_SESSION as $k =&gt; $v) echo($k."=".$v);<br />
+// now kill the thief<br />
+$_SESSION['username']=NULL;<br />
+//web session variable now NULL - honestly!</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="73045""></a>
+  <div class="note">
+   <strong class="user">Colin</strong>
+   <a href="#73045" class="date">07-Feb-2007 10:52</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note that when you are using a custom session handler, session_destroy will cause a fatal error if you have set the session destroy function used by session_set_save_handler to private.<br />
+<br />
+Example:<br />
+Fatal error: Call to private method Session::sessDestroy()<br />
+<br />
+where sessDestroy was the function I specified in the 5th parameter of session_set_save_handler.<br />
+<br />
+Even though it isn't all that desirable, the simple solution is to set sessDestroy to public.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.session-decode.html">session_decode</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.session-encode.html">session_encode</a></div>
+ <div class="up"><a href="ref.session.html">セッション関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

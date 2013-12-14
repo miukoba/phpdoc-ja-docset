@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>クエリを実行する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongocursor.dead.html">MongoCursor::dead</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongocursor.explain.html">MongoCursor::explain</a></div>
+ <div class="up"><a href="class.mongocursor.html">MongoCursor</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mongocursor.doquery" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">MongoCursor::doQuery</h1>
+  <p class="verinfo">(バージョン情報なし。おそらく SVN 版にしか存在しないでしょう)</p><p class="refpurpose"><span class="refname">MongoCursor::doQuery</span> &mdash; <span class="dc-title">クエリを実行する</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-mongocursor.doquery-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">protected</span> <span class="type"><span class="type void">void</span></span> <span class="methodname"><strong>MongoCursor::doQuery</strong></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+  <div class="warning"><strong class="warning">警告</strong>
+   <p class="para">
+    このメソッドは使わないでください。
+   </p>
+  </div>
+  <p class="para">
+   この関数はデータベースへのクエリを実行します。すべてのクエリやコマンドは、この関数を通して実行します。
+   従って、この関数をオーバーライドすれば独自のクエリ処理機能を提供することができます。
+  </p>
+  <p class="para">
+   この関数では、クエリのシリアライズとデータベースへの送信、
+   結果の受け取り、そして受け取った結果のデシリアライズを担当します。
+   オーバーライドしようとうするときは、おそらくは元の関数をコールして既存の機能を使うことになるでしょう
+   (以下の例を参照ください)。
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 parameters" id="refsect1-mongocursor.doquery-parameters">
+  <h3 class="title">パラメータ</h3>    
+  <p class="para">この関数にはパラメータはありません。</p>
+ </div>
+
+ 
+ <div class="refsect1 returnvalues" id="refsect1-mongocursor.doquery-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <strong><code>NULL</code></strong> を返します。
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 errors" id="refsect1-mongocursor.doquery-errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">
+   データベースに接続できない場合に <a href="class.mongoconnectionexception.html" class="classname">MongoConnectionException</a>
+   をスローします。
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 changelog" id="refsect1-mongocursor.doquery-changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>1.2.11</td>
+       <td><strong><code>E_DEPRECATED</code></strong> を発行するようになりました。</td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-mongocursor.doquery-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="mongocursor.doquery.example.basic">
+    <p><strong>例1  <span class="function"><strong>MongoCursor::doQuery()</strong></span> の例</strong></p>
+    <div class="example-contents"><p>
+     この関数をオーバーライドすると、セカンダリに対してクエリを発行して
+     失敗した場合はプライマリに向けて再発行することができます。
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">MyCursor&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">MongoCursor&nbsp;</span><span style="color: #007700">{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;protected&nbsp;function&nbsp;</span><span style="color: #0000BB">doQuery</span><span style="color: #007700">()&nbsp;{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">slaveOkay</span><span style="color: #007700">();<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">MongoCursor</span><span style="color: #007700">::</span><span style="color: #0000BB">doQuery</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;catch(</span><span style="color: #0000BB">MongoCursorException&nbsp;$e</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">slaveOkay</span><span style="color: #007700">(</span><span style="color: #0000BB">false</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">MongoCursor</span><span style="color: #007700">::</span><span style="color: #0000BB">doQuery</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+ 
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongocursor.dead.html">MongoCursor::dead</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongocursor.explain.html">MongoCursor::explain</a></div>
+ <div class="up"><a href="class.mongocursor.html">MongoCursor</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>数値アイテムの値を減らす</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="memcached.construct.html">Memcached::__construct</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="memcached.decrementbykey.html">Memcached::decrementByKey</a></div>
+ <div class="up"><a href="class.memcached.html">Memcached</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="memcached.decrement" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">Memcached::decrement</h1>
+  <p class="verinfo">(PECL memcached &gt;= 0.1.0)</p><p class="refpurpose"><span class="refname">Memcached::decrement</span> &mdash; <span class="dc-title">数値アイテムの値を減らす</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-memcached.decrement-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">int</span> <span class="methodname"><strong>Memcached::decrement</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$key</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$offset</code><span class="initializer"> = 1</span></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$initial_value</code><span class="initializer"> = 0</span></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$expiry</code><span class="initializer"> = 0</span></span>
+  ]]] )</div>
+
+  <p class="para rdfs-comment">
+    <span class="function"><strong>Memcached::decrement()</strong></span> は、数値アイテムの値を
+   <em><code class="parameter">offset</code></em> で指定しただけ減らします。
+   アイテムの値が数値でない場合はエラーとなります。
+   操作後の値が 0 より小さくなる場合は、新しい値は 0 となります。
+   アイテムが存在しない場合、 <span class="function"><strong>Memcached::decrement()</strong></span> は値を
+   <em><code class="parameter">initial_value</code></em> に設定します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-memcached.decrement-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">key</code></em></span>
+     <dd>
+
+      <p class="para">
+       減らしたいアイテムのキー。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">offset</code></em></span>
+     <dd>
+
+      <p class="para">
+       値を減らしたい量。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">initial_value</code></em></span>
+     <dd>
+
+      <p class="para">
+       そのアイテムが存在しない場合に設定する値。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">expiry</code></em></span>
+     <dd>
+
+      <p class="para">
+       そのアイテムに設定する有効期限。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-memcached.decrement-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合にアイテムの新しい値、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-memcached.decrement-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-4412">
+    <p><strong>例1  <span class="function"><strong>Memcached::decrement()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Memcached</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">addServer</span><span style="color: #007700">(</span><span style="color: #DD0000">'localhost'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">11211</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">set</span><span style="color: #007700">(</span><span style="color: #DD0000">'counter'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$n&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">decrement</span><span style="color: #007700">(</span><span style="color: #DD0000">'counter'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$n</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$n&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">decrement</span><span style="color: #007700">(</span><span style="color: #DD0000">'counter'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$n</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">get</span><span style="color: #007700">(</span><span style="color: #DD0000">'counter'</span><span style="color: #007700">));<br /><br /></span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">set</span><span style="color: #007700">(</span><span style="color: #DD0000">'counter'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'abc'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$n&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">increment</span><span style="color: #007700">(</span><span style="color: #DD0000">'counter'</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;アイテムの値が数値でないので、これは失敗します<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$n</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+int(4)
+int(0)
+int(0)
+bool(false)
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-memcached.decrement-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="methodname"><a href="memcached.increment.html" class="methodname" rel="rdfs-seeAlso">Memcached::increment()</a> - 数値アイテムの値を増やす</span></li>
+    <li class="member"> <span class="methodname"><a href="memcached.incrementbykey.html" class="methodname" rel="rdfs-seeAlso">Memcached::incrementByKey()</a> - 指定したサーバー上にある数値アイテムの値を増やす</span></li>
+    <li class="member"> <span class="methodname"><a href="memcached.decrementbykey.html" class="methodname" rel="rdfs-seeAlso">Memcached::decrementByKey()</a> - 指定したサーバー上にある数値アイテムの値を減らす</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="111132""></a>
+  <div class="note">
+   <strong class="user">jbaginski</strong>
+   <a href="#111132" class="date">18-Jan-2013 04:31</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+PECL memcached &lt; 0.2.0<br />
+<br />
+public int Memcached::decrement ( string $key [, int $offset = 1 ] )</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="memcached.construct.html">Memcached::__construct</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="memcached.decrementbykey.html">Memcached::decrementByKey</a></div>
+ <div class="up"><a href="class.memcached.html">Memcached</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>リクエストをリクエストグループに追加する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.eio-get-last-error.html">eio_get_last_error</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.eio-grp-cancel.html">eio_grp_cancel</a></div>
+ <div class="up"><a href="ref.eio.html">Eio 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.eio-grp-add" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">eio_grp_add</h1>
+  <p class="verinfo">(PECL eio &gt;= 0.0.1dev)</p><p class="refpurpose"><span class="refname">eio_grp_add</span> &mdash; <span class="dc-title">リクエストをリクエストグループに追加する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-function.eio-grp-add-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type"><span class="type void">void</span></span> <span class="methodname"><strong>eio_grp_add</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$grp</code></span>
+   , <span class="methodparam"><span class="type">resource</span> <code class="parameter">$req</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   <span class="function"><strong>eio_grp_add()</strong></span> は、リクエストをリクエストグループに追加します。
+  </p>
+
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.eio-grp-add-parameters">
+  <h3 class="title">パラメータ</h3>
+  <dl>
+
+   <dt>
+
+    <span class="term"><em><code class="parameter">grp</code></em></span>
+    <dd>
+
+     <p class="para">
+      <span class="function"><a href="function.eio-grp.html" class="function">eio_grp()</a></span> が返すリクエストグループリソース。
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><em><code class="parameter">req</code></em></span>
+    <dd>
+
+     <p class="para">
+     リクエストリソース。
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.eio-grp-add-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <span class="function"><strong>eio_grp_add()</strong></span> は値を返しません。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.eio-grp-add-examples">
+  <h3 class="title">例</h3>
+  <div class="example" id="example-3573">
+  <p><strong>例1 リクエストのグループ化</strong></p>
+  <div class="example-contents"><div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*<br />&nbsp;*&nbsp;ファイルを開き、読んでから閉じるグループリクエストを作ります<br />&nbsp;*/<br /><br />//&nbsp;テンポラリファイルを作って何かを書き込みます<br /></span><span style="color: #0000BB">$temp_filename&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">dirname</span><span style="color: #007700">(</span><span style="color: #0000BB">__FILE__</span><span style="color: #007700">)&nbsp;.</span><span style="color: #DD0000">"/eio-file.tmp"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #0000BB">$temp_filename</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"w"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"some&nbsp;data"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;グループリクエストが終了したときに呼ばれます&nbsp;*/<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">my_grp_done</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$result</span><span style="color: #007700">)&nbsp;{<br />&nbsp;</span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br />&nbsp;@</span><span style="color: #0000BB">unlink</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #FF8000">/*&nbsp;eio_open()&nbsp;が終わったら呼ばれます&nbsp;*/<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">my_grp_file_opened_callback</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$result</span><span style="color: #007700">)&nbsp;{<br />&nbsp;global&nbsp;</span><span style="color: #0000BB">$grp</span><span style="color: #007700">;<br /><br />&nbsp;</span><span style="color: #FF8000">//&nbsp;$result&nbsp;にはファイルディスクリプタが含まれるはずです<br />&nbsp;</span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">&gt;&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br /><br />&nbsp;</span><span style="color: #FF8000">//&nbsp;eio_read()&nbsp;リクエストを作ってグループに追加します<br />&nbsp;//&nbsp;ファイルディスクリプタをコールバックに渡します<br />&nbsp;</span><span style="color: #0000BB">$req&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">eio_read</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">EIO_PRI_DEFAULT</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"my_grp_file_read_callback"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$result</span><span style="color: #007700">);<br />&nbsp;</span><span style="color: #0000BB">eio_grp_add</span><span style="color: #007700">(</span><span style="color: #0000BB">$grp</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$req</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #FF8000">/*&nbsp;eio_read()&nbsp;が終わったら呼ばれます&nbsp;*/<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">my_grp_file_read_callback</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$result</span><span style="color: #007700">)&nbsp;{<br />&nbsp;global&nbsp;</span><span style="color: #0000BB">$grp</span><span style="color: #007700">;<br /><br />&nbsp;</span><span style="color: #FF8000">//&nbsp;データを読みます<br />&nbsp;</span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">);<br /><br />&nbsp;</span><span style="color: #FF8000">//&nbsp;eio_close()&nbsp;リクエストを作ってグループに追加します<br />&nbsp;//&nbsp;$data&nbsp;にはファイルディスクリプタが含まれるはずです<br />&nbsp;</span><span style="color: #0000BB">$req&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">eio_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">);<br />&nbsp;</span><span style="color: #0000BB">eio_grp_add</span><span style="color: #007700">(</span><span style="color: #0000BB">$grp</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$req</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;リクエストグループを作ります<br /></span><span style="color: #0000BB">$grp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">eio_grp</span><span style="color: #007700">(</span><span style="color: #DD0000">"my_grp_done"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$temp_filename</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$grp</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;eio_open()&nbsp;リクエストを作ってグループに追加します<br /></span><span style="color: #0000BB">$req&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">eio_open</span><span style="color: #007700">(</span><span style="color: #0000BB">$temp_filename</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">EIO_O_RDWR&nbsp;</span><span style="color: #007700">|&nbsp;</span><span style="color: #0000BB">EIO_O_APPEND&nbsp;</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">,<br />&nbsp;&nbsp;</span><span style="color: #0000BB">EIO_PRI_DEFAULT</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"my_grp_file_opened_callback"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">eio_grp_add</span><span style="color: #007700">(</span><span style="color: #0000BB">$grp</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$req</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;リクエストを処理します<br /></span><span style="color: #0000BB">eio_event_loop</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div></div>
+
+  <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+ <div class="example-contents screen"><div class="cdata"><pre>
+resource(6) of type (EIO Group Descriptor)
+bool(true)
+string(4) &quot;some&quot;
+bool(true)
+</pre></div></div>
+ </div>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.eio-grp-add-seealso">
+  <h3 class="title">参考</h3>
+  <ul class="simplelist">
+   <li class="member">eio_grp</li>
+   <li class="member">eio_grp_cancel</li>
+   <li class="member">eio_grp_limit</li>
+  </ul>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.eio-get-last-error.html">eio_get_last_error</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.eio-grp-cancel.html">eio_grp_cancel</a></div>
+ <div class="up"><a href="ref.eio.html">Eio 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

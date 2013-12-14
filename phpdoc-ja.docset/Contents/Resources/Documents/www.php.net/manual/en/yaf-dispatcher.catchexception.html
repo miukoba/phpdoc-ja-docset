@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>例外のキャッチのオン/オフを切り替える</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="yaf-dispatcher.autorender.html">Yaf_Dispatcher::autoRender</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="yaf-dispatcher.clone.html">Yaf_Dispatcher::__clone</a></div>
+ <div class="up"><a href="class.yaf-dispatcher.html">Yaf_Dispatcher</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="yaf-dispatcher.catchexception" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">Yaf_Dispatcher::catchException</h1>
+  <p class="verinfo">(Yaf &gt;=1.0.0)</p><p class="refpurpose"><span class="refname">Yaf_Dispatcher::catchException</span> &mdash; <span class="dc-title">例外のキャッチのオン/オフを切り替える</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-yaf-dispatcher.catchexception-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type"><a href="class.yaf-dispatcher.html" class="type Yaf_Dispatcher">Yaf_Dispatcher</a></span> <span class="methodname"><strong>Yaf_Dispatcher::catchException</strong></span>
+    ([ <span class="methodparam"><span class="type">bool</span> <code class="parameter">$flag</code></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+     application.dispatcher.throwException が On
+     (あるいは  <span class="methodname"><strong>Yaf_Dispatcher::throwException(TRUE)()</strong></span> で有効にした)
+     他愛、Yaf でエラーが発生したときに例外をスローします。
+  </p>
+  <p class="para">   
+     そのとき、 <span class="methodname"><strong>Yaf_Dispatcher::catchException()</strong></span> を有効にする
+     (あるいは <a href="yaf.appconfig.html#configuration.yaf.dispatcher.catchexception" class="link">application.dispatcher.catchException</a> で有効にする) と、
+     もし ErrorController::error を定義していれば
+     キャッチしなかった例外はすべて ErrorController::error に送られます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-yaf-dispatcher.catchexception-parameters">
+  <h3 class="title">パラメータ</h3>
+  <dl>
+
+   <dt>
+
+    <span class="term"><em><code class="parameter">flag</code></em></span>
+    <dd>
+
+     <p class="para">
+       bool
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-yaf-dispatcher.catchexception-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-yaf-dispatcher.catchexception-examples">
+  <h3 class="title">例</h3>
+  <div class="example" id="example-4108">
+   <p><strong>例1  <span class="function"><strong>Yaf_Dispatcher::catchException()</strong></span> の例</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+/*&nbsp;次のような&nbsp;ErrorController&nbsp;を定義しているものとします&nbsp;*/<br /><span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">ErrorController&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">Yaf_Controller_Abstract&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/**&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Yaf_Request_Abstract::getException&nbsp;を呼んで<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;未処理の例外を取得します<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">public&nbsp;function&nbsp;</span><span style="color: #0000BB">errorAction</span><span style="color: #007700">(</span><span style="color: #0000BB">$exception</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;エラーが発生した&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">switch&nbsp;(</span><span style="color: #0000BB">$exception</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getCode</span><span style="color: #007700">())&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #0000BB">YAF_ERR_NOTFOUND_MODULE</span><span style="color: #007700">:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #0000BB">YAF_ERR_NOTFOUND_CONTROLLER</span><span style="color: #007700">:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #0000BB">YAF_ERR_NOTFOUND_ACTION</span><span style="color: #007700">:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #0000BB">YAF_ERR_NOTFOUND_VIEW</span><span style="color: #007700">:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">404</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">":"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$exception</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getMessage</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default&nbsp;:<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$message&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$exception</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getMessage</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">":"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$exception</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getMessage</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+/* now if some error occur, assuming access a non-exists controller(or you can throw a exception yourself): */
+404:Could not find controller script **/application/controllers/No-exists-controller.php
+</pre></div>
+   </div>
+  </div>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-yaf-dispatcher.catchexception-seealso">
+  <h3 class="title">参考</h3>
+  <ul class="simplelist">
+   <li class="member"> <span class="methodname"><a href="yaf-dispatcher.throwexception.html" class="methodname" rel="rdfs-seeAlso">Yaf_Dispatcher::throwException()</a> - 例外のスローのオン/オフを切り替える</span></li>
+   <li class="member"> <span class="methodname"><a href="yaf-dispatcher.seterrorhandler.html" class="methodname" rel="rdfs-seeAlso">Yaf_Dispatcher::setErrorHandler()</a> - エラーハンドラを設定する</span></li>
+  </ul>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="yaf-dispatcher.autorender.html">Yaf_Dispatcher::autoRender</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="yaf-dispatcher.clone.html">Yaf_Dispatcher::__clone</a></div>
+ <div class="up"><a href="class.yaf-dispatcher.html">Yaf_Dispatcher</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

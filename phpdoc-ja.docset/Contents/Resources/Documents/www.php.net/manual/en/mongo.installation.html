@@ -1,0 +1,498 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>インストール手順</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongo.requirements.html">要件</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongo.configuration.html">実行時設定</a></div>
+ <div class="up"><a href="mongo.setup.html">インストール/設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mongo.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  MongoDB PHP ドライバは、ほぼすべてのシステムで動作します。
+  Windows、Mac OS X、Unix そして Linux。リトルエンディアンマシンおよびビッグエンディアンマシン。
+  32 ビットマシンおよび 64 ビットマシン。PHP 5.2、5.3、5.4 および 5.5。
+ </p>
+ <p class="para">
+  この <a href="http://pecl.php.net/" class="link external" title="Link : http://pecl.php.net/">&raquo;&nbsp;PECL</a> 拡張
+モジュールは PHP にバンドルされていません。
+ </p>
+
+ <ul class="simplelist">
+  <li class="member">
+   <a href="mongo.installation.html#mongo.installation.manual" class="xref">手動インストール</a>
+  </li>
+  <li class="member">
+   <a href="mongo.installation.html#mongo.installation.nix" class="xref">*NIX へのインストール</a>
+  </li>
+  <li class="member">
+   <a href="mongo.installation.html#mongo.installation.windows" class="xref">Windows へのインストール</a>
+  </li>
+  <li class="member">
+   <a href="mongo.installation.html#mongo.installation.osx" class="xref">OS X</a>
+  </li>
+  <li class="member">
+   <a href="mongo.installation.html#mongo.installation.gentoo" class="xref">Gentoo</a>
+  </li>
+  <li class="member">
+   <a href="mongo.installation.html#mongo.installation.fedora" class="xref">Red Hat</a>
+  </li>
+  <li class="member">
+   <a href="mongo.installation.html#mongo.installation.thirdparty" class="xref">その他のインストール説明</a>
+  </li>
+ </ul>
+
+ <div class="section" id="mongo.installation.manual">
+  <h2 class="title">手動インストール</h2>
+
+  <p class="para">
+   ドライバの開発者や最新のバグフィックス版に興味のあるかたは、
+   <a href="http://github.com/mongodb/mongo-php-driver" class="link external" title="Link : http://github.com/mongodb/mongo-php-driver">&raquo;&nbsp;Github</a>
+   にある最新のソースコードからドライバをコンパイルすることもできます。
+   Github に行き、&quot;download&quot; ボタンをクリックしましょう。そして以下のようにします。
+
+   <div class="example-contents">
+<div class="cdata"><pre>
+
+$ tar zxvf mongodb-mongodb-php-driver-&lt;commit_id&gt;.tar.gz
+$ cd mongodb-mongodb-php-driver-&lt;commit_id&gt;
+$ phpize
+$ ./configure
+$ make all
+$ sudo make install
+
+</pre></div>
+   </div>
+
+  </p>
+
+  <p class="para">
+   php.ini を次のように変更します。
+  </p>
+  <ul class="itemizedlist">
+   <li class="listitem">
+    <p class="para">
+     <em class="emphasis">extension_dir</em> 変数が
+     <em class="emphasis">mongo.so</em> のあるディレクトリを指すようにします。
+     ビルド中に、PHP ドライバをどこにインストールするのかがこのように表示されます。
+     <div class="example-contents">
+<div class="cdata"><pre>
+
+Installing &#039;/usr/lib/php/extensions/no-debug-non-zts-20060613/mongo.so&#039;
+
+</pre></div>
+     </div>
+
+
+      この場所が PHP の拡張モジュール用ディレクトリと一致するかどうかは、次のようにして確認します。
+
+     <div class="example-contents">
+<div class="cdata"><pre>
+
+$ php -i | grep extension_dir
+  extension_dir =&gt; /usr/lib/php/extensions/no-debug-non-zts-20060613 =&gt;
+                   /usr/lib/php/extensions/no-debug-non-zts-20060613
+
+</pre></div>
+     </div>
+
+
+     もし一致しない場合は、php.ini の <em class="emphasis">extension_dir</em> を変更するか、あるいは <em class="emphasis">mongo.so</em>
+     を移動させます。
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     PHP の起動時に拡張モジュールを読み込むために、次の行を追加します。
+
+     <div class="example-contents">
+<div class="cdata"><pre>
+
+extension=mongo.so
+
+</pre></div>
+     </div>
+
+
+    </p>
+   </li>
+  </ul>
+
+ <div class="section" id="mongo.installation.nix">
+  <h2 class="title">*NIX へのインストール</h2>
+
+  <p class="para">
+   <div class="example-contents">
+<div class="cdata"><pre>
+
+$ sudo pecl install mongo
+
+</pre></div>
+   </div>
+
+   を実行します。
+  </p>
+
+  <p class="para">
+   CentOS あるいは Redhat を使っている場合は、
+   <a href="http://downloads-distro.mongodb.org/repo/redhat/os/" class="link external" title="Link : http://downloads-distro.mongodb.org/repo/redhat/os/">&raquo;&nbsp;RPM</a>
+   からインストールできます。
+  </p>
+
+  <p class="para">
+   php.ini ファイルに次の行を追加します。
+   <div class="example-contents">
+<div class="cdata"><pre>
+
+extension=mongo.so
+
+</pre></div>
+   </div>
+
+  </p>
+
+  <p class="para">
+   インストール中に pecl が out of memory となる場合は、php.ini の memory_limit
+   が 128M 以上あるかどうかを確認しましょう。
+  </p>
+ </div>
+
+ <div class="section" id="mongo.installation.windows">
+  <h2 class="title">Windows へのインストール</h2>
+
+  <p class="para">
+   リリースごとのコンパイル済みバイナリが
+   <a href="https://s3.amazonaws.com/drivers.mongodb.org/php/index.html" class="link external" title="Link : https://s3.amazonaws.com/drivers.mongodb.org/php/index.html">&raquo;&nbsp;S3</a> にあります。
+   バージョン、スレッドセーフ/非スレッドセーフ、VCのライブラリのさまざまな組み合わせに対応しています。
+   アーカイブを Unzip して、php_mongo.dll を PHP 拡張モジュールのディレクトリ
+   (デフォルトは &quot;ext&quot;) に置きましょう。
+  </p>
+
+  <p class="para">
+   php.ini に次の行を追加します。
+   <div class="example-contents">
+<div class="cdata"><pre>
+
+extension=php_mongo.dll
+
+</pre></div>
+   </div>
+
+  </p>
+ </div>
+
+  <div class="section" id="mongo.installation.osx">
+   <h2 class="title">OS X</h2>
+
+   <p class="para">
+    autoconf が見つからない場合は、Xcode をインストールしなければなりません
+    (これは、OS X のインストール DVD の中にあります。あるいは Apple
+    のウェブサイトから無料でダウンロードすることもできます)。
+   </p>
+   
+   <p class="para">
+    たいていの場合は、pecl でインストールするのがいちばん簡単です。
+    <div class="example-contents">
+<div class="shellcode"><pre class="shellcode">$ sudo pecl install mongo</pre>
+</div>
+    </div>
+
+   </p>
+   <p class="para">
+    XAMPP を使っている場合は、次のコマンドでドライバをコンパイルすることができます。
+    <div class="example-contents">
+<div class="cdata"><pre>
+
+sudo /Applications/XAMPP/xamppfiles/bin/pecl install mongo
+
+</pre></div>
+    </div>
+
+   </p>
+
+  </div>
+
+  <div class="section" id="mongo.installation.gentoo">
+   <h2 class="title">Gentoo</h2>
+   <p class="para">
+    Gentoo には PHP ドライバのパッケージ dev-php5/mongo があり、
+    次のようにすればインストールできます。
+   </p>
+   <div class="example-contents">
+<div class="cdata"><pre>
+
+$ sudo emerge -va dev-php5/mongo
+
+</pre></div>
+   </div>
+
+
+   <p class="para">
+    PECL を使う場合は、libtool のバージョンが違うというエラーが出るかもしれません。
+    ソースからコンパイルするには、aclocal と autoconf を実行しなければなりません。
+   </p>
+   <div class="example-contents">
+<div class="cdata"><pre>
+
+$ phpize
+$ aclocal 
+$ autoconf 
+$ ./configure
+$ make
+$ sudo make install
+
+</pre></div>
+   </div>
+
+  </div>
+  <div class="section" id="mongo.installation.fedora">
+   <h2 class="title">Red Hat</h2>
+   <p class="para">
+    Fedora や CentOS も含みます。
+   </p>
+   <p class="para">
+    これらのシステム上の Apache のデフォルト設定では
+    リクエストがネットワーク接続できないようにしており、
+    データベースに接続しようとすると &quot;Permission denied&quot;
+    というエラーが発生します。もしこの現象に遭遇したら、次のコマンドを実行しましょう。
+    <div class="example-contents">
+<div class="cdata"><pre>
+$ /usr/sbin/setsebool -P httpd_can_network_connect 1 
+</pre></div>
+    </div>
+
+    そして Apache を再起動します (この問題は、SELinux の環境で発生します)。
+   </p>
+  </div>
+ </div>
+
+ <div class="section" id="mongo.installation.thirdparty">
+  <h2 class="title">その他のインストール説明</h2>
+  
+  <p class="para">
+   PHP 用ドライバのインストールに関するすばらしいチュートリアルが、
+   多くのかたによって公開されています。
+  </p>
+
+  <ul class="itemizedlist">
+   <li class="listitem">
+    <p class="para">
+     <a href="http://www.vimeo.com/8005503" class="link external" title="Link : http://www.vimeo.com/8005503">&raquo;&nbsp;
+      PHP 5.3.1 with Xdebug, MongoDB and Lithium on Ubuntu 9.10 / Apache 2.2
+     </a>
+    </p>
+    <p class="para">
+     Jon Adams によるすばらしい動画です。
+     Apache, PHP, Xdebug, MongoDB, そして Lithium のインストール手順をひとつひとつ説明しています。
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     <a href="http://javierav.com/2009-10-instalando-mongodb-driver-php-en-ubuntu-9-04.html" class="link external" title="Link : http://javierav.com/2009-10-instalando-mongodb-driver-php-en-ubuntu-9-04.html">&raquo;&nbsp;
+      Installing MongoDB and the PHP driver on Ubuntu 9.04
+     </a>
+    </p>
+    <p class="para">
+     Javier Aranda によるスペイン語の記事です (<a href="http://translate.google.com/translate?js=n&prev=_t&hl=en&ie=UTF-8&layout=2&eotf=1&sl=auto&tl=en&u=http://javierav.com/2009-10-instalando-mongodb-driver-php-en-ubuntu-9-04.html" class="link external" title="Link : http://translate.google.com/translate?js=n&prev=_t&hl=en&ie=UTF-8&layout=2&eotf=1&sl=auto&tl=en&u=http://javierav.com/2009-10-instalando-mongodb-driver-php-en-ubuntu-9-04.html">&raquo;&nbsp;
+      英語訳</a>)。
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     <a href="http://technosophos.com/content/os-x-installing-mongodb-and-php-mongo-driver" class="link external" title="Link : http://technosophos.com/content/os-x-installing-mongodb-and-php-mongo-driver">&raquo;&nbsp;
+      OS X: Installing MongoDB and the PHP Mongo Driver
+     </a>
+    </p>
+    <p class="para">
+     Matt Butcher によるものです。
+    </p>
+   </li>
+  </ul>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113674""></a>
+  <div class="note">
+   <strong class="user">Daniel</strong>
+   <a href="#113674" class="date">14-Nov-2013 08:27</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This may help also:<br />
+<br />
+<a href="http://blog.salientdigital.com/2012/05/16/how-to-fix-no-acceptable-c-compiler-found-in-path-on-mac-os-x-lion/" rel="nofollow" target="_blank">http://blog.salientdigital.com/2012/05/16/how-to-fix-no-acceptable-c-compiler-found-in-path-on-mac-os-x-lion/</a><br />
+<br />
+Xcode doesn't ship with "Command Line Tools", you need to install then after installing Xcode.<br />
+<br />
+You need Command Line Tools to get the program `m4` that you need to install mongo driver using: sudo pecl install mongo.<br />
+<br />
+HTH</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="112022""></a>
+  <div class="note">
+   <strong class="user">bradley dot henke at colorado dot edu</strong>
+   <a href="#112022" class="date">23-Apr-2013 03:36</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Instructions for Manually Installing MongoDB for PHP for use with "XAMPP for Linux":<br />
+<br />
+There were two gotchas that I ran into. "XAMPP for Linux" needs 32 bit libraries, and the php API version must match the php API version of "XAMPP for Linux".<br />
+Hopefully this will save someone else time figuring this all out!<br />
+<br />
+1) Install "XAMPP for Linux" AND the "XAMPP for Linux Development Files".<br />
+<br />
+2) Grab the source code from github (in the manual instructions above)<br />
+$ tar zxvf mongodb-mongodb-php-driver-&lt;commit_id&gt;.tar.gz<br />
+$ cd mongodb-mongodb-php-driver-&lt;commit_id&gt;<br />
+<br />
+There are now some smalls deviation from the manual instructions...<br />
+3) PHPize<br />
+$ sudo /opt/lampp/bin/phpize<br />
+<br />
+4) Configure<br />
+$ ./configure<br />
+<br />
+5) Make changes to the Makefile (XAMPP requires a 32-bit compilation)<br />
+- Choose your favorite text editor and open "Makefile"<br />
+- Make the following changes:<br />
+Line 20: prefix = /opt/lampp<br />
+Line 23: prefix = /opt/lampp<br />
+Line 25: phpincludedir = /opt/lampp/include/php<br />
+Line 27: CFLAGS = -g -O2 -m32<br />
+Line 34: EXTENSION_DIR = /opt/lampp/lib/php/extensions/no-debug-non-zts-20100525/<br />
+Line 35: PHP_EXECUTABLE = /opt/lampp/bin/php<br />
+<br />
+Make sure you replace &lt;/path/to/mongo-php-driver-master&gt;<br />
+Line 38: INCLUDES = -I/opt/lampp/include/php -I/opt/lampp/include/php/main -I/opt/lampp/include/php/TSRM -I/opt/lampp/include/php/Zend -I/opt/lampp/include/php/ext -I/opt/lampp/include/php/ext/date/lib -I&lt;/path/to/mongo-php-driver-master&gt;/util -I&lt;/path/to/mongo-php-driver-master&gt;/exceptions -I&lt;/path/to/mongo-php-driver-master&gt;/gridfs -I&lt;/path/to/mongo-php-driver-master&gt;/types -I&lt;/path/to/mongo-php-driver-master&gt;/mcon<br />
+<br />
+6) Compile<br />
+$ sudo make all<br />
+<br />
+7) Copy the static object into the extension directory<br />
+$ sudo cp modules/mongo.so /opt/lampp/lib/php/extensions/no-debug-non-zts-20100525/<br />
+<br />
+9) Update your php.ini file<br />
+- Grab you favorite text editor and open /opt/lampp/etc/php.ini (you'll probably need to use sudo).<br />
+- Add the line: extension=mongo.so<br />
+<br />
+10) Restart "XAMPP for Linux". You should now be able to see Mongo listed in your phpinfo() page! Installation Complete!!!<br />
+<br />
+Good Luck!</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="111083""></a>
+  <div class="note">
+   <strong class="user">Hanakaze</strong>
+   <a href="#111083" class="date">13-Jan-2013 03:18</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+To install the Mongo driver on Windows 7 x64 with EasyPHP, you have to use the x86 driver (instead of x64) and non nts :<br />
+php_mongo-1.3.2RC1-5.4-vc9.dll actually</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="105302""></a>
+  <div class="note">
+   <strong class="user">tiago dot braga at gmail dot com</strong>
+   <a href="#105302" class="date">08-Aug-2011 06:04</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+In Windows running IIS the directory to instal is "C:\Program Files\PHP\ext". Than you have to install the apropriate MongoDriver version (in my case was mongo-1.1.4-php5.3vc9) and than Restart IIS.<br />
+<br />
+The MongoDB Driver will be available.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="104629""></a>
+  <div class="note">
+   <strong class="user">rishi at plavaga dot in</strong>
+   <a href="#104629" class="date">27-Jun-2011 10:25</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I am using XAMPP 1.7.4 (32 bit) on Windows 7. Though it was mentioned that Apache uses a non-threadsafe version of DLL, when used, it was giving me the below error:<br />
+<br />
+PHP Warning:&nbsp; PHP Startup: Unable to load dynamic library <br />
+Warning:&nbsp; PHP Startup: Unable to load dynamic library 'D:\xampp\php\ext\php_mongo.dll' - The specified module could not be found.<br />
+<br />
+I had to use the thread-safe version (mongo-1.1.4.zip\mongo-1.1.4-php5.3vc6ts\php_mongo.dll) to get it working.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="104223""></a>
+  <div class="note">
+   <strong class="user">Andrey</strong>
+   <a href="#104223" class="date">02-Jun-2011 01:54</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+On windows installation check for VC compilator version inside phpinfo(), if you install incorrect one it wouldn't work.<br />
+I tried to run on Apache2 with VC6, and always get folowing error:<br />
+<br />
+Fatal error: Class 'Mongo' not found<br />
+<br />
+Until I look into phpinfo and found MSVC9, after that<br />
+I install VC9 dll files and it solve the problem.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="100606""></a>
+  <div class="note">
+   <strong class="user">poorpuer at gmail dot com</strong>
+   <a href="#100606" class="date">26-Oct-2010 05:26</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you're running IIS under Windows 7 and have PHP manager installed you'll also need to manually enable the extension. Start IIS Manager, select PHP Manager, under the section labeled PHP Extensions click on Enable or disable an extension, then enable the php_mongo.dll extension, and restart IIS.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="96435""></a>
+  <div class="note">
+   <strong class="user">cap at unagon dot com</strong>
+   <a href="#96435" class="date">26-Feb-2010 10:52</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+For Debian users: apt-get install php5-dev will install phpize for you.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongo.requirements.html">要件</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongo.configuration.html">実行時設定</a></div>
+ <div class="up"><a href="mongo.setup.html">インストール/設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

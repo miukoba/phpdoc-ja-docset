@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>基本的な使用法</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="imagick.examples.html">例</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="class.imagick.html">Imagick</a></div>
+ <div class="up"><a href="imagick.examples.html">例</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="imagick.examples-1" class="section">
+  <h2 class="title">基本的な使用法</h2>
+  <p class="para">
+   Imagick は、PHP による画像の操作を、
+   とても簡単なオブジェクト指向インターフェイスで行います。
+   画像のサムネイルを作成する簡単な例をごらんください。
+   <div class="example" id="example-3291">
+    <p><strong>例1 Imagick によるサムネイルの作成</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />header</span><span style="color: #007700">(</span><span style="color: #DD0000">'Content-type:&nbsp;image/jpeg'</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$image&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Imagick</span><span style="color: #007700">(</span><span style="color: #DD0000">'image.jpg'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;幅あるいは高さに&nbsp;0&nbsp;を指定すると、<br />//&nbsp;元の画像のアスペクト比を維持します<br /></span><span style="color: #0000BB">$image</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">thumbnailImage</span><span style="color: #007700">(</span><span style="color: #0000BB">100</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br /><br />echo&nbsp;</span><span style="color: #0000BB">$image</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+
+  <p class="para">
+   SPL および Imagick がサポートするその他のオブジェクト指向機能を使用すると、
+   ディレクトリ内のすべてのファイルのサイズを変更するのも簡単です
+   (デジタルカメラで撮影した巨大な画像ファイル群をウェブ用に変換するような
+   バッチ処理で有用です)。この例では、リサイズ機能を使用しています。
+   これは、画像のメタデータを残しておきたいからです。
+   <div class="example" id="example-3292">
+    <p><strong>例2 ディレクトリ内のすべての JPG ファイルのサムネイルの作成</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$images&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Imagick</span><span style="color: #007700">(</span><span style="color: #0000BB">glob</span><span style="color: #007700">(</span><span style="color: #DD0000">'images/*.JPG'</span><span style="color: #007700">));<br /><br />foreach(</span><span style="color: #0000BB">$images&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$image</span><span style="color: #007700">)&nbsp;{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;0&nbsp;を指定することで、thumbnailImage&nbsp;にアスペクト比を維持させています<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$image</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">thumbnailImage</span><span style="color: #007700">(</span><span style="color: #0000BB">1024</span><span style="color: #007700">,</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br /><br />}<br /><br /></span><span style="color: #0000BB">$images</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">writeImages</span><span style="color: #007700">();<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   これは、鏡像を作成する例です。
+   鏡像を作成するには、まず画像を反転させてその上に階調を重ねます。
+   そして、もとの画像と反転画像をキャンバスの上で合成します。
+   <div class="example" id="example-3293">
+    <p><strong>例3 画像の鏡像の作成</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;画像を読み込みます&nbsp;*/<br /></span><span style="color: #0000BB">$im&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Imagick</span><span style="color: #007700">(</span><span style="color: #DD0000">"test.png"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;画像のサムネイルを作成します&nbsp;*/<br /></span><span style="color: #0000BB">$im</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">thumbnailImage</span><span style="color: #007700">(</span><span style="color: #0000BB">200</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;画像の枠線を作成します&nbsp;*/<br /></span><span style="color: #0000BB">$im</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">borderImage</span><span style="color: #007700">(new&nbsp;</span><span style="color: #0000BB">ImagickPixel</span><span style="color: #007700">(</span><span style="color: #DD0000">"white"</span><span style="color: #007700">),&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;画像をコピーし、反転させます&nbsp;*/<br /></span><span style="color: #0000BB">$reflection&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$im</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">clone</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$reflection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">flipImage</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">/*&nbsp;階調を作成します。これを後で鏡像にかぶせます&nbsp;*/<br /></span><span style="color: #0000BB">$gradient&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Imagick</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">/*&nbsp;階調は、画像と枠線をあわせたものより大きくなければなりません&nbsp;*/<br /></span><span style="color: #0000BB">$gradient</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">newPseudoImage</span><span style="color: #007700">(</span><span style="color: #0000BB">$reflection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getImageWidth</span><span style="color: #007700">()&nbsp;+&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$reflection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getImageHeight</span><span style="color: #007700">()&nbsp;+&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"gradient:transparent-black"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;階調を合成します&nbsp;*/<br /></span><span style="color: #0000BB">$reflection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">compositeImage</span><span style="color: #007700">(</span><span style="color: #0000BB">$gradient</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">imagick</span><span style="color: #007700">::</span><span style="color: #0000BB">COMPOSITE_OVER</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;不透明度を設定します。ImageMagick&nbsp;6.2.9&nbsp;以降が必要です&nbsp;*/<br /></span><span style="color: #0000BB">$reflection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setImageOpacity</span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">0.3&nbsp;</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;空のキャンバスを作成します&nbsp;*/<br /></span><span style="color: #0000BB">$canvas&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Imagick</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">/*&nbsp;キャンバスは、どちらの画像よりも大きくなければなりません&nbsp;*/<br /></span><span style="color: #0000BB">$width&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$im</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getImageWidth</span><span style="color: #007700">()&nbsp;+&nbsp;</span><span style="color: #0000BB">40</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$height&nbsp;</span><span style="color: #007700">=&nbsp;(</span><span style="color: #0000BB">$im</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getImageHeight</span><span style="color: #007700">()&nbsp;*&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">)&nbsp;+&nbsp;</span><span style="color: #0000BB">30</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$canvas</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">newImage</span><span style="color: #007700">(</span><span style="color: #0000BB">$width</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$height</span><span style="color: #007700">,&nbsp;new&nbsp;</span><span style="color: #0000BB">ImagickPixel</span><span style="color: #007700">(</span><span style="color: #DD0000">"black"</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">$canvas</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setImageFormat</span><span style="color: #007700">(</span><span style="color: #DD0000">"png"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;もとの画像と鏡像をキャンバスに合成します&nbsp;*/<br /></span><span style="color: #0000BB">$canvas</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">compositeImage</span><span style="color: #007700">(</span><span style="color: #0000BB">$im</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">imagick</span><span style="color: #007700">::</span><span style="color: #0000BB">COMPOSITE_OVER</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">20</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$canvas</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">compositeImage</span><span style="color: #007700">(</span><span style="color: #0000BB">$reflection</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">imagick</span><span style="color: #007700">::</span><span style="color: #0000BB">COMPOSITE_OVER</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">20</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$im</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getImageHeight</span><span style="color: #007700">()&nbsp;+&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;画像を出力します&nbsp;*/<br /></span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Content-Type:&nbsp;image/png"</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #0000BB">$canvas</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+    <div class="mediaobject">
+     
+     <div class="imageobject">
+      <img src="images/c0d23d2d6769e53e24a1b3136c064577-hello_world_reflection.png" alt="出力例 : 鏡像の作成" width="250" height="130" />
+     </div>
+    </div>
+   </div>
+  </p>
+  <p class="para">
+   この例では、描画時に塗りつぶしパターンを使用する方法を説明します。
+   <div class="example" id="example-3294">
+    <p><strong>例4 グラデーションつきテキスト</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">/*&nbsp;新しい&nbsp;imagick&nbsp;オブジェクトを作成します&nbsp;*/<br /></span><span style="color: #0000BB">$im&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Imagick</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">/*&nbsp;新しい画像を作成して、これを塗りつぶしパターンとして使用します&nbsp;*/<br /></span><span style="color: #0000BB">$im</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">newPseudoImage</span><span style="color: #007700">(</span><span style="color: #0000BB">50</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">50</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"gradient:red-black"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;imagickdraw&nbsp;オブジェクトを作成します&nbsp;*/<br /></span><span style="color: #0000BB">$draw&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">ImagickDraw</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">/*&nbsp;"gradient"&nbsp;という新しいパターンを開始します&nbsp;*/<br /></span><span style="color: #0000BB">$draw</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">pushPattern</span><span style="color: #007700">(</span><span style="color: #DD0000">'gradient'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">50</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">50</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;パターン上のグラデーションを合成します&nbsp;*/<br /></span><span style="color: #0000BB">$draw</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">composite</span><span style="color: #007700">(</span><span style="color: #0000BB">Imagick</span><span style="color: #007700">::</span><span style="color: #0000BB">COMPOSITE_OVER</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">50</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">50</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$im</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;パターンを閉じます&nbsp;*/<br /></span><span style="color: #0000BB">$draw</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">popPattern</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">/*&nbsp;"gradient"&nbsp;を塗りつぶしパターンとして指定します&nbsp;*/<br /></span><span style="color: #0000BB">$draw</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setFillPatternURL</span><span style="color: #007700">(</span><span style="color: #DD0000">'#gradient'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;フォントサイズを&nbsp;52&nbsp;に設定します&nbsp;*/<br /></span><span style="color: #0000BB">$draw</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setFontSize</span><span style="color: #007700">(</span><span style="color: #0000BB">52</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;テキストを追加します&nbsp;*/<br /></span><span style="color: #0000BB">$draw</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">annotation</span><span style="color: #007700">(</span><span style="color: #0000BB">20</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">50</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Hello&nbsp;World!"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;新しいキャンバスオブジェクトと白い画像をを作成します&nbsp;*/<br /></span><span style="color: #0000BB">$canvas&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Imagick</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$canvas</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">newImage</span><span style="color: #007700">(</span><span style="color: #0000BB">350</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">70</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"white"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;ImagickDraw&nbsp;をキャンバス上に描画します&nbsp;*/<br /></span><span style="color: #0000BB">$canvas</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">drawImage</span><span style="color: #007700">(</span><span style="color: #0000BB">$draw</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;幅&nbsp;1px&nbsp;の黒い枠線で画像の周りを囲みます&nbsp;*/<br /></span><span style="color: #0000BB">$canvas</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">borderImage</span><span style="color: #007700">(</span><span style="color: #DD0000">'black'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;フォーマットを&nbsp;PNG&nbsp;に設定します&nbsp;*/<br /></span><span style="color: #0000BB">$canvas</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setImageFormat</span><span style="color: #007700">(</span><span style="color: #DD0000">'png'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;画像を出力します&nbsp;*/<br /></span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Content-Type:&nbsp;image/png"</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #0000BB">$canvas</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+    <div class="mediaobject">
+     
+     <div class="imageobject">
+      <img src="images/c0d23d2d6769e53e24a1b3136c064577-hello_world.png" alt="出力例 : グラデーションつきテキスト" width="352" height="72" />
+     </div>
+    </div>
+   </div>
+  </p>
+  <p class="para">
+   アニメーション GIF 画像を操作します。
+   <div class="example" id="example-3295">
+    <p><strong>例5 GIF 画像の読み込みと全フレームのサイズ変更</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">/*&nbsp;新しい&nbsp;imagick&nbsp;オブジェクトを作成して&nbsp;GIF&nbsp;を読み込みます&nbsp;*/<br /></span><span style="color: #0000BB">$im&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Imagick</span><span style="color: #007700">(</span><span style="color: #DD0000">"example.gif"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;全フレームのサイズを変更します&nbsp;*/<br /></span><span style="color: #007700">foreach&nbsp;(</span><span style="color: #0000BB">$im&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$frame</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;50x50&nbsp;のフレーム&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$frame</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">thumbnailImage</span><span style="color: #007700">(</span><span style="color: #0000BB">50</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">50</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;仮想キャンバスを正しい大きさに設定します&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$frame</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setImagePage</span><span style="color: #007700">(</span><span style="color: #0000BB">50</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">50</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #FF8000">/*&nbsp;writeImage&nbsp;ではなく&nbsp;writeImages&nbsp;を使うことに注意しましょう&nbsp;*/<br /></span><span style="color: #0000BB">$im</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">writeImages</span><span style="color: #007700">(</span><span style="color: #DD0000">"example_small.gif"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   楕円形を使ったりカスタムフォントを使ったりします。
+   <div class="example" id="example-3296">
+    <p><strong>例6 PHP ロゴの作成</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;幅と高さを、本物の&nbsp;PHP&nbsp;ロゴにあわせて設定します&nbsp;*/<br /></span><span style="color: #0000BB">$width&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">400</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$height&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">210</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">/*&nbsp;Imagick&nbsp;オブジェクトを透過キャンバスで作ります&nbsp;*/<br /></span><span style="color: #0000BB">$img&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Imagick</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$img</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">newImage</span><span style="color: #007700">(</span><span style="color: #0000BB">$width</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$height</span><span style="color: #007700">,&nbsp;new&nbsp;</span><span style="color: #0000BB">ImagickPixel</span><span style="color: #007700">(</span><span style="color: #DD0000">'transparent'</span><span style="color: #007700">));<br /><br /></span><span style="color: #FF8000">/*&nbsp;楕円の描画用に、新しい&nbsp;ImagickDraw&nbsp;のインスタンスを作ります&nbsp;*/<br /></span><span style="color: #0000BB">$draw&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">ImagickDraw</span><span style="color: #007700">();<br /></span><span style="color: #FF8000">/*&nbsp;楕円の塗りつぶし色を紫にします&nbsp;*/<br /></span><span style="color: #0000BB">$draw</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setFillColor</span><span style="color: #007700">(</span><span style="color: #DD0000">'#777bb4'</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">/*&nbsp;楕円の大きさを設定します&nbsp;*/<br /></span><span style="color: #0000BB">$draw</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">ellipse</span><span style="color: #007700">(</span><span style="color: #0000BB">$width&nbsp;</span><span style="color: #007700">/&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$height&nbsp;</span><span style="color: #007700">/&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$width&nbsp;</span><span style="color: #007700">/&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$height&nbsp;</span><span style="color: #007700">/&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">360</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">/*&nbsp;楕円をキャンバス上に描画します&nbsp;*/<br /></span><span style="color: #0000BB">$img</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">drawImage</span><span style="color: #007700">(</span><span style="color: #0000BB">$draw</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;楕円の塗りつぶし色をリセットして黒に戻し、テキストの描画に備えます&nbsp;(ImagickDraw&nbsp;オブジェクトを再利用していることに注目)&nbsp;*/<br /></span><span style="color: #0000BB">$draw</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setFillColor</span><span style="color: #007700">(</span><span style="color: #DD0000">'black'</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">/*&nbsp;縁取りの色を白に設定します&nbsp;*/<br /></span><span style="color: #0000BB">$draw</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setStrokeColor</span><span style="color: #007700">(</span><span style="color: #DD0000">'white'</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">/*&nbsp;線の太さを設定します&nbsp;*/<br /></span><span style="color: #0000BB">$draw</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setStrokeWidth</span><span style="color: #007700">(</span><span style="color: #0000BB">2</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">/*&nbsp;フォントのカーニングを設定します&nbsp;(負の値は、文字と文字の間隔を狭くすることを意味します)&nbsp;*/<br /></span><span style="color: #0000BB">$draw</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setTextKerning</span><span style="color: #007700">(-</span><span style="color: #0000BB">8</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">/*&nbsp;PHP&nbsp;ロゴで使うフォントとそのサイズを設定します&nbsp;*/<br /></span><span style="color: #0000BB">$draw</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setFont</span><span style="color: #007700">(</span><span style="color: #DD0000">'Handel&nbsp;Gothic.ttf'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$draw</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setFontSize</span><span style="color: #007700">(</span><span style="color: #0000BB">150</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">/*&nbsp;テキストを縦横ともに中央寄せにします&nbsp;*/<br /></span><span style="color: #0000BB">$draw</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setGravity</span><span style="color: #007700">(</span><span style="color: #0000BB">Imagick</span><span style="color: #007700">::</span><span style="color: #0000BB">GRAVITY_CENTER</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;"php"&nbsp;という文字を、キャンバス内の&nbsp;Y&nbsp;オフセット&nbsp;-10&nbsp;の位置&nbsp;(楕円の中)&nbsp;に描画します&nbsp;*/<br /></span><span style="color: #0000BB">$img</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">annotateImage</span><span style="color: #007700">(</span><span style="color: #0000BB">$draw</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;-</span><span style="color: #0000BB">10</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'php'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$img</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setImageFormat</span><span style="color: #007700">(</span><span style="color: #DD0000">'png'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;PNG&nbsp;のヘッダーを設定して、画像を出力します&nbsp;*/<br /></span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">'Content-Type:&nbsp;image/png'</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #0000BB">$img</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+    <div class="mediaobject">
+     
+     <div class="imageobject">
+      <img src="images/c0d23d2d6769e53e24a1b3136c064577-php_logo.png" alt="出力例: Imagick で作った PHP ロゴ" width="300" height="180" />
+     </div>
+    </div>
+   </div>
+  </p>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113872""></a>
+  <div class="note">
+   <strong class="user">inoshadi at gmail dot com</strong>
+   <a href="#113872" class="date">12-Dec-2013 04:53</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+on Example #3 Creating a reflection of an image<br />
+----------------------------------------------------<br />
+/* Clone the image and flip it */<br />
+$reflection = $im-&gt;clone();<br />
+$reflection-&gt;flipImage();<br />
+----------------------------------------------------<br />
+it was using the Imagick::clone function<br />
+<br />
+This function has been DEPRECATED as of imagick 3.1.0 in favour of using the clone keyword.<br />
+<br />
+use below code instead:<br />
+----------------------------------------------------<br />
+/* Clone the image and flip it */<br />
+$reflection = clone $im;<br />
+$reflection-&gt;flipImage();<br />
+----------------------------------------------------<br />
+<br />
+<a href="http://php.net/manual/en/imagick.clone.php" rel="nofollow" target="_blank">http://php.net/manual/en/imagick.clone.php</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="imagick.examples.html">例</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="class.imagick.html">Imagick</a></div>
+ <div class="up"><a href="imagick.examples.html">例</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

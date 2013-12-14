@@ -1,0 +1,533 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Hyperwave API 関数</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="hwapi.constants.html">定義済み定数</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="hwapi.checkin.html">hw_api::checkin</a></div>
+ <div class="up"><a href="book.hwapi.html">Hyperwave API</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="ref.hwapi" class="reference">
+  <h1 class="title">Hyperwave API 関数</h1>
+
+  <div class="partintro">
+   <div class="section" id="hwapi.apache">
+    <h2 class="title">Apache との統合</h2>
+    <p class="para">
+     Apache やその他のサーバーと統合するための情報は、すでに
+     <a href="ref.hw.html" class="link">Hyperwave モジュール</a>で説明されています。
+     これは、Hyperwave サーバーに接続するための最初の拡張モジュールでした。
+    </p>
+   </div>
+
+   
+   <div class="section" id="hwapi.classes">
+    <h2 class="title">クラス</h2>
+    <p class="para">
+     HW_API 拡張モジュールが提供する API は、完全にオブジェクト指向です。
+     Hyperwave SDK の C++ インターフェイスに非常によく似ています。
+     この API は、以下のクラスからなります。
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <span class="simpara">
+        <strong class="classname">HW_API</strong>
+          </span>
+         </li>
+      <li class="listitem">
+       <span class="simpara">
+        <strong class="classname">HW_API_Object</strong>
+          </span>
+         </li>
+      <li class="listitem">
+       <span class="simpara">
+        <strong class="classname">HW_API_Attribute</strong>
+          </span>
+         </li>
+      <li class="listitem">
+       <span class="simpara">
+        <strong class="classname">HW_API_Error</strong>
+          </span>
+         </li>
+      <li class="listitem">
+       <span class="simpara">
+        <strong class="classname">HW_API_Content</strong>
+          </span>
+         </li>
+      <li class="listitem">
+       <span class="simpara">
+        <strong class="classname">HW_API_Reason</strong>
+          </span>
+         </li>
+     </ul>
+     Hyperwave SDK に含まれているクラスのうち、
+     <strong class="classname">HW_API_String</strong>、
+     <strong class="classname">HW_API_String_Array</strong>
+     のような基本的なクラスは実装されていません。
+     PHP には、それらに代わる強力な機能があるからです。
+    </p>
+    <p class="para">
+     各クラスにはメソッドが含まれており、その名前は Hyperwave SDK
+     の対応するメソッドと同じです。この関数に引数を渡す方法は
+     PHP の他の拡張モジュールとは少し異なっており、HW SDK の C++ API
+     に似ています。複数のパラメータを別々に渡すのではなく、
+     それらをひとつの連想配列にまとめて単一のパラメータとして渡します。
+     連想配列のキーの名前は、HW SDK に記述されている内容と同じです。
+     一般的なパラメータについては以下で説明します。
+     それ以外のパラメータが必要になる場合は、必要に応じて説明されます。
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <span class="simpara">
+        <strong class="classname">objectIdentifier</strong> オブジェクトの名前あるいは ID。
+        例 &quot;rootcollection&quot;、&quot;0x873A8768 0x00000002&quot;。
+          </span>
+         </li>
+      <li class="listitem">
+       <span class="simpara">
+        <strong class="classname">parentIdentifier</strong>
+        親オブジェクトの名前あるいは ID。
+          </span>
+         </li>
+      <li class="listitem">
+       <span class="simpara">
+        <strong class="classname">object</strong> HW_API_Object クラスのインスタンス。
+          </span>
+         </li>
+      <li class="listitem">
+       <span class="simpara">
+        <strong class="classname">parameters</strong> HW_API_Object クラスのインスタンス。
+          </span>
+         </li>
+      <li class="listitem">
+       <span class="simpara">
+        <strong class="classname">version</strong> オブジェクトのバージョン。
+          </span>
+         </li>
+      <li class="listitem">
+       <span class="simpara">
+        <strong class="classname">mode</strong> 実行される操作を定義する整数値。
+          </span>
+         </li>
+      <li class="listitem">
+       <span class="simpara">
+        <strong class="classname">attributeSelector</strong>
+        文字列の配列で、個々の要素は属性の名前となります。
+        オブジェクトレコードを取得する際に特定の属性を含めたい場合に使用します。
+          </span>
+         </li>
+      <li class="listitem">
+       <span class="simpara">
+        <strong class="classname">objectQuery</strong>
+        オブジェクトのリストの中から特定のオブジェクトを選択するためのクエリ。
+         <span class="function"><a href="hwapi.children.html" class="function">hw_api::children()</a></span> や  <span class="function"><a href="hwapi.find.html" class="function">hw_api::find()</a></span>
+        のような関数から返されるオブジェクトの数を減らすために使用します。
+          </span>
+         </li>
+     </ul>
+    </p>
+    <blockquote class="note"><p><strong class="note">注意</strong>: 
+     <p class="para">
+      <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span> 型のメソッドは、
+      <strong><code>TRUE</code></strong>、<strong><code>FALSE</code></strong> あるいは
+      <strong class="classname">HW_API_Error</strong> オブジェクトを返します。
+     </p>
+    </p></blockquote>
+   </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="hwapi.checkin.html">hw_api::checkin</a> — オブジェクトをチェックインする</li><li><a href="hwapi.checkout.html">hw_api::checkout</a> — オブジェクトをチェックアウトする</li><li><a href="hwapi.children.html">hw_api::children</a> — オブジェクトの子を返す</li><li><a href="hwapi.content.html">hw_api::content</a> — オブジェクトのコンテンツを返す</li><li><a href="hwapi.copy.html">hw_api::copy</a> — 物理的にコピーする</li><li><a href="hwapi.dbstat.html">hw_api::dbstat</a> — データベースサーバーの統計情報を返す</li><li><a href="hwapi.dcstat.html">hw_api::dcstat</a> — 文書キャッシュサーバーの統計情報を返す</li><li><a href="hwapi.dstanchors.html">hw_api::dstanchors</a> — すべての対象アンカーの一覧を返す</li><li><a href="hwapi.dstofsrcanchor.html">hw_api::dstofsrcanchor</a> — ソースアンカーの対象を返す</li><li><a href="hwapi.find.html">hw_api::find</a> — オブジェクトを検索する</li><li><a href="hwapi.ftstat.html">hw_api::ftstat</a> — フルテキストサーバーの統計情報を返す</li><li><a href="hwapi.hwstat.html">hw_api::hwstat</a> — Hyperwave サーバーについての統計情報を返す</li><li><a href="hwapi.identify.html">hw_api::identify</a> — Hyperwave サーバーにログインする</li><li><a href="hwapi.info.html">hw_api::info</a> — サーバー設定についての情報を返す</li><li><a href="hwapi.insert.html">hw_api::insert</a> — 新しいオブジェクトを挿入する</li><li><a href="hwapi.insertanchor.html">hw_api::insertanchor</a> — アンカー型の新しいオブジェクトを挿入する</li><li><a href="hwapi.insertcollection.html">hw_api::insertcollection</a> — コレクション型の新しいオブジェクトを挿入する</li><li><a href="hwapi.insertdocument.html">hw_api::insertdocument</a> — 文書型の新しいオブジェクトを挿入する</li><li><a href="hwapi.link.html">hw_api::link</a> — オブジェクトへのリンクを作成する</li><li><a href="hwapi.lock.html">hw_api::lock</a> — オブジェクトをロックする</li><li><a href="hwapi.move.html">hw_api::move</a> — コレクション間でオブジェクトを移動する</li><li><a href="hwapi.object.html">hw_api::object</a> — 属性の情報を取得する</li><li><a href="hwapi.objectbyanchor.html">hw_api::objectbyanchor</a> — アンカーが所属しているオブジェクトを返す</li><li><a href="hwapi.parents.html">hw_api::parents</a> — オブジェクトの親を返す</li><li><a href="hwapi.remove.html">hw_api::remove</a> — オブジェクトを削除する</li><li><a href="hwapi.replace.html">hw_api::replace</a> — オブジェクトを置き換える</li><li><a href="hwapi.setcommittedversion.html">hw_api::setcommittedversion</a> — 最後のバージョン以外のバージョンをコミットする</li><li><a href="hwapi.srcanchors.html">hw_api::srcanchors</a> — ソースアンカーの一覧を返す</li><li><a href="hwapi.srcsofdst.html">hw_api::srcsofdst</a> — 対象オブジェクトのソースを返す</li><li><a href="hwapi.unlock.html">hw_api::unlock</a> — オブジェクトのロックを解除する</li><li><a href="hwapi.user.html">hw_api::user</a> — 自分自身のユーザーオブジェクトを返す</li><li><a href="hwapi.userlist.html">hw_api::userlist</a> — ログイン中の全ユーザーの一覧を返す</li><li><a href="hwapi.attribute-key.html">hw_api_attribute::key</a> — 属性のキーを返す</li><li><a href="hwapi.attribute-langdepvalue.html">hw_api_attribute::langdepvalue</a> — 指定した言語の値を返す</li><li><a href="hwapi.attribute-value.html">hw_api_attribute::value</a> — 属性の値を返す</li><li><a href="hwapi.attribute-values.html">hw_api_attribute::values</a> — 属性のすべての値を返す</li><li><a href="hwapi.content-mimetype.html">hw_api_content::mimetype</a> — mimetype を返す</li><li><a href="hwapi.content-read.html">hw_api_content::read</a> — コンテンツを読み込む</li><li><a href="hwapi.error-count.html">hw_api_error::count</a> — 原因の数を返す</li><li><a href="hwapi.error-reason.html">hw_api_error::reason</a> — エラーの原因を返す</li><li><a href="hwapi.object-assign.html">hw_api_object::assign</a> — オブジェクトを複製する</li><li><a href="hwapi.object-attreditable.html">hw_api_object::attreditable</a> — 属性が編集可能かどうかを調べる</li><li><a href="hwapi.object-count.html">hw_api_object::count</a> — 属性の数を返す</li><li><a href="hwapi.object-insert.html">hw_api_object::insert</a> — 新しい属性を挿入する</li><li><a href="hwapi.object-remove.html">hw_api_object::remove</a> — 属性を削除する</li><li><a href="hwapi.object-title.html">hw_api_object::title</a> — title 属性を返す</li><li><a href="hwapi.object-value.html">hw_api_object::value</a> — 属性の値を返す</li><li><a href="hwapi.reason-description.html">hw_api_reason::description</a> — 原因の説明を返す</li><li><a href="hwapi.reason-type.html">hw_api_reason::type</a> — 原因の型を返す</li><li><a href="function.hwapi-attribute-new.html">hwapi_attribute_new</a> — hw_api_attribute クラスのインスタンスを作成する</li><li><a href="function.hwapi-content-new.html">hwapi_content_new</a> — hw_api_content クラスの新しいインスタンスを作成する</li><li><a href="function.hwapi-hgcsp.html">hwapi_hgcsp</a> — hw_api クラスのオブジェクトを返す</li><li><a href="function.hwapi-object-new.html">hwapi_object_new</a> — hwapi_object_new クラスの新しいインスタンスを作成する</li></ul>
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="hwapi.constants.html">定義済み定数</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="hwapi.checkin.html">hw_api::checkin</a></div>
+ <div class="up"><a href="book.hwapi.html">Hyperwave API</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

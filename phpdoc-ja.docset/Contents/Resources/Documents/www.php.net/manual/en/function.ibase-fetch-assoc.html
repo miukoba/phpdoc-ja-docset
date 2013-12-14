@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>クエリの結果から、行を連想配列として取得する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.ibase-execute.html">ibase_execute</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.ibase-fetch-object.html">ibase_fetch_object</a></div>
+ <div class="up"><a href="ref.ibase.html">Firebird/InterBase 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.ibase-fetch-assoc" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ibase_fetch_assoc</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose"><span class="refname">ibase_fetch_assoc</span> &mdash; <span class="dc-title">クエリの結果から、行を連想配列として取得する</span></p>
+ 
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.ibase-fetch-assoc-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">array</span> <span class="methodname"><strong>ibase_fetch_assoc</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$result</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$fetch_flag</code><span class="initializer"> = 0</span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+   クエリの結果の行を連想配列で返します。
+  </p>
+  <p class="para">
+    <span class="function"><strong>ibase_fetch_assoc()</strong></span> は、
+   <em><code class="parameter">result</code></em> から結果を 1 行取得します。
+   同じフィールド名のカラムが 2 つ以上存在する場合、最後のカラムが
+   優先されます。同名のその他のカラムにアクセスするには、
+    <span class="function"><a href="function.ibase-fetch-row.html" class="function">ibase_fetch_row()</a></span> を使用して数値添字を用いるか
+   あるいはクエリ中でカラムに別名をつけます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.ibase-fetch-assoc-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">result</code></em></span>
+     <dd>
+
+      <p class="para">
+       結果ハンドル。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">fetch_flag</code></em></span>
+     <dd>
+
+      <p class="para">
+       <em><code class="parameter">fetch_flag</code></em> は、定数 <strong><code>IBASE_TEXT</code></strong>
+       および <strong><code>IBASE_UNIXTIME</code></strong>
+       を論理和で指定します。<strong><code>IBASE_TEXT</code></strong> を渡すと、BLOB ID のかわりに BLOB
+       の内容自体を返します。<strong><code>IBASE_UNIXTIME</code></strong> を渡すと、日付/時刻の値を文字列ではなく
+       Unix タイムスタンプで返します。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.ibase-fetch-assoc-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+    <span class="function"><strong>ibase_fetch_assoc()</strong></span> は、取得した行に対応する連想配列を返します。
+   続けてコールすると、結果セットの次の行を返し、
+   行がもうない場合には <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.ibase-fetch-assoc-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="function.ibase-fetch-row.html" class="function" rel="rdfs-seeAlso">ibase_fetch_row()</a> - InterBase データベースから 1 行分の結果を取得する</span></li>
+    <li class="member"> <span class="function"><a href="function.ibase-fetch-object.html" class="function" rel="rdfs-seeAlso">ibase_fetch_object()</a> - InterBase データベースからオブジェクトを得る</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="52247""></a>
+  <div class="note">
+   <strong class="user">karasek ... ceskyserver - dot - cz</strong>
+   <a href="#52247" class="date">26-Apr-2005 09:37</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Unlike mysql_fetch_assoc, all indexes of associative array are upper-case.<br />
+<br />
+so, use<br />
+$row = ibase_fetch_assoc($result);<br />
+<br />
+echo $row["INDEX"];<br />
+not<br />
+echo $row["index"];</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="38253""></a>
+  <div class="note">
+   <strong class="user">sir_fred@</strong>
+   <a href="#38253" class="date">14-Dec-2003 03:34</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If your php is older than version 4.3.0, you can use the following:<br />
+<br />
+$arr_record = get_object_vars(ibase_fetch_object($sql_result));<br />
+<br />
+which is the same as: $arr_record = ibase_fetch_assoc($sql_result);</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.ibase-execute.html">ibase_execute</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.ibase-fetch-object.html">ibase_fetch_object</a></div>
+ <div class="up"><a href="ref.ibase.html">Firebird/InterBase 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

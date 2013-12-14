@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Mac OS X へのインストール</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="install.unix.debian.html">Debian GNU/Linux へのインストール</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="install.macosx.packages.html">パッケージの使用</a></div>
+ <div class="up"><a href="install.html">インストールと設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="install.macosx" class="chapter">
+  <h1>Mac OS X へのインストール</h1>
+<h2>目次</h2><ul class="chunklist chunklist_chapter"><li><a href="install.macosx.packages.html">パッケージの使用</a></li><li><a href="install.macosx.bundled.html">バンドルされている PHP の使用法</a></li><li><a href="install.macosx.compile.html">Mac OS X 上での PHP のコンパイル</a></li></ul>
+
+  <p class="para">
+   本章では、PHP を Mac OS X 上にインストールする際の注意事項とコツを説明します。
+   PHP は Mac にバンドルされています。また、コンパイルの手順は
+   <a href="install.unix.html" class="link">Unix へのインストールガイド</a>
+   と同じです。
+  </p>
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+ 
+
+
+
+ </div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="73743""></a>
+  <div class="note">
+   <strong class="user">Dan Black</strong>
+   <a href="#73743" class="date">08-Mar-2007 05:00</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+My httpd.conf had some of the lines, but not all of them -- mine was missing the LoadModule and AddModule lines for php.&nbsp; I'm not sure why -- I don't delete any of those; I just comment them out if I'm not using them.&nbsp; Plus, the note above put a space in "LoadModule"; it has no space.&nbsp; I didn't know about the "apachectl graceful" trick, though -- since "httpd -k restart" stopped working (probably around 10.2), I had just been doing it manually -- find the process, kill it, and hit httpd again -- thanks for the tip!<br />
+<br />
+So for those who are missing any of the lines, here are the full lines.<br />
+<br />
+In the section with all the other LoadModules:<br />
+&nbsp; LoadModule php4_module&nbsp; &nbsp; &nbsp; &nbsp; libexec/httpd/libphp4.so&lt;/div&gt;<br />
+<br />
+Directly below that section should be the AddModules; you need:<br />
+&nbsp; AddModule mod_php4.c<br />
+<br />
+And then the AddType lines should be right after the language priorities (so after the AddCharset lines and after the LanguagePriority bit):<br />
+&nbsp; AddType application/x-httpd-php .php<br />
+&nbsp; AddType application/x-httpd-php-source .phps<br />
+<br />
+Then restart apache/httpd as described above, and hopefully you should be good.<br />
+<br />
+BTW, the actual module should be at:<br />
+/usr/libexec/httpd/libphp4.so<br />
+So if things fail, you can check to see if that's there.<br />
+<br />
+Thanks to others who posted here; it definitely helped and got me on the right track.&nbsp; I just had to find the module manually to write my own LoadModule line.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="69552""></a>
+  <div class="note">
+   <strong class="user">Jeff Hayden</strong>
+   <a href="#69552" class="date">10-Sep-2006 08:17</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Just a note. The darwinports software is now macports and you can get it at: <a href="http://www.macports.org/" rel="nofollow" target="_blank">http://www.macports.org/</a><br />
+<br />
+If you use macports, be sure to change any refernces you may have in your calling scripts to macports as the file macports now gets installed.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="44854""></a>
+  <div class="note">
+   <strong class="user">andreas at fink dot org</strong>
+   <a href="#44854" class="date">18-Aug-2004 09:01</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+To build on MacOS X 10.3.5 set the environment variable CFLAGS in the following way (depending on your shell)<br />
+<br />
+setenv CFLAGS "-DBIND_8_COMPAT=1 -DEAPI -O3"<br />
+<br />
+export CFLAGS="-DBIND_8_COMPAT=1 -DEAPI -O3"<br />
+<br />
+Then launch configure with the options:<br />
+<br />
+./configure --prefix=/usr --mandir=/usr/share/man&nbsp; ....<br />
+<br />
+The -DBIND_8_COMPAT=1 gets you over a problem in the DNS files because MacOS X has definitions for Bind9 and PHP expects Bind8 definitions. -DEAPI is needed if you build it for Apache 1.3.31. -O3 enables the gcc optimizer.<br />
+<br />
+You can also add one of the following lines to your CFLAGS depending on the CPU you use to further improve speed:<br />
+-mcpu=G3 -mtune=G3<br />
+-mcpu=G4 -mtune=G4<br />
+-mcpu=G5 -mtune=G5</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="install.unix.debian.html">Debian GNU/Linux へのインストール</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="install.macosx.packages.html">パッケージの使用</a></div>
+ <div class="up"><a href="install.html">インストールと設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

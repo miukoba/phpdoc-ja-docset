@@ -1,0 +1,698 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>HTTP ファイルアップロード変数</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="reserved.variables.post.html">$_POST</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="reserved.variables.request.html">$_REQUEST</a></div>
+ <div class="up"><a href="reserved.variables.html">定義済の変数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="reserved.variables.files" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">$_FILES</h1>
+  <h1 class="refname">$HTTP_POST_FILES [非推奨]</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.1.0, PHP 5)</p><p class="refpurpose"><span class="refname">$_FILES</span> -- <span class="refname">$HTTP_POST_FILES [非推奨]</span> &mdash; <span class="dc-title">HTTP ファイルアップロード変数</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-reserved.variables.files-description">
+  <h3 class="title">説明</h3>
+  <p class="para">
+   HTTP POST メソッドで現在のスクリプトにアップロードされた項目の連想配列です。
+  </p>
+
+  <p class="simpara">
+   <var class="varname"><var class="varname">$HTTP_POST_FILES</var></var> は同じ情報を持っていますが、
+   これは<a href="language.variables.superglobals.html" class="link">スーパーグローバル</a>ではありません
+   (<var class="varname"><var class="varname">$HTTP_POST_FILES</var></var> と <var class="varname"><var class="varname">$_FILES</var></var>
+   は異なる変数であり、PHP はこれらを異なる変数として扱うことに注意してください)。
+  </p>
+
+ </div>
+
+ 
+
+ <div class="refsect1 changelog" id="refsect1-reserved.variables.files-changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>4.1.0</td>
+       <td>
+        <var class="varname"><var class="varname">$_FILES</var></var> が導入され、
+        <var class="varname"><var class="varname">$HTTP_POST_FILES</var></var>
+        は非推奨となりました。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 notes" id="refsect1-reserved.variables.files-notes">
+  <h3 class="title">注意</h3>
+  <blockquote class="note"><p><strong class="note">注意</strong>: <p class="para">これは &#039;スーパーグローバル&#039;
+あるいは自動グローバル変数と呼ばれるものです。
+スクリプト全体を通してすべてのスコープで使用することができます。
+関数やメソッドの内部で使用する場合にも
+<strong class="command">global $variable;</strong> とする必要はありません。
+</p></p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-reserved.variables.files-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="function.move-uploaded-file.html" class="function" rel="rdfs-seeAlso">move_uploaded_file()</a> - アップロードされたファイルを新しい位置に移動する</span></li>
+    <li class="member"><a href="features.file-upload.html" class="link">ファイルアップロードの処理</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113424""></a>
+  <div class="note">
+   <strong class="user">phazei at gmail dot com</strong>
+   <a href="#113424" class="date">09-Oct-2013 09:51</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I realize there are a number of posts here for reformating the php $_FILES array, but they don't handle all cases.&nbsp; This handles the single case, the multiple file case, and even submitting multiple file arrays.&nbsp; This way no matter what, before ever touching the files array I call this regardless of what it might be:<br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">/**<br />
+&nbsp;&nbsp; &nbsp; * This is to fix the odd files array PHP creates when a file input has a name that's php array:<br />
+&nbsp;&nbsp; &nbsp; * eg: &lt;file name="model[column]" value='file1'&gt; &lt;file name="model[column2][]" value='file2'&gt;<br />
+&nbsp;&nbsp; &nbsp; * becomes:&nbsp; $_FILES['model']['name'][column] = file1_name.xxx<br />
+&nbsp;&nbsp; &nbsp; *&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; $_FILES['model']['name'][column2][0] = file2_name.xxx<br />
+&nbsp;&nbsp; &nbsp; *<br />
+&nbsp;&nbsp; &nbsp; * this changes it to:<br />
+&nbsp;&nbsp; &nbsp; *&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; $files['model'][column]['name'] = file1_name.xxx<br />
+&nbsp;&nbsp; &nbsp; *&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; $files['model'][column2][0]['name'] = file2_name.xxx<br />
+&nbsp;&nbsp; &nbsp; *<br />
+&nbsp;&nbsp; &nbsp; * This way the file data is grouped together as expected and as it does with a non-array type name attribute<br />
+&nbsp;&nbsp; &nbsp; */<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">static public function </span><span class="default">multi_file_fix</span><span class="keyword">(</span><span class="default">$files </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">)<br />
+&nbsp;&nbsp;&nbsp; {<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if (</span><span class="default">$files </span><span class="keyword">== </span><span class="default">null</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$files </span><span class="keyword">= (</span><span class="default">is_array</span><span class="keyword">(</span><span class="default">$_FILES</span><span class="keyword">)) ? </span><span class="default">$_FILES </span><span class="keyword">: array();<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">//make there there is a file, and see if the first item is also an array<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$new_files </span><span class="keyword">= array();<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; foreach (</span><span class="default">$files </span><span class="keyword">as </span><span class="default">$name </span><span class="keyword">=&gt; </span><span class="default">$attributes</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (</span><span class="default">is_array</span><span class="keyword">(</span><span class="default">reset</span><span class="keyword">(</span><span class="default">$attributes</span><span class="keyword">))) { </span><span class="comment">//check first item<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">foreach (</span><span class="default">$attributes </span><span class="keyword">as </span><span class="default">$attribute </span><span class="keyword">=&gt; </span><span class="default">$item</span><span class="keyword">) { </span><span class="comment">//array file submit, eg name="model[file]"<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">foreach (</span><span class="default">$item </span><span class="keyword">as </span><span class="default">$key </span><span class="keyword">=&gt; </span><span class="default">$value</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (</span><span class="default">is_array</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">)) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; foreach (</span><span class="default">$value </span><span class="keyword">as </span><span class="default">$key2 </span><span class="keyword">=&gt; </span><span class="default">$sub_val</span><span class="keyword">) { </span><span class="comment">// multi-array file submit, eg name="model[file][]"<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$new_files</span><span class="keyword">[</span><span class="default">$name</span><span class="keyword">][</span><span class="default">$key</span><span class="keyword">][</span><span class="default">$key2</span><span class="keyword">][</span><span class="default">$attribute</span><span class="keyword">] = </span><span class="default">$sub_val</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; } else {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$new_files</span><span class="keyword">[</span><span class="default">$name</span><span class="keyword">][</span><span class="default">$key</span><span class="keyword">][</span><span class="default">$attribute</span><span class="keyword">] = </span><span class="default">$value</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; } else { </span><span class="comment">// regular file submit, eg name="file"<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$new_files</span><span class="keyword">[</span><span class="default">$name</span><span class="keyword">] = </span><span class="default">$attributes</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">$new_files</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+<br />
+</span><span class="comment">//Usage:<br />
+<br />
+</span><span class="default">$files </span><span class="keyword">= </span><span class="default">multi_file_fix</span><span class="keyword">(</span><span class="default">$_FILES</span><span class="keyword">);<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="109958""></a>
+  <div class="note">
+   <strong class="user">sergio_ag at terra dot com dot br</strong>
+   <a href="#109958" class="date">06-Sep-2012 05:09</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+A nice trick to reorder the $_FILES array when you use a input name as array is:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">diverse_array</span><span class="keyword">(</span><span class="default">$vector</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$result </span><span class="keyword">= array();<br />
+&nbsp;&nbsp;&nbsp; foreach(</span><span class="default">$vector </span><span class="keyword">as </span><span class="default">$key1 </span><span class="keyword">=&gt; </span><span class="default">$value1</span><span class="keyword">)<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; foreach(</span><span class="default">$value1 </span><span class="keyword">as </span><span class="default">$key2 </span><span class="keyword">=&gt; </span><span class="default">$value2</span><span class="keyword">)<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$result</span><span class="keyword">[</span><span class="default">$key2</span><span class="keyword">][</span><span class="default">$key1</span><span class="keyword">] = </span><span class="default">$value2</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; return </span><span class="default">$result</span><span class="keyword">;<br />
+}<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+will transform this:<br />
+<br />
+array(1) {<br />
+&nbsp;&nbsp;&nbsp; ["upload"]=&gt;array(2) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ["name"]=&gt;array(2) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [0]=&gt;string(9)"file0.txt"<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [1]=&gt;string(9)"file1.txt"<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ["type"]=&gt;array(2) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [0]=&gt;string(10)"text/plain"<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [1]=&gt;string(10)"text/html"<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+<br />
+into:<br />
+<br />
+array(1) {<br />
+&nbsp;&nbsp;&nbsp; ["upload"]=&gt;array(2) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; [0]=&gt;array(2) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; ["name"]=&gt;string(9)"file0.txt"<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; ["type"]=&gt;string(10)"text/plain"<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; },<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; [1]=&gt;array(2) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; ["name"]=&gt;string(9)"file1.txt"<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; ["type"]=&gt;string(10)"text/html"<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+<br />
+just do:<br />
+<br />
+<span class="default">&lt;?php $upload </span><span class="keyword">= </span><span class="default">diverse_array</span><span class="keyword">(</span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">"upload"</span><span class="keyword">]); </span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="109902""></a>
+  <div class="note">
+   <strong class="user">sparticvs at popebp dot com</strong>
+   <a href="#109902" class="date">02-Sep-2012 05:59</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+A note of security: Don't ever trust $_FILES["image"]["type"]. It takes whatever is sent from the browser, so don't trust this for the image type.&nbsp; I recommend using finfo_open (<a href="http://www.php.net/manual/en/function.finfo-open.php" rel="nofollow" target="_blank">http://www.php.net/manual/en/function.finfo-open.php</a>) to verify the MIME type of a file. It will parse the MAGIC in the file and return it's type...this can be trusted (you can also use the "file" program on Unix, but I would refrain from ever making a System call with your PHP code...that's just asking for problems).</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="109648""></a>
+  <div class="note">
+   <strong class="user">tjbp</strong>
+   <a href="#109648" class="date">05-Aug-2012 06:46</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+For quick debugging (eg. var_dump($_FILES);), these are the values of the error constants. Obviously don't use these for comparison in real code.<br />
+<br />
+UPLOAD_ERR_OK: 0<br />
+UPLOAD_ERR_INI_SIZE: 1<br />
+UPLOAD_ERR_FORM_SIZE: 2<br />
+UPLOAD_ERR_NO_TMP_DIR: 6<br />
+UPLOAD_ERR_CANT_WRITE: 7<br />
+UPLOAD_ERR_EXTENSION: 8<br />
+UPLOAD_ERR_PARTIAL: 3</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="109283""></a>
+  <div class="note">
+   <strong class="user">seifert at alesak dot net</strong>
+   <a href="#109283" class="date">02-Jul-2012 11:02</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I just spent long time debugging strange behavior of one of our application on new webhosting. We have 30 file inputs on one page for upload to server. Problem was that only 20 was actually uploaded.<br />
+<br />
+Now I found there is an option max_file_uploads in php.ini limiting maximum size of $_FILES to 20 by default.<br />
+<br />
+When you have suhosin extension installed it has own option limiting same thing to 25 (suhosin.upload.max_uploads in php.ini)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="108718""></a>
+  <div class="note">
+   <strong class="user">Alexandre Teles</strong>
+   <a href="#108718" class="date">20-May-2012 01:31</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+You can check error index this way:<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+$errorIndex </span><span class="keyword">= </span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">"file"</span><span class="keyword">][</span><span class="string">"error"</span><span class="keyword">];<br />
+<br />
+if (</span><span class="default">$errorIndex </span><span class="keyword">&gt; </span><span class="default">0</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; die(</span><span class="string">'We have a error. Try Again.'</span><span class="keyword">);<br />
+}<br />
+<br />
+</span><span class="default">processFile</span><span class="keyword">();<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="107940""></a>
+  <div class="note">
+   <strong class="user">yuriy dot nayda at gmail dot com</strong>
+   <a href="#107940" class="date">16-Mar-2012 01:49</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+THis is an solution to convert Cyrillic and umlaut characters as file name when uplaoding files into needed encoding. Was searching for it but could not find. Thus posting this. Just like this:<br />
+<br />
+$value = mb_convert_encoding($value, "UTF-8");</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="106608""></a>
+  <div class="note">
+   <strong class="user">BigShark666 at gmail dot com</strong>
+   <a href="#106608" class="date">22-Nov-2011 07:51</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Nontypicall array comes in php after the submission.I wrote a small function to restate it to the familiar look.<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">multiple</span><span class="keyword">(array </span><span class="default">$_files</span><span class="keyword">, </span><span class="default">$top </span><span class="keyword">= </span><span class="default">TRUE</span><span class="keyword">)<br />
+{<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$files </span><span class="keyword">= array();<br />
+&nbsp;&nbsp;&nbsp; foreach(</span><span class="default">$_files </span><span class="keyword">as </span><span class="default">$name</span><span class="keyword">=&gt;</span><span class="default">$file</span><span class="keyword">){<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if(</span><span class="default">$top</span><span class="keyword">) </span><span class="default">$sub_name </span><span class="keyword">= </span><span class="default">$file</span><span class="keyword">[</span><span class="string">'name'</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; else&nbsp; &nbsp; </span><span class="default">$sub_name </span><span class="keyword">= </span><span class="default">$name</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if(</span><span class="default">is_array</span><span class="keyword">(</span><span class="default">$sub_name</span><span class="keyword">)){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; foreach(</span><span class="default">array_keys</span><span class="keyword">(</span><span class="default">$sub_name</span><span class="keyword">) as </span><span class="default">$key</span><span class="keyword">){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$files</span><span class="keyword">[</span><span class="default">$name</span><span class="keyword">][</span><span class="default">$key</span><span class="keyword">] = array(<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">'name'&nbsp; &nbsp;&nbsp; </span><span class="keyword">=&gt; </span><span class="default">$file</span><span class="keyword">[</span><span class="string">'name'</span><span class="keyword">][</span><span class="default">$key</span><span class="keyword">],<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">'type'&nbsp; &nbsp;&nbsp; </span><span class="keyword">=&gt; </span><span class="default">$file</span><span class="keyword">[</span><span class="string">'type'</span><span class="keyword">][</span><span class="default">$key</span><span class="keyword">],<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">'tmp_name' </span><span class="keyword">=&gt; </span><span class="default">$file</span><span class="keyword">[</span><span class="string">'tmp_name'</span><span class="keyword">][</span><span class="default">$key</span><span class="keyword">],<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">'error'&nbsp; &nbsp; </span><span class="keyword">=&gt; </span><span class="default">$file</span><span class="keyword">[</span><span class="string">'error'</span><span class="keyword">][</span><span class="default">$key</span><span class="keyword">],<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">'size'&nbsp; &nbsp;&nbsp; </span><span class="keyword">=&gt; </span><span class="default">$file</span><span class="keyword">[</span><span class="string">'size'</span><span class="keyword">][</span><span class="default">$key</span><span class="keyword">],<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; );<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$files</span><span class="keyword">[</span><span class="default">$name</span><span class="keyword">] = </span><span class="default">multiple</span><span class="keyword">(</span><span class="default">$files</span><span class="keyword">[</span><span class="default">$name</span><span class="keyword">], </span><span class="default">FALSE</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }else{<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$files</span><span class="keyword">[</span><span class="default">$name</span><span class="keyword">] = </span><span class="default">$file</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; return </span><span class="default">$files</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$_FILES</span><span class="keyword">);<br />
+</span><span class="comment">/*<br />
+Array<br />
+(<br />
+&nbsp;&nbsp;&nbsp; [image] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [name] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [0] =&gt; 400.png<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; )<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [type] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [0] =&gt; image/png<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; )<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [tmp_name] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [0] =&gt; /tmp/php5Wx0aJ<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; )<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [error] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [0] =&gt; 0<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; )<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [size] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [0] =&gt; 15726<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; )<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; )<br />
+)<br />
+*/<br />
+</span><span class="default">$files </span><span class="keyword">= </span><span class="default">multiple</span><span class="keyword">(</span><span class="default">$_FILES</span><span class="keyword">);<br />
+</span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$files</span><span class="keyword">);<br />
+</span><span class="comment">/*<br />
+Array<br />
+(<br />
+&nbsp;&nbsp;&nbsp; [image] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [0] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [name] =&gt; 400.png<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [type] =&gt; image/png<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [tmp_name] =&gt; /tmp/php5Wx0aJ<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [error] =&gt; 0<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [size] =&gt; 15726<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; )<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; )<br />
+)<br />
+*/<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="106558""></a>
+  <div class="note">
+   <strong class="user">kbolyshev at gmail dot com</strong>
+   <a href="#106558" class="date">18-Nov-2011 01:39</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+For situation download[file1], download[file2], ..., download[fileN], try it:<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="comment">/**<br />
+&nbsp;*<br />
+&nbsp;* @param array&nbsp; &nbsp;&nbsp; $arrayForFill<br />
+&nbsp;* @param string&nbsp; &nbsp; $currentKey<br />
+&nbsp;* @param mixed&nbsp; &nbsp;&nbsp; $currentMixedValue<br />
+&nbsp;* @param string&nbsp; &nbsp; $fileDescriptionParam (name, type, tmp_name, error или size)<br />
+&nbsp;* @return void<br />
+&nbsp;*/<br />
+</span><span class="keyword">function </span><span class="default">rRestructuringFilesArray</span><span class="keyword">(&amp;</span><span class="default">$arrayForFill</span><span class="keyword">, </span><span class="default">$currentKey</span><span class="keyword">, </span><span class="default">$currentMixedValue</span><span class="keyword">, </span><span class="default">$fileDescriptionParam</span><span class="keyword">)<br />
+{<br />
+&nbsp;&nbsp;&nbsp; if (</span><span class="default">is_array</span><span class="keyword">(</span><span class="default">$currentMixedValue</span><span class="keyword">)) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; foreach (</span><span class="default">$currentMixedValue </span><span class="keyword">as </span><span class="default">$nameKey </span><span class="keyword">=&gt; </span><span class="default">$mixedValue</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">rRestructuringFilesArray</span><span class="keyword">(</span><span class="default">$arrayForFill</span><span class="keyword">[</span><span class="default">$currentKey</span><span class="keyword">],<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$nameKey</span><span class="keyword">,<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$mixedValue</span><span class="keyword">,<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$fileDescriptionParam</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; } else {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$arrayForFill</span><span class="keyword">[</span><span class="default">$currentKey</span><span class="keyword">][</span><span class="default">$fileDescriptionParam</span><span class="keyword">] = </span><span class="default">$currentMixedValue</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+<br />
+</span><span class="default">$arrayForFill </span><span class="keyword">= array();<br />
+foreach (</span><span class="default">$_FILES </span><span class="keyword">as </span><span class="default">$firstNameKey </span><span class="keyword">=&gt; </span><span class="default">$arFileDescriptions</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; foreach (</span><span class="default">$arFileDescriptions </span><span class="keyword">as </span><span class="default">$fileDescriptionParam </span><span class="keyword">=&gt; </span><span class="default">$mixedValue</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">rRestructuringFilesArray</span><span class="keyword">(</span><span class="default">$arrayForFill</span><span class="keyword">,<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$firstNameKey</span><span class="keyword">,<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$_FILES</span><span class="keyword">[</span><span class="default">$firstNameKey</span><span class="keyword">][</span><span class="default">$fileDescriptionParam</span><span class="keyword">],<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$fileDescriptionParam</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+</span><span class="default">$_FILES </span><span class="keyword">= </span><span class="default">$arrayForFill</span><span class="keyword">;<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="105640""></a>
+  <div class="note">
+   <strong class="user">unca dot alby at gmail dot com</strong>
+   <a href="#105640" class="date">02-Sep-2011 10:31</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+In checking the error code, you probably ought to check for code 4.&nbsp; I believe Code 4 means no file was uploaded, and there are many instances where that's perfectly OK.<br />
+<br />
+Such as when you have a form with multiple data items, including file and image uploads, plus whatever else.&nbsp; The user might not be adding a new upload for whatever reason, such as there may already be a file in the system from an earlier update, and the user is satisfied with that.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="104395""></a>
+  <div class="note">
+   <strong class="user">Sbastien</strong>
+   <a href="#104395" class="date">13-Jun-2011 04:36</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you're uploading multiple files and you name your file inputs "upload[]" the $_FILES array will look different than the var_dump posted below. I figured I'd post what it looks like since it caused me (and still causes me) headaches!<br />
+<br />
+array(1) {<br />
+&nbsp;&nbsp;&nbsp; ["upload"]=&gt;array(5) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ["name"]=&gt;array(3) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [0]=&gt;string(9)"file0.txt"<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [1]=&gt;string(9)"file1.txt"<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [2]=&gt;string(9)"file2.txt"<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ["type"]=&gt;array(3) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [0]=&gt;string(10)"text/plain"<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [1]=&gt;string(10)"text/plain"<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [2]=&gt;string(10)"text/plain"<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ["tmp_name"]=&gt;array(3) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [0]=&gt;string(14)"/tmp/blablabla"<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [1]=&gt;string(14)"/tmp/phpyzZxta"<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [2]=&gt;string(14)"/tmp/phpn3nopO"<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ["error"]=&gt;array(3) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [0]=&gt;int(0)<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [1]=&gt;int(0)<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [2]=&gt;int(0)<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ["size"]=&gt;array(3) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [0]=&gt;int(0)<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [1]=&gt;int(0)<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [2]=&gt;int(0)<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+<br />
+(I thought the array would have looked like upload[index][name] which is not the case.)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="103662""></a>
+  <div class="note">
+   <strong class="user">Anonymous</strong>
+   <a href="#103662" class="date">26-Apr-2011 11:48</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Having url rewrite patterns in .htaccess file which modify your urls can affect $_FILES sometimes. Even though the php page loads and works fine, this variable may not work because of it. Therefore if you rewrite 'www.example.com' to 'example.com', make sure you use the latter one when sending POST to the php page. I'm still not sure why this happens, but its worth noting here so others don't spend time chasing ghosts.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="103522""></a>
+  <div class="note">
+   <strong class="user">Anonymous</strong>
+   <a href="#103522" class="date">18-Apr-2011 03:23</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+As mentioned , you should check the error index of the upload.<br />
+<br />
+Example below suggests you have a file field named 'image'.<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if(</span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">'image'</span><span class="keyword">][</span><span class="string">'error'</span><span class="keyword">] == </span><span class="default">0</span><span class="keyword">){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// success - move uploaded file and process stuff here<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">}else{<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// 'there was an error uploading file' stuff here....&nbsp; &nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">}<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="102252""></a>
+  <div class="note">
+   <strong class="user">John</strong>
+   <a href="#102252" class="date">04-Feb-2011 03:14</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+In the past you could unconditionally call $_FILES['profile_pic'] without ever having to worry about PHP spitting an "Undefined index: profile_pic" error (so long as the page posting had a file input on it (e.g. &lt;input type="file" name="profile_pic" /&gt;)). This was the case regardless of whether or not the end user actually uploaded a file. These days, with so many people browsing the web via iPads, you have to explicitly check to see if the input isset($_FILES['profile_pic']) before calling into it, else you'll get the aforementioned error message. This is because iOS devices running Safari disable file inputs thereby causing them to be treated as if they don't exist. Time to update your scripts!<br />
+<br />
+-john</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="92893""></a>
+  <div class="note">
+   <strong class="user">mwgamera at gmail dot com</strong>
+   <a href="#92893" class="date">13-Aug-2009 02:40</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+To determine whether upload was successful you should check for error being UPLOAD_ERR_OK instead of checking the file size. When nothing is chosen to be uploaded, the key in $_FILES will still be there, but it should have error equal UPLOAD_ERR_NO_FILE.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="91862""></a>
+  <div class="note">
+   <strong class="user">calurion at gmail dot com</strong>
+   <a href="#91862" class="date">30-Jun-2009 01:51</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+For some reason when I tried to check if $_FILES['myVarName'] was empty() or !isset() or array_key_exists(), it always came back that the file was indeed in the superglobal, even when nothing was uploaded.<br />
+<br />
+I wonder if this is a result of enctype="multipart/form-data".<br />
+<br />
+Anyways, I solved my issue by checking to make sure that $_FILES['myVarName']['size'] &gt; 0</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="91041""></a>
+  <div class="note">
+   <strong class="user">Sam</strong>
+   <a href="#91041" class="date">22-May-2009 04:08</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This is REQUIRED by the xhtml specs.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="89674""></a>
+  <div class="note">
+   <strong class="user">dewi at dewimorgan dot com</strong>
+   <a href="#89674" class="date">18-Mar-2009 07:35</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The format of this array is (assuming your form has two input type=file fields named "file1", "file2", etc):<br />
+<br />
+Array<br />
+(<br />
+&nbsp;&nbsp;&nbsp; [file1] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [name] =&gt; MyFile.txt (comes from the browser, so treat as tainted)<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [type] =&gt; text/plain&nbsp; (not sure where it gets this from - assume the browser, so treat as tainted)<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [tmp_name] =&gt; /tmp/php/php1h4j1o (could be anywhere on your system, depending on your config settings, but the user has no control, so this isn't tainted)<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [error] =&gt; UPLOAD_ERR_OK&nbsp; (= 0)<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [size] =&gt; 123&nbsp;&nbsp; (the size in bytes)<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; )<br />
+<br />
+&nbsp;&nbsp;&nbsp; [file2] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [name] =&gt; MyFile.jpg<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [type] =&gt; image/jpeg<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [tmp_name] =&gt; /tmp/php/php6hst32<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [error] =&gt; UPLOAD_ERR_OK<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [size] =&gt; 98174<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; )<br />
+)<br />
+<br />
+Last I checked (a while ago now admittedly), if you use array parameters in your forms (that is, form names ending in square brackets, like several file fields called "download[file1]", "download[file2]" etc), then the array format becomes... interesting.<br />
+<br />
+Array<br />
+(<br />
+&nbsp;&nbsp;&nbsp; [download] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [name] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [file1] =&gt; MyFile.txt<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [file2] =&gt; MyFile.jpg<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; )<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [type] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [file1] =&gt; text/plain<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [file2] =&gt; image/jpeg<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; )<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [tmp_name] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [file1] =&gt; /tmp/php/php1h4j1o<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [file2] =&gt; /tmp/php/php6hst32<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; )<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [error] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [file1] =&gt; UPLOAD_ERR_OK<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [file2] =&gt; UPLOAD_ERR_OK<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; )<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [size] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [file1] =&gt; 123<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [file2] =&gt; 98174<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; )<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; )<br />
+)<br />
+<br />
+So you'd need to access the error param of file1 as, eg $_Files['download']['error']['file1']</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="88251""></a>
+  <div class="note">
+   <strong class="user">andrewpunch at bigfoot dot com</strong>
+   <a href="#88251" class="date">17-Jan-2009 09:16</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If $_FILES is empty, even when uploading, try adding enctype="multipart/form-data" to the form tag and make sure you have file uploads turned on.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="reserved.variables.post.html">$_POST</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="reserved.variables.request.html">$_REQUEST</a></div>
+ <div class="up"><a href="reserved.variables.html">定義済の変数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

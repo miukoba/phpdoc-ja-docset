@@ -1,0 +1,297 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>持続的接続を使用してOracle データベースに接続する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.oci-password-change.html">oci_password_change</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.oci-result.html">oci_result</a></div>
+ <div class="up"><a href="ref.oci8.html">OCI8 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.oci-pconnect" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">oci_pconnect</h1>
+  <p class="verinfo">(PHP 5, PECL OCI8 &gt;= 1.1.0)</p><p class="refpurpose"><span class="refname">oci_pconnect</span> &mdash; <span class="dc-title">持続的接続を使用してOracle データベースに接続する</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.oci-pconnect-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">resource</span> <span class="methodname"><strong>oci_pconnect</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$username</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$password</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$connection_string</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$character_set</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$session_mode</code></span>
+  ]]] )</div>
+
+  <p class="para rdfs-comment">
+   Oracle サーバーへの持続的接続を生成し、ログオンします。
+  </p>
+  <p class="para">
+   持続的接続はキャッシュされ、リクエスト間で再利用されることで、
+   各ページロードのオーバーヘッドを軽減します。
+   典型的な PHP アプリケーションでは、Apache の子プロセス
+   (もしくは PHP FastCGI/CGI プロセス) ごとに
+   Oracle サーバーに対してオープンされた単一の持続的接続を有します。
+   より詳細な情報については、<a href="features.persistent-connections.html" class="link">持続的データベース接続</a>
+   のセクションを参照してください。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.oci-pconnect-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">username</code></em></span>
+     <dd>
+
+      <p class="para">
+       Oracle のユーザー名。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">password</code></em></span>
+     <dd>
+
+      <p class="para">
+       <em><code class="parameter">username</code></em> のパスワード。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">connection_string</code></em></span>
+     <dd>
+
+      <p class="para">
+接続先の <em>Oracle インスタンス</em>。
+<a href="http://download.oracle.com/docs/cd/E11882_01/network.112/e10836/naming.htm" class="link external" title="Link : http://download.oracle.com/docs/cd/E11882_01/network.112/e10836/naming.htm">&raquo;&nbsp;Easy Connect
+文字列</a>、<var class="filename">tnsnames.ora</var>
+ファイルの接続文字列、あるいはローカルの Oracle インスタンス名を指定します。
+</p>
+<p class="para">省略した場合、PHP は環境変数
+<strong><code>TWO_TASK</code></strong> (Linux) あるいは
+<strong><code>LOCAL</code></strong> (Windows)
+と <strong><code>ORACLE_SID</code></strong> を用いて接続先の
+<em>Oracle インスタンス</em> を判断します。
+</p>
+<p class="para">
+Easy Connect 方式を使うには、PHP を Oracle
+10<em class="emphasis">g</em> 以降のクライアントライブラリとリンクさせる必要があります。Oracle 10<em class="emphasis">g</em> の Easy Connect
+文字列の形式は
+<em class="emphasis">[//]host_name[:port][/service_name]</em> です。Oracle
+11<em class="emphasis">g</em> 以降の場合は、この構文は
+<em class="emphasis">[//]host_name[:port][/service_name][:server_type][/instance_name]</em>
+となります。サービス名を調べるには、Oracle のユーティリティ
+<em>lsnrctl status</em> をデータベースサーバー上で実行します。
+</p>
+<p class="para">
+<var class="filename">tnsnames.ora</var> ファイルは Oracle Net のサーチパス上にあります。
+サーチパスに含まれるのは <var class="filename">$ORACLE_HOME/network/admin</var>
+や <var class="filename">/etc</var> です。もうひとつの方法として、
+<em>TNS_ADMIN</em> を指定して
+<var class="filename">$TNS_ADMIN/tnsnames.ora</var> を読み込ませることもできます。
+ウェブデーモンにそのファイルの読み込み権限を与えておきましょう。
+</p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">character_set</code></em></span>
+     <dd>
+
+      <p class="para">
+Oracle クライアントライブラリが使う文字セットを指定します。
+これは、データベースが用いる文字セットと一致させる必要はありません。
+一致していない場合は、Oracle
+が最善を尽くしてデータベースの文字セットとの間の変換を行います。
+文字セットによっては、この変換結果がうまく使えないこともあります。
+また、変換にはそれなりの時間を要します。
+</p>
+<p class="para">省略した場合は、
+Oracle クライアントライブラリは環境変数 <strong><code>NLS_LANG</code></strong>
+の値をもとに文字セットを判断します。
+</p>
+<p class="para">このパラメータを渡すことで、
+接続に要する時間を短縮できます。
+</p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">session_mode</code></em></span>
+     <dd>
+
+      <p class="para">
+このパラメータは PHP 5 (PECL OCI8 1.1) 以降で使え、
+<strong><code>OCI_DEFAULT</code></strong>、
+<strong><code>OCI_SYSOPER</code></strong> そして <strong><code>OCI_SYSDBA</code></strong>
+といった値を指定することができます。<strong><code>OCI_SYSOPER</code></strong> あるいは
+<strong><code>OCI_SYSDBA</code></strong> を指定した場合は、
+この関数は外部の証明書を使った特権接続の確立を試みます。
+特権接続は、デフォルトでは無効になっています。有効にするには
+<a href="oci8.configuration.html#ini.oci8.privileged-connect" class="link">oci8.privileged_connect</a>
+を <em>On</em> に設定しなければなりません。
+</p>
+<p class="para">
+PHP 5.3 (PECL OCI8 1.3.4) 以降、
+<strong><code>OCI_CRED_EXT</code></strong> モードを使えるようになりました。
+これは、Oracle に外部認証あるいは OS 認証を使うよう指示します。
+どちらかをデータベースで設定しておかなければなりません。
+<strong><code>OCI_CRED_EXT</code></strong> フラグを使えるのは、ユーザー名が
+&quot;/&quot; でパスワードが空のときだけです。
+<a href="oci8.configuration.html#ini.oci8.privileged-connect" class="link">oci8.privileged_connect</a>
+は <em>On</em> あるいは <em>Off</em> のどちらでもかまいません。
+</p>
+<p class="para">
+<strong><code>OCI_CRED_EXT</code></strong> は、
+<strong><code>OCI_SYSOPER</code></strong> あるいは
+<strong><code>OCI_SYSDBA</code></strong> モードと組み合わせて使います。
+</p>
+<p class="para">
+<strong><code>OCI_CRED_EXT</code></strong> は、セキュリティ上の理由により
+Windows ではサポートされていません。
+</p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.oci-pconnect-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   接続 ID、あるいはエラー時に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes" id="refsect1-function.oci-pconnect-notes">
+  <h3 class="title">注意</h3>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <span class="simpara">
+    PHP 5.1.2 および PECL OCI8 1.1 から、持続的 Oracle
+    接続の生存時間と最大数を PHP のプロセス単位で調節できるようになりました。
+    次の設定値を利用します。
+    <a href="oci8.configuration.html#ini.oci8.persistent-timeout" class="link">oci8.persistent_timeout</a>,
+    <a href="oci8.configuration.html#ini.oci8.ping-interval" class="link">oci8.ping_interval</a>,
+    <a href="oci8.configuration.html#ini.oci8.max-persistent" class="link">oci8.max_persistent</a> 。
+   </span>
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.oci-pconnect-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="function.oci-connect.html" class="function" rel="rdfs-seeAlso">oci_connect()</a> - Oracle データベースに接続する</span></li>
+    <li class="member"> <span class="function"><a href="function.oci-new-connect.html" class="function" rel="rdfs-seeAlso">oci_new_connect()</a> - 一意な接続を使って Oracle サーバーへ接続する</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="109022""></a>
+  <div class="note">
+   <strong class="user">gotankersley at NOSPAM dot com</strong>
+   <a href="#109022" class="date">13-Jun-2012 11:29</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Installed on CentOS 6.2, and had lots of trouble getting it to recognize tnsnames.ora.&nbsp; The fix for me was:<br />
+<br />
+1. Make sure apache is getting the TNS_ADMIN env variable by putting it in the /etc/init.d/httpd file:<br />
+&nbsp;TNS_ADMIN=/usr/lib/oracle/11.2/client64/network/admin<br />
+&nbsp;export PATH TNS_ADMIN<br />
+<br />
+This can be debugging in PHP by <span class="default">&lt;?php </span><span class="keyword">echo </span><span class="default">system</span><span class="keyword">(</span><span class="string">'env'</span><span class="keyword">); </span><span class="default">?&gt;</span> and by verifying that TNS_ADMIN is there.<br />
+<br />
+2. Make sure to use the name at the beginning of the tnsnames.ora file - not the SID (although ideally they should match.&nbsp; However, if the name at the beginning is XXXX.world then pconnect will expect this - not the SID)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="86253""></a>
+  <div class="note">
+   <strong class="user">php at jaggard dot org dot uk</strong>
+   <a href="#86253" class="date">09-Oct-2008 06:38</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+[Editor's note: OCI8 1.3 should not experience the problem described in this user comment. The first use of such a connection will return an Oracle error which will trigger a cleanup in PHP.&nbsp; Subsequent persistent connection calls will then succeed.&nbsp; For high availability you might consider doing consecutive oci_pconnect calls in your script.]<br />
+<br />
+If you connect using oci_pconnect and the connection has logged you off but is still valid, there seems to be no way to re-use that connection. The next time I try oci_pconnect and then perform an oci_execute operation, I get a "ORA-01012: not logged on" warning. This problem remains, even if I close the connection using oci_close. I ended up with the following (rather annoying) code.<br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">function </span><span class="default">getOracleConnection</span><span class="keyword">()<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp;&nbsp; if (!</span><span class="default">function_exists</span><span class="keyword">(</span><span class="string">'oci_pconnect'</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">false</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$toReturn </span><span class="keyword">= </span><span class="default">oci_pconnect</span><span class="keyword">(</span><span class="string">'user'</span><span class="keyword">, </span><span class="string">'pass'</span><span class="keyword">, </span><span class="string">'db'</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp;&nbsp; if (</span><span class="default">$testRes </span><span class="keyword">= @</span><span class="default">oci_parse</span><span class="keyword">(</span><span class="default">$toReturn</span><span class="keyword">, </span><span class="string">'SELECT Count(group_type_code) FROM pvo.group_type'</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if (@</span><span class="default">oci_execute</span><span class="keyword">(</span><span class="default">$testRes</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (@</span><span class="default">oci_fetch_array</span><span class="keyword">(</span><span class="default">$testRes</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">$toReturn</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">oci_close</span><span class="keyword">(</span><span class="default">$toReturn</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp;&nbsp; if (!</span><span class="default">function_exists</span><span class="keyword">(</span><span class="string">'oci_connect'</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">false</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$toReturn </span><span class="keyword">= </span><span class="default">oci_connect</span><span class="keyword">(</span><span class="string">'user'</span><span class="keyword">, </span><span class="string">'pass'</span><span class="keyword">, </span><span class="string">'db'</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp;&nbsp; if (</span><span class="default">$testRes </span><span class="keyword">= @</span><span class="default">oci_parse</span><span class="keyword">(</span><span class="default">$toReturn</span><span class="keyword">, </span><span class="string">'SELECT Count(group_type_code) FROM pvo.group_type'</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if (@</span><span class="default">oci_execute</span><span class="keyword">(</span><span class="default">$testRes</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (@</span><span class="default">oci_fetch_array</span><span class="keyword">(</span><span class="default">$testRes</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">$toReturn</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">oci_close</span><span class="keyword">(</span><span class="default">$toReturn</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp;&nbsp; if (!</span><span class="default">function_exists</span><span class="keyword">(</span><span class="string">'oci_new_connect'</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">false</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$toReturn </span><span class="keyword">= </span><span class="default">oci_new_connect</span><span class="keyword">(</span><span class="string">'user'</span><span class="keyword">, </span><span class="string">'pass'</span><span class="keyword">, </span><span class="string">'db'</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp;&nbsp; if (</span><span class="default">$testRes </span><span class="keyword">= @</span><span class="default">oci_parse</span><span class="keyword">(</span><span class="default">$toReturn</span><span class="keyword">, </span><span class="string">'SELECT Count(group_type_code) FROM pvo.group_type'</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if (@</span><span class="default">oci_execute</span><span class="keyword">(</span><span class="default">$testRes</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (@</span><span class="default">oci_fetch_array</span><span class="keyword">(</span><span class="default">$testRes</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">$toReturn</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">oci_close</span><span class="keyword">(</span><span class="default">$toReturn</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp;&nbsp; return </span><span class="default">false</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.oci-password-change.html">oci_password_change</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.oci-result.html">oci_result</a></div>
+ <div class="up"><a href="ref.oci8.html">OCI8 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

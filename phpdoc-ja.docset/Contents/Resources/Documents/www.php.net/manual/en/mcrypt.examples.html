@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>例</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mcrypt.ciphers.html">Mcrypt 暗号</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="ref.mcrypt.html">Mcrypt 関数</a></div>
+ <div class="up"><a href="book.mcrypt.html">Mcrypt</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mcrypt.examples" class="appendix">
+ <h1>例</h1>
+
+ <p class="para">
+  mcrypt は、上に示した暗号を用いて暗号化および復号化を
+  行うことが可能です。<em>libmcrypt-2.2.x</em> とリンクした場合、4つの重要な
+  mcrypt コマンド ( <span class="function"><a href="function.mcrypt-cfb.html" class="function">mcrypt_cfb()</a></span>,
+   <span class="function"><a href="function.mcrypt-cbc.html" class="function">mcrypt_cbc()</a></span>, <span class="function"><a href="function.mcrypt-ecb.html" class="function">mcrypt_ecb()</a></span>, 
+   <span class="function"><a href="function.mcrypt-ofb.html" class="function">mcrypt_ofb()</a></span>) は、<strong><code>MCRYPT_ENCRYPT</code></strong> および
+  <strong><code>MCRYPT_DECRYPT</code></strong> という 2つのモードの両方で実行可能です。
+ </p>
+ <p class="para">
+  libmcrypt 2.4.x または 2.5.x とリンクした場合、上記の関数も利用可能
+  ですが、新しい関数を使用されることを推奨します。
+  <div class="example" id="example-835">
+   <p><strong>例1 2.4.x 以降において <em>ECB</em> モードで <em>TripleDES</em> により入力を暗号化する</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;&nbsp;&nbsp;$key&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"this&nbsp;is&nbsp;a&nbsp;secret&nbsp;key"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$input&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Let&nbsp;us&nbsp;meet&nbsp;at&nbsp;9&nbsp;o'clock&nbsp;at&nbsp;the&nbsp;secret&nbsp;place."</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$td&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mcrypt_module_open</span><span style="color: #007700">(</span><span style="color: #DD0000">'tripledes'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'ecb'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$iv&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mcrypt_create_iv</span><span style="color: #007700">(</span><span style="color: #0000BB">mcrypt_enc_get_iv_size</span><span style="color: #007700">(</span><span style="color: #0000BB">$td</span><span style="color: #007700">),&nbsp;</span><span style="color: #0000BB">MCRYPT_RAND</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">mcrypt_generic_init</span><span style="color: #007700">(</span><span style="color: #0000BB">$td</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$key</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$iv</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$encrypted_data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mcrypt_generic</span><span style="color: #007700">(</span><span style="color: #0000BB">$td</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$input</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">mcrypt_generic_deinit</span><span style="color: #007700">(</span><span style="color: #0000BB">$td</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">mcrypt_module_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$td</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+  この例は、<em>$encrypted_data</em> に文字列として
+  暗号化されたデータを取得します。詳細な例については、
+   <span class="function"><a href="function.mcrypt-module-open.html" class="function">mcrypt_module_open()</a></span> を参照してください。
+ </p>
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="99672""></a>
+  <div class="note">
+   <strong class="user">ivoras at gmail dot com</strong>
+   <a href="#99672" class="date">30-Aug-2010 03:36</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note that there can be standard padding in block modes:<br />
+<br />
+<a href="http://www.di-mgt.com.au/cryptopad.html" rel="nofollow" target="_blank">http://www.di-mgt.com.au/cryptopad.html</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="84147""></a>
+  <div class="note">
+   <strong class="user">jizz @ Nowhere</strong>
+   <a href="#84147" class="date">01-Jul-2008 09:36</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Ok after having a problem using triple des with .net/visual basic with php I think this could help someone:<br />
+<br />
+Visual Basic 9 with .net 2.0<br />
+Encrypting as a stream into the IO/Memory as bytes<br />
+Then they get converted back after encryption <br />
+<br />
+I wanted to use base64 encoding to store the VB encryption<br />
+The problem I found was ... <br />
+<br />
+I could En/Decrypt within VB and PHP just fine <br />
+But when I tried to encrypt one in VB and decrypt in PHP<br />
+I got the wrong values with the mcrypt function alone<br />
+<br />
+I found that at least with VB9 that the stream encryption uses a UTF char that is the value for how many missing bytes left in the 8 bit stream.<br />
+<br />
+So if you encrypt 1234 it will add chr(4) four times (the amount of missing bytes)<br />
+In php use chr otherwise most browsers/client cant read it.<br />
+Im not good at explaining things but the php code I figured out is below.<br />
+<br />
+It will find the missing bytes on input as visual basic does<br />
+and replace as needed. For both encryption and decryption.<br />
+<br />
+Example is triple_des and cbc with self key and iv for storing in base64<br />
+<br />
+$key = "E4HD9h4DhS23DYfhHemkS3Nf";// 24 bit Key<br />
+$iv = "fYfhHeDm";// 8 bit IV<br />
+$input = "Text to encrypt";// text to encrypt<br />
+$bit_check=8;// bit amount for diff algor.<br />
+<br />
+$str= encrypt($input,$key,$iv,$bit_check);<br />
+echo "Start: $input - Excrypted: $str - Decrypted: ".decrypt($str,$key,$iv,$bit_check);<br />
+<br />
+function encrypt($text,$key,$iv,$bit_check) {<br />
+$text_num =str_split($text,$bit_check);<br />
+$text_num = $bit_check-strlen($text_num[count($text_num)-1]);<br />
+for ($i=0;$i&lt;$text_num; $i++) {$text = $text . chr($text_num);}<br />
+$cipher = mcrypt_module_open(MCRYPT_TRIPLEDES,'','cbc','');<br />
+mcrypt_generic_init($cipher, $key, $iv);<br />
+$decrypted = mcrypt_generic($cipher,$text);<br />
+mcrypt_generic_deinit($cipher);<br />
+return base64_encode($decrypted);<br />
+}<br />
+<br />
+function decrypt($encrypted_text,$key,$iv,$bit_check){<br />
+$cipher = mcrypt_module_open(MCRYPT_TRIPLEDES,'','cbc','');<br />
+mcrypt_generic_init($cipher, $key, $iv);<br />
+$decrypted = mdecrypt_generic($cipher,base64_decode($encrypted_text));<br />
+mcrypt_generic_deinit($cipher);<br />
+$last_char=substr($decrypted,-1);<br />
+for($i=0;$i&lt;$bit_check-1; $i++){<br />
+&nbsp;&nbsp;&nbsp; if(chr($i)==$last_char){<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; $decrypted=substr($decrypted,0,strlen($decrypted)-$i);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; break;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+return $decrypted;<br />
+}</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mcrypt.ciphers.html">Mcrypt 暗号</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="ref.mcrypt.html">Mcrypt 関数</a></div>
+ <div class="up"><a href="book.mcrypt.html">Mcrypt</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

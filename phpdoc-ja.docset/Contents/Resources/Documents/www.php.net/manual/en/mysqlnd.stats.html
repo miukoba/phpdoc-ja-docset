@@ -1,0 +1,1031 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>統計情報</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqlnd.persist.html">持続的接続</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd.notes.html">メモ</a></div>
+ <div class="up"><a href="book.mysqlnd.html">Mysqlnd</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mysqlnd.stats" class="chapter">
+ <h1>統計情報</h1>
+
+ <p class="para">
+  <em class="emphasis">統計情報を使う</em>
+ </p>
+ <p class="para">
+  MySQL Native Driver は、クライアントとサーバー間の通信に関する統計情報を収集する機能をサポートしています。収集できる統計情報は主に3つのタイプに分けられます。
+ </p>
+ <ul class="itemizedlist">
+  <li class="listitem">
+   <p class="para">
+    クライアントの統計情報
+   </p>
+  </li>
+  <li class="listitem">
+   <p class="para">
+    接続の統計情報
+   </p>
+  </li>
+  <li class="listitem">
+   <p class="para">
+    Zval のキャッシュに関する統計情報
+   </p>
+  </li>
+ </ul>
+ <p class="para">
+  <em>mysqli</em> 拡張機能を使っている場合、これらの統計情報は以下の3つのAPIを呼び出すことで取得できます。
+ </p>
+ <ul class="itemizedlist">
+  <li class="listitem">
+   <p class="para">
+     <span class="function"><a href="mysqli.get-client-stats.html" class="function">mysqli_get_client_stats()</a></span>
+   </p>
+  </li>
+  <li class="listitem">
+   <p class="para">
+     <span class="function"><a href="mysqli.get-connection-stats.html" class="function">mysqli_get_connection_stats()</a></span>
+   </p>
+  </li>
+  <li class="listitem">
+   <p class="para">
+     <span class="function"><a href="function.mysqli-get-cache-stats.html" class="function">mysqli_get_cache_stats()</a></span>
+   </p>
+  </li>
+ </ul>
+ <blockquote class="note"><p><strong class="note">注意</strong>: 
+  <p class="para">
+   MySQL Native Driver を使っているすべての拡張機能が統計情報を収集します。たとえば、<em>ext/mysql</em> や <em>ext/mysqli</em> を MySQL Native Driver を使ってコンパイルし、<em>ext/mysql</em> や <em>ext/mysqli</em> の関数を呼び出すと、収集される統計情報の値が変わります。MySQL Native Driver を使ってコンパイルされた MySQL 拡張機能の呼び出しが、どの程度統計情報に影響を与えるかはわかりません。PDO MySQL Driver や <em>ext/mysql</em> や <em>ext/mysqli</em> を、オプションで MySQL Native Driver を使うように設定することができます。こうすると、すべての拡張機能で統計情報を変化させることができます。
+  </p>
+ </p></blockquote>
+ <p class="para">
+  <em class="emphasis">クライアントの統計情報にアクセスする</em>
+ </p>
+ <p class="para">
+  クライアントの統計情報にアクセスするには、 <span class="function"><a href="mysqli.get-client-stats.html" class="function">mysqli_get_client_stats()</a></span> 関数を呼び出す必要があります。この関数を呼び出すのに引数は必要ありません。
+ </p>
+ <p class="para">
+  この関数は、統計情報の名前をキーとして対応するデータを値とする連想配列を返します。
+ </p>
+ <p class="para">
+  クライアントの統計情報は  <span class="function"><a href="function.phpinfo.html" class="function">phpinfo()</a></span> 関数を呼び出してもアクセスできます。
+ </p>
+ <p class="para">
+  <em class="emphasis">接続の統計情報にアクセスする</em>
+ </p>
+ <p class="para">
+  接続の統計情報にアクセスするには  <span class="function"><a href="mysqli.get-connection-stats.html" class="function">mysqli_get_connection_stats()</a></span> 関数を使います。この関数は接続ハンドルを引数にとります。
+ </p>
+ <p class="para">
+  この関数は、統計情報の名前をキーとして対応するデータを値とする連想配列を返します。
+ </p>
+ <p class="para">
+  <em class="emphasis">Zvalキャッシュの統計情報にアクセスする</em>
+ </p>
+ <p class="para">
+  MySQL Native Driver は PHPの内部的な値である Zval のキャッシュからも統計情報を収集します。これらの統計は  <span class="function"><a href="function.mysqli-get-cache-stats.html" class="function">mysqli_get_cache_stats()</a></span> 関数を使ってアクセスできます。
+ </p>
+ <p class="para">
+  Zval のキャッシュに関する統計情報を収集する際は、<var class="filename">php.ini</var> の Zval cache に関連する設定を調整することで、パフォーマンスを向上させることができます。
+ </p>
+ <p class="para">
+  <em class="emphasis">結果セットをバッファリングさせるか否か</em>
+ </p>
+ <p class="para">
+  結果セットはバッファリングさせることもできますし、しないこともできます。デフォルトの設定では、<em>ext/mysql</em> と <em>ext/mysqli</em> は通常の (プリペアドステートメントでない) クエリの場合結果セットをバッファリングします。バッファリングされた結果セットはクライアント側でキャッシュされます。クエリが実行された後、すべての結果がMySQLサーバから取得され、クライアント側でキャッシュに保存されます。結果セットをバッファリングすることの大きな利点は、一度クライアントが結果を取得すると、サーバがすべての結果セットに割り当てられたリソースを開放できることです。
+ </p>
+ <p class="para">
+  一方、結果セットをバッファリングしない場合、結果セットはサーバ側にバッファリングするよりも長く残ります。仮にクライアント側でのメモリ使用量を削減したいが、サーバ側の負荷が高くなっても構わない場合、結果セットをバッファリングしないようにします。仮にサーバの負荷が高く、バッファリングしていない結果セットの量がサーバ側で多いことが分かっている場合、その負荷をクライアント側に移すことを検討すべきです。クライアントは通常の場合サーバよりも分散しやすいからです。ここでいう "<span class="quote">負荷</span>" とはメモリバッファに対するものだけでなく、サーバが結果セットを開放する前に他のリソース、たとえばファイルハンドルやスレッドを開きっぱなしにする必要があることも指しています。
+ </p>
+ <p class="para">
+  プリペアドステートメントはデフォルトでは結果セットをバッファリングしません。しかし、 <span class="function"><a href="mysqli-stmt.store-result.html" class="function">mysqli_stmt_store_result()</a></span> 関数を使えば、結果セットのバッファリングを有効にすることができます。
+ </p>
+ <p class="para">
+  <em class="emphasis">MySQL Native Driver が返す統計情報</em>
+ </p>
+ <p class="para">
+  以下の表で、 <span class="function"><a href="mysqli.get-client-stats.html" class="function">mysqli_get_client_stats()</a></span>,
+   <span class="function"><a href="mysqli.get-connection-stats.html" class="function">mysqli_get_connection_stats()</a></span>,
+   <span class="function"><a href="function.mysqli-get-cache-stats.html" class="function">mysqli_get_cache_stats()</a></span> 関数が返す統計情報のリストを示します。
+ </p>
+ <table class="doctable table">
+  <caption><strong>MySQL Native Driver が返す統計情報: ネットワーク関連</strong></caption>
+  
+   <col width="10*" />
+   <col width="10*" />
+   <col width="40*" />
+   <col width="40*" />
+   <thead>
+    <tr>
+     <th>統計情報</th>
+     <th>統計のカテゴリ</th>
+     <th>説明</th>
+     <th>注意点</th>
+    </tr>
+
+   </thead>
+
+   <tbody class="tbody">
+    <tr>
+     <td><em>bytes_sent</em></td>
+     <td>Connection</td>
+     <td>PHP から MySQLサーバに送信されたバイト数</td>
+     <td>圧縮プロトコルの効率をチェックするのに使えます</td>
+    </tr>
+
+    <tr>
+     <td><em>bytes_received</em></td>
+     <td>Connection</td>
+     <td>MySQLサーバから受け取ったバイト数</td>
+     <td>同上</td>
+    </tr>
+
+    <tr>
+     <td><em>packets_sent</em></td>
+     <td>Connection</td>
+     <td>MySQL のクライアントサーバプロトコルにおいて送信されたパケット数</td>
+     <td>クライアントサーバプロトコルの実装をデバッグするのに使われます</td>
+    </tr>
+
+    <tr>
+     <td><em>packets_received</em></td>
+     <td>Connection</td>
+     <td>MySQL のクライアントサーバプロトコルにおいて受信したパケット数</td>
+     <td>同上</td>
+    </tr>
+
+    <tr>
+     <td><em>protocol_overhead_in</em></td>
+     <td>Connection</td>
+     <td>MySQL のクライアントサーバプロトコルの受信側の通信にかかるオーバーヘッドをバイト単位で示します。現状はパケットヘッダ(4バイト)のみをオーバーヘッドと看做しています。
+      protocol_overhead_in = packets_received * 4で表されます。</td>
+     <td>同上</td>
+    </tr>
+
+    <tr>
+     <td><em>protocol_overhead_out</em></td>
+     <td>Connection</td>
+     <td>MySQL のクライアントサーバプロトコルの受信側の通信にかかるオーバーヘッドをバイト単位で示します。現状はパケットヘッダ(4バイト)のみをオーバーヘッドと看做しています。
+      protocol_overhead_out = packets_sent * 4で表されます。</td>
+     <td>同上</td>
+    </tr>
+
+    <tr>
+     <td><em>bytes_received_ok_packet</em></td>
+     <td>Connection</td>
+     <td>MySQL のクライアントサーバプロトコルにおけるOKパケットの受信量の合計をバイト単位で示します。
+      OKパケットはステータスメッセージも含むことができます。ステータスメッセージの長さは変化しうるため、OKパケットのサイズは固定ではありません。</td>
+     <td>クライアントサーバプロトコルの実装をデバッグするのに使われます。受信する合計バイト数には、パケットヘッダ(4バイト, protocol_overhead_in や protocol_overhead_out を参照) のサイズも含まれていることに注意してください</td>
+    </tr>
+
+    <tr>
+     <td><em>packets_received_ok</em></td>
+     <td>Connection</td>
+     <td>MySQL のクライアントサーバプロトコルにおけるOKパケットを受信した数です。</td>
+     <td>同上</td>
+    </tr>
+
+    <tr>
+     <td><em>bytes_received_eof_packet</em></td>
+     <td>Connection</td>
+     <td>MySQL のクライアントサーバプロトコルにおけるEOFパケットを受信量の合計をバイト単位で示します。EOFパケットはサーバのバージョンによってサイズが変わります。また、EOFパケットはエラーメッセージも伝えることができます。</td>
+     <td>同上</td>
+    </tr>
+
+    <tr>
+     <td><em>packets_received_eof</em></td>
+     <td>Connection</td>
+     <td>MySQL のクライアントサーバプロトコルにおけるEOFパケットの数を示します。EOFパケットの数は、PHPが期待するパケットを受け取らなかった場合であっても増加します。これは他のパケット数を示す統計情報と同じです。PHPが期待しないパケットの例は、エラーメッセージが挙げられます。</td>
+     <td>同上</td>
+    </tr>
+
+    <tr>
+     <td><em>bytes_received_rset_header_packet</em></td>
+     <td>Connection</td>
+     <td>MySQL のクライアントサーバプロトコルにおける結果セットにあるヘッダパケットの合計サイズをバイト単位で示します。パケットのサイズはペイロード(<em>LOAD LOCAL INFILE</em>, <em>INSERT</em>, <em>UPDATE</em>, <em>SELECT</em>, エラーメッセージ)に応じて変わります。</td>
+     <td>同上</td>
+    </tr>
+
+    <tr>
+     <td><em>packets_received_rset_header</em></td>
+     <td>Connection</td>
+     <td>MySQL のクライアントサーバプロトコルにおける結果セットにあるヘッダパケットの数を示します</td>
+     <td>同上</td>
+    </tr>
+
+    <tr>
+     <td><em>bytes_received_rset_field_meta_packet</em></td>
+     <td>Connection</td>
+     <td>MySQL のクライアントサーバプロトコルにおける結果セットにあるメタデータ(カラム情報) の合計サイズをバイト単位で示します。もちろん、メタデータのサイズは結果セットにあるカラムによって変わります。このパケットはペイロードが COM_LIST_FIELDS の場合(訳注：テーブルのカラム情報を得るためのMySQLプロトコル http://dev.mysql.com/doc/internals/en/text-protocol.html#com-field-list)の場合は、エラーメッセージかEOFパケットを返す可能性があります。</td>
+     <td>同上</td>
+    </tr>
+
+    <tr>
+     <td><em>packets_received_rset_field_meta</em></td>
+     <td>Connection</td>
+     <td>MySQL のクライアントサーバプロトコルにおける結果セットにあるメタデータ(カラム情報) のパケット数を示します。</td>
+     <td>同上</td>
+    </tr>
+
+    <tr>
+     <td><em>bytes_received_rset_row_packet</em></td>
+     <td>Connection</td>
+     <td>MySQL のクライアントサーバプロトコルにおける結果セットにある行情報パケットの合計サイズをバイト単位で示します。このパケットはエラー情報またはEOFパケットを送信する場合もあります。
+      <em>bytes_received_rset_row_packet</em> の数から、<em>rows_fetched_from_server_normal</em> と <em>rows_fetched_from_server_ps</em> の値を引くことによって、エラー数やEOFパケットの数を割り出すことができます。</td>
+     <td>同上</td>
+    </tr>
+
+    <tr>
+     <td><em>packets_received_rset_row</em></td>
+     <td>Connection</td>
+     <td>MySQL のクライアントサーバプロトコルの結果セット行データパケットと、それらの合計サイズをバイト単位で示します。</td>
+     <td>同上</td>
+    </tr>
+
+    <tr>
+     <td><em>bytes_received_prepare_response_packet</em></td>
+     <td>Connection</td>
+     <td>MySQL のクライアントサーバプロトコルにおける、プリペアドステートメント初期化パケット(prepared statement init packets) が OK を返した合計サイズをバイト単位で示します。このパケットはエラーを送信する可能性もあります。このパケットのサイズは MySQL のバージョンによって変わります。: MySQL 4.1 では 9バイト、 MySQ 5.0 以降は 12 byte です。エラーが起きた回数を安全に知る方法はありません。たとえば、MySQL 5.0 以降の MySQL に常に接続している場合は、<em>bytes_received_prepare_response_packet</em> != <em>packets_received_prepare_response</em> * 12 の場合にエラーが起きていると推定できるかもしれません。<em>ps_prepared_never_executed</em> や <em>ps_prepared_once_executed</em> も参照してください。</td>
+     <td>同上</td>
+    </tr>
+
+    <tr>
+     <td><em>packets_received_prepare_response</em></td>
+     <td>Connection</td>
+     <td>MySQL のクライアントサーバプロトコルにおける、プリペアドステートメント初期化パケット(prepared statement init packets) が OK を返した数</td>
+     <td>同上</td>
+    </tr>
+
+    <tr>
+     <td><em>bytes_received_change_user_packet</em></td>
+     <td>Connection</td>
+     <td>MySQL のクライアントサーバプロトコルにおける、COM_CHANGE_USER パケットの合計サイズをバイト単位で示します。このパケットはエラーやEOFパケットを送信する可能性もあります。</td>
+     <td>同上</td>
+    </tr>
+
+    <tr>
+     <td><em>packets_received_change_user</em></td>
+     <td>Connection</td>
+     <td>MySQL のクライアントサーバプロトコルにおける、COM_CHANGE_USER パケットの数</td>
+     <td>同上</td>
+    </tr>
+
+    <tr>
+     <td><em>packets_sent_command</em></td>
+     <td>Connection</td>
+     <td>PHP から MySQL に送信されたMySQL クライアントサーバプロトコルコマンドの合計数。特定のどのコマンドが送信されたか、そしてそれらのうちどのくらいが実際に送信されたかを知る方法はありません。この統計値は、PHPバイナリで MySQLのサポートを無効にすることを確かめる手がかりを知るために、PHP がコマンドを送信しているかどうかを知る手段として使えるくらいです。また、データを MySQL に送信している間にエラーが起きた回数を知る方法もありません。記録されるエラーは command_buffer_too_small (後述) の値くらいです。</td>
+     <td>MySQL のクライアントサーバプロトコルのデバッグする用途だけに役立ちます。</td>
+    </tr>
+
+    <tr>
+     <td><em>bytes_received_real_data_normal</em></td>
+     <td>Connection</td>
+     <td>PHP クライアントが <em>mysqlnd</em> からテキストプロトコル経由で受け取ったペイロードの合計バイト数。</td>
+     <td>これは、プリペアドステートメントではないクエリから生成され、PHPクライアントが取得した結果セットに含まれる実際のデータサイズです。完全な結果セットは <em>mysqlnd</em> が MySQL から取得しますが、この統計値は PHP クライアントが <em>mysqlnd</em> から実際に取得した実際のデータのみを数えていることに注意してください。この統計値を増やすコードの例は以下のようになります:
+<div class="example-contents">
+<div class="cdata"><pre>
+$mysqli = new mysqli();
+$res = $mysqli-&gt;query(&quot;SELECT &#039;abc&#039;&quot;);
+$res-&gt;fetch_assoc();
+$res-&gt;close();
+</pre></div>
+</div>
+
+      <p class="para">
+       毎回取得(fetch)操作をするたびにこの値が増加します。
+      </p>
+
+      <p class="para">
+       この統計値は、結果セットがクライアント上でバッファリングされただけで、実際に取得されていない場合は変化しません。たとえば、次のようなコードの場合です:
+      </p>
+<div class="example-contents">
+<div class="cdata"><pre>
+$mysqli = new mysqli();
+$res = $mysqli-&gt;query(&quot;SELECT &#039;abc&#039;&quot;);
+$res-&gt;close();
+</pre></div>
+</div>
+
+      <p class="para">
+       この統計値は PHP 5.3.4 から利用可能です。
+      </p></td>
+    </tr>
+
+    <tr>
+     <td><em>bytes_received_real_data_ps</em></td>
+     <td>Connection</td>
+     <td>PHP クライアントが <em>mysqlnd</em> からプリペアドステートメントプロトコル経由で受け取ったペイロードの合計バイト数。</td>
+     <td>これは、プリペアドステートメントプロトコルを使ってから生成され、PHPクライアントが取得した結果セットに含まれる実際のデータサイズです。この値は、PHPクライアントが読み取らなければ変化しません。完全な結果セットは <em>mysqlnd</em> が MySQL から取得しますが、この統計値は PHP クライアントが <em>mysqlnd</em> から実際に取得した実際のデータのみを数えていることに注意してください。<em>bytes_received_real_data_normal</em> も参照してください。この統計値は PHP 5.3.4 から利用可能です。</td>
+    </tr>
+
+   </tbody>
+  
+ </table>
+
+ <p class="para">
+  <em class="emphasis">Result Set</em>
+ </p>
+ <table class="doctable table">
+  <caption><strong>MySQL Native Driver が返す統計情報: 結果セット</strong></caption>
+  
+   <col width="10*" />
+   <col width="10*" />
+   <col width="40*" />
+   <col width="40*" />
+   <thead>
+    <tr>
+     <th>統計情報</th>
+     <th>統計のカテゴリ</th>
+     <th>説明</th>
+     <th>注意点</th>
+    </tr>
+
+   </thead>
+
+   <tbody class="tbody">
+    <tr>
+     <td><em>result_set_queries</em></td>
+     <td>Connection</td>
+     <td>結果セットを生成したクエリの数。結果セットを生成するクエリの例: <em>SELECT</em>,
+      <em>SHOW</em>. 結果セットのヘッダパケットを読み取っている間にエラーが発生した場合、この統計値はインクリメントされません</td>
+     <td>たとえば、データベースに高い負荷をかけているクライアントを特定する目的で、PHP が MySQL に送信したクエリの数を間接的に測るのに使えます。</td>
+    </tr>
+
+    <tr>
+     <td><em>non_result_set_queries</em></td>
+     <td>Connection</td>
+     <td>結果セットを生成しなかったクエリの数。結果セットを生成しないクエリの例:<em>INSERT</em>, <em>UPDATE</em>, <em>LOAD DATA</em>, <em>SHOW</em>. 結果セットのヘッダパケットを読み取っている間にエラーが発生した場合、この統計値はインクリメントされません。</td>
+     <td>同上</td>
+    </tr>
+
+    <tr>
+     <td><em>no_index_used</em></td>
+     <td>Connection</td>
+     <td>結果セットを生成したが、インデックスを使わなかったクエリの数 (mysqld の起動オプション -log-queries-not-using-indexes も参照してください) こうしたクエリを記録したい場合、mysqli_report(MYSQLI_REPORT_INDEX) を使って ext/mysqli に例外をスローさせることができます。例外ではなく警告にとどめたい場合は、mysqli_report(MYSQLI_REPORT_INDEX ^ MYSQLI_REPORT_STRICT) を使ってください。</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr>
+     <td><em>bad_index_used</em></td>
+     <td>Connection</td>
+     <td>結果セットを生成したが、良いインデックスを使わなかったクエリの数 (mysqld の起動オプション -log-slow-queries も参照してください)</td>
+     <td>こうしたクエリを記録したい場合、mysqli_report(MYSQLI_REPORT_INDEX) を使って ext/mysqli に例外をスローさせることができます。例外ではなく警告にとどめたい場合は、mysqli_report(MYSQLI_REPORT_INDEX ^ MYSQLI_REPORT_STRICT) を使ってください。</td>
+    </tr>
+
+    <tr>
+     <td><em>slow_queries</em></td>
+     <td>Connection</td>
+     <td>実行に <em>long_query_time</em> 秒以上かかり、少なくとも <em>min_examined_row_limit</em> 行以上調べる必要があるSQL</td>
+     <td> <span class="function"><a href="function.mysqli-report.html" class="function">mysqli_report()</a></span>関数では記録できません</td>
+    </tr>
+
+    <tr>
+     <td><em>buffered_sets</em></td>
+     <td>Connection</td>
+     <td>"<span class="quote">通常の</span>" クエリで返された結果セットのうち、バッファリングされたものの数。"<span class="quote">通常の</span>" というのは、右の「注意点」で述べている "<span class="quote">プリペアドステートメントのことではありません</span>"</td>
+     <td>結果セットをクライアント側にバッファリングするAPI呼び出しの例:
+       <span class="function"><a href="function.mysql-query.html" class="function">mysql_query()</a></span>,
+       <span class="function"><a href="mysqli.query.html" class="function">mysqli_query()</a></span>,
+       <span class="function"><a href="mysqli.store-result.html" class="function">mysqli_store_result()</a></span>,
+       <span class="function"><a href="mysqli-stmt.get-result.html" class="function">mysqli_stmt_get_result()</a></span>
+      結果セットをクライアント側にバッファリングすると、サーバ側のリソースが迅速に解放され、結果セットを走査しやすくなります。欠点としては、クライアント側のメモリ消費が、バッファリングする分だけ増えてしまうということです。mysqlnd は、PHP の内部的なメモリ管理関数を使っているため、(MySQL Client Library とは異なり) PHP 側の memory_limit の設定を尊重することに注意してください。同じ理由で  <span class="function"><a href="function.memory-get-usage.html" class="function">memory_get_usage()</a></span> 関数の実行結果は、MySQL Client Library と比べて高いメモリ使用量を報告します。 <span class="function"><a href="function.memory-get-usage.html" class="function">memory_get_usage()</a></span> 関数は MySQL Client Library のメモリ使用量を全く計測しません。なぜなら、MySQL Client Library は この関数が監視する PHP の内部メモリ管理関数を使用していないからです！</td>
+    </tr>
+
+    <tr>
+     <td><em>unbuffered_sets</em></td>
+     <td>Connection</td>
+     <td>通常の(プリペアドステートメントではない) クエリによって返された、バッファリングされていない結果セットの数</td>
+     <td>クライアント側で結果セットがバッファリングされないAPI呼び出しの例:
+       <span class="function"><a href="mysqli.use-result.html" class="function">mysqli_use_result()</a></span></td>
+    </tr>
+
+    <tr>
+     <td><em>ps_buffered_sets</em></td>
+     <td>Connection</td>
+     <td>プリペアドステートメントによって返される、バッファリングされた結果セットの数。デフォルトでは、プリペアドステートメントはバッファリングされません。</td>
+     <td>クライアント側で結果セットがバッファリングされるAPI呼び出しの例:
+      <em>mysqli_stmt_store_result</em></td>
+    </tr>
+
+    <tr>
+     <td><em>ps_unbuffered_sets</em></td>
+     <td>Connection</td>
+     <td>プリペアドステートメントによって返される、バッファリングされない結果セットの数。</td>
+     <td>デフォルトでは、プリペアドステートメントはバッファリングされません。</td>
+    </tr>
+
+    <tr>
+     <td><em>flushed_normal_sets</em></td>
+     <td>Connection</td>
+     <td>
+      通常の(プリペアドステートメントではない) クエリから返された、クライアントが読み取っていないため黙ってフラッシュされたデータが残っている結果セットの数。フラッシュはバッファリングされていない結果セットの場合だけ起こります。</td>
+     <td>
+      バッファリングされていない結果セットは、新しいクエリが実行される前に完全に取得されなければなりません。そうでない場合、MySQL はエラーを生成します。アプリケーションがバッファリングされていない結果セットからすべての行を取得していない場合、mysqlnd は行をクリアするため暗黙のうちに結果セットをフラッシュします。<em>rows_skipped_normal</em> や、<em>rows_skipped_ps</em> も参照してください。暗黙のフラッシュが起こりうる原因を以下に示します:
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         クライアントアプリケーションが不完全な場合
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         クライアントは探していた情報を見つけたあと終了しますが、MySQL に必要以上のレコードを計算させてしまっている場合
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         クライアントアプリケーションが予期せず終了する場合
+        </p>
+       </li>
+      </ul></td>
+    </tr>
+
+    <tr>
+     <td><em>flushed_ps_sets</em></td>
+     <td>Connection</td>
+     <td>プリペアドステートメントのクエリから返された、クライアントが読み取っていないため黙ってフラッシュされたデータが残っている結果セットの数。フラッシュはバッファリングされていない結果セットの場合だけ起こります。</td>
+     <td>同上</td>
+    </tr>
+
+    <tr>
+     <td><em>ps_prepared_never_executed</em></td>
+     <td>Connection</td>
+     <td>準備(prepare)されたが、決して実行されないステートメントの数</td>
+     <td>プリペアドステートメントはサーバのリソースを占有します。実行する予定がない場合、ステートメントを準備すべきではありません。</td>
+    </tr>
+
+    <tr>
+     <td><em>ps_prepared_once_executed</em></td>
+     <td>Connection</td>
+     <td>一度だけ実行されたプリペアドステートメントの数</td>
+     <td>
+      プリペアドステートメントの背後にあるアイディアのうちのひとつは、同じクエリは繰り返し繰り返し(異なるパラメーターで)実行されるんだから、ステートメントの実行が準備と実行に分かれていれば、クエリのパースやほかの準備処理はキャッシュできる、というものです。 このアイディアは準備を一度行い、その結果を "<span class="quote">キャッシュ</span>" します。たとえば解析ツリーを複数のステートメントの実行時に再利用するのです。プリペアドステートメントが一度だけしか実行されない場合、二段階に処理が分かれていることは "<span class="quote">通常の</span>"クエリに比べて非効率かもしれません。なぜなら、すべてのキャッシュは余計なものであり、その情報を保持するためにサーバは(限られた)リソースを消費しているからです。結果的に、一度しか実行されていないプリペアドステートメントはパフォーマンスを害する原因になる可能性があります。
+     </td>
+    </tr>
+
+    <tr>
+     <td><em>rows_fetched_from_server_normal</em>,
+      <em>rows_fetched_from_server_ps</em></td>
+     <td>Connection</td>
+     <td>
+      クライアントが消費していたかいないかに関わらず、MySQLから取得に成功した結果セット行の合計数。行によっては、クライアントアプリケーションは取得しないため暗黙のうちにフラッシュされている場合があります。</td>
+     <td><em>packets_received_rset_row</em> も参照してください</td>
+    </tr>
+
+    <tr>
+     <td><em>rows_buffered_from_client_normal</em>,
+      <em>rows_buffered_from_client_ps</em></td>
+     <td>Connection</td>
+     <td>
+      通常のクエリ、またはプリペアドステートメントから生成された、バッファリングに成功した行の合計数。これは MySQL から取得され、クライアントにバッファリングされた行の数です。バッファリングに成功した行については、ふたつの全く別な統計値があることに注意してください。(MySQL から mysqlnd の内部バッファに)バッファリングされた行の数と、(mysqlnd の内部バッファからクライアントアプリケーションへ)取得され、バッファリングされた行の数です。バッファリングされた行数が、取得されてバッファリングされた行より多い場合、クライアントアプリケーションが必要以上に大きな結果セットを生成しているため、クライアントが読み取らない行ができてしまっている可能性があります。</td>
+     <td>結果をバッファリングするクエリの例:
+       <span class="function"><a href="mysqli.query.html" class="function">mysqli_query()</a></span>,
+       <span class="function"><a href="mysqli.store-result.html" class="function">mysqli_store_result()</a></span></td>
+    </tr>
+
+    <tr>
+     <td><em>rows_fetched_from_client_normal_buffered</em>,
+      <em>rows_fetched_from_client_ps_buffered</em></td>
+     <td>Connection</td>
+     <td>バッファリングされた結果セットからクライアントによって取得された行の合計数。この結果セットは通常のクエリとプリペアドステートメントの両方から生成されたものです。</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr>
+     <td><em>rows_fetched_from_client_normal_unbuffered</em>,
+      <em>rows_fetched_from_client_ps_unbuffered</em></td>
+     <td>Connection</td>
+     <td>バッファリングされて「いない」結果セットからクライアントによって取得された行の合計数。この結果セットは通常のクエリとプリペアドステートメントの両方から生成されたものです。</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr>
+     <td><em>rows_fetched_from_client_ps_cursor</em></td>
+     <td>Connection</td>
+     <td>プリペアドステートメントによって生成されたカーソルから、クライアントが取得した行の合計数</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr>
+     <td><em>rows_skipped_normal</em>,
+      <em>rows_skipped_ps</em></td>
+     <td>Connection</td>
+     <td>将来のために予約されています(今のところサポートされていません)</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr>
+     <td><em>copy_on_write_saved</em>,
+      <em>copy_on_write_performed</em></td>
+     <td>Process</td>
+     <td>
+      mysqlnd では、エクステンションから返された値は mysqlnd 内部にある通信結果のバッファを指しています。開発者が値を変更しなければ、取得されたデータは一度だけメモリに保持されます。値を変更した場合、mysqlnd は 内部にある通信結果のバッファを変更から保護するために コピーオンライト を実行しなければなりません。MySQL Client Library を使うと、取得したデータを二度メモリに保持します。MySQL Client Library の内部バッファと変数の値がエクステンションによって返されるのです。理論上、mysqlnd は40%のメモリを節約できます。しかし、メモリに保持されている量は  <span class="function"><a href="function.memory-get-usage.html" class="function">memory_get_usage()</a></span>関数では計測できないことに注意してください。</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr>
+     <td><em>explicit_free_result</em>,
+      <em>implicit_free_result</em></td>
+     <td>Connection, Process (プリペアドステートメントのクリーンアップ時のみ)</td>
+     <td>解放された結果セットの合計数</td>
+     <td>ここでいう「解放」とは明示的なもので、初期化コマンドで生成された結果セットを除きます。たとえば <em>mysqli_options(MYSQLI_INIT_COMMAND , ...)</em> 関数の呼び出しがそれにあたります。</td>
+    </tr>
+
+    <tr>
+     <td><em>proto_text_fetched_null</em>,
+      <em>proto_text_fetched_bit</em>,
+      <em>proto_text_fetched_tinyint</em>
+      <em>proto_text_fetched_short</em>,
+      <em>proto_text_fetched_int24</em>,
+      <em>proto_text_fetched_int</em>
+      <em>proto_text_fetched_bigint</em>,
+      <em>proto_text_fetched_decimal</em>,
+      <em>proto_text_fetched_float</em>
+      <em>proto_text_fetched_double</em>,
+      <em>proto_text_fetched_date</em>,
+      <em>proto_text_fetched_year</em>
+      <em>proto_text_fetched_time</em>,
+      <em>proto_text_fetched_datetime</em>,
+      <em>proto_text_fetched_timestamp</em>
+      <em>proto_text_fetched_string</em>,
+      <em>proto_text_fetched_blob</em>,
+      <em>proto_text_fetched_enum</em>
+      <em>proto_text_fetched_set</em>,
+      <em>proto_text_fetched_geometry</em>,
+      <em>proto_text_fetched_other</em></td>
+     <td>Connection</td>
+     <td>通常のクエリ(MySQL テキストプロトコル) から取得したあるタイプのカラムの合計数</td>
+     <td>C API/ MySQL のメタデータと 統計の名前の対応:
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <em>MYSQL_TYPE_NULL</em> - proto_text_fetched_null
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>MYSQL_TYPE_BIT</em> - proto_text_fetched_bit
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>MYSQL_TYPE_TINY</em> - proto_text_fetched_tinyint
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>MYSQL_TYPE_SHORT</em> - proto_text_fetched_short
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>MYSQL_TYPE_INT24</em> - proto_text_fetched_int24
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>MYSQL_TYPE_LONG</em> - proto_text_fetched_int
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>MYSQL_TYPE_LONGLONG</em> -
+         proto_text_fetched_bigint
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>MYSQL_TYPE_DECIMAL</em>,
+         <em>MYSQL_TYPE_NEWDECIMAL</em> -
+         proto_text_fetched_decimal
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>MYSQL_TYPE_FLOAT</em> - proto_text_fetched_float
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>MYSQL_TYPE_DOUBLE</em> -
+         proto_text_fetched_double
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>MYSQL_TYPE_DATE</em>,
+         <em>MYSQL_TYPE_NEWDATE</em> - proto_text_fetched_date
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>MYSQL_TYPE_YEAR</em> - proto_text_fetched_year
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>MYSQL_TYPE_TIME</em> - proto_text_fetched_time
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>MYSQL_TYPE_DATETIME</em> -
+         proto_text_fetched_datetime
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>MYSQL_TYPE_TIMESTAMP</em> -
+         proto_text_fetched_timestamp
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>MYSQL_TYPE_STRING</em>,
+         <em>MYSQL_TYPE_VARSTRING</em>,
+         <em>MYSQL_TYPE_VARCHAR</em> -
+         proto_text_fetched_string
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>MYSQL_TYPE_TINY_BLOB</em>,
+         <em>MYSQL_TYPE_MEDIUM_BLOB</em>,
+         <em>MYSQL_TYPE_LONG_BLOB</em>,
+         <em>MYSQL_TYPE_BLOB</em> - proto_text_fetched_blob
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>MYSQL_TYPE_ENUM</em> - proto_text_fetched_enum
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>MYSQL_TYPE_SET</em> - proto_text_fetched_set
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>MYSQL_TYPE_GEOMETRY</em> -
+         proto_text_fetched_geometry
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         上記にない <em>MYSQL_TYPE_*</em> (ないはずですが) - proto_text_fetched_other
+        </p>
+       </li>
+      </ul>
+      <p class="para">
+       MYSQL_*-type 定数は、 MySQL の各バージョンの同じSQLカラムタイプと結びついているとは限らないことに注意してください。
+      </p></td>
+    </tr>
+
+    <tr>
+     <td><em>proto_binary_fetched_null</em>,
+      <em>proto_binary_fetched_bit</em>,
+      <em>proto_binary_fetched_tinyint</em>
+      <em>proto_binary_fetched_short</em>,
+      <em>proto_binary_fetched_int24</em>,
+      <em>proto_binary_fetched_int</em>,
+      <em>proto_binary_fetched_bigint</em>,
+      <em>proto_binary_fetched_decimal</em>,
+      <em>proto_binary_fetched_float</em>,
+      <em>proto_binary_fetched_double</em>,
+      <em>proto_binary_fetched_date</em>,
+      <em>proto_binary_fetched_year</em>,
+      <em>proto_binary_fetched_time</em>,
+      <em>proto_binary_fetched_datetime</em>,
+      <em>proto_binary_fetched_timestamp</em>,
+      <em>proto_binary_fetched_string</em>,
+      <em>proto_binary_fetched_blob</em>,
+      <em>proto_binary_fetched_enum</em>,
+      <em>proto_binary_fetched_set</em>,
+      <em>proto_binary_fetched_geometry</em>,
+      <em>proto_binary_fetched_other</em></td>
+     <td>Connection</td>
+     <td>プリペアドステートメント(MySQL バイナリプロトコル) から取得したあるタイプのカラムの合計数</td>
+     <td>カラムタイプと統計の名前の対応は、上の <em>proto_text_*</em> を参照してください</td>
+    </tr>
+
+   </tbody>
+  
+ </table>
+
+ <table class="doctable table">
+  <caption><strong>MySQL Native Driver が返す統計情報: データベース接続</strong></caption>
+  
+   <col width="10*" />
+   <col width="10*" />
+   <col width="40*" />
+   <col width="40*" />
+   <thead>
+    <tr>
+     <th>統計情報</th>
+     <th>統計のカテゴリ</th>
+     <th>説明</th>
+     <th>注意点</th>
+    </tr>
+
+   </thead>
+
+   <tbody class="tbody">
+    <tr>
+     <td><em>connect_success</em>, <em>connect_failure</em></td>
+     <td>Connection</td>
+     <td>接続を試みた結果が 成功 / 失敗 した回数の合計</td>
+     <td>再利用された接続や、他の種類の接続もすべて含みます</td>
+    </tr>
+
+    <tr>
+     <td><em>reconnect</em></td>
+     <td>Process</td>
+     <td>既に開かれている接続ハンドルに対して(mysqli_real_connectを使って)行われた再接続の合計回数</td>
+     <td>次のコードは、再接続を行います。<em>$link = new mysqli(...);$link-&gt;real_connect(...)</em> しかし、次のコードは再接続を行いません。<em>$link = new mysqli(...); $link-&gt;connect(...)</em> なぜなら、このコードは新しい接続が確立される前に明示的に既存の接続を閉じるからです。</td>
+    </tr>
+
+    <tr>
+     <td><em>pconnect_success</em></td>
+     <td>Connection</td>
+     <td>持続的接続を試みて成功した合計回数</td>
+     <td><em>connect_success</em> は、持続的接続と通常の接続の両方の成功数を合計している点に注意してください。通常の接続の成功数は、<em>connect_success</em> - <em>pconnect_success</em> で求められます。</td>
+    </tr>
+
+    <tr>
+     <td><em>active_connections</em></td>
+     <td>Connection</td>
+     <td>アクティブな持続的接続と通常の接続の合計値</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+    <tr>
+     <td><em>active_persistent_connections</em></td>
+     <td>Connection</td>
+     <td>アクティブな持続的接続の合計値</td>
+     <td>アクティブな通常の接続の合計値は、<em>active_connections</em> - <em>active_persistent_connections</em> で求められます。</td>
+    </tr>
+
+    <tr>
+     <td><em>explicit_close</em></td>
+     <td>Connection</td>
+     <td>明示的に閉じられた接続の合計数(ext/mysqli 限定).</td>
+     <td>明示的に接続を閉じるコードの例 :
+<div class="example-contents">
+<div class="cdata"><pre>
+$link = new mysqli(...); $link-&gt;close(...)
+$link = new mysqli(...); $link-&gt;connect(...)
+</pre></div>
+</div>
+</td>
+    </tr>
+
+    <tr>
+     <td><em>implicit_close</em></td>
+     <td>Connection</td>
+     <td>暗黙的に閉じられた接続の合計数(ext/mysqli 限定).</td>
+     <td>暗黙的に接続を閉じるコードの例 :
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         <em>$link = new mysqli(...);
+         $link-&gt;real_connect(...)</em>
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>unset($link)</em>
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         持続的接続の場合: プールされる接続は real_connect 関数を使って作成されますが、作成されたハンドルにはどんなオプションが設定されたかわからない場合があります。この場合、暗黙のうちに接続を閉じることで、どんなオプションが設定されたかわからない接続が返されることを防いでください。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         持続的接続の場合: mysqli::ping や mysqli::change_user を実行すると失敗し、ext/mysqli が接続を閉じてしまいます。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         スクリプトの実行が終了する時: ユーザーが閉じていない接続は閉じられます。
+        </p>
+       </li>
+      </ul></td>
+    </tr>
+
+    <tr>
+     <td><em>disconnect_close</em></td>
+     <td>Connection</td>
+     <td>接続を試み、C API の <span class="function"><strong>mysql_real_connect()</strong></span> を呼び出した後に失敗した回数</td>
+     <td>C API の呼び出しの際に渡された接続ハンドルを閉じるため、<em>disconnect_close</em> と呼ばれています。</td>
+    </tr>
+
+    <tr>
+     <td><em>in_middle_of_command_close</em></td>
+     <td>Process</td>
+     <td>コマンドの実行中(クエリを送信し、応答を受け取る前に残っていた結果セットが取得されなかったり、データを取得中だったり、LOAD DATA コマンドのデータを送信中だったりした場合)に閉じられた接続</td>
+     <td>非同期クエリを使っていない場合、コマンド実行中に接続が閉じられるのは、PHPスクリプトが予期しない箇所で終了し、PHPが接続を閉じた場合だけのはずです。</td>
+    </tr>
+
+    <tr>
+     <td><em>init_command_executed_count</em></td>
+     <td>Connection</td>
+     <td>初期化コマンドが実行された合計回数。たとえば、以下のようなコードが実行された回数です。
+      <em>mysqli_options(MYSQLI_INIT_COMMAND , ...)</em></td>
+     <td>初期化コマンドが成功した回数は <em>init_command_executed_count</em> - <em>init_command_failed_count</em> で求められます。</td>
+    </tr>
+
+    <tr>
+     <td><em>init_command_failed_count</em></td>
+     <td>Connection</td>
+     <td>初期化コマンドが失敗した回数</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+   </tbody>
+  
+ </table>
+
+ <table class="doctable table">
+  <caption><strong>MySQL Native Driverが返す統計情報: COM_* コマンド</strong></caption>
+  
+   <col width="10*" />
+   <col width="10*" />
+   <col width="40*" />
+   <col width="40*" />
+   <thead>
+    <tr>
+     <th>統計情報</th>
+     <th>統計のカテゴリ</th>
+     <th>説明</th>
+     <th>注意点</th>
+    </tr>
+
+   </thead>
+
+   <tbody class="tbody">
+    <tr>
+     <td><em>com_quit</em>, <em>com_init_db</em>,
+      <em>com_query</em>, <em>com_field_list</em>,
+      <em>com_create_db</em>, <em>com_drop_db</em>,
+      <em>com_refresh</em>, <em>com_shutdown</em>,
+      <em>com_statistics</em>,
+      <em>com_process_info</em>,
+      <em>com_connect</em>,
+      <em>com_process_kill</em>, <em>com_debug</em>,
+      <em>com_ping</em>, <em>com_time</em>,
+      <em>com_delayed_insert</em>,
+      <em>com_change_user</em>,
+      <em>com_binlog_dump</em>,
+      <em>com_table_dump</em>,
+      <em>com_connect_out</em>,
+      <em>com_register_slave</em>,
+      <em>com_stmt_prepare</em>,
+      <em>com_stmt_execute</em>,
+      <em>com_stmt_send_long_data</em>,
+      <em>com_stmt_close</em>,
+      <em>com_stmt_reset</em>,
+      <em>com_stmt_set_option</em>,
+      <em>com_stmt_fetch</em>, <em>com_daemon</em></td>
+     <td>Connection</td>
+     <td>PHP から MySQL へ、特定の COM_* コマンドを送信しようとした合計回数</td>
+     <td><p class="para">
+       これらの統計値は、コマンドをチェックした後、対応する MySQLクライアントサーバプロトコルのパケットが送信される前にインクリメントされます。mysqlnd がパケットの送信に失敗したとしても、統計情報は減りません。パケットの送信にした場合、PHP は "<span class="quote">Error while sending %s packet. PID=%d.</span>" という、E_WARNING レベルの警告を発生させます。
+      </p>
+
+      <p class="para">
+       使い方の例:
+      </p>
+      <ul class="itemizedlist">
+       <li class="listitem">
+        <p class="para">
+         PHP があるコマンドを MySQLに送信しているかどうかをチェックする。たとえば、クライアントが <em>COM_PROCESS_KILL</em> を送信しているかどうかをチェックする。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>COM_EXECUTE</em> コマンドと <em>COM_PREPARE</em> コマンドの実行回数を比較することで、プリペアドステートメントの平均実行回数を割り出す。
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>COM_QUERY</em> コマンドの実行回数がゼロかどうかをチェックすることで、PHP がプリペアドステートメントでない通常のクエリを実行しているかどうかをチェックする
+        </p>
+       </li>
+       <li class="listitem">
+        <p class="para">
+         <em>COM_QUERY</em> と <em>COM_EXECUTE</em> コマンドをチェックすることで、SQLを実行しすぎているPHPスクリプトを特定する
+        </p>
+       </li>
+      </ul></td>
+    </tr>
+
+   </tbody>
+  
+ </table>
+
+ <p class="para">
+  <em class="emphasis">その他</em>
+ </p>
+ <table class="doctable table">
+  <caption><strong>MySQL Native Driver が返す統計情報: その他</strong></caption>
+  
+   <col width="10*" />
+   <col width="10*" />
+   <col width="40*" />
+   <col width="40*" />
+   <thead>
+    <tr>
+     <th>統計情報</th>
+     <th>統計のカテゴリ</th>
+     <th>説明</th>
+     <th>注意点</th>
+    </tr>
+
+   </thead>
+
+   <tbody class="tbody">
+    <tr>
+     <td><em>explicit_stmt_close</em>,
+      <em>implicit_stmt_close</em></td>
+     <td>プロセス</td>
+     <td>プリペアドステートメントが閉じられた合計回数</td>
+     <td>プリペアドステートメントは、常に明示的に閉じられるものとみなされます。ただし、prepare に失敗した場合を除きます。</td>
+    </tr>
+
+    <tr>
+     <td><em>mem_emalloc_count</em>,
+      <em>mem_emalloc_ammount</em>,
+      <em>mem_ecalloc_count</em>,
+      <em>mem_ecalloc_ammount</em>,
+      <em>mem_erealloc_count</em>,
+      <em>mem_erealloc_ammount</em>,
+      <em>mem_efree_count</em>,
+      <em>mem_malloc_count</em>,
+      <em>mem_malloc_ammount</em>,
+      <em>mem_calloc_count</em>,
+      <em>mem_calloc_ammount</em>,
+      <em>mem_realloc_count</em>,
+      <em>mem_realloc_ammount</em>,
+      <em>mem_free_count</em></td>
+     <td>Process</td>
+     <td>メモリ管理に関する関数コールの回数</td>
+     <td>開発者だけが使うものです。</td>
+    </tr>
+
+    <tr>
+     <td><em>command_buffer_too_small</em></td>
+     <td>データベース接続</td>
+     <td>PHP が MySQL にコマンドを送信する際、コマンドバッファの大きさが拡張された回数</td>
+     <td>
+      <p class="para">
+       mysqlnd は、内部的に <em>mysqlnd.net_cmd_buffer_size</em>(<var class="filename">php.ini</var>で設定) バイトを接続毎にメモリに割り当てます。MySQL のクライアントサーバプロトコルの場合、<em>COM_QUERY</em> (通常クエリ) コマンドがバッファサイズより大きい場合、mysqlnd はコマンドを送信するのに必要なサイズまでバッファを拡張します。ひとつの接続につきバッファが拡張された際はいつでも、<em>command_buffer_too_small</em> の値がひとつインクリメントされます。
+      </p>
+
+      <p class="para">
+       mysqlnd が ほぼすべての接続で デフォルトの <em>mysqlnd.net_cmd_buffer_size</em> (<var class="filename">php.ini</var> で設定) バイトを超えてバッファを拡張しなければならない場合、メモリの再割り当てを防ぐために、デフォルトの値を増やすことを検討すべきです。
+      </p>
+
+      <p class="para">
+       PHP 5.3.0 では、デフォルトのバッファサイズが 2K バイトでした。将来のバージョンでは、この値は 4K バイト以上になる見込みです。このデフォルトの値は <var class="filename">php.ini</var> の <em>mysqlnd.net_cmd_buffer_size</em> を設定するか、<em>mysqli_options(MYSQLI_OPT_NET_CMD_BUFFER_SIZE, int size)</em> 関数を使うことで変更することができます。
+      </p>
+
+      <p class="para">
+       4096バイト以上のバッファサイズを設定することを推奨します。なぜなら、mysqlnd は MySQL からある通信パケットを読み取っているときにそれだけのメモリを使うからです。PHP 5.3.0 では、MySQL が現在設定されているバッファサイズ以上のパケットを送信しても、mysqlnd は絶対にバッファサイズを拡大しません。その結果として、mysqlnd はパケットをデコードできず、クライアントアプリケーションがエラーを発生させることになります。PHP 5.3.0 における <em>mysqlnd.net_cmd_buffer_size</em> のデフォルトである 2048 バイト以上に大きなパケットが送られてくる場合はふたつしかありません: とても長いエラーメッセージを送信した場合と、<em>COM_LIST_FIELD</em> ( <span class="function"><a href="function.mysql-list-fields.html" class="function">mysql_list_fields()</a></span>関数から投げられる内部コマンド) から発生したパケットに含まれるカラムのメタデータが、とても長いデフォルト値(1900バイト以上)を持つ文字列型のカラムを持っていた場合です。この問題に関するバグレポートは存在していません - こんなことは滅多に起きないはずです。
+      </p>
+
+      <p class="para">
+       PHP 5.3.2 の mysqlnd は 4096バイトより小さいバッファを設定できません。
+      </p></td>
+    </tr>
+
+    <tr>
+     <td><em>connection_reused</em></td>
+     <td class="empty">&nbsp;</td>
+     <td class="empty">&nbsp;</td>
+     <td class="empty">&nbsp;</td>
+    </tr>
+
+   </tbody>
+  
+ </table>
+
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqlnd.persist.html">持続的接続</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd.notes.html">メモ</a></div>
+ <div class="up"><a href="book.mysqlnd.html">Mysqlnd</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

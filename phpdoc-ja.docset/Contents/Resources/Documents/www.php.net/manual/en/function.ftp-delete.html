@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>FTP サーバー上のファイルを削除する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.ftp-connect.html">ftp_connect</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.ftp-exec.html">ftp_exec</a></div>
+ <div class="up"><a href="ref.ftp.html">FTP 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.ftp-delete" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ftp_delete</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose"><span class="refname">ftp_delete</span> &mdash; <span class="dc-title">FTP サーバー上のファイルを削除する</span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-function.ftp-delete-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>ftp_delete</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$ftp_stream</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$path</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+    <span class="function"><strong>ftp_delete()</strong></span> は、<em><code class="parameter">path</code></em>
+   で指定したファイルを FTP サーバーから削除します。
+  </p>
+ </div>
+
+ <div class="refsect1 parameters" id="refsect1-function.ftp-delete-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">ftp_stream</code></em></span>
+     <dd>
+
+      <p class="para">
+        FTP 接続のリンク ID 。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">path</code></em></span>
+     <dd>
+
+      <p class="para">
+       削除するファイル。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues" id="refsect1-function.ftp-delete-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+ <div class="refsect1 examples" id="refsect1-function.ftp-delete-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-4259">
+    <p><strong>例1  <span class="function"><strong>ftp_delete()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$file&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'public_html/old.txt'</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;接続を確立する<br /></span><span style="color: #0000BB">$conn_id&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ftp_connect</span><span style="color: #007700">(</span><span style="color: #0000BB">$ftp_server</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;ユーザー名とパスワードでログインする<br /></span><span style="color: #0000BB">$login_result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ftp_login</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn_id</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$ftp_user_name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$ftp_user_pass</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;$file&nbsp;の削除を試みる<br /></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">ftp_delete</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn_id</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$file</span><span style="color: #007700">))&nbsp;{<br />&nbsp;echo&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$file</span><span style="color: #DD0000">&nbsp;deleted&nbsp;successful\n"</span><span style="color: #007700">;<br />}&nbsp;else&nbsp;{<br />&nbsp;echo&nbsp;</span><span style="color: #DD0000">"could&nbsp;not&nbsp;delete&nbsp;</span><span style="color: #0000BB">$file</span><span style="color: #DD0000">\n"</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;接続を閉じる<br /></span><span style="color: #0000BB">ftp_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn_id</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="112582""></a>
+  <div class="note">
+   <strong class="user">Jim Greene</strong>
+   <a href="#112582" class="date">02-Jul-2013 04:15</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Generally speaking, unlink will work just fine for most applications, however, if you are using multiple servers, you're going to have to connect to the other server using FTP.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="92739""></a>
+  <div class="note">
+   <strong class="user">oritatelodoy at hotmail dot com</strong>
+   <a href="#92739" class="date">06-Aug-2009 07:42</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+you can delete a file with a normal unlink function in the php api</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="51556""></a>
+  <div class="note">
+   <strong class="user">webmaster at iamsowonderful dot com</strong>
+   <a href="#51556" class="date">04-Apr-2005 07:37</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+You can make a script delete itself with ftp_delete!<br />
+<br />
+It's pretty useful when creating an install script which you want to destroy at the end of the installation to prevent it from being run later.<br />
+<br />
+On Linux machines, very often the user uploads third party scripts, and gets asked to CHMOD this and delete that manually because the webserver user is different from the FTP user ; make them enter their FTP info and get rid of the tedious file manipulation step!<br />
+<br />
+Be careful, though. You will need to flush the output buffer and call ftp_delete at the end of the script, or else the script will die before it fully executes. Look up ob_end_flush for more info.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.ftp-connect.html">ftp_connect</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.ftp-exec.html">ftp_exec</a></div>
+ <div class="up"><a href="ref.ftp.html">FTP 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>接続を閉じる</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="class.mongoclient.html">MongoClient</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongo.connect.html">Mongo::connect</a></div>
+ <div class="up"><a href="class.mongoclient.html">MongoClient</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mongo.close" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">Mongo::close</h1>
+  <p class="verinfo">(バージョン情報なし。おそらく SVN 版にしか存在しないでしょう)</p><p class="refpurpose"><span class="refname">Mongo::close</span> &mdash; <span class="dc-title">接続を閉じる</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-mongo.close-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><strong>Mongo::close</strong></span>
+    ([ <span class="methodparam"><span class="type"><span class="type boolean|string">boolean|string</span></span> <code class="parameter">$connection</code></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+    <span class="function"><strong>Mongo::close()</strong></span> メソッドは、
+   データベースとの接続を強制的に閉じます。持続的接続を使っていても同じです。
+   通常は、<em class="emphasis">決して</em> このメソッドを使う必要はありません。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-mongo.close-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term">
+      <em><code class="parameter">connection</code></em>
+     </span>
+     <dd>
+
+      <p class="para">
+       指定しなかったり <strong><code>FALSE</code></strong> を渡したりした場合は、
+       書き込み用に選ばれた接続を閉じます。単一ノード構成の場合はすべての接続を閉じることになりますが、
+       レプリカセットに接続している場合は、close() とするとプライマリサーバーへの接続
+       <em class="emphasis">だけ</em> を閉じることになります。
+      </p>
+      <p class="para">
+       <strong><code>TRUE</code></strong> を渡すと、コネクションマネージャーが把握しているすべての接続を閉じます。
+       つまり、close を呼んだオブジェクトを作ったときの接続文字列に含まれていない接続も、
+       閉じる対象になる可能性があります。
+      </p>
+      <p class="para">
+       文字列を渡すと、このハッシュが指す接続だけを閉じます。
+       ハッシュとは接続の識別子のことで、 <span class="function"><strong>Mongo::getConnections()</strong></span>
+       を呼ぶと取得できます。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-mongo.close-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   接続を閉じるのに成功したかどうかを返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-mongo.close-examples">
+  <h3 class="title">例</h3>
+  <div class="example" id="example-1393">
+   <p><strong>例1  <span class="function"><strong>MongoClient::close()</strong></span> の例</strong></p>
+   <div class="example-contents"><p>この例は、セカンダリへの接続だけを選んで閉じる方法を示すものです。</p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;レプリカセットに接続します<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Mongo</span><span style="color: #007700">(</span><span style="color: #DD0000">"mongodb://whisky:13000/?replicaset=seta"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$connections&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$a</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getConnections</span><span style="color: #007700">();<br /><br />foreach&nbsp;(&nbsp;</span><span style="color: #0000BB">$connections&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$con&nbsp;</span><span style="color: #007700">)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;すべての接続をループし、型が&nbsp;"SECONDARY"<br />&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;のときに接続を閉じます<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">if&nbsp;(&nbsp;</span><span style="color: #0000BB">$con</span><span style="color: #007700">[</span><span style="color: #DD0000">'connection'</span><span style="color: #007700">][</span><span style="color: #DD0000">'connection_type_desc'</span><span style="color: #007700">]&nbsp;==&nbsp;</span><span style="color: #DD0000">"SECONDARY"&nbsp;</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Closing&nbsp;'</span><span style="color: #007700">{</span><span style="color: #0000BB">$con</span><span style="color: #007700">[</span><span style="color: #DD0000">'hash'</span><span style="color: #007700">]}</span><span style="color: #DD0000">':&nbsp;"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$closed&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$a</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">close</span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$con</span><span style="color: #007700">[</span><span style="color: #DD0000">'hash'</span><span style="color: #007700">]&nbsp;);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$closed&nbsp;</span><span style="color: #007700">?&nbsp;</span><span style="color: #DD0000">"ok"&nbsp;</span><span style="color: #007700">:&nbsp;</span><span style="color: #DD0000">"failed"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+Closing &#039;whisky:13001;X;4948&#039;: ok
+</pre></div>
+   </div>
+  </div>
+ </div>
+
+
+ <div class="refsect1 changelog" id="refsect1-mongo.close-changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>1.3.0</td>
+       <td>
+        <p class="para">
+         <em><code class="parameter">connection</code></em> パラメータが追加されました。
+         それより前のバージョンでは、このメソッドで閉じられるのは書き込み接続だけでした。
+        </p>
+       </td>
+      </tr>
+
+      <tr>
+       <td>1.2.0</td>
+       <td>
+        <p class="para">
+         1.2.0 より前のバージョンでは、デフォルトでは持続的接続を使いませんでした。
+         そして、MongoDB の接続がスコープから抜ければすぐに閉じられていました。
+         バージョン 1.2.0 からはそうではなくなりました。
+         close を呼ばないと、高負荷な接続がサーバーを使い切ってしまう可能性があります。
+        </p>
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-mongo.close-seealso">
+  <h3 class="title">参考</h3>
+  <ul class="simplelist">
+   <li class="member"> <span class="function"><strong>Mongo::getConnections()</strong></span></li>
+  </ul>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="class.mongoclient.html">MongoClient</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongo.connect.html">Mongo::connect</a></div>
+ <div class="up"><a href="class.mongoclient.html">MongoClient</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

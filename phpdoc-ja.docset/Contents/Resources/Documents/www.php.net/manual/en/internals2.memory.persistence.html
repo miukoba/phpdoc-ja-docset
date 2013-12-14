@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>データの永続化</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="internals2.memory.management.html">基本的なメモリ管理</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="internals2.memory.tsrm.html">スレッドセーフなリソースマネージャ</a></div>
+ <div class="up"><a href="internals2.memory.html">メモリ管理</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="internals2.memory.persistence" class="sect1">
+ <h2 class="title">データの永続化</h2>
+ 
+ <p class="simpara">
+  ここでいう「データの永続化」とは、現在のリクエストの間はずっと生き続けることを想定したあらゆるデータを指します。
+  エンジン内でのメモリ管理はリクエスト単位での割り当てを重視していますが、必ずしもこれが現実的であったり適切であったりするわけではありません。
+  永続メモリは、たとえば外部ライブラリの要件を満たすために必要になることがあります。
+  また、<code class="code">ハック</code>の際にも便利です。
+ </p>
+ 
+ <p class="simpara">
+  永続メモリのよくある使い道は、データベースサーバーとの持続的な接続をできるようにすることです。
+  これはあまり望ましいことではありませんが、永続メモリの使い道としては一番よくあるものです。
+ </p>
+ 
+ <blockquote class="note"><p><strong class="note">注意</strong>: 
+  <span class="simpara">
+   これらの関数にはすべて、追加のパラメータ persistent があります。これを false にすると、
+   エンジンは通常のアロケータ (emalloc) を使い、永続化しなくなります。メモリを永続化する場合はシステムのアロケータを使います。
+   しかしたいていの場合、メインメモリ API のように NULL ポインタを返すことはできません。
+  </span>
+ </p></blockquote>
+ 
+ <table id="internals2.memory.management.papis" class="doctable table">
+  <caption><strong>永続メモリ API</strong></caption>
+  
+   <thead>
+    <tr>
+     <th>プロトタイプ</th>
+     <th>説明</th>
+    </tr>
+
+   </thead>
+
+   <tbody class="tbody">
+    
+    <tr>
+     <td><code class="code">void *pemalloc(size_t size, zend_bool persistent)</code></td>
+     <td><code class="code">size</code> バイトのメモリを確保します。</td>
+    </tr>
+
+    
+    <tr>
+     <td><code class="code">void *pecalloc(size_t nmemb, size_t size, zend_bool persistent)</code></td>
+     <td>
+      <code class="code">size</code> バイトのバッファを <code class="code">nmemb</code> 要素だけ確保し、
+      ゼロで初期化します。
+     </td>
+    </tr>
+
+    
+    <tr>
+     <td><code class="code">void *perealloc(void *ptr, size_t size, zend_bool persistent)</code></td>
+     <td>
+      <code class="code">emalloc</code> を使って確保したバッファ <code class="code">ptr</code> のサイズを変更し、
+      <code class="code">size</code> バイトにします。
+     </td>
+    </tr>
+
+    
+    <tr>
+     <td><code class="code">void pefree(void *ptr, zend_bool persistent)</code></td>
+     <td>
+      <code class="code">ptr</code> が指すバッファを解放します。このバッファは
+      <code class="code">pemalloc</code> で確保したものでなければいけません。
+     </td>
+    </tr>
+
+    
+    <tr>
+     <td>
+      <code class="code">void *safe_pemalloc(size_t nmemb, size_t size, size_t offset, zend_bool persistent)</code>
+     </td>
+     <td>
+      <code class="code">size</code> バイトのバッファを <code class="code">nmemb</code> ブロックぶんと、さらに
+      <code class="code">offset</code> バイトを確保します。
+      <code class="code">pemalloc(nmemb * size + offset)</code> と似ていますが、
+      オーバーフロー対策の特別な保護が追加されています。
+     </td>
+    </tr>
+
+    
+    <tr>
+     <td><code class="code">char *pestrdup(const char *s, zend_bool persistent)</code></td>
+     <td>
+      NULL 終端文字列 <code class="code">s</code> を保持できるだけのバッファを確保し、
+      <code class="code">s</code> をそのバッファにコピーします。
+     </td>
+    </tr>
+
+    
+    <tr>
+     <td>
+      <code class="code">char *pestrndup(const char *s, unsigned int length, zend_bool persistent)</code>
+     </td>
+     <td>
+      <code class="code">pestrdup</code> と似ていますが、NULL 終端文字列の長さが既知である場合に使います。
+     </td>
+    </tr>
+
+   </tbody>
+  
+ </table>
+
+ 
+ <div class="caution"><strong class="caution">警告</strong>
+  <p class="simpara">
+   大切なのは、永続化させるために確保したメモリはエンジン側での最適化や追跡が行われないということです。
+   memory_limit に縛られることもありません。さらに、エンジンの<code class="code">ハッカー</code>が作った変数では永続メモリを使ってはいけません。
+  </p>
+ </div>
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="internals2.memory.management.html">基本的なメモリ管理</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="internals2.memory.tsrm.html">スレッドセーフなリソースマネージャ</a></div>
+ <div class="up"><a href="internals2.memory.html">メモリ管理</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,268 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>実行時設定</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqlnd-ms.installation.html">インストール手順</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd-ms.plugin-ini-json.html">Plugin configuration file (&gt;=1.1.x)</a></div>
+ <div class="up"><a href="mysqlnd-ms.setup.html">インストール/設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mysqlnd-ms.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <table class="doctable table">
+   <caption><strong>Mysqlnd_ms 設定オプション</strong></caption>
+   
+    <thead>
+     <tr>
+      <th>名前</th>
+      <th>デフォルト</th>
+      <th>変更可能</th>
+      <th>変更履歴</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+     <tr>
+      <td><a href="mysqlnd-ms.configuration.html#ini.mysqlnd-ms.enable" class="link">mysqlnd_ms.enable</a></td>
+      <td>0</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td></td>
+     </tr>
+
+     <tr>
+      <td><a href="mysqlnd-ms.configuration.html#ini.mysqlnd-ms.force-config-usage" class="link">mysqlnd_ms.force_config_usage</a></td>
+      <td>0</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td></td>
+     </tr>
+
+     <tr>
+      <td><a href="mysqlnd-ms.configuration.html#ini.mysqlnd-ms.ini-file" class="link">mysqlnd_ms.ini_file</a></td>
+      <td>&quot;&quot;</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td></td>
+     </tr>
+
+     <tr>
+      <td><a href="mysqlnd-ms.configuration.html#ini.mysqlnd-ms.config-file" class="link">mysqlnd_ms.config_file</a></td>
+      <td>&quot;&quot;</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td></td>
+     </tr>
+
+     <tr>
+      <td><a href="mysqlnd-ms.configuration.html#ini.mysqlnd-ms.collect-statistics" class="link">mysqlnd_ms.collect_statistics</a></td>
+      <td>0</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td></td>
+     </tr>
+
+     <tr>
+      <td><a href="mysqlnd-ms.configuration.html#ini.mysqlnd-ms.multi-master" class="link">mysqlnd_ms.multi_master</a></td>
+      <td>0</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td></td>
+     </tr>
+
+     <tr>
+      <td><a href="mysqlnd-ms.configuration.html#ini.mysqlnd-ms.disable-rw-split" class="link">mysqlnd_ms.disable_rw_split</a></td>
+      <td>0</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td></td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+ </p>
+
+ <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+ <p class="para">
+  <dl>
+
+
+   <dt id="ini.mysqlnd-ms.enable">
+    <span class="term">
+     <em><code class="parameter">mysqlnd_ms.enable</code></em>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      Enables or disables the plugin. If disabled, the extension will not plug
+      into
+      <a href="book.mysqlnd.html" class="link">mysqlnd</a> to proxy internal
+      <a href="book.mysqlnd.html" class="link">mysqlnd</a> C API calls.
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.mysqlnd-ms.force-config-usage">
+    <span class="term">
+     <em><code class="parameter">mysqlnd_ms.force_config_usage</code></em>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      If enabled, the plugin checks if the host (server) parameters value of any
+      MySQL connection attempt, matches a section name from the plugin configuration
+      file. If not, the connection attempt is blocked.
+     </p>
+     <p class="para">
+      This setting is not only useful to restrict PHP to certain servers but also
+      to debug configuration file problems. The configuration file validity is checked
+      at two different stages. The first check is performed when PHP begins to
+      handle a web request. At this point the plugin reads and decodes the configuration
+      file. Errors thrown at this early stage in an extensions life cycle may not be
+      shown properly to the user. Thus, the plugin buffers the errors, if any, and
+      additionally displays them when establishing a connection to MySQL.
+      By default a buffered startup error will emit an error of type
+      <em>E_WARNING</em>.  If <em>force_config_usage</em> is set,
+      the error type used is <em>E_RECOVERABLE_ERROR</em>.
+     </p>
+     <p class="para">
+      Please, see also <a href="mysqlnd-ms.plugin-ini-json.html#mysqlnd-ms.plugin-ini-json.debug_config" class="link">configuration
+      file debugging notes</a>.
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.mysqlnd-ms.ini-file">
+    <span class="term">
+     <em><code class="parameter">mysqlnd_ms.ini_file</code></em>
+     <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      Plugin specific configuration file. This setting has been
+      renamed to <em>mysqlnd_ms.config_file</em> in version 1.4.0.
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.mysqlnd-ms.config-file">
+    <span class="term">
+     <em><code class="parameter">mysqlnd_ms.config_file</code></em>
+     <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      Plugin specific configuration file. This setting superseeds
+      <em>mysqlnd_ms.ini_file</em> since 1.4.0.
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.mysqlnd-ms.collect-statistics">
+    <span class="term">
+     <em><code class="parameter">mysqlnd_ms.collect_statistics</code></em>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      Enables or disables the collection of statistics. The collection of
+      statistics is disabled by default for performance reasons.
+      Statistics are returned by the function
+       <span class="function"><a href="function.mysqlnd-ms-get-stats.html" class="function">mysqlnd_ms_get_stats()</a></span>.
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.mysqlnd-ms.multi-master">
+    <span class="term">
+     <em><code class="parameter">mysqlnd_ms.multi_master</code></em>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      Enables or disables support of MySQL multi master replication setups.
+      Please, see also <a href="mysqlnd-ms.supportedclusters.html" class="link">supported clusters</a>.
+     </p>
+    </dd>
+
+   </dt>
+
+
+   <dt id="ini.mysqlnd-ms.disable-rw-split">
+    <span class="term">
+     <em><code class="parameter">mysqlnd_ms.disable_rw_split</code></em>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      Enables or disables built-in read write splitting.
+     </p>
+     <p class="para">
+      Controls whether load balancing and lazy connection functionality can
+      be used independently of read write splitting. If read write splitting
+      is disabled, only servers from the master list will be used for
+      statement execution. All configured slave servers will be ignored.
+     </p>
+     <p class="para">
+      The SQL hint <em>MYSQLND_MS_USE_SLAVE</em> will not be recognized.
+      If found, the statement will be redirected to a master.
+     </p>
+     <p class="para">
+      Disabling read write splitting impacts the return value of
+       <span class="function"><a href="function.mysqlnd-ms-query-is-select.html" class="function">mysqlnd_ms_query_is_select()</a></span>.
+      The function will no longer propose query execution on slave servers.
+     </p>
+     <blockquote class="note"><p><strong class="note">注意</strong>: 
+      <strong>Multiple master servers</strong><br />
+      <p class="para">
+       Setting <em>mysqlnd_ms.multi_master=1</em> allows the plugin
+       to use multiple master servers, instead of only the first master server
+       of the master list.
+      </p>
+      <p class="para">
+       Please, see also <a href="mysqlnd-ms.supportedclusters.html" class="link">supported clusters</a>.
+      </p>
+     </p></blockquote>
+    </dd>
+
+   </dt>
+
+
+  </dl>
+
+ </p>
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqlnd-ms.installation.html">インストール手順</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd-ms.plugin-ini-json.html">Plugin configuration file (&gt;=1.1.x)</a></div>
+ <div class="up"><a href="mysqlnd-ms.setup.html">インストール/設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

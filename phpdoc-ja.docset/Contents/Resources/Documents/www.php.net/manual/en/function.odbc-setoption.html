@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>ODBC の設定を変更する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.odbc-rollback.html">odbc_rollback</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.odbc-specialcolumns.html">odbc_specialcolumns</a></div>
+ <div class="up"><a href="ref.uodbc.html">ODBC 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.odbc-setoption" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">odbc_setoption</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose"><span class="refname">odbc_setoption</span> &mdash; <span class="dc-title">ODBC の設定を変更する</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.odbc-setoption-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>odbc_setoption</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$id</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$function</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$option</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$param</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   この関数により特定の接続またはクエリー結果に関する ODBC
+   オプションを変更することが可能となります。この関数は、気まぐれな ODBC
+   ドライバの問題に対処する際の道具として作成されたものです。自分が ODBC
+   プログラマであり、様々なオプションが有する効果を理解している場合にのみこの関数を使用するべきでしょう。
+   使用可能な全てのオプションおよび値を理解するためには、良い ODBC
+   リファレンスが必要です。ドライバーのバージョンが違うと、
+   サポートされるオプションも異なります。
+  </p>
+  <p class="para">
+   この関数の効果は ODBC ドライバに依存する可能性があるので、
+   一般に公開するスクリプトでは、この関数の使用は避けましょう。
+   また、いくつかの ODBC オプションはこの関数では利用できません。
+   それは、これらを接続の確立またはクエリの準備の前に設定する必要があるからです。
+   しかし、特定の業務において自分の上司が商用製品の使用を指示しなかったために
+   PHP を使用する場合、このことは実際的な問題となります。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.odbc-setoption-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">id</code></em></span>
+     <dd>
+
+      <p class="para">
+       設定を変更する接続 ID または
+       結果 ID。SQLSetConnectOption() の場合、これは接続 ID です。
+       SQLSetStmtOption() の場合、これは結果 ID です。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">function</code></em></span>
+     <dd>
+
+      <p class="para">
+       使用する ODBC 関数。
+       値は SQLSetConnectOption() の場合 1、
+       SQLSetStmtOption() の場合 2 である必要があります。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">option</code></em></span>
+     <dd>
+
+      <p class="para">
+       設定するオプション。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">param</code></em></span>
+     <dd>
+
+      <p class="para">
+       指定した <em><code class="parameter">option</code></em> の値。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.odbc-setoption-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.odbc-setoption-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-894">
+    <p><strong>例1  <span class="function"><strong>odbc_setoption()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;1.&nbsp;SQLSetConnectOption()&nbsp;のオプション&nbsp;102&nbsp;は&nbsp;SQL_AUTOCOMMIT&nbsp;です。<br />//&nbsp;&nbsp;&nbsp;&nbsp;SQL_AUTOCOMMIT&nbsp;の値&nbsp;1&nbsp;は&nbsp;SQL_AUTOCOMMIT_ON&nbsp;です。<br />//&nbsp;&nbsp;&nbsp;&nbsp;この例は&nbsp;odbc_autocommit($conn,&nbsp;true);&nbsp;と同じ結果<br />//&nbsp;&nbsp;&nbsp;&nbsp;となります。<br /><br /></span><span style="color: #0000BB">odbc_setoption</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">102</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;2.&nbsp;SQLSetStmtOption()&nbsp;のオプション&nbsp;0&nbsp;は&nbsp;SQL_QUERY_TIMEOUT&nbsp;です。<br />//&nbsp;&nbsp;&nbsp;&nbsp;この例は&nbsp;30&nbsp;秒後に時間切れとなるクエリーを設定します。<br /><br /></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">odbc_prepare</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$sql</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">odbc_setoption</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">30</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">odbc_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="88295""></a>
+  <div class="note">
+   <strong class="user">egil at wp dot pl</strong>
+   <a href="#88295" class="date">19-Jan-2009 04:42</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Some options for Microsoft SQL Server ODBC:<br />
+1 - (SQL_MAX_ROWS) show top x rows<br />
+6 - (SQL_CURSOR_TYPE) zmiana kursora - ma działać dopiero w PHP 5.3<br />
+<br />
+You can "translate" constant names (found on e.g. Microsoft website) to appropriate values using this page:<br />
+<a href="http://www.freepascal.org/docs-html/packages/odbcsql/index-2.html" rel="nofollow" target="_blank">http://www.freepascal.org/docs-html/packages/odbcsql/index-2.html</a><br />
+<br />
+BTW. If anyone is banging his head about "cursor type changed" warning while using execute with ORDER BY clause, then just use exec for now (remember to addslashes for yourself). In PHP 5.3 a Bug #43668 will be fixed and it will allow you to change a cursor type to SQL_CUR_USE_ODBC.<br />
+<br />
+Note that you could also try to select a cursor type in odbc_connect, but that didn't work for me (much more problems appeared then it solved).</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.odbc-rollback.html">odbc_rollback</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.odbc-specialcolumns.html">odbc_specialcolumns</a></div>
+ <div class="up"><a href="ref.uodbc.html">ODBC 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

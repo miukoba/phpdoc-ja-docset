@@ -1,0 +1,257 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>ビルトインウェブサーバー</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="features.commandline.interactive.html">対話シェル</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="features.commandline.ini.html">INI 設定</a></div>
+ <div class="up"><a href="features.commandline.html">コマンドラインの使用法</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="features.commandline.webserver" class="section">
+  <h2 class="title">ビルトインウェブサーバー</h2>
+
+  <p class="para">
+   PHP 5.4.0 から、<acronym title="Command Line Interpreter/Interface">CLI</acronym> <acronym title="Server Application Programming Interface">SAPI</acronym> にはウェブサーバーの機能が組み込まれるようになりました。
+  </p>
+
+  <p class="para">
+   このウェブサーバーは開発用としてのみ設計されたものであり、
+   実運用に使ってはいけません。
+  </p>
+
+  <p class="para">
+   リクエストの処理はシーケンシャルに行います。
+  </p>
+
+  <p class="para">
+    URI リクエストの処理は、PHP を開始した時点の作業ディレクトリから行われます。
+    -t オプションを使えば、ドキュメントルートを明示的に指定することができます。
+    URI リクエストにファイルが含まれない場合は、指定したディレクトリにある index.php
+    あるいは index.html を返します。どちらも存在しない場合はレスポンスコード
+    404 を返します。
+  </p>
+
+  <p class="para">
+    ウェブサーバーの開始時にコマンドラインで PHP ファイルを指定すると、
+    そのファイルをウェブサーバーの &quot;ルーター&quot; スクリプトとして使います。
+    このスクリプトは、各 HTTP リクエストの開始時に動きます。このスクリプトが
+    <strong><code>FALSE</code></strong> を返すと、リクエストされたリソースをそのままの形式で返します。
+    それ以外の場合はスクリプトの出力をブラウザに返します。
+  </p>
+
+  <p class="para">
+    以下にあげる拡張子のファイルについては、標準の MIME タイプを返します。
+    .css,
+    .gif, .htm, .html, .jpe, .jpeg, .jpg, .js, .png, .svg, そして .txt。
+    このうち .htm と .svg については、PHP 5.4.4 以降で対応するようになりました。
+  </p>
+
+  <div class="example" id="example-378">
+   <p><strong>例1 ウェブサーバーの起動</strong></p> 
+   <div class="example-contents">
+<div class="shellcode"><pre class="shellcode">$ cd ~/public_html
+$ php -S localhost:8000</pre>
+</div>
+   </div>
+
+   <div class="example-contents"><p>
+     ターミナルには次のように表示されます。
+   </p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+PHP 5.4.0 Development Server started at Thu Jul 21 10:43:28 2011
+Listening on localhost:8000
+Document root is /home/me/public_html
+Press Ctrl-C to quit
+</pre></div>
+   </div>
+   <div class="example-contents"><p>
+     http://localhost:8000/ と
+     http://localhost:8000/myscript.html をリクエストした後のターミナルの表示は、
+     このようになります。
+   </p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+PHP 5.4.0 Development Server started at Thu Jul 21 10:43:28 2011
+Listening on localhost:8000
+Document root is /home/me/public_html
+Press Ctrl-C to quit.
+[Thu Jul 21 10:48:48 2011] ::1:39144 GET /favicon.ico - Request read
+[Thu Jul 21 10:48:50 2011] ::1:39146 GET / - Request read
+[Thu Jul 21 10:48:50 2011] ::1:39147 GET /favicon.ico - Request read
+[Thu Jul 21 10:48:52 2011] ::1:39148 GET /myscript.html - Request read
+[Thu Jul 21 10:48:52 2011] ::1:39149 GET /favicon.ico - Request read
+</pre></div>
+   </div>
+  </div>
+
+  <div class="example" id="example-379">
+   <p><strong>例2 ドキュメントルートディレクトリを指定した起動</strong></p> 
+   <div class="example-contents">
+<div class="shellcode"><pre class="shellcode">$ cd ~/public_html
+$ php -S localhost:8000 -t foo/</pre>
+</div>
+   </div>
+
+   <div class="example-contents"><p>
+     ターミナルには次のように表示されます。
+   </p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+PHP 5.4.0 Development Server started at Thu Jul 21 10:50:26 2011
+Listening on localhost:8000
+Document root is /home/me/public_html/foo
+Press Ctrl-C to quit
+</pre></div>
+   </div>
+  </div>
+
+  <div class="example" id="example-380">
+   <p><strong>例3 ルータースクリプトの使用</strong></p> 
+<div class="example-contents"><p>
+  この例では、画像ファイルをリクエストすればそのまま表示し、HTML ファイルをリクエストすると &quot;Welcome to PHP&quot; と表示します。
+</p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;router.php<br /></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">preg_match</span><span style="color: #007700">(</span><span style="color: #DD0000">'/\.(?:png|jpg|jpeg|gif)$/'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$_SERVER</span><span style="color: #007700">[</span><span style="color: #DD0000">"REQUEST_URI"</span><span style="color: #007700">]))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;リクエストされたリソースをそのままの形式で扱います。<br /></span><span style="color: #007700">}&nbsp;else&nbsp;{&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&lt;p&gt;Welcome&nbsp;to&nbsp;PHP&lt;/p&gt;"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents">
+<div class="shellcode"><pre class="shellcode">$ php -S localhost:8000 router.php</pre>
+</div>
+   </div>
+
+  </div>
+
+  <div class="example" id="example-381">
+   <p><strong>例4 CLI ウェブサーバーを使っているかどうかのチェック</strong></p> 
+<div class="example-contents"><p>
+  フレームワークのルータースクリプトを、開発中は CLI ウェブサーバーで使って
+  その後は本番環境のウェブサーバーでも使うという例です。
+</p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;router.php<br /></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">php_sapi_name</span><span style="color: #007700">()&nbsp;==&nbsp;</span><span style="color: #DD0000">'cli-server'</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;静的コンテンツのルーティングをして&nbsp;false&nbsp;を返します&nbsp;*/<br /></span><span style="color: #007700">}<br /></span><span style="color: #FF8000">/*&nbsp;通常の&nbsp;index.php&nbsp;の処理を続きます&nbsp;*/<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents">
+<div class="shellcode"><pre class="shellcode">$ php -S localhost:8000 router.php</pre>
+</div>
+   </div>
+
+  </div>
+
+  <div class="example" id="example-382">
+   <p><strong>例5 未サポートのファイル形式の処理</strong></p> 
+<div class="example-contents"><p>
+  CLI ウェブサーバーで対応していない MIME タイプの静的リソースを扱うには、このようにします。
+</p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;router.php<br /></span><span style="color: #0000BB">$path&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">pathinfo</span><span style="color: #007700">(</span><span style="color: #0000BB">$_SERVER</span><span style="color: #007700">[</span><span style="color: #DD0000">"SCRIPT_FILENAME"</span><span style="color: #007700">]);<br />if&nbsp;(</span><span style="color: #0000BB">$path</span><span style="color: #007700">[</span><span style="color: #DD0000">"extension"</span><span style="color: #007700">]&nbsp;==&nbsp;</span><span style="color: #DD0000">"ogg"</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Content-Type:&nbsp;video/ogg"</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">readfile</span><span style="color: #007700">(</span><span style="color: #0000BB">$_SERVER</span><span style="color: #007700">[</span><span style="color: #DD0000">"SCRIPT_FILENAME"</span><span style="color: #007700">]);<br />}<br />else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">FALSE</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents">
+<div class="shellcode"><pre class="shellcode">$ php -S localhost:8000 router.php</pre>
+</div>
+   </div>
+
+  </div>
+
+  <div class="example" id="example-383">
+   <p><strong>例6 CLI ウェブサーバーへのリモートマシンからのアクセス</strong></p> 
+<div class="example-contents"><p>
+  ウェブサーバーを、任意のインターフェイスからポート 8000 でアクセスできるようにするには、このようにします。
+</p></div>
+   <div class="example-contents">
+<div class="shellcode"><pre class="shellcode">$ php -S 0.0.0.0:8000</pre>
+</div>
+   </div>
+
+  </div>
+
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="112667""></a>
+  <div class="note">
+   <strong class="user">Ivan Ferrer</strong>
+   <a href="#112667" class="date">11-Jul-2013 05:03</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+On Windows you may find useful to have a phpserver.bat file in shell:sendto with the folowing:<br />
+explorer <a href="http://localhost:8888" rel="nofollow" target="_blank">http://localhost:8888</a><br />
+rem check if arg is file or dir<br />
+if exist "%~1\" (<br />
+&nbsp; php -S localhost:8888 -t "%~1"<br />
+) else (<br />
+&nbsp; php -S localhost:8888 -t "%~dp1"<br />
+)<br />
+<br />
+then for fast web testing you only have to SendTo a file or folder to this bat and it will open your explorer and run the server.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="111966""></a>
+  <div class="note">
+   <strong class="user">dstrout at dstrout dot net</strong>
+   <a href="#111966" class="date">18-Apr-2013 02:16</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Just gave it a try, and it is IPv6 compatible, if anyone was wondering.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="107843""></a>
+  <div class="note">
+   <strong class="user">Stefano F. Rausch</strong>
+   <a href="#107843" class="date">09-Mar-2012 09:25</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+To develop / deploy websites in 3 stages, i.e. ( 1 ) locally, ( 2 ) with an access controlled dedicated beta / test website in the www and ( 3 ) the production site, you can have ( 1 ) &amp; ( 2 ) using the same domain name - port free - as follows:<br />
+<br />
+- look up the IP address of the beta.web.site<br />
+<br />
+and edit the hosts file to reflect:<br />
+<br />
+- &lt;IP&gt; beta.web.site<br />
+- 127.0.0.1 beta.web.site<br />
+<br />
+Start the built-in web server to work locally with:<br />
+<br />
+- sudo php -S beta.web.site:80<br />
+<br />
+and just hit <a href="http://beta.web.site as usual. Switching back and forth between ( 1 " rel="nofollow" target="_blank">http://beta.web.site as usual. Switching back and forth between ( 1 </a>) and ( 2 ) is as easy as telling the php engine not to fake a server any more :) Nice!<br />
+<br />
+Happy PHP'ing.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="features.commandline.interactive.html">対話シェル</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="features.commandline.ini.html">INI 設定</a></div>
+ <div class="up"><a href="features.commandline.html">コマンドラインの使用法</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

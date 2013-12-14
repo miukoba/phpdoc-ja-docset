@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>実行時設定</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="exif.installation.html">インストール手順</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="exif.resources.html">リソース型</a></div>
+ <div class="up"><a href="exif.setup.html">インストール/設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="exif.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <a href="ref.mbstring.html" class="link">mbstring</a> が有効になっている場合、
+  Exif 拡張モジュールはユーザーコメントの文字エンコーディングの変換
+  （Unicode と JIS）を自動的に行います。この処理が行われるのは、
+  指定した文字セットを使用して最初にコメントをデコードする際です。
+  その結果は、<em>HTTP</em> 出力用の文字コードにエンコード
+  されます。
+ <table class="doctable table">
+  <caption><strong>Exif 設定オプション</strong></caption>
+  
+   <thead>
+    <tr>
+     <th>名前</th>
+     <th>デフォルト</th>
+     <th>変更可能</th>
+     <th>変更履歴</th>
+    </tr>
+
+   </thead>
+
+   <tbody class="tbody">
+    <tr>
+     <td><a href="exif.configuration.html#ini.exif.encode-unicode" class="link">exif.encode_unicode</a></td>
+     <td>&quot;ISO-8859-15&quot;</td>
+     <td>PHP_INI_ALL</td>
+     <td>PHP 4.3.0 以降で有効です。</td>
+    </tr>
+
+    <tr>
+     <td><a href="exif.configuration.html#ini.exif.decode-unicode-motorola" class="link">exif.decode_unicode_motorola</a></td>
+     <td>&quot;UCS-2BE&quot;</td>
+     <td>PHP_INI_ALL</td>
+     <td>PHP 4.3.0 以降で有効です。</td>
+    </tr>
+
+    <tr>
+     <td><a href="exif.configuration.html#ini.exif.decode-unicode-intel" class="link">exif.decode_unicode_intel</a></td>
+     <td>&quot;UCS-2LE&quot;</td>
+     <td>PHP_INI_ALL</td>
+     <td>PHP 4.3.0 以降で有効です。</td>
+    </tr>
+
+    <tr>
+     <td><a href="exif.configuration.html#ini.exif.encode-jis" class="link">exif.encode_jis</a></td>
+     <td>&quot;&quot;</td>
+     <td>PHP_INI_ALL</td>
+     <td>PHP 4.3.0 以降で有効です。</td>
+    </tr>
+
+    <tr>
+     <td><a href="exif.configuration.html#ini.exif.decode-jis-motorola" class="link">exif.decode_jis_motorola</a></td>
+     <td>&quot;JIS&quot;</td>
+     <td>PHP_INI_ALL</td>
+     <td>PHP 4.3.0 以降で有効です。</td>
+    </tr>
+
+    <tr>
+     <td><a href="exif.configuration.html#ini.exif.decode-jis-intel" class="link">exif.decode_jis_intel</a></td>
+     <td>&quot;JIS&quot;</td>
+     <td>PHP_INI_ALL</td>
+     <td>PHP 4.3.0 以降で有効です。</td>
+    </tr>
+
+    </tbody>
+   
+  </table>
+
+  PHP_INI_* モードの詳細および定義については
+<a href="configuration.changes.modes.html" class="xref">どこで設定を行うのか</a> を参照してください。
+ </p>
+ 
+ <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+ 
+ <p class="para">
+  <dl>
+
+   <dt id="ini.exif.encode-unicode">
+    <span class="term">
+     <em><code class="parameter">exif.encode_unicode</code></em>
+     <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+    </span>
+    <dd>
+
+    <p class="para">
+     <em>exif.encode_unicode</em> は、UNICODE ユーザーコメント
+     を処理する文字セットを定義します。デフォルトは ISO-8859-15 で、
+     アジア以外のほとんどの国で動作します。この設定は、空白
+     あるいは mbstring のサポートするエンコーディングである必要があります。
+     空白の場合は mbstring の内部エンコーディング設定が使用されます。
+    </p>
+    </dd>
+
+   </dt>
+
+    <dt id="ini.exif.decode-unicode-motorola">
+    <span class="term">
+     <em><code class="parameter">exif.decode_unicode_motorola</code></em>
+     <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      <em>exif.decode_unicode_motorola</em> は、画像の
+      バイトオーダーがモトローラ形式（ビッグエンディアン）であった場合に
+      Unicode のユーザーコメントを扱うための内部文字セットを定義します。
+      この設定は空白にすることはできず、mbstring がサポートしている
+      エンコーディングの中から指定します。デフォルトは UCS-2BE です。
+     </p>
+    </dd>
+
+   </dt>
+
+    <dt id="ini.exif.decode-unicode-intel">
+    <span class="term">
+     <em><code class="parameter">exif.decode_unicode_intel</code></em>
+     <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      <em>exif.decode_unicode_intel</em> は、画像の
+      バイトオーダーがインテル形式（リトルエンディアン）であった場合に
+      Unicode のユーザーコメントを扱うための内部文字セットを定義します。
+      この設定は空白にすることはできず、mbstring がサポートしている
+      エンコーディングの中から指定します。デフォルトは UCS-2LE です。
+     </p>
+    </dd>
+
+   </dt>
+
+    <dt id="ini.exif.encode-jis">
+    <span class="term">
+     <em><code class="parameter">exif.encode_jis</code></em>
+     <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      <em>exif.encode_jis</em> は、JIS ユーザーコメントを
+      処理する文字セットを定義します。デフォルトは空白で、これは
+      mbstring の内部設定を使用させることを意味します。
+     </p>
+    </dd>
+
+   </dt>
+
+    <dt id="ini.exif.decode-jis-motorola">
+    <span class="term">
+     <em><code class="parameter">exif.decode_jis_motorola</code></em>
+     <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      <em>exif.decode_jis_motorola</em> は、画像の
+      バイトオーダーがモトローラ形式（ビッグエンディアン）であった場合に
+      JIS のユーザーコメントを扱うための内部文字セットを定義します。
+      この設定は空白にすることはできず、mbstring がサポートしている
+      エンコーディングの中から指定します。デフォルトは JIS です。
+     </p>
+    </dd>
+
+   </dt>
+
+    <dt id="ini.exif.decode-jis-intel">
+    <span class="term">
+     <em><code class="parameter">exif.decode_jis_intel</code></em>
+     <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      <em>exif.decode_jis_intel</em> は、画像の
+      バイトオーダーがインテル形式（リトルエンディアン）であった場合に
+      JIS のユーザーコメントを扱うための内部文字セットを定義します。
+      この設定は空白にすることはできず、mbstring がサポートしている
+      エンコーディングの中から指定します。デフォルトは JIS です。
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </p>
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="exif.installation.html">インストール手順</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="exif.resources.html">リソース型</a></div>
+ <div class="up"><a href="exif.setup.html">インストール/設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

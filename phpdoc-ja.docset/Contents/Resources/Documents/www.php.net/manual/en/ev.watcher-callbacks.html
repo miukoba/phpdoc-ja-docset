@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>ウォッチャーのコールバック</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="ev.watchers.html">ウォッチャー</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="ev.periodic-modes.html">Periodic ウォッチャーの操作モード</a></div>
+ <div class="up"><a href="book.ev.html">Ev</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="ev.watcher-callbacks" class="chapter">
+ <h1>ウォッチャーのコールバック</h1>
+
+ <p class="para">
+  すべてのウォッチャーは、アクティブ (イベントを待ち受け中)
+  あるいは非アクティブ (一時停止) の状態になります。
+  コールバックを実行できるのは、アクティブなウォッチャーだけです。
+  すべてのコールバックは、少なくとも二つの引数を付けて呼ばれます。
+  <em><code class="parameter">watcher</code></em> (ウォッチャー)、そして
+  <em><code class="parameter">revents</code></em> (受け取ったイベントのビットマスク) です。
+ </p>
+ <p class="para">
+  ウォッチャーのコールバックは、ウォッチャーのコンストラクタ
+  (<a href="class.evwatcher.html" class="classname">EvWatcher</a> の派生クラス。
+   <span class="methodname"><a href="evcheck.construct.html" class="methodname">EvCheck::__construct()</a></span> や
+   <span class="methodname"><a href="evchild.construct.html" class="methodname">EvChild::__construct()</a></span> など)
+  に渡します。コールバックは、次のプロトタイプにしたがわなければいけません。
+ </p>
+ <div class="methodsynopsis dc-description">
+  <span class="type"><span class="type void">void</span></span>
+   <span class="methodname"><strong>callback</strong></span>
+   ([ <span class="methodparam">
+   <span class="type">object</span>
+    <code class="parameter">$watcher</code>
+   <span class="initializer"> = NULL</span>
+  </span>
+  [, <span class="methodparam">
+   <span class="type">int</span>
+    <code class="parameter">$revents</code>
+   <span class="initializer"> = NULL</span>
+  </span>
+ ]] )</div>
+
+ <p class="para">
+  <dl>
+
+   <dt>
+
+    <span class="term">
+     <em><code class="parameter">watcher</code></em>
+    </span>
+    <dd>
+
+     <p class="para">
+      <a href="class.evwatcher.html" class="classname">EvWatcher</a> を継承したクラスのインスタンス。
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term">
+     <em><code class="parameter">revents</code></em>
+    </span>
+    <dd>
+
+     <p class="para">
+      <a href="class.ev.html#ev.constants.watcher-revents" class="link">ウォッチャーが受信したイベント</a>
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </p>
+ <p class="para">
+  ウォッチャーの型によって、
+  <em><code class="parameter">revents</code></em> に関連するビットが割り当てられています。
+  そのため、複数のウォッチャーに対して同じコールバックを使えます。
+  イベントのマスクは、イベントの型にちなんだ名前になっています。たとえば
+  <a href="class.evchild.html" class="classname">EvChild</a> (あるいは  <span class="methodname"><a href="evloop.child.html" class="methodname">EvLoop::child()</a></span>)
+  は <strong><code>EV::CHILD</code></strong>、
+  <a href="class.evprepare.html" class="classname">EvPrepare</a> (あるいは  <span class="methodname"><a href="evloop.prepare.html" class="methodname">EvLoop::prepare()</a></span>)
+  は <strong><code>Ev::PREPARE</code></strong>、
+  <a href="class.evperiodic.html" class="classname">EvPeriodic</a> (あるいは  <span class="methodname"><a href="evloop.periodic.html" class="methodname">EvLoop::periodic()</a></span>)
+  は <strong><code>Ev::PERIODIC</code></strong>
+  などです。ただ I/O のイベントは例外で、これは
+  <strong><code>Ev::READ</code></strong> と <strong><code>Ev::WRITE</code></strong>
+  の両方のビットを設定します。
+ </p>
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="ev.watchers.html">ウォッチャー</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="ev.periodic-modes.html">Periodic ウォッチャーの操作モード</a></div>
+ <div class="up"><a href="book.ev.html">Ev</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

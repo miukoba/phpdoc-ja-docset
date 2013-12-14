@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>配列ディザリングを行う</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="imagick.optimizeimagelayers.html">Imagick::optimizeImageLayers</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="imagick.paintfloodfillimage.html">Imagick::paintFloodfillImage</a></div>
+ <div class="up"><a href="class.imagick.html">Imagick</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="imagick.orderedposterizeimage" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">Imagick::orderedPosterizeImage</h1>
+  <p class="verinfo">(PECL imagick 2.2.2)</p><p class="refpurpose"><span class="refname">Imagick::orderedPosterizeImage</span> &mdash; <span class="dc-title">配列ディザリングを行う</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-imagick.orderedposterizeimage-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>Imagick::orderedPosterizeImage</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$threshold_map</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$channel</code><span class="initializer"> = Imagick::CHANNEL_ALL</span></span>
+  ] )</div>
+
+
+  <p class="para rdfs-comment">
+    定義済みのディザリング閾値マップにもとづいた、複数の強度レベルによる配列ディザリングを行います。
+    入力の引数に応じて、各チャネルで異なるレベルを使用することができます。
+    このメソッドは、ImageMagick バージョン 6.3.1 以降で Imagick をコンパイルした場合に使用可能です。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-imagick.orderedposterizeimage-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">threshold_map</code></em></span>
+     <dd>
+
+      <p class="para">
+       使用するディザリング閾値マップを含む文字列。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">channel</code></em></span>
+     <dd>
+
+      <p class="para">
+       チャネルモードに応じたチャネル定数を指定します。
+       複数のチャネルに適用するには、定数をビット演算子で組み合わせます。
+       <a href="imagick.constants.html#imagick.constants.channel" class="link">チャネル定数</a>
+       の一覧を参照ください。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-imagick.orderedposterizeimage-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 errors" id="refsect1-imagick.orderedposterizeimage-errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">
+   エラー時に ImagickException をスローします。
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="108404""></a>
+  <div class="note">
+   <strong class="user">holdoffhunger at gmail dot com</strong>
+   <a href="#108404" class="date">24-Apr-2012 09:39</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Originally, I thought this function would be similar to the Posterize function, or at least, any one of the Imagick class functions that produces an artistic effect (like the oilPaintImage function).&nbsp; This function can be used for those purposes, but it is mostly geared toward print production.&nbsp; The OrderedPosterize is simply a highly flexible dithering tool.&nbsp; The intention essentially is to produce high-resolution imagery by means of using constant dots across a medium that vary in size according to the detail of the imagery.&nbsp; Everyone has seen a dithered photograph inside of a newspaper, but the wiki page provides better examples: <a href="http://en.wikipedia.org/wiki/Dither ." rel="nofollow" target="_blank">http://en.wikipedia.org/wiki/Dither .</a><br />
+<br />
+The two parameters are unusual to someone who simply wants to get the use of this function without fussing too much about the Imagick class.<br />
+<br />
+First parameter: The threshold_map is a set of "brushes" predefined by a very simple xml file.&nbsp; They are: threshold, checks, o2x2, o3x3, o4x4, o8x8, h4x4a, h6x6a, h8x8a, h4x4o, h6x6o, h8x8o, h16x16o, c5x5b, c5x5w, c6x6b, c6x6w, c7x7b, and c7x7w.&nbsp; These are the values you are expected to input as parameters for the Thershold_Map value.&nbsp; Much better descriptions of these brush shapes available at the Imagick site: <a href="http://www.imagemagick.org/Usage/quantize/tmaps_list.txt ." rel="nofollow" target="_blank">http://www.imagemagick.org/Usage/quantize/tmaps_list.txt .</a><br />
+<br />
+Second parameter: The channel is any of the constants as predefined by the Imagick class.&nbsp; In the code, the value looks like "imagick::CHANNEL_RED", but you have the "_value" options of: red, undefined, gray, cyan, green, magenta, blue, yellow, alpha, opacity, matte, black, index, all, and default.&nbsp; More info here: <a href="http://www.php.net/manual/en/imagick.constants.php#imagick.constants.channel ." rel="nofollow" target="_blank">http://www.php.net/manual/en/imagick.constants.php#imagick.constants.channel .</a><br />
+<br />
+Finally, don't forget you can use bitwise operators on the second parameter.&nbsp; That means you can use &amp; to AND them, | to OR them, &amp; to XOR them, and ~ to NEGATE them.&nbsp; A valid parameter for the second parameter would be: "((~imagick::CHANNEL_GREEN) ^ imagick::CHANNEL_YELLOW) | imagick::CHANNEL_MAGENTA)".&nbsp; You can get extremely creative in this particular parameter.&nbsp; And if you want to define your own brushes using simple XML, then that's also true of the first parameter, too.<br />
+<br />
+Note:&nbsp; You can use this function artistically.&nbsp; How?&nbsp; Use the orderedPosterizeImage to give the image some texture (a photo of a vase, for instance), and then use your OilPoint, Sketch, or Standard Posterize to give the image a cool effect.&nbsp; Alone, though, seems pretty boring.<br />
+<br />
+And now, a very simple demonstration :<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Author: holdoffhunger@gmail.com<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; // Filename<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; // ---------------------------------------------<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$file_to_grab_with_location </span><span class="keyword">= </span><span class="string">"graphics_engine/image_workshop_directory/ordered_posterize_source.bmp"<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$imagick_type </span><span class="keyword">= new </span><span class="default">Imagick</span><span class="keyword">();<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Open File<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; // ---------------------------------------------<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$file_handle_for_viewing_image_file </span><span class="keyword">= </span><span class="default">fopen</span><span class="keyword">(</span><span class="default">$file_to_grab_with_location</span><span class="keyword">, </span><span class="string">'a+'</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$imagick_type</span><span class="keyword">-&gt;</span><span class="default">readImageFile</span><span class="keyword">(</span><span class="default">$file_handle_for_viewing_image_file</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Perform Function<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; // ---------------------------------------------<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$imagick_type</span><span class="keyword">-&gt;</span><span class="default">orderedPosterizeImage</span><span class="keyword">(</span><span class="string">"o2x2"</span><span class="keyword">, </span><span class="default">imagick</span><span class="keyword">::</span><span class="default">CHANNEL_GREEN</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Save File<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; // ---------------------------------------------<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$file_to_save_with_location </span><span class="keyword">= </span><span class="string">"graphics_engine/image_workshop_directory/ordered_posterize_result.bmp"<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$file_handle_for_saving_image_file </span><span class="keyword">= </span><span class="default">fopen</span><span class="keyword">(</span><span class="default">$file_to_save_with_location</span><span class="keyword">, </span><span class="string">'a+'</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$imagick_type</span><span class="keyword">-&gt;</span><span class="default">writeImageFile</span><span class="keyword">(</span><span class="default">$file_handle_for_saving_image_file</span><span class="keyword">);<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="imagick.optimizeimagelayers.html">Imagick::optimizeImageLayers</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="imagick.paintfloodfillimage.html">Imagick::paintFloodfillImage</a></div>
+ <div class="up"><a href="class.imagick.html">Imagick</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

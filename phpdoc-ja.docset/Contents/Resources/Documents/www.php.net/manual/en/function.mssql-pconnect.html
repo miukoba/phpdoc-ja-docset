@@ -1,0 +1,252 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>持続的 MS SQL 接続をオープンする</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.mssql-num-rows.html">mssql_num_rows</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.mssql-query.html">mssql_query</a></div>
+ <div class="up"><a href="ref.mssql.html">Mssql 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mssql-pconnect" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mssql_pconnect</h1>
+  <p class="verinfo">(PHP 4, PHP 5, PECL odbtp &gt;= 1.1.1)</p><p class="refpurpose"><span class="refname">mssql_pconnect</span> &mdash; <span class="dc-title">持続的 MS SQL 接続をオープンする</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.mssql-pconnect-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">resource</span> <span class="methodname"><strong>mssql_pconnect</strong></span>
+    ([ <span class="methodparam"><span class="type">string</span> <code class="parameter">$servername</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$username</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$password</code></span>
+   [, <span class="methodparam"><span class="type">bool</span> <code class="parameter">$new_link</code><span class="initializer"> = false</span></span>
+  ]]]] )</div>
+
+  <p class="para rdfs-comment">
+    <span class="function"><strong>mssql_pconnect()</strong></span> は  <span class="function"><a href="function.mssql-connect.html" class="function">mssql_connect()</a></span>
+   とほとんど同じく動作しますが、違う点が 2 つあります。
+  </p>
+  <p class="para">
+   第 1 に、この関数は接続時に同じホスト、ユーザー名、パスワードで既に
+   オープンされている(持続的)リンクを探そうとします。
+   もし見つかった場合、新規の接続をオープンせずにその ID を返します。
+  </p>
+  <p class="para">
+   第 2 に、SQL サーバーはスクリプトの実行終了時に接続を閉じません。
+   代わりに、リンクは後に使用されるためにオープンされたままとします
+   ( <span class="function"><a href="function.mssql-close.html" class="function">mssql_close()</a></span> は
+    <span class="function"><strong>mssql_pconnect()</strong></span> により確立されたリンクを閉じません)。
+  </p>
+  <p class="para">
+   この型のリンクはこのため &#039;持続的である&#039; と呼ばれます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.mssql-pconnect-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">servername</code></em></span>
+     <dd>
+
+      <p class="para">
+       MS SQL サーバー。
+       <em>hostname:port</em> のようにポート番号を含めることもできます。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">username</code></em></span>
+     <dd>
+
+      <p class="para">
+       ユーザー名。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">password</code></em></span>
+     <dd>
+
+      <p class="para">
+       パスワード。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">new_link</code></em></span>
+     <dd>
+
+      <p class="para">
+       同じ引数で  <span class="function"><strong>mssql_pconnect()</strong></span> が再度コールされた場合、
+       新規のリンクは作成されず、代わりに既にオープンされたリンク ID が返されます。
+       このパラメータは、この振る舞いを変更し、 <span class="function"><strong>mssql_pconnect()</strong></span>
+       が常に新しいリンクを返すようにします。同じパラメータで事前に
+        <span class="function"><strong>mssql_pconnect()</strong></span> がコールされていたとしても、
+       新しいリンクを返します。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.mssql-pconnect-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功時に正の MS SQL 持続的リンク ID、エラー時に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.mssql-pconnect-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-1544">
+    <p><strong>例1  <span class="function"><strong>mssql_pconnect()</strong></span> で <em><code class="parameter">new_link</code></em> を使う例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;MSSQL&nbsp;に接続し、データベースを選択します<br /></span><span style="color: #0000BB">$link1&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mssql_pconnect</span><span style="color: #007700">(</span><span style="color: #DD0000">'MANGO\SQLEXPRESS'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'sa'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'phpfi'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">mssql_select_db</span><span style="color: #007700">(</span><span style="color: #DD0000">'php'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$link1</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;新しいリンクを作成します<br /></span><span style="color: #0000BB">$link2&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mssql_pconnect</span><span style="color: #007700">(</span><span style="color: #DD0000">'MANGO\SQLEXPRESS'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'sa'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'phpfi'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">mssql_select_db</span><span style="color: #007700">(</span><span style="color: #DD0000">'random'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$link2</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="108508""></a>
+  <div class="note">
+   <strong class="user">kagaku at gmail dot com</strong>
+   <a href="#108508" class="date">03-May-2012 03:47</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Be careful when utilizing mssql_pconnect to connect to multiple databases on the same server using different credentials. For example:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">/* first connection */<br />
+</span><span class="default">$conn1 </span><span class="keyword">= </span><span class="default">mssql_pconnect</span><span class="keyword">(</span><span class="string">'production-server'</span><span class="keyword">,</span><span class="string">'sa'</span><span class="keyword">,</span><span class="string">'1234'</span><span class="keyword">);<br />
+</span><span class="default">mssql_select_db</span><span class="keyword">(</span><span class="default">$conn1</span><span class="keyword">,</span><span class="string">'invoicelistdb'</span><span class="keyword">);<br />
+<br />
+</span><span class="default">$row </span><span class="keyword">= </span><span class="default">mssql_query</span><span class="keyword">(</span><span class="string">'select top 10 * from invoices'</span><span class="keyword">, </span><span class="default">$conn1</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">/* open another connection, same server different */<br />
+</span><span class="default">$conn2 </span><span class="keyword">= </span><span class="default">mssql_pconnect</span><span class="keyword">(</span><span class="string">'production-server'</span><span class="keyword">,</span><span class="string">'loweruser'</span><span class="keyword">,</span><span class="string">'6789'</span><span class="keyword">);<br />
+</span><span class="default">mssql_select_db</span><span class="keyword">(</span><span class="default">$conn2</span><span class="keyword">,</span><span class="string">'someotherdb'</span><span class="keyword">);<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Results in the error:<br />
+<br />
+PHP Warning:&nbsp; mssql_select_db(): Unable to select database:&nbsp; someotherdb<br />
+<br />
+I suspect mssql_pconnect detects a connect opened to "production-server" and just re-uses it, regardless of whether or not the credentials are the same. We did not notice this until consolidating two different MSSQL servers onto one server with two databases with different users/permissions. Reverting back to mssql_connect() solves the problem.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="40663""></a>
+  <div class="note">
+   <strong class="user">php at burntpopcorn dot net</strong>
+   <a href="#40663" class="date">11-Mar-2004 03:17</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Please note that mssql_pconnect creates a connection for the pool for *each process*. If you have "ThreadsPerChild" set to 50 in apache, and mssql.max_procs set to 25 in php, then eventually you will get mssql_pconnect failing to give you a connection to the database. This has stumped me for quite a while, and the answer finally presented itself thanks to the people in #php.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="39791""></a>
+  <div class="note">
+   <strong class="user">dave at dontspamme dot com</strong>
+   <a href="#39791" class="date">10-Feb-2004 11:32</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you are running PHP/Apache combination on a Windows machine that is part of a domain, using NT Authentication to connect to a MS SQL Server, you must to do the following things:<br />
+<br />
+1) Turn NT Authentication On (under MSSQL in php.ini)<br />
+2) Configure the Apache service to run as the user that is authorized to access the MS SQL server.<br />
+<br />
+Hope this helps save someone the time that it took me to track down!</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="23396""></a>
+  <div class="note">
+   <strong class="user">m1tk4 at hotmail dot com</strong>
+   <a href="#23396" class="date">17-Jul-2002 06:08</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Be careful with pconnect!<br />
+<br />
+Platform: RH Linux 7.3, PHP 4.2.1. FreeTDS.<br />
+<br />
+pconnect does give you better time than connect (about 0.25-0.4 seconds gain) BUT:<br />
+<br />
+- occasionally, I've experienced "quirks" when fetch() would randomly return empty recordsets from stored procedurest that can_not return empty recordsets by definition.<br />
+<br />
+- if you restart MSSQL server while some of the connections did not time out, next pconnect() will not establish a new connection! It will return an old one, so next time you do execute() or query() your script will just _hang_ until timeouted by Apache.<br />
+<br />
+All of the above I believe are FreeTDS problems, not PHP. I wonder if somebody with PHP+Sybase lib got pconnect to work.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="13980""></a>
+  <div class="note">
+   <strong class="user">php at rawhide dot cjb dot net</strong>
+   <a href="#13980" class="date">12-Jul-2001 03:18</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+One should not that persistent connections are not persistent under a CGI interface.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.mssql-num-rows.html">mssql_num_rows</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.mssql-query.html">mssql_query</a></div>
+ <div class="up"><a href="ref.mssql.html">Mssql 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

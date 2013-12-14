@@ -1,0 +1,793 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Oracle プレースホルダに PHP 変数をバインドする</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.oci-bind-array-by-name.html">oci_bind_array_by_name</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.oci-cancel.html">oci_cancel</a></div>
+ <div class="up"><a href="ref.oci8.html">OCI8 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.oci-bind-by-name" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">oci_bind_by_name</h1>
+  <p class="verinfo">(PHP 5, PECL OCI8 &gt;= 1.1.0)</p><p class="refpurpose"><span class="refname">oci_bind_by_name</span> &mdash; <span class="dc-title">Oracle プレースホルダに PHP 変数をバインドする</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-function.oci-bind-by-name-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>oci_bind_by_name</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$statement</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$bv_name</code></span>
+   , <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter reference">&$variable</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$maxlength</code><span class="initializer"> = -1</span></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$type</code><span class="initializer"> = SQLT_CHR</span></span>
+  ]] )</div>
+
+  <p class="para rdfs-comment">
+   PHP の変数
+   <em><code class="parameter">variable</code></em> を Oracle プレースホルダ
+   <em><code class="parameter">bv_name</code></em> にバインドします。
+   バインドは Oracle データベースのパフォーマンスに影響を及ぼす重要な仕組みで、
+   SQL インジェクション攻撃を防ぐための方法にもなります。
+  </p>
+
+  <p class="para">
+    バインドを使うとデータベースでステートメントのコンテキストを
+    (たとえ別のユーザーやプロセスが実行したものであっても)
+    再利用することができるようになります。
+    バインドによって SQL インジェクションの心配を軽減できる理由は、
+    バインド変数で代入したデータが決して SQL 文の一部と見なされることがないからです。
+    クォートやエスケープは不要です。
+  </p>
+
+  <p class="para">
+    バインドする PHP 変数の中身を変更してステートメントを再実行するときにも、
+    ステートメントをパースしなおしたり変数をバインドしなおしたりする必要はありません。
+  </p>
+
+  <p class="para">
+    Oracle のバインド変数は、データベースに渡す値に使う
+    <em>IN</em> 変数と PHP に返される値に使う
+    <em>OUT</em> 変数のふたつに大別できます。
+    バインド変数は <em>IN</em> あるいは <em>OUT</em>
+    のどちらかの形式になります。バインド変数を入力用に使うか出力用に使うかは、
+    実行時に決まります。
+  </p>
+
+  <p class="para">
+    <em>OUT</em> 変数を使う場合は
+    <em><code class="parameter">maxlength</code></em> を指定しなければなりません。
+    これを用いて、返される値を格納するのに必要なメモリを PHP が確保します。
+  </p>
+
+  <p class="para">
+    <em>IN</em> 変数の場合も、もし PHP
+    の変数にさまざまな値を格納してステートメントを何度も実行するのであれば
+    <em><code class="parameter">maxlength</code></em> を設定しておくことを推奨します。
+    そうしないと、最初に渡した PHP の変数の値にあわせて
+    Oracle がデータの長さを切り詰めてしまう可能性があります。
+    最大長がどの程度になるかわからない場合は現在のデータサイズで
+     <span class="function"><strong>oci_bind_by_name()</strong></span>
+    を再コールしてから  <span class="function"><a href="function.oci-execute.html" class="function">oci_execute()</a></span> を実行するようにしましょう。
+    不必要に大きなサイズでバインドすると、
+    データベースのプロセスのメモリ使用量に影響を及ぼします。
+  </p>
+
+  <p class="para">
+    バインドは、Oracle にデータをどのメモリアドレスから読み込むのかを指示します。
+    <em>IN</em> 変数の場合、 <span class="function"><a href="function.oci-execute.html" class="function">oci_execute()</a></span>
+    がコールされたときにそのメモリアドレスに正しいデータがなければなりません。
+    つまり、バインドされる変数は実行時までスコープ内に残っていなければならないということです。
+    もしそうでなければ、
+    &quot;ORA-01460: unimplemented or unreasonable conversion requested&quot;
+    のような予期せぬエラーが発生します。
+    <em>OUT</em> 変数の場合は、PHP の変数に何も値が格納されないといったことになるでしょう。
+  </p>
+
+  <p class="para">
+    繰り返し実行されるステートメントで決して値が変わることのないバインド変数を使っていると、
+    Oracle のオプティマイザが最適な実行プランを選びにくくなる可能性があります。
+    実行に長い時間がかかり、再実行されることもめったにないようなステートメントは、
+    バインドの恩恵を受けられないでしょう。
+    しかし、どちらの場合であっても、文字列を連結して
+    SQL 文を作るよりはバインドを使ったほうが安全です。
+    ユーザーの入力をフィルタリングせずに埋め込んでしまうというリスクをなくせるからです。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.oci-bind-by-name-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">statement</code></em></span>
+     <dd>
+
+      <p class="para">
+       有効な OCI8 ステートメント識別子。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">bv_name</code></em></span>
+     <dd>
+
+      <p class="para">
+       コロンを先頭につけたバインド変数プレースホルダをステートメント内で使います。
+       コロンは <em><code class="parameter">bv_name</code></em> では必須ではありません。
+       Oracle はクエスチョンマークをプレースホルダとして使いません。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">variable</code></em></span>
+     <dd>
+
+      <p class="para">
+       <em><code class="parameter">bv_name</code></em> に関連づける PHP の変数。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">maxlength</code></em></span>
+     <dd>
+
+      <p class="para">
+       バインド時の最大長。-1 に設定した場合、
+       <em><code class="parameter">variable</code></em> の現在の長さを最大長として設定します。
+       この場合は、 <span class="function"><strong>oci_bind_by_name()</strong></span> がコールされたときに
+       <em><code class="parameter">variable</code></em> が存在してデータが格納されている必要があります。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">type</code></em></span>
+     <dd>
+
+      <p class="para">
+       Oracle がデータを扱うときのデータ型。デフォルトの
+       <em><code class="parameter">type</code></em> は
+       <strong><code>SQLT_CHR</code></strong> です。
+       Oracle は、可能な場合はこの型とデータベースのカラム
+       (あるいは PL/SQL の変数) の型の間で変換を行います。
+      </p>
+      <p class="para">
+       抽象データ型 (LOB/ROWID/BFILE) をバインドする必要がある場合、まず
+        <span class="function"><a href="function.oci-new-descriptor.html" class="function">oci_new_descriptor()</a></span>
+       関数を使用してこれを確保する必要があります。
+       <em><code class="parameter">length</code></em> は抽象データ型用には
+       使用されず、-1 を設定する必要があります。
+      </p>
+      <p class="para">
+       <em><code class="parameter">type</code></em> に設定できる値は以下のとおりです。
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <p class="para">
+          <strong><code>SQLT_BFILEE</code></strong> or <strong><code>OCI_B_BFILE</code></strong>
+           - BFILE 用
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <strong><code>SQLT_CFILEE</code></strong> or <strong><code>OCI_B_CFILEE</code></strong>
+          - CFILE 用
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <strong><code>SQLT_CLOB</code></strong> or <strong><code>OCI_B_CLOB</code></strong>
+          - CLOB 用
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <strong><code>SQLT_BLOB</code></strong> or <strong><code>OCI_B_BLOB</code></strong>
+          - BLOB 用
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <strong><code>SQLT_RDD</code></strong> or <strong><code>OCI_B_ROWID</code></strong>
+          - ROWID 用
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <strong><code>SQLT_NTY</code></strong> or <strong><code>OCI_B_NTY</code></strong>
+          - 名前付けされたデータ型用
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <strong><code>SQLT_INT</code></strong> or <strong><code>OCI_B_INT</code></strong>
+          - integer 用
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <strong><code>SQLT_CHR</code></strong> - VARCHAR 用
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <strong><code>SQLT_BIN</code></strong> or <strong><code>OCI_B_BIN</code></strong>
+          - RAW カラム用
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <strong><code>SQLT_LNG</code></strong> - LONG カラム用
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <strong><code>SQLT_LBI</code></strong> - LONG RAW カラム用
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <strong><code>SQLT_RSET</code></strong> - カーソル用。
+           <span class="function"><a href="function.oci-new-cursor.html" class="function">oci_new_cursor()</a></span> により、前もって生成されたもの。
+         </p>
+        </li>
+       </ul>
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.oci-bind-by-name-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.oci-bind-by-name-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-1941">
+    <p><strong>例1  <span class="function"><strong>oci_bind_by_name()</strong></span> によるデータの挿入</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;このようなテーブルを作ります<br />//&nbsp;&nbsp;&nbsp;CREATE&nbsp;TABLE&nbsp;mytab&nbsp;(id&nbsp;NUMBER,&nbsp;text&nbsp;VARCHAR2(40));<br /><br /></span><span style="color: #0000BB">$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'hr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'welcome'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'localhost/XE'</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$conn</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_error</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$m</span><span style="color: #007700">[</span><span style="color: #DD0000">'message'</span><span style="color: #007700">]),&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,</span><span style="color: #DD0000">"INSERT&nbsp;INTO&nbsp;mytab&nbsp;(id,&nbsp;text)&nbsp;VALUES(:id_bv,&nbsp;:text_bv)"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$id&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$text&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Data&nbsp;to&nbsp;insert&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">":id_bv"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$id</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">":text_bv"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$text</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;テーブルに入る内容:&nbsp;1,&nbsp;'Data&nbsp;to&nbsp;insert&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+
+  <p class="para">
+   <div class="example" id="example-1942">
+    <p><strong>例2 一度組み立てたものを複数回実行</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;このようなテーブルを作ります<br />//&nbsp;&nbsp;&nbsp;CREATE&nbsp;TABLE&nbsp;mytab&nbsp;(id&nbsp;NUMBER);<br /><br /></span><span style="color: #0000BB">$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'hr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'welcome'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'localhost/XE'</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$conn</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_error</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$m</span><span style="color: #007700">[</span><span style="color: #DD0000">'message'</span><span style="color: #007700">]),&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #0000BB">1</span><span style="color: #007700">,</span><span style="color: #0000BB">3</span><span style="color: #007700">,</span><span style="color: #0000BB">5</span><span style="color: #007700">,</span><span style="color: #0000BB">7</span><span style="color: #007700">,</span><span style="color: #0000BB">11</span><span style="color: #007700">);&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;挿入するデータ<br /><br /></span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'INSERT&nbsp;INTO&nbsp;mytab&nbsp;(id)&nbsp;VALUES&nbsp;(:bv)'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">':bv'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$v</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">20</span><span style="color: #007700">);<br />foreach&nbsp;(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$v</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$r&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_DEFAULT</span><span style="color: #007700">);&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;自動コミットはしません<br /></span><span style="color: #007700">}<br /></span><span style="color: #0000BB">oci_commit</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;すべてをここでコミットします<br /><br />//&nbsp;テーブルには次の&nbsp;5&nbsp;行が含まれます:&nbsp;1,&nbsp;3,&nbsp;5,&nbsp;7,&nbsp;11<br /><br /></span><span style="color: #0000BB">oci_free_statement</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+
+  <p class="para">
+   <div class="example" id="example-1943">
+    <p><strong>例3  <span class="function"><strong>foreach()</strong></span> ループでのバインド</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'hr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'welcome'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'localhost/XE'</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$conn</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_error</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$m</span><span style="color: #007700">[</span><span style="color: #DD0000">'message'</span><span style="color: #007700">]),&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">$sql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'SELECT&nbsp;*&nbsp;FROM&nbsp;departments&nbsp;WHERE&nbsp;department_name&nbsp;=&nbsp;:dname&nbsp;AND&nbsp;location_id&nbsp;=&nbsp;:loc'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$sql</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$ba&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">':dname'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'IT&nbsp;Support'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">':loc'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1700</span><span style="color: #007700">);<br /><br />foreach&nbsp;(</span><span style="color: #0000BB">$ba&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$key&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$val</span><span style="color: #007700">)&nbsp;{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;oci_bind_by_name($stid,&nbsp;$key,&nbsp;$val)&nbsp;ではうまくいきません。<br />&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;これは、すべてのプレースホルダを同じ内容にバインドしてしまうからです。<br />&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;$val&nbsp;ではなく、データの実際の位置を表す&nbsp;$ba[$key]&nbsp;を使いましょう。<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$key</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$ba</span><span style="color: #007700">[</span><span style="color: #0000BB">$key</span><span style="color: #007700">]);<br />}<br /><br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_fetch_array</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_ASSOC</span><span style="color: #007700">+</span><span style="color: #0000BB">OCI_RETURN_NULLS</span><span style="color: #007700">);<br />foreach&nbsp;(</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$item</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #0000BB">$item</span><span style="color: #007700">.</span><span style="color: #DD0000">"&lt;br&gt;\n"</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #0000BB">oci_free_statement</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+
+  <p class="para">
+   <div class="example" id="example-1944">
+    <p><strong>例4 WHERE 句でのバインド</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">"hr"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"hrpwd"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"localhost/XE"</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$conn</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_error</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$m</span><span style="color: #007700">[</span><span style="color: #DD0000">'message'</span><span style="color: #007700">]),&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">$sql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'SELECT&nbsp;last_name&nbsp;FROM&nbsp;employees&nbsp;WHERE&nbsp;employee_id&nbsp;=&nbsp;:eidbv'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$sql</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$myeid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">101</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">':eidbv'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$myeid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_fetch_array</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_ASSOC</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">'LAST_NAME'</span><span style="color: #007700">]&nbsp;.</span><span style="color: #DD0000">"&lt;br&gt;\n"</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;出力は<br />//&nbsp;&nbsp;&nbsp;&nbsp;Kochhar<br /><br /></span><span style="color: #0000BB">oci_free_statement</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+
+  <p class="para">
+   <div class="example" id="example-1945">
+    <p><strong>例5 LIKE 句でのバインド</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'hr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'welcome'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'localhost/XE'</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$conn</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_error</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$m</span><span style="color: #007700">[</span><span style="color: #DD0000">'message'</span><span style="color: #007700">]),&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;'South'&nbsp;からはじまるすべての都市を探します<br /></span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;city&nbsp;FROM&nbsp;locations&nbsp;WHERE&nbsp;city&nbsp;LIKE&nbsp;:bv"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$city&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'South%'</span><span style="color: #007700">;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;'%'&nbsp;は&nbsp;SQL&nbsp;でのワイルドカードです<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">":bv"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$city</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_fetch_all</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$res</span><span style="color: #007700">);<br /><br />foreach&nbsp;(</span><span style="color: #0000BB">$res</span><span style="color: #007700">[</span><span style="color: #DD0000">'CITY'</span><span style="color: #007700">]&nbsp;as&nbsp;</span><span style="color: #0000BB">$c</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #0000BB">$c&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"&lt;br&gt;\n"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #FF8000">//&nbsp;出力は<br />//&nbsp;&nbsp;&nbsp;South&nbsp;Brunswick<br />//&nbsp;&nbsp;&nbsp;South&nbsp;San&nbsp;Francisco<br />//&nbsp;&nbsp;&nbsp;Southlake<br /><br /></span><span style="color: #0000BB">oci_free_statement</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+
+  <p class="para">
+   <div class="example" id="example-1946">
+    <p><strong>例6 REGEXP_LIKE でのバインド</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'hr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'welcome'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'localhost/XE'</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$conn</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_error</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$m</span><span style="color: #007700">[</span><span style="color: #DD0000">'message'</span><span style="color: #007700">]),&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;'ing'&nbsp;を含むすべての都市を探します<br /></span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;city&nbsp;FROM&nbsp;locations&nbsp;WHERE&nbsp;REGEXP_LIKE(city,&nbsp;:bv)"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$city&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'.*ing.*'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">":bv"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$city</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_fetch_all</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$res</span><span style="color: #007700">);<br /><br />foreach&nbsp;(</span><span style="color: #0000BB">$res</span><span style="color: #007700">[</span><span style="color: #DD0000">'CITY'</span><span style="color: #007700">]&nbsp;as&nbsp;</span><span style="color: #0000BB">$c</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #0000BB">$c&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"&lt;br&gt;\n"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #FF8000">//&nbsp;出力は<br />//&nbsp;&nbsp;&nbsp;Beijing<br />//&nbsp;&nbsp;&nbsp;Singapore<br /><br /></span><span style="color: #0000BB">oci_free_statement</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+
+  <p class="para">
+    IN 句の中の条件数が少なくて固定なのであれば、個々にバインド変数を割り当てればいいでしょう。
+    実行時に不明な値は NULL が設定されます。
+    こうすればひとつのステートメントをすべてのユーザーで使い回すことができ、
+    Oracle の DB キャッシュの効率を最大化させることができます。
+  </p>
+
+  <p class="para">
+   <div class="example" id="example-1947">
+    <p><strong>例7 IN 句での複数の値のバインド</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'hr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'welcome'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'localhost/XE'</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$conn</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_error</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$m</span><span style="color: #007700">[</span><span style="color: #DD0000">'message'</span><span style="color: #007700">]),&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">$sql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'SELECT&nbsp;last_name&nbsp;FROM&nbsp;employees&nbsp;WHERE&nbsp;employee_id&nbsp;in&nbsp;(:e1,&nbsp;:e2,&nbsp;:e3)'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$sql</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$mye1&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">103</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$mye2&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">104</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$mye3&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;pretend&nbsp;we&nbsp;were&nbsp;not&nbsp;given&nbsp;this&nbsp;value<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">':e1'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mye1</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">':e2'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mye2</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">':e3'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mye3</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_fetch_all</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$res</span><span style="color: #007700">);<br />foreach&nbsp;(</span><span style="color: #0000BB">$res</span><span style="color: #007700">[</span><span style="color: #DD0000">'LAST_NAME'</span><span style="color: #007700">]&nbsp;as&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">.</span><span style="color: #DD0000">"&lt;br&gt;\n"</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;出力は<br />//&nbsp;&nbsp;&nbsp;Ernst<br />//&nbsp;&nbsp;&nbsp;Hunold<br /><br /></span><span style="color: #0000BB">oci_free_statement</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+
+  <p class="para">
+   <div class="example" id="example-1948">
+    <p><strong>例8 クエリが返す ROWID のバインド</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;このようなテーブルを作ります<br />//&nbsp;&nbsp;&nbsp;CREATE&nbsp;TABLE&nbsp;mytab&nbsp;(id&nbsp;NUMBER,&nbsp;salary&nbsp;NUMBER,&nbsp;name&nbsp;VARCHAR2(40));<br />//&nbsp;&nbsp;&nbsp;INSERT&nbsp;INTO&nbsp;mytab&nbsp;(id,&nbsp;salary,&nbsp;name)&nbsp;VALUES&nbsp;(1,&nbsp;100,&nbsp;'Chris');<br />//&nbsp;&nbsp;&nbsp;COMMIT;<br /><br /></span><span style="color: #0000BB">$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'hr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'welcome'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'localhost/XE'</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$conn</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_error</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$m</span><span style="color: #007700">[</span><span style="color: #DD0000">'message'</span><span style="color: #007700">]),&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'SELECT&nbsp;ROWID,&nbsp;name&nbsp;FROM&nbsp;mytab&nbsp;WHERE&nbsp;id&nbsp;=&nbsp;:id_bv&nbsp;FOR&nbsp;UPDATE'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$id&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">':id_bv'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$id</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_fetch_array</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_ASSOC</span><span style="color: #007700">+</span><span style="color: #0000BB">OCI_RETURN_NULLS</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$rid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">'ROWID'</span><span style="color: #007700">];<br /></span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">'NAME'</span><span style="color: #007700">];<br /><br /></span><span style="color: #FF8000">//&nbsp;名前を大文字に変換してそれを保存します<br /></span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">strtoupper</span><span style="color: #007700">(</span><span style="color: #0000BB">$name</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'UPDATE&nbsp;mytab&nbsp;SET&nbsp;name&nbsp;=&nbsp;:n_bv&nbsp;WHERE&nbsp;ROWID&nbsp;=&nbsp;:r_bv'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">':n_bv'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">':r_bv'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$rid</span><span style="color: #007700">,&nbsp;-</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_B_ROWID</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;テーブルに入る内容:&nbsp;1,&nbsp;100,&nbsp;CHRIS<br /><br /></span><span style="color: #0000BB">oci_free_statement</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+
+  <p class="para">
+   <div class="example" id="example-1949">
+    <p><strong>例9 INSERT での ROWID のバインド</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;この例では&nbsp;id&nbsp;と&nbsp;name&nbsp;を挿入し、それから&nbsp;salary&nbsp;を更新します<br />//&nbsp;このようなテーブルを作ります<br />//&nbsp;&nbsp;&nbsp;CREATE&nbsp;TABLE&nbsp;mytab&nbsp;(id&nbsp;NUMBER,&nbsp;salary&nbsp;NUMBER,&nbsp;name&nbsp;VARCHAR2(40));<br />//<br />//&nbsp;Based&nbsp;on&nbsp;original&nbsp;ROWID&nbsp;example&nbsp;by&nbsp;thies&nbsp;at&nbsp;thieso&nbsp;dot&nbsp;net&nbsp;(980221)<br /><br /></span><span style="color: #0000BB">$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'hr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'welcome'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'localhost/XE'</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$conn</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_error</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$m</span><span style="color: #007700">[</span><span style="color: #DD0000">'message'</span><span style="color: #007700">]),&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">$sql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"INSERT&nbsp;INTO&nbsp;mytab&nbsp;(id,&nbsp;name)&nbsp;VALUES(:id_bv,&nbsp;:name_bv)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURNING&nbsp;ROWID&nbsp;INTO&nbsp;:rid"</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$ins_stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$sql</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$rowid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_new_descriptor</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_D_ROWID</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$ins_stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">":id_bv"</span><span style="color: #007700">,&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$id</span><span style="color: #007700">,&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$ins_stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">":name_bv"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;&nbsp;</span><span style="color: #0000BB">32</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$ins_stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">":rid"</span><span style="color: #007700">,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$rowid</span><span style="color: #007700">,&nbsp;-</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_B_ROWID</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$sql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"UPDATE&nbsp;mytab&nbsp;SET&nbsp;salary&nbsp;=&nbsp;:salary&nbsp;WHERE&nbsp;ROWID&nbsp;=&nbsp;:rid"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$upd_stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$sql</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$upd_stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">":rid"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$rowid</span><span style="color: #007700">,&nbsp;-</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_B_ROWID</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$upd_stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">":salary"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$salary</span><span style="color: #007700">,&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">32</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;挿入する&nbsp;id&nbsp;と&nbsp;name<br /></span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #0000BB">1111&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Larry"</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">2222&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Bill"</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">3333&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Jim"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;それぞれの&nbsp;salary<br /></span><span style="color: #0000BB">$salary&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">10000</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;挿入し、その後すぐに各行を更新します<br /></span><span style="color: #007700">foreach&nbsp;(</span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$id&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$ins_stid</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$upd_stid</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">$rowid</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">free</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">oci_free_statement</span><span style="color: #007700">(</span><span style="color: #0000BB">$upd_stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_free_statement</span><span style="color: #007700">(</span><span style="color: #0000BB">$ins_stid</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;新しい行を表示します<br /></span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;*&nbsp;FROM&nbsp;mytab"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br />while&nbsp;(</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_fetch_array</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_ASSOC</span><span style="color: #007700">+</span><span style="color: #0000BB">OCI_RETURN_NULLS</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$row</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">oci_free_statement</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+
+  <p class="para">
+   <div class="example" id="example-1950">
+    <p><strong>例10 PL/SQL ストアドファンクションでのバインド</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;&nbsp;PHP&nbsp;プログラムを実行する前に、ストアドファンクションを<br />//&nbsp;&nbsp;SQL*Plus&nbsp;あるいは&nbsp;SQL&nbsp;Developer&nbsp;で作ります<br />//<br />//&nbsp;&nbsp;CREATE&nbsp;OR&nbsp;REPLACE&nbsp;FUNCTION&nbsp;myfunc(p&nbsp;IN&nbsp;NUMBER)&nbsp;RETURN&nbsp;NUMBER&nbsp;AS<br />//&nbsp;&nbsp;BEGIN<br />//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURN&nbsp;p&nbsp;*&nbsp;3;<br />//&nbsp;&nbsp;END;<br /><br /></span><span style="color: #0000BB">$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'hr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'welcome'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'localhost/XE'</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$conn</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$e&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_error</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$e</span><span style="color: #007700">[</span><span style="color: #DD0000">'message'</span><span style="color: #007700">]),&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">$p&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">8</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'begin&nbsp;:r&nbsp;:=&nbsp;myfunc(:p);&nbsp;end;'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">':p'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$p</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;返り値は&nbsp;OUT&nbsp;変数に格納されます。デフォルトの型は文字列型なので、<br />//&nbsp;length&nbsp;が&nbsp;40&nbsp;ということは最大で&nbsp;40&nbsp;まで返される可能性があるということです<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">':r'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$r</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">40</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /><br />print&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$r</span><span style="color: #DD0000">\n"</span><span style="color: #007700">;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;24&nbsp;と表示します<br /><br /></span><span style="color: #0000BB">oci_free_statement</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+
+  <p class="para">
+  <div class="example" id="example-1951">
+   <p><strong>例11 PL/SQL ストアドプロシージャでのパラメータのバインド</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;&nbsp;PHP&nbsp;プログラムを実行する前に、ストアドプロシージャを<br />//&nbsp;&nbsp;SQL*Plus&nbsp;あるいは&nbsp;SQL&nbsp;Developer&nbsp;で作ります<br />//<br />//&nbsp;&nbsp;CREATE&nbsp;OR&nbsp;REPLACE&nbsp;PROCEDURE&nbsp;myproc(p1&nbsp;IN&nbsp;NUMBER,&nbsp;p2&nbsp;OUT&nbsp;NUMBER)&nbsp;AS<br />//&nbsp;&nbsp;BEGIN<br />//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p2&nbsp;:=&nbsp;p1&nbsp;*&nbsp;2;<br />//&nbsp;&nbsp;END;<br /><br /></span><span style="color: #0000BB">$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'hr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'welcome'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'localhost/XE'</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$conn</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$e&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_error</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$e</span><span style="color: #007700">[</span><span style="color: #DD0000">'message'</span><span style="color: #007700">]),&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">$p1&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">8</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'begin&nbsp;myproc(:p1,&nbsp;:p2);&nbsp;end;'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">':p1'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$p1</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;プロシージャの&nbsp;2&nbsp;番目のパラメータは&nbsp;OUT&nbsp;変数です。デフォルトの型は文字列型なので、<br />//&nbsp;length&nbsp;が&nbsp;40&nbsp;ということは最大で&nbsp;40&nbsp;まで返される可能性があるということです<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">':p2'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$p2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">40</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /><br />print&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$p2</span><span style="color: #DD0000">\n"</span><span style="color: #007700">;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;16&nbsp;と表示します<br /><br /></span><span style="color: #0000BB">oci_free_statement</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+
+  <p class="para">
+  <div class="example" id="example-1952">
+   <p><strong>例12 CLOB 列のバインド</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;実行する前にテーブルを作成します。<br />//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CREATE&nbsp;TABLE&nbsp;mytab&nbsp;(mykey&nbsp;NUMBER,&nbsp;myclob&nbsp;CLOB);<br /><br /></span><span style="color: #0000BB">$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'hr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'welcome'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'localhost/XE'</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$conn</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$e&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_error</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$e</span><span style="color: #007700">[</span><span style="color: #DD0000">'message'</span><span style="color: #007700">]),&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">$mykey&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">12343</span><span style="color: #007700">;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;この例のための任意のキー<br /><br /></span><span style="color: #0000BB">$sql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"INSERT&nbsp;INTO&nbsp;mytab&nbsp;(mykey,&nbsp;myclob)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VALUES&nbsp;(:mykey,&nbsp;EMPTY_CLOB())<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RETURNING&nbsp;myclob&nbsp;INTO&nbsp;:myclob"</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$sql</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$clob&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_new_descriptor</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_D_LOB</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">":mykey"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mykey</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">":myclob"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$clob</span><span style="color: #007700">,&nbsp;-</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_B_CLOB</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_DEFAULT</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$clob</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">save</span><span style="color: #007700">(</span><span style="color: #DD0000">"A&nbsp;very&nbsp;long&nbsp;string"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">oci_commit</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;CLOB&nbsp;データを取得します<br /><br /></span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'SELECT&nbsp;myclob&nbsp;FROM&nbsp;mytab&nbsp;WHERE&nbsp;mykey&nbsp;=&nbsp;:mykey'</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse&nbsp;</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$query</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">":mykey"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mykey</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /><br />print&nbsp;</span><span style="color: #DD0000">'&lt;table&nbsp;border="1"&gt;'</span><span style="color: #007700">;<br />while&nbsp;(</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_fetch_array</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_ASSOC</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">'MYCLOB'</span><span style="color: #007700">]-&gt;</span><span style="color: #0000BB">load</span><span style="color: #007700">();<br />&nbsp;&nbsp;print&nbsp;</span><span style="color: #DD0000">'&lt;tr&gt;&lt;td&gt;'</span><span style="color: #007700">.</span><span style="color: #0000BB">$result</span><span style="color: #007700">.</span><span style="color: #DD0000">'&lt;/td&gt;&lt;/tr&gt;'</span><span style="color: #007700">;<br />}<br />print&nbsp;</span><span style="color: #DD0000">'&lt;/table&gt;'</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+  </p>
+
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.oci-bind-by-name-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes" id="refsect1-function.oci-bind-by-name-notes">
+  <h3 class="title">注意</h3>
+  <div class="warning"><strong class="warning">警告</strong>
+   <p class="para">
+    クォートは不要なので、<a href="info.configuration.html#ini.magic-quotes-gpc" class="link">magic_quotes_gpc</a> や
+     <span class="function"><a href="function.addslashes.html" class="function">addslashes()</a></span> を
+     <span class="function"><strong>oci_bind_by_name()</strong></span> と同時に使わないでください。
+    自動的に追加されたクォートはデータベースの中にそのまま書き込まれてしまいます。
+     <span class="function"><strong>oci_bind_by_name()</strong></span>
+    はデータをそのままの形で追加し、クォートやエスケープ文字の除去は行わないからです。
+   </p>
+  </div>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    <em>WHERE</em> 句の中の
+    <em>CHAR</em> 型のカラムに文字列をバインドするときには、
+    Oracle における <em>CHAR</em> 型のカラムの比較が
+    スペースで埋めた (固定長形式で) 行われることを覚えておきましょう。
+    <em>WHERE</em> 句を期待通りに動作させるには、
+    PHP の変数側でもスペースを追加してカラムの幅と同じにしておく必要があります。
+   </p>
+  </p></blockquote>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+     PHP の <em><code class="parameter">variable</code></em> 引数は参照渡しです。
+     ループの形式によっては期待通りの動きをしないこともあります。
+   </p>
+   <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">foreach&nbsp;(</span><span style="color: #0000BB">$myarray&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$key&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$value</span><span style="color: #007700">)&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$key</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$value</span><span style="color: #007700">);<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+   </div>
+   <p class="para">
+     これは、それぞれのキーに対して $value の指す場所をバインドします。
+     つまり、すべてのバインド変数の値は
+     ループの最後の処理で $value が指す値となります。
+     期待通りに動かすには、次のようにします。
+   </p>
+   <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">foreach&nbsp;(</span><span style="color: #0000BB">$myarray&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$key&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$value</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$key</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$myarray</span><span style="color: #007700">[</span><span style="color: #0000BB">$key</span><span style="color: #007700">]);<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+   </div>
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.oci-bind-by-name-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="function.oci-bind-array-by-name.html" class="function" rel="rdfs-seeAlso">oci_bind_array_by_name()</a> - PHP の配列を Oracle PL/SQL の配列に名前でバインドする</span></li>
+    <li class="member"> <span class="function"><a href="function.oci-parse.html" class="function" rel="rdfs-seeAlso">oci_parse()</a> - 実行のために Oracle の文をパースする</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="105911""></a>
+  <div class="note">
+   <strong class="user">abiyi2000 at yahoo dot com</strong>
+   <a href="#105911" class="date">25-Sep-2011 05:03</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I unfortunately spent the whole day trying to make this work as part of OCI bind_by_name insert:<br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="keyword">if(</span><span class="default">is_numeric</span><span class="keyword">(</span><span class="default">$v2</span><span class="keyword">)){<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">oci_bind_by_name</span><span class="keyword">(</span><span class="default">$stmth</span><span class="keyword">, </span><span class="default">$bvar</span><span class="keyword">, </span><span class="default">$v2</span><span class="keyword">,&nbsp; -</span><span class="default">1</span><span class="keyword">, </span><span class="default">OCI_B_INT</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp;&nbsp; }else{<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$v2 </span><span class="keyword">= (string) </span><span class="default">$v2</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">oci_bind_by_name</span><span class="keyword">(</span><span class="default">$stmth</span><span class="keyword">, </span><span class="default">$bvar</span><span class="keyword">, </span><span class="default">$v2</span><span class="keyword">, -</span><span class="default">1</span><span class="keyword">, </span><span class="default">SQLT_CHR</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp;&nbsp; }<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+The string field is always inserting correctly w/o any truncation. The string field is a&nbsp; varchar2(160) CHAR, but the data used to populate it is 40 chars in length.<br />
+<br />
+The numeric part is of Type Number in the database which is being used to store unix time (10 digit seconds since 1970/01/01.<br />
+<br />
+The problem, the insert was truncating to 9 digits with some bogus value not even related to the input i.e., it's not just a matter of dropping the leftmost or rightmost digit, it'll just insert a 9 digit bogus number.<br />
+<br />
+The only way I was able to resolve this for the numeric field was to set the maxlength to 8 (not 10 which is the number of digits in the input): <br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="keyword">if(</span><span class="default">is_numeric</span><span class="keyword">(</span><span class="default">$v2</span><span class="keyword">)){<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">oci_bind_by_name</span><span class="keyword">(</span><span class="default">$stmth</span><span class="keyword">, </span><span class="default">$bvar</span><span class="keyword">, </span><span class="default">$v2</span><span class="keyword">,&nbsp; </span><span class="default">8</span><span class="keyword">, </span><span class="default">OCI_B_INT</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp;&nbsp; }else{<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$v2 </span><span class="keyword">= (string) </span><span class="default">$v2</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">oci_bind_by_name</span><span class="keyword">(</span><span class="default">$stmth</span><span class="keyword">, </span><span class="default">$bvar</span><span class="keyword">, </span><span class="default">$v2</span><span class="keyword">, -</span><span class="default">1</span><span class="keyword">, </span><span class="default">SQLT_CHR</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp;&nbsp; }<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Hopefully you'll see this soon before you expend a lot of time repeating the same problem I had.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="92334""></a>
+  <div class="note">
+   <strong class="user">adrian dot crossley at hesa dot ac dot uk</strong>
+   <a href="#92334" class="date">20-Jul-2009 03:14</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Sometimes you get the error "ORA-01461: can bind a LONG value only for insert into a LONG column".&nbsp; This error is highly misleading especially when you have no LONG columns or LONG values.<br />
+<br />
+From my testing it seems this error can be caused when the value of a bound variable exceeds the length allocated.<br />
+<br />
+To avoid this error make sure you specify lengths when binding varchars e.g. <br />
+<span class="default">&lt;?php<br />
+oci_bind_by_name</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">,</span><span class="string">':string'</span><span class="keyword">,</span><span class="default">$string</span><span class="keyword">, </span><span class="default">256</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+And for numerics use the default length (-1) but tell oracle its an integer e.g. <br />
+<span class="default">&lt;?php<br />
+oci_bind_by_name</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">,</span><span class="string">':num'</span><span class="keyword">,</span><span class="default">$num</span><span class="keyword">, -</span><span class="default">1</span><span class="keyword">, </span><span class="default">SQLT_INT</span><span class="keyword">);<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="89074""></a>
+  <div class="note">
+   <strong class="user">avenger at php dot net</strong>
+   <a href="#89074" class="date">20-Feb-2009 12:54</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Dont forget the 5th parameter: $type. It's will slowly your code some times. Eg:<br />
+<br />
+<span class="default">&lt;?php<br />
+$sql </span><span class="keyword">= </span><span class="string">"select * from (select * from b xxx) where rownum &lt; :rnum"</span><span class="keyword">;<br />
+</span><span class="default">$stmt </span><span class="keyword">= </span><span class="default">OCIParse</span><span class="keyword">(</span><span class="default">$conn</span><span class="keyword">,</span><span class="default">$sql</span><span class="keyword">);<br />
+</span><span class="default">OCIBindByName</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">, </span><span class="string">":rnum"</span><span class="keyword">, </span><span class="default">$NUM</span><span class="keyword">, -</span><span class="default">1</span><span class="keyword">);<br />
+</span><span class="default">OCIExecute</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Below code was slow 5~6 time than not use bind value.Change the 3rd line to:<br />
+<br />
+<span class="default">&lt;?php<br />
+OCIBindByName</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">, </span><span class="string">":rnum"</span><span class="keyword">, </span><span class="default">$NUM</span><span class="keyword">, -</span><span class="default">1</span><span class="keyword">, </span><span class="default">SQLT_INT</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+will resloved this problem.<br />
+<br />
+This issue is also in the ADODB DB class(adodb.sf.net), you will be careful for use the SelectLimit method.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="83094""></a>
+  <div class="note">
+   <strong class="user">ajitsingh4u at gmail dot com</strong>
+   <a href="#83094" class="date">09-May-2008 06:39</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+//Calling Oracle Stored Procedure<br />
+//I assume that you have a users table and three columns in users table i.e. id, user, email in oracle<br />
+// For example I made connection in constructor, you can modify as per your requirement.<br />
+//<a href="http://www.devshed.com/c/a/PHP/Understanding-Destructors-in-PHP-5/1/" rel="nofollow" target="_blank">http://www.devshed.com/c/a/PHP/Understanding-Destructors-in-PHP-5/1/</a><br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">class </span><span class="default">Users</span><span class="keyword">{<br />
+&nbsp;&nbsp;&nbsp; private </span><span class="default">$connection</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; public function </span><span class="default">__construct</span><span class="keyword">()<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">connection </span><span class="keyword">= </span><span class="default">oci_connect</span><span class="keyword">(</span><span class="string">"scott"</span><span class="keyword">, </span><span class="string">"tiger"</span><span class="keyword">, </span><span class="default">$db</span><span class="keyword">); </span><span class="comment">// Establishes a connection to the Oracle server; <br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">}<br />
+<br />
+&nbsp;&nbsp;&nbsp; public function </span><span class="default">selectUsers</span><span class="keyword">(</span><span class="default">$start_index</span><span class="keyword">=</span><span class="default">1</span><span class="keyword">, </span><span class="default">$numbers_of_rows</span><span class="keyword">=</span><span class="default">20</span><span class="keyword">)<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$sql </span><span class="keyword">=</span><span class="string">"BEGIN sp_users_select(:p_start_index, :p_numbers_of_rows, :p_cursor, :p_result); END;"</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$stmt </span><span class="keyword">= </span><span class="default">oci_parse</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">connection</span><span class="keyword">, </span><span class="default">$sql</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">//Bind in parameter<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">oci_bind_by_name</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">, </span><span class="string">':p_start_index'</span><span class="keyword">, </span><span class="default">$start_index</span><span class="keyword">, </span><span class="default">20</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">oci_bind_by_name</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">, </span><span class="string">':p_numbers_of_rows'</span><span class="keyword">, </span><span class="default">$numbers_of_rows</span><span class="keyword">, </span><span class="default">20</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">//Bind out parameter<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">oci_bind_by_name</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">, </span><span class="string">':p_result'</span><span class="keyword">, </span><span class="default">$result</span><span class="keyword">, </span><span class="default">20</span><span class="keyword">); </span><span class="comment">// returns 0 if stored procedure succeessfully executed.<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; //Bind Cursor<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$p_cursor </span><span class="keyword">= </span><span class="default">oci_new_cursor</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">connection</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">oci_bind_by_name</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">, </span><span class="string">':p_cursor'</span><span class="keyword">, </span><span class="default">$p_cursor</span><span class="keyword">, -</span><span class="default">1</span><span class="keyword">, </span><span class="default">OCI_B_CURSOR</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Execute Statement<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">oci_execute</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">oci_execute</span><span class="keyword">(</span><span class="default">$p_cursor</span><span class="keyword">, </span><span class="default">OCI_DEFAULT</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">oci_fetch_all</span><span class="keyword">(</span><span class="default">$p_cursor</span><span class="keyword">, </span><span class="default">$cursor</span><span class="keyword">, </span><span class="default">null</span><span class="keyword">, </span><span class="default">null</span><span class="keyword">, </span><span class="default">OCI_FETCHSTATEMENT_BY_ROW</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="default">$result</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$cursor</span><span class="keyword">); </span><span class="comment">// $cursor is an associative array so we can use print_r() to print this data.<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; // you can return data from this function to use it at your user interface.<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">}<br />
+<br />
+&nbsp;&nbsp;&nbsp; public function </span><span class="default">deleteUser</span><span class="keyword">(</span><span class="default">$id</span><span class="keyword">)<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$sql </span><span class="keyword">=</span><span class="string">"BEGIN sp_user_delete(:p_id, :p_result); END;"</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$stmt </span><span class="keyword">= </span><span class="default">oci_parse</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">connection</span><span class="keyword">, </span><span class="default">$sql</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// bind in and out variables<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">oci_bind_by_name</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">, </span><span class="string">':p_id'</span><span class="keyword">, </span><span class="default">$id</span><span class="keyword">, </span><span class="default">20</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">oci_bind_by_name</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">, </span><span class="string">':p_result'</span><span class="keyword">, </span><span class="default">$result</span><span class="keyword">, </span><span class="default">20</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">//Execute the statement<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$check </span><span class="keyword">= </span><span class="default">oci_execute</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if(</span><span class="default">$check </span><span class="keyword">== </span><span class="default">true</span><span class="keyword">)<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$commit </span><span class="keyword">= </span><span class="default">oci_commit</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">connection</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; else<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$commit </span><span class="keyword">= </span><span class="default">oci_rollback</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">connection</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">$result</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">// You can make function for insert ,update using above two functions<br />
+<br />
+</span><span class="keyword">}<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="75018""></a>
+  <div class="note">
+   
+   <a href="#75018" class="date">08-May-2007 10:59</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This is what the old OCI_B_* constants are now called:<br />
+(PHP 5.1.6 win32)<br />
+<br />
+OCI_B_NTY - SQLT_NTY<br />
+OCI_B_BFILE - SQLT_BFILEE<br />
+OCI_B_CFILEE - SQLT_CFILEE<br />
+OCI_B_CLOB - SQLT_CLOB<br />
+OCI_B_BLOB - SQLT_BLOB<br />
+OCI_B_ROWID - SQLT_RDD<br />
+OCI_B_CURSOR - SQLT_RSET<br />
+OCI_B_BIN - SQLT_BIN<br />
+OCI_B_INT - SQLT_INT<br />
+OCI_B_NUM - SQLT_NUM</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="72290""></a>
+  <div class="note">
+   <strong class="user">Chris Delcamp</strong>
+   <a href="#72290" class="date">11-Jan-2007 05:48</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This is an example of returning the primary key from an insert so that you can do inserts on other tables with foreign keys based on that value.&nbsp; The date is just used to provied semi-unique data to be inserted.<br />
+<br />
+$conn = oci_connect("username", "password")<br />
+$stmt = oci_parse($conn, "INSERT INTO test (test_msg) values (:data) RETURN test_id INTO :RV");<br />
+$data = date("d-M-Y H:i:s");<br />
+oci_bind_by_name($stmt, ":RV", $rv, -1, SQLT_INT);<br />
+oci_bind_by_name($stmt, ":data", $data, 24);<br />
+oci_execute($stmt);<br />
+print $rv;</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="55895""></a>
+  <div class="note">
+   <strong class="user">hfuecks at nospam dot org</strong>
+   <a href="#55895" class="date">16-Aug-2005 10:12</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note that there have been some changes on the constant identifiers and the documentation is currently not entirely accurate.<br />
+<br />
+Running the following script;<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">foreach (</span><span class="default">array_keys</span><span class="keyword">(</span><span class="default">get_defined_constants</span><span class="keyword">()) as </span><span class="default">$const</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; if ( </span><span class="default">preg_match</span><span class="keyword">(</span><span class="string">'/^OCI_B_/'</span><span class="keyword">, </span><span class="default">$const</span><span class="keyword">) ) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; print </span><span class="string">"</span><span class="default">$const</span><span class="string">\n"</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Under PHP 4.4.0 I get;<br />
+<br />
+OCI_B_SQLT_NTY &lt; renamed to OCI_B_NTY with PHP5<br />
+OCI_B_BFILE<br />
+OCI_B_CFILEE<br />
+OCI_B_CLOB<br />
+OCI_B_BLOB<br />
+OCI_B_ROWID<br />
+OCI_B_CURSOR<br />
+OCI_B_BIN<br />
+<br />
+Under PHP 5.0.4 I get;<br />
+<br />
+OCI_B_NTY<br />
+OCI_B_BFILE &lt; docs are wrong right now<br />
+OCI_B_CFILEE &lt; docs are wrong right now<br />
+OCI_B_CLOB<br />
+OCI_B_BLOB<br />
+OCI_B_ROWID<br />
+OCI_B_CURSOR<br />
+OCI_B_BIN &lt; it's a mystery</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.oci-bind-array-by-name.html">oci_bind_array_by_name</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.oci-cancel.html">oci_cancel</a></div>
+ <div class="up"><a href="ref.oci8.html">OCI8 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,418 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Windows インストーラ (PHP 5.2 以降)</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="install.windows.installer.html">Windows インストーラ (PHP 5.1.0 以前)</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="install.windows.manual.html">手動でのインストール</a></div>
+ <div class="up"><a href="install.windows.html">Windows システムへのインストール</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="install.windows.installer.msi" class="sect1">
+   <h2 class="title">Windows インストーラ (PHP 5.2 以降)</h2>
+    <p class="para">
+     Windows 用 PHP インストーラの最新版は、MSI 形式になっています。これは
+     Wix Toolkit (<a href="http://wix.sourceforge.net/" class="link external" title="Link : http://wix.sourceforge.net/">&raquo;&nbsp;http://wix.sourceforge.net/</a>) で作成されています。
+     このインストーラは、インストールおよび PHP の設定、そして組み込みのモジュールと
+     <acronym title="PHP Extension and Application Repository">PECL</acronym> 拡張モジュールの設定だけでなく、
+     <acronym>IIS</acronym>、Apache そして Xitami
+     などといった多くのウェブサーバーの設定も行います。
+    </p>
+    
+    <p class="simpara">
+     最初に、お好みの <acronym title="Hypertext Transfer Protocol">HTTP</acronym> (ウェブ)
+     サーバーをシステムにインストールし、動作確認をします。
+     それから、次のうちのいずれかのインストール形式を選択します。
+    </p>
+    
+    <div class="sect2" id="install.windows.installer.msi.normal">
+    <h3 class="title">通常のインストール</h3>
+     <p class="para">
+      MSI インストーラを実行し、インストールウィザードの指示に従います。
+      まず最初に設定するウェブサーバーを選択し、
+      それに伴って必要となる設定を行います。
+     </p>
+     
+     <p class="para">
+      次に、さまざまな機能や拡張モジュールの中から
+      インストールして有効にしたいものを選択します。
+      各項目のドロップダウンメニューで &quot;Will be installed on local 
+      hard drive&quot; を選択することで、その機能をインストールするかどうかを切り替えます。
+      &quot;Entire feature will be 
+      installed on local hard drive&quot; を選択すると、
+      その機能に関連するすべての機能がインストールされます
+      (たとえば &quot;PDO&quot; に対してこのオプションを選択すると、
+      すべての PDO ドライバがインストールされます)。
+     </p>
+     
+     <div class="warning"><strong class="warning">警告</strong>
+      <p class="para">
+       すべての項目をデフォルトでインストールしてしまうのはお勧めしません。
+       それらの多くは、適切に動作させるためには
+       PHP 以外の外部の依存性を解決する必要があるからです。
+       その代わりに、いったんインストールした後で
+       コントロールパネルの「プログラムの追加と削除」
+       で修復モードを使用して拡張モジュールを有効にするようにしましょう。
+      </p>
+     </div>
+     
+     <p class="para">
+      次に、インストーラは Windows で使用する PHP と <var class="filename">php.ini</var>
+      ファイルを設定し、ウェブサーバーで PHP を使用できるように設定します。
+      現在インストーラがサポートしているのは IIS、
+      Apache、Xitami および Sambar Server のみです。
+      それ以外のウェブサーバーを使用する場合は、自分で設定する必要があります。
+     </p>
+    </div>
+    
+    <div class="sect2" id="install.windows.installer.msi.silent">
+    <h3 class="title">サイレントインストール</h3>
+     <p class="para">
+      このインストーラはサイレントモードもサポートしています。
+      このモードは、システム管理者が簡単に PHP 環境を構築する際に便利です。
+      サイレントモードは、次のようにして使用します。
+      <div class="example-contents screen">
+<div class="cdata"><pre>       
+msiexec.exe /i php-VERSION-win32-install.msi /q
+</pre></div>     
+      </div>
+     </p>
+     <p class="para">
+      インストール先ディレクトリを設定するには、インストール時のパラメータとして指定します。
+      例えば、e:\php にインストールする場合は次のようになります。
+      <div class="example-contents screen">
+<div class="cdata"><pre>       
+msiexec.exe /i php-VERSION-win32-install.msi /q INSTALLDIR=e:\php
+</pre></div>     
+      </div>
+      同様にして、Apache の設定ディレクトリ (APACHEDIR)
+      や Sambar Server のディレクトリ (SAMBARDIR)、
+      そして Xitami Server のディレクトリ (XITAMIDIR)
+      も指定することが可能です。
+     </p>
+     <p class="para">
+      また、インストールする機能を指定することもできます。例えば、
+      mysqli 拡張モジュールおよび CGI 実行ファイルをインストールするには次のようにします。
+      <div class="example-contents screen">
+<div class="cdata"><pre>       
+msiexec.exe /i php-VERSION-win32-install.msi /q ADDLOCAL=cgi,ext_php_mysqli
+</pre></div>     
+      </div>
+     </p>
+     <p class="para">
+      現在、インストールする機能としてサポートされている項目は次のとおりです。
+      <div class="example-contents screen">
+<div class="cdata"><pre> 
+MainExecutable - php.exe 実行ファイル (PHP 5.2.10/5.3.0 以降は存在しません。デフォルトで含まれるようになりました)
+ScriptExecutable - php-win.exe 実行ファイル
+ext_php_* - 各種拡張モジュール (例: MySQL の場合は ext_php_mysql)
+apache13 - Apache 1.3 モジュール
+apache20 - Apache 2.0 モジュール
+apache22 - Apache 2.2 モジュール
+apacheCGI - Apache CGI 実行ファイル
+iis4ISAPI - IIS ISAPI モジュール
+iis4CGI - IIS CGI 実行ファイル
+iis4FastCGI - IIS CGI 実行ファイル
+NSAPI - Sun/iPlanet/Netscape サーバーモジュール
+netserve - NetServe Web Server CGI 実行ファイル
+Xitami - Xitami CGI 実行ファイル
+Sambar - Sambar Server ISAPI モジュール
+CGI - php-cgi.exe 実行ファイル
+PEAR - PEAR インストーラ
+Manual - CHM 形式の PHP マニュアル
+</pre></div>
+      </div>
+     </p>
+     <p class="para">
+      MSI インストーラをコマンドラインから使用する方法の詳細については
+      <a href="http://msdn.microsoft.com/en-us/library/aa367988.aspx" class="link external" title="Link : http://msdn.microsoft.com/en-us/library/aa367988.aspx">&raquo;&nbsp;http://msdn.microsoft.com/en-us/library/aa367988.aspx</a>
+      を参照ください。
+     </p>
+    </div>
+    
+    <div class="sect2" id="install.windows.installer.msi.upgrade">
+    <h3 class="title">インストーラによる PHP のアップグレード</h3>
+    
+     <p class="para">
+      アップグレードの際も、ダブルクリックあるいはコマンドラインから通常どおりインストーラを実行します。
+      インストーラが現在のインストールオプションを読み取り、
+      現在インストールされているバージョンを削除してから
+      同じオプションで PHP をインストールしなおします。
+      インストールディレクトリのファイルを手動で置き換えるのではなく、
+      この方法で PHP をアップグレードすることを推奨します。
+     </p>
+    </div>
+    
+   </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113500""></a>
+  <div class="note">
+   <strong class="user">lkm-1acitp at hotmail dot co dot uk</strong>
+   <a href="#113500" class="date">20-Oct-2013 07:00</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Hi, sorry if this post is in the wrong section but if like myself you have installed php via the msi installer, please note (unless this is not your first time setting this up)<br />
+the installer automatically adds the php path &amp; extension to the httpd.conf file in Apache, But it fails to add the directory index for php.<br />
+<br />
+unless you edit the httpd.conf file line from this:<br />
+<br />
+&lt;IfModule dir_module&gt;<br />
+&nbsp;&nbsp;&nbsp; DirectoryIndex index.html<br />
+&lt;/IfModule&gt;<br />
+<br />
+To this:<br />
+<br />
+&lt;IfModule dir_module&gt;<br />
+&nbsp;&nbsp;&nbsp; DirectoryIndex index.html index.htm index.php welcome.html<br />
+&lt;/IfModule&gt;<br />
+<br />
+Your Apache will serve directories when the index page/homepage is a php file.<br />
+<br />
+Thanks for reading &amp; again sorry if this is the wrong section.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="108152""></a>
+  <div class="note">
+   <strong class="user">ckelley at ca-cycleworks dot com</strong>
+   <a href="#108152" class="date">03-Apr-2012 12:18</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Two aspects of a typical Windows installation:<br />
+<br />
+1) The default behavior for short_open_tag is OFF. You must edit php.ini and explicitly set it to ON. This means most developers will have their source code displayed rather than the script executed. short_open_tag OFF means the php tags must be <span class="default">&lt;?php&nbsp; ?&gt;</span> and the shorter &lt;? ?&gt; will not be interpreted.<br />
+<br />
+2) When using php as cli from the command line, Windows 7 will perform the file association in such a way that running a script from the command line will not accept additional arguments. Note, however that typing the full path to the executable will see arguments. As Windows 7 has a limited file associations GUI, the fix is to open regedit and change the key HKEY_CLASSES_ROOT\Applications\php.exe\shell\open\command from its default value of "C:\php\php.exe" "%1" to instead read "C:\php\php.exe" "%1" "%2" "%3" "%4" "%5" "%6" "%7" "%8" "%9"</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="100244""></a>
+  <div class="note">
+   <strong class="user">lwpro2</strong>
+   <a href="#100244" class="date">04-Oct-2010 10:09</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+run php as CGI binary, and add these to httpd.conf, <br />
+<br />
+#BEGIN PHP INSTALLER EDITS - REMOVE ONLY ON UNINSTALL<br />
+ScriptAlias /php/ "C:/php/"<br />
+Action application/x-httpd-php "C:/php/php-cgi.exe"<br />
+#END PHP INSTALLER EDITS - REMOVE ONLY ON UNINSTALL<br />
+AddType application/x-httpd-php .php<br />
+AddType application/x-httpd-php .phtml<br />
+<br />
+&lt;Directory "C:/Apache2.2/cgi-bin"&gt;<br />
+&nbsp;&nbsp;&nbsp; AllowOverride None<br />
+&nbsp;&nbsp;&nbsp; Options None<br />
+&nbsp;&nbsp;&nbsp; Order allow,deny<br />
+&nbsp;&nbsp;&nbsp; Allow from all<br />
+&lt;/Directory&gt;<br />
+<br />
+&lt;Directory "C:/php"&gt;<br />
+AllowOverride None<br />
+Options None<br />
+Order allow,deny<br />
+Allow from all<br />
+&lt;/Directory&gt;<br />
+<br />
+finally it works</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="96651""></a>
+  <div class="note">
+   <strong class="user">fawaz at webcitynetworks dot com</strong>
+   <a href="#96651" class="date">09-Mar-2010 11:24</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Tryed installing PHP several times using the MSI instalation, which defaults to "C:\Prorame Files\PHP", and could not work at all. <br />
+<br />
+The OS: Windows XP, with SP3<br />
+Web Server: IIS 5.1<br />
+<br />
+Instalation Steps:<br />
+<br />
+Step 1: Install the MSI Instalation, but make sure you select the instalation folder to be "C:\PHP" and NOT "C:\Programe Files\PHP\".<br />
+<br />
+Step 2: Copy the "php.ini" fil from "C:\PHP", to "C:\Windows\" folder. Keep the default settings, so far OK.<br />
+<br />
+Step 3: Go to IIS, Open "Default Website", Properties, and open the "Home Directory" tab, and then "Configue" buttton.<br />
+<br />
+Step 4: Click 'Add" under Mappings Tab, and browse for "C:\PHP\php-cgi.exe" file from 'Browse', and add ".php" (i.e. without the Qoutes ""). Keep "Verb" settings to "All Verbs" and click "OK"<br />
+<br />
+Step 5: Create a php file with : <span class="default">&lt;?php phpinfo</span><span class="keyword">();</span><span class="default">?&gt;</span>, and test. <br />
+<br />
+It should be working fine by this time.<br />
+<br />
+Hope this was helpful to all.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="96338""></a>
+  <div class="note">
+   <strong class="user">rod at rodsdot dot com</strong>
+   <a href="#96338" class="date">21-Feb-2010 11:29</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+On IIS 5.1 (Windows XP) and IIS 6.0 (Windows Server 2003) the following installation method goes very smoothly, but for three additional tasks.<br />
+<br />
+Before installing PHP 5.2.x using the Microsoft Web Platform Installer, make sure:<br />
+<br />
+C:\PHP does not exist<br />
+C:\Program Files\PHP does not exist (it will be created)<br />
+C:\Windows\php.ini does not exist (you won't need it there)<br />
+<br />
+Run Microsoft Web Platform Installer allowing it to install FastCGI support and PHP 5.2.x.<br />
+<br />
+After installation you should have PHP installed in C:\Program Files\PHP.<br />
+<br />
+An examination of php.ini will show you will not likely need to change any settings, except the sendmail_from address.&nbsp; The Windows specific settings have been set, but are grouped together under:<br />
+<br />
+; Default timeout for socket based streams (seconds)<br />
+<br />
+Those are:<br />
+upload_tmp_dir="C:\WINDOWS\Temp"<br />
+session.save_path="C:\WINDOWS\Temp"<br />
+error_log="C:\WINDOWS\temp\php-errors.log"<br />
+cgi.force_redirect=0<br />
+fastcgi.impersonate=1<br />
+fastcgi.logging=0<br />
+<br />
+In addition to having the correct minimal IIS settings already set in php.ini, you will find the Path has had C:\Program Files\PHP\ added, and the environment variable PHPRC is set correctly.<br />
+<br />
+The three things not performed by the install but needed to run:<br />
+<br />
+1.<br />
+HKEY_LOCAL_MACHINE\Software\PHP\IniFilePath may be wrong.&nbsp; It should not be C:\Windows, but C:\Program Files\PHP, which is what is set in both the PATH and PHPRC. (This could be a left over setting from a previous install, but the installer does not correct it.)<br />
+<br />
+2.<br />
+In IIS manager, under the default web site properties, Home Directory (tab), Configuration (button), Mappings, the entry for .php may be missing or wrong. It should be:<br />
+Executable: "C:\Program Files\PHP\php-cgi.exe" with the quotes.<br />
+Verbs: Limit To: GET,HEAD,POST,TRACE<br />
+Script Engine checkbox checked<br />
+Check That File Exists checkbox checked.<br />
+<br />
+3.<br />
+The installer will not set the proper security permissions for php-cgi.exe or php.ini, both of which need to be accessible to the default Internet user account: e.g. IUSR_machine name.<br />
+<br />
+In Windows Explorer, navigate to the C:\Program Files\PHP folder, right click, properties, security (tab), add IUSR_machinename and accept the default security permissions.<br />
+<br />
+All of these seemed to take effect without a reboot, but a reboot is suggested.&nbsp; Note: Items 1 and 2 may be left over from previous installations and might possibly be rightly ignored by the installer, but if they are not corrected (at least check) you are going to have a problem.<br />
+<br />
+Item 3 is not going to be performed by the installer.&nbsp; You will have to do it based on how you have security permissions set in IIS.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="96006""></a>
+  <div class="note">
+   <strong class="user">peter at peterjhart dot com</strong>
+   <a href="#96006" class="date">02-Feb-2010 06:21</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Apache2 on Windows (PHP 5.3.1):<br />
+<br />
+Install VC6 x86 THREAD SAFE. If you do not see Apache in the list of webservers, it is because you downloaded the NON-THREAD SAFE installer.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="92361""></a>
+  <div class="note">
+   <strong class="user">manville at doctors dot org dot uk</strong>
+   <a href="#92361" class="date">21-Jul-2009 03:50</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I have just spent a tiresome morning trying to get PHP 5.2 / 5.3 installed onto Apache 2.2 (WinXPSP2) (Slight oddity in setup that program files on D: drive)<br />
+<br />
+I have finally got it to work by using the following:<br />
+<br />
+1) Getting installation script to use "Other CGI" (would be nice if it mentioned Apache - I believe it to be a fairly popular option)<br />
+<br />
+2) Adding the following directives to httpd.conf (the Apache configuration file)<br />
+<br />
+ScriptAlias /php/&nbsp; "D:/Program Files/PHP/"<br />
+<br />
+(This tells Apache to treat the PHP directory as script files/executables and alias it under /php/ for ease of use later)<br />
+<br />
+AddHandler x-httpd-php .php<br />
+<br />
+(This tells apache to recognise all .php files as of type x-httpd-php (equally you could call them anything you liked and after this mornings debacle I can think of one or two choice phrases)<br />
+<br />
+Action x-httpd-php "php/php-cgi.exe"<br />
+<br />
+(The tells Apache to use php-cgi.exe to handle files of type x-httpd-php (or .php files as we declared earlier). php-cgi.exe only exists if you have selected the "Other CGI" option at installation". A lot of stuff around on the web is pointing at php.exe which is now failing. Has this changed recently?)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="88910""></a>
+  <div class="note">
+   <strong class="user">infoworld at yahoo dot com</strong>
+   <a href="#88910" class="date">12-Feb-2009 10:41</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Using the installer, I have been getting the "cannot run script" error on Windows XP and IIS 5.1.&nbsp; I used both the Zip file and installer filer to make it successful:<br />
+<br />
+1. I downloaded the zip file (not the installer) into C:\php\, <br />
+2. extracted the contents to the same directory (C:\php\).<br />
+3. Downloaded and ran the installer into the C:\php\<br />
+<br />
+Nagesh A</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="88089""></a>
+  <div class="note">
+   <strong class="user">Anonymous</strong>
+   <a href="#88089" class="date">09-Jan-2009 04:06</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I just installed PHP 5.2.8 (MSI package) on windows XP, IIS 5.1.<br />
+<br />
+Selected IIS-ISAPI, always got error "The specified module could not be found." (firefox), HTTP 500 Internal Server Error (ie 7). Even though no extensions were selected.<br />
+<br />
+Trick: Install PHP to C:\PHP (and not to C:\Program Files\PHP)<br />
+<br />
+In your IIS web site properties, tab home directory, configuration, application mappings. <br />
+Remove the quotes before and after the executable path and the problem will be solved.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="install.windows.installer.html">Windows インストーラ (PHP 5.1.0 以前)</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="install.windows.manual.html">手動でのインストール</a></div>
+ <div class="up"><a href="install.windows.html">Windows システムへのインストール</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,366 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>エントリを読み込む</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.ldap-parse-result.html">ldap_parse_result</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.ldap-rename.html">ldap_rename</a></div>
+ <div class="up"><a href="ref.ldap.html">LDAP 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.ldap-read" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ldap_read</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose"><span class="refname">ldap_read</span> &mdash; <span class="dc-title">エントリを読み込む</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.ldap-read-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">resource</span> <span class="methodname"><strong>ldap_read</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$link_identifier</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$base_dn</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$filter</code></span>
+   [, <span class="methodparam"><span class="type">array</span> <code class="parameter">$attributes</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$attrsonly</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$sizelimit</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$timelimit</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$deref</code></span>
+  ]]]]] )</div>
+
+  <p class="para rdfs-comment">
+   指定したフィルタ <em><code class="parameter">filter</code></em>
+   を使用し、スコープ <strong><code>LDAP_SCOPE_BASE</code></strong>
+   でディレクトリを検索します。これは、
+   ディレクトリからエントリを読み込むことと同じ意味です。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.ldap-read-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">link_identifier</code></em></span>
+     <dd>
+
+      <p class="para">
+        <span class="function"><a href="function.ldap-connect.html" class="function">ldap_connect()</a></span> が返す LDAP リンク ID。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">base_dn</code></em></span>
+     <dd>
+
+      <p class="para">
+       ディレクトリのベース DN。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">filter</code></em></span>
+     <dd>
+
+      <p class="para">
+       空のフィルタは指定できません。
+       このエントリに関する全ての情報を完全に取得したい場合は、
+       <em>objectClass=*</em> というフィルタを使用してください。
+       ディレクトリサーバーで使用されるエントリの型が分かっている場合、
+       <em>objectClass=inetOrgPerson</em>
+       のように適切なフィルタを使用することができます。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">attributes</code></em></span>
+     <dd>
+
+      <p class="para">
+       必要な属性を、
+       array(&quot;mail&quot;, &quot;sn&quot;, &quot;cn&quot;) のような通常の PHP 文字列配列で保持します。
+       &quot;dn&quot; は要求された属性の型によらず常に返されることに注意してください。
+      </p>
+      <p class="para">
+       このパラメータを使用すると、デフォルトの動作よりもかなり効率的になります
+       (デフォルトでは、すべての属性とその値を返します)。
+       したがって、これを使用することを推奨します。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">attrsonly</code></em></span>
+     <dd>
+
+      <p class="para">
+       属性の型のみを取得したい場合は 1 を設定します。
+       属性の型および値の両方を取得したい場合は 0
+       を設定します (これがデフォルトの挙動です)。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">sizelimit</code></em></span>
+     <dd>
+
+      <p class="para">
+       取得するエントリ数の制限を設定します。
+       0 は無制限であることを表します。
+      </p>
+      <blockquote class="note"><p><strong class="note">注意</strong>: 
+       <p class="para">
+        このパラメータは、サーバー側で事前に設定されている
+        sizelimit を上書きすることはできません。それ以下の値を指定することはできます。
+       </p>
+       <p class="para">
+        ディレクトリサーバーのホストによっては、
+        事前に設定された数以上のエントリを返さないようになっているものもあります。
+        この場合、サーバーでは、それが結果セットのすべてではないことを通知します。
+        このパラメータでエントリ数を制限した場合にも、同じことが起こります。
+       </p>
+      </p></blockquote>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">timelimit</code></em></span>
+     <dd>
+
+      <p class="para">
+       検索に要する最大秒数を設定します。
+       これを 0 にすると無制限であることを表します。
+      </p>
+      <blockquote class="note"><p><strong class="note">注意</strong>: 
+       <p class="para">
+        このパラメータは、サーバー側で事前に設定されている
+        timelimit を上書きすることはできません。それ以下の値を指定することはできます。
+       </p>
+      </p></blockquote>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">deref</code></em></span>
+     <dd>
+
+      <p class="para">
+       検索時のエイリアスの扱いについて指定します。
+       以下のいずれかとなります。
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>LDAP_DEREF_NEVER</code></strong> - (デフォルト)
+          エイリアスは参照されません。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>LDAP_DEREF_SEARCHING</code></strong> -
+          エイリアスを参照しますが、検索のベースオブジェクト上にいるときは参照しません。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>LDAP_DEREF_FINDING</code></strong> -
+          エイリアスの参照は、ベースオブジェクト上にいて検索中でない場合に行われます。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>LDAP_DEREF_ALWAYS</code></strong> - エイリアスを常に参照します。
+          always.
+         </span>
+        </li>
+       </ul>
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.ldap-read-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   検索結果 ID を返します。エラーの場合は、<strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog" id="refsect1-function.ldap-read-changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>4.0.5</td>
+       <td>
+        並列検索のサポートが追加されました。詳細は
+         <span class="function"><a href="function.ldap-search.html" class="function">ldap_search()</a></span> を参照ください。
+       </td>
+      </tr>
+
+      <tr>
+       <td>4.0.2</td>
+       <td>
+        <em><code class="parameter">attrsonly</code></em>、<em><code class="parameter">sizelimit</code></em>、
+        <em><code class="parameter">timelimit</code></em> および <em><code class="parameter">deref</code></em>
+        が追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="111718""></a>
+  <div class="note">
+   <strong class="user">ronny at nxc dot no</strong>
+   <a href="#111718" class="date">21-Mar-2013 12:14</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The array in the attributes parameter needs to be an indexed array with numeric keys in ascending order. Like this:<br />
+<br />
+Array<br />
+(<br />
+&nbsp;&nbsp;&nbsp; [0] =&gt; this<br />
+&nbsp;&nbsp;&nbsp; [1] =&gt; is<br />
+&nbsp;&nbsp;&nbsp; [2] =&gt; a<br />
+&nbsp;&nbsp;&nbsp; [3] =&gt; test<br />
+)<br />
+<br />
+If there are missing keys in the array, then no result will be returned. This will not work:<br />
+<br />
+Array<br />
+(<br />
+&nbsp;&nbsp;&nbsp; [0] =&gt; this<br />
+&nbsp;&nbsp;&nbsp; [1] =&gt; is<br />
+&nbsp;&nbsp;&nbsp; [3] =&gt; test<br />
+)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="77468""></a>
+  <div class="note">
+   <strong class="user">me at example dot com</strong>
+   <a href="#77468" class="date">30-Aug-2007 09:23</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+In the previous example the<br />
+<br />
+$ds = ldap.myserver.com // your ldap server<br />
+<br />
+should be <br />
+<br />
+$ds = ldap_connect( "ldap.myserver.com" ) ; // your ldap server</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="59977""></a>
+  <div class="note">
+   <strong class="user">cnicholl at yahoo dot com</strong>
+   <a href="#59977" class="date">21-Dec-2005 08:21</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Clarification of the ldap_read command syntax:&nbsp; <br />
+<br />
+If you just want to pull certain attributes from an object and you already know it's dn, the ldap_read command can do this as illustrated below.&nbsp; It will be less overhead than ldap_search.<br />
+<br />
+The string base_dn which is normally used to set the top context for a recursive ldap_search is used slightly differently with this command.&nbsp; It is used to specify the actual object with the full dn.&nbsp; (Hopefully this saves someone else a couple hours trying this command out.)<br />
+<br />
+<span class="default">&lt;?php<br />
+$ds </span><span class="keyword">= </span><span class="default">ldap</span><span class="keyword">.</span><span class="default">myserver</span><span class="keyword">.</span><span class="default">com </span><span class="comment">// your ldap server<br />
+&nbsp; </span><span class="default">$dn </span><span class="keyword">= </span><span class="string">"cn=username,o=My Company, c=US"</span><span class="keyword">; </span><span class="comment">//the object itself instead of the top search level as in ldap_search<br />
+&nbsp; </span><span class="default">$filter</span><span class="keyword">=</span><span class="string">"(objectclass=*)"</span><span class="keyword">; </span><span class="comment">// this command requires some filter<br />
+&nbsp; </span><span class="default">$justthese </span><span class="keyword">= array(</span><span class="string">"ou"</span><span class="keyword">, </span><span class="string">"sn"</span><span class="keyword">, </span><span class="string">"givenname"</span><span class="keyword">, </span><span class="string">"mail"</span><span class="keyword">); </span><span class="comment">//the attributes to pull, which is much more efficient than pulling all attributes if you don't do this<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$sr</span><span class="keyword">=</span><span class="default">ldap_read</span><span class="keyword">(</span><span class="default">$ds</span><span class="keyword">, </span><span class="default">$dn</span><span class="keyword">, </span><span class="default">$filter</span><span class="keyword">, </span><span class="default">$justthese</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$entry </span><span class="keyword">= </span><span class="default">ldap_get_entries</span><span class="keyword">(</span><span class="default">$ds</span><span class="keyword">, </span><span class="default">$sr</span><span class="keyword">);<br />
+<br />
+echo </span><span class="default">$entry</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">][</span><span class="string">"mail"</span><span class="keyword">][</span><span class="default">0</span><span class="keyword">] . </span><span class="string">"is the email address of the cn your requested"</span><span class="keyword">;<br />
+echo </span><span class="default">$entry</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">][</span><span class="string">"sn"</span><span class="keyword">][</span><span class="default">0</span><span class="keyword">] . </span><span class="string">"is the sn of the cn your requested"</span><span class="keyword">;<br />
+</span><span class="default">ldap_close</span><span class="keyword">(</span><span class="default">$ds</span><span class="keyword">);<br />
+</span><span class="default">?&gt;</span> <br />
+<br />
+This prints out the specified users mail and surname for example.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="14141""></a>
+  <div class="note">
+   <strong class="user">sbarnum at mac dot com</strong>
+   <a href="#14141" class="date">18-Jul-2001 11:15</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This differs from ldap_search() by not recursing down to sub-entries.&nbsp; if you know the dn of the item you're looking for and only want info on that entry, use ldap_read() and pass it the full dn of the item you want.<br />
+<br />
+It also seems that you'd alway want something like objectclass=* for the filter, since you're only searching on one entry.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.ldap-parse-result.html">ldap_parse_result</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.ldap-rename.html">ldap_rename</a></div>
+ <div class="up"><a href="ref.ldap.html">LDAP 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

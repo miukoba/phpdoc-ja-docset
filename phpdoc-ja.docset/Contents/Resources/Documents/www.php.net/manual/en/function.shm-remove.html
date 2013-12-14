@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Unix システムから共有メモリを削除する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.shm-remove-var.html">shm_remove_var</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="book.shmop.html">共有メモリ</a></div>
+ <div class="up"><a href="ref.sem.html">セマフォ関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.shm-remove" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">shm_remove</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose"><span class="refname">shm_remove</span> &mdash; <span class="dc-title">Unix システムから共有メモリを削除する</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.shm-remove-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>shm_remove</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$shm_identifier</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+    <span class="function"><strong>shm_remove()</strong></span> は、共有メモリ
+   <em><code class="parameter">shm_identifier</code></em> を削除します。
+   全てのデータは破棄されます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.shm-remove-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">shm_identifier</code></em></span>
+     <dd>
+
+      <p class="para">
+        <span class="function"><a href="function.shm-attach.html" class="function">shm_attach()</a></span> が返す
+       共有メモリ ID。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.shm-remove-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.shm-remove-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="function.shm-remove-var.html" class="function" rel="rdfs-seeAlso">shm_remove_var()</a> - 共有メモリから変数を削除する</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="69018""></a>
+  <div class="note">
+   <strong class="user">aaron DURP segura DURP gmail DURP com</strong>
+   <a href="#69018" class="date">20-Aug-2006 01:55</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+It appears that you must be connected to the shm segment in order to remove it.<br />
+<br />
+<span class="default">&lt;?php<br />
+shm_remove</span><span class="keyword">(</span><span class="default">$shm</span><span class="keyword">);<br />
+</span><span class="default">shm_detach</span><span class="keyword">(</span><span class="default">$shm</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+works, while<br />
+<br />
+<span class="default">&lt;?php<br />
+shm_detach</span><span class="keyword">(</span><span class="default">$shm</span><span class="keyword">);<br />
+</span><span class="default">shm_remove</span><span class="keyword">(</span><span class="default">$shm</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+produces "Warning: shm_remove(): The parameter is not a valid shm_identifier ..."</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="2956""></a>
+  <div class="note">
+   <strong class="user">cu at ulakbim dot gov dot tr</strong>
+   <a href="#2956" class="date">30-Dec-1999 05:30</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Though it says **shm_identifier** in<br />
+&nbsp; int shm_remove(int shm_identifier);<br />
+and<br />
+&nbsp; shm_attach() returns an **id** that that can be used to access the System V...<br />
+<br />
+a snippet like this:<br />
+<span class="default">&lt;?php<br />
+&nbsp; $key </span><span class="keyword">= </span><span class="default">1234</span><span class="keyword">;<br />
+&nbsp; </span><span class="default">$shm</span><span class="keyword">=</span><span class="default">shm_attach</span><span class="keyword">(</span><span class="default">$key</span><span class="keyword">);<br />
+&nbsp; </span><span class="comment">// do whatever...<br />
+&nbsp; </span><span class="default">shm_remove</span><span class="keyword">(</span><span class="default">$shm</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+produces an error like<br />
+Warning: 2(which is the value of $shm) is not a existing SysV shared memory key in /usr/cu/web/sema.php on line 44...<br />
+<br />
+The documentation confused me a bit. I thought shm_remove would get the shm handle/id that returns from shm_attach, not the key given to shm_attach. So, use instead:<br />
+&nbsp; shm_remove($key);<br />
+<br />
+which is what is intended indeed.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.shm-remove-var.html">shm_remove_var</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="book.shmop.html">共有メモリ</a></div>
+ <div class="up"><a href="ref.sem.html">セマフォ関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

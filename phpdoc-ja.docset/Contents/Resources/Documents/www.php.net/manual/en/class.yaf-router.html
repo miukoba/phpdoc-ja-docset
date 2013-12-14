@@ -1,0 +1,339 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Yaf_Router クラス</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="yaf-route-rewrite.route.html">Yaf_Route_Rewrite::route</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="yaf-router.addconfig.html">Yaf_Router::addConfig</a></div>
+ <div class="up"><a href="book.yaf.html">Yaf</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="class.yaf-router" class="reference">
+
+ <h1 class="title">Yaf_Router クラス</h1>
+ 
+
+ <div class="partintro"><p class="verinfo">(Yaf &gt;=1.0.0)</p>
+
+
+  <div class="section" id="yaf-router.intro">
+   <h2 class="title">導入</h2>
+   <p class="para">
+   <strong class="classname">Yaf_Router</strong> は、フレームワークの標準のルーターです。
+   ルーティングとは、URI エンドポイント (URI の中で、ベース URL の後に続く部分。
+    <span class="methodname"><a href="yaf-request-abstract.setbaseuri.html" class="methodname">Yaf_Request_Abstract::setBaseUri()</a></span> を参照ください) を受け取ってそこからパラメータを抽出し、
+   リクエストを受け取るモジュールやコントローラそしてアクションを判断する処理のことです。
+   モジュール、コントローラ、アクション、そしてその他のパラメータは
+   <a href="class.yaf-request-abstract.html" class="classname">Yaf_Request_Abstract</a> オブジェクトにまとめられ、
+   そして <a href="class.yaf-dispatcher.html" class="classname">Yaf_Dispatcher</a> で処理します。
+   ルーティングが行われるのは一度だけで、リクエストを最初に受け取ってから
+   最初のコントローラにディスパッチする前に行われます。
+
+   <strong class="classname">Yaf_Router</strong> は、mod_rewrite 風の機能を
+   PHP を使って実現できるような設計になっています。
+   Ruby on Rails のルーティング方式を参考にしており、
+   ウェブサーバーの URL リライト機能に関する事前知識は不要です。
+   Apache の場合は、次のような mod_rewrite ルールを書けば使えます。
+   <div class="example" id="example-4149">
+    <p><strong>例1 Apache 用のリライトルール</strong></p>
+   <div class="example-contents">
+<div class="confcode"><pre class="confcode">RewriteEngine on
+RewriteRule !\.(js|ico|gif|jpg|png|css|html)$ index.php</pre>
+</div>
+   </div>
+
+   </div>
+   あるいは、次のようにもできます (こちらのほうを推奨します)。
+   <div class="example" id="example-4150">
+    <p><strong>例2 Apache 用のリライトルール</strong></p>
+   <div class="example-contents">
+<div class="confcode"><pre class="confcode">RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+RewriteRule ^.*$ index.php [NC,L]</pre>
+</div>
+   </div>
+
+  </div>
+   Lighttpd の場合は、次のようなリライトルールを指定します。
+   <div class="example" id="example-4151">
+    <p><strong>例3 Lighttpd 用のリライトルール</strong></p>
+   <div class="example-contents">
+<div class="confcode"><pre class="confcode">url.rewrite-once = (
+  &quot;.*\?(.*)$&quot; =&gt; &quot;/index.php?$1&quot;,
+  &quot;.*\.(js|ico|gif|jpg|png|css|html)$&quot; =&gt; &quot;$0&quot;,
+  &quot;&quot; =&gt; &quot;/index.php&quot;
+)</pre>
+</div>
+   </div>
+
+  </div>
+   Nginx の場合は、次のようなリライトルールを指定します。
+   <div class="example" id="example-4152">
+    <p><strong>例4 Nginx 用のリライトルール</strong></p>
+   <div class="example-contents">
+<div class="confcode"><pre class="confcode">server {
+  listen ****;
+  server_name  yourdomain.com;
+  root   document_root;
+  index  index.php index.html;
+
+  if (!-e $request_filename) {
+    rewrite ^/(.*)  /index.php/$1 last;
+  }
+}</pre>
+</div>
+   </div>
+
+  </div>
+   </p>
+  </div>
+
+
+  <div class="section" id="yaf-router.default">
+   <h2 class="title">デフォルトのルート</h2>
+   <p class="para">
+   <strong class="classname">Yaf_Router</strong> には設定済みのデフォルトルート <a href="class.yaf-route-static.html" class="classname">Yaf_Route_Static</a> が用意されており、これは
+   controller/action 形式の URI にマッチします。
+   さらに、モジュール名を最初のパス要素として指定できます。この場合の URI は
+   module/controller/action 形式になります。
+   また、追加のパラメータを URI に追記できるようになっています。つまり
+   controller/action/var1/value1/var2/value2 といった形式です。
+    <blockquote class="note"><p><strong class="note">注意</strong>: 
+     <p class="para">
+      モジュール名は設定ファイルで定義しておく必要があります。
+      たとえば application.module=&quot;Index,Foo,Bar&quot; とすると、
+      index、foo、bar だけがモジュール名とみなされます。
+      設定をしなかった場合は、モジュール名とみなされるのは &quot;Index&quot; だけです。
+     </p>
+    </p></blockquote>
+   </p>
+
+   <p class="para">
+   ルートのマッチングの例を示します。
+   <div class="example" id="example-4153">
+    <p><strong>例5 <a href="class.yaf-route-static.html" class="classname">Yaf_Route_Static</a> のデフォルトルート</strong></p>
+   <div class="example-contents">
+<div class="confcode"><pre class="confcode">// このように設定しているものとします
+$conf = array(
+   &quot;application&quot; =&gt; array(
+      &quot;modules&quot; =&gt; &quot;Index,Blog&quot;,
+   ),
+);
+
+コントローラのみ
+http://example/news
+    controller == news
+アクションのみ (php.ini で yaf.action_prefer=1 とした場合)
+    action  == news
+ 
+モジュール名として無効な場合はコントローラ名とみなします
+http://example/foo
+    controller == foo
+ 
+モジュール + コントローラ
+http://example/blog/archive
+    module     == blog
+    controller == archive
+ 
+モジュール + コントローラ + アクション
+http://example/blog/archive/list
+    module     == blog
+    controller == archive
+    action     == list
+ 
+モジュール + コントローラ + アクション + パラメータ
+http://example/blog/archive/list/sort/alpha/date/desc
+    module     == blog
+    controller == archive
+    action     == list
+    sort       == alpha
+    date       == desc</pre>
+</div>
+   </div>
+
+  </div>
+
+  </p>
+  </div>
+
+  <div class="section" id="yaf-router.synopsis">
+   <h2 class="title">クラス概要</h2>
+
+
+   <div class="classsynopsis">
+    <div class="ooclass"></div>
+
+
+    <div class="classsynopsisinfo">
+     <span class="ooclass">
+      <strong class="classname">Yaf_Router</strong>
+     </span>
+     {</div>
+
+    <div class="classsynopsisinfo classsynopsisinfo_comment">/* プロパティ */</div>
+    <div class="fieldsynopsis">
+     <span class="modifier">protected</span>
+      <var class="varname"><a href="class.yaf-router.html#yaf-router.props.routes">$<var class="varname">_routes</var></a></var>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">protected</span>
+      <var class="varname"><a href="class.yaf-router.html#yaf-router.props.current">$<var class="varname">_current</var></a></var>
+    ;</div>
+
+
+    
+    <div class="classsynopsisinfo classsynopsisinfo_comment">/* メソッド */</div>
+    <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><a href="yaf-router.addconfig.html" class="methodname">addConfig</a></span>
+    ( <span class="methodparam"><span class="type"><a href="class.yaf-config-abstract.html" class="type Yaf_Config_Abstract">Yaf_Config_Abstract</a></span> <code class="parameter">$config</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><a href="yaf-router.addroute.html" class="methodname">addRoute</a></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$name</code></span>
+   , <span class="methodparam"><span class="type"><span class="type Yaf_Route_Abstract">Yaf_Route_Abstract</span></span> <code class="parameter">$route</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="methodname"><a href="yaf-router.construct.html" class="methodname">__construct</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">string</span> <span class="methodname"><a href="yaf-router.getcurrentroute.html" class="methodname">getCurrentRoute</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">Yaf_Route_Interface</span> <span class="methodname"><a href="yaf-router.getroute.html" class="methodname">getRoute</a></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$name</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">mixed</span> <span class="methodname"><a href="yaf-router.getroutes.html" class="methodname">getRoutes</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><a href="yaf-router.route.html" class="methodname">route</a></span>
+    ( <span class="methodparam"><span class="type"><a href="class.yaf-request-abstract.html" class="type Yaf_Request_Abstract">Yaf_Request_Abstract</a></span> <code class="parameter">$request</code></span>
+   )</div>
+
+   }</div>
+
+
+  </div>
+
+  
+
+  <div class="section" id="yaf-router.props">
+   <h2 class="title">プロパティ</h2>
+   <dl>
+
+    <dt id="yaf-router.props.routes">
+     <span class="term"><var class="varname"><var class="varname">_routes</var></var></span>
+     <dd>
+
+      <p class="para">
+       登録されたルートスタック。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt id="yaf-router.props.current">
+     <span class="term"><var class="varname"><var class="varname">_current</var></var></span>
+     <dd>
+
+      <p class="para">
+       ルーティングを終えた後に、
+       今回のリクエストで使ったルートの名前がここに入ります。
+
+       この名前を取得するには
+        <span class="methodname"><a href="yaf-router.getcurrentroute.html" class="methodname">Yaf_Router::getCurrentRoute()</a></span> を使います。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </div>
+
+
+
+ </div>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="yaf-router.addconfig.html">Yaf_Router::addConfig</a> — 設定で定義したルートをルーターに追加する</li><li><a href="yaf-router.addroute.html">Yaf_Router::addRoute</a> — 新しいルートをルーターに追加する</li><li><a href="yaf-router.construct.html">Yaf_Router::__construct</a> — Yaf_Router のコンストラクタ</li><li><a href="yaf-router.getcurrentroute.html">Yaf_Router::getCurrentRoute</a> — 使われているルート名を取得する</li><li><a href="yaf-router.getroute.html">Yaf_Router::getRoute</a> — 名前を指定してルートを取得する</li><li><a href="yaf-router.getroutes.html">Yaf_Router::getRoutes</a> — 登録済みのルートを取得する</li><li><a href="yaf-router.route.html">Yaf_Router::route</a> — The route purpose</li></ul>
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="yaf-route-rewrite.route.html">Yaf_Route_Rewrite::route</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="yaf-router.addconfig.html">Yaf_Router::addConfig</a></div>
+ <div class="up"><a href="book.yaf.html">Yaf</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

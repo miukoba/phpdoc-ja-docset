@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>セマフォを得る</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.msg-stat-queue.html">msg_stat_queue</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.sem-get.html">sem_get</a></div>
+ <div class="up"><a href="ref.sem.html">セマフォ関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.sem-acquire" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">sem_acquire</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose"><span class="refname">sem_acquire</span> &mdash; <span class="dc-title">セマフォを得る</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.sem-acquire-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>sem_acquire</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$sem_identifier</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+    <span class="function"><strong>sem_acquire()</strong></span> は、(必要な場合)
+   セマフォが確保できるまでブロックします。
+   既に確保されているセマフォを得ようとするプロセスは、
+   セマフォの獲得により max_aquire 値を超える場合、
+   永久にブロックされます。
+  </p>
+  <p class="para">
+   リクエスト処理の後、プロセスにより獲得された全てのセマフォのうち、
+   明示的に開放されていないものが自動的に開放され、警告が表示されます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.sem-acquire-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">sem_identifier</code></em></span>
+     <dd>
+
+      <p class="para">
+       <em><code class="parameter">sem_identifier</code></em> はセマフォのリソースで、
+        <span class="function"><a href="function.sem-get.html" class="function">sem_get()</a></span> によって得られます。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.sem-acquire-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.sem-acquire-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="function.sem-get.html" class="function" rel="rdfs-seeAlso">sem_get()</a> - セマフォ ID を得る</span></li>
+    <li class="member"> <span class="function"><a href="function.sem-release.html" class="function" rel="rdfs-seeAlso">sem_release()</a> - セマフォを解放する</span></li>
+   </ul>
+  </p>
+ </div>
+  
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113605""></a>
+  <div class="note">
+   <strong class="user">Sander Backus</strong>
+   <a href="#113605" class="date">04-Nov-2013 06:01</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note that when you reset $sem_identifier the semaphore won't block anymore!<br />
+<br />
+This code does NOT work: <br />
+&nbsp;&nbsp;&nbsp; $key&nbsp; &nbsp;&nbsp; = ftok(__FILE__,'m');<br />
+&nbsp;&nbsp;&nbsp; $a&nbsp; &nbsp; &nbsp; &nbsp; = sem_get($key);<br />
+&nbsp;&nbsp;&nbsp; sem_acquire($a);<br />
+&nbsp;&nbsp;&nbsp; $a = false;<br />
+<br />
+while this one does: <br />
+<br />
+&nbsp;&nbsp;&nbsp; $key&nbsp; &nbsp;&nbsp; = ftok(__FILE__,'m');<br />
+&nbsp;&nbsp;&nbsp; $a&nbsp; &nbsp; &nbsp; &nbsp; = sem_get($key);<br />
+&nbsp;&nbsp;&nbsp; sem_acquire($a);<br />
+&nbsp;&nbsp;&nbsp; //$a = false;<br />
+<br />
+So: use unique var names for your identifier!</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="107487""></a>
+  <div class="note">
+   <strong class="user">Pinky</strong>
+   <a href="#107487" class="date">13-Feb-2012 05:29</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+sem_acquire() is blocking, meaning that subsequent calls with the same semaphore will block indefinitely until the semaphore is released. This ensures serialization, but it is not very practical if all you want to do is check if you should proceed or not. Unfortunately, PHP does not yet support any method of querying the state of a semaphore in a non-blocking manner.<br />
+<br />
+It may seem possible to put together such a mechanism by hand, using shared memory (shm_ functions). However, be warned that it is not trivial and ultimately non-productive. You cannot, for example, simply pick a shared mem var, store the semaphore key and query it. Such an operation would be non-transactional and non-atomic ie. it is possible for two or more parallel processes to manage to read "not locked" from the shared mem var before one of them manages to mark it "locked". You would have to use a (blocking) semaphore to serialize access to the shared mem var, thus recreating the very problem you are trying to solve.<br />
+<br />
+In other words, if non-blocking queries are crucial to you, you need to either request that this issue be solved by the PHP designers, or pick another mechanism to do your locking, one that already has this feature.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="107292""></a>
+  <div class="note">
+   <strong class="user">arjuna w</strong>
+   <a href="#107292" class="date">28-Jan-2012 10:14</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+In my tests sem_acquire() is 150 times faster than flock()</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="41527""></a>
+  <div class="note">
+   <strong class="user">gladd at trash dot eris dot qinetiq dot com</strong>
+   <a href="#41527" class="date">13-Apr-2004 11:02</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Just to clarify what is meant by "process" above:<br />
+<br />
+On the Apache webserver, many PHP requests will be executed within the same process space because it is multithreaded. However, any semaphores got and acquired by a script and not released and removed will still be automatically cleaned up by the PHP interpreter each time the script terminates.<br />
+<br />
+Remove any trash before emailing!</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.msg-stat-queue.html">msg_stat_queue</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.sem-get.html">sem_get</a></div>
+ <div class="up"><a href="ref.sem.html">セマフォ関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

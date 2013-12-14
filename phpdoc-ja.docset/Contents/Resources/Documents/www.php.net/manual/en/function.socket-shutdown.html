@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>受信、送信、または送受信用のソケットをシャットダウンする</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.socket-set-option.html">socket_set_option</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.socket-strerror.html">socket_strerror</a></div>
+ <div class="up"><a href="ref.sockets.html">ソケット 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.socket-shutdown" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">socket_shutdown</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.1.0, PHP 5)</p><p class="refpurpose"><span class="refname">socket_shutdown</span> &mdash; <span class="dc-title">受信、送信、または送受信用のソケットをシャットダウンする</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.socket-shutdown-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>socket_shutdown</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$socket</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$how</code><span class="initializer"> = 2</span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+    <span class="function"><strong>socket_shutdown()</strong></span> 関数は、<em><code class="parameter">socket</code></em>
+   から送られてくる受信、送信あるいはすべて（デフォルト）のデータを停止します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.socket-shutdown-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">socket</code></em></span>
+     <dd>
+
+      <p class="para">
+        <span class="function"><a href="function.socket-create.html" class="function">socket_create()</a></span> で作成したソケットリソース。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">how</code></em></span>
+     <dd>
+
+      <p class="para">
+       <em><code class="parameter">how</code></em> の値は以下のうちのひとつです。
+       <table class="doctable table">
+        <caption><strong><em><code class="parameter">how</code></em> のとりうる値</strong></caption>
+        
+         <tbody class="tbody">
+          <tr>
+           <td><em>0</em></td>
+           <td>
+            ソケットの読み込みを停止します。
+           </td>
+          </tr>
+
+          <tr>
+           <td><em>1</em></td>
+           <td>
+            ソケットの書き込みを停止します。
+           </td>
+          </tr>
+
+          <tr>
+           <td><em>2</em></td>
+           <td>
+            ソケットの読み込み・書き込みを停止します。
+           </td>
+          </tr>
+
+         </tbody>
+        
+       </table>
+
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.socket-shutdown-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="99956""></a>
+  <div class="note">
+   <strong class="user">recycling dot sp dot am at gmail dot com</strong>
+   <a href="#99956" class="date">16-Sep-2010 06:09</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Shutdown and SOL_TCP:<br />
+<span class="default">&lt;?php<br />
+$a</span><span class="keyword">= </span><span class="default">socket_create</span><span class="keyword">(</span><span class="default">AF_INET</span><span class="keyword">, </span><span class="default">SOCK_STREAM</span><span class="keyword">, </span><span class="default">SOL_TCP</span><span class="keyword">);<br />
+</span><span class="default">socket_shutdown</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">, </span><span class="default">2</span><span class="keyword">)<br />
+</span><span class="default">?&gt;<br />
+</span>PHP Warning:&nbsp; socket_shutdown(): unable to shutdown socket [107]: Transport endpoint is not connected <br />
+<br />
+Shutdown and SOL_UDP:<br />
+<span class="default">&lt;?php<br />
+$a</span><span class="keyword">= </span><span class="default">socket_create</span><span class="keyword">(</span><span class="default">AF_INET</span><span class="keyword">, </span><span class="default">SOCK_STREAM</span><span class="keyword">, </span><span class="default">SOL_UDP</span><span class="keyword">);<br />
+</span><span class="default">socket_shutdown</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">, </span><span class="default">2</span><span class="keyword">)<br />
+</span><span class="default">?&gt;<br />
+</span>PHP Warning:&nbsp; socket_shutdown(): unable to shutdown socket [107]: Transport endpoint is not connected <br />
+<br />
+Conclusion: if you are not actually connected, shutdown will fails with socket_error = 107, Transport endpoint is not connected. This is true for both TPC and UDP connection (which is suprising, UDP being a connectionless protocol). This is true no matter the value set for the how parameter.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="59003""></a>
+  <div class="note">
+   <strong class="user">richard dot thomas at psysolutions dot com</strong>
+   <a href="#59003" class="date">23-Nov-2005 07:20</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+That is not a good example of a graceful shutdown. One should close the sending side of the socket and continue to read until the remote end closes its sending connection.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="56447""></a>
+  <div class="note">
+   <strong class="user">ludvig dot ericson at gmail dot com</strong>
+   <a href="#56447" class="date">02-Sep-2005 10:13</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Sockets should be first shutdown and then closed.<br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">// Sample: Closing sockets gracefully<br />
+</span><span class="default">socket_shutdown</span><span class="keyword">(</span><span class="default">$sock</span><span class="keyword">, </span><span class="default">2</span><span class="keyword">);<br />
+</span><span class="default">socket_close</span><span class="keyword">(</span><span class="default">$sock</span><span class="keyword">);<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.socket-set-option.html">socket_set_option</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.socket-strerror.html">socket_strerror</a></div>
+ <div class="up"><a href="ref.sockets.html">ソケット 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>インストール手順</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="amqp.requirements.html">要件</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="amqp.configuration.html">実行時設定</a></div>
+ <div class="up"><a href="amqp.setup.html">インストール/設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="amqp.installation" class="section">
+ <h2 class="title">インストール手順</h2>
+
+ <p class="para">
+   AMQP 拡張モジュールをインストールするには、まず最初に
+   <a href="https://github.com/alanxz/rabbitmq-c" class="link external" title="Link : https://github.com/alanxz/rabbitmq-c">&raquo;&nbsp;librabbitmq</a>
+   ライブラリをインストールしなければなりません。また、
+   rabbitmq-c ライブラリのバージョン 0-9-1 が必要で、
+   使おうとしているブローカのバージョンに対応するバージョンの
+   rabbitmq-codegen とリンクしなければなりません。
+   次の手順でライブラリのダウンロードとインストールを行いましょう。
+ </p>
+  
+ <div class="example-contents">
+  <div class="shellcode"><pre class="shellcode"># rabbitmq-c ライブラリのバージョン 0-9-1 のダウンロード
+  git clone git://github.com/alanxz/rabbitmq-c.git
+  cd rabbitmq-c
+  # codegen git submodule の初期化と更新
+  git submodule init
+  git submodule update
+  # configure、コンパイル、そしてインストール
+  autoreconf -i &amp;&amp; ./configure &amp;&amp; make &amp;&amp; sudo make install</pre>
+</div>
+ </div>
+
+ <p class="para">
+  この PECL 拡張モジュールをインストールする方法は、
+マニュアルの <a href="install.pecl.html" class="link">
+PECL 拡張モジュールのインストール</a> という章にあります。
+新規リリース・ダウンロード・ソースファイル・管理者情報・CHANGELOG
+といった関連する情報については、次の場所にあります。
+  <a href="http://pecl.php.net/package/amqp" class="link external" title="Link : http://pecl.php.net/package/amqp">&raquo;&nbsp;http://pecl.php.net/package/amqp</a>.
+ </p>
+
+ <p class="para">
+  Windows ユーザー向けの注意:
+  この拡張モジュールは、現時点では Windows をサポートしていません。
+  librabbitmq がまだ Windows をサポートしていないからです。
+ </p>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="112822""></a>
+  <div class="note">
+   <strong class="user">sheershoff</strong>
+   <a href="#112822" class="date">26-Jul-2013 09:55</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+As for windows: i just googled 'php_amqp windows php 5.4' and found a link to <a href="http://windows.php.net/downloads/pecl/releases/amqp/1.0.9/" rel="nofollow" target="_blank">http://windows.php.net/downloads/pecl/releases/amqp/1.0.9/</a><br />
+<br />
+As Nathan notes in his post - the rabbitmq library should reside in windows folder for the libraries.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="112407""></a>
+  <div class="note">
+   <strong class="user">zhenyi2697 at gmail.com</strong>
+   <a href="#112407" class="date">13-Jun-2013 01:13</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+@ pomaxa at gmail dot com<br />
+<br />
+Totally agree. I've followed the instruction and I've successfully intalled this extension.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="112130""></a>
+  <div class="note">
+   <strong class="user">nathan at nathanjohnson dot info</strong>
+   <a href="#112130" class="date">08-May-2013 01:21</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Windows is supported by the underlying lib, and has been for some time.&nbsp; It's also supported by extension author at their github page.<br />
+<br />
+https://github.com/pdezwart/php-amqp<br />
+<br />
+go there.<br />
+<br />
+I have some precompiled 32 bit windows php 5.3 binaries on my site:<br />
+<br />
+<a href="http://www.nathanjohnson.info/?p=77" rel="nofollow" target="_blank">http://www.nathanjohnson.info/?p=77</a><br />
+<br />
+I've also documented how I went about building the binaries, so 64 bit&nbsp; builds or 5.4 builds should be fairly easy to do following the same recipe.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="110200""></a>
+  <div class="note">
+   <strong class="user">maik penz</strong>
+   <a href="#110200" class="date">30-Sep-2012 03:35</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+On a mac os (10.5+) it was necessary to run aclocal prior to autoreconf.<br />
+./configure --enable-64-bit was useful too, since it would compile as 32bit by default.<br />
+<br />
+The last line now looks like<br />
+aclocal &amp;&amp; autoreconf -i &amp;&amp; ./configure --enable-64-bit &amp;&amp; make &amp;&amp; sudo make install</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="108932""></a>
+  <div class="note">
+   <strong class="user">pomaxa at gmail dot com</strong>
+   <a href="#108932" class="date">06-Jun-2012 10:33</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+For ubuntu 12.04, the only way to install this extension is to install rabbitmq-c lib prior, and the only working way is to follow instruction on : https://github.com/alanxz/rabbitmq-c</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="107566""></a>
+  <div class="note">
+   <strong class="user">rgagnon</strong>
+   <a href="#107566" class="date">18-Feb-2012 02:00</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+PECL now has stable version 1.0.0 of this code that does compile cleanly with PHP &gt;= 5.0 (as of 15-Feb-2012).&nbsp; &nbsp; I personally had a clean build with no warnings under 5.2.17<br />
+<br />
+Previously the code was not stable, and only compiled nicely under 5.3<br />
+<br />
+I don't know what's up with the extension posted on code.google.com, but the PECL one is the supported extension.<br />
+<br />
+<a href="http://pecl.php.net/amqp" rel="nofollow" target="_blank">http://pecl.php.net/amqp</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="106849""></a>
+  <div class="note">
+   <strong class="user">LilaeaMedia</strong>
+   <a href="#106849" class="date">12-Dec-2011 01:54</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Make sure you are using <a href="http://pecl.php.net/get/amqp" rel="nofollow" target="_blank">http://pecl.php.net/get/amqp</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="103773""></a>
+  <div class="note">
+   <strong class="user">soham</strong>
+   <a href="#103773" class="date">03-May-2011 08:41</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you get these errors:<br />
+<br />
+"error: possibly undefined macro: AM_PROG_LIBTOOL" ===&gt; you need to install 'libtool'. <br />
+<br />
+"Can't exec "aclocal"&nbsp; ===&gt; You need to install 'automake'<br />
+<br />
+Use your linux distro's default providers to install them e.g. on opensuse, I'd use 'zypper install ..'</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="101336""></a>
+  <div class="note">
+   <strong class="user">brian dot ngure at gmail dot com</strong>
+   <a href="#101336" class="date">10-Dec-2010 08:26</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Have a look at the installation instructions on the Google Code site, found here: <a href="http://code.google.com/p/php-amqp/" rel="nofollow" target="_blank">http://code.google.com/p/php-amqp/</a><br />
+<br />
+Brian</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="amqp.requirements.html">要件</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="amqp.configuration.html">実行時設定</a></div>
+ <div class="up"><a href="amqp.setup.html">インストール/設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

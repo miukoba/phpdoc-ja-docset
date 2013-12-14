@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>米Yahoo! の位置情報プラットフォーム FireEagle の例</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="oauth.examples.html">例</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="ref.oauth.html">OAuth 関数</a></div>
+ <div class="up"><a href="oauth.examples.html">例</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="oauth.examples.fireeagle" class="section">
+  <h2 class="title">米Yahoo! の位置情報プラットフォーム FireEagle の例</h2>
+  <p class="para">
+   <div class="example" id="example-5253">
+    
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$req_url&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'https://fireeagle.yahooapis.com/oauth/request_token'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$authurl&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'https://fireeagle.yahoo.net/oauth/authorize'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$acc_url&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'https://fireeagle.yahooapis.com/oauth/access_token'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$api_url&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'https://fireeagle.yahooapis.com/api/0.1'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$conskey&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'your_consumer_key'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$conssec&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'your_consumer_secret'</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">session_start</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;セッションの&nbsp;state&nbsp;の値が1の場合、次のリクエストには&nbsp;oauth_token&nbsp;の値が含まれているはずである<br /></span><span style="color: #007700">if(!isset(</span><span style="color: #0000BB">$_GET</span><span style="color: #007700">[</span><span style="color: #DD0000">'oauth_token'</span><span style="color: #007700">])&nbsp;&amp;&amp;&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'state'</span><span style="color: #007700">]==</span><span style="color: #0000BB">1</span><span style="color: #007700">)&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'state'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;<br />try&nbsp;{<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$oauth&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">OAuth</span><span style="color: #007700">(</span><span style="color: #0000BB">$conskey</span><span style="color: #007700">,</span><span style="color: #0000BB">$conssec</span><span style="color: #007700">,</span><span style="color: #0000BB">OAUTH_SIG_METHOD_HMACSHA1</span><span style="color: #007700">,</span><span style="color: #0000BB">OAUTH_AUTH_TYPE_URI</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$oauth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">enableDebug</span><span style="color: #007700">();<br />&nbsp;&nbsp;if(!isset(</span><span style="color: #0000BB">$_GET</span><span style="color: #007700">[</span><span style="color: #DD0000">'oauth_token'</span><span style="color: #007700">])&nbsp;&amp;&amp;&nbsp;!</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'state'</span><span style="color: #007700">])&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$request_token_info&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$oauth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getRequestToken</span><span style="color: #007700">(</span><span style="color: #0000BB">$req_url</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'secret'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">$request_token_info</span><span style="color: #007700">[</span><span style="color: #DD0000">'oauth_token_secret'</span><span style="color: #007700">];<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'state'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">'Location:&nbsp;'</span><span style="color: #007700">.</span><span style="color: #0000BB">$authurl</span><span style="color: #007700">.</span><span style="color: #DD0000">'?oauth_token='</span><span style="color: #007700">.</span><span style="color: #0000BB">$request_token_info</span><span style="color: #007700">[</span><span style="color: #DD0000">'oauth_token'</span><span style="color: #007700">]);<br />&nbsp;&nbsp;&nbsp;&nbsp;exit;<br />&nbsp;&nbsp;}&nbsp;else&nbsp;if(</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'state'</span><span style="color: #007700">]==</span><span style="color: #0000BB">1</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$oauth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setToken</span><span style="color: #007700">(</span><span style="color: #0000BB">$_GET</span><span style="color: #007700">[</span><span style="color: #DD0000">'oauth_token'</span><span style="color: #007700">],</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'secret'</span><span style="color: #007700">]);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$access_token_info&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$oauth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getAccessToken</span><span style="color: #007700">(</span><span style="color: #0000BB">$acc_url</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'state'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'token'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">$access_token_info</span><span style="color: #007700">[</span><span style="color: #DD0000">'oauth_token'</span><span style="color: #007700">];<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'secret'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">$access_token_info</span><span style="color: #007700">[</span><span style="color: #DD0000">'oauth_token_secret'</span><span style="color: #007700">];<br />&nbsp;&nbsp;}&nbsp;<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$oauth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setToken</span><span style="color: #007700">(</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'token'</span><span style="color: #007700">],</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'secret'</span><span style="color: #007700">]);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$oauth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetch</span><span style="color: #007700">(</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$api_url</span><span style="color: #DD0000">/user.json"</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$json&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">json_decode</span><span style="color: #007700">(</span><span style="color: #0000BB">$oauth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getLastResponse</span><span style="color: #007700">());<br />&nbsp;&nbsp;</span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$json</span><span style="color: #007700">);<br />}&nbsp;catch(</span><span style="color: #0000BB">OAuthException&nbsp;$E</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;</span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$E</span><span style="color: #007700">);<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="111967""></a>
+  <div class="note">
+   <strong class="user">kayalshri at gmail dot com</strong>
+   <a href="#111967" class="date">18-Apr-2013 02:28</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Please refer the oAuth End Points for Top level service providers <a href="http://www.cheatography.com/kayalshri/cheat-sheets/oauth-end-points/" rel="nofollow" target="_blank">http://www.cheatography.com/kayalshri/cheat-sheets/oauth-end-points/</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="111621""></a>
+  <div class="note">
+   <strong class="user">brianmoreau at uk2 dot net</strong>
+   <a href="#111621" class="date">09-Mar-2013 09:26</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I have just managed to modify this script to work with the Twitter API...<br />
+<br />
+The changes are...<br />
+<br />
+$req_url = 'https://api.twitter.com/oauth/request_token';<br />
+$authurl = 'https://api.twitter.com/oauth/authorize';<br />
+$acc_url = 'https://api.twitter.com/oauth/access_token';<br />
+$api_url = 'https://api.twitter.com/1.1/account';<br />
+$conskey = 'YOURAPPconskey';<br />
+$conssec = 'YOURAPPconssec';<br />
+<br />
+And change<br />
+#$oauth-&gt;fetch("$api_url/user.json");<br />
+# verify_credentials<br />
+# TO<br />
+$oauth-&gt;fetch("$api_url/verify_credentials.json");</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="oauth.examples.html">例</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="ref.oauth.html">OAuth 関数</a></div>
+ <div class="up"><a href="oauth.examples.html">例</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

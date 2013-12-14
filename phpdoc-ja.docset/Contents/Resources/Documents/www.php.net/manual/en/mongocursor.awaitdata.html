@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>追尾可能なカーソルで、データがないときにしばらく待つかどうかを設定する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongocursor.addoption.html">MongoCursor::addOption</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongocursor.batchsize.html">MongoCursor::batchSize</a></div>
+ <div class="up"><a href="class.mongocursor.html">MongoCursor</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mongocursor.awaitdata" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">MongoCursor::awaitData</h1>
+  <p class="verinfo">(PECL mongo &gt;=1.2.11)</p><p class="refpurpose"><span class="refname">MongoCursor::awaitData</span> &mdash; <span class="dc-title">追尾可能なカーソルで、データがないときにしばらく待つかどうかを設定する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-mongocursor.awaitdata-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type"><a href="class.mongocursor.html" class="type MongoCursor">MongoCursor</a></span> <span class="methodname"><strong>MongoCursor::awaitData</strong></span>
+    ([ <span class="methodparam"><span class="type">bool</span> <code class="parameter">$wait</code><span class="initializer"> = true</span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+   このメソッドは追尾可能なカーソルに対して使います。
+   データの最期に到達したときに、空のデータを返すのではなくブロックしてデータを待つようになります。
+   タイムアウトに達すると、通常の場合と同様に空のデータを返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-mongocursor.awaitdata-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term">
+      <em><code class="parameter">wait</code></em>
+     </span>
+     <dd>
+
+      <p class="para">
+       カーソルに、さらにデータがやってくるまで待たせるかどうか。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-mongocursor.awaitdata-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   このカーソルを返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 errors" id="refsect1-mongocursor.awaitdata-errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">
+   カーソルの反復処理が始まっている場合は <a href="class.mongocursorexception.html" class="classname">MongoCursorException</a> をスローします。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-mongocursor.awaitdata-examples">
+  <h3 class="title">例</h3>
+  <div class="example" id="example-1473">
+   <p><strong>例1  <span class="function"><strong>MongoCursor::awaitData()</strong></span> の例</strong></p>
+   <div class="example-contents"><p>
+    この例では &quot;oplog&quot; を追尾します。反復処理のたびにスリープするのではなく、
+     <span class="function"><strong>MongoCursor::awaitData()</strong></span> オプションを設定します。
+     <span class="function"><a href="mongocursor.hasnext.html" class="function">MongoCursor::hasNext()</a></span> はこれで、さらにデータがやってくるまでブロックするようになります。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(&nbsp;</span><span style="color: #DD0000">'mongodb://localhost:13000'</span><span style="color: #007700">,&nbsp;array(&nbsp;</span><span style="color: #DD0000">'replSet'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'seta'&nbsp;</span><span style="color: #007700">)&nbsp;);<br /></span><span style="color: #0000BB">$c&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">local</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">selectCollection</span><span style="color: #007700">(&nbsp;</span><span style="color: #DD0000">'oplog.rs'&nbsp;</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$cursor&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">find</span><span style="color: #007700">(&nbsp;array(&nbsp;</span><span style="color: #DD0000">'ns'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'demo.article'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'op'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'i'&nbsp;</span><span style="color: #007700">)&nbsp;);<br /></span><span style="color: #0000BB">$cursor</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">tailable</span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$cursor</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">awaitData</span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">);<br /><br />while&nbsp;(</span><span style="color: #0000BB">true</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!</span><span style="color: #0000BB">$cursor</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">hasNext</span><span style="color: #007700">())&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;すべての結果を読んだので、終了します<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">$cursor</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">dead</span><span style="color: #007700">())&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$cursor</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getNext</span><span style="color: #007700">()&nbsp;);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-mongocursor.awaitdata-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   MongoDB コアドキュメントの <a href="http://www.mongodb.org/display/DOCS/Tailable+Cursors" class="link external" title="Link : http://www.mongodb.org/display/DOCS/Tailable+Cursors">&raquo;&nbsp;tailable cursors</a>。
+  </p>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="mongocursor.tailable.html" class="function" rel="rdfs-seeAlso">MongoCursor::tailable()</a> - このカーソルが、最後の結果を取得した後もオープンしたままにしておくかどうかを設定する</span></li>
+   </ul>
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongocursor.addoption.html">MongoCursor::addOption</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongocursor.batchsize.html">MongoCursor::batchSize</a></div>
+ <div class="up"><a href="class.mongocursor.html">MongoCursor</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

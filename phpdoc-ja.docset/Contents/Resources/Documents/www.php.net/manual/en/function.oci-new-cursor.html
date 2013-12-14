@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>新規カーソル (ステートメントハンドル) を割り当て、それを返す</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.oci-new-connect.html">oci_new_connect</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.oci-new-descriptor.html">oci_new_descriptor</a></div>
+ <div class="up"><a href="ref.oci8.html">OCI8 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.oci-new-cursor" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">oci_new_cursor</h1>
+  <p class="verinfo">(PHP 5, PECL OCI8 &gt;= 1.1.0)</p><p class="refpurpose"><span class="refname">oci_new_cursor</span> &mdash; <span class="dc-title">新規カーソル (ステートメントハンドル) を割り当て、それを返す</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.oci-new-cursor-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">resource</span> <span class="methodname"><strong>oci_new_cursor</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$connection</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   指定された接続に新規カーソルを割り当てます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.oci-new-cursor-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">connection</code></em></span>
+     <dd>
+
+      <p class="para">
+        <span class="function"><a href="function.oci-connect.html" class="function">oci_connect()</a></span> あるいは  <span class="function"><a href="function.oci-pconnect.html" class="function">oci_pconnect()</a></span>
+       が返す Oracle 接続 ID。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.oci-new-cursor-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   新しいステートメントハンドル、あるいはエラー時に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.oci-new-cursor-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-2002">
+    <p><strong>例1 Oracle ストアドプロシージャにおける REF CURSOR の使用例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;ストアドプロシージャ&nbsp;info.output&nbsp;が&nbsp;:data&nbsp;の&nbsp;REF&nbsp;CURSOR&nbsp;を返すと仮定する<br /><br /></span><span style="color: #0000BB">$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">"scott"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"tiger"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$curs&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_new_cursor</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$stmt&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"begin&nbsp;info.output(:data);&nbsp;end;"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"data"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$curs</span><span style="color: #007700">,&nbsp;-</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_B_CURSOR</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$curs</span><span style="color: #007700">);<br /><br />while&nbsp;(</span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_fetch_row</span><span style="color: #007700">(</span><span style="color: #0000BB">$curs</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">oci_free_statement</span><span style="color: #007700">(</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_free_statement</span><span style="color: #007700">(</span><span style="color: #0000BB">$curs</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   <div class="example" id="example-2003">
+    <p><strong>例2 Oracle の select 文における REF CURSOR の使用例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"&lt;html&gt;&lt;body&gt;"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">"scott"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"tiger"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$count_cursor&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"CURSOR(select&nbsp;count(empno)&nbsp;num_emps&nbsp;from&nbsp;emp&nbsp;"&nbsp;</span><span style="color: #007700">.<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"where&nbsp;emp.deptno&nbsp;=&nbsp;dept.deptno)&nbsp;as&nbsp;EMPCNT&nbsp;from&nbsp;dept"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$stmt&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"select&nbsp;deptno,dname,</span><span style="color: #0000BB">$count_cursor</span><span style="color: #DD0000">"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #DD0000">"&lt;table&nbsp;border=\"1\"&gt;"</span><span style="color: #007700">;<br />echo&nbsp;</span><span style="color: #DD0000">"&lt;tr&gt;"</span><span style="color: #007700">;<br />echo&nbsp;</span><span style="color: #DD0000">"&lt;th&gt;DEPT&nbsp;NAME&lt;/th&gt;"</span><span style="color: #007700">;<br />echo&nbsp;</span><span style="color: #DD0000">"&lt;th&gt;DEPT&nbsp;#&lt;/th&gt;"</span><span style="color: #007700">;<br />echo&nbsp;</span><span style="color: #DD0000">"&lt;th&gt;#&nbsp;EMPLOYEES&lt;/th&gt;"</span><span style="color: #007700">;<br />echo&nbsp;</span><span style="color: #DD0000">"&lt;/tr&gt;"</span><span style="color: #007700">;<br /><br />while&nbsp;(</span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_fetch_assoc</span><span style="color: #007700">(</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&lt;tr&gt;"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$dname&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$data</span><span style="color: #007700">[</span><span style="color: #DD0000">"DNAME"</span><span style="color: #007700">];<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$deptno&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$data</span><span style="color: #007700">[</span><span style="color: #DD0000">"DEPTNO"</span><span style="color: #007700">];<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&lt;td&gt;</span><span style="color: #0000BB">$dname</span><span style="color: #DD0000">&lt;/td&gt;"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&lt;td&gt;</span><span style="color: #0000BB">$deptno</span><span style="color: #DD0000">&lt;/td&gt;"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">[</span><span style="color: #DD0000">"EMPCNT"</span><span style="color: #007700">]);<br />&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(</span><span style="color: #0000BB">$subdata&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_fetch_assoc</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">[</span><span style="color: #DD0000">"EMPCNT"</span><span style="color: #007700">]))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$num_emps&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$subdata</span><span style="color: #007700">[</span><span style="color: #DD0000">"NUM_EMPS"</span><span style="color: #007700">];<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;&nbsp;</span><span style="color: #DD0000">"&lt;td&gt;</span><span style="color: #0000BB">$num_emps</span><span style="color: #DD0000">&lt;/td&gt;"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&lt;/tr&gt;"</span><span style="color: #007700">;<br />}<br />echo&nbsp;</span><span style="color: #DD0000">"&lt;/table&gt;"</span><span style="color: #007700">;<br />echo&nbsp;</span><span style="color: #DD0000">"&lt;/body&gt;&lt;/html&gt;"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">oci_free_statement</span><span style="color: #007700">(</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 notes" id="refsect1-function.oci-new-cursor-notes">
+  <h3 class="title">注意</h3>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    PHP バージョン 5.0.0 以前では、代わりに
+     <span class="function"><a href="function.ocinewcursor.html" class="function">ocinewcursor()</a></span>
+    を使用しなければなりません。
+    まだこの名前を使用することができ、下位互換性のため
+     <span class="function"><strong>oci_new_cursor()</strong></span> への別名として残されていますが、
+    推奨されません。
+   </p>
+  </p></blockquote>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="110576""></a>
+  <div class="note">
+   <strong class="user">mgumiel at mgait dot com</strong>
+   <a href="#110576" class="date">09-Nov-2012 06:15</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Some packages in oracle are functions, and that functions returns a cursor.<br />
+<br />
+For example:<br />
+<br />
+CREATE FUNCTION F_Function( p1 char(2), p2 int)<br />
+&nbsp; RETURN SYS_REFCURSOR<br />
+AS<br />
+&nbsp; my_cursor SYS_REFCURSOR;<br />
+BEGIN<br />
+&nbsp; OPEN my_cursor FOR SELECT * FROM allitems <br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; WHERE (cod=p1) <br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; AND (Number=p2);<br />
+&nbsp; RETURN my_cursor;<br />
+END F_Function; <br />
+<br />
+Here is the code that allows to obtain data from a function that returns a cursor.<br />
+<br />
+&lt;pre&gt;<br />
+<span class="default">&lt;?php<br />
+&nbsp;$conn</span><span class="keyword">=</span><span class="default">oci_connect</span><span class="keyword">(</span><span class="string">"server"</span><span class="keyword">, </span><span class="string">"user"</span><span class="keyword">, </span><span class="string">"pass"</span><span class="keyword">);<br />
+if (!</span><span class="default">$conn</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$e </span><span class="keyword">= </span><span class="default">oci_error</span><span class="keyword">();<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">trigger_error</span><span class="keyword">(</span><span class="default">htmlentities</span><span class="keyword">(</span><span class="default">$e</span><span class="keyword">[</span><span class="string">'message'</span><span class="keyword">]), </span><span class="default">E_USER_ERROR</span><span class="keyword">);<br />
+}<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">//You must asign before.<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$p1 </span><span class="keyword">= </span><span class="string">'03'</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$p2 </span><span class="keyword">= </span><span class="default">2012016191</span><span class="keyword">;<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$stid </span><span class="keyword">= </span><span class="default">oci_parse</span><span class="keyword">(</span><span class="default">$conn</span><span class="keyword">, </span><span class="string">'begin :cursor := server.PKG_package.F_Function(:p1,:p2); end;'</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$p_cursor </span><span class="keyword">= </span><span class="default">oci_new_cursor</span><span class="keyword">(</span><span class="default">$conn</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">//Send parameters variable&nbsp; value&nbsp; lenght<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">oci_bind_by_name</span><span class="keyword">(</span><span class="default">$stid</span><span class="keyword">, </span><span class="string">':p1'</span><span class="keyword">, </span><span class="default">$p1</span><span class="keyword">,</span><span class="default">2</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">oci_bind_by_name</span><span class="keyword">(</span><span class="default">$stid</span><span class="keyword">, </span><span class="string">':p2'</span><span class="keyword">, </span><span class="default">$p2</span><span class="keyword">,</span><span class="default">10</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">//Bind Cursor&nbsp; &nbsp;&nbsp; put -1 <br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">oci_bind_by_name</span><span class="keyword">(</span><span class="default">$stid</span><span class="keyword">, </span><span class="string">':cursor'</span><span class="keyword">, </span><span class="default">$p_cursor</span><span class="keyword">, -</span><span class="default">1</span><span class="keyword">, </span><span class="default">OCI_B_CURSOR</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">// Execute Statement<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">oci_execute</span><span class="keyword">(</span><span class="default">$stid</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">oci_execute</span><span class="keyword">(</span><span class="default">$p_cursor</span><span class="keyword">, </span><span class="default">OCI_DEFAULT</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">oci_fetch_all</span><span class="keyword">(</span><span class="default">$p_cursor</span><span class="keyword">, </span><span class="default">$cursor</span><span class="keyword">, </span><span class="default">null</span><span class="keyword">, </span><span class="default">null</span><span class="keyword">, </span><span class="default">OCI_FETCHSTATEMENT_BY_ROW</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$cursor</span><span class="keyword">);<br />
+&nbsp;</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="95903""></a>
+  <div class="note">
+   <strong class="user">sixd at php dot net</strong>
+   <a href="#95903" class="date">28-Jan-2010 07:41</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Oracle 11.2 introduced support for REF CURSOR prefetching</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="86834""></a>
+  <div class="note">
+   <strong class="user">sixd at php dot net</strong>
+   <a href="#86834" class="date">05-Nov-2008 09:13</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Because OCI8 uses "prefetching" to greatly improve returning query results, but Oracle doesn't support prefetching for REF CURSORs, application performance using REF CURSORs can be greatly improved by writing a PL/SQL function that pulls data from the REF CURSOR and PIPEs the output. The new function can be queried in a SELECT as if it were a table.&nbsp; See <a href="http://blogs.oracle.com/opal/2008/11/" rel="nofollow" target="_blank">http://blogs.oracle.com/opal/2008/11/</a><br />
+converting_ref_cursor_to_pipe.html</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.oci-new-connect.html">oci_new_connect</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.oci-new-descriptor.html">oci_new_descriptor</a></div>
+ <div class="up"><a href="ref.oci8.html">OCI8 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

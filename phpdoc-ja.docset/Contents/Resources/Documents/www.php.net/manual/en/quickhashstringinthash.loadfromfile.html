@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>ファイルからハッシュを作るファクトリーメソッド</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="quickhashstringinthash.getsize.html">QuickHashStringIntHash::getSize</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="quickhashstringinthash.loadfromstring.html">QuickHashStringIntHash::loadFromString</a></div>
+ <div class="up"><a href="class.quickhashstringinthash.html">QuickHashStringIntHash</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="quickhashstringinthash.loadfromfile" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">QuickHashStringIntHash::loadFromFile</h1>
+  <p class="verinfo">(バージョン情報なし。おそらく SVN 版にしか存在しないでしょう)</p><p class="refpurpose"><span class="refname">QuickHashStringIntHash::loadFromFile</span> &mdash; <span class="dc-title">ファイルからハッシュを作るファクトリーメソッド</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-quickhashstringinthash.loadfromfile-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="modifier">static</span> <span class="type"><a href="class.quickhashstringinthash.html" class="type QuickHashStringIntHash">QuickHashStringIntHash</a></span> <span class="methodname"><strong>QuickHashStringIntHash::loadFromFile</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$filename</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$size</code><span class="initializer"> = 0</span></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$options</code><span class="initializer"> = 0</span></span>
+  ]] )</div>
+
+  <p class="para rdfs-comment">
+   ディスク上の定義ファイルから新しいハッシュを作るファクトリーメソッドです。
+   ファイルフォーマットは、まずシグネチャ &#039;QH\0x21\0&#039;、
+   そして要素数を表す 32 ビット符号付き整数値 (システムと同じエンディアン)、
+   その後に、符号なし 32 ビット整数値で表した要素データの数と実際の文字が続きます。
+   この要素データの中にすべての文字列が含まれます。
+   さらに、バケツリスト数を表す符号付き 32 ビット整数値が続きます。
+   ヘッダーと文字列の後に、要素が続きます。
+   バケツリスト順に並んでおり、キーをハッシュしなくてもハッシュを復元できます。
+   各バケツリストに対して格納されている情報は次のとおりです
+   (すべて 32 ビット整数値)。
+   バケツリストのインデックス、リスト内の要素数、要素を表す二つの
+   32 ビット符号なし整数値 (最初の値は文字列内でキーを含む場所を表すインデックス、
+   そして次がそれに対応する値)。
+   以下に例を示します。
+  </p>
+  <p class="para">
+   <div class="example" id="example-5130">
+    <p><strong>例1 QuickHash StringIntHash ファイルフォーマット</strong></p>
+    <div class="example-contents screen"><div class="descriptioncode"><pre class="descriptioncode">00000000  51 48 21 00 02 00 00 00  09 00 00 00 40 00 00 00  |QH!.........@...|
+00000010  4f 4e 45 00 4e 49 4e 45  00 07 00 00 00 01 00 00  |ONE.NINE........|
+00000020  00 00 00 00 00 01 00 00  00 2f 00 00 00 01 00 00  |........./......|
+00000030  00 04 00 00 00 03 00 00  00                       |.........|
+00000039</pre>
+</div></div>
+   </div>
+  </p>
+  <p class="para">
+   <div class="example" id="example-5131">
+    <p><strong>例2 QuickHash IntHash ファイルフォーマット</strong></p>
+    <div class="example-contents screen"><div class="descriptioncode"><pre class="descriptioncode">header signature (&#039;QH&#039;; key type: 2; value type: 1; filler: \0x00)
+00000000  51 48 21 00
+
+number of elements:
+00000004  02 00 00 00
+
+length of string values (9 characters):
+00000008  09 00 00 00
+
+number of hash bucket lists (this is configured for hashes as argument to the
+constructor normally, 64 in this case):
+0000000C  40 00 00 00
+
+string values:
+00000010  4f 4e 45 00 4e 49 4e 45  00
+
+bucket lists:
+  bucket list 1 (with key 7, and 1 element):
+    header:
+    07 00 00 00 01 00 00 00
+    elements (key index: 0 (&#039;ONE&#039;), value = 0):
+    00 00 00 00 01 00 00 00
+  bucket list 2 (with key 0x2f, and 1 element):
+    header:
+    2f 00 00 00 01 00 00 00
+    elements (key index: 4 (&#039;NINE&#039;), value = 3):
+    04 00 00 00 03 00 00 00</pre>
+</div></div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-quickhashstringinthash.loadfromfile-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">filename</code></em></span>
+     <dd>
+
+      <p class="para">
+       ハッシュを読み込むファイルのファイル名。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">size</code></em></span>
+     <dd>
+
+      <p class="para">
+       バケツリストの数。
+       ここに渡した値は、直近の 2 の階乗まで切り上げられます。また、自動的に
+       4 から 4194304 までの範囲になります。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">options</code></em></span>
+     <dd>
+
+      <p class="para">
+       クラスのコンストラクタが受け取るのと同じオプション。
+       size オプションは無視されます。
+       サイズはハッシュのエントリをもとにして自動的に算出され、
+       2 の階乗の中で直近の値に切り上げられます。
+       最大値は 4194304 です。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-quickhashstringinthash.loadfromfile-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   新しい QuickHashStringIntHash を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-quickhashstringinthash.loadfromfile-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-5132">
+    <p><strong>例3  <span class="function"><strong>QuickHashStringIntHash::loadFromFile()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$file&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">dirname</span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">__FILE__&nbsp;</span><span style="color: #007700">)&nbsp;.&nbsp;</span><span style="color: #DD0000">"/simple.hash.string"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$hash&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">QuickHashStringIntHash</span><span style="color: #007700">::</span><span style="color: #0000BB">loadFromFile</span><span style="color: #007700">(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$file</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">QuickHashStringIntHash</span><span style="color: #007700">::</span><span style="color: #0000BB">DO_NOT_USE_ZEND_ALLOC<br /></span><span style="color: #007700">);<br />foreach(&nbsp;</span><span style="color: #0000BB">range</span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0x0f&nbsp;</span><span style="color: #007700">)&nbsp;as&nbsp;</span><span style="color: #0000BB">$key&nbsp;</span><span style="color: #007700">)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$i&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">48712&nbsp;</span><span style="color: #007700">+&nbsp;</span><span style="color: #0000BB">$key&nbsp;</span><span style="color: #007700">*&nbsp;</span><span style="color: #0000BB">1631</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$k&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">base_convert</span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$i</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">36&nbsp;</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$k</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'&nbsp;=&gt;&nbsp;'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$hash</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">get</span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$k&nbsp;</span><span style="color: #007700">),&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+11l4 =&gt; 48712
+12uf =&gt; 50343
+143q =&gt; 51974
+15d1 =&gt; 53605
+16mc =&gt; 55236
+17vn =&gt; 56867
+194y =&gt; 58498
+1ae9 =&gt; 60129
+1bnk =&gt; 61760
+1cwv =&gt; 63391
+1e66 =&gt; 65022
+1ffh =&gt; 66653
+1gos =&gt; 68284
+1hy3 =&gt; 69915
+1j7e =&gt; 71546
+1kgp =&gt; 73177
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="quickhashstringinthash.getsize.html">QuickHashStringIntHash::getSize</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="quickhashstringinthash.loadfromstring.html">QuickHashStringIntHash::loadFromString</a></div>
+ <div class="up"><a href="class.quickhashstringinthash.html">QuickHashStringIntHash</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

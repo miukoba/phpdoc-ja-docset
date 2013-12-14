@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>結果に関連付けられたメモリを開放する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqli-result.field-seek.html">mysqli_result::field_seek</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqli-result.lengths.html">mysqli_result::$lengths</a></div>
+ <div class="up"><a href="class.mysqli-result.html">mysqli_result</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mysqli-result.free" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mysqli_result::free</h1>
+  <h1 class="refname">mysqli_free_result</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose"><span class="refname">mysqli_result::free</span> -- <span class="refname">mysqli_free_result</span> &mdash; <span class="dc-title">結果に関連付けられたメモリを開放する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-mysqli-result.free-description">
+  <h3 class="title">説明</h3>
+  <p class="para">オブジェクト指向型</p>
+  <div class="methodsynopsis dc-description">
+   <span class="type"><span class="type void">void</span></span> <span class="methodname"><strong>mysqli_result::free</strong></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+  <div class="methodsynopsis dc-description">
+   <span class="type"><span class="type void">void</span></span> <span class="methodname"><strong>mysqli_result::close</strong></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+  <div class="methodsynopsis dc-description">
+   <span class="type"><span class="type void">void</span></span> <span class="methodname"><strong>mysqli_result::free_result</strong></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+  <p class="para rdfs-comment">手続き型</p>
+  <div class="methodsynopsis dc-description">
+   <span class="type"><span class="type void">void</span></span> <span class="methodname"><strong>mysqli_free_result</strong></span>
+    ( <span class="methodparam"><span class="type"><a href="class.mysqli-result.html" class="type mysqli_result">mysqli_result</a></span> <code class="parameter">$result</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   結果に関連付けられたメモリを開放します。
+  </p>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    結果オブジェクトが必要なくなった場合は、常に
+     <span class="function"><strong>mysqli_free_result()</strong></span> でメモリを開放すべきです。
+   </p>
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-mysqli-result.free-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+<span class="term"><em><code class="parameter">
+result</code></em></span><dd>
+<p class="para">手続き型のみ:
+ <span class="function"><a href="mysqli.query.html" class="function">mysqli_query()</a></span>、 <span class="function"><a href="mysqli.store-result.html" class="function">mysqli_store_result()</a></span>
+あるいは  <span class="function"><a href="mysqli.use-result.html" class="function">mysqli_use_result()</a></span> が返す結果セット ID。</p></dd>
+</dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-mysqli-result.free-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   値を返しません。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-mysqli-result.free-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="mysqli.query.html" class="function" rel="rdfs-seeAlso">mysqli_query()</a> - データベース上でクエリを実行する</span></li>
+    <li class="member"> <span class="function"><a href="mysqli-stmt.store-result.html" class="function" rel="rdfs-seeAlso">mysqli_stmt_store_result()</a> - プリペアドステートメントから結果を転送する</span></li>
+    <li class="member"> <span class="function"><a href="mysqli.store-result.html" class="function" rel="rdfs-seeAlso">mysqli_store_result()</a> - 直近のクエリから結果セットを転送する</span></li>
+    <li class="member"> <span class="function"><a href="mysqli.use-result.html" class="function" rel="rdfs-seeAlso">mysqli_use_result()</a> - 結果セットの取得を開始する</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="95357""></a>
+  <div class="note">
+   <strong class="user">Vector at ionisis dot com</strong>
+   <a href="#95357" class="date">29-Dec-2009 02:17</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you are getting this error:<br />
+Internal SQL Bug: 2014, Commands out of sync; you can't run this command now<br />
+<br />
+Then you never called mysqli_result::free(), mysqli_result::free_result(), mysqli_result::close(), or mysqli_free_result() in your script, and must call it before executing another stored procedure.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="94137""></a>
+  <div class="note">
+   <strong class="user">Anonymous</strong>
+   <a href="#94137" class="date">19-Oct-2009 12:49</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Freeing the memory associated with a result means that the references returned by mysqli_fetch_object (or equivalent) are cleared. Thus if you should pass an object pointing to a database row _by reference_, every call of mysqli_free_result will discard the referenced data.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqli-result.field-seek.html">mysqli_result::field_seek</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqli-result.lengths.html">mysqli_result::$lengths</a></div>
+ <div class="up"><a href="class.mysqli-result.html">mysqli_result</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

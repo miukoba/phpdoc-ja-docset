@@ -1,0 +1,318 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>mysqlndプラグインの開発をはじめよう</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqlnd.plugin.api.html">mysqlnd のプラグインAPI</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="book.mysqlnd-ms.html">mysqlnd_ms</a></div>
+ <div class="up"><a href="mysqlnd.plugin.html">MySQL Native Driver プラグインAPI</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mysqlnd.plugin.developing" class="section">
+  <h2 class="title">mysqlndプラグインの開発をはじめよう</h2>
+  <p class="para">
+   <em>mysqlnd</em>プラグイン それ自体が PHPエクステンション であることを覚えておくことが重要です。
+  </p>
+  <p class="para">
+   次のコードは、典型的な <em>mysqlnd</em> プラグインで使われる MINIT 関数の基本構造を示します。
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre>
+/* my_php_mysqlnd_plugin.c */
+
+ static PHP_MINIT_FUNCTION(mysqlnd_plugin) {
+  /* globals, ini entries, resources, classes */
+
+  /* register mysqlnd plugin */
+  mysqlnd_plugin_id = mysqlnd_plugin_register();
+
+  conn_m = mysqlnd_get_conn_methods();
+  memcpy(org_conn_m, conn_m,
+    sizeof(struct st_mysqlnd_conn_methods));
+
+  conn_m-&gt;query = MYSQLND_METHOD(mysqlnd_plugin_conn, query);
+  conn_m-&gt;connect = MYSQLND_METHOD(mysqlnd_plugin_conn, connect);
+}
+</pre></div>
+</div>
+
+<div class="example-contents">
+<div class="cdata"><pre>
+/* my_mysqlnd_plugin.c */
+
+ enum_func_status MYSQLND_METHOD(mysqlnd_plugin_conn, query)(/* ... */) {
+  /* ... */
+}
+enum_func_status MYSQLND_METHOD(mysqlnd_plugin_conn, connect)(/* ... */) {
+  /* ... */
+}
+</pre></div>
+</div>
+
+  <p class="para">
+   <em class="emphasis">タスクの解析: C言語からユーザースペースへ</em>
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre>
+ class proxy extends mysqlnd_plugin_connection {
+  public function connect($host, ...) { .. }
+}
+mysqlnd_plugin_set_conn_proxy(new proxy());
+</pre></div>
+</div>
+
+  <p class="para">
+   プロセス:
+  </p>
+  <ol type="1">
+   <li class="listitem">
+    <p class="para">
+     PHP: ユーザーがプラグインのコールバックを登録する
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     PHP: ユーザーがMySQLに接続するため、任意の PHP MySQL API を呼び出す
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     C: ext/*mysql* が mysqlnd のメソッドを呼び出す
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     C: mysqlnd が ext/mysqlnd_plugin の中で終了する
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     C: ext/mysqlnd_plugin
+     <ol type="1">
+      <li class="listitem">
+       <p class="para">
+        ユーザースペースで登録されたコールバックを呼び出す
+       </p>
+      </li>
+      <li class="listitem">
+       <p class="para">
+        また、ユーザースペースのコールバックが登録されていない場合は、<em>mysqlnd</em> のメソッドを呼び出す。
+       </p>
+      </li>
+     </ol>
+    </p>
+   </li>
+  </ol>
+  <p class="para">
+   次のことを実行する必要があります:
+  </p>
+  <ol type="1">
+   <li class="listitem">
+    <p class="para">
+     &quot;mysqlnd_plugin_connection&quot; というクラスを C言語で書く
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     &quot;mysqlnd_plugin_set_conn_proxy()&quot; 関数を使って、プロキシオブジェクトを受け入れ、登録する
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     C言語から、ユーザースペースへのプロキシメソッドを呼び出す (最適化 - zend_interface.h)
+    </p>
+   </li>
+  </ol>
+  <p class="para">
+   ユーザースペースのオブジェクトメソッドは、<em>call_user_function()</em> を使うか、<em>zend_call_method()</em> を使って Zend Engine に近いレベルで操作を行うことができます。
+  </p>
+  <p class="para">
+   <em class="emphasis"> 最適化: C言語から zend_call_method を使ってメソッドを呼び出す</em>
+  </p>
+  <p class="para">
+   次に示すコードの断片は、<em>zend_call_method</em> のプロトタイプを示しています。これは <var class="filename">zend_interface.h</var> からとってきたものです。
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre>
+ ZEND_API zval* zend_call_method(
+  zval **object_pp, zend_class_entry *obj_ce,
+  zend_function **fn_proxy, char *function_name,
+  int function_name_len, zval **retval_ptr_ptr,
+  int param_count, zval* arg1, zval* arg2 TSRMLS_DC
+);
+</pre></div>
+</div>
+
+  <p class="para">
+   Zend API は2つの引数しかサポートしていません。それ以上必要な場合は、たとえば次のようにします。
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre>
+ enum_func_status (*func_mysqlnd_conn__connect)(
+  MYSQLND *conn, const char *host,
+  const char * user, const char * passwd,
+  unsigned int passwd_len, const char * db,
+  unsigned int db_len, unsigned int port,
+  const char * socket, unsigned int mysql_flags TSRMLS_DC
+);
+</pre></div>
+</div>
+
+  <p class="para">
+   この問題に対処するには、<em>zend_call_method()</em> のコピーを作り、追加の引数の入れ物を追加する必要があるでしょう。これは、<em>MY_ZEND_CALL_METHOD_WRAPPER</em> マクロの組を作ることで実現できます。
+  </p>
+  <p class="para">
+   <em class="emphasis">PHP のユーザースペースを呼び出す</em>
+  </p>
+  <p class="para">
+   以下のコードは、C言語からユーザースペースの関数を呼ぶための最適化されたやり方を示しています:
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre> 
+/* my_mysqlnd_plugin.c */
+
+MYSQLND_METHOD(my_conn_class,connect)(
+  MYSQLND *conn, const char *host /* ... */ TSRMLS_DC) {
+  enum_func_status ret = FAIL;
+  zval * global_user_conn_proxy = fetch_userspace_proxy();
+  if (global_user_conn_proxy) {
+    /* call userspace proxy */
+    ret = MY_ZEND_CALL_METHOD_WRAPPER(global_user_conn_proxy, host, /*...*/);
+  } else {
+    /* or original mysqlnd method = do nothing, be transparent */
+    ret = org_methods.connect(conn, host, user, passwd,
+          passwd_len, db, db_len, port,
+          socket, mysql_flags TSRMLS_CC);
+  }
+  return ret;
+}
+</pre></div>
+</div>
+
+  <p class="para">
+   <em class="emphasis"> ユーザースペースを呼び出す: 引数が一つの場合
+   </em>
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre>
+/* my_mysqlnd_plugin.c */
+
+ MYSQLND_METHOD(my_conn_class,connect)(
+  /* ... */, const char *host, /* ...*/) {
+  /* ... */
+  if (global_user_conn_proxy) {
+    /* ... */
+    zval* zv_host;
+    MAKE_STD_ZVAL(zv_host);
+    ZVAL_STRING(zv_host, host, 1);
+    MY_ZEND_CALL_METHOD_WRAPPER(global_user_conn_proxy, zv_retval, zv_host /*, ...*/);
+    zval_ptr_dtor(&amp;zv_host);
+    /* ... */
+  }
+  /* ... */
+}
+</pre></div>
+</div>
+
+  <p class="para">
+   <em class="emphasis"> ユーザースペースを呼び出す: 構造体を引数にする場合
+   </em>
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre>
+/* my_mysqlnd_plugin.c */
+
+MYSQLND_METHOD(my_conn_class, connect)(
+  MYSQLND *conn, /* ...*/) {
+  /* ... */
+  if (global_user_conn_proxy) {
+    /* ... */
+    zval* zv_conn;
+    ZEND_REGISTER_RESOURCE(zv_conn, (void *)conn, le_mysqlnd_plugin_conn);
+    MY_ZEND_CALL_METHOD_WRAPPER(global_user_conn_proxy, zv_retval, zv_conn, zv_host /*, ...*/);
+    zval_ptr_dtor(&amp;zv_conn);
+    /* ... */
+  }
+  /* ... */
+}
+</pre></div>
+</div>
+
+  <p class="para">
+   多くの <em>mysqlnd</em> のメソッドがはじめに引数としてとるのが C の &quot;object&quot; です。たとえば、 connect() メソッドのはじめの引数は <em>MYSQLND</em>構造体 へのポインタです。MYSQNND構造体 は、<em>mysqlnd</em> 接続オブジェクトを表現します。
+  </p>
+  <p class="para">
+   <em>mysqlnd</em>接続オブジェクトへのポインタは、標準のI/Oファイルハンドルと比較できます。標準の I/Oファイルハンドルのように <em>mysqlnd</em>接続オブジェクトは PHP のリソース変数タイプを使ってユーザースペースに結びついていなければならないのです。
+  </p>
+  <p class="para">
+   <em class="emphasis">C言語とユーザースペースを行き来する</em>
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre>
+ class proxy extends mysqlnd_plugin_connection {
+  public function connect($conn, $host, ...) {
+    /* &quot;pre&quot; hook */
+    printf(&quot;Connecting to host = &#039;%s&#039;\n&quot;, $host);
+    debug_print_backtrace();
+    return parent::connect($conn);
+  }
+
+  public function query($conn, $query) {
+    /* &quot;post&quot; hook */
+    $ret = parent::query($conn, $query);
+    printf(&quot;Query = &#039;%s&#039;\n&quot;, $query);
+    return $ret;
+  }
+}
+mysqlnd_plugin_set_conn_proxy(new proxy());
+</pre></div>
+</div>
+
+  <p class="para">
+   PHP ユーザーは、オーバーライドしたメソッドの親の実装を呼び出し可能にしなければいけません。
+  </p>
+  <p class="para">
+   継承することで、ユーザーが選択したメソッドだけを改善し、&quot;pre&quot; や &quot;post&quot; フックを持たせるかどうかを選択できます。
+  </p>
+  <p class="para">
+   <em class="emphasis"> ビルトインのクラス:
+   mysqlnd_plugin_connection::connect() </em>
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre>
+/*  my_mysqlnd_plugin_classes.c */
+
+ PHP_METHOD(&quot;mysqlnd_plugin_connection&quot;, connect) {
+  /* ... simplified! ... */
+  zval* mysqlnd_rsrc;
+  MYSQLND* conn;
+  char* host; int host_len;
+  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, &quot;rs&quot;,
+    &amp;mysqlnd_rsrc, &amp;host, &amp;host_len) == FAILURE) {
+    RETURN_NULL();
+  }
+  ZEND_FETCH_RESOURCE(conn, MYSQLND* conn, &amp;mysqlnd_rsrc, -1,
+    &quot;Mysqlnd Connection&quot;, le_mysqlnd_plugin_conn);
+  if (PASS == org_methods.connect(conn, host, /* simplified! */ TSRMLS_CC))
+    RETVAL_TRUE;
+  else
+    RETVAL_FALSE;
+}
+</pre></div>
+</div>
+
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqlnd.plugin.api.html">mysqlnd のプラグインAPI</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="book.mysqlnd-ms.html">mysqlnd_ms</a></div>
+ <div class="up"><a href="mysqlnd.plugin.html">MySQL Native Driver プラグインAPI</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

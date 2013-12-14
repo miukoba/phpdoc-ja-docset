@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>指定したキーで排他ロックを確保する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.wincache-fcache-meminfo.html">wincache_fcache_meminfo</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.wincache-ocache-fileinfo.html">wincache_ocache_fileinfo</a></div>
+ <div class="up"><a href="ref.wincache.html">WinCache 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.wincache-lock" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">wincache_lock</h1>
+  <p class="verinfo">(PECL wincache &gt;= 1.1.0)</p><p class="refpurpose"><span class="refname">wincache_lock</span> &mdash; <span class="dc-title">
+   指定したキーで排他ロックを確保する
+  </span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-function.wincache-lock-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>wincache_lock</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$key</code></span>
+   [, <span class="methodparam"><span class="type">bool</span> <code class="parameter">$isglobal</code><span class="initializer"> = false</span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+   指定したキーについての排他ロックを確保します。
+   ロックを確保するまでは、現在のスクリプトの実行はブロックされます。
+   ロックを確保できたら、その後は他のスクリプトから同じキーのロックを要求があってもそれをブロックします。
+   現在のスクリプトが  <span class="function"><a href="function.wincache-unlock.html" class="function">wincache_unlock()</a></span> でロックを解放するまでは他のスクリプトからロックを確保できません。
+  </p>
+  <div class="warning"><strong class="warning">警告</strong>
+   <p class="simpara">
+     <span class="function"><strong>wincache_lock()</strong></span> および  <span class="function"><a href="function.wincache-unlock.html" class="function">wincache_unlock()</a></span>
+    を使っていると、FastCGI のようなマルチプロセス環境において PHP スクリプトがデッドロックを引き起こすことがあります。
+    本当にそれが必要である場合でない限り、これらの関数は使わないようにしましょう。
+    キャッシュ上でのさまざまな操作の大半は、これらの関数を使う必要のないものです。
+   </p>
+  </div>
+ </div>
+
+ <div class="refsect1 parameters" id="refsect1-function.wincache-lock-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">key</code></em></span>
+     <dd>
+
+      <p class="para">
+       ロックを取得したいキャッシュ内のキーの名前。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">isglobal</code></em></span>
+     <dd>
+
+      <p class="para">
+       ロックのスコープをシステム全体にするかローカルにするかを制御します。
+       ローカルロックのスコープは、IIS FastCGI のアプリケーションプール内
+       あるいは同一の親プロセス ID を持つ PHP プロセス群全体となります。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues" id="refsect1-function.wincache-lock-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+ <div class="refsect1 examples" id="refsect1-function.wincache-lock-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-558">
+    <p><strong>例1  <span class="function"><strong>wincache_lock()</strong></span> の使用</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">"/tmp/lock.txt"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"r+"</span><span style="color: #007700">);<br />if&nbsp;(</span><span style="color: #0000BB">wincache_lock</span><span style="color: #007700">(</span><span style="color: #0000BB">“lock_txt_lock”</span><span style="color: #007700">))&nbsp;{&nbsp;</span><span style="color: #FF8000">//&nbsp;排他ロックを確保します<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">ftruncate</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;ファイルを切り詰めます<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Write&nbsp;something&nbsp;here\n"</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">wincache_unlock</span><span style="color: #007700">(</span><span style="color: #0000BB">“lock_txt_lock”</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;ロックを解放します<br /></span><span style="color: #007700">}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Couldn't&nbsp;get&nbsp;the&nbsp;lock!"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.wincache-lock-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="function.wincache-unlock.html" class="function" rel="rdfs-seeAlso">wincache_unlock()</a> - 指定したキーの排他ロックを解放する</span></li>
+    <li class="member"> <span class="function"><a href="function.wincache-ucache-set.html" class="function" rel="rdfs-seeAlso">wincache_ucache_set()</a> - 変数をユーザーキャッシュに追加し、変数が既にキャッシュに存在する場合はそれを上書きする</span></li>
+    <li class="member"> <span class="function"><a href="function.wincache-ucache-get.html" class="function" rel="rdfs-seeAlso">wincache_ucache_get()</a> - ユーザーキャッシュに格納された変数を取得する</span></li>
+    <li class="member"> <span class="function"><a href="function.wincache-ucache-delete.html" class="function" rel="rdfs-seeAlso">wincache_ucache_delete()</a> - 変数をユーザーキャッシュから削除する</span></li>
+    <li class="member"> <span class="function"><a href="function.wincache-ucache-clear.html" class="function" rel="rdfs-seeAlso">wincache_ucache_clear()</a> - ユーザーキャッシュの中身全体を削除する</span></li>
+    <li class="member"> <span class="function"><a href="function.wincache-ucache-exists.html" class="function" rel="rdfs-seeAlso">wincache_ucache_exists()</a> - 変数がユーザーキャッシュに存在するかどうかを調べる</span></li>
+    <li class="member"> <span class="function"><a href="function.wincache-ucache-meminfo.html" class="function" rel="rdfs-seeAlso">wincache_ucache_meminfo()</a> - ユーザーキャッシュのメモリ使用状況についての情報を取得する</span></li>
+    <li class="member"> <span class="function"><a href="function.wincache-ucache-info.html" class="function" rel="rdfs-seeAlso">wincache_ucache_info()</a> - ユーザーキャッシュにキャッシュされたファイルについての情報を取得する</span></li>
+    <li class="member"> <span class="function"><a href="function.wincache-scache-info.html" class="function" rel="rdfs-seeAlso">wincache_scache_info()</a> - セッションキャッシュにキャッシュされたファイルについての情報を取得する</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="97528""></a>
+  <div class="note">
+   <strong class="user">donraman at microsoft dot com</strong>
+   <a href="#97528" class="date">24-Apr-2010 03:11</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+User should be aware that character '\' is not allowed as part of lock name. The reason why backslash is not allowed is because we are using CreateMutex call as described at <a href="http://msdn.microsoft.com/en-us/library/ms682411(VS.85" rel="nofollow" target="_blank">http://msdn.microsoft.com/en-us/library/ms682411(VS.85</a>).aspx. As per this article third parameter cannot have '\' character which is the lock name.<br />
+<br />
+This means below code will not work.<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+&nbsp;&nbsp; $ret_val </span><span class="keyword">= </span><span class="default">wincache_lock</span><span class="keyword">(</span><span class="string">"C:\WINDOWS\Temp/cache"</span><span class="keyword">);<br />
+&nbsp;&nbsp; echo </span><span class="default">$ret_val </span><span class="keyword">. </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br />
+&nbsp;&nbsp; </span><span class="default">$ret_val </span><span class="keyword">= </span><span class="default">wincache_unlock</span><span class="keyword">(</span><span class="string">"C:\WINDOWS\Temp/cache"</span><span class="keyword">);<br />
+&nbsp;&nbsp; echo </span><span class="default">$ret_val </span><span class="keyword">. </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.wincache-fcache-meminfo.html">wincache_fcache_meminfo</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.wincache-ocache-fileinfo.html">wincache_ocache_fileinfo</a></div>
+ <div class="up"><a href="ref.wincache.html">WinCache 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

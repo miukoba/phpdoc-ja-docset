@@ -1,0 +1,366 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Connection pooling and switching</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqlnd-ms.architecture.html">Architecture</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd-ms.transaction.html">Transaction handling</a></div>
+ <div class="up"><a href="mysqlnd-ms.concepts.html">Concepts</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mysqlnd-ms.pooling" class="section">
+  <h2 class="title">Connection pooling and switching</h2>
+  <p class="para">
+   The replication and load balancing plugin changes the semantics of a PHP
+   MySQL connection handle. The existing API of the PHP MySQL extensions
+   (<a href="ref.mysqli.html" class="link">mysqli</a>,
+  <a href="ref.mysql.html" class="link">mysql</a>, and
+  <a href="ref.pdo-mysql.html" class="link">PDO_MYSQL</a>) are not changed in
+  a way that functions are added or removed. But their behaviour
+  changes when using the plugin. Existing applications do not need to
+  be adapted to a new API, but they may need to be modified because of
+  the behaviour changes.
+  </p>
+  <p class="para">
+   The plugin breaks the one-by-one relationship between a
+   <a href="ref.mysqli.html" class="link">mysqli</a>,
+   <a href="ref.mysql.html" class="link">mysql</a>, and
+   <a href="ref.pdo-mysql.html" class="link">PDO_MYSQL</a> connection
+   handle and a MySQL network connection. And a
+   <a href="ref.mysqli.html" class="link">mysqli</a>,
+   <a href="ref.mysql.html" class="link">mysql</a>, and
+   <a href="ref.pdo-mysql.html" class="link">PDO_MYSQL</a> connection
+   handle represents a local pool of connections to the configured
+   MySQL replication master and MySQL replication slave servers.
+   The plugin redirects queries to the master and slave servers.
+   At some point in time one and the same PHP connection handle
+   may point to the MySQL master server. Later on, it may point
+   to one of the slave servers or still the master. Manipulating
+   and replacing the network connection referenced by a PHP MySQL
+   connection handle is not a transparent operation.
+  </p>
+  <p class="para">
+   Every MySQL connection has a state. The state of the connections in
+   the connection pool of the plugin can differ. Whenever the
+   plugin switches from one wire connection to another, the current state of
+   the user connection may change. The applications must be aware of this.
+  </p>
+  <p class="para">
+   The following list shows what the connection state consists of. The list
+   may not be complete.
+  </p>
+  <p class="para">
+    <ul class="itemizedlist">
+     <li class="listitem">
+      <span class="simpara">
+       Transaction status
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       Temporary tables
+      </span>
+    </li>
+    <li class="listitem">
+      <span class="simpara">
+       Table locks
+      </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      Session system variables and session user variables
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      The current database set using <em>USE</em> and other state chaining SQL commands
+     </span>
+    </li>
+    <li class="listitem">
+      <span class="simpara">
+       Prepared statements
+      </span>
+    </li>
+    <li class="listitem">
+      <span class="simpara">
+       <em>HANDLER</em> variables
+      </span>
+    </li>
+    <li class="listitem">
+      <span class="simpara">
+       Locks acquired with <em>GET_LOCK()</em>
+      </span>
+    </li>
+   </ul>
+  </p>
+  <p class="para">
+    Connection switches happen right before queries are executed. The plugin does
+    not switch the current connection until the next statement is executed.
+  </p>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <strong>Replication issues</strong><br />
+   <p class="para">
+    See also the MySQL reference manual chapter about
+    <a href="http://dev.mysql.com/doc/mysql/en/replication.html" class="link external" title="Link : http://dev.mysql.com/doc/mysql/en/replication.html">&raquo;&nbsp;replication features</a> and
+    related issues. Some restrictions may not be related to the PHP plugin, but
+    are properties of the MySQL replication system.
+   </p>
+  </p></blockquote>
+  <p class="para">Broadcasted messages</p>
+  <p class="para">
+   The plugins philosophy is to align the state of connections in the
+   pool only if the state is under full control of the plugin, or if it is
+   necessary for security reasons. Just a few actions that change the
+   state of the connection fall into this category.
+  </p>
+  <p class="para">
+   The following is a list of connection client library calls that change state,
+   and are broadcasted to all open connections in the connection pool.
+  </p>
+  <p class="para">
+   If any of the listed calls below are to be executed, the plugin loops over all
+   open master and slave connections. The loop continues until all servers
+   have been contacted, and the loop does not break if a server indicates a failure.
+   If possible, the failure will propagate to the called user API function, which may
+   be detected depending on which underlying library function was triggered.
+  </p>
+  <table class="doctable informaltable">
+   
+    <col width="1*" />
+    <col width="7*" />
+    <col width="2*" />
+    <thead>
+     <tr>
+      <th>Library call</th>
+      <th>Notes</th>
+      <th>Version</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+     <tr>
+      <td>
+       <em>change_user()</em>
+      </td>
+      <td>
+       Called by the  <span class="function"><a href="mysqli.change-user.html" class="function">mysqli_change_user()</a></span> user API call.
+       Also triggered upon reuse of a persistent <em>mysqli</em>
+       connection.
+      </td>
+      <td>Since 1.0.0.</td>
+     </tr>
+
+     <tr>
+      <td>
+       <em>select_db</em>
+      </td>
+      <td>
+       Called by the following user API calls:
+        <span class="function"><a href="function.mysql-select-db.html" class="function">mysql_select_db()</a></span>,
+        <span class="function"><a href="function.mysql-list-tables.html" class="function">mysql_list_tables()</a></span>,
+        <span class="function"><a href="function.mysql-db-query.html" class="function">mysql_db_query()</a></span>,
+        <span class="function"><a href="function.mysql-list-fields.html" class="function">mysql_list_fields()</a></span>,
+        <span class="function"><a href="mysqli.select-db.html" class="function">mysqli_select_db()</a></span>.
+       Note, that SQL <em>USE</em> is not monitored.
+      </td>
+      <td>Since 1.0.0.</td>
+     </tr>
+
+     <tr>
+      <td>
+       <em>set_charset()</em>
+      </td>
+      <td>
+       Called by the following user API calls:
+        <span class="function"><a href="function.mysql-set-charset.html" class="function">mysql_set_charset()</a></span>.
+        <span class="function"><a href="mysqli.set-charset.html" class="function">mysqli_set_charset()</a></span>.
+       Note, that SQL <em>SET NAMES</em> is not monitored.
+      </td>
+      <td>Since 1.0.0.</td>
+     </tr>
+
+     <tr>
+      <td>
+       <em>set_server_option()</em>
+      </td>
+      <td>
+        Called by the following user API calls:
+         <span class="function"><a href="mysqli.multi-query.html" class="function">mysqli_multi_query()</a></span>,
+         <span class="function"><a href="mysqli.real-query.html" class="function">mysqli_real_query()</a></span>,
+         <span class="function"><a href="mysqli.query.html" class="function">mysqli_query()</a></span>,
+         <span class="function"><a href="function.mysql-query.html" class="function">mysql_query()</a></span>.
+      </td>
+      <td>Since 1.0.0.</td>
+     </tr>
+
+     <tr>
+      <td>
+       <em>set_client_option()</em>
+      </td>
+      <td>
+        Called by the following user API calls:
+         <span class="function"><a href="mysqli.options.html" class="function">mysqli_options()</a></span>,
+         <span class="function"><a href="mysqli.ssl-set.html" class="function">mysqli_ssl_set()</a></span>,
+         <span class="function"><a href="function.mysqli-connect.html" class="function">mysqli_connect()</a></span>,
+         <span class="function"><a href="function.mysql-connect.html" class="function">mysql_connect()</a></span>,
+         <span class="function"><a href="function.mysql-pconnect.html" class="function">mysql_pconnect()</a></span>.
+      </td>
+      <td>Since 1.0.0.</td>
+     </tr>
+
+     <tr>
+      <td>
+       <em>set_autocommit()</em>
+      </td>
+      <td>
+        Called by the following user API calls:
+         <span class="function"><a href="mysqli.autocommit.html" class="function">mysqli_autocommit()</a></span>,
+        <em>PDO::setAttribute(PDO::ATTR_AUTOCOMMIT)</em>.
+      </td>
+      <td>Since 1.0.0. PHP &gt;= 5.4.0.</td>
+     </tr>
+
+     <tr>
+      <td>
+       <em>ssl_set()</em>
+      </td>
+      <td>
+       Called by the following user API calls:
+        <span class="function"><a href="mysqli.ssl-set.html" class="function">mysqli_ssl_set()</a></span>.
+      </td>
+      <td>Since 1.1.0.</td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  <p class="para">Broadcasting and lazy connections</p>
+  <p class="para">
+   The plugin does not proxy or
+   "<span class="quote">remember</span>" all settings to apply them on connections
+   opened in the future. This is important to remember, if
+   using
+   <a href="mysqlnd-ms.plugin-ini-json.html#ini.mysqlnd-ms-plugin-config-v2.lazy-connections" class="link">lazy connections</a>.
+   Lazy connections are connections which are not
+   opened before the client sends the first connection.
+   Use of lazy connections is the default plugin action.
+  </p>
+  <p class="para">
+   The following connection library calls each changed state, and their execution is
+   recorded for later use when lazy connections are opened. This helps ensure that
+   the connection state of all connections in the connection pool are comparable.
+  </p>
+  <table class="doctable informaltable">
+   
+    <col width="1*" />
+    <col width="7*" />
+    <col width="2*" />
+    <thead>
+     <tr>
+      <th>Library call</th>
+      <th>Notes</th>
+      <th>Version</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+     <tr>
+      <td>
+       <em>change_user()</em>
+      </td>
+      <td>
+       User, password and database recorded for future use.
+      </td>
+      <td>Since 1.1.0.</td>
+     </tr>
+
+     <tr>
+      <td>
+       <em>select_db</em>
+      </td>
+      <td>
+       Database recorded for future use.
+      </td>
+      <td>Since 1.1.0.</td>
+     </tr>
+
+     <tr>
+      <td>
+       <em>set_charset()</em>
+      </td>
+      <td>
+       Calls <em>set_client_option(MYSQL_SET_CHARSET_NAME, charset)</em>
+       on lazy connection to ensure <em>charset</em> will be used
+       upon opening the lazy connection.
+      </td>
+      <td>Since 1.1.0.</td>
+     </tr>
+
+     <tr>
+      <td>
+       <em>set_autocommit()</em>
+      </td>
+      <td>
+       Adds <em>SET AUTOCOMMIT=0|1</em> to the list of init commands
+       of a lazy connection using
+       <em>set_client_option(MYSQL_INIT_COMMAND, &quot;SET AUTOCOMMIT=...%quot;)</em>.
+      </td>
+      <td>Since 1.1.0. PHP &gt;= 5.4.0.</td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+
+  <div class="caution"><strong class="caution">警告</strong>
+   <h1 class="title">Connection state</h1>
+   <p class="para">
+    The connection state is not only changed by API calls. Thus, even if
+    PECL mysqlnd_ms monitors all API calls, the application must still
+    be aware. Ultimately, it is the applications responsibility to maintain
+    the connection state, if needed.
+   </p>
+  </div>
+
+  <p class="para">Charsets and string escaping</p>
+  <p class="para">
+   Due to the use of lazy connections, which are a default, it can happen that
+   an application tries to escape a string for use within SQL statements before
+   a connection has been established. In this case string escaping is not possible.
+   The string escape function does not know what charset to use before a connection
+   has been established.
+  </p>
+  <p class="para">
+   To overcome the problem a new configuration setting
+   <a href="mysqlnd-ms.plugin-ini-json.html#ini.mysqlnd-ms-plugin-config-v2.server-charset" class="link"><em>server_charset</em></a>
+   has been introduced in version 1.4.0.
+  </p>
+  <p class="para">
+   Attention has to be paid on escaping strings with a certain charset but using
+   the result on a connection that uses a different charset. Please note,
+   that PECL/mysqlnd_ms manipulates connections and one application level connection
+   represents a pool of multiple connections that all may have different default charsets.
+   It is recommended to configure the servers involved to use the same default charsets.
+   The configuration setting <em>server_charset</em> does help with this situation as well.
+   If using <em>server_charset</em>, the plugin will set the given
+   charset on all newly opened connections.
+  </p>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqlnd-ms.architecture.html">Architecture</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd-ms.transaction.html">Transaction handling</a></div>
+ <div class="up"><a href="mysqlnd-ms.concepts.html">Concepts</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

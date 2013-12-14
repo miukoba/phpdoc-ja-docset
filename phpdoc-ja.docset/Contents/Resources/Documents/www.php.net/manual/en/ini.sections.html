@@ -1,0 +1,254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>php.ini のセクション一覧</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="ini.list.html">php.ini ディレクティブのリスト</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="ini.core.html">コア php.ini ディレクティブに関する説明</a></div>
+ <div class="up"><a href="ini.html">php.ini ディレクティブ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="ini.sections" class="section">
+  <h2 class="title"><var class="filename">php.ini</var> のセクション一覧</h2>
+   <p class="para">
+   この一覧では、ホスト単位やパス単位で PHP の設定を行いたい場合に設定する
+   <var class="filename">php.ini</var> のセクションをまとめます。これらのセクションはオプションです。
+  </p>
+  <p class="para">
+   これらのセクションは、PHP に直接影響を及ぼすわけではありません。
+   さまざまな <var class="filename">php.ini</var> ディレクティブをひとまとめにして、
+   それを特定のホストや特定のパスにだけ適用する場合に使用します。
+  </p>
+  <p class="para">
+   これらのセクションは CGI/FastCGI モードでのみ使用します。
+   <a href="ini.core.html#ini.extension" class="link">extension</a> および <a href="ini.core.html#ini.zend-extension" class="link">zend_extension</a> ディレクティブは設定できません。
+  </p>
+  <p class="para">
+   <table class="doctable table">
+    <caption><strong>セクション</strong></caption>
+    
+     <thead>
+      <tr>
+       <th>名前</th>
+       <th>変更可能</th>
+       <th>変更履歴</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td><a href="ini.sections.html#ini.per-host" class="link">[HOST=]</a></td>
+       <td>PHP_INI_SYSTEM</td>
+       <td>PHP 5.3.0 で追加。</td>
+      </tr>
+
+      <tr>
+       <td><a href="ini.sections.html#ini.per-path" class="link">[PATH=]</a></td>
+       <td>PHP_INI_SYSTEM</td>
+       <td>PHP 5.3.0 で追加。</td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+
+  <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+  <p class="para">
+   <dl>
+
+    <dt id="ini.per-host">
+     <span class="term">
+      <em><code class="parameter">[HOST=&lt;host&gt;]</code></em>
+     </span>
+     <dd>
+
+      <p class="para">
+       このセクションで指定した <var class="filename">php.ini</var> ディレクティブは、
+       指定した名前のホスト上でのみ有効となります。
+      </p>
+      <p class="para">
+       <div class="example" id="example-5580">
+        <p><strong>例1 dev. ドメインではエラーを画面に表示させるようにする例</strong></p>
+        <div class="example-contents">
+<div class="php.inicode"><pre class="php.inicode">[HOST=dev.site.com]
+error_reporting = E_ALL
+display_errors = On</pre>
+</div>
+        </div>
+
+       </div>
+      </p>
+     </dd>
+
+    </dt>
+
+
+    <dt id="ini.per-path">
+     <span class="term">
+       <em><code class="parameter">[PATH=&lt;path&gt;]</code></em>
+      </span>
+     <dd>
+
+      <p class="para">
+       このセクションで指定した <var class="filename">php.ini</var> ディレクティブは、
+       指定したパスで実行したスクリプトでのみ有効となります。
+      </p>
+      <p class="para">
+       <div class="example" id="example-5581">
+        <p><strong>例2 保護エリア内でのスクリプトのセキュリティ確保</strong></p>
+        <div class="example-contents">
+<div class="php.inicode"><pre class="php.inicode">[PATH=/home/site/public/secure]
+auto_prepend_file=security.php</pre>
+</div>
+        </div>
+
+       </div>
+      </p>
+     </dd>
+
+    </dt>
+
+
+   </dl>
+
+  </p>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="105240""></a>
+  <div class="note">
+   <strong class="user">z dot himdi at bita dot nl</strong>
+   <a href="#105240" class="date">04-Aug-2011 04:53</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+On Windows IIS 7 server I noticed that [PATH=] was not listened to. [HOST=] however worked.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="103840""></a>
+  <div class="note">
+   <strong class="user">leo</strong>
+   <a href="#103840" class="date">06-May-2011 12:21</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Just developed the probably first php.ini hack to add commands which will only be parsed before PHP 5.3 when using mod_php.<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="comment"># Disable eAccelerator by default<br />
+</span><span class="default">eaccelerator</span><span class="keyword">.</span><span class="default">enable </span><span class="keyword">= </span><span class="default">0<br />
+<br />
+</span><span class="comment"># Now, to prevent incompatibilities with Zend Optimizer+, we<br />
+# want to enable eAccelerator only in PHP 5.2 or lower.<br />
+</span><span class="keyword">[</span><span class="default">HOST</span><span class="keyword">=*]<br />
+</span><span class="default">eaccelerator</span><span class="keyword">.</span><span class="default">enable </span><span class="keyword">= </span><span class="default">1<br />
+<br />
+?&gt;<br />
+</span><br />
+What is happening here? In PHP 5.3, php.ini sections to set up PHP on a per host basis have been introduced:<br />
+<br />
+<a href="http://www.php.net/manual/en/ini.sections.php" rel="nofollow" target="_blank">http://www.php.net/manual/en/ini.sections.php</a><br />
+<br />
+These sections only work in CGI/FastCGI mode, however there still seems to be a difference in how the php.ini file is parsed in PHP 5.2 and PHP 5.3 when using mod_php: PHP 5.3 ignores everything below the line [HOST=*], whereas PHP 5.2 does not.<br />
+<br />
+In the above example, PHP 5.3 only reads "eaccelerator.enable = 0" and then stops at the invalid command [HOST=*]. However, PHP 5.2 seems to ignore the invalid command and parses the whole configuration file, ending up with "eaccelerator.enable = 1".</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="101689""></a>
+  <div class="note">
+   <strong class="user">stickman</strong>
+   <a href="#101689" class="date">05-Jan-2011 10:39</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This doesn't seem to work with php-fpm.<br />
+The values defined under PATH or HOST will become the new master value for all the processes (as if they were redefined).</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="99780""></a>
+  <div class="note">
+   <strong class="user">crash at lubyte dot de</strong>
+   <a href="#99780" class="date">06-Sep-2010 02:45</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you have a system which uses separated PHP inis for loading extensions (Debian, Fedora and most other distributions do so), [PATH=] or [HOST=] will prevent loading extensions defined in those ini files (extension= and zend_extension=).<br />
+<br />
+I had some headache, when I added a hosts.ini to /etc/php5/cgi/conf.d (Debians default), where I wanted to define some defaults for a host name. The manual says extension= and zend_extension= aren't allowed in [HOST=] and [PATH=] (see above). I figured out that you can easily fix that with adding [PHP] after your definitions.<br />
+<br />
+For example hosts.ini:<br />
+[HOST=dev.example.com]<br />
+display_errors = on<br />
+<br />
+[PHP]<br />
+<br />
+this will change the section back to [PHP] where extension= and zend_extension= is allowed.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="97287""></a>
+  <div class="note">
+   <strong class="user">robert dot johnson at icap dot com</strong>
+   <a href="#97287" class="date">12-Apr-2010 07:26</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Adding PATH= applies only to the named path and does not include sub-directories, you have to add a PATH= value for each sub-directory.<br />
+<br />
+Also some settings have no effect even though phpinfo recognises and displays the per-folder value as the 'local' value, and the default as the 'master' value.<br />
+<br />
+'fastcgi.impersonate' always uses the master setting.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="93733""></a>
+  <div class="note">
+   <strong class="user">public at grik dot net</strong>
+   <a href="#93733" class="date">25-Sep-2009 12:00</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+In [HOST=...] one should use only the 1st server name from the list of server names.<br />
+<br />
+I.E. if you have <br />
+server_name example.com, example2.com;<br />
+and will use www.example.com in a browser, <br />
+use [HOST=example.com] in php.ini for both addresses.<br />
+<br />
+PHP looks not at the HOST request header (as I expected), but at the SERVER_NAME parameter (which by default is the 1st from the list of names, no matter what the HOST is).</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="ini.list.html">php.ini ディレクティブのリスト</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="ini.core.html">コア php.ini ディレクティブに関する説明</a></div>
+ <div class="up"><a href="ini.html">php.ini ディレクティブ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

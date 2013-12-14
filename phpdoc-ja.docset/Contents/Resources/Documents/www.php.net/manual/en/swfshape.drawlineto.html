@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>線を描く</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="swfshape.drawline.html">SWFShape::drawLine</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="swfshape.movepen.html">SWFShape::movePen</a></div>
+ <div class="up"><a href="class.swfshape.html">SWFShape</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="swfshape.drawlineto" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">SWFShape::drawLineTo</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.5)</p><p class="refpurpose"><span class="refname">SWFShape::drawLineTo</span> &mdash; <span class="dc-title">線を描く</span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-swfshape.drawlineto-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type"><span class="type void">void</span></span> <span class="methodname"><strong>SWFShape::drawLineTo</strong></span>
+    ( <span class="methodparam"><span class="type">float</span> <code class="parameter">$x</code></span>
+   , <span class="methodparam"><span class="type">float</span> <code class="parameter">$y</code></span>
+   )</div>
+
+  <div class="warning"><strong class="warning">警告</strong><p class="simpara">この関数は、
+<em class="emphasis">実験的</em> なものです。この関数の動作・
+名前・その他ドキュメントに書かれている事項は、予告なく、将来的な PHP
+のリリースにおいて変更される可能性があります。
+この関数は自己責任で使用してください。</p></div>
+  <p class="simpara">
+    <span class="function"><strong>swfshape::drawlineto()</strong></span> は、
+   ( <span class="function"><a href="swfshape.setline.html" class="function">swfshape::setline()</a></span> で設定した現在の線スタイルを
+   使用して) 現在のペンの位置から
+   (<em><code class="parameter">x</code></em>,<em><code class="parameter">y</code></em>) まで
+   図形の座標空間で直線を描きます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-swfshape.drawlineto-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   値を返しません。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-swfshape.drawlineto-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="swfshape.drawline.html" class="function" rel="rdfs-seeAlso">SWFShape::drawLine()</a> - 線を描く (相対座標)</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="55178""></a>
+  <div class="note">
+   <strong class="user">lexmanspam at laposte dot net</strong>
+   <a href="#55178" class="date">27-Jul-2005 09:04</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you have the error &lt;&lt;drawlineto(): failed assertion&gt;&gt; :<br />
+<br />
+Ming can't handel drawLineToTo if the distance from the previous point is over 8276.7 pixels (mesured empiriticaly) in the vertical or horizontal axis<br />
+&nbsp;Why ?<br />
+Coordinates in SWF are in twips (20 twips = 1 pixel)<br />
+&nbsp;and 2^16 = 65536 = 3276.8 * 20<br />
+So we can assume that coordinates of drawLineTo in SWf are relatives to the previous point, and take 16 bits (plus the sign).<br />
+Or it can be ming that brings this limitation<br />
+These measures have been made with ming_setScale(20.00000000);<br />
+This issue doesn't seem to occur with movePenTo<br />
+<br />
+Here's how you can handle this :<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">splitForMing</span><span class="keyword">(</span><span class="default">$x1</span><span class="keyword">, </span><span class="default">$y1</span><span class="keyword">, </span><span class="default">$x2</span><span class="keyword">, </span><span class="default">$y2</span><span class="keyword">) {<br />
+&nbsp; </span><span class="default">$res </span><span class="keyword">= array();<br />
+&nbsp; </span><span class="default">$nbSegments </span><span class="keyword">=&nbsp; </span><span class="default">floor</span><span class="keyword">(</span><span class="default">max</span><span class="keyword">(</span><span class="default">abs</span><span class="keyword">(</span><span class="default">$x2 </span><span class="keyword">- </span><span class="default">$x1</span><span class="keyword">), </span><span class="default">abs</span><span class="keyword">(</span><span class="default">$y2 </span><span class="keyword">- </span><span class="default">$y1</span><span class="keyword">)) / </span><span class="default">3276</span><span class="keyword">) + </span><span class="default">1</span><span class="keyword">;<br />
+&nbsp; for(</span><span class="default">$i </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">; </span><span class="default">$i </span><span class="keyword">&lt; </span><span class="default">$nbSegments </span><span class="keyword">; </span><span class="default">$i</span><span class="keyword">++) { </span><span class="comment">// ($nbSegments - 1) iterations in the loop : the 1st point is assumed to have been already processed ; the last one is already known<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$res</span><span class="keyword">[] = array(</span><span class="default">$x1 </span><span class="keyword">+ (</span><span class="default">$x2 </span><span class="keyword">- </span><span class="default">$x1</span><span class="keyword">) * </span><span class="default">$i </span><span class="keyword">/ </span><span class="default">$nbSegments</span><span class="keyword">, </span><span class="default">$y1 </span><span class="keyword">+ (</span><span class="default">$y2 </span><span class="keyword">- </span><span class="default">$y1</span><span class="keyword">) * </span><span class="default">$i </span><span class="keyword">/ </span><span class="default">$nbSegments</span><span class="keyword">);<br />
+&nbsp; }<br />
+&nbsp; </span><span class="default">$res</span><span class="keyword">[] = array(</span><span class="default">$x2</span><span class="keyword">, </span><span class="default">$y2</span><span class="keyword">);<br />
+&nbsp; return </span><span class="default">$res</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="default">ming_setScale</span><span class="keyword">(</span><span class="default">20.00000000</span><span class="keyword">);<br />
+</span><span class="default">ming_useswfversion</span><span class="keyword">(</span><span class="default">6</span><span class="keyword">); </span><span class="comment">// With ming 0.3<br />
+</span><span class="default">$movie </span><span class="keyword">= new </span><span class="default">SWFMovie</span><span class="keyword">();<br />
+</span><span class="default">$movie</span><span class="keyword">-&gt;</span><span class="default">setDimension</span><span class="keyword">(</span><span class="default">20000</span><span class="keyword">,</span><span class="default">8000</span><span class="keyword">);<br />
+</span><span class="default">$movie</span><span class="keyword">-&gt;</span><span class="default">setBackground</span><span class="keyword">(</span><span class="default">0xcc</span><span class="keyword">, </span><span class="default">0xcc</span><span class="keyword">, </span><span class="default">0xcc </span><span class="keyword">);<br />
+</span><span class="default">$movie</span><span class="keyword">-&gt;</span><span class="default">setRate</span><span class="keyword">(</span><span class="default">24</span><span class="keyword">);<br />
+<br />
+</span><span class="default">$polygone </span><span class="keyword">= new </span><span class="default">SWFShape</span><span class="keyword">();<br />
+</span><span class="default">$polygone</span><span class="keyword">-&gt;</span><span class="default">setRightFill</span><span class="keyword">(</span><span class="default">$polygone</span><span class="keyword">-&gt;</span><span class="default">addFill</span><span class="keyword">(</span><span class="default">0xff</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">));<br />
+</span><span class="default">$polygone</span><span class="keyword">-&gt;</span><span class="default">setLine</span><span class="keyword">(</span><span class="default">20</span><span class="keyword">, </span><span class="default">0x7f</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">);<br />
+</span><span class="default">$polygone</span><span class="keyword">-&gt;</span><span class="default">movePenTo</span><span class="keyword">(</span><span class="default">10000</span><span class="keyword">, </span><span class="default">500</span><span class="keyword">); </span><span class="comment">// No split needed for movePenTo<br />
+</span><span class="default">$tmp </span><span class="keyword">= </span><span class="default">splitForMing</span><span class="keyword">(</span><span class="default">10000</span><span class="keyword">, </span><span class="default">500</span><span class="keyword">, </span><span class="default">15000</span><span class="keyword">, </span><span class="default">500</span><span class="keyword">);<br />
+for( </span><span class="default">$i </span><span class="keyword">= </span><span class="default">0 </span><span class="keyword">; </span><span class="default">$i </span><span class="keyword">&lt; </span><span class="default">count</span><span class="keyword">(</span><span class="default">$tmp</span><span class="keyword">) ; </span><span class="default">$i</span><span class="keyword">++) {<br />
+&nbsp;&nbsp; &nbsp; </span><span class="default">$polygone</span><span class="keyword">-&gt;</span><span class="default">drawLineTo</span><span class="keyword">(</span><span class="default">$tmp</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="default">0</span><span class="keyword">], </span><span class="default">$tmp</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="default">1</span><span class="keyword">]); </span><span class="comment">// C<br />
+</span><span class="keyword">}<br />
+</span><span class="default">$tmp </span><span class="keyword">= </span><span class="default">splitForMing</span><span class="keyword">(</span><span class="default">15000</span><span class="keyword">, </span><span class="default">500</span><span class="keyword">, </span><span class="default">15000</span><span class="keyword">, </span><span class="default">5500</span><span class="keyword">);<br />
+for( </span><span class="default">$i </span><span class="keyword">= </span><span class="default">0 </span><span class="keyword">; </span><span class="default">$i </span><span class="keyword">&lt; </span><span class="default">count</span><span class="keyword">(</span><span class="default">$tmp</span><span class="keyword">) ; </span><span class="default">$i</span><span class="keyword">++) {<br />
+&nbsp;&nbsp; &nbsp; </span><span class="default">$polygone</span><span class="keyword">-&gt;</span><span class="default">drawLineTo</span><span class="keyword">(</span><span class="default">$tmp</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="default">0</span><span class="keyword">], </span><span class="default">$tmp</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="default">1</span><span class="keyword">]); </span><span class="comment">// C<br />
+</span><span class="keyword">}<br />
+</span><span class="default">$tmp </span><span class="keyword">= </span><span class="default">splitForMing</span><span class="keyword">(</span><span class="default">15000</span><span class="keyword">, </span><span class="default">5500</span><span class="keyword">, </span><span class="default">10000</span><span class="keyword">, </span><span class="default">500</span><span class="keyword">);<br />
+for( </span><span class="default">$i </span><span class="keyword">= </span><span class="default">0 </span><span class="keyword">; </span><span class="default">$i </span><span class="keyword">&lt; </span><span class="default">count</span><span class="keyword">(</span><span class="default">$tmp</span><span class="keyword">) ; </span><span class="default">$i</span><span class="keyword">++) {<br />
+&nbsp;&nbsp; &nbsp; </span><span class="default">$polygone</span><span class="keyword">-&gt;</span><span class="default">drawLineTo</span><span class="keyword">(</span><span class="default">$tmp</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="default">0</span><span class="keyword">], </span><span class="default">$tmp</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="default">1</span><span class="keyword">]); </span><span class="comment">// C<br />
+</span><span class="keyword">}<br />
+</span><span class="default">$polygone</span><span class="keyword">-&gt;</span><span class="default">drawLineTo</span><span class="keyword">(</span><span class="default">15000</span><span class="keyword">, </span><span class="default">15000</span><span class="keyword">);<br />
+</span><span class="default">$ajout </span><span class="keyword">= </span><span class="default">$movie</span><span class="keyword">-&gt;</span><span class="default">add</span><span class="keyword">(</span><span class="default">$polygone</span><span class="keyword">);<br />
+</span><span class="default">$ajout</span><span class="keyword">-&gt;</span><span class="default">setName</span><span class="keyword">(</span><span class="string">"test"</span><span class="keyword">);<br />
+</span><span class="default">$movie</span><span class="keyword">-&gt;</span><span class="default">output</span><span class="keyword">();<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="swfshape.drawline.html">SWFShape::drawLine</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="swfshape.movepen.html">SWFShape::movePen</a></div>
+ <div class="up"><a href="class.swfshape.html">SWFShape</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

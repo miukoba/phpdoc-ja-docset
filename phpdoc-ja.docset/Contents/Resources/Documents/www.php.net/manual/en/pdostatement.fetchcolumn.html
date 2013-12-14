@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>結果セットの次行から単一カラムを返す</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="pdostatement.fetchall.html">PDOStatement::fetchAll</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="pdostatement.fetchobject.html">PDOStatement::fetchObject</a></div>
+ <div class="up"><a href="class.pdostatement.html">PDOStatement</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="pdostatement.fetchcolumn" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">PDOStatement::fetchColumn</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.1.0, PECL pdo &gt;= 0.9.0)</p><p class="refpurpose"><span class="refname">PDOStatement::fetchColumn</span> &mdash; <span class="dc-title">
+   結果セットの次行から単一カラムを返す
+  </span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-pdostatement.fetchcolumn-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">string</span> <span class="methodname"><strong>PDOStatement::fetchColumn</strong></span>
+    ([ <span class="methodparam"><span class="type">int</span> <code class="parameter">$column_number</code><span class="initializer"> = 0</span></span>
+  ] )</div>
+
+
+  <p class="para rdfs-comment">
+   結果セットの次行から単一カラムを返します。
+   行がもうない場合には <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-pdostatement.fetchcolumn-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">column_number</code></em></span>
+     <dd>
+
+      <p class="para">
+       行から処理したい 0 で始まるカラム番号を指定します。
+       何も値が与えられない場合、
+        <span class="function"><strong>PDOStatement::fetchColumn()</strong></span>
+       は最初のカラムをフェッチします。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-pdostatement.fetchcolumn-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+    <span class="function"><strong>PDOStatement::fetchColumn()</strong></span>
+   は結果セットの次行から単一カラムを返します。
+  </p>
+  <div class="warning"><strong class="warning">警告</strong>
+   <p class="para">
+     <span class="function"><strong>PDOStatement::fetchColumn()</strong></span>
+    を使用してデータを処理する場合、同一行から
+    他のカラムを返す方法はありません。
+   </p>
+  </div>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-pdostatement.fetchcolumn-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-954"><p><strong>例1 次行の最初のカラムを返す</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$sth&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$dbh</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">prepare</span><span style="color: #007700">(</span><span style="color: #DD0000">"SELECT&nbsp;name,&nbsp;colour&nbsp;FROM&nbsp;fruit"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$sth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">execute</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">/*&nbsp;結果セットの次行から最初のカラムをフェッチする&nbsp;*/<br /></span><span style="color: #007700">print(</span><span style="color: #DD0000">"Fetch&nbsp;the&nbsp;first&nbsp;column&nbsp;from&nbsp;the&nbsp;next&nbsp;row&nbsp;in&nbsp;the&nbsp;result&nbsp;set:\n"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$sth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetchColumn</span><span style="color: #007700">();<br />print(</span><span style="color: #DD0000">"name&nbsp;=&nbsp;</span><span style="color: #0000BB">$result</span><span style="color: #DD0000">\n"</span><span style="color: #007700">);<br /><br />print(</span><span style="color: #DD0000">"Fetch&nbsp;the&nbsp;second&nbsp;column&nbsp;from&nbsp;the&nbsp;next&nbsp;row&nbsp;in&nbsp;the&nbsp;result&nbsp;set:\n"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$sth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetchColumn</span><span style="color: #007700">(</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br />print(</span><span style="color: #DD0000">"colour&nbsp;=&nbsp;</span><span style="color: #0000BB">$result</span><span style="color: #DD0000">\n"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+Fetch the first column from the next row in the result set:
+name = lemon
+Fetch the second column from the next row in the result set:
+colour = red
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-pdostatement.fetchcolumn-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="pdo.query.html" class="function" rel="rdfs-seeAlso">PDO::query()</a> - SQL ステートメントを実行し、結果セットを PDOStatement オブジェクトとして返す</span></li>
+    <li class="member"> <span class="function"><a href="pdostatement.fetch.html" class="function" rel="rdfs-seeAlso">PDOStatement::fetch()</a> - 結果セットから次の行を取得する</span></li>
+    <li class="member"> <span class="function"><a href="pdostatement.fetchall.html" class="function" rel="rdfs-seeAlso">PDOStatement::fetchAll()</a> - 全ての結果行を含む配列を返す</span></li>
+    <li class="member"> <span class="function"><a href="pdo.prepare.html" class="function" rel="rdfs-seeAlso">PDO::prepare()</a> - 文を実行する準備を行い、文オブジェクトを返す</span></li>
+    <li class="member"> <span class="function"><a href="pdostatement.setfetchmode.html" class="function" rel="rdfs-seeAlso">PDOStatement::setFetchMode()</a> - この文に対するデフォルトのフェッチモードを設定する</span></li>
+   </ul>
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="107993""></a>
+  <div class="note">
+   <strong class="user">Nathan Pohpam</strong>
+   <a href="#107993" class="date">21-Mar-2012 11:49</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+WARNING: PhoenixSegovia isn't quite correct. Perhaps it's implementation-dependent, but fetchColumn returns the empty string in my program. Beware!</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="100522""></a>
+  <div class="note">
+   <strong class="user">PhoneixSegovia at GOOGLE_MAIL_SERVER dot com</strong>
+   <a href="#100522" class="date">21-Oct-2010 11:13</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+fetchColumn return boolean false when a row not is found or don't had more rows.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="72609""></a>
+  <div class="note">
+   <strong class="user">seanferd at assmasterdonkeyranch dot com</strong>
+   <a href="#72609" class="date">26-Jan-2007 12:04</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This is an excellent method for returning a column count. For example:<br />
+<br />
+<span class="default">&lt;?php<br />
+$db </span><span class="keyword">= new </span><span class="default">PDO</span><span class="keyword">(</span><span class="string">'mysql:host=localhost;dbname=pictures'</span><span class="keyword">,</span><span class="string">'user'</span><span class="keyword">,</span><span class="string">'password'</span><span class="keyword">);<br />
+</span><span class="default">$pics </span><span class="keyword">= </span><span class="default">$db</span><span class="keyword">-&gt;</span><span class="default">query</span><span class="keyword">(</span><span class="string">'SELECT COUNT(id) FROM pics'</span><span class="keyword">);<br />
+</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">totalpics </span><span class="keyword">= </span><span class="default">$pics</span><span class="keyword">-&gt;</span><span class="default">fetchColumn</span><span class="keyword">();<br />
+</span><span class="default">$db </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span>In my case $pics-&gt;fetchColumn() returns 641 because that is how many pictures I have in my db.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="pdostatement.fetchall.html">PDOStatement::fetchAll</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="pdostatement.fetchobject.html">PDOStatement::fetchObject</a></div>
+ <div class="up"><a href="class.pdostatement.html">PDOStatement</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

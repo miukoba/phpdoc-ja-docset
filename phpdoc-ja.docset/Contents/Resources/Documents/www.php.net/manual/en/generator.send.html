@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>値をジェネレータに送る</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="generator.rewind.html">Generator::rewind</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="generator.throw.html">Generator::throw</a></div>
+ <div class="up"><a href="class.generator.html">Generator</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="generator.send" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">Generator::send</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.5.0)</p><p class="refpurpose"><span class="refname">Generator::send</span> &mdash; <span class="dc-title">値をジェネレータに送る</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-generator.send-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <span class="methodname"><strong>Generator::send</strong></span>
+    ( <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter">$value</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   指定した値を yield の結果としてジェネレータに送り、ジェネレータを続行します。
+  </p>
+
+  <p class="para">
+    <span class="methodname"><strong>Generator::send()</strong></span> を使うと、
+   反復処理の際に値をジェネレータ関数に注入できます。
+   注入した値は <a href="language.generators.syntax.html#control-structures.yield" class="link">yield</a> 文の結果として返され、ジェネレータ関数内のその他の値と同じように使えます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-generator.send-parameters">
+  <h3 class="title">パラメータ</h3>
+  <dl>
+
+   <dt>
+
+    <span class="term"><em><code class="parameter">value</code></em></span>
+    <dd>
+
+     <p class="para">
+      
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-generator.send-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-307">
+    <p><strong>例1  <span class="methodname"><strong>Generator::send()</strong></span> による値の注入</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">printer</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(</span><span style="color: #0000BB">true</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$string&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">yield</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$string</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #0000BB">$printer&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">printer</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$printer</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">send</span><span style="color: #007700">(</span><span style="color: #DD0000">'Hello&nbsp;world!'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+Hello world!
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-generator.send-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   yield した値を返します。
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113418""></a>
+  <div class="note">
+   <strong class="user">sergei dot solomonov at gmail dot com</strong>
+   <a href="#113418" class="date">09-Oct-2013 03:30</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">foo</span><span class="keyword">() {<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$string </span><span class="keyword">= </span><span class="default">yield</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="default">$string</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; for (</span><span class="default">$i </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">; </span><span class="default">$i </span><span class="keyword">&lt;= </span><span class="default">3</span><span class="keyword">; </span><span class="default">$i</span><span class="keyword">++) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">yield $i</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+<br />
+</span><span class="default">$generator </span><span class="keyword">= </span><span class="default">foo</span><span class="keyword">();<br />
+</span><span class="default">$generator</span><span class="keyword">-&gt;</span><span class="default">send</span><span class="keyword">(</span><span class="string">'Hello world!'</span><span class="keyword">);<br />
+foreach (</span><span class="default">$generator </span><span class="keyword">as </span><span class="default">$value</span><span class="keyword">) echo </span><span class="string">"</span><span class="default">$value</span><span class="string">\n"</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+This code falls with the error:<br />
+PHP Fatal error:&nbsp; Uncaught exception 'Exception' with message 'Cannot rewind a generator that was already run'.<br />
+foreach internally calls rewind, you should remember this!</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="112729""></a>
+  <div class="note">
+   <strong class="user">sfroelich01 at sp dot gm dot ail dot am dot com</strong>
+   <a href="#112729" class="date">17-Jul-2013 09:11</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Reading the example, it is a bit difficult to understand what exactly to do with this. The example below is a simple example of what you can do this.<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">nums</span><span class="keyword">() {<br />
+&nbsp;&nbsp;&nbsp; for (</span><span class="default">$i </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">; </span><span class="default">$i </span><span class="keyword">&lt; </span><span class="default">5</span><span class="keyword">; ++</span><span class="default">$i</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">//get a value from the caller<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$cmd </span><span class="keyword">= (</span><span class="default">yield $i</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if(</span><span class="default">$cmd </span><span class="keyword">== </span><span class="string">'stop'</span><span class="keyword">)<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return;</span><span class="comment">//exit the function<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">}&nbsp; &nbsp;&nbsp; <br />
+}<br />
+<br />
+</span><span class="default">$gen </span><span class="keyword">= </span><span class="default">nums</span><span class="keyword">();<br />
+foreach(</span><span class="default">$gen </span><span class="keyword">as </span><span class="default">$v</span><span class="keyword">)<br />
+{<br />
+&nbsp;&nbsp;&nbsp; if(</span><span class="default">$v </span><span class="keyword">== </span><span class="default">3</span><span class="keyword">)</span><span class="comment">//we are satisfied<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$gen</span><span class="keyword">-&gt;</span><span class="default">send</span><span class="keyword">(</span><span class="string">'stop'</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="string">"</span><span class="keyword">{</span><span class="default">$v</span><span class="keyword">}</span><span class="string">\n"</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="comment">//Output<br />
+</span><span class="default">0<br />
+1<br />
+2<br />
+3<br />
+?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="generator.rewind.html">Generator::rewind</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="generator.throw.html">Generator::throw</a></div>
+ <div class="up"><a href="class.generator.html">Generator</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

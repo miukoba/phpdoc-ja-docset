@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>メッセージの受信を受け付ける</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="class.amqpqueue.html">AMQPQueue</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="amqpqueue.bind.html">AMQPQueue::bind</a></div>
+ <div class="up"><a href="class.amqpqueue.html">AMQPQueue</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="amqpqueue.ack" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">AMQPQueue::ack</h1>
+  <p class="verinfo">(PECL amqp &gt;= Unknown)</p><p class="refpurpose"><span class="refname">AMQPQueue::ack</span> &mdash; <span class="dc-title">メッセージの受信を受け付ける</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-amqpqueue.ack-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><strong>AMQPQueue::ack</strong></span>
+    ( <span class="methodparam"><span class="type">int</span> <code class="parameter">$delivery_tag</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$flags</code><span class="initializer"> = <strong><code>AMQP_NOPARAM</code></strong></span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+     <span class="methodname"><a href="amqpqueue.get.html" class="methodname">AMQPQueue::get()</a></span> あるいは  <span class="methodname"><a href="amqpqueue.consume.html" class="methodname">AMQPQueue::consume()</a></span> が
+    <strong><code>AMQP_AUTOACK</code></strong> フラグなしで取得したメッセージの受信を認めます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-amqpqueue.ack-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">delivery_tag</code></em></span>
+     <dd>
+
+      <p class="para">
+       受信を認めるメッセージ配送タグ。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">flags</code></em></span>
+     <dd>
+
+      <p class="para">
+       渡せるフラグは <strong><code>AMQP_MULTIPLE</code></strong> のみです。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 errors" id="refsect1-amqpqueue.ack-errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">
+   チャネルが開いていない場合に <strong class="classname">AMQPChannelException</strong> をスローします。
+  </p>
+  <p class="para">
+   ブローカへの接続が途切れた場合に <strong class="classname">AMQPConnectionException</strong> をスローします。
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 returnvalues" id="refsect1-amqpqueue.ack-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-amqpqueue.ack-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-4178">
+    <p><strong>例1  <span class="methodname"><strong>AMQPQueue::ack()</strong></span> と  <span class="methodname"><a href="amqpqueue.get.html" class="methodname">AMQPQueue::get()</a></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">/*&nbsp;デフォルトの設定で接続を作成します&nbsp;*/<br /></span><span style="color: #0000BB">$connection&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">AMQPConnection</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$connection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">connect</span><span style="color: #007700">();<br /><br /></span><span style="color: #0000BB">$channel&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">AMQPChannel</span><span style="color: #007700">(</span><span style="color: #0000BB">$connection</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;キューオブジェクトを作成します&nbsp;*/<br /></span><span style="color: #0000BB">$queue&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">AMQPQueue</span><span style="color: #007700">(</span><span style="color: #0000BB">$channel</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;キューを宣言します<br /></span><span style="color: #0000BB">$queue</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">declare</span><span style="color: #007700">(</span><span style="color: #DD0000">'myqueue'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;次のメッセージを取得しますが、配送済みにはしません<br /></span><span style="color: #0000BB">$message&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$queue</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">get</span><span style="color: #007700">(</span><span style="color: #0000BB">AMQP_NOPARAM</span><span style="color: #007700">);<br /><br />echo&nbsp;</span><span style="color: #0000BB">$message</span><span style="color: #007700">[</span><span style="color: #DD0000">'msg'</span><span style="color: #007700">];<br /><br /></span><span style="color: #FF8000">//&nbsp;メッセージを受信したことを知らせます<br /></span><span style="color: #0000BB">$queue</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">ack</span><span style="color: #007700">(</span><span style="color: #0000BB">$message</span><span style="color: #007700">[</span><span style="color: #DD0000">'delivery_tag'</span><span style="color: #007700">]);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   <div class="example" id="example-4179">
+    <p><strong>例2  <span class="methodname"><strong>AMQPQueue::ack()</strong></span> と  <span class="methodname"><a href="amqpqueue.consume.html" class="methodname">AMQPQueue::consume()</a></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">/*&nbsp;デフォルトの設定で接続を作成します&nbsp;*/<br /></span><span style="color: #0000BB">$connection&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">AMQPConnection</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$connection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">connect</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">/*&nbsp;キューオブジェクトを作成します&nbsp;*/<br /></span><span style="color: #0000BB">$queue&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">AMQPQueue</span><span style="color: #007700">(</span><span style="color: #0000BB">$connection</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;キューを宣言します<br /></span><span style="color: #0000BB">$queue</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">declare</span><span style="color: #007700">(</span><span style="color: #DD0000">'myqueue'</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$options&nbsp;</span><span style="color: #007700">=&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'min'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'max'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'ack'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">false<br /></span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;メッセージを取得しますが、配送済みにはしません<br /></span><span style="color: #0000BB">$messages&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$queue</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">consume</span><span style="color: #007700">(</span><span style="color: #0000BB">$options</span><span style="color: #007700">);<br /><br />foreach&nbsp;(</span><span style="color: #0000BB">$messages&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$message</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$message</span><span style="color: #007700">[</span><span style="color: #DD0000">'message_body'</span><span style="color: #007700">];<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;メッセージを受信したことを知らせます<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$queue</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">ack</span><span style="color: #007700">(</span><span style="color: #0000BB">$message</span><span style="color: #007700">[</span><span style="color: #DD0000">'delivery_tag'</span><span style="color: #007700">]);<br />}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="class.amqpqueue.html">AMQPQueue</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="amqpqueue.bind.html">AMQPQueue::bind</a></div>
+ <div class="up"><a href="class.amqpqueue.html">AMQPQueue</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

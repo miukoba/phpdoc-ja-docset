@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>エラーの内容を表す文字列を返す</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.curl-multi-setopt.html">curl_multi_setopt</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.curl-pause.html">curl_pause</a></div>
+ <div class="up"><a href="ref.curl.html">cURL 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.curl-multi-strerror" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">curl_multi_strerror</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.5.0)</p><p class="refpurpose"><span class="refname">curl_multi_strerror</span> &mdash; <span class="dc-title">エラーの内容を表す文字列を返す</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-function.curl-multi-strerror-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">string</span> <span class="methodname"><strong>curl_multi_strerror</strong></span>
+    ( <span class="methodparam"><span class="type">int</span> <code class="parameter">$errornum</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   指定した CURLM エラーコードに対応するエラーメッセージの文字列を返します。
+  </p>
+
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.curl-multi-strerror-parameters">
+  <h3 class="title">パラメータ</h3>
+  <dl>
+
+   <dt>
+
+    <span class="term"><em><code class="parameter">errornum</code></em></span>
+    <dd>
+
+     <p class="para">
+      <a href="http://curl.haxx.se/libcurl/c/libcurl-errors.html" class="link external" title="Link : http://curl.haxx.se/libcurl/c/libcurl-errors.html">&raquo;&nbsp;CURLM エラーコード</a> 定数のいずれか。
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.curl-multi-strerror-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   有効なエラーコードを指定した場合は、それに対応する文字列を返します。それ以外の場合は <strong><code>NULL</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.curl-multi-strerror-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-4200">
+    <p><strong>例1  <span class="function"><strong>curl_multi_strerror()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;cURL&nbsp;ハンドルを作ります<br /></span><span style="color: #0000BB">$ch1&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">curl_init</span><span style="color: #007700">(</span><span style="color: #DD0000">"http://example.com"</span><span style="color: #007700">/);<br /></span><span style="color: #0000BB">$ch2&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">curl_init</span><span style="color: #007700">(</span><span style="color: #DD0000">"http://php.net/"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;cURL&nbsp;マルチハンドルを作ります<br /></span><span style="color: #0000BB">$mh&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">curl_multi_init</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;マルチハンドルにハンドルを追加します<br /></span><span style="color: #0000BB">curl_multi_add_handle</span><span style="color: #007700">(</span><span style="color: #0000BB">$mh</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$ch1</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">curl_multi_add_handle</span><span style="color: #007700">(</span><span style="color: #0000BB">$mh</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$ch2</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;マルチハンドルを実行します<br /></span><span style="color: #007700">do&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$status&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">curl_multi_exec</span><span style="color: #007700">(</span><span style="color: #0000BB">$mh</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$active</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;エラーをチェックします<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">if(</span><span style="color: #0000BB">$status&nbsp;</span><span style="color: #007700">&gt;&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;エラーメッセージを表示します<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"ERROR!\n&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">curl_multi_strerror</span><span style="color: #007700">(</span><span style="color: #0000BB">$status</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}&nbsp;while&nbsp;(</span><span style="color: #0000BB">$status&nbsp;</span><span style="color: #007700">===&nbsp;</span><span style="color: #0000BB">CURLM_CALL_MULTI_PERFORM&nbsp;</span><span style="color: #007700">||&nbsp;</span><span style="color: #0000BB">$active</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.curl-multi-strerror-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="function.curl-strerror.html" class="function" rel="rdfs-seeAlso">curl_strerror()</a> - エラーコードの説明を返す</span></li>
+    <li class="member"><a href="http://curl.haxx.se/libcurl/c/libcurl-errors.html" class="link external" title="Link : http://curl.haxx.se/libcurl/c/libcurl-errors.html">&raquo;&nbsp;cURL エラーコード</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.curl-multi-setopt.html">curl_multi_setopt</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.curl-pause.html">curl_pause</a></div>
+ <div class="up"><a href="ref.curl.html">cURL 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>ドキュメント内の次のノードに移動する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="xmlreader.open.html">XMLReader::open</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="xmlreader.readinnerxml.html">XMLReader::readInnerXML</a></div>
+ <div class="up"><a href="class.xmlreader.html">XMLReader</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="xmlreader.read" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">XMLReader::read</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.1.0)</p><p class="refpurpose"><span class="refname">XMLReader::read</span> &mdash; <span class="dc-title">ドキュメント内の次のノードに移動する</span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-xmlreader.read-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><strong>XMLReader::read</strong></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   ドキュメント内の次のノードにカーソルを移動します。
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues" id="refsect1-xmlreader.read-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+ <div class="refsect1 seealso" id="refsect1-xmlreader.read-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="methodname"><a href="xmlreader.movetoelement.html" class="methodname" rel="rdfs-seeAlso">XMLReader::moveToElement()</a> - 現在の属性の親要素にカーソルを移動する</span></li>
+    <li class="member"> <span class="methodname"><a href="xmlreader.movetoattribute.html" class="methodname" rel="rdfs-seeAlso">XMLReader::moveToAttribute()</a> - 指定した名前の属性にカーソルを移動する</span></li>
+    <li class="member"> <span class="methodname"><a href="xmlreader.next.html" class="methodname" rel="rdfs-seeAlso">XMLReader::next()</a> - すべてのサブツリーを飛ばして、次のノードにカーソルを移動する</span></li>
+   </ul>
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="104640""></a>
+  <div class="note">
+   <strong class="user">Nate</strong>
+   <a href="#104640" class="date">27-Jun-2011 07:49</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+It is interesting to note that this function will stop on closing tags as well.&nbsp; I have an XML document similar to the following:<br />
+<br />
+&lt;root&gt;<br />
+&nbsp; &lt;columns&gt;<br />
+&nbsp;&nbsp;&nbsp; &lt;column&gt;columnX&lt;/column&gt;<br />
+&nbsp;&nbsp;&nbsp; &lt;column&gt;columnY&lt;/column&gt;<br />
+&nbsp; &lt;/columns&gt;<br />
+&nbsp; &lt;table&gt;<br />
+&nbsp;&nbsp;&nbsp; &lt;row&gt;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; &lt;columnX&gt;38&lt;/columnX&gt;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; &lt;columnY&gt;50&lt;/columnY&gt;<br />
+&nbsp;&nbsp;&nbsp; &lt;/row&gt;<br />
+&nbsp;&nbsp;&nbsp; &lt;row&gt;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; &lt;columnX&gt;82&lt;/columnY&gt;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; &lt;columnY&gt;28&lt;/columnY&gt;<br />
+&nbsp;&nbsp;&nbsp; &lt;/row&gt;<br />
+&nbsp;&nbsp;&nbsp; ...<br />
+&nbsp; &lt;/table&gt;<br />
+&lt;/root&gt;<br />
+<br />
+I need to parse the &lt;columns&gt; object to know what attributes to check for from each &lt;row&gt; node.&nbsp; Therefore I was doing the following:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">while (</span><span class="default">$xml</span><span class="keyword">-&gt;</span><span class="default">read</span><span class="keyword">()) {<br />
+&nbsp; if (</span><span class="default">$xml</span><span class="keyword">-&gt;</span><span class="default">name </span><span class="keyword">=== </span><span class="string">'column'</span><span class="keyword">) {<br />
+&nbsp;&nbsp; </span><span class="comment">//parse column node to into $columns array<br />
+&nbsp; </span><span class="keyword">}<br />
+&nbsp; elseif (</span><span class="default">$xml</span><span class="keyword">-&gt;</span><span class="default">name </span><span class="keyword">=== </span><span class="string">'row'</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">//parse row node, using constructed $columns array<br />
+&nbsp; </span><span class="keyword">}<br />
+}<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+This kind of worked in that I ended up with an array of all the data I wanted, but the array I constructed was twice as large as I expected and every other entry was empty.&nbsp; Took me a while to debug, but finally figured out that checking <span class="default">&lt;?php $xml</span><span class="keyword">-&gt;</span><span class="default">name </span><span class="keyword">=== </span><span class="string">'row' </span><span class="default">?&gt;</span> matches both &lt;row&gt; and &lt;/row&gt;, so the check should really be something more like:<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="keyword">if (</span><span class="default">$xml</span><span class="keyword">-&gt;</span><span class="default">name </span><span class="keyword">=== </span><span class="string">'row' </span><span class="keyword">&amp;&amp; </span><span class="default">$xml</span><span class="keyword">-&gt;</span><span class="default">nodeType </span><span class="keyword">== </span><span class="default">XMLReader</span><span class="keyword">::</span><span class="default">ELEMENT</span><span class="keyword">) {<br />
+&nbsp; </span><span class="comment">// parse row node<br />
+</span><span class="keyword">}<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+I would have liked to use the next() function instead, but as I needed to parse 2 different subtrees, I couldn't figure out how to find all the columns, reset the pointer, and then find all the rows.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="103993""></a>
+  <div class="note">
+   <strong class="user">andy at siliconrockstar dot com</strong>
+   <a href="#103993" class="date">16-May-2011 10:01</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+A very simple way to avoid typing $reader-&gt;read() multiple times when you want to skip some nodes:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">class </span><span class="default">smartXMLReader </span><span class="keyword">extends </span><span class="default">XMLReader </span><span class="keyword">{<br />
+&nbsp;&nbsp;&nbsp; public function </span><span class="default">readTimes</span><span class="keyword">(</span><span class="default">$count</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$i </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; while(</span><span class="default">$i </span><span class="keyword">&lt; </span><span class="default">$count</span><span class="keyword">){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">read</span><span class="keyword">();<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$i</span><span class="keyword">++;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Using this smartXMLReader, <br />
+<br />
+<span class="default">&lt;?php<br />
+$reader</span><span class="keyword">-&gt;</span><span class="default">readTimes</span><span class="keyword">(</span><span class="default">3</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+is equivalent to <br />
+<br />
+<span class="default">&lt;?php<br />
+$reader</span><span class="keyword">-&gt;</span><span class="default">read</span><span class="keyword">();<br />
+</span><span class="default">$reader</span><span class="keyword">-&gt;</span><span class="default">read</span><span class="keyword">();<br />
+</span><span class="default">$reader</span><span class="keyword">-&gt;</span><span class="default">read</span><span class="keyword">();<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Makes getting around in your XML document a bit easier :)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="94528""></a>
+  <div class="note">
+   <strong class="user">Yannik</strong>
+   <a href="#94528" class="date">10-Nov-2009 12:38</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you have trouble parsing xml documents with text tags bigger than 10MB, this might help you:<br />
+<br />
+<span class="default">&lt;?php<br />
+$xmlreader </span><span class="keyword">= new </span><span class="default">XMLReader</span><span class="keyword">();<br />
+</span><span class="default">$xmlreader</span><span class="keyword">-&gt;</span><span class="default">open</span><span class="keyword">(</span><span class="default">$uri</span><span class="keyword">, </span><span class="default">null</span><span class="keyword">, </span><span class="default">1</span><span class="keyword">&lt;&lt;</span><span class="default">19</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Since in libxml there is a constant<br />
+XML_PARSE_HUGE = 1&lt;&lt;19<br />
+which enables parsing xml documents with huge texts.<br />
+<br />
+Please note that this option is not accessible using the setParserProperty method and that there is currently no constant to do the work, which will hopefully change soon:<br />
+<br />
+<a href="http://bugs.php.net/bug.php?id=49660" rel="nofollow" target="_blank">http://bugs.php.net/bug.php?id=49660</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="61641""></a>
+  <div class="note">
+   <strong class="user">jirka at kosek dot cz</strong>
+   <a href="#61641" class="date">08-Feb-2006 10:01</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+libxml2 contains much more useful method readString() that will read and return whole text content of element. You can call it after receiving start tag (XMLReader::ELEMENT). You can use this PHP code to emulate this method until PHP will directly call underlying libxml2 implementation.<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">class </span><span class="default">XMLReader2 </span><span class="keyword">extends </span><span class="default">XMLReader<br />
+</span><span class="keyword">{<br />
+&nbsp; function </span><span class="default">readString</span><span class="keyword">()<br />
+&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$depth </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$text </span><span class="keyword">= </span><span class="string">""</span><span class="keyword">;<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; while (</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">read</span><span class="keyword">() &amp;&amp; </span><span class="default">$depth </span><span class="keyword">!= </span><span class="default">0</span><span class="keyword">)<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (</span><span class="default">in_array</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">nodeType</span><span class="keyword">, array(</span><span class="default">XMLReader</span><span class="keyword">::</span><span class="default">TEXT</span><span class="keyword">, </span><span class="default">XMLReader</span><span class="keyword">::</span><span class="default">CDATA</span><span class="keyword">, </span><span class="default">XMLReader</span><span class="keyword">::</span><span class="default">WHITESPACE</span><span class="keyword">, </span><span class="default">XMLReader</span><span class="keyword">::</span><span class="default">SIGNIFICANT_WHITESPACE</span><span class="keyword">)))<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$text </span><span class="keyword">.= </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">value</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">nodeType </span><span class="keyword">== </span><span class="default">XMLReader</span><span class="keyword">::</span><span class="default">ELEMENT</span><span class="keyword">) </span><span class="default">$depth</span><span class="keyword">++;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">nodeType </span><span class="keyword">== </span><span class="default">XMLReader</span><span class="keyword">::</span><span class="default">END_ELEMENT</span><span class="keyword">) </span><span class="default">$depth</span><span class="keyword">--;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">$text</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Just use XMLReader2 instead of XMLReader.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="xmlreader.open.html">XMLReader::open</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="xmlreader.readinnerxml.html">XMLReader::readInnerXML</a></div>
+ <div class="up"><a href="class.xmlreader.html">XMLReader</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

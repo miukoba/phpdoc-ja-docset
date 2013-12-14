@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>ヘッダ用の関数を登録する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.getservbyport.html">getservbyport</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.header-remove.html">header_remove</a></div>
+ <div class="up"><a href="ref.network.html">ネットワーク 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.header-register-callback" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">header_register_callback</h1>
+  <p class="verinfo">(バージョン情報なし。おそらく SVN 版にしか存在しないでしょう)</p><p class="refpurpose"><span class="refname">header_register_callback</span> &mdash; <span class="dc-title">ヘッダ用の関数を登録する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-function.header-register-callback-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>header_register_callback</strong></span>
+    ( <span class="methodparam"><span class="type"><a href="language.types.callable.html" class="type callable">callable</a></span> <code class="parameter">$callback</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   PHP が出力を送信しはじめるときにコールする関数を登録します。
+  </p>
+  <p class="para">
+   <em><code class="parameter">callback</code></em> が実行されるのは、
+   PHP がすべてのヘッダを送出し終えてからその他の出力を始めるまでの間です。
+   ここで、送信する前のヘッダを操作できます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.header-register-callback-parameters">
+  <h3 class="title">パラメータ</h3>
+  <dl>
+
+   <dt>
+
+    <span class="term"><em><code class="parameter">callback</code></em></span>
+    <dd>
+
+     <p class="para">
+      ヘッダを送信する前にコールする関数。パラメータは受け取らず、返り値も無視されます。
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.header-register-callback-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 examples" id="refsect1-function.header-register-callback-examples">
+  <h3 class="title">例</h3>
+  <div class="example" id="header-register-callback.example.basic">
+   <p><strong>例1  <span class="function"><strong>header_register_callback()</strong></span> の例</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />header</span><span style="color: #007700">(</span><span style="color: #DD0000">'Content-Type:&nbsp;text/plain'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">'X-Test:&nbsp;foo'</span><span style="color: #007700">);<br /><br />function&nbsp;</span><span style="color: #0000BB">foo</span><span style="color: #007700">()&nbsp;{<br />&nbsp;foreach&nbsp;(</span><span style="color: #0000BB">headers_list</span><span style="color: #007700">()&nbsp;as&nbsp;</span><span style="color: #0000BB">$header</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">strpos</span><span style="color: #007700">(</span><span style="color: #0000BB">$header</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'X-Powered-By:'</span><span style="color: #007700">)&nbsp;!==&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">header_remove</span><span style="color: #007700">(</span><span style="color: #DD0000">'X-Powered-By'</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">header_remove</span><span style="color: #007700">(</span><span style="color: #DD0000">'X-Test'</span><span style="color: #007700">);<br />&nbsp;}<br />}<br /><br /></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">header_register_callback</span><span style="color: #007700">(</span><span style="color: #DD0000">'foo'</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #DD0000">"a"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+Content-Type: text/plain
+
+a
+</pre></div>
+   </div>
+  </div>
+ </div>
+
+
+ <div class="refsect1 notes" id="refsect1-function.header-register-callback-notes">
+  <h3 class="title">注意</h3>
+  <p class="para">
+    <span class="function"><strong>header_register_callback()</strong></span>
+   はヘッダを送出しようとするときに実行されるので、
+   この関数の中で何らかの出力をしてしまうと出力が壊れてしまいます。
+  </p>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    ヘッダにアクセスできたりヘッダを出力したりするのは、
+    それに対応した SAPI を使っている場合のみです。
+   </p>
+  </p></blockquote>
+
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.header-register-callback-seealso">
+  <h3 class="title">参考</h3>
+  <ul class="simplelist">
+   <li class="member"> <span class="function"><a href="function.headers-list.html" class="function" rel="rdfs-seeAlso">headers_list()</a> - 送信した (もしくは送信される予定の) レスポンスヘッダの一覧を返す</span></li>
+   <li class="member"> <span class="function"><a href="function.header-remove.html" class="function" rel="rdfs-seeAlso">header_remove()</a> - 以前に設定したHTTPヘッダを削除する</span></li>
+   <li class="member"> <span class="function"><a href="function.header.html" class="function" rel="rdfs-seeAlso">header()</a> - 生の HTTP ヘッダを送信する</span></li>
+  </ul>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="111498""></a>
+  <div class="note">
+   <strong class="user">matt@kafene</strong>
+   <a href="#111498" class="date">27-Feb-2013 07:26</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note that this function only registers a single callback as of php 5.4. The most recent callback set is the one that will be executed, they will not be executed in order like with register_shutdown_function(), just overwritten.<br />
+<br />
+Here is my test:<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+$i </span><span class="keyword">= </span><span class="default">$j </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br />
+</span><span class="default">header_register_callback</span><span class="keyword">(function() use(&amp;</span><span class="default">$i</span><span class="keyword">){ </span><span class="default">$i</span><span class="keyword">+=</span><span class="default">2</span><span class="keyword">; });<br />
+</span><span class="default">header_register_callback</span><span class="keyword">(function() use(&amp;</span><span class="default">$i</span><span class="keyword">){ </span><span class="default">$i</span><span class="keyword">+=</span><span class="default">3</span><span class="keyword">; });<br />
+</span><span class="default">register_shutdown_function</span><span class="keyword">(function() use(&amp;</span><span class="default">$j</span><span class="keyword">){ </span><span class="default">$j</span><span class="keyword">+=</span><span class="default">2</span><span class="keyword">; });<br />
+</span><span class="default">register_shutdown_function</span><span class="keyword">(function() use(&amp;</span><span class="default">$j</span><span class="keyword">){ </span><span class="default">$j</span><span class="keyword">+=</span><span class="default">3</span><span class="keyword">; });<br />
+</span><span class="default">register_shutdown_function</span><span class="keyword">(function() use(&amp;</span><span class="default">$j</span><span class="keyword">){ </span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$j</span><span class="keyword">); });<br />
+while(!</span><span class="default">headers_sent</span><span class="keyword">()) { echo </span><span class="string">"&lt;!-- ... flushing ... --&gt;"</span><span class="keyword">; }<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">headers_sent</span><span class="keyword">(), </span><span class="default">$i</span><span class="keyword">);<br />
+exit;<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Results:<br />
+<br />
+headers_sent() - true<br />
+$i = 3<br />
+$j = 5</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.getservbyport.html">getservbyport</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.header-remove.html">header_remove</a></div>
+ <div class="up"><a href="ref.network.html">ネットワーク 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

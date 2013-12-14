@@ -1,0 +1,385 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Ingres データベースへの接続をオープンする</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.ingres-commit.html">ingres_commit</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.ingres-cursor.html">ingres_cursor</a></div>
+ <div class="up"><a href="ref.ingres.html">Ingres 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.ingres-connect" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ingres_connect</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.2, PHP 5 &lt;= 5.0.5, PECL ingres &gt;= 1.0.0)</p><p class="refpurpose"><span class="refname">ingres_connect</span> &mdash; <span class="dc-title">Ingres データベースへの接続をオープンする</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.ingres-connect-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">resource</span> <span class="methodname"><strong>ingres_connect</strong></span>
+    ([ <span class="methodparam"><span class="type">string</span> <code class="parameter">$database</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$username</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$password</code></span>
+   [, <span class="methodparam"><span class="type">array</span> <code class="parameter">$options</code></span>
+  ]]]] )</div>
+
+  <p class="para rdfs-comment">
+    <span class="function"><strong>ingres_connect()</strong></span> は、指定した Ingres
+   <em><code class="parameter">database</code></em> との接続をオープンします。
+  </p>
+  <p class="para">
+   この接続は、スクリプトの実行終了時または、このリンクについて
+    <span class="function"><a href="function.ingres-close.html" class="function">ingres_close()</a></span> がコールされた場合に
+   クローズされます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.ingres-connect-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   いくつかのパラメータが欠けている場合、
+    <span class="function"><strong>ingres_connect()</strong></span> は、
+   <em><code class="parameter">ingres.default_database</code></em>、
+   <em><code class="parameter">ingres.default_user</code></em>、
+   <em><code class="parameter">ingres.default_password</code></em> に関して
+   <var class="filename">php.ini</var> の値を使用します。
+  </p>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">database</code></em></span>
+     <dd>
+
+      <p class="para">
+       データベース名。
+      </p>
+      <p class="para">
+       <var class="varname"><var class="varname">[vnode::]dbname[/svr_class]</var></var>
+       形式でなければなりません。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">username</code></em></span>
+     <dd>
+
+      <p class="para">
+       Ingres のユーザー名。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">password</code></em></span>
+     <dd>
+
+      <p class="para">
+       <em><code class="parameter">username</code></em> のパスワード。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt id="function.ingres-connect.options">
+     <span class="term"><em><code class="parameter">options</code></em></span>
+     <dd>
+
+      <p class="para">
+        <span class="function"><strong>ingres_connect()</strong></span> のオプション
+       <table class="doctable informaltable">
+        
+         <thead>
+          <tr>
+           <th>オプション名</th>
+           <th>型</th>
+           <th>説明</th>
+           <th>例</th>
+          </tr>
+
+         </thead>
+
+         <tbody class="tbody">
+          <tr style="vertical-align: top;">
+           <td>date_century_boundary</td>
+           <td><span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span></td>
+           <td>
+            2桁で指定した年を、今世紀と判断するか来世紀と判断するかの閾値。
+            II_DATE_CENTURY_BOUNDARY と同等です。
+           </td>
+           <td>50</td>
+          </tr>
+
+          <tr style="vertical-align: top;">
+           <td>group</td>
+           <td><span class="type"><a href="language.types.string.html" class="type string">string</a></span></td>
+           <td>ユーザーのグループ ID を指定します。&quot;-G&quot; フラグと同等です。</td>
+           <td>payroll</td>
+          </tr>
+
+          <tr style="vertical-align: top;">
+           <td>role</td>
+           <td><span class="type"><a href="language.types.string.html" class="type string">string</a></span></td>
+           <td>
+            アプリケーションのロール ID。ロールのパスワードが必要な場合は、
+            このパラメータは &quot;role/password&quot; 形式で指定する必要があります。
+           </td>
+          </tr>
+
+          <tr style="vertical-align: top;">
+           <td>effective_user</td>
+           <td><span class="type"><a href="language.types.string.html" class="type string">string</a></span></td>
+           <td>使用する ingres ユーザーアカウント。&quot;-u&quot; フラグと同等です。</td>
+           <td>another_user</td>
+          </tr>
+
+          <tr style="vertical-align: top;">
+           <td>dbms_password</td>
+           <td><span class="type"><a href="language.types.string.html" class="type string">string</a></span></td>
+           <td>ユーザーが Ingres に接続する際に使用する、内部データベースのパスワード。</td>
+           <td>s3cr3t</td>
+          </tr>
+
+          <tr style="vertical-align: top;">
+           <td>table_structure</td>
+           <td><span class="type"><a href="language.types.string.html" class="type string">string</a></span></td>
+           <td><p class="para">
+             新規テーブルのデフォルトの構造。以下のいずれかが指定可能です。
+            <ul class="itemizedlist">
+             <li class="listitem"><span class="simpara">INGRES_STRUCTURE_BTREE</span></li>
+             <li class="listitem"><span class="simpara">INGRES_STRUCTURE_HASH</span></li>
+             <li class="listitem"><span class="simpara">INGRES_STRUCTURE_HEAP</span></li>
+             <li class="listitem"><span class="simpara">INGRES_STRUCTURE_ISAM</span></li>
+             <li class="listitem"><span class="simpara">INGRES_STRUCTURE_CBTREE</span></li>
+             <li class="listitem"><span class="simpara">INGRES_STRUCTURE_CISAM</span></li>
+             <li class="listitem"><span class="simpara">INGRES_STRUCTURE_CHASH</span></li>
+             <li class="listitem"><span class="simpara">INGRES_STRUCTURE_CHEAP</span></li>
+            </ul>
+            </p>
+           </td>
+           <td>INGRES_STRUCTURE_BTREE</td>
+          </tr>
+
+          <tr style="vertical-align: top;">
+           <td>index_structure</td>
+           <td><span class="type"><a href="language.types.string.html" class="type string">string</a></span></td>
+           <td><p class="para">
+             新規セカンダリインデックスのデフォルトの構造。以下のいずれかが指定可能です。
+            <ul class="itemizedlist">
+             <li class="listitem"><span class="simpara">INGRES_STRUCTURE_CBTREE</span></li>
+             <li class="listitem"><span class="simpara">INGRES_STRUCTURE_CISAM</span></li>
+             <li class="listitem"><span class="simpara">INGRES_STRUCTURE_CHASH</span></li>
+             <li class="listitem"><span class="simpara">INGRES_STRUCTURE_BTREE</span></li>
+             <li class="listitem"><span class="simpara">INGRES_STRUCTURE_HASH</span></li>
+             <li class="listitem"><span class="simpara">INGRES_STRUCTURE_ISAM</span></li>
+            </ul>
+            </p>
+           </td>
+           <td>INGRES_STRUCTURE_HASH</td>
+          </tr>
+
+          <tr style="vertical-align: top;">
+           <td>login_local</td>
+           <td><span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span></td>
+           <td>
+            対象データベースの文字列に VNODE が含まれていた場合に
+            ユーザー ID とパスワードをどのように使用して接続するかを指定します。
+            TRUE に設定すると、ユーザー ID とパスワードで VNODE にローカルアクセスし、
+            VNODE のログイン情報を使用してデータベースとの接続を確立します。
+            FALSE に設定すると、プロセスのユーザー ID を使用して VNODE にアクセスし、
+            接続用のユーザー ID とパスワードを VNODE のログイン情報の代わりに使用して
+            データベースとの接続を確立します。対象データベースの文字列に
+            VNODE が含まれていない場合は、このパラメータは無視されます。
+            デフォルトは FALSE です。
+           </td>
+           <td>TRUE</td>
+          </tr>
+
+          <tr style="vertical-align: top;">
+           <td>timezone</td>
+           <td><span class="type"><a href="language.types.string.html" class="type string">string</a></span></td>
+           <td>
+            このセッションのタイムゾーンを設定します。設定しなかった場合は
+            II_TIMEZONE_NAME の値が使用されます。II_TIMEZONE_NAME
+            も設定されていない場合は、NA-PACIFIC (GMT-8 に夏時間を適用)
+            が用いられます。
+           </td>
+          </tr>
+
+          <tr style="vertical-align: top;">
+           <td>date_format</td>
+           <td><span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span></td>
+           <td><p class="para">
+           Ingres の日付として指定可能な入出力書式を設定します。
+           デフォルトは II_DATE_FORMAT で指定された値です。II_DATE_FORMAT
+           が設定されていない場合は、デフォルトは US の日付フォーマット、すなわち
+           mm/dd/yy となります。以下のいずれかが使用可能です。
+            <ul class="itemizedlist">
+             <li class="listitem"><span class="simpara">INGRES_DATE_DMY</span></li>
+             <li class="listitem"><span class="simpara">INGRES_DATE_FINISH</span></li>
+             <li class="listitem"><span class="simpara">INGRES_DATE_GERMAN</span></li>
+             <li class="listitem"><span class="simpara">INGRES_DATE_ISO</span></li>
+             <li class="listitem"><span class="simpara">INGRES_DATE_ISO4</span></li>
+             <li class="listitem"><span class="simpara">INGRES_DATE_MDY</span></li>
+             <li class="listitem"><span class="simpara">INGRES_DATE_MULTINATIONAL</span></li>
+             <li class="listitem"><span class="simpara">INGRES_DATE_MULTINATIONAL4</span></li>
+             <li class="listitem"><span class="simpara">INGRES_DATE_YMD</span></li>
+             <li class="listitem"><span class="simpara">INGRES_DATE_US</span></li>
+            </ul>
+            </p>
+           </td>
+           <td>INGRES_DATE_MULTINATIONAL4</td>
+          </tr>
+
+          <tr style="vertical-align: top;">
+           <td>decimal_separator</td>
+           <td><span class="type"><a href="language.types.string.html" class="type string">string</a></span></td>
+           <td>小数点を表す文字。</td>
+           <td>&quot;,&quot;</td>
+          </tr>
+
+          <tr style="vertical-align: top;">
+           <td>money_lort</td>
+           <td><span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span></td>
+           <td><p class="para">通貨記号を先頭あるいは末尾のどちらにつけるか。以下のいずれかが使用可能です。
+            <ul class="itemizedlist">
+             <li class="listitem"><span class="simpara">INGRES_MONEY_LEADING</span></li>
+             <li class="listitem"><span class="simpara">INGRES_MONEY_TRAILING</span></li>
+            </ul>
+            </p>
+           </td>
+           <td>INGRES_MONEY_TRAILING</td>
+          </tr>
+
+          <tr style="vertical-align: top;">
+           <td>money_sign</td>
+           <td><span class="type"><a href="language.types.string.html" class="type string">string</a></span></td>
+           <td>MONEY データ型で使用する通貨記号。</td>
+           <td>€</td>
+          </tr>
+
+          <tr style="vertical-align: top;">
+           <td>money_precision</td>
+           <td><span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span></td>
+           <td>MONEY データ型の精度。</td>
+           <td>3</td>
+          </tr>
+
+          <tr style="vertical-align: top;">
+           <td>float4_precision</td>
+           <td><span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span></td>
+           <td>FLOAT4 データ型の精度。</td>
+           <td>10</td>
+          </tr>
+
+          <tr style="vertical-align: top;">
+           <td>float8_precision</td>
+           <td><span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span></td>
+           <td>FLOAT8 データの精度。</td>
+           <td>10</td>
+          </tr>
+
+          <tr style="vertical-align: top;">
+           <td>blob_segment_length</td>
+           <td><span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span></td>
+           <td>
+            BLOB/CLOB データを読み込む際に、一度に取得するデータのバイト数。
+            明示的に指定しなかった場合、デフォルトは 4096 バイトです。
+           </td>
+           <td>8192</td>
+          </tr>
+
+         </tbody>
+        
+       </table>
+
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.ingres-connect-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功時に Ingres リンクリソース、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.ingres-connect-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-1205">
+    <p><strong>例1 Ingres データベースへの接続のオープン</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$link&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ingres_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">"mydb"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"user"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"pass"</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;die(</span><span style="color: #DD0000">"接続できませんでした"</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #DD0000">"接続に成功しました"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">ingres_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$link</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.ingres-connect-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="function.ingres-pconnect.html" class="function" rel="rdfs-seeAlso">ingres_pconnect()</a> - Ingres データベースへの持続的接続をオープンする</span></li>
+    <li class="member"> <span class="function"><a href="function.ingres-close.html" class="function" rel="rdfs-seeAlso">ingres_close()</a> - Ingres データベース接続を閉じる</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="76001""></a>
+  <div class="note">
+   <strong class="user">tdjunk at openxtrem dot com</strong>
+   <a href="#76001" class="date">26-Jun-2007 02:09</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+You need to connect with the user running your web server, be it apache, nobody, or system (on MS Windows). Hence you have to create a matching (username) Ingres user.<br />
+<br />
+Otherwise you may experience an Ingres Error :<br />
+<br />
+&nbsp;790536 : Unable to authenticate client's user ID.<br />
+<br />
+See more information on the community forum : <a href="http://community.ingres.com/forum/dba-forum/463-installation-problem-ingres-ice.html" rel="nofollow" target="_blank">http://community.ingres.com/forum/dba-forum/463-installation-problem-ingres-ice.html</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.ingres-commit.html">ingres_commit</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.ingres-cursor.html">ingres_cursor</a></div>
+ <div class="up"><a href="ref.ingres.html">Ingres 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

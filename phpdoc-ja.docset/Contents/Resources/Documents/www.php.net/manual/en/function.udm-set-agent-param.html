@@ -1,0 +1,422 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>mnoGoSearch エージェントのセッションパラメータを設定する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.udm-open-stored.html">udm_open_stored</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="book.solr.html">Solr</a></div>
+ <div class="up"><a href="ref.mnogosearch.html">mnoGoSearch 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.udm-set-agent-param" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">udm_set_agent_param</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.5, PHP 5 &lt;= 5.0.5, PECL mnogosearch &gt;= 1.0.0)</p><p class="refpurpose"><span class="refname">udm_set_agent_param</span> &mdash; <span class="dc-title">mnoGoSearch エージェントのセッションパラメータを設定する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-function.udm-set-agent-param-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>udm_set_agent_param</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$agent</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$var</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$val</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   mnoGoSearch セッションパラメータを定義します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.udm-set-agent-param-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">agent</code></em></span>
+     <dd>
+
+      <p class="para">
+        <span class="function"><a href="function.udm-alloc-agent.html" class="function">udm_alloc_agent()</a></span> のコールにより取得した、
+       エージェントのリンク ID。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">var</code></em></span>
+     <dd>
+
+      <p class="para">
+       以下のパラメータおよびそれらの値が利用可能です。
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>UDM_PARAM_PAGE_NUM</code></strong> - 検索結果のページ番号を選択するために
+          使用されます (結果は、ページ毎に <strong><code>UDM_PARAM_PAGE_SIZE</code></strong> 個の結果を有する
+          0 から始まるページで返されます)。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>UDM_PARAM_PAGE_SIZE</code></strong> - 1 ページに表示される検索結果の数です。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>UDM_PARAM_SEARCH_MODE</code></strong> - 検索モード。次の値が利用可能です。
+          <strong><code>UDM_MODE_ALL</code></strong> - 全ての単語を検索します。; 
+          <strong><code>UDM_MODE_ANY</code></strong> - いずれかの単語で検索します。; 
+          <strong><code>UDM_MODE_PHRASE</code></strong> - 熟語で検索します。;
+          <strong><code>UDM_MODE_BOOL</code></strong> - 論理値で検索します。論理値検索に関する詳細については
+           <span class="function"><a href="function.udm-find.html" class="function">udm_find()</a></span> を参照ください。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>UDM_PARAM_CACHE_MODE</code></strong> - 検索結果のキャッシュモードをオンまたは
+          オフにします。有効の場合、検索エンジンは検索結果をディスクに
+          保存します。似たような検索が後で実行された場合、エンジンは
+          より高速にキャッシュから結果を得ることが可能です。
+          利用可能な値: <strong><code>UDM_CACHE_ENABLED</code></strong>, <strong><code>UDM_CACHE_DISABLED</code></strong>.
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>UDM_PARAM_TRACK_MODE</code></strong> - クエリ追跡モードをオンまたはオフにします。
+          バージョン 3.1.2 以降、mnoGoSearch はクエリ追跡モードをサポート
+          しています。追跡は SQL バージョンにのみ実装されており、組み込み
+          データベースでは利用できません。追跡を使用するには、テーブルを
+          追跡サポート用に作成する必要があります。MySQL の場合、
+          <var class="filename">create/mysql/track.txt</var> を使用してください。検索実行時に、
+          フロントエンドはクエリ単語、見つけたドキュメントの数、カレントの
+          秒単位の Unix タイムスタンプを保存するためにこれらのテーブルを
+          使用します。
+          利用可能な値: <strong><code>UDM_TRACK_ENABLED</code></strong>, <strong><code>UDM_TRACK_DISABLED</code></strong>.
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>UDM_PARAM_PHRASE_MODE</code></strong> - 熟語を用いたインデックスデータベースか
+          どうかを定義します (indexer.confにおける&quot;phrase&quot; パラメータ)。
+          使用可能な値: <strong><code>UDM_PHRASE_ENABLED</code></strong> および <strong><code>UDM_PHRASE_DISABLED</code></strong>。
+          熟語検索が有効な場合 (<strong><code>UDM_PHRASE_ENABLED</code></strong>) でも、全てのモード
+          (<em>ANY</em>、<em>ALL</em>、<em>BOOL</em>、<em>PHRASE</em>)
+          で検索が可能であることに注意してください。
+          mnoGoSearch のバージョン 3.1.10 で、SQL と組み込みデータベース
+          モードでのみ熟語検索がサポートされました。一方、3.1.11 で
+          キャッシュモードでも熟語検索がサポートされ始めました。
+         </span>
+         <span class="simpara">
+          熟語検索の例:
+         </span>
+         <span class="simpara">
+          <em>&quot;Arizona desert&quot;</em> - このクエリは、&quot;Arizona desert&quot; を熟語として含む
+          全てのドキュメントを返します。熟語の前後に二重引用符が
+          必要であることに注意してください。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>UDM_PARAM_CHARSET</code></strong> - ローカルな charset を定義します。利用可能な値:
+          mnoGoSearch によりサポートされるcharset、
+          例えば、koi8-r, cp1251, ...
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>UDM_PARAM_STOPFILE</code></strong> - stopword ファイルの名前とパスを定義します。
+          (mnoGoSearch と若干違いがあります。つまり、mnoGoSearch においては、
+          相対パスまたはパスが入力されなかった場合、<strong><code>UDM_CONF_DIR</code></strong> からの
+          相対パスとしてこのファイルが探されます。一方このモジュールは、
+          カレントのパス、すなわち PHP スクリプトが実行されるパスからの
+          相対パスで探します)。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>UDM_PARAM_STOPTABLE</code></strong> - 指定した SQL テーブルから停止単語をロード
+          します。複数の StopwordTable コマンドを使用可能です。このコマンドは、
+          SQL データベースサポートを有効にせずにコンパイルした場合は
+          使用できません。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>UDM_PARAM_WEIGHT_FACTOR</code></strong> - 指定したドキュメント部分の重み係数を
+          表します。現在、body, title, keywords, description, url が
+          サポートされています。この機能を有効にするには、<var class="filename">indexer.conf</var> の
+          *Weight コマンドに 2 の累乗を指定してください。ここで次のような
+          重みを指定した場合を考えてみましょう。
+         </span>
+         <pre class="literallayout">
+      URLWeight     1
+      BodyWeight    2
+      TitleWeight   4
+      KeywordWeight 8
+      DescWeight    16
+         </pre>
+     
+         <span class="simpara">
+          同じドキュメントにいくつかの単語が複数回現れる場合、
+          indexerが単語の重みに OR 演算子を使用するので、異なった
+          ドキュメントの部分に単語が現れる回数を検出可能です。本文にのみ現れる
+          単語は、(2進標記で) 重み集合 00000010 を有します。すべての
+          ドキュメント部分で使用される単語は、重み集合 00011111 を有します。
+         </span>
+     
+         <span class="simpara">
+          このパラメータの値は、16進数文字列 <em>ABCDE</em> です。各桁は、単語重みの
+          対応するビットの因子です。上で指定した重み設定は次のようになります。
+         </span>
+         <pre class="literallayout">
+       E is a factor for weight 1  (URL Weight bit)
+       D is a factor for weight 2  (BodyWeight bit)
+       C is a factor for weight 4  (TitleWeight bit)
+       B is a factor for weight 8  (KeywordWeight bit)
+       A is a factor for weight 16 (DescWeight bit)
+         </pre>
+         <span class="simpara">
+          例:
+         </span>
+         <span class="simpara">
+          <strong><code>UDM_PARAM_WEIGHT_FACTOR</code></strong>=00001 は、URL のみを検索します。
+         </span>
+         <span class="simpara">
+          <strong><code>UDM_PARAM_WEIGHT_FACTOR</code></strong>=00100 は、Title のみを検索します。
+         </span>
+         <span class="simpara">
+          <strong><code>UDM_PARAM_WEIGHT_FACTOR</code></strong>=11100 は、Title, Keywords, Desctription を
+          検索しますが、URL と Body は検索しません。
+         </span>
+         <span class="simpara">
+          <strong><code>UDM_PARAM_WEIGHT_FACTOR</code></strong>=F9421 は、次の検索を行います。
+         </span>
+         <pre class="literallayout">
+        Description with factor 15  (F hex)
+        Keywords with factor 9
+        Title with factor  4
+        Body with factor 2
+        URL with factor 1
+         </pre>
+         <span class="simpara">
+          <strong><code>UDM_PARAM_WEIGHT_FACTOR</code></strong> 変数が省略された場合、元の重みの値は
+          ソート結果から引き出されます。上記で指定した重み設定の場合、
+          ドキュメントの Description は、最大重み 16 を有するドキュメントの
+          description を意味します。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>UDM_PARAM_WORD_MATCH</code></strong> - 単語にマッチ。このパラメータを単語検索型を
+          選択する際に使用可能です。この機能は、&quot;single&quot; および &quot;multi&quot;
+          モードで SQL データベースおよび組み込みのデータベースを使用する
+          場合にのみ動作します。この機能は、cachemode および他のモードでは
+          動作しません。これは、これらのモードが単語 CRC を使用しており、
+          部分文字列検索をサポートしていないからです。
+          利用可能な値は次のようになります。
+         </span>
+         <span class="simpara"><strong><code>UDM_MATCH_BEGIN</code></strong> - 単語の始めにマッチ</span>
+         <span class="simpara"><strong><code>UDM_MATCH_END</code></strong> - 単語の終りにマッチ</span>
+         <span class="simpara"><strong><code>UDM_MATCH_WORD</code></strong> - 単語全体にマッチ</span>
+         <span class="simpara"><strong><code>UDM_MATCH_SUBSTR</code></strong> - 単語の部分文字列にマッチ</span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>UDM_PARAM_MIN_WORD_LEN</code></strong> - 単語の最短長を定義します。
+          この制限より短い単語は、stopword とみなされます。このパラメータは
+          その値自身も範囲に含むことに注意してください。つまり、
+          <strong><code>UDM_PARAM_MIN_WORD_LEN</code></strong>=3 の場合、3 文字の長さの単語は stopword と
+          見なされませんが、2 文字の単語はstopwordとみなされます。
+          デフォルトは 1 です。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>UDM_PARAM_ISPELL_PREFIXES</code></strong> - 利用可能な値は <strong><code>UDM_PREFIXES_ENABLED</code></strong> および
+          <strong><code>UDM_PREFIXES_DISABLED</code></strong> で、それぞれプレフィックスの使用を有効あるいは
+          無効とします。例えば検索クエリに &quot;tested&quot; が含まれていた場合、
+          &quot;test&quot; や &quot;testing&quot; などといった単語も対象とします。デフォルトでは
+          このようなサフィックスのみがサポートされています。プレフィックスは
+          しばしば単語の意味を変えてしまいます。たとえば、&quot;tested&quot;
+          を検索した際の結果として &quot;untested&quot; が出てきてほしいと思う人は
+          ほとんどいないでしょう。プレフィックスのサポートは、サイトの
+          スペルチェックのために使用すると便利です。ispell を有効にするには、
+           <span class="function"><a href="function.udm-load-ispell-data.html" class="function">udm_load_ispell_data()</a></span> で ispell データを
+          読み込む必要があります。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>UDM_PARAM_CROSS_WORDS</code></strong> - クロスワードのサポートを有効あるいは無効にします。
+          利用可能な値: <strong><code>UDM_CROSS_WORDS_ENABLED</code></strong> および <strong><code>UDM_CROSS_WORDS_DISABLED</code></strong>
+         </span>
+         <span class="simpara">
+          クロスワード機能により、&lt;a href=&quot;xxx&quot;&gt; と &lt;/a&gt; の間の
+          単語もリンク先ドキュメントに設定します。これは SQL データベース
+          モードで動作し、組み込みのデータベースやキャッシュモードでは
+          使用できません。
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>UDM_PARAM_VARDIR</code></strong> - 組み込みのデータベースやキャッシュモードを
+          使用する際に、インデクサがデータを保存するディレクトリへの
+          パスを指定します。デフォルトでは、<span class="application">mnoGoSearch</span> をインストールした
+          ディレクトリの下の <em>/var</em> ディレクトリが
+          使用されます。文字列値のみを指定可能です。
+         </span>
+        </li>
+       </ul>
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">val</code></em></span>
+     <dd>
+
+      <p class="para">
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog" id="refsect1-function.udm-set-agent-param-changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>4.1.0</td>
+       <td>
+        <strong><code>UDM_PARAM_VARDIR</code></strong> が追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.udm-set-agent-param-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes" id="refsect1-function.udm-set-agent-param-notes">
+  <h3 class="title">注意</h3>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <span class="simpara">
+    クロスワードは <span class="application">mnoGoSearch</span> 3.1.11 以降でのみサポートされています。
+   </span>
+  </p></blockquote>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="66039""></a>
+  <div class="note">
+   <strong class="user">ywarnier at beeznest dot org</strong>
+   <a href="#66039" class="date">13-May-2006 01:37</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Other possible session parameters not documented but found in the default php frontend on <a href="http://www.mnogosearch.org:" rel="nofollow" target="_blank">http://www.mnogosearch.org:</a><br />
+UDM_PARAM_BROWSER_CHARSET - ?<br />
+UDM_PARAM_HLBEG - defines the tag to use before an highlighted search term<br />
+UDM_PARAM_HLBEG&nbsp; - defines the tag to use after an highlighted search term<br />
+UDM_PARAM_QSTRING - defines the search term (or query string)<br />
+UDM_PARAM_REMOTE_ADDR - ?<br />
+UDM_PARAM_QUERY - ?<br />
+UDM_PARAM_STORED - ?<br />
+UDM_PARAM_GROUPBYSITE - toggles the "group by site" feature (UDM_ENABLED or UDM_DISABLED)<br />
+UDM_PARAM_SITEID - ?<br />
+UDM_PARAM_DETECT_CLONES - enable the "detect clone" feature (UDM_ENABLED or UDM_DISABLED)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="59971""></a>
+  <div class="note">
+   <strong class="user">adu at php dot net</strong>
+   <a href="#59971" class="date">21-Dec-2005 05:42</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I found an undocumented function: udm_set_agent_param_ex<br />
+For example, if you want to sort results by date, do this:<br />
+udm_set_agent_param_ex($udm_agent, 's', 'DR');<br />
+See <a href="http://www.mnogosearch.org/doc/msearch-doingsearch.html for details" rel="nofollow" target="_blank">http://www.mnogosearch.org/doc/msearch-doingsearch.html for details</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="54874""></a>
+  <div class="note">
+   <strong class="user">GneralTsao</strong>
+   <a href="#54874" class="date">18-Jul-2005 08:27</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+One useful parameter not documented above is UDM_PARAM_SYNONYM.&nbsp; If you understand how this API works in general, you should be able to figure it out, but here goes anyway:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">/* Make sure that PHP is able to find the file.&nbsp; Unlike mnogosearch's indexer and search.cgi, it doesn't know the directory of the installation. */<br />
+</span><span class="default">$synFile</span><span class="keyword">=</span><span class="string">"/usr/local/mnogosearch/etc/synonym/english.syn"</span><span class="keyword">;<br />
+</span><span class="default">udm_set_agent_param</span><span class="keyword">(</span><span class="default">$agent</span><span class="keyword">, </span><span class="default">UDM_PARAM_SYNONYM</span><span class="keyword">, </span><span class="default">$synFile</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Piece of cake.<br />
+<br />
+For more about mnogosearch's handling of synonyms see <a href="http://www.mnogosearch.org/doc/msearch-fuzzy.html#synonyms" rel="nofollow" target="_blank">http://www.mnogosearch.org/doc/msearch-fuzzy.html#synonyms</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.udm-open-stored.html">udm_open_stored</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="book.solr.html">Solr</a></div>
+ <div class="up"><a href="ref.mnogosearch.html">mnoGoSearch 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

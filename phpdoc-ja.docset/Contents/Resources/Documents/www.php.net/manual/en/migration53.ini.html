@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>INIファイル の扱いに関する変更</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="migration53.global-constants.html">新しいグローバル定数</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="migration53.other.html">その他の変更</a></div>
+ <div class="up"><a href="migration53.html">PHP 5.2.x から PHP 5.3.x への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="migration53.ini" class="section">
+  <h2 class="title">INIファイル の扱いに関する変更</h2>
+  <p class="simpara">
+   PHP 5.3.0 はパフォーマンスが大きく向上しました。そして構文解析や構文の新機能があります。
+  </p>
+  <ul class="itemizedlist">
+   <li class="listitem">
+    <span class="simpara">
+     標準の <var class="filename">php.ini</var> ファイルは再び整理され、名前が変更されました。
+     <em>php.ini-development</em> ファイルには開発環境で推奨される設定があります。
+     <em>php.ini-production</em> は本番環境向けに設定されています。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <em>[PATH=/opt/httpd/www.example.com/]</em> と
+     <em>[HOST=www.example.com]</em> という特別なセクションをサポートしました。
+     このセクションに置かれたディレクティブは、
+     実行時やユーザー定義のiniファイルで上書きすることができません。
+     詳しい情報は <a href="ini.sections.html" class="link">こちら</a> を参照してください。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <a href="ini.core.html#ini.zend-extension-debug" class="link">zend_extension_debug</a>、
+     <a href="ini.core.html#ini.zend-extension-debug-ts" class="link">zend_extension_debug_ts</a>
+     そして <a href="ini.core.html#ini.zend-extension-ts" class="link">zend_extension_ts</a>
+     ディレクティブが削除されました。代替として <a href="ini.core.html#ini.zend-extension" class="link">zend_extension</a>
+     をすべてのZend拡張機能をロードするのに使ってください。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <a href="ini.core.html#ini.zend.ze1-compatibility-mode" class="link">zend.ze1_compatibility_mode</a> ディレクティブは削除されました。
+     このディレクティブをONにしていると、<strong><code>E_ERROR</code></strong> エラーが起動時に発生します。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <a href="ini.core.html#ini.extension" class="link">extension</a>
+     ディレクティブを使ってロードするモジュールをフルパスで指定できるようになりました。
+     directive.
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <var class="filename">php.ini</var> ファイルのほとんどすべての場所で <em>&quot;ini-variables&quot;</em> の形式が使えるようになりました。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     実行時に <a href="ini.core.html#ini.open-basedir" class="link">open_basedir</a> の制限をより厳しくできるようになりました。
+     また、このディレクティブは PHP_INI_ALL になりました。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     INI オプションの配列で 数値とアルファベットが混じった値が使えるようになりました。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+      <span class="function"><a href="function.get-cfg-var.html" class="function">get_cfg_var()</a></span> 関数は &quot;配列の&quot; INIオプションを返せるようになりました。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     メールに関するディレクティブ
+     <a href="mail.configuration.html#ini.mail.add-x-header" class="link">mail.add_x_header</a> および
+     <a href="mail.configuration.html#ini.mail.log" class="link">mail.log</a> が追加されました。
+    </span>
+   </li>
+  </ul>
+  <p class="simpara">
+   新しく追加された iniディレクティブ は以下の通りです。
+  </p>
+  <ul class="itemizedlist">
+   <li class="listitem">
+    <span class="simpara">
+     <em>user_ini.filename</em> と <em>user_ini.cache_ttl</em> 
+     が追加されました。これは、
+     <a href="configuration.file.per-user.html" class="link">ユーザー定義 INI ファイル</a>用のものです。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <a href="ini.core.html#ini.exit-on-timeout" class="link">exit_on_timeout</a> が追加されました。
+     これは、PHP でタイムアウトが発生したときに Apache 1.x の子プロセスを終了させるものです。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <em>mbstring.http_output_conv_mimetype</em> が追加されました。
+     このディレクティブは  <span class="function"><a href="function.mb-output-handler.html" class="function">mb_output_handler()</a></span>
+     関数が呼び出された場合に使う Content-Type の正規表現パターンを指定します。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <a href="ini.core.html#ini.request-order" class="link">request_order</a> ディレクティブが追加されました。
+     これはどのリクエストオプションを <var class="varname"><var class="varname"><a href="reserved.variables.request.html" class="classname">$_REQUEST</a></var></var>
+     変数で正確に利用可能にすべきかを指定します。
+    </span>
+   </li>
+  </ul>
+  <p class="simpara">
+   デフォルト値が変更された ini ディレクティブは以下の通りです。
+  </p>
+  <ul class="itemizedlist">
+   <li class="listitem">
+    <span class="simpara">
+     <a href="session.configuration.html#ini.session.use-only-cookies" class="link">session.use_only_cookies</a> のデフォルト値は
+     <em>&quot;1&quot;</em> (有効) になりました。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <a href="oci8.configuration.html#ini.oci8.default-prefetch" class="link">oci8.default_prefetch</a> の値は
+     <em>&quot;10&quot;</em> から <em>&quot;100&quot;</em> に変更されました。
+    </span>
+   </li>
+  </ul>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="migration53.global-constants.html">新しいグローバル定数</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="migration53.other.html">その他の変更</a></div>
+ <div class="up"><a href="migration53.html">PHP 5.2.x から PHP 5.3.x への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

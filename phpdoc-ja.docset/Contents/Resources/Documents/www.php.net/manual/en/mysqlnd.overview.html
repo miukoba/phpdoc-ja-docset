@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>概要</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="intro.mysqlnd.html">導入</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd.install.html">インストール</a></div>
+ <div class="up"><a href="book.mysqlnd.html">Mysqlnd</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mysqlnd.overview" class="chapter">
+ <h1>概要</h1>
+
+ <p class="para">
+  <em class="emphasis">何ではないか</em>
+ </p>
+ <p class="para">
+  MySQL Native Driver は PHP の拡張モジュールとして作られていますが、
+  PHP を使って開発をする人たちに新しい API を提供するものではないことに注意しましょう。
+  MySQL データベースに接続するための API を提供するのは、
+  MySQL 拡張モジュールや <em>mysqli</em> そして
+  PDO MYSQL です。これらの拡張モジュールが、MySQL Native
+  Driver を使って MySQL サーバーと通信できるようになったということです。
+  したがって、MySQL Native Driver を新たな API と考えてはいけません。
+ </p>
+ <p class="para">
+  <em class="emphasis">使うべき理由</em>
+ </p>
+ <p class="para">
+  MySQL Native Driver には、
+  MySQL Client Library に比べて数多くの利点があります。
+ </p>
+ <p class="para">
+  旧来の MySQL Client Library は MySQL AB (現在の Oracle
+  Corporation) が書いたものであり、MySQL ライセンスのもとでリリースされていました。
+  それが原因で、最終的には PHP がデフォルトで MySQL をサポートしないようになったのです。
+  しかし MySQL Native Driver は PHP プロジェクトの一部として開発されており、
+  PHP ライセンスのもとでリリースされています。
+  これで、かつて存在したライセンス問題も解決しました。
+ </p>
+ <p class="para">
+  また、かつては MySQL データベース用の拡張モジュールをビルドするには
+  MySQL Client Library が必要でした。
+  これはつまり、PHP をソースからビルドしようとすると、
+  そのマシン上に MySQL をインストールしておく必要があったということです。
+  また、PHP のアプリケーションを動かす際に、
+  MySQL データベース用の拡張モジュールは最終的に
+  MySQL Client Library のファイルを呼び出すことになるので、
+  システム上にそのファイルをインストールしておくことも必要でした。
+  MySQL Native Driver ならその必要はありません。
+  すべてが標準の配布ファイルに組み込まれているからです。
+  PHP をビルドしたり PHP のアプリケーションを動かしたりするときに、
+  MySQL をインストールする必要がなくなったのです。
+ </p>
+ <p class="para">
+  MySQL Native Driver は PHP の拡張モジュールとして作られているので、
+  PHP 本体の動作と密につながっています。つまり、
+  特にメモリ管理などの点で効率があがります。
+  というのも、ドライバが PHP のメモリ管理システムを使えるからです。
+  また、PHP のメモリ制限もサポートします。
+  MySQL Native Driver を使うと MySQL Client Library
+  と同等あるいはそれを上回るパフォーマンスを得られますが、
+  メモリの使い方はずっと効率的です。その一例をあげましょう。
+  MySQL Client Library を使うと各行がメモリに二度格納されることになりますが、
+  MySQL Native Driver の場合は各行がメモリに格納されるのは一度だけです。
+ </p>
+ <blockquote class="note"><p><strong class="note">注意</strong>: 
+  <strong>メモリ使用量の報告</strong><br />
+  <p class="para">
+   MySQL Native Driver は PHP のメモリ管理システムを使っているので、
+   そのメモリ使用量を  <span class="function"><a href="function.memory-get-usage.html" class="function">memory_get_usage()</a></span> で追えます。
+   これは libmysqlclient では不可能なことです。なぜなら libmysqlclient は
+   C の malloc() 関数を使っているからです。
+  </p>
+ </p></blockquote>
+ <p class="para">
+  <em class="emphasis">おすすめ機能</em>
+ </p>
+ <p class="para">
+  MySQL Native Driver には、それ特有の機能もあります。
+  以下にまとめるこれらの機能は、MySQL Client Library を使った MySQL
+  データベース用の拡張モジュールでは利用できないものです。
+ </p>
+ <ul class="itemizedlist">
+  <li class="listitem">
+   <p class="para">
+    持続的接続の改善
+   </p>
+  </li>
+  <li class="listitem">
+   <p class="para">
+     <span class="function"><a href="mysqli-result.fetch-all.html" class="function">mysqli_fetch_all()</a></span> 関数
+   </p>
+  </li>
+  <li class="listitem">
+   <p class="para">
+    パフォーマンス統計用の関数
+     <span class="function"><a href="function.mysqli-get-cache-stats.html" class="function">mysqli_get_cache_stats()</a></span>、
+     <span class="function"><a href="mysqli.get-client-stats.html" class="function">mysqli_get_client_stats()</a></span>、
+     <span class="function"><a href="mysqli.get-connection-stats.html" class="function">mysqli_get_connection_stats()</a></span>
+   </p>
+  </li>
+ </ul>
+ <p class="para">
+  パフォーマンス統計機能を活用すれば、
+  パフォーマンス上のボトルネックを見つけるのに大いに役立つでしょう。
+ </p>
+ <p class="para">
+  MySQL Native Driver を
+  <em>mysqli</em> 拡張モジュールで使うと、持続的接続も可能です。
+ </p>
+ <p class="para">
+  <em class="emphasis">SSL サポート</em>
+ </p>
+ <p class="para">
+  MySQL Native Driver は PHP 5.3.3 以降で SSL をサポートします。
+ </p>
+ <p class="para">
+  <em class="emphasis">圧縮プロトコルのサポート</em>
+ </p>
+ <p class="para">
+  PHP 5.3.2 以降では、MySQL Native Driver は圧縮したクライアントサーバープロトコルをサポートします。
+  5.3.0 や 5.3.1 の時点ではまだ対応していませんでした。
+  <em>ext/mysql</em> や <em>ext/mysqli</em>
+  では、MySQL Native Driver を使うように設定すればこの機能を使えるようになります。
+  ただし、<em>PDO_MYSQL</em> については mysqlnd
+  と組み合わせても圧縮機能が<em class="emphasis">使えない</em>ことに注意しましょう。
+ </p>
+ <p class="para">
+  <em class="emphasis">名前付きパイプのサポート</em>
+ </p>
+ <p class="para">
+  Windows 上での名前付きパイプのサポートは、PHP 5.4.0 で追加されました。
+ </p>
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="intro.mysqlnd.html">導入</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd.install.html">インストール</a></div>
+ <div class="up"><a href="book.mysqlnd.html">Mysqlnd</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>インストール手順</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="opcache.requirements.html">要件</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="opcache.configuration.html">実行時設定</a></div>
+ <div class="up"><a href="opcache.setup.html">インストール/設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="opcache.installation" class="sect1">
+ <h2 class="title">インストール手順</h2>
+
+ <p class="para">
+  OPcache のインストール手順は、どのバージョンの PHP を実行しているかによって異なります。
+  詳細は以下の適切なセクションを参照してください。
+ </p>
+
+ <blockquote class="note"><p><strong class="note">注意</strong>: 
+  <p class="para">
+   OPcache を <a href="http://xdebug.org/" class="link external" title="Link : http://xdebug.org/">&raquo;&nbsp;Xdebug</a> と一緒に使う場合は、OPcache を Xdebug より前にロードさせなければいけません。
+  </p>
+ </p></blockquote>
+
+ <div class="sect2" id="opcache.installation.bundled">
+  <h3 class="title">PHP 5.5.0 以降の場合</h3>
+
+  <p class="para">
+   デフォルトで OPcache は共有ライブラリ形式の拡張モジュールとしてコンパイルされます。
+   <strong class="option configure">--disable-all</strong>
+ を指定してデフォルトでコンパイルされる拡張モジュールを無効にしている場合は、OPcache が利用可能になるように <strong class="option configure">--enable-opcache</strong>
+ オプションを使って PHP をコンパイルしなければいけません。
+  </p>
+  
+  <p class="para">
+   いったんコンパイルすると、<a href="ini.core.html#ini.zend-extension" class="link">zend_extension</a> 設定ディレクティブを使って OPcache を PHP にロードできます。これは <em>zend_extension=/full/path/to/opcache.so</em> という設定で行えます。Windows の場合は <em>zend_extension=C:\path\to\php_opcache.dll</em> を使います。
+  </p>
+ </div>
+
+ <div class="sect2" id="opcache.installation.pecl">
+  <h3 class="title">PHP 5.2, 5.3, 5.4 の場合</h3>
+
+  <p class="para">
+   この <a href="http://pecl.php.net/" class="link external" title="Link : http://pecl.php.net/">&raquo;&nbsp;PECL</a> 拡張
+モジュールは PHP にバンドルされていません。
+  </p>
+
+  <p class="para">
+   この PECL 拡張モジュールをインストールする方法は、
+マニュアルの <a href="install.pecl.html" class="link">
+PECL 拡張モジュールのインストール</a> という章にあります。
+新規リリース・ダウンロード・ソースファイル・管理者情報・CHANGELOG
+といった関連する情報については、次の場所にあります。
+   <a href="http://pecl.php.net/package/ZendOpcache" class="link external" title="Link : http://pecl.php.net/package/ZendOpcache">&raquo;&nbsp;http://pecl.php.net/package/ZendOpcache</a>.
+  </p>
+
+  <p class="para">
+   この <acronym title="PHP Extension and Application Repository">PECL</acronym>
+拡張モジュールの <acronym title="Dynamic Link Library">DLL</acronym> は、現在存在しません。
+<a href="install.windows.building.html" class="link">Windows でのビルド</a>
+も参照ください
+  </p>
+ </div>
+
+ <div class="sect2" id="opcache.installation.recommended">
+  <h3 class="title">推奨される php.ini の設定</h3>
+
+  <p class="para">
+   良好なパフォーマンスを得るために、一般的に推奨される設定は次の通りです。
+  </p>
+
+  <div class="informalexample">
+   <div class="example-contents">
+<div class="cdata"><pre>
+opcache.memory_consumption=128
+opcache.interned_strings_buffer=8
+opcache.max_accelerated_files=4000
+opcache.revalidate_freq=60
+opcache.fast_shutdown=1
+opcache.enable_cli=1
+</pre></div>
+   </div>
+
+  </div>
+
+  <p class="para">
+   <a href="opcache.configuration.html#ini.opcache.save-comments" class="link">opcache.save_comments</a> を無効にし、
+   <a href="opcache.configuration.html#ini.opcache.enable-file-override" class="link">opcache.enable_file_override</a> を有効にしたいと思うかもしれませんが、この設定を行う前に実運用環境であなたのコードを必ずテストするようにしてください。なぜなら、この設定は特にドキュメント向けのコメントやアノテーションを使っている場合に、既存のフレームワークやアプリケーションが壊れることが既知の現象としてあるからです。
+  </p>
+
+  <p class="para">
+   OPcache がサポートしている設定ディレクティブの完全なリストは
+   <a href="opcache.configuration.html" class="link">実行時設定</a> のページにあります。
+  </p>
+ </div>
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113510""></a>
+  <div class="note">
+   <strong class="user">dosercz</strong>
+   <a href="#113510" class="date">22-Oct-2013 07:26</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+For me works (on windows) only filename without path (default extensions dir path is used)<br />
+zend_extension=php_opcache.dll</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="opcache.requirements.html">要件</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="opcache.configuration.html">実行時設定</a></div>
+ <div class="up"><a href="opcache.setup.html">インストール/設定</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

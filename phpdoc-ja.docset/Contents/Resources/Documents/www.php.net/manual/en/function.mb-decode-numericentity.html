@@ -1,0 +1,317 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>HTML 数値エンティティを文字にデコードする</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.mb-decode-mimeheader.html">mb_decode_mimeheader</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.mb-detect-encoding.html">mb_detect_encoding</a></div>
+ <div class="up"><a href="ref.mbstring.html">マルチバイト文字列 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mb-decode-numericentity" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mb_decode_numericentity</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.0.6, PHP 5)</p><p class="refpurpose"><span class="refname">mb_decode_numericentity</span> &mdash; <span class="dc-title">HTML 数値エンティティを文字にデコードする</span></p>
+
+ </div>
+   
+ <div class="refsect1 description" id="refsect1-function.mb-decode-numericentity-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">string</span> <span class="methodname"><strong>mb_decode_numericentity</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$str</code></span>
+   , <span class="methodparam"><span class="type">array</span> <code class="parameter">$convmap</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$encoding</code><span class="initializer"> = mb_internal_encoding()</span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+   文字列 <em><code class="parameter">str</code></em>
+   において指定した文字領域にある数値エンティティを変換し、
+   変換後の文字列を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.mb-decode-numericentity-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">str</code></em></span>
+     <dd>
+
+      <p class="para">
+       デコードする文字列。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">convmap</code></em></span>
+     <dd>
+
+      <p class="para">
+       <em><code class="parameter">convmap</code></em>
+       は変換するコード領域を指定する配列です。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">encoding</code></em></span>
+     <dd>
+
+      <p class="para"><em><code class="parameter">encoding</code></em> 
+パラメータには文字エンコーディングを指定します。省略した場合は、
+内部文字エンコーディングを使用します。</p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 returnvalues" id="refsect1-function.mb-decode-numericentity-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   変換された文字列を返します。
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 examples" id="refsect1-function.mb-decode-numericentity-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-2695">
+    <p><strong>例1 <em><code class="parameter">convmap</code></em> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$convmap&nbsp;</span><span style="color: #007700">=&nbsp;array&nbsp;(<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">int&nbsp;start_code1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">int&nbsp;end_code1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">int&nbsp;offset1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">int&nbsp;mask1</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">int&nbsp;start_code2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">int&nbsp;end_code2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">int&nbsp;offset2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">int&nbsp;mask2</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;........<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">int&nbsp;start_codeN</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">int&nbsp;end_codeN</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">int&nbsp;offsetN</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">int&nbsp;maskN&nbsp;</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;start_codeN&nbsp;および&nbsp;end_codeN&nbsp;に&nbsp;Unicode値を指定<br />//&nbsp;値にoffsetNを追加、マスクmaskNを指定してビット毎の'AND'をとり、<br />//&nbsp;数値エンティティに値を変換します。<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.mb-decode-numericentity-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="function.mb-encode-numericentity.html" class="function" rel="rdfs-seeAlso">mb_encode_numericentity()</a> - 文字を HTML 数値エンティティにエンコードする</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="89992""></a>
+  <div class="note">
+   <strong class="user">Navi</strong>
+   <a href="#89992" class="date">01-Apr-2009 10:00</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Manual entity =&gt; utf8 conversion:<br />
+<span class="default">&lt;?php<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// parse entities<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$raw </span><span class="keyword">= </span><span class="default">preg_replace_callback<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">(<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">"/&amp;#(\\d+);/u"</span><span class="keyword">,<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">"_pcreEntityToUtf"</span><span class="keyword">,<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$raw<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp;&nbsp; function </span><span class="default">_pcreEntityToUtf</span><span class="keyword">(</span><span class="default">$matches</span><span class="keyword">)<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$char </span><span class="keyword">= </span><span class="default">intval</span><span class="keyword">(</span><span class="default">is_array</span><span class="keyword">(</span><span class="default">$matches</span><span class="keyword">) ? </span><span class="default">$matches</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">] : </span><span class="default">$matches</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if (</span><span class="default">$char </span><span class="keyword">&lt; </span><span class="default">0x80</span><span class="keyword">)<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// to prevent insertion of control characters<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if (</span><span class="default">$char </span><span class="keyword">&gt;= </span><span class="default">0x20</span><span class="keyword">) return </span><span class="default">htmlspecialchars</span><span class="keyword">(</span><span class="default">chr</span><span class="keyword">(</span><span class="default">$char</span><span class="keyword">));<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; else return </span><span class="string">"&amp;#</span><span class="default">$char</span><span class="string">;"</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; else if (</span><span class="default">$char </span><span class="keyword">&lt; </span><span class="default">0x8000</span><span class="keyword">)<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">chr</span><span class="keyword">(</span><span class="default">0xc0 </span><span class="keyword">| (</span><span class="default">0x1f </span><span class="keyword">&amp; (</span><span class="default">$char </span><span class="keyword">&gt;&gt; </span><span class="default">6</span><span class="keyword">))) . </span><span class="default">chr</span><span class="keyword">(</span><span class="default">0x80 </span><span class="keyword">| (</span><span class="default">0x3f </span><span class="keyword">&amp; </span><span class="default">$char</span><span class="keyword">));<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; else<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">chr</span><span class="keyword">(</span><span class="default">0xe0 </span><span class="keyword">| (</span><span class="default">0x0f </span><span class="keyword">&amp; (</span><span class="default">$char </span><span class="keyword">&gt;&gt; </span><span class="default">12</span><span class="keyword">))) . </span><span class="default">chr</span><span class="keyword">(</span><span class="default">0x80 </span><span class="keyword">| (</span><span class="default">0x3f </span><span class="keyword">&amp; (</span><span class="default">$char </span><span class="keyword">&gt;&gt; </span><span class="default">6</span><span class="keyword">))). </span><span class="default">chr</span><span class="keyword">(</span><span class="default">0x80 </span><span class="keyword">| (</span><span class="default">0x3f </span><span class="keyword">&amp; </span><span class="default">$char</span><span class="keyword">));<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="64672""></a>
+  <div class="note">
+   <strong class="user">donovan at conduit it</strong>
+   <a href="#64672" class="date">19-Apr-2006 06:05</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+note that at this time it seems that mb_decode_numericentity() only works with decimal entities and not hexadecimal entities.&nbsp; This fact would have saved me a good hour of time in debugging.<br />
+<br />
+For those who need to convert hex entities try first converting them all to decimal entities with a combination of the preg_replace() and hexdec() functions.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="49508""></a>
+  <div class="note">
+   <strong class="user">dirk at camindo de</strong>
+   <a href="#49508" class="date">30-Jan-2005 06:51</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+By use of function utf8_decode you'll get a problem with all extended chars above ISO-8859-1 charset. You can solve this problem by using the <br />
+<br />
+function mb_encode_numericentity before:<br />
+<br />
+&nbsp; // convert $text from UTF-8 to ISO-8859-1<br />
+&nbsp; $convmap = array(0xFF, 0x2FFFF, 0, 0xFFFF);<br />
+&nbsp; $text = mb_encode_numericentity($text, $convmap, "UTF-8");<br />
+&nbsp; $text = utf8_decode($text);<br />
+<br />
+The second line encodes all extended chars below 0xFF, the third line converts the rest: 0x80 - 0xFF</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="48085""></a>
+  <div class="note">
+   <strong class="user">Andrew Simpson</strong>
+   <a href="#48085" class="date">11-Dec-2004 02:29</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Many web browsers will tend upload high order characters as UTF-8 encoded entities. <br />
+<br />
+Here is some simple code to convert UTF-8 HTML entities within a block of text into proper characters:<br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp;&nbsp; </span><span class="comment">//decode decimal HTML entities added by web browser<br />
+&nbsp; </span><span class="default">$body </span><span class="keyword">= </span><span class="default">preg_replace</span><span class="keyword">(</span><span class="string">'/&amp;#\d{2,5};/ue'</span><span class="keyword">, </span><span class="string">"utf8_entity_decode('$0')"</span><span class="keyword">, </span><span class="default">$body </span><span class="keyword">);<br />
+&nbsp; </span><span class="comment">//decode hex HTML entities added by web browser<br />
+&nbsp; </span><span class="default">$body </span><span class="keyword">= </span><span class="default">preg_replace</span><span class="keyword">(</span><span class="string">'/&amp;#x([a-fA-F0-7]{2,8});/ue'</span><span class="keyword">, </span><span class="string">"utf8_entity_decode('&amp;#'.hexdec('$1').';')"</span><span class="keyword">, </span><span class="default">$body </span><span class="keyword">);<br />
+<br />
+</span><span class="comment">//callback function for the regex<br />
+</span><span class="keyword">function </span><span class="default">utf8_entity_decode</span><span class="keyword">(</span><span class="default">$entity</span><span class="keyword">){<br />
+&nbsp;</span><span class="default">$convmap </span><span class="keyword">= array(</span><span class="default">0x0</span><span class="keyword">, </span><span class="default">0x10000</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">, </span><span class="default">0xfffff</span><span class="keyword">);<br />
+&nbsp;return </span><span class="default">mb_decode_numericentity</span><span class="keyword">(</span><span class="default">$entity</span><span class="keyword">, </span><span class="default">$convmap</span><span class="keyword">, </span><span class="string">'UTF-8'</span><span class="keyword">);<br />
+}<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="41126""></a>
+  <div class="note">
+   <strong class="user">php at cNhOiSpPpAlMe dot org</strong>
+   <a href="#41126" class="date">31-Mar-2004 09:55</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Here are functions to convert hankaku to zenkaku characters (and vice-versa) in Japanese text.<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="comment">// Supported characters:<br />
+//&nbsp; &nbsp; (space)<br />
+//&nbsp; &nbsp;&nbsp; !#$%&amp;()*+,./0123456789:;&lt;=&gt;?@<br />
+//&nbsp; &nbsp; ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`<br />
+//&nbsp; &nbsp; abcdefghijklmnopqrstuvwxyz{|}<br />
+// (Katakana isn't supported.)<br />
+<br />
+</span><span class="keyword">function </span><span class="default">f_han2zen </span><span class="keyword">(</span><span class="default">$string</span><span class="keyword">,</span><span class="default">$encoding </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">) {<br />
+&nbsp; if (</span><span class="default">is_null</span><span class="keyword">(</span><span class="default">$encoding</span><span class="keyword">)) </span><span class="default">$encoding </span><span class="keyword">= </span><span class="default">mb_internal_encoding</span><span class="keyword">();<br />
+&nbsp; </span><span class="default">$convmap </span><span class="keyword">= array(<br />
+&nbsp;&nbsp; &nbsp; </span><span class="default">0x20</span><span class="keyword">,</span><span class="default">0x20</span><span class="keyword">,</span><span class="default">0x3000</span><span class="keyword">-</span><span class="default">0x20</span><span class="keyword">,</span><span class="default">0xffff</span><span class="keyword">,&nbsp;&nbsp; </span><span class="comment">// Space<br />
+&nbsp;&nbsp; &nbsp; </span><span class="default">0x21</span><span class="keyword">,</span><span class="default">0x7e</span><span class="keyword">,</span><span class="default">0xff01</span><span class="keyword">-</span><span class="default">0x21</span><span class="keyword">,</span><span class="default">0xffff</span><span class="keyword">);<br />
+&nbsp; </span><span class="default">$temp </span><span class="keyword">= </span><span class="default">mb_encode_numericentity</span><span class="keyword">(</span><span class="default">$string</span><span class="keyword">,</span><span class="default">$convmap</span><span class="keyword">,</span><span class="default">$encoding</span><span class="keyword">);<br />
+&nbsp; </span><span class="default">$convmap </span><span class="keyword">= array(</span><span class="default">0</span><span class="keyword">,</span><span class="default">0xffff</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">,</span><span class="default">0xffff</span><span class="keyword">);<br />
+&nbsp; return </span><span class="default">mb_decode_numericentity</span><span class="keyword">(</span><span class="default">$temp</span><span class="keyword">,</span><span class="default">$convmap</span><span class="keyword">,</span><span class="default">$encoding</span><span class="keyword">);<br />
+}<br />
+function </span><span class="default">f_zen2han </span><span class="keyword">(</span><span class="default">$string</span><span class="keyword">,</span><span class="default">$encoding </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">) {<br />
+&nbsp; if (</span><span class="default">is_null</span><span class="keyword">(</span><span class="default">$encoding</span><span class="keyword">)) </span><span class="default">$encoding </span><span class="keyword">= </span><span class="default">mb_internal_encoding</span><span class="keyword">();<br />
+&nbsp; </span><span class="default">$convmap </span><span class="keyword">= array(<br />
+&nbsp;&nbsp; &nbsp; </span><span class="default">0x3000</span><span class="keyword">,</span><span class="default">0x3000</span><span class="keyword">,-(</span><span class="default">0x3000</span><span class="keyword">-</span><span class="default">0x20</span><span class="keyword">),</span><span class="default">0xffff</span><span class="keyword">,&nbsp;&nbsp; </span><span class="comment">// Space<br />
+&nbsp;&nbsp; &nbsp; </span><span class="default">0xff01</span><span class="keyword">,</span><span class="default">0xff5e</span><span class="keyword">,-(</span><span class="default">0xff01</span><span class="keyword">-</span><span class="default">0x21</span><span class="keyword">),</span><span class="default">0xffff</span><span class="keyword">);<br />
+&nbsp; </span><span class="default">$temp </span><span class="keyword">= </span><span class="default">mb_encode_numericentity</span><span class="keyword">(</span><span class="default">$string</span><span class="keyword">,</span><span class="default">$convmap</span><span class="keyword">,</span><span class="default">$encoding</span><span class="keyword">);<br />
+&nbsp; </span><span class="default">$convmap </span><span class="keyword">= array(</span><span class="default">0</span><span class="keyword">,</span><span class="default">0xffff</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">,</span><span class="default">0xffff</span><span class="keyword">);<br />
+&nbsp; return </span><span class="default">mb_decode_numericentity</span><span class="keyword">(</span><span class="default">$temp</span><span class="keyword">,</span><span class="default">$convmap</span><span class="keyword">,</span><span class="default">$encoding</span><span class="keyword">);<br />
+}<br />
+<br />
+</span><span class="comment">// Sample usage:<br />
+</span><span class="default">f_han2zen</span><span class="keyword">(</span><span class="string">"test"</span><span class="keyword">,</span><span class="string">"shift_jis"</span><span class="keyword">);<br />
+</span><span class="default">f_han2zen</span><span class="keyword">(</span><span class="string">"test"</span><span class="keyword">,</span><span class="string">"utf-8"</span><span class="keyword">);<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="37547""></a>
+  <div class="note">
+   <strong class="user">dev at glossword info</strong>
+   <a href="#37547" class="date">19-Nov-2003 04:43</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Just two great functions for daily use:<br />
+<br />
+/* Converts any HTML-entities into characters */<br />
+function my_numeric2character($t)<br />
+{<br />
+&nbsp;&nbsp;&nbsp; $convmap = array(0x0, 0x2FFFF, 0, 0xFFFF);<br />
+&nbsp;&nbsp;&nbsp; return mb_decode_numericentity($t, $convmap, 'UTF-8');<br />
+}<br />
+/* Converts any characters into HTML-entities */<br />
+function my_character2numeric($t)<br />
+{<br />
+&nbsp;&nbsp;&nbsp; $convmap = array(0x0, 0x2FFFF, 0, 0xFFFF);<br />
+&nbsp;&nbsp;&nbsp; return mb_encode_numericentity($t, $convmap, 'UTF-8');<br />
+}<br />
+print my_numeric2character('&amp;#8217; &amp;#7936; &amp;#226;');<br />
+print my_character2numeric(' � � ');</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.mb-decode-mimeheader.html">mb_decode_mimeheader</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.mb-detect-encoding.html">mb_detect_encoding</a></div>
+ <div class="up"><a href="ref.mbstring.html">マルチバイト文字列 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

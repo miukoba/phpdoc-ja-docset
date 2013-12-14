@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>命令の分離</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="language.basic-syntax.phpmode.html">HTML からの脱出</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="language.basic-syntax.comments.html">コメント</a></div>
+ <div class="up"><a href="language.basic-syntax.html">基本的な構文</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="language.basic-syntax.instruction-separation" class="sect1">
+   <h2 class="title">命令の分離</h2>
+   <p class="para">
+    C や Perl と同様に、PHP でもステートメントを区切りにはセミコロンが必要と
+    なります。PHP コードブロックの終了タグには自動的にセミコロンが含まれていると
+    認識されます。 従って PHP コードの最終行にはセミコロンを記述する必要はありません。
+    ブロックの終了タグは、直後に改行がある場合、それを含んだものになります。
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">'テストです'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;<br /></span><br /><span style="color: #0000BB">&lt;?php&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">'テストです'&nbsp;</span><span style="color: #0000BB">?&gt;<br /></span><br /><span style="color: #0000BB">&lt;?php&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">'終了タグを省略しました'</span><span style="color: #007700">;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+    <blockquote class="note"><p><strong class="note">注意</strong>: 
+     <p class="para">
+      ファイル終端における PHP ブロックの終了タグはオプション（任意）です。
+       <span class="function"><a href="function.include.html" class="function">include</a></span> や
+       <span class="function"><a href="function.require.html" class="function">require</a></span> を利用する際には、
+      終了タグを省略する方が無難です。というのは、そうすることでファイルの最後に
+      予期せぬ空白文字があらわれてしまうことを防げますし、後でレスポンスに
+      ヘッダを付加することも可能となるからです。また、出力バッファリングを
+      使用しており、include したファイルの生成する部分の最後に余計な空白を
+      つけたくない場合などにも便利です。
+     </p>
+    </p></blockquote>
+   </p>
+  </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="106551""></a>
+  <div class="note">
+   <strong class="user">pbarney</strong>
+   <a href="#106551" class="date">18-Nov-2011 01:13</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you want to keep the newline after a closing tag in the output, just add a space after the closing tag, and the newline will not be ignored.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="85181""></a>
+  <div class="note">
+   <strong class="user">Darabos, Edvrd Konrd</strong>
+   <a href="#85181" class="date">19-Aug-2008 12:58</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+One newline character (or sequence) is dropped out by the parser after "?&gt;", so you can add the beloved "final newline" to your file after "?&gt;"<br />
+<br />
+Example for plain text outputs:<br />
+<br />
+&lt;? foreach($array as $elem){ ?&gt;<br />
+Value: &lt;?=$elem?&gt;<br />
+<br />
+&lt;? } ?&gt;<br />
+<br />
+(You have to add an extra enter after &lt;?=$elem?&gt; if you want to see a newline in the output.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="82993""></a>
+  <div class="note">
+   <strong class="user">james dot d dot noyes at lmco dot com</strong>
+   <a href="#82993" class="date">05-May-2008 08:42</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you are embedding this in XML, you had better place the ending '?&gt;' there or the XML parser will puke on you.&nbsp; XML parsers do not like processing instructions without end tags, regardless of what PHP does.<br />
+<br />
+If you're doing HTML like 90% of the world, or if you are going to process/interpret the PHP before the XML parser ever sees it, then you can likely get away with it, but it's still not best practice for XML.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="68959""></a>
+  <div class="note">
+   <strong class="user">Krishna Srikanth</strong>
+   <a href="#68959" class="date">17-Aug-2006 01:44</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Do not mis interpret<br />
+<br />
+<span class="default">&lt;?php </span><span class="keyword">echo </span><span class="string">'Ending tag excluded'</span><span class="keyword">; <br />
+<br />
+</span><span class="default">with<br />
+<br />
+</span><span class="keyword">&lt;?</span><span class="default">php </span><span class="keyword">echo </span><span class="string">'Ending tag excluded'</span><span class="keyword">;<br />
+&lt;</span><span class="default">p</span><span class="keyword">&gt;</span><span class="default">But html is still visible</span><span class="keyword">&lt;/</span><span class="default">p</span><span class="keyword">&gt;<br />
+<br />
+</span><span class="default">The second one would give error</span><span class="keyword">. </span><span class="default">Exclude ?&gt;</span> if you no more html to write after the code.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="language.basic-syntax.phpmode.html">HTML からの脱出</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="language.basic-syntax.comments.html">コメント</a></div>
+ <div class="up"><a href="language.basic-syntax.html">基本的な構文</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

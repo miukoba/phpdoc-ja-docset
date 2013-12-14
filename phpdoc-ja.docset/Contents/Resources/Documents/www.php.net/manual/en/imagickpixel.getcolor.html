@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>色を返す</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="imagickpixel.destroy.html">ImagickPixel::destroy</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="imagickpixel.getcolorasstring.html">ImagickPixel::getColorAsString</a></div>
+ <div class="up"><a href="class.imagickpixel.html">ImagickPixel</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="imagickpixel.getcolor" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ImagickPixel::getColor</h1>
+  <p class="verinfo">(PECL imagick 2.0.0)</p><p class="refpurpose"><span class="refname">ImagickPixel::getColor</span> &mdash; <span class="dc-title">色を返す</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-imagickpixel.getcolor-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">array</span> <span class="methodname"><strong>ImagickPixel::getColor</strong></span>
+    ([ <span class="methodparam"><span class="type">bool</span> <code class="parameter">$normalized</code><span class="initializer"> = false</span></span>
+  ] )</div>
+
+  <div class="warning"><strong class="warning">警告</strong><p class="simpara">この関数は、
+現在のところ詳細な情報はありません。引数のリストのみが
+記述されています。</p></div>
+  <p class="para">
+   ImagickPixel オブジェクトの色を、配列で返します。透明度が設定されている場合は、
+   4 つの要素からなる配列となります。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-imagickpixel.getcolor-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">normalized</code></em></span>
+     <dd>
+
+      <p class="para">
+       色を正規化する。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+
+ </div>
+
+ <div class="refsect1 returnvalues" id="refsect1-imagickpixel.getcolor-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   各チャネルの値を配列で返します。パラメータに <strong><code>TRUE</code></strong>
+   を指定した場合は、各値を正規化します。エラー時には
+   ImagickPixelException をスローします。
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="112161""></a>
+  <div class="note">
+   <strong class="user">roman</strong>
+   <a href="#112161" class="date">11-May-2013 06:27</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+In case you use default un-normalized getColor value the alpha value will always be either 0 or 1.<br />
+<br />
+If you want to use real full-range 0-1 alpha channel on your 24bit transparent images use the alpha value from the normalized one, even if you use the rest of unnormalized data.<br />
+<br />
+To copy a 24bit png with real alpha transparency, you would have to do this:<br />
+<span class="default">&lt;?php<br />
+<br />
+$im</span><span class="keyword">=new </span><span class="default">Imagick</span><span class="keyword">( </span><span class="string">'image.png' </span><span class="keyword">);<br />
+</span><span class="default">$iterator</span><span class="keyword">=</span><span class="default">$im</span><span class="keyword">-&gt;</span><span class="default">getPixelIterator</span><span class="keyword">();<br />
+foreach (</span><span class="default">$iterator </span><span class="keyword">as </span><span class="default">$row</span><span class="keyword">=&gt;</span><span class="default">$pixels</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; foreach ( </span><span class="default">$pixels </span><span class="keyword">as </span><span class="default">$column </span><span class="keyword">=&gt; </span><span class="default">$pixel </span><span class="keyword">){<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$un_color</span><span class="keyword">=</span><span class="default">$pixel</span><span class="keyword">-&gt;</span><span class="default">getColor</span><span class="keyword">(); </span><span class="comment">//unnormalized color<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$nor_color</span><span class="keyword">=</span><span class="default">$pixel</span><span class="keyword">-&gt;</span><span class="default">getColor</span><span class="keyword">(</span><span class="default">true</span><span class="keyword">); </span><span class="comment">//normalized color<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$pixel</span><span class="keyword">-&gt;</span><span class="default">setColor</span><span class="keyword">(</span><span class="string">'rgba('</span><span class="keyword">.</span><span class="default">$un_color</span><span class="keyword">[</span><span class="string">'r'</span><span class="keyword">].</span><span class="string">','</span><span class="keyword">.</span><span class="default">$un_color</span><span class="keyword">[</span><span class="string">'g'</span><span class="keyword">].</span><span class="string">','</span><span class="keyword">.</span><span class="default">$un_color</span><span class="keyword">[</span><span class="string">'b'</span><span class="keyword">].</span><span class="string">','</span><span class="keyword">.</span><span class="default">$nor_color</span><span class="keyword">[</span><span class="string">'a'</span><span class="keyword">].</span><span class="string">')'</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+If you use 'a' (alpha) value from the unnormalized color there will only be binary transparency.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="imagickpixel.destroy.html">ImagickPixel::destroy</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="imagickpixel.getcolorasstring.html">ImagickPixel::getColorAsString</a></div>
+ <div class="up"><a href="class.imagickpixel.html">ImagickPixel</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

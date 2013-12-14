@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>アイテムを格納する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="memcached.resetserverlist.html">Memcached::resetServerList</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="memcached.setbykey.html">Memcached::setByKey</a></div>
+ <div class="up"><a href="class.memcached.html">Memcached</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="memcached.set" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">Memcached::set</h1>
+  <p class="verinfo">(PECL memcached &gt;= 0.1.0)</p><p class="refpurpose"><span class="refname">Memcached::set</span> &mdash; <span class="dc-title">アイテムを格納する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-memcached.set-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><strong>Memcached::set</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$key</code></span>
+   , <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter">$value</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$expiration</code></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+    <span class="function"><strong>Memcached::set()</strong></span> は、
+   指定したキー <em><code class="parameter">key</code></em> で memcache サーバー上に
+   <em><code class="parameter">value</code></em> を格納します。
+   <em><code class="parameter">expiration</code></em> パラメータで、
+   この値をいつ有効期限切れにするのかを制御することができます。
+  </p>
+  <p class="para">
+   値に指定できるのは、リソース型以外の PHP の任意の型です。
+   リソース型はシリアライズすることができないため、使用することができません。
+   <strong><code>Memcached::OPT_COMPRESSION</code></strong> オプションをオンにすると、
+   シリアライズしたデータを格納する前に圧縮を行います。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-memcached.set-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">key</code></em></span>
+     <dd>
+
+      <p class="para">
+       値の格納先のキー。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">value</code></em></span>
+     <dd>
+
+      <p class="para">
+       格納する値。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">expiration</code></em></span>
+     <dd>
+
+      <p class="para">
+       期限切れとなるまでの時間。デフォルトは 0。詳細な情報は<a href="memcached.expiration.html" class="link">有効期限</a> を参照ください。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-memcached.set-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+   必要に応じて  <span class="methodname"><a href="memcached.getresultcode.html" class="methodname">Memcached::getResultCode()</a></span> を使用しましょう。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-memcached.set-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-4431">
+    <p><strong>例1  <span class="function"><strong>Memcached::set()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Memcached</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">addServer</span><span style="color: #007700">(</span><span style="color: #DD0000">'localhost'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">11211</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">set</span><span style="color: #007700">(</span><span style="color: #DD0000">'int'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">99</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">set</span><span style="color: #007700">(</span><span style="color: #DD0000">'string'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'a&nbsp;simple&nbsp;string'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">set</span><span style="color: #007700">(</span><span style="color: #DD0000">'array'</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #0000BB">11</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">12</span><span style="color: #007700">));<br /></span><span style="color: #FF8000">/*&nbsp;expire&nbsp;'object'&nbsp;key&nbsp;in&nbsp;5&nbsp;minutes&nbsp;*/<br /></span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">set</span><span style="color: #007700">(</span><span style="color: #DD0000">'object'</span><span style="color: #007700">,&nbsp;new&nbsp;</span><span style="color: #0000BB">stdclass</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">time</span><span style="color: #007700">()&nbsp;+&nbsp;</span><span style="color: #0000BB">300</span><span style="color: #007700">);<br /><br /><br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">get</span><span style="color: #007700">(</span><span style="color: #DD0000">'int'</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">get</span><span style="color: #007700">(</span><span style="color: #DD0000">'string'</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">get</span><span style="color: #007700">(</span><span style="color: #DD0000">'array'</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">get</span><span style="color: #007700">(</span><span style="color: #DD0000">'object'</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+int(99)
+string(15) &quot;a simple string&quot;
+array(2) {
+  [0]=&gt;
+  int(11)
+  [1]=&gt;
+  int(12)
+}
+object(stdClass)#1 (0) {
+}
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-memcached.set-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="methodname"><a href="memcached.setbykey.html" class="methodname" rel="rdfs-seeAlso">Memcached::setByKey()</a> - 指定したサーバーにアイテムを格納する</span></li>
+    <li class="member"> <span class="methodname"><a href="memcached.add.html" class="methodname" rel="rdfs-seeAlso">Memcached::add()</a> - アイテムを新しいキーで追加する</span></li>
+    <li class="member"> <span class="methodname"><a href="memcached.replace.html" class="methodname" rel="rdfs-seeAlso">Memcached::replace()</a> - 既存のキーのアイテムを入れ替える</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113677""></a>
+  <div class="note">
+   <strong class="user">Matthew Minix</strong>
+   <a href="#113677" class="date">15-Nov-2013 01:59</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Unlike Memcache, Memcached will not replace spaces in keys with underscores for you, and will instead send the key as provided which will cause an error that can result in keys and values being mismatched.&nbsp; You can avoid this problem by removing/replacing spaces before storage or setting the option Memcached::OPT_BINARY_PROTOCOL to true.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="92259""></a>
+  <div class="note">
+   <strong class="user">miha at hribar dot info</strong>
+   <a href="#92259" class="date">16-Jul-2009 05:26</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The method correctly returns false if you set the value to false. This means that in order to have proper fault checking mechanism in place you need to check the result code.<br />
+<br />
+<span class="default">&lt;?php<br />
+$Memcached </span><span class="keyword">= new </span><span class="default">Memcached</span><span class="keyword">();<br />
+</span><span class="default">$Memcached</span><span class="keyword">-&gt;</span><span class="default">addServer</span><span class="keyword">(</span><span class="string">'localhost'</span><span class="keyword">, </span><span class="default">11211</span><span class="keyword">);<br />
+</span><span class="default">$Memcached</span><span class="keyword">-&gt;</span><span class="default">set</span><span class="keyword">(</span><span class="string">'key'</span><span class="keyword">, </span><span class="default">false</span><span class="keyword">);<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$Memcached</span><span class="keyword">-&gt;</span><span class="default">get</span><span class="keyword">(</span><span class="string">'key'</span><span class="keyword">));&nbsp; &nbsp; &nbsp; </span><span class="comment">// boolean false<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$Memcached</span><span class="keyword">-&gt;</span><span class="default">getResultCode</span><span class="keyword">()); </span><span class="comment">// int 0 which is&nbsp; Memcached::RES_SUCCESS&nbsp; <br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="memcached.resetserverlist.html">Memcached::resetServerList</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="memcached.setbykey.html">Memcached::setByKey</a></div>
+ <div class="up"><a href="class.memcached.html">Memcached</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

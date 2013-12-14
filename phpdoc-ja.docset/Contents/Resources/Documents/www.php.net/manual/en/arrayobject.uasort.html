@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>ユーザー定義の比較関数でエントリをソートし、キーとの対応は保持する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="arrayobject.setiteratorclass.html">ArrayObject::setIteratorClass</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="arrayobject.uksort.html">ArrayObject::uksort</a></div>
+ <div class="up"><a href="class.arrayobject.html">ArrayObject</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="arrayobject.uasort" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ArrayObject::uasort</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.2.0)</p><p class="refpurpose"><span class="refname">ArrayObject::uasort</span> &mdash; <span class="dc-title">ユーザー定義の比較関数でエントリをソートし、キーとの対応は保持する</span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-arrayobject.uasort-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type"><span class="type void">void</span></span> <span class="methodname"><strong>ArrayObject::uasort</strong></span>
+    ( <span class="methodparam"><span class="type"><a href="language.types.callable.html" class="type callable">callable</a></span> <code class="parameter">$cmp_function</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   この関数はエントリをソートします。キーとそれに対応する値の関連は保持されたままとなります。
+   ソートにはユーザー定義の比較関数を利用します。
+  </p>
+  <p class="para">
+   これは主に、連想配列など実際の要素の並びが重要となる場合のソートで使います。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-arrayobject.uasort-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">cmp_function</code></em></span>
+     <dd>
+
+      <p class="para">
+       関数 <em><code class="parameter">cmp_function</code></em>
+       は二つのパラメータを受け取ります。ここにはエントリのペアが渡されます。
+       比較関数の返り値は、最初の引数が二番目の引数より小さい場合に負の数、
+       等しい場合にゼロ、大きい場合に正の数となります。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-arrayobject.uasort-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   値を返しません。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-arrayobject.uasort-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-3977">
+    <p><strong>例1  <span class="function"><strong>ArrayObject::uasort()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;比較関数<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">cmp</span><span style="color: #007700">(</span><span style="color: #0000BB">$a</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$b</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">$b</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">&lt;&nbsp;</span><span style="color: #0000BB">$b</span><span style="color: #007700">)&nbsp;?&nbsp;-</span><span style="color: #0000BB">1&nbsp;</span><span style="color: #007700">:&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;ソートしたい配列<br /></span><span style="color: #0000BB">$array&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">'a'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'b'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">8</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'c'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;-</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'d'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;-</span><span style="color: #0000BB">9</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'e'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'f'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'g'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'h'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;-</span><span style="color: #0000BB">4</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$arrayObject&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">ArrayObject</span><span style="color: #007700">(</span><span style="color: #0000BB">$array</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$arrayObject</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;ソートと、その結果の表示<br /></span><span style="color: #0000BB">$arrayObject</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">uasort</span><span style="color: #007700">(</span><span style="color: #DD0000">'cmp'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$arrayObject</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+Array
+(
+    [a] =&gt; 4
+    [b] =&gt; 8
+    [c] =&gt; -1
+    [d] =&gt; -9
+    [e] =&gt; 2
+    [f] =&gt; 5
+    [g] =&gt; 3
+    [h] =&gt; -4
+)
+Array
+(
+    [d] =&gt; -9
+    [h] =&gt; -4
+    [c] =&gt; -1
+    [e] =&gt; 2
+    [g] =&gt; 3
+    [a] =&gt; 4
+    [f] =&gt; 5
+    [b] =&gt; 8
+)
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-arrayobject.uasort-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="methodname"><a href="arrayobject.asort.html" class="methodname" rel="rdfs-seeAlso">ArrayObject::asort()</a> - 値でエントリをソートする</span></li>
+    <li class="member"> <span class="methodname"><a href="arrayobject.ksort.html" class="methodname" rel="rdfs-seeAlso">ArrayObject::ksort()</a> - キーでエントリをソートする</span></li>
+    <li class="member"> <span class="methodname"><a href="arrayobject.natsort.html" class="methodname" rel="rdfs-seeAlso">ArrayObject::natsort()</a> - &quot;自然順&quot; アルゴリズムでエントリをソートする</span></li>
+    <li class="member"> <span class="methodname"><a href="arrayobject.natcasesort.html" class="methodname" rel="rdfs-seeAlso">ArrayObject::natcasesort()</a> - 大文字小文字を区別しない &quot;自然順&quot; アルゴリズムでエントリをソートする</span></li>
+    <li class="member"> <span class="methodname"><a href="arrayobject.uksort.html" class="methodname" rel="rdfs-seeAlso">ArrayObject::uksort()</a> - ユーザー定義の比較関数を使って、キーでエントリをソートする</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="105628""></a>
+  <div class="note">
+   <strong class="user">poxetinho at gmail dot com</strong>
+   <a href="#105628" class="date">01-Sep-2011 09:38</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note that return values between (-1, 1) are being considered as 0.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="arrayobject.setiteratorclass.html">ArrayObject::setIteratorClass</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="arrayobject.uksort.html">ArrayObject::uksort</a></div>
+ <div class="up"><a href="class.arrayobject.html">ArrayObject</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

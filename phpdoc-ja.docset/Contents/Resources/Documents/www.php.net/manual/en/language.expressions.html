@@ -1,0 +1,919 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>式</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="language.constants.predefined.html">自動的に定義される定数</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="language.operators.html">演算子</a></div>
+ <div class="up"><a href="langref.html">言語リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="language.expressions" class="chapter">
+  <h1>式</h1>
+
+  
+  <p class="simpara">
+   式は、PHP における最も重要な基盤石です。PHPにおいては、ほとんど全てのものは式で記述されます。最も簡単で最も正確な式の定義は、&quot;全ての式には値がある。&quot;
+   です。
+  </p>
+
+  <p class="simpara">
+   考えられる簡単な例は、定数と変数です。
+   &quot;<var class="varname"><var class="varname">$a</var></var> = 5&quot; と入力すると、<var class="varname"><var class="varname">$a</var></var> に &#039;5&#039; を代入することになります。
+   &#039;5&#039; は、明らかに、 5 という値です。
+   言葉を変えると &#039;5&#039; は 5 という値を有する式なのです。
+   (この場合、&#039;5&#039; は整数定数です。)
+  </p>
+
+  <p class="simpara">
+   この代入の後、<var class="varname"><var class="varname">$a</var></var> の値は、5 であることが期待されます。
+   よって、<var class="varname"><var class="varname">$b</var></var> = <var class="varname"><var class="varname">$a</var></var> と書いた場合、<var class="varname"><var class="varname">$b</var></var> = 5 と書いたのと
+   同じように動作することが期待されます。
+   言い換えると <var class="varname"><var class="varname">$a</var></var> は 5 という値を持つ式なのです。
+   全てが正しく動作する場合、何が起こるかをこのことが正確に表現しています。
+  </p>
+  
+  <p class="para">
+   式をもう少し複雑にしたのが関数です。
+   例えば、次の関数を考えてみましょう。
+   
+   <div class="informalexample">
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">foo&nbsp;</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+
+  <p class="simpara">
+   あなたが関数の概念に慣れていると仮定すると
+   (そうでない場合は、<a href="language.functions.html" class="link">関数</a>
+   に関する章を参照ください。)、
+   <em>$c = foo()</em> と入力することは、
+   <em>$c = 5</em> と書くことと本質的に全く同じで
+   あると予想されたかもしれません。この予想は、正しいです。
+   関数は、その返り値を値とする式なのです。
+   <em>foo()</em> は 5 を返すので、式 &#039;<em>foo()</em>&#039; の値は 5 です。
+   通常、関数は、決まった数だけを返すのではなく、何かを計算します。
+  </p>
+
+  <p class="simpara">
+   もちろん、PHP の値は整数である必要はありませんし、
+   多くの場合、そうではありません。
+   PHP は、4 種類のスカラー型: 整数(<span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>)、
+   浮動小数点数(<span class="type"><a href="language.types.float.html" class="type float">float</a></span>)、文字列(<span class="type"><a href="language.types.string.html" class="type string">string</a></span>)、
+   真偽値(<span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>) をサポートします。
+   (スカラーとは、配列とかと異なり、より小さな部分に&#039;分割する&#039;ことができない値のことです。)
+   PHP は、2種類の複合(非スカラー)型(配列とオブジェクト)もサポートします。
+   これらの型の値は、変数に代入することができ、
+   関数からの返り値とすることができます。
+  </p>
+
+  <p class="simpara">
+   PHP は、他の多くの言語が行うのと同じ手法で、
+   更に多くの式を使用可能です。
+   PHP は、ほとんど全てが式であるという意味で、式指向の言語です。
+   既に取り扱った &#039;<var class="varname"><var class="varname">$a</var></var> = 5&#039; という例について考えてみましょう。
+   この式には、整数定数の &#039;5&#039; と 5 に更新された <var class="varname"><var class="varname">$a</var></var> の値という
+   2 つの値が現れているということに容易に気づくことでしょう。
+   しかし、実際には、ここにはもうひとつの値が含まれています。
+   それは、代入自体の値です。
+   代入式は、それ自体、代入値を評価します。
+   この場合、その値は 5 になります。
+   このことは、実際には、&#039;<var class="varname"><var class="varname">$a</var></var> = 5&#039; は、それが何をするかによらず、
+   値 5 を有する式であることを意味します。
+   つまり、
+   &#039;<var class="varname"><var class="varname">$b</var></var> = (<var class="varname"><var class="varname">$a</var></var> = 5)&#039; のように書くことは、
+   &#039;<var class="varname"><var class="varname">$a</var></var> = 5; <var class="varname"><var class="varname">$b</var></var> = 5;&#039; と書くのと
+   同様なのです。(セミコロンは、文の終わりを示します。)
+   代入は、右から左へ実行されるため、&#039;<var class="varname"><var class="varname">$b</var></var> = <var class="varname"><var class="varname">$a</var></var> = 5&#039; と書くことも
+   可能です。
+  </p>
+
+  <p class="simpara">
+   式の配置に関する別の良い例は、前置、後置加算子、あるいは減算子です。
+   PHP と他の多くの言語のユーザーは、<em>variable++</em> や
+   <em>variable--</em> といった表記法に慣れていることでしょう。
+   これらは、<a href="language.operators.increment.html" class="link">加算子および減算子</a>です。
+   PHP においては、C 言語のように、
+   前置加算と後置加算という、2 種類の加算があります。
+   前置加算と後置加算は、両方とも、基本的には変数を増加させ、
+   変数に対する効果は同じです。
+   異なっているのは、加算する式の値です。
+
+   前置加算は、&#039;++<var class="varname"><var class="varname">$variable</var></var>&#039; と書かれますが、
+   加算後の値を評価します
+   (PHP はその値を読む前に変数を増加させるので、&#039;前置加算(pre-increment)&#039;
+   という名前がついています)。
+   後置加算は、&#039;<var class="varname"><var class="varname">$variable</var></var>++&#039; と書かれますが、加算される前の
+   $variable の元の値を評価します。
+   (PHP は、その値を読んだ後に変数を増加させるので、
+   &#039;後置加算(post-increment)&#039; という名前がついています。)
+  </p>
+  <p class="simpara">
+   <a href="language.operators.comparison.html" class="link">比較</a>演算子は、
+   極めて標準的な式です。
+   比較演算子は、<strong><code>FALSE</code></strong> または <strong><code>TRUE</code></strong> のどちらかを値とします。
+   PHPは、&gt;(大なり)、 &gt;=(大なりイコール)、=(イコール)、
+   &lt;(小なり)、&lt;=(小なりイコール)をサポートします。
+   PHP 言語は、いくつかの厳密な等価演算子: ===
+   (イコールかつ同じ型) そして !== (イコールではないまたは型が違う) も
+   サポートします。
+   これらの式は、<em>if</em>文のような条件式の内部で一般的に
+   使用されます。
+  </p>
+  <p class="simpara">
+   式の最後の例として、ここでは、演算子+代入式の複合演算式
+   を扱います。
+   既にご存知のように、<var class="varname"><var class="varname">$a</var></var> に 1 を加えたい場合は、&#039;<var class="varname"><var class="varname">$a</var></var>++&#039; または
+   &#039;++<var class="varname"><var class="varname">$a</var></var>&#039; と書くだけで十分です。
+   しかし、1より大きな数、例えば 3 を加えたい場合は、どうすればよいのでしょう?
+   &#039;<var class="varname"><var class="varname">$a</var></var>++&#039; を複数回使うこともできますが、当然これはあまり効率的で快適な手法ではありません。
+   ふつうは、&#039;<var class="varname"><var class="varname">$a</var></var> = <var class="varname"><var class="varname">$a</var></var> + 3&#039; と書きます。
+   &#039;<var class="varname"><var class="varname">$a</var></var> + 3&#039; の部分で <var class="varname"><var class="varname">$a</var></var> の値に 3 を加えた値を評価し、
+   その結果を <var class="varname"><var class="varname">$a</var></var> に代入するというわけです。
+   この結果、<var class="varname"><var class="varname">$a</var></var> に 3 が加えられます。
+   
+   PHP においては、C のような他の言語と同様に、
+    この例をより短かく書くことができます。
+    これにより、より明確になり、同時に理解も迅速になります。
+    <var class="varname"><var class="varname">$a</var></var> の現在の値に 3 を加える式は、 &#039;<var class="varname"><var class="varname">$a</var></var> += 3&#039; と書くことができます。
+    この式の正確な意味は、
+    &quot;<var class="varname"><var class="varname">$a</var></var> の値を取得し、それに 3 を加え、<var class="varname"><var class="varname">$a</var></var> に再代入しなさい。&quot;
+    です。
+    より短く、明確になっただけでなく、実行もより高速になります。
+    &#039;<var class="varname"><var class="varname">$a</var></var> += 3&#039; の値は、通常の代入と同様に、代入された値です。
+    この値は 3 ではなく、<var class="varname"><var class="varname">$a</var></var> に 3 を加えた加算値
+    (この値が、<var class="varname"><var class="varname">$a</var></var> に代入された値です)であることに注意してください。
+    &#039;<var class="varname"><var class="varname">$a</var></var> -= 5&#039; (<var class="varname"><var class="varname">$a</var></var> から 5 を引く)
+    や &#039;<var class="varname"><var class="varname">$b</var></var> *= 7&#039; (<var class="varname"><var class="varname">$b</var></var> に 7 をかける)等のように、
+    全ての 2 項演算子は、この演算子+代入式のモードで使用することができます。
+  </p>
+
+  <p class="para">
+   もう一種類、三項演算子(ternary operator)を用いた式がありますが、
+   他の言語で見たことがない場合には理解できないかもしれません。
+
+   <div class="informalexample">
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$first&nbsp;</span><span style="color: #007700">?&nbsp;</span><span style="color: #0000BB">$second&nbsp;</span><span style="color: #007700">:&nbsp;</span><span style="color: #0000BB">$third<br />?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+
+   最初の部分式の値が <strong><code>TRUE</code></strong> (非ゼロ)の場合、二番目の部分式が評価され、
+    この条件文の結果となります。
+   そうでない場合、三番目の部分式が評価され、この文の値となります。
+  </p>
+  
+  <p class="para">
+   次の例は、前置および後置加算子と多少一般的な式の理解を
+   助けてくれることでしょう。
+   
+   <div class="informalexample">
+    <div class="example-contents">
+<div class="cdata"><pre>
+&lt;?php
+function double($i) {
+    return $i*2;
+}
+$b = $a = 5;        /* 値 5 を $a と $b に代入します */
+$c = $a++;          /* 後置加算なので、$c に代入される値は、$a の
+                       元の値 (5) です */
+$e = $d = ++$b;     /* 前置加算なので、$d と $e に代入される値は、
+                       加算後の $b の値 (6) です */
+
+/* ここままで、$d と $e は、6 です */
+
+$f = double($d++);  /* $f には、$d が加算される前の値を2倍した値、
+                       つまり 2*6 = 12 が、代入されます。
+$g = double(++$e);  /* $g には、$e が加算された後の値を2倍した値、
+                        つまり 2*7 = 14 が、代入されます。
+$h = $g += 10;      /* まず、$g に 10 が加算され、24 になります。
+                       代入値 (24) は、$h に代入されます。
+                       そして、$h も同様に 24 になります。 */
+?&gt;
+</pre></div>
+    </div>
+
+   </div>
+  </p>
+  
+  <p class="simpara">
+   式が、文として扱われることがあります。
+   この場合、文は、&#039;<em>式 ;</em>&#039; 、つまり式の後にセミコロンがついた形式です。
+   <em>&#039;$b = $a =5;&#039;</em> において、<em>&#039;$a = 5&#039;</em> は有効な式ですが、
+   自身を値とする文では
+   ありません。しかし、<em>&#039;$b = $a = 5;&#039;</em> は有効な文です。
+  </p>
+  
+  <p class="simpara">
+   最後に、有益な事項として式の論理値について説明します。
+   多くのイベント、主に条件付き実行とループにおいて、
+   式の特定な値には関心がないが、<strong><code>TRUE</code></strong> または <strong><code>FALSE</code></strong> のどちらを
+   意味するかに関心があるということがあります。
+
+   
+
+   定数<strong><code>TRUE</code></strong>と<strong><code>FALSE</code></strong>(大文字小文字を区別しない)は、論理型の値がとり得る
+   値です。必要に応じて式は論理値に変換されます。詳細な手法については、
+  <a href="language.types.type-juggling.html#language.types.typecasting" class="link">型キャストに関するセクション
+  </a>を参照ください。
+  </p>
+  <p class="simpara">
+   PHP  は、完全で強力な式の実装を提供します。
+   それを完全に記述することは、このマニュアルの範囲を超えています。
+   上記の例は、式とは何か、そして、便利な式をどうやって作るかということ
+   に関して良いアイデアを与えるに違いありません。
+   本マニュアルの残りの部分では<var class="varname"><var class="varname">expr</var></var>という
+  マークを使用しますが、これは PHP の有効な式を意味します。
+  </p>
+ </div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="112682""></a>
+  <div class="note">
+   <strong class="user">chriswarbo at gmail dot com</strong>
+   <a href="#112682" class="date">12-Jul-2013 08:06</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note that there is a difference between a function and a function call, and both<br />
+are expressions. PHP has two kinds of function, "named functions" and "anonymous<br />
+functions". Here's an example with both:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">// A named function. Its name is "double".<br />
+</span><span class="keyword">function </span><span class="default">double</span><span class="keyword">(</span><span class="default">$x</span><span class="keyword">) {<br />
+&nbsp; return </span><span class="default">2 </span><span class="keyword">* </span><span class="default">$x</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="comment">// An anonymous function. It has no name, in the same way that the string<br />
+// "hello" has no name. Since it is an expression, we can give it a temporary<br />
+// name by assigning it to the variable $triple.<br />
+</span><span class="default">$triple </span><span class="keyword">= function(</span><span class="default">$x</span><span class="keyword">) {<br />
+&nbsp; return </span><span class="default">3 </span><span class="keyword">* </span><span class="default">$x</span><span class="keyword">;<br />
+};<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+We can "call" (or "run") both kinds of function. A "function call" is an<br />
+expression with the value of whatever the function returns. For example:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">// The easiest way to run a function is to put () after its name, containing its<br />
+// arguments (if any)<br />
+</span><span class="default">$my_numbers </span><span class="keyword">= array(</span><span class="default">double</span><span class="keyword">(</span><span class="default">5</span><span class="keyword">), </span><span class="default">$triple</span><span class="keyword">(</span><span class="default">5</span><span class="keyword">));<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+$my_numbers is now an array containing 10 and 15, which are the return values of<br />
+double and $triple when applied to the number 5.<br />
+<br />
+Importantly, if we *don't* call a function, ie. we don't put () after its name,<br />
+then we still get expressions. For example:<br />
+<br />
+<span class="default">&lt;?php<br />
+$my_functions </span><span class="keyword">= array(</span><span class="string">'double'</span><span class="keyword">, </span><span class="default">$triple</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+$my_functions is now an array containing these two functions. Notice that named<br />
+functions are more awkward than anonymous functions. PHP treats them differently<br />
+because it didn't use to have anonymous functions, and the way named functions<br />
+were implemented didn't work for anonymous functions when they were eventually<br />
+added.<br />
+<br />
+This means that instead of using a named function literally, like we can with<br />
+anonymous functions, we have to use a string containing its name instead. PHP<br />
+makes sure that these strings will be treated as functions when it's<br />
+appropriate. For example:<br />
+<br />
+<span class="default">&lt;?php<br />
+$temp&nbsp; &nbsp; &nbsp; </span><span class="keyword">= </span><span class="string">'double'</span><span class="keyword">;<br />
+</span><span class="default">$my_number </span><span class="keyword">= </span><span class="default">$temp</span><span class="keyword">(</span><span class="default">5</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+$my_number will be 10, since PHP has spotted that we're treating a string as if<br />
+it were a function, so it has looked up that named function for us.<br />
+<br />
+Unfortunately PHP's parser is very quirky; rather than looking for generic<br />
+patterns like "x(y)" and seeing if "x" is a function, it has lots of<br />
+special-cases like "$x(y)". This makes code like "'double'(5)" invalid, so we<br />
+have to do tricks like using temporary variables. There is another way around<br />
+this restriction though, and that is to pass our functions to the<br />
+"call_user_func" or "call_user_func_array" functions when we want to call them.<br />
+For example:<br />
+<br />
+<span class="default">&lt;?php<br />
+$my_numbers </span><span class="keyword">= array(</span><span class="default">call_user_func</span><span class="keyword">(</span><span class="string">'double'</span><span class="keyword">, </span><span class="default">5</span><span class="keyword">), </span><span class="default">call_user_func</span><span class="keyword">(</span><span class="default">$triple</span><span class="keyword">, </span><span class="default">5</span><span class="keyword">));<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+$my_numbers contains 10 and 15 because "call_user_func" called our functions for<br />
+us. This is possible because the string 'double' and the anonymous function<br />
+$triple are expressions. Note that we can even use this technique to call an<br />
+anonymous function without ever giving it a name:<br />
+<br />
+<span class="default">&lt;?php<br />
+$my_number </span><span class="keyword">= </span><span class="default">call_user_func</span><span class="keyword">(function(</span><span class="default">$x</span><span class="keyword">) { return </span><span class="default">4 </span><span class="keyword">* </span><span class="default">$x</span><span class="keyword">; }, </span><span class="default">5</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+$my_number is now 20, since "call_user_func" called the anonymous function,<br />
+which quadruples its argument, with the value 5.<br />
+<br />
+Passing functions around as expressions like this is very useful whenever we<br />
+need to use a 'callback'. Great examples of this are array_map and array_reduce.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="107687""></a>
+  <div class="note">
+   <strong class="user">antickon at gmail dot com</strong>
+   <a href="#107687" class="date">27-Feb-2012 04:29</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+evaluation order of subexpressions is not strictly defined for all operators<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">a</span><span class="keyword">() {echo </span><span class="string">'a'</span><span class="keyword">;}<br />
+function </span><span class="default">b</span><span class="keyword">() {echo </span><span class="string">'b'</span><span class="keyword">;}<br />
+</span><span class="default">a</span><span class="keyword">() == </span><span class="default">b</span><span class="keyword">(); </span><span class="comment">// outputs "ab", ie evaluates left-to-right<br />
+<br />
+</span><span class="default">$a </span><span class="keyword">= </span><span class="default">3</span><span class="keyword">;<br />
+</span><span class="default">var_dump</span><span class="keyword">( </span><span class="default">$a </span><span class="keyword">== </span><span class="default">$a </span><span class="keyword">= </span><span class="default">4 </span><span class="keyword">); </span><span class="comment">// outputs bool(true), ie evaluates right-to-left<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+this is not a bug: "we [php developers] make no guarantee about the order of evaluation".<br />
+See https://bugs.php.net/bug.php?id=61188</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="90327""></a>
+  <div class="note">
+   <strong class="user">Magnus Deininger, dma05 at web dot de</strong>
+   <a href="#90327" class="date">16-Apr-2009 05:04</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note that even though PHP borrows large portions of its syntax from C, the ',' is treated quite differently. It's not possible to create combined expressions in PHP using the comma-operator that C has, except in for() loops.<br />
+<br />
+Example (parse error):<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+$a </span><span class="keyword">= </span><span class="default">2</span><span class="keyword">, </span><span class="default">$b </span><span class="keyword">= </span><span class="default">4</span><span class="keyword">;<br />
+<br />
+echo </span><span class="default">$a</span><span class="keyword">.</span><span class="string">"\n"</span><span class="keyword">;<br />
+echo </span><span class="default">$b</span><span class="keyword">.</span><span class="string">"\n"</span><span class="keyword">;<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Example (works):<br />
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="keyword">for (</span><span class="default">$a </span><span class="keyword">= </span><span class="default">2</span><span class="keyword">, </span><span class="default">$b </span><span class="keyword">= </span><span class="default">4</span><span class="keyword">; </span><span class="default">$a </span><span class="keyword">&lt; </span><span class="default">3</span><span class="keyword">; </span><span class="default">$a</span><span class="keyword">++)<br />
+{<br />
+&nbsp; echo </span><span class="default">$a</span><span class="keyword">.</span><span class="string">"\n"</span><span class="keyword">;<br />
+&nbsp; echo </span><span class="default">$b</span><span class="keyword">.</span><span class="string">"\n"</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+This is because PHP doesn't actually have a proper comma-operator, it's only supported as syntactic sugar in for() loop headers. In C, it would have been perfectly legitimate to have this:<br />
+<br />
+int f()<br />
+{<br />
+&nbsp; int a, b;<br />
+&nbsp; a = 2, b = 4;<br />
+<br />
+&nbsp; return a;<br />
+}<br />
+<br />
+or even this:<br />
+<br />
+int g()<br />
+{<br />
+&nbsp; int a, b;<br />
+&nbsp; a = (2, b = 4);<br />
+<br />
+&nbsp; return a;<br />
+}<br />
+<br />
+In f(), a would have been set to 2, and b would have been set to 4.<br />
+In g(), (2, b = 4) would be a single expression which evaluates to 4, so both a and b would have been set to 4.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="81849""></a>
+  <div class="note">
+   <strong class="user">denzoo at gmail dot com</strong>
+   <a href="#81849" class="date">16-Mar-2008 01:52</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+To jvm at jvmyers dot com:<br />
+Your first two if statements just check if there's anything in the string, if you wish to actually execute the code in your string you need eval().</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="81363""></a>
+  <div class="note">
+   <strong class="user">jvm at jvmyers dot com</strong>
+   <a href="#81363" class="date">24-Feb-2008 09:20</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+<span class="default">&lt;?php<br />
+</span><span class="comment">// Compound booleans expressed as string args in an 'if' statement don't work as expected:<br />
+//<br />
+//&nbsp; &nbsp; Context:<br />
+//&nbsp; &nbsp; &nbsp; &nbsp; 1.&nbsp; I generate an array of counters<br />
+//&nbsp; &nbsp; &nbsp; &nbsp; 2.&nbsp; I dynamically generate a compound boolean based on selected counters in the array<br />
+//&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Note: since the real array is sparse, I must use the 'empty' operator<br />
+//&nbsp; &nbsp; &nbsp; &nbsp; 3.&nbsp; When I submit the compound boolean as the expression of an 'if' statement, <br />
+//&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; the 'if' appears to resolve ONLY the first element of the compound boolean.<br />
+//&nbsp; &nbsp; Conclusion: appears to be a short-circuiting issue<br />
+<br />
+</span><span class="default">$aArray </span><span class="keyword">= array(</span><span class="default">1</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">// Case 1: 'if' expression passed as string:<br />
+<br />
+</span><span class="default">$sCondition </span><span class="keyword">= </span><span class="string">"!empty(</span><span class="default">$aArray</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">]</span><span class="string">) &amp;&amp; !empty(</span><span class="default">$aArray</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">]</span><span class="string">)"</span><span class="keyword">;<br />
+if (</span><span class="default">$sCondition</span><span class="keyword">)<br />
+{<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="string">"1. Conditions met&lt;br /&gt;"</span><span class="keyword">;<br />
+}<br />
+else<br />
+{<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="string">"1. Conditions not met&lt;br /&gt;"</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="comment">// Case 1 output:&nbsp; "1. Conditions met"<br />
+<br />
+// Case 2: same as Case 1, but using catenation operator<br />
+<br />
+</span><span class="keyword">if (</span><span class="string">""</span><span class="keyword">.</span><span class="default">$sCondition</span><span class="keyword">.</span><span class="string">""</span><span class="keyword">)<br />
+{<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="string">"2. Conditions met&lt;br /&gt;"</span><span class="keyword">;<br />
+}<br />
+else<br />
+{<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="string">"2. Conditions not met&lt;br /&gt;"</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="comment">// Case 2 output:&nbsp; "2. Conditions met"<br />
+<br />
+// Case 3: same 'if' expression but passed in context:<br />
+<br />
+</span><span class="keyword">if (!empty(</span><span class="default">$aArray</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">]) &amp;&amp; !empty(</span><span class="default">$aArray</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">]))<br />
+{<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="string">"3. Conditions met&lt;br /&gt;"</span><span class="keyword">;<br />
+}<br />
+else<br />
+{<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="string">"3. Conditions not met&lt;br /&gt;"</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="comment">// Case 3 output:&nbsp; "3. Conditions not met"<br />
+<br />
+// jvm@jvmyers.com<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+PS: the bug folks say this "does not imply a bug in PHP itself."&nbsp; Sure bugs me!</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="78636""></a>
+  <div class="note">
+   <strong class="user">petruzanauticoyahoo?com!ar</strong>
+   <a href="#78636" class="date">20-Oct-2007 05:41</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Regarding the ternary operator, I would rather say that the best option is to enclose all the expression in parantheses, to avoid errors and improve clarity:<br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp;&nbsp; </span><span class="keyword">print ( </span><span class="default">$a </span><span class="keyword">&gt; </span><span class="default">1 </span><span class="keyword">? </span><span class="string">"many" </span><span class="keyword">: </span><span class="string">"just one" </span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+PS: for php, C++, and any other language that has it.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="77291""></a>
+  <div class="note">
+   <strong class="user">winks716</strong>
+   <a href="#77291" class="date">23-Aug-2007 10:42</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+reply to egonfreeman at gmail dot com<br />
+04-Apr-2007 07:45 <br />
+<br />
+the second example u mentioned as follow:<br />
+=====================================<br />
+<br />
+$n = 3;<br />
+$n * $n++<br />
+<br />
+from 3 * 3 into 3 * 4. Post- operations operate on a variable after it has been 'checked', but it doesn't necessarily state that it should happen AFTER an evaluation is over (on the contrary, as a matter of fact).<br />
+<br />
+===========================================<br />
+<br />
+everything works correctly but one sentence should be modified:<br />
+<br />
+"from 3 * 3 into 3 * 4"&nbsp; should be "from 3 * 3 into 4 * 3"<br />
+<br />
+best regards~ :)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="76571""></a>
+  <div class="note">
+   <strong class="user">george dot langley at shaw dot ca</strong>
+   <a href="#76571" class="date">20-Jul-2007 08:01</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Here's a quick example of Pre and Post-incrementation, in case anyone does feel confused (ref anonymous poster 31 May 2005)<br />
+<br />
+<span class="default">&lt;?PHP<br />
+</span><span class="keyword">echo </span><span class="string">"Using Pre-increment ++\$a:&lt;br&gt;"</span><span class="keyword">;<br />
+</span><span class="default">$a </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br />
+echo </span><span class="string">"\$a = </span><span class="default">$a</span><span class="string">&lt;br&gt;"</span><span class="keyword">;<br />
+</span><span class="default">$b </span><span class="keyword">= ++</span><span class="default">$a</span><span class="keyword">;<br />
+echo </span><span class="string">"\$b = ++\$a, so \$b = </span><span class="default">$b</span><span class="string"> and \$a = </span><span class="default">$a</span><span class="string">&lt;br&gt;"</span><span class="keyword">;<br />
+echo </span><span class="string">"&lt;br&gt;"</span><span class="keyword">;<br />
+echo </span><span class="string">"Using Post-increment \$a++:&lt;br&gt;"</span><span class="keyword">;<br />
+</span><span class="default">$a </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br />
+echo </span><span class="string">"\$a = </span><span class="default">$a</span><span class="string">&lt;br&gt;"</span><span class="keyword">;<br />
+</span><span class="default">$b </span><span class="keyword">= </span><span class="default">$a</span><span class="keyword">++;<br />
+echo </span><span class="string">"\$b = \$a++, so \$b = </span><span class="default">$b</span><span class="string"> and \$a = </span><span class="default">$a</span><span class="string">&lt;br&gt;"</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+HTH</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="74308""></a>
+  <div class="note">
+   <strong class="user">egonfreeman at gmail dot com</strong>
+   <a href="#74308" class="date">04-Apr-2007 04:45</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+It is worthy to mention that:<br />
+<br />
+$n = 3;<br />
+$n * --$n<br />
+<br />
+WILL RETURN 4 instead of 6.<br />
+<br />
+It can be a hard to spot "error", because in our human thought process this really isn't an error at all! But you have to remember that PHP (as it is with many other high-level languages) evaluates its statements RIGHT-TO-LEFT, and therefore "--$n" comes BEFORE multiplying, so - in the end - it's really "2 * 2", not "3 * 2".<br />
+<br />
+It is also worthy to mention that the same behavior will change:<br />
+<br />
+$n = 3;<br />
+$n * $n++<br />
+<br />
+from 3 * 3 into 3 * 4. Post- operations operate on a variable after it has been 'checked', but it doesn't necessarily state that it should happen AFTER an evaluation is over (on the contrary, as a matter of fact).<br />
+<br />
+So, if you ever find yourself on a 'wild goose chase' for a bug in that "impossible-to-break, so-very-simple" piece of code that uses pre-/post-'s, remember this post. :)<br />
+<br />
+(just thought I'd check it out - turns out I was right :P)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="73261""></a>
+  <div class="note">
+   <strong class="user">shawnster</strong>
+   <a href="#73261" class="date">15-Feb-2007 01:56</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+An easy fix (although intuitively tough to do...) is to reverse the comparison.<br />
+<br />
+if (5 == $a) {}<br />
+<br />
+If you forget the second '=', you'll get a parse error for trying to assign a value to a non-variable.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="72692""></a>
+  <div class="note">
+   <strong class="user">nabil_kadimi at hotmail dot com</strong>
+   <a href="#72692" class="date">30-Jan-2007 04:46</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Attention! php will not warn you if you write (1) When you mean (2)<br />
+<br />
+(1)<br />
+&lt;?<br />
+if($a=0) <br />
+&nbsp;&nbsp;&nbsp; echo "condition is true";<br />
+else <br />
+&nbsp;&nbsp;&nbsp; echo "condition is false";<br />
+//output: condition is false<br />
+?&gt;<br />
+<br />
+(2)<br />
+&lt;?<br />
+if($a==0) <br />
+&nbsp;&nbsp;&nbsp; echo "condition is true";<br />
+else <br />
+&nbsp;&nbsp;&nbsp; echo "condition is false";<br />
+//output: condition is true<br />
+?&gt;</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="60899""></a>
+  <div class="note">
+   <strong class="user">richard at phase4 dot ie</strong>
+   <a href="#60899" class="date">19-Jan-2006 09:00</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Follow up on Martin K. There are no hard and fast rules regarding operator precedence. Newbies should definitely learn them, but if their use results in code that is not easy to read you should use parentheses. The two important things are that it works properly AND is maintainable by you and others.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="57998""></a>
+  <div class="note">
+   <strong class="user">Martin K</strong>
+   <a href="#57998" class="date">21-Oct-2005 03:28</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+At 04-Feb-2005 05:13, tom at darlingpet dot com said:<br />
+&gt; It's also a good idea to use parenthesis when using something SIMILAR to:<br />
+&gt; <br />
+&gt; <span class="default">&lt;?php<br />
+</span><span class="keyword">&gt; echo (</span><span class="default">trim</span><span class="keyword">(</span><span class="default">$var</span><span class="keyword">)==</span><span class="string">""</span><span class="keyword">) ? </span><span class="string">"empty" </span><span class="keyword">: </span><span class="string">"not empty"</span><span class="keyword">;<br />
+&gt; </span><span class="default">?&gt;<br />
+</span><br />
+No, it's a BAD idea.<br />
+<br />
+All the short-circuiting operators, including the ternary conditional operator, have LOWER precedence than the comparison operators, so they almost NEVER need parentheses around their subexpressions.<br />
+<br />
+Inserting the parentheses suggested above does not change the meaning of the code, but their use misleads inexperienced programmers to expect that things like this will work in a similar manner:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">my_print</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">) { print(</span><span class="default">$a</span><span class="keyword">); }<br />
+</span><span class="default">my_print </span><span class="keyword">(</span><span class="default">trim</span><span class="keyword">(</span><span class="default">$var</span><span class="keyword">)==</span><span class="string">""</span><span class="keyword">) ? </span><span class="string">"empty" </span><span class="keyword">: </span><span class="string">"not empty"</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+when of course it doesn't.<br />
+<br />
+Rather than worrying that code doesn't work as expected, simply learn the precedence rules (<a href="http://www.php.net/manual/en/language.operators.php" rel="nofollow" target="_blank">http://www.php.net/manual/en/language.operators.php</a>) so that one expects the right things.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="55815""></a>
+  <div class="note">
+   <strong class="user">12345alex at gmx dot net</strong>
+   <a href="#55815" class="date">14-Aug-2005 04:00</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+this code:<br />
+&nbsp;&nbsp;&nbsp; print array() == NULL ? "True" : "False";<br />
+&nbsp;&nbsp;&nbsp; print " (" . (array() == NULL) . ")\n";<br />
+<br />
+&nbsp;&nbsp;&nbsp; $arr = array();<br />
+&nbsp;&nbsp;&nbsp; print array() == $arr ? "True" : "False";<br />
+&nbsp;&nbsp;&nbsp; print " (" . (array() == $arr) . ")\n";<br />
+<br />
+&nbsp;&nbsp;&nbsp; print count(array()) . "\n";<br />
+&nbsp;&nbsp;&nbsp; print count(NULL) . "\n";<br />
+<br />
+will output (on php4 and php5):<br />
+&nbsp;&nbsp;&nbsp; True (1)<br />
+&nbsp;&nbsp;&nbsp; True (1)<br />
+&nbsp;&nbsp;&nbsp; 0<br />
+&nbsp;&nbsp;&nbsp; 0<br />
+<br />
+so to decide wether i have NULL or an empty array i will also have to use gettype(). this seems some kind of weird for me, although if is this is a bug, somebody should have noticed it before.<br />
+<br />
+alex</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="53404""></a>
+  <div class="note">
+   
+   <a href="#53404" class="date">31-May-2005 09:07</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I don't see why it is necessary here to explain pre- and post- incrementing.<br />
+<br />
+This is something that will confuse new users of PHP, even longer time programmers will sometimes miss a the fine details of a construct like that.<br />
+<br />
+If something has a side-effect it should be on a line of it's own, or at least be an expression of it's own and not part of an assignment, condition or whatever.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="49666""></a>
+  <div class="note">
+   <strong class="user">tom at darlingpet dot com</strong>
+   <a href="#49666" class="date">04-Feb-2005 11:13</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Something I've noticed with ternary expressions is if you do something like :<br />
+<br />
+&lt;?= $var=="something" ? "is something" : "not something"; ?&gt;<br />
+<br />
+It will give wacky results sometimes...<br />
+<br />
+So be sure to enclose the ternary expression in parenthesis when ever necessary (such as having multiple expressions or nested ternary expressions)<br />
+<br />
+The above could look like:<br />
+<br />
+&lt;?= ($var=="something") ? "is something" : "not something"; ?&gt;<br />
+<br />
+It's also a good idea to use parenthesis when using something SIMILAR to:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">echo (</span><span class="default">trim</span><span class="keyword">(</span><span class="default">$var</span><span class="keyword">)==</span><span class="string">""</span><span class="keyword">) ? </span><span class="string">"empty" </span><span class="keyword">: </span><span class="string">"not empty"</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+In some cases other than the &lt;?= ?&gt; example, not placing the entire expression in appropriate parenthesis might yield undesirable results as well.. but I'm not quite sure.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="24119""></a>
+  <div class="note">
+   <strong class="user">oliver at hankeln-online dot de</strong>
+   <a href="#24119" class="date">07-Aug-2002 03:06</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The short-circuiting IS a feature. It is also available in C, so I suppose the developers won�t remove it in future PHP versions.<br />
+<br />
+It is rather nice to write:<br />
+<br />
+$file=fopen("foo","r") or die("Error!");<br />
+<br />
+Greets,<br />
+Oliver</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="21750""></a>
+  <div class="note">
+   <strong class="user">Mattias at mail dot ee</strong>
+   <a href="#21750" class="date">25-May-2002 12:29</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+A note about the short-circuit behaviour of the boolean operators.<br />
+<br />
+1. if (func1() || func2())<br />
+Now, if func1() returns true, func2() isn't run, since the expression<br />
+will be true anyway.<br />
+<br />
+2. if (func1() &amp;&amp; func2())<br />
+Now, if func1() returns false, func2() isn't run, since the expression<br />
+will be false anyway.<br />
+<br />
+The reason for this behaviour comes probably from the programming<br />
+language C, on which PHP seems to be based on. There the<br />
+short-circuiting can be a very useful tool. For example:<br />
+<br />
+int * myarray = a_func_to_set_myarray(); // init the array<br />
+if (myarray != NULL &amp;&amp; myarray[0] != 4321) // check<br />
+&nbsp;&nbsp;&nbsp; myarray[0] = 1234;<br />
+<br />
+Now, the pointer myarray is checked for being not null, then the<br />
+contents of the array is validated. This is important, because if<br />
+you try to access an array whose address is invalid, the program<br />
+will crash and die a horrible death. But thanks to the short<br />
+circuiting, if myarray == NULL then myarray[0] won't be accessed,<br />
+and the program will work fine.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="11883""></a>
+  <div class="note">
+   <strong class="user">yasuo_ohgaki at hotmail dot com</strong>
+   <a href="#11883" class="date">12-Mar-2001 08:14</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Manual defines "expression is anything that has value", Therefore, parser will give error for following code.<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">(</span><span class="default">$val</span><span class="keyword">) ? echo(</span><span class="string">'true'</span><span class="keyword">) : echo(</span><span class="string">'false'</span><span class="keyword">);<br />
+</span><span class="default">Note</span><span class="keyword">: </span><span class="string">"? : " </span><span class="default">operator has this syntax&nbsp; </span><span class="string">"expr ? expr : expr;"<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+since echo does not have(return) value and ?: expects expression(value).<br />
+<br />
+However, if function/language constructs that have/return value, such as include(), parser compiles code.<br />
+<br />
+Note: User defined functions always have/return value without explicit return statement (returns NULL if there is no return statement). Therefore, user defined functions are always valid expressions. <br />
+[It may be useful to have VOID as new type to prevent programmer to use function as RVALUE by mistake]<br />
+<br />
+For example,<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">(</span><span class="default">$val</span><span class="keyword">) ? include(</span><span class="string">'true.inc'</span><span class="keyword">) : include(</span><span class="string">'false.inc'</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+is valid, since "include" returns value.<br />
+<br />
+The fact "echo" does not return value(="echo" is not a expression), is less obvious to me. <br />
+<br />
+Print() and Echo() is NOT identical since print() has/returns value and can be a valid expression.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="9801""></a>
+  <div class="note">
+   <strong class="user">anthony at n dot o dot s dot p dot a dot m dot trams dot com</strong>
+   <a href="#9801" class="date">24-Nov-2000 08:01</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The ternary conditional operator is a useful way of avoiding inconvenient if statements.&nbsp; They can even be used in the middle of a string concatenation, if you use parentheses.&nbsp; <br />
+<br />
+Example:<br />
+<br />
+if ( $wakka ) {<br />
+&nbsp; $string = 'foo' ;<br />
+} else {<br />
+&nbsp; $string = 'bar' ;<br />
+}<br />
+<br />
+The above can be expressed like the following:<br />
+<br />
+$string = $wakka ? 'foo' : 'bar' ;<br />
+<br />
+If $wakka is true, $string is assigned 'foo', and if it's false, $string is assigned 'bar'.<br />
+<br />
+To do the same in a concatenation, try:<br />
+<br />
+$string = $otherString . ( $wakka ? 'foo' : 'bar' ) ;</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="language.constants.predefined.html">自動的に定義される定数</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="language.operators.html">演算子</a></div>
+ <div class="up"><a href="langref.html">言語リファレンス</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

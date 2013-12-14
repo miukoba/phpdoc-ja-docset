@@ -1,0 +1,232 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Oracleとの接続を閉じる</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.oci-client-version.html">oci_client_version</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.oci-commit.html">oci_commit</a></div>
+ <div class="up"><a href="ref.oci8.html">OCI8 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.oci-close" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">oci_close</h1>
+  <p class="verinfo">(PHP 5, PECL OCI8 &gt;= 1.1.0)</p><p class="refpurpose"><span class="refname">oci_close</span> &mdash; <span class="dc-title">Oracleとの接続を閉じる</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.oci-close-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>oci_close</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$connection</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   接続 <em><code class="parameter">connection</code></em> を閉じます。
+   他のいかなるリソースも利用しない、なおかつ  <span class="function"><a href="function.oci-connect.html" class="function">oci_connect()</a></span>
+   または  <span class="function"><a href="function.oci-new-connect.html" class="function">oci_new_connect()</a></span> で作成された場合、
+   基礎となるデータベース接続が閉じられます。
+  </p>
+  <p class="para">
+   もはや不要となった接続を閉じることを推奨します。
+   なぜなら、これにより他のユーザーがデータベースリソースを利用できるようになるからです。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.oci-close-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">connection</code></em></span>
+     <dd>
+
+      <p class="para">
+        <span class="function"><a href="function.oci-connect.html" class="function">oci_connect()</a></span>、 <span class="function"><a href="function.oci-pconnect.html" class="function">oci_pconnect()</a></span>
+       あるいは  <span class="function"><a href="function.oci-new-connect.html" class="function">oci_new_connect()</a></span> が返す Oracle 接続 ID。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.oci-close-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.oci-close-examples">
+  <h3 class="title">例</h3>
+  <div class="example" id="example-1954">
+   <p><strong>例1 接続を閉じる</strong></p>
+   <div class="example-contents"><p>
+    基礎となるデータベース接続がきちんと終了され、データベースリソースが解放されることを確実にするために、
+    接続に関連したリソースは閉じられるべきです。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'hr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'welcome'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'localhost/XE'</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$conn</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$e&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_error</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$e</span><span style="color: #007700">[</span><span style="color: #DD0000">'message'</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">ENT_QUOTES</span><span style="color: #007700">),&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'SELECT&nbsp;*&nbsp;FROM&nbsp;departments'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$r&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_fetch_all</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$res</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;接続を閉じるときにステートメント識別子を解放します<br /></span><span style="color: #0000BB">oci_free_statement</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+
+  <div class="example" id="example-1955">
+   <p><strong>例2 参照の全てが閉じられるまでデータベース接続は閉じられません</strong></p>
+   <div class="example-contents"><p>
+    基礎となるデータベースへの接続が閉じられる前に
+    接続の内部的な参照回数識別子はゼロで無ければいけません
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'hr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'welcome'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'localhost/XE'</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$conn</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$e&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_error</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$e</span><span style="color: #007700">[</span><span style="color: #DD0000">'message'</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">ENT_QUOTES</span><span style="color: #007700">),&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'SELECT&nbsp;*&nbsp;FROM&nbsp;departments'</span><span style="color: #007700">);&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;これは&nbsp;$conn&nbsp;の参照回数を増やします<br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_fetch_all</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$res</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">oci_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;$conn&nbsp;はもはやスクリプトで使用できませんが、基礎となるデータベース接続は<br />//&nbsp;$stid&nbsp;が解放されるまで開かれたまま保たれます。<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;NULL&nbsp;を出力&nbsp;<br /><br />//&nbsp;PHP&nbsp;が活動していない間にターミナルウィンドウで&nbsp;Oracle&nbsp;の&nbsp;V$SESSION&nbsp;ビューを<br />//&nbsp;参照すると、データベースユーザーがまだ接続されていると表示します。<br /></span><span style="color: #0000BB">sleep</span><span style="color: #007700">(</span><span style="color: #0000BB">10</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;$stid&nbsp;が解放されると、データベース接続は物理的に閉じられます。<br /></span><span style="color: #0000BB">oci_free_statement</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);&nbsp;&nbsp;<br /><br /></span><span style="color: #FF8000">//&nbsp;PHP&nbsp;が活動していない間にターミナルウィンドウで&nbsp;Oracle&nbsp;の&nbsp;V$SESSION&nbsp;ビューを<br />//&nbsp;参照すると、データベースユーザーが切断されたと表示します。<br /></span><span style="color: #0000BB">sleep</span><span style="color: #007700">(</span><span style="color: #0000BB">10</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+
+  <div class="example" id="example-1956">
+   <p><strong>例3 一回以上開かれた接続を閉じる</strong></p>
+   <div class="example-contents"><p>
+     データベースクレデンシャルが再利用されるときは、基礎となるデータベース接続が閉じられる前に、
+     両方の接続がともに閉じられていなければいけません。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$conn1&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'hr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'welcome'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'localhost/XE'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;同じ基礎となるデータベース接続を再利用するクレデンシャルを使用すると、<br />//&nbsp;$conn1&nbsp;上でなされたコミットされていない変更は全て、&nbsp;$conn2&nbsp;で認識できます。<br /></span><span style="color: #0000BB">$conn2&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'hr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'welcome'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'localhost/XE'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;PHP&nbsp;が活動していない間にターミナルウィンドウで&nbsp;Oracle&nbsp;の&nbsp;V$SESSION&nbsp;ビューを<br />//&nbsp;参照すると、データベースユーザーが一つだけ接続されたと表示します。<br /></span><span style="color: #0000BB">sleep</span><span style="color: #007700">(</span><span style="color: #0000BB">10</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">oci_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn1</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;基礎となるデータベース接続を閉じません。<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn1</span><span style="color: #007700">);&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;変数&nbsp;$conn1&nbsp;がもはや利用できないので&nbsp;NULL&nbsp;を出力します<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn2</span><span style="color: #007700">);&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;$conn2&nbsp;はまだ有効な接続リソースと表示されます。<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+
+  <div class="example" id="example-1957">
+   <p><strong>例4 変数がスコープから外れると接続が閉じられます</strong></p>
+   <div class="example-contents"><p>
+    接続を参照する変数の全てがスコープを外れてPHPにより解放されると、
+    （必要に応じて）ロールバックが発生します。
+    そしてデータベースへの基礎となる接続が閉じられます。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">myfunc</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'hr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'hrpwd'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'localhost/XE'</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!</span><span style="color: #0000BB">$conn</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$e&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_error</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$e</span><span style="color: #007700">[</span><span style="color: #DD0000">'message'</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">ENT_QUOTES</span><span style="color: #007700">),&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'UPDATE&nbsp;mytab&nbsp;SET&nbsp;id&nbsp;=&nbsp;100'</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_NO_AUTO_COMMIT</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #DD0000">"Finished"</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #0000BB">$r&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">myfunc</span><span style="color: #007700">();<br /></span><span style="color: #FF8000">//&nbsp;この時点でロールバックが発生し、基礎となるデータベース接続が閉じられます。<br /><br /></span><span style="color: #007700">print&nbsp;</span><span style="color: #0000BB">$r</span><span style="color: #007700">;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;関数の返り値&nbsp;"Finished"&nbsp;を表示します<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </div>
+
+
+ <div class="refsect1 notes" id="refsect1-function.oci-close-notes">
+  <h3 class="title">注意</h3>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    接続識別子に依存する変数、たとえば  <span class="function"><a href="function.oci-parse.html" class="function">oci_parse()</a></span> により返される
+    ステートメント識別子のような変数は、基礎となるデータベース接続が閉じられる前に
+    解放されなければいけません。
+   </p>
+  </p></blockquote>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    PHP 5.1.2 (PECL OCI8 1.1) より前のバージョンでは、 <span class="function"><strong>oci_close()</strong></span>
+    は実際には何もしませんでした。最近のバージョンでは、きちんと Oracle 接続を閉じます。
+    この関数の古い動作をさせる場合は <a href="oci8.configuration.html#ini.oci8.old-oci-close-semantics" class="link">oci8.old_oci_close_semantics</a>
+    オプションを使用してください。
+   </p>
+  </p></blockquote>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+     <span class="function"><strong>oci_close()</strong></span> 関数は
+     <span class="function"><a href="function.oci-pconnect.html" class="function">oci_pconnect()</a></span> で作成された基礎となるデータベース接続を
+    閉じません。
+   </p>
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.oci-close-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="function.oci-connect.html" class="function" rel="rdfs-seeAlso">oci_connect()</a> - Oracle データベースに接続する</span></li>
+    <li class="member"> <span class="function"><a href="function.oci-free-statement.html" class="function" rel="rdfs-seeAlso">oci_free_statement()</a> - 文やカーソルに関連付けられた全てのリソースを解放する</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="107857""></a>
+  <div class="note">
+   <strong class="user">Fahd Alwashmi (F-A-W)</strong>
+   <a href="#107857" class="date">10-Mar-2012 05:22</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+please note, you can use oci_close() to close persistent connections opened with oci_pconnect() in PHP ver 5.3 or above.<br />
+as stated in here:<br />
+<a href="http://www.php.net/manual/en/oci8.configuration.php#ini.oci8.persistent-timeout" rel="nofollow" target="_blank">http://www.php.net/manual/en/oci8.configuration.php#ini.oci8.persistent-timeout</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="19122""></a>
+  <div class="note">
+   <strong class="user">yepster at hotmail dot com</strong>
+   <a href="#19122" class="date">16-Feb-2002 07:21</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+For using persistent connections &amp;&amp; being able to sleep, I use:<br />
+<br />
+function close_db_locks_on_abort( ) {<br />
+&nbsp;&nbsp;&nbsp; global $conn;<br />
+&nbsp;&nbsp;&nbsp; if( connection_aborted() ) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; $fp = fopen( "/tmp/shutdown-func.txt", "a" );<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; fwrite( $fp, sprintf( "connection aborted on %s\n", date( "d-m-Y H:i:s" ) ) );<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if( $conn ) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; OCIRollBack( $conn );<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; fwrite( $fp, sprintf( "-- DURING CONNECTION! ip=%s, user=%s, page=%s\n", $_SERVER["REMOTE_ADDR"], $_SERVER["PHP_AUTH_USER"], $_SERVER["SCRIPT_FILENAME"] ) );<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; fclose( $fp );<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+<br />
+register_shutdown_function ( "close_db_locks_on_abort" );<br />
+<br />
+This makes sure a rollback is done on a connection when a user hits 'stop', so there will be no locks on table rows.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.oci-client-version.html">oci_client_version</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.oci-commit.html">oci_commit</a></div>
+ <div class="up"><a href="ref.oci8.html">OCI8 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

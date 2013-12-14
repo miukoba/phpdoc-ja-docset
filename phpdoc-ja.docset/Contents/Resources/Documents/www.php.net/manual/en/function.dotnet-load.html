@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>DOTNET モジュールをロードする</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="ref.dotnet.html">.NET 関数</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="book.com.html">COM</a></div>
+ <div class="up"><a href="ref.dotnet.html">.NET 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.dotnet-load" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">dotnet_load</h1>
+  <p class="verinfo">(PHP 4)</p><p class="refpurpose"><span class="refname">dotnet_load</span> &mdash; <span class="dc-title">DOTNET モジュールをロードする</span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-function.dotnet-load-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">int</span> <span class="methodname"><strong>dotnet_load</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$assembly_name</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$datatype_name</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$codepage</code></span>
+  ]] )</div>
+
+  <div class="warning"><strong class="warning">警告</strong><p class="simpara">この関数は、
+<em class="emphasis">実験的</em> なものです。この関数の動作・
+名前・その他ドキュメントに書かれている事項は、予告なく、将来的な PHP
+のリリースにおいて変更される可能性があります。
+この関数は自己責任で使用してください。</p></div>
+  <div class="warning"><strong class="warning">警告</strong><p class="simpara">この関数は、
+現在のところ詳細な情報はありません。引数のリストのみが
+記述されています。</p></div>
+ </div>
+
+
+ <div class="refsect1 changelog" id="refsect1-function.dotnet-load-changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>4.1.0</td>
+       <td>
+        パラメータ <em><code class="parameter">codepage</code></em> が追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="100581""></a>
+  <div class="note">
+   <strong class="user">Rudi Lippert</strong>
+   <a href="#100581" class="date">25-Oct-2010 11:50</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you got here looking for the standard way to load DOTNET modules, you might be better off looking here:<br />
+<a href="http://php.net/manual/en/class.dotnet.php" rel="nofollow" target="_blank">http://php.net/manual/en/class.dotnet.php</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="76111""></a>
+  <div class="note">
+   <strong class="user">sunside</strong>
+   <a href="#76111" class="date">01-Jul-2007 04:46</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The <br />
+<br />
+&nbsp; if (parameters[0].GetType().ToString() == "System.Int32")<br />
+<br />
+below can be compacted to<br />
+<br />
+&nbsp; if (parameters[0] is System.Int32)<br />
+<br />
+as well as<br />
+<br />
+&nbsp; if (parameters[0] is int)<br />
+<br />
+(if you are on a 32bit platform, that is)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="23580""></a>
+  <div class="note">
+   <strong class="user">thomas dot weidner at voxtronic dot com</strong>
+   <a href="#23580" class="date">23-Jul-2002 12:54</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+To realise functions within Microsoft.NET which can use with every type of parameter as boolean, integer, string or any other type you want to use do the following.<br />
+<br />
+Write your function in .NET :<br />
+CSharp Example :<br />
+MyFunction (params object[] parameters)<br />
+{<br />
+&nbsp;&nbsp;&nbsp; if (parameters[0].GetType().ToString() == "System.Int32")<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; return "Parameter 0 is an Integer";<br />
+&nbsp;&nbsp;&nbsp; return "Parameter 0 is no Integer"; <br />
+}<br />
+<br />
+Within PHP do the following :<br />
+<br />
+$parameter[0] = 12345;<br />
+$parameter[1] = "My String";<br />
+$parameter[2] = false;<br />
+$obj = new COM ("NameSpace.Class");<br />
+$value = $obj -&gt; MyFunction($parameter)<br />
+print($value);<br />
+<br />
+How to work with params and object you could read within the .NET Documentation. <br />
+<br />
+If you have any further question dont be afraid and write me...<br />
+<br />
+Bye<br />
+Thomas</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="23552""></a>
+  <div class="note">
+   <strong class="user">Thomas dot Weidner at voxtronic dot com</strong>
+   <a href="#23552" class="date">22-Jul-2002 11:12</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I`ve found an workaround to use the Microsoft.NET within PHP but without the need of compiling the DOTNET.DLL of PHP.<br />
+<br />
+At first write the functions you want to need within PHP in the Microsoft.NET Languages (I`m working in CSharp).<br />
+<br />
+Then make your FunctionsLibrary StrongNamed. Read about how to do this in the SDK-Help. (Key, Version...)<br />
+<br />
+Then you have to register your DLL in GAC. <br />
+For this you have to do REGASM /tlb:your.tlb your.dll<br />
+Then you have to do GACUTIL /if your.dll<br />
+<br />
+After this your DLL will be recognised with in the whole .NET.<br />
+<br />
+Now... to use your DLL within PHP you just have to use an ordinary COM Object.<br />
+<br />
+$MyObj = new COM ("NameSpace.Class");<br />
+$ReturnValue = $MyObj -&gt; MyFunction($MyParams);<br />
+$MyObj = NULL;<br />
+<br />
+$MyParams could be any type. For example an Array.<br />
+<br />
+I tested this with PHP 4.2.1, RDK-Framework, SDK-Frwamework, Visual Studio and SharpDevelop. You have not to recompile PHP because you don�t need the DOTNET.DLL .<br />
+<br />
+The only negative aspect within this way due to COMRestrictions is, that REF or OUT Values are not returned. So you have only one return value.<br />
+But for an good written function this should be no great restriction.<br />
+<br />
+If you have any further question dont be afraid and write to me...<br />
+<br />
+Bye<br />
+Thomas</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="21110""></a>
+  <div class="note">
+   <strong class="user">mb at netminers dot dk</strong>
+   <a href="#21110" class="date">29-Apr-2002 08:34</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Now we are working!<br />
+Well that means that if you want to use the .NET modules, from PHP, you'll have to build a new php_dotnet.dll file.<br />
+The problem with the existing code is the interface versions of the COM object needed to mix unmanaged code with managed code.<br />
+<br />
+To fix this minor issue, replace<br />
+#include "mscorlib.h", in the extensions project of the PHP4.2 source, with the following type library binary file import.<br />
+#import "mscorlib.tlb" raw_interfaces_only high_property_prefixes("_get","_put","_putref") <br />
+<br />
+The type library file is converted to a type library header file which is then automatically included by Visual Studio, presuming you are using that. :o)<br />
+Have fun! (Mail me if this description was too bad, I can mail the new php_dotnet.dll)<br />
+<br />
+By the way the tlbexp.exe SDK tool can generate the .tlb file.<br />
+<br />
+I'll check with the PHP group to verify they are aware of the issue, so it's nicely fixed in a future release of PHP.<br />
+<br />
+Great stuff,<br />
+Michael</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="ref.dotnet.html">.NET 関数</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="book.com.html">COM</a></div>
+ <div class="up"><a href="ref.dotnet.html">.NET 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>結果の行を数値添字配列で取得する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqli-result.fetch-object.html">mysqli_result::fetch_object</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqli-result.field-count.html">mysqli_result::$field_count</a></div>
+ <div class="up"><a href="class.mysqli-result.html">mysqli_result</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mysqli-result.fetch-row" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mysqli_result::fetch_row</h1>
+  <h1 class="refname">mysqli_fetch_row</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose"><span class="refname">mysqli_result::fetch_row</span> -- <span class="refname">mysqli_fetch_row</span> &mdash; <span class="dc-title">結果の行を数値添字配列で取得する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-mysqli-result.fetch-row-description">
+  <h3 class="title">説明</h3>
+  <p class="para">オブジェクト指向型</p>
+  <div class="methodsynopsis dc-description">
+   <span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <span class="methodname"><strong>mysqli_result::fetch_row</strong></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+  <p class="para rdfs-comment">手続き型</p>
+  <div class="methodsynopsis dc-description">
+   <span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <span class="methodname"><strong>mysqli_fetch_row</strong></span>
+    ( <span class="methodparam"><span class="type"><a href="class.mysqli-result.html" class="type mysqli_result">mysqli_result</a></span> <code class="parameter">$result</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   結果セットからデータを 1 行取得し、それを数値添字の配列で
+   返します。各カラムは 0（ゼロ）から始まる添字に格納されます。
+    <span class="function"><strong>mysqli_fetch_row()</strong></span> 関数を続けてコールすると、
+   結果セットの次の行を返します。もしもう行がない場合には
+   <strong><code>NULL</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-mysqli-result.fetch-row-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+<span class="term"><em><code class="parameter">
+result</code></em></span><dd>
+<p class="para">手続き型のみ:
+ <span class="function"><a href="mysqli.query.html" class="function">mysqli_query()</a></span>、 <span class="function"><a href="mysqli.store-result.html" class="function">mysqli_store_result()</a></span>
+あるいは  <span class="function"><a href="mysqli.use-result.html" class="function">mysqli_use_result()</a></span> が返す結果セット ID。</p></dd>
+</dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-mysqli-result.fetch-row-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+    <span class="function"><strong>mysqli_fetch_row()</strong></span> は取得した行に対応する文字列の配列を
+   返します。もしもう行がない場合には <strong><code>NULL</code></strong> を返します。
+  </p>
+  <blockquote class="note"><p><strong class="note">注意</strong>: <span class="simpara">この関数は、
+NULL フィールドに PHPの <strong><code>NULL</code></strong> 値を設定します。</span></p></blockquote>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-mysqli-result.fetch-row-examples">
+  <h3 class="title">例</h3>
+  <div class="example" id="example-1737">
+   <p><strong>例1 オブジェクト指向型</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$mysqli&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">mysqli</span><span style="color: #007700">(</span><span style="color: #DD0000">"localhost"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"my_user"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"my_password"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"world"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;接続状況をチェックします&nbsp;*/<br /></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">mysqli_connect_errno</span><span style="color: #007700">())&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"Connect&nbsp;failed:&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">mysqli_connect_error</span><span style="color: #007700">());<br />&nbsp;&nbsp;&nbsp;&nbsp;exit();<br />}<br /><br /></span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;Name,&nbsp;CountryCode&nbsp;FROM&nbsp;City&nbsp;ORDER&nbsp;by&nbsp;ID&nbsp;DESC&nbsp;LIMIT&nbsp;50,5"</span><span style="color: #007700">;<br /><br />if&nbsp;(</span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #0000BB">$query</span><span style="color: #007700">))&nbsp;{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;配列を取得します&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">while&nbsp;(</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$result</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetch_row</span><span style="color: #007700">())&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf&nbsp;</span><span style="color: #007700">(</span><span style="color: #DD0000">"%s&nbsp;(%s)\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #0000BB">1</span><span style="color: #007700">]);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;結果セットを開放します&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$result</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">close</span><span style="color: #007700">();<br />}<br /><br /></span><span style="color: #FF8000">/*&nbsp;接続を閉じます&nbsp;*/<br /></span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">close</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+  <div class="example" id="example-1738">
+   <p><strong>例2 手続き型</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$link&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysqli_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">"localhost"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"my_user"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"my_password"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"world"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;接続状況をチェックします&nbsp;*/<br /></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">mysqli_connect_errno</span><span style="color: #007700">())&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"Connect&nbsp;failed:&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">mysqli_connect_error</span><span style="color: #007700">());<br />&nbsp;&nbsp;&nbsp;&nbsp;exit();<br />}<br /><br /></span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;Name,&nbsp;CountryCode&nbsp;FROM&nbsp;City&nbsp;ORDER&nbsp;by&nbsp;ID&nbsp;DESC&nbsp;LIMIT&nbsp;50,5"</span><span style="color: #007700">;<br /><br />if&nbsp;(</span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysqli_query</span><span style="color: #007700">(</span><span style="color: #0000BB">$link</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$query</span><span style="color: #007700">))&nbsp;{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;配列を取得します&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">while&nbsp;(</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysqli_fetch_row</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf&nbsp;</span><span style="color: #007700">(</span><span style="color: #DD0000">"%s&nbsp;(%s)\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #0000BB">1</span><span style="color: #007700">]);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;結果セットを開放します&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">mysqli_free_result</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #FF8000">/*&nbsp;接続を閉じます&nbsp;*/<br /></span><span style="color: #0000BB">mysqli_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$link</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+Pueblo (USA)
+Arvada (USA)
+Cape Coral (USA)
+Green Bay (USA)
+Santa Clara (USA)
+</pre></div>
+   </div>
+  </div>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-mysqli-result.fetch-row-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="mysqli-result.fetch-array.html" class="function" rel="rdfs-seeAlso">mysqli_fetch_array()</a> - 結果の行を連想配列・数値添字配列あるいはその両方の形式で取得する</span></li>
+    <li class="member"> <span class="function"><a href="mysqli-result.fetch-assoc.html" class="function" rel="rdfs-seeAlso">mysqli_fetch_assoc()</a> - 結果の行を連想配列で取得する</span></li>
+    <li class="member"> <span class="function"><a href="mysqli-result.fetch-object.html" class="function" rel="rdfs-seeAlso">mysqli_fetch_object()</a> - 結果セットの現在の行をオブジェクトとして返す</span></li>
+    <li class="member"> <span class="function"><a href="mysqli.query.html" class="function" rel="rdfs-seeAlso">mysqli_query()</a> - データベース上でクエリを実行する</span></li>
+    <li class="member"> <span class="function"><a href="mysqli-result.data-seek.html" class="function" rel="rdfs-seeAlso">mysqli_data_seek()</a> - 結果の任意の行にポインタを移動する</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="77861""></a>
+  <div class="note">
+   <strong class="user">evangun2001 at yahoo dot fr</strong>
+   <a href="#77861" class="date">16-Sep-2007 11:24</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Remember that fetch() and fetch_row() are two different things, and differ in the way to use them.<br />
+<br />
+- fetch() is used on a statement (like an executed prepared statement) and needs to be used in association with bind_result().<br />
+<br />
+- fetch_row() is used on a result (like the result of query()).<br />
+<br />
+As a consequence, if you want to use to use fetch_row() with an executed prepared statement, first you'll have to get the result out of this statement with mysqli_store_result() or mysqli_use_result().</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="72527""></a>
+  <div class="note">
+   <strong class="user">Stephen</strong>
+   <a href="#72527" class="date">23-Jan-2007 11:29</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+It's worth noting that the MySQLi functions (and, I presume, the MySQL functions) fetch a string regardless of the MySQL data type. E.g. if you fetch a row with an integer column, the corresponding value for that column and row will still be stored as a string in the array returned by mysql_fetch_row.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="38766""></a>
+  <div class="note">
+   <strong class="user">maillist at pnpitalia.it</strong>
+   <a href="#38766" class="date">06-Jan-2004 07:01</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+from "README.PHP4-TO-PHP5-THIN-CHANGES"<br />
+<br />
+4. Be careful when porting from ext/mysql to ext/mysqli. The following<br />
+&nbsp;&nbsp; functions return NULL when no more data is available in the result set<br />
+&nbsp;&nbsp; (ext/mysql's functions return FALSE).<br />
+<br />
+&nbsp;&nbsp;&nbsp; - mysqli_fetch_row()<br />
+&nbsp;&nbsp;&nbsp; - mysqli_fetch_array()<br />
+&nbsp;&nbsp;&nbsp; - mysqli_fetch_assoc()</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqli-result.fetch-object.html">mysqli_result::fetch_object</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqli-result.field-count.html">mysqli_result::$field_count</a></div>
+ <div class="up"><a href="class.mysqli-result.html">mysqli_result</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>JSON にシリアライズしたいデータを指定する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="class.jsonserializable.html">JsonSerializable</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="ref.json.html">JSON 関数</a></div>
+ <div class="up"><a href="class.jsonserializable.html">JsonSerializable</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="jsonserializable.jsonserialize" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">JsonSerializable::jsonSerialize</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.4.0)</p><p class="refpurpose"><span class="refname">JsonSerializable::jsonSerialize</span> &mdash; <span class="dc-title">JSON にシリアライズしたいデータを指定する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-jsonserializable.jsonserialize-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">abstract</span> <span class="modifier">public</span> <span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <span class="methodname"><strong>JsonSerializable::jsonSerialize</strong></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   オブジェクトをシリアライズして、
+    <span class="function"><a href="function.json-encode.html" class="function">json_encode()</a></span> がネイティブにシリアライズできる値にします。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-jsonserializable.jsonserialize-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">この関数にはパラメータはありません。</p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-jsonserializable.jsonserialize-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+    <span class="function"><a href="function.json-encode.html" class="function">json_encode()</a></span> でシリアライズするデータを返します。
+   <span class="type"><a href="language.types.resource.html" class="type resource">resource</a></span> 型以外の任意の型になります。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-jsonserializable.jsonserialize-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-3732">
+    <p><strong>例1 
+      <span class="methodname"><strong>JsonSerializable::jsonSerialize()</strong></span> で配列を返す例
+    </strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">ArrayValue&nbsp;</span><span style="color: #007700">implements&nbsp;</span><span style="color: #0000BB">JsonSerializable&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">__construct</span><span style="color: #007700">(array&nbsp;</span><span style="color: #0000BB">$array</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">array&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$array</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">jsonSerialize</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">array</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #0000BB">$array&nbsp;</span><span style="color: #007700">=&nbsp;[</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">];<br />echo&nbsp;</span><span style="color: #0000BB">json_encode</span><span style="color: #007700">(new&nbsp;</span><span style="color: #0000BB">ArrayValue</span><span style="color: #007700">(</span><span style="color: #0000BB">$array</span><span style="color: #007700">),&nbsp;</span><span style="color: #0000BB">JSON_PRETTY_PRINT</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+[
+    1,
+    2,
+    3
+]
+</pre></div>
+    </div>
+   </div>
+   <div class="example" id="example-3733">
+    <p><strong>例2 
+      <span class="methodname"><strong>JsonSerializable::jsonSerialize()</strong></span> で連想配列を返す例
+    </strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">ArrayValue&nbsp;</span><span style="color: #007700">implements&nbsp;</span><span style="color: #0000BB">JsonSerializable&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">__construct</span><span style="color: #007700">(array&nbsp;</span><span style="color: #0000BB">$array</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">array&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$array</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">jsonSerialize</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">array</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #0000BB">$array&nbsp;</span><span style="color: #007700">=&nbsp;[</span><span style="color: #DD0000">'foo'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'bar'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'quux'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'baz'</span><span style="color: #007700">];<br />echo&nbsp;</span><span style="color: #0000BB">json_encode</span><span style="color: #007700">(new&nbsp;</span><span style="color: #0000BB">ArrayValue</span><span style="color: #007700">(</span><span style="color: #0000BB">$array</span><span style="color: #007700">),&nbsp;</span><span style="color: #0000BB">JSON_PRETTY_PRINT</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+{
+    &quot;foo&quot;: &quot;bar&quot;,
+    &quot;quux&quot;: &quot;baz&quot;
+}
+</pre></div>
+    </div>
+   </div>
+   <div class="example" id="example-3734">
+    <p><strong>例3 
+      <span class="methodname"><strong>JsonSerializable::jsonSerialize()</strong></span> で整数値を返す例
+    </strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">IntegerValue&nbsp;</span><span style="color: #007700">implements&nbsp;</span><span style="color: #0000BB">JsonSerializable&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">__construct</span><span style="color: #007700">(</span><span style="color: #0000BB">$number</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">number&nbsp;</span><span style="color: #007700">=&nbsp;(integer)&nbsp;</span><span style="color: #0000BB">$number</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">jsonSerialize</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">number</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br />echo&nbsp;</span><span style="color: #0000BB">json_encode</span><span style="color: #007700">(new&nbsp;</span><span style="color: #0000BB">IntegerValue</span><span style="color: #007700">(</span><span style="color: #0000BB">1</span><span style="color: #007700">),&nbsp;</span><span style="color: #0000BB">JSON_PRETTY_PRINT</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+1
+</pre></div>
+    </div>
+   </div>
+   <div class="example" id="example-3735">
+    <p><strong>例4 
+      <span class="methodname"><strong>JsonSerializable::jsonSerialize()</strong></span> で文字列を返す例
+    </strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">StringValue&nbsp;</span><span style="color: #007700">implements&nbsp;</span><span style="color: #0000BB">JsonSerializable&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">__construct</span><span style="color: #007700">(</span><span style="color: #0000BB">$string</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">string&nbsp;</span><span style="color: #007700">=&nbsp;(string)&nbsp;</span><span style="color: #0000BB">$string</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">jsonSerialize</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">string</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br />echo&nbsp;</span><span style="color: #0000BB">json_encode</span><span style="color: #007700">(new&nbsp;</span><span style="color: #0000BB">StringValue</span><span style="color: #007700">(</span><span style="color: #DD0000">'Hello!'</span><span style="color: #007700">),&nbsp;</span><span style="color: #0000BB">JSON_PRETTY_PRINT</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+&quot;Hello!&quot;
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="111263""></a>
+  <div class="note">
+   <strong class="user">benkuhl at gmail dot com</strong>
+   <a href="#111263" class="date">01-Feb-2013 01:17</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+A good example on when you would use functionality like this is when working with objects.<br />
+<br />
+json_encode() will take a DateTime and convert it to:<br />
+<br />
+{<br />
+&nbsp;&nbsp;&nbsp; "date":"2013-01-31 11:14:05",<br />
+&nbsp;&nbsp;&nbsp; "timezone_type":3,<br />
+&nbsp;&nbsp;&nbsp; "timezone":"America\/Los_Angeles"<br />
+}<br />
+<br />
+This is great when working with PHP, but if the Date is being read by Java.&nbsp; The Java date parser doesn't know what to do with that.&nbsp; But it does know what to do with the ISO8601 format...<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+date_default_timezone_set</span><span class="keyword">(</span><span class="string">'America/Los_Angeles'</span><span class="keyword">);<br />
+<br />
+class </span><span class="default">Fruit </span><span class="keyword">implements </span><span class="default">JsonSerializable </span><span class="keyword">{<br />
+&nbsp;&nbsp;&nbsp; public<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$type </span><span class="keyword">= </span><span class="string">'Apple'</span><span class="keyword">,<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$lastEaten </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">;<br />
+<br />
+&nbsp;&nbsp;&nbsp; public function </span><span class="default">__construct</span><span class="keyword">() {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">lastEaten </span><span class="keyword">= new </span><span class="default">DateTime</span><span class="keyword">();<br />
+&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp; public function </span><span class="default">jsonSerialize</span><span class="keyword">() {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; return [<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">'type' </span><span class="keyword">=&gt; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">type</span><span class="keyword">,<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">'lastEaten' </span><span class="keyword">=&gt; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">lastEaten</span><span class="keyword">-&gt;</span><span class="default">format</span><span class="keyword">(</span><span class="default">DateTime</span><span class="keyword">::</span><span class="default">ISO8601</span><span class="keyword">)<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ];<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+echo </span><span class="default">json_encode</span><span class="keyword">(new </span><span class="default">Fruit</span><span class="keyword">()); </span><span class="comment">//which outputs: {"type":"Apple","lastEaten":"2013-01-31T11:17:07-0500"}<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="class.jsonserializable.html">JsonSerializable</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="ref.json.html">JSON 関数</a></div>
+ <div class="up"><a href="class.jsonserializable.html">JsonSerializable</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

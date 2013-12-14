@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>行を取り込む</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.odbc-fetch-object.html">odbc_fetch_object</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.odbc-field-len.html">odbc_field_len</a></div>
+ <div class="up"><a href="ref.uodbc.html">ODBC 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.odbc-fetch-row" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">odbc_fetch_row</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose"><span class="refname">odbc_fetch_row</span> &mdash; <span class="dc-title">行を取り込む</span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-function.odbc-fetch-row-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>odbc_fetch_row</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$result_id</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$row_number</code></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+    <span class="function"><a href="function.odbc-do.html" class="function">odbc_do()</a></span> や 
+    <span class="function"><a href="function.odbc-exec.html" class="function">odbc_exec()</a></span> から返された行データを取得します。
+    <span class="function"><strong>odbc_fetch_row()</strong></span> がコールされた後、この行のフィールドは、
+    <span class="function"><a href="function.odbc-result.html" class="function">odbc_result()</a></span> でアクセス可能となります。
+  </p>
+ </div>
+
+ <div class="refsect1 parameters" id="refsect1-function.odbc-fetch-row-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">result_id</code></em></span>
+     <dd>
+
+      <p class="para">
+       結果 ID。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">row_number</code></em></span>
+     <dd>
+
+      <p class="para">
+       <em><code class="parameter">row_number</code></em> が指定されない場合、
+        <span class="function"><strong>odbc_fetch_row()</strong></span> は、
+       結果セットにおける次の行を取り込もうと試みます。
+       <em><code class="parameter">row_number</code></em> を指定した
+        <span class="function"><strong>odbc_fetch_row()</strong></span>
+       のコールと指定しないコールを混用することができます。
+      </p>
+      <p class="para">
+       結果を複数回走査したい場合、 <span class="function"><strong>odbc_fetch_row()</strong></span> を
+       <em><code class="parameter">row_number</code></em> に 1 を指定してコールし、
+       続いて結果を再度見るために
+       <em><code class="parameter">row_number</code></em> を指定せずに
+        <span class="function"><strong>odbc_fetch_row()</strong></span> を実行しつづけます。
+       行を番号で取り込むことをドライバがサポートしていない場合、
+       <em><code class="parameter">row_number</code></em> パラメータは無視されます。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues" id="refsect1-function.odbc-fetch-row-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   行があった場合には
+   <strong><code>TRUE</code></strong>、それ以外の場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="51685""></a>
+  <div class="note">
+   <strong class="user">eolscr at gmail dot com</strong>
+   <a href="#51685" class="date">07-Apr-2005 05:05</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+When I migrates from 4 to 5 took me a long day to find the solution.<br />
+<br />
+The way to use it without problems<br />
+<br />
+In php4:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">while (</span><span class="default">odbc_fetch_row</span><span class="keyword">(</span><span class="default">$stringsql</span><span class="keyword">)) {<br />
+<br />
+</span><span class="comment">// ...<br />
+<br />
+</span><span class="keyword">}<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+In php5:<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+odbc_fetch_row</span><span class="keyword">(</span><span class="default">$stringsql</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">); <br />
+<br />
+while (</span><span class="default">odbc_fetch_row</span><span class="keyword">(</span><span class="default">$stringsql</span><span class="keyword">)) {<br />
+<br />
+</span><span class="comment">// ...<br />
+<br />
+</span><span class="keyword">}<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Good luck</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.odbc-fetch-object.html">odbc_fetch_object</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.odbc-field-len.html">odbc_field_len</a></div>
+ <div class="up"><a href="ref.uodbc.html">ODBC 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

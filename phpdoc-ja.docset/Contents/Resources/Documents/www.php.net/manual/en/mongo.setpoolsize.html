@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>新しい接続プールのサイズを設定する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongo.pooldebug.html">Mongo::poolDebug</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongo.setslaveokay.html">Mongo::setSlaveOkay</a></div>
+ <div class="up"><a href="class.mongo.html">Mongo</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mongo.setpoolsize" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">Mongo::setPoolSize</h1>
+  <p class="verinfo">(PECL mongo &gt;=1.2.0)</p><p class="refpurpose"><span class="refname">Mongo::setPoolSize</span> &mdash; <span class="dc-title">新しい接続プールのサイズを設定する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-mongo.setpoolsize-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="modifier">static</span> <span class="type">bool</span> <span class="methodname"><strong>Mongo::setPoolSize</strong></span>
+    ( <span class="methodparam"><span class="type">int</span> <code class="parameter">$size</code></span>
+   )</div>
+
+
+  <div class="warning"><strong class="warning">警告</strong>
+   <p class="simpara">
+    このメソッドは、バージョン 1.2.3 からは<em class="emphasis">非推奨</em>となります。
+    この機能に依存してはいけません。かわりに
+     <span class="function"><a href="mongopool.setsize.html" class="function">MongoPool::setSize()</a></span> を使いましょう。
+   </p>
+  </div>
+
+  <p class="para">
+   新しい接続プールが作成できる接続の数を設定します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-mongo.setpoolsize-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term">
+      <em><code class="parameter">size</code></em>
+     </span>
+     <dd>
+
+      <p class="para">
+       新しい接続プールが作成できる接続の最大数。
+       負の値を設定すると、接続を無限に作成できるようになります。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-mongo.setpoolsize-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   設定する前のプールのサイズを返します。
+  </p>
+ </div>
+
+
+
+ <div class="refsect1 examples" id="refsect1-mongo.setpoolsize-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="mongo.setpoolsize.example.basic">
+    <p><strong>例1  <span class="function"><strong>Mongo::setPoolSize()</strong></span> の例</strong></p>
+    <div class="example-contents"><p>
+     プールサイズを <em>n</em> に設定してから
+     <em>n</em> 個の接続を作成し、さらに
+     <em>n+1</em> 番目の接続を作ろうとすると
+     <a href="class.mongoconnectionexception.html" class="classname">MongoConnectionException</a> が発生します。
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;サーバーへの接続はひとつだけしか作れないようにします<br /></span><span style="color: #0000BB">Mongo</span><span style="color: #007700">::</span><span style="color: #0000BB">setPoolSize</span><span style="color: #007700">(</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;localhost:27017&nbsp;への接続を作成ｈします<br /></span><span style="color: #0000BB">$m1&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Mongo</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;localhost:27017&nbsp;への二番目の接続の作成を試みます<br />//&nbsp;ひとつだけしか作れないようにしているので、これは例外となります<br /></span><span style="color: #0000BB">$m2&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Mongo</span><span style="color: #007700">();<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+Fatal error: Uncaught exception &#039;MongoConnectionException&#039; with message &#039;no more connections in pool&#039; in /path/to/php/script.php:10
+Stack trace:
+#0 /path/to/php/script.php(10): Mongo-&gt;__construct()
+#1 {main}
+  thrown in /path/to/php/script.php on line 10
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+
+
+ <div class="refsect1 seealso" id="refsect1-mongo.setpoolsize-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="mongo.getpoolsize.html" class="function" rel="rdfs-seeAlso">Mongo::getPoolSize()</a> - 接続プールのサイズを取得する</span></li>
+    <li class="member"> <span class="function"><a href="mongo.pooldebug.html" class="function" rel="rdfs-seeAlso">Mongo::poolDebug()</a> - すべての接続プールに関する情報を返す</span></li>
+    <li class="member"><a href="mongo.connecting.html" class="link">接続</a>のドキュメント</li>
+   </ul>
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongo.pooldebug.html">Mongo::poolDebug</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongo.setslaveokay.html">Mongo::setSlaveOkay</a></div>
+ <div class="up"><a href="class.mongo.html">Mongo</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

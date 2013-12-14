@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>チュートリアル</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongo.manual.html">マニュアル</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongo.tutorial.connecting.html">接続の作成</a></div>
+ <div class="up"><a href="mongo.manual.html">マニュアル</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mongo.tutorial" class="chapter">
+ <h1>チュートリアル</h1>
+<h2>目次</h2><ul class="chunklist chunklist_chapter"><li><a href="mongo.tutorial.connecting.html">接続の作成</a></li><li><a href="mongo.tutorial.selectdb.html">データベースの取得</a></li><li><a href="mongo.tutorial.collection.html">コレクションの取得</a></li><li><a href="mongo.tutorial.insert.html">ドキュメントの追加</a></li><li><a href="mongo.tutorial.findone.html">MongoCollection::findOne によるドキュメントの検索</a></li><li><a href="mongo.tutorial.insert.multiple.html">複数のドキュメントの追加</a></li><li><a href="mongo.tutorial.counting.html">コレクション内のドキュメント数</a></li><li><a href="mongo.tutorial.cursor.html">カーソルを使った全ドキュメントの取得</a></li><li><a href="mongo.tutorial.criteria.html">問い合わせの条件の設定</a></li><li><a href="mongo.tutorial.multi.query.html">クエリによる複数ドキュメントの取得</a></li><li><a href="mongo.tutorial.indexes.html">インデックスの作成</a></li></ul>
+
+ <p class="para">
+  これは、公式の MongoDB 用 PHP ドライバです。
+ </p>
+ <p class="para">
+  簡単なコード例をもとに、MongoDB への接続やドキュメントの追加、
+  ドキュメントの問い合わせ、問い合わせ結果の反復処理、
+  そして接続の切断の方法を示します。
+  各ステップの詳細については後に続くチュートリアルを参照ください。
+ </p>
+ <div class="example" id="mongo.tutorial.basics">
+  <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;接続<br /></span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;データベースの選択<br /></span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">comedy</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;コレクション&nbsp;(リレーショナルデータベースのテーブルみたいなもの)&nbsp;の選択<br /></span><span style="color: #0000BB">$collection&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$db</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">cartoons</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;レコードの追加<br /></span><span style="color: #0000BB">$document&nbsp;</span><span style="color: #007700">=&nbsp;array(&nbsp;</span><span style="color: #DD0000">"title"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Calvin&nbsp;and&nbsp;Hobbes"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"author"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"Bill&nbsp;Watterson"&nbsp;</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$collection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(</span><span style="color: #0000BB">$document</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;構造が異なる別のレコードの追加<br /></span><span style="color: #0000BB">$document&nbsp;</span><span style="color: #007700">=&nbsp;array(&nbsp;</span><span style="color: #DD0000">"title"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"XKCD"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"online"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$collection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(</span><span style="color: #0000BB">$document</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;コレクション内の全件の検索<br /></span><span style="color: #0000BB">$cursor&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$collection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">find</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;結果の反復処理<br /></span><span style="color: #007700">foreach&nbsp;(</span><span style="color: #0000BB">$cursor&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$document</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$document</span><span style="color: #007700">[</span><span style="color: #DD0000">"title"</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+  </div>
+
+  <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+  <div class="example-contents screen">
+<div class="cdata"><pre>
+Calvin and Hobbes
+XKCD
+</pre></div>
+  </div>
+ </div>
+
+
+ 
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113246""></a>
+  <div class="note">
+   <strong class="user">pgl at yoyo dot org</strong>
+   <a href="#113246" class="date">17-Sep-2013 10:44</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+To use a collection with periods in its name, quote it with braces:<br />
+<br />
+<span class="default">&lt;?php<br />
+$m </span><span class="keyword">= new </span><span class="default">MongoClient</span><span class="keyword">();<br />
+<br />
+</span><span class="default">$cursor </span><span class="keyword">= </span><span class="default">$m</span><span class="keyword">-&gt;</span><span class="default">test</span><span class="keyword">-&gt;{</span><span class="string">'test.test'</span><span class="keyword">}-&gt;</span><span class="default">find</span><span class="keyword">();<br />
+<br />
+</span><span class="comment">## equivalent to the following:<br />
+#$db = $m-&gt;test;<br />
+#$collection = $db-&gt;{'test.test'};<br />
+#$cursor = $collection-&gt;find();<br />
+<br />
+</span><span class="keyword">foreach (</span><span class="default">$cursor </span><span class="keyword">as </span><span class="default">$doc</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$doc</span><span class="keyword">);<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="101305""></a>
+  <div class="note">
+   <strong class="user">Josh Heidenreich</strong>
+   <a href="#101305" class="date">09-Dec-2010 07:28</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you are getting "writing more" shown at random places on the screen, it's a MongoDB connector bug in 1.0.5.<br />
+<br />
+Bug report: <a href="http://jira.mongodb.org/browse/PHP-91" rel="nofollow" target="_blank">http://jira.mongodb.org/browse/PHP-91</a><br />
+<br />
+Update to the latest connector driver and it should go away.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="97539""></a>
+  <div class="note">
+   <strong class="user">php at whoah dot net</strong>
+   <a href="#97539" class="date">25-Apr-2010 07:57</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Make sure array keys consecutive before inserting. As of 1.0.6 driver, the following will end up as an object of key:value pairs, instead of an array, because it's trying to maintain the 0 and 2 keys:<br />
+<br />
+$array = array('a', 'b', 'c');<br />
+unset($array[1]);<br />
+<br />
+$document = array(<br />
+'embedded' =&gt; $array,<br />
+);<br />
+<br />
+// assuming local<br />
+$mongo = new Mongo();<br />
+$mongo-&gt;test-&gt;test-&gt;insert($document);<br />
+<br />
+mongodb result:<br />
+{ "_id" : ObjectId(...), "embedded" : { "0" : "a", "2" : "c" } } <br />
+<br />
+This is bad if you plan on indexing the embedded property as an array because objects and arrays are indexed differently.<br />
+<br />
+Whether the behaviour will change or not, this is logged here: <a href="http://jira.mongodb.org/browse/PHP-104" rel="nofollow" target="_blank">http://jira.mongodb.org/browse/PHP-104</a><br />
+<br />
+If you know about it, it's not major, just use a sort() before inserting, or use array_* methods to remove elements instead of unset() -- anything that will re-adjust keys.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongo.manual.html">マニュアル</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongo.tutorial.connecting.html">接続の作成</a></div>
+ <div class="up"><a href="mongo.manual.html">マニュアル</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

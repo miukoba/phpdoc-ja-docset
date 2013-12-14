@@ -1,0 +1,543 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>select() システムコールと同等の操作を、
+   ストリームの配列に対して tv_sec と tv_usec で指定されたタイムアウト時間をもって行う</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.stream-resolve-include-path.html">stream_resolve_include_path</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.stream-set-blocking.html">stream_set_blocking</a></div>
+ <div class="up"><a href="ref.stream.html">ストリーム 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.stream-select" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">stream_select</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.3.0, PHP 5)</p><p class="refpurpose"><span class="refname">stream_select</span> &mdash; <span class="dc-title">select() システムコールと同等の操作を、
+   ストリームの配列に対して tv_sec と tv_usec で指定されたタイムアウト時間をもって行う</span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-function.stream-select-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">int</span> <span class="methodname"><strong>stream_select</strong></span>
+    ( <span class="methodparam"><span class="type">array</span> <code class="parameter reference">&$read</code></span>
+   , <span class="methodparam"><span class="type">array</span> <code class="parameter reference">&$write</code></span>
+   , <span class="methodparam"><span class="type">array</span> <code class="parameter reference">&$except</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$tv_sec</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$tv_usec</code><span class="initializer"> = 0</span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+    <span class="function"><strong>stream_select()</strong></span> はストリームの配列を受け取ると、
+   それらの状態が変化するまで待ちます。機能としては、ストリームに対して
+   働くという点以外では  <span class="function"><a href="function.socket-select.html" class="function">socket_select()</a></span> と同一です。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.stream-select-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">read</code></em></span>
+     <dd>
+
+      <p class="para">
+       <em><code class="parameter">read</code></em> 配列に列挙されたストリームに対しては、
+       何らかのデータがそのストリーム内で読み出せる状態にあるかどうか
+       監視が行われます
+       (より正確にいえば、ブロックしないで読み出せる状態かどうか -
+       特にストリームが EOF に達したかどうか、です。このとき、
+        <span class="function"><a href="function.fread.html" class="function">fread()</a></span> は長さ 0 の文字列を返します)。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">write</code></em></span>
+     <dd>
+
+      <p class="para">
+       <em><code class="parameter">write</code></em> 配列に列挙されたストリームに対しては、
+       ブロックしないで書き込みができるかどうかの監視が行われます。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">except</code></em></span>
+     <dd>
+
+      <p class="para">
+       <em><code class="parameter">except</code></em> 配列に列挙されたストリームに対しては、
+       重大な例外（&quot;帯域外の&quot;）データが発生したかどうかの監視が行われます。
+      </p>
+      <blockquote class="note"><p><strong class="note">注意</strong>: 
+       <p class="para">
+         <span class="function"><strong>stream_select()</strong></span> の終了時には、
+        どのストリームの状態が実際に変化したのかが分かるよう、
+        配列 <em><code class="parameter">read</code></em>、<em><code class="parameter">write</code></em> および
+        <em><code class="parameter">except</code></em> に変更が加えられます。
+       </p>
+      </p></blockquote>
+      <span class="simpara">
+        <span class="function"><strong>stream_select()</strong></span> のすべてのパラメータに配列を
+       渡す必要はありません。代わりに
+       そのままにしておくことも、空の配列を渡すことも、<strong><code>NULL</code></strong> を渡すことも
+       できます。このとき、それらの変数は<em class="emphasis">参照渡し</em>で渡されるため、
+        <span class="function"><strong>stream_select()</strong></span> から戻った時点で変更されている
+       可能性があることに注意してください。
+      </span>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">tv_sec</code></em></span>
+     <dd>
+
+      <p class="para">
+       <em><code class="parameter">tv_sec</code></em> と <em><code class="parameter">tv_usec</code></em>
+       は、一体となって、<em class="emphasis">timeout</em> パラメータを表現します。
+       <em><code class="parameter">tv_sec</code></em> は秒数を指定し、一方
+       <em><code class="parameter">tv_usec</code></em> はマイクロ秒数を指定します。
+       <em class="emphasis">timeout</em> は、 <span class="function"><strong>stream_select()</strong></span>
+       の実行から戻るまでの時間の上限です。
+       <em><code class="parameter">tv_sec</code></em> および <em><code class="parameter">tv_usec</code></em>
+       の両方に <em>0</em> を指定すると
+        <span class="function"><strong>stream_select()</strong></span> はデータを待たずに一瞬で戻ります。
+       これは現在のストリームの状態を示します。
+      </p>
+      <p class="para">
+       <em><code class="parameter">tv_sec</code></em> が <strong><code>NULL</code></strong> (タイムアウトなし) の場合、
+        <span class="function"><strong>stream_select()</strong></span> はブロックしつづけ、調べている
+       ストリームのひとつでイベントが発生する（あるいはシグナルがシステム
+       コールを中断する）まで終了しません。
+      </p>
+      <div class="warning"><strong class="warning">警告</strong>
+       <p class="para">
+        タイムアウト値に <em>0</em> を指定すると、ストリームの
+        状態を即時に取得することが可能です。しかし、ループ内でタイムアウト
+        <em>0</em> を指定するのは良い考えではありません。
+        そうすると大量の CPU 時間を消費してしまいます。
+       </p>
+       <p class="para">
+        タイムアウト値を数秒にするとかなりましになります。しかし、どうしても
+        他のコードを同時に実行させながらチェックをする必要がある場合には、
+        少なくとも <em>200000</em> マイクロ秒以上のタイムアウトを
+        設定するようにしましょう。これであなたのスクリプトの CPU 使用量を
+        抑えることができます。
+       </p>
+       <p class="para">
+        タイムアウト値は、あくまでも経過時間の最大値であることを覚えておきましょう。
+         <span class="function"><strong>stream_select()</strong></span> は、指定したストリームが使用可能に
+        なるとすぐに結果を返します。
+       </p>
+      </div>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">tv_usec</code></em></span>
+     <dd>
+
+      <p class="para">
+       <em><code class="parameter">tv_sec</code></em> の説明を参照ください。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.stream-select-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合  <span class="function"><strong>stream_select()</strong></span> は、変更された
+   配列に何個のストリームリソースが格納されたかを示す数を返します。
+   もしタイムアウトの時間内に何も規定された事象が起こらなかった場合は
+   0 になることもあります。エラーの際は <strong><code>FALSE</code></strong> を返し、警告を発生させます
+   （システムコールが別のシグナルによって中断された場合などに起こりえます）。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.stream-select-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-4011">
+    <p><strong>例1  <span class="function"><strong>stream_select()</strong></span> の例</strong></p>
+    <div class="example-contents"><p>
+     この例では、<em><code class="parameter">$stream1</code></em> あるいは
+     <em><code class="parameter">$stream2</code></em> のどちらかに読み込めるデータが
+     到達したかどうかを調べます。
+     タイムアウトが <em>0</em> なので、すぐに結果を返します。
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;read&nbsp;配列を用意&nbsp;*/<br /></span><span style="color: #0000BB">$read&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #0000BB">$stream1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$stream2</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$write&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$except&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">;<br />if&nbsp;(</span><span style="color: #0000BB">false&nbsp;</span><span style="color: #007700">===&nbsp;(</span><span style="color: #0000BB">$num_changed_streams&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">stream_select</span><span style="color: #007700">(</span><span style="color: #0000BB">$read</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$write</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$except</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;エラー処理&nbsp;*/<br /></span><span style="color: #007700">}&nbsp;elseif&nbsp;(</span><span style="color: #0000BB">$num_changed_streams&nbsp;</span><span style="color: #007700">&gt;&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;少なくとも&nbsp;1&nbsp;つのストリームに何らかの事象が起こりました。*/<br /></span><span style="color: #007700">}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes" id="refsect1-function.stream-select-notes">
+  <h3 class="title">注意</h3>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    現在の Zend Engine の実装上の制約により、<strong><code>NULL</code></strong> のような定数を
+    この関数の参照渡しが行われるパラメータに直接指定することはできません。
+    代わりに一時的な変数を指定するか、一番左の変数が一時的な変数になるような
+    式を指定してください:
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$e&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">stream_select</span><span style="color: #007700">(</span><span style="color: #0000BB">$r</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$w</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   </p>
+  </p></blockquote>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+   エラーかどうかをチェックするには <em>===</em> を使ってください。
+    <span class="function"><strong>stream_select()</strong></span> は 0 を返すことがあるため、その場合
+   <strong><code>FALSE</code></strong> と <em>==</em> 演算子で比較すると <strong><code>TRUE</code></strong>
+   と評価されてしまうからです:
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$e&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">;<br />if&nbsp;(</span><span style="color: #0000BB">false&nbsp;</span><span style="color: #007700">===&nbsp;</span><span style="color: #0000BB">stream_select</span><span style="color: #007700">(</span><span style="color: #0000BB">$r</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$w</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"stream_select()&nbsp;に失敗しました\n"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   </p>
+  </p></blockquote>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    配列に返されたストリームに対して読み込みまたは書き込み操作を行う際に、
+    必ずしもあなたの希望しただけデータが読まれたり書かれたりはしないことに
+    注意してください。たった 1 バイトしか読み出せない場合も、書き込めない
+    場合もあるのです。
+   </p>
+  </p></blockquote>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    ストリームの中には、(<em>zlib</em> などのように)
+    この関数で select できないものもあります。
+   </p>
+  </p></blockquote>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    Windows の互換性: Windows 98 では、
+     <span class="function"><a href="function.proc-open.html" class="function">proc_open()</a></span> が返すパイプに対して
+     <span class="function"><strong>stream_select()</strong></span> を使用すると
+    データが失われる可能性があります。
+   </p>
+   <p class="para">
+    Windows では、 <span class="function"><a href="function.proc-open.html" class="function">proc_open()</a></span> が返すファイル記述子に
+    対して  <span class="function"><strong>stream_select()</strong></span> を使用すると
+    失敗して <strong><code>FALSE</code></strong> を返すことがあります。
+   </p>
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.stream-select-seealso">
+  <h3 class="title">参考</h3>
+  <ul class="simplelist">
+   <li class="member"> <span class="function"><a href="function.stream-set-blocking.html" class="function" rel="rdfs-seeAlso">stream_set_blocking()</a> - ストリームのブロックモードを有効にする / 解除する</span></li>
+  </ul>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113028""></a>
+  <div class="note">
+   <strong class="user">mark2xv at gmail dot com</strong>
+   <a href="#113028" class="date">21-Aug-2013 01:52</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you're getting unexplainable problems with nonblocking sockets using stream_select, disable the buffers using:<br />
+<br />
+stream_set_read_buffer($socket, 0);<br />
+stream_set_write_buffer($socket, 0);<br />
+<br />
+For some reason when writing (in total) ~256k, sockets start returning FALSE when reading, yet always appear in the stream_select arrays. This fixed that problem. (for us.)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="100842""></a>
+  <div class="note">
+   <strong class="user">aks at esoft dot dk</strong>
+   <a href="#100842" class="date">10-Nov-2010 04:56</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+stream_select() looks deceptively like a simple wrapper around POSIX select(2).<br />
+<br />
+But beware: while select(2) allows you to pass no file descriptors and use it as a "portable subsecond sleep", PHP will complain with "Warning: stream_select(): No stream arrays were passed in ****" if all arrays are empty or null, and it WONT sleep, it will return immediately. So... if the number of file descriptors you have isn't static, you have to deal with the special case yourself.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="96774""></a>
+  <div class="note">
+   <strong class="user">lynch at php dot net</strong>
+   <a href="#96774" class="date">15-Mar-2010 09:48</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note: At least one of the input arrays must be non-empty, or you get an E_WARNING message:<br />
+PHP Warning:&nbsp; stream_select(): unable to select [9]: Bad file descriptor (max_fd=0) in</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="92503""></a>
+  <div class="note">
+   <strong class="user">jerrywilborn at gmail dot com</strong>
+   <a href="#92503" class="date">27-Jul-2009 07:55</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+<a href="http://bugs.php.net/bug.php?id=42682" rel="nofollow" target="_blank">http://bugs.php.net/bug.php?id=42682</a><br />
+<br />
+This function will not return the number of changed streams under certain systems with older versions, but instead it will return '0'. Be careful.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="92012""></a>
+  <div class="note">
+   <strong class="user">php at richardneill dot org</strong>
+   <a href="#92012" class="date">05-Jul-2009 04:45</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note that reading from a regular file which is on end-of-file will *not* block. You'll get a non-blocking, zero-byte read.&nbsp; However, stream_select *will* block if the input is a pipe, and there is no more data to be had.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="78147""></a>
+  <div class="note">
+   <strong class="user">Maxdamantus</strong>
+   <a href="#78147" class="date">30-Sep-2007 07:28</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Simple stream_select wrapper.. Returns the first stream in the array, and sets parameter 2 to the key (So that it is easy to identify what received data):<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">select</span><span class="keyword">(</span><span class="default">$array</span><span class="keyword">, &amp;</span><span class="default">$vkey</span><span class="keyword">, </span><span class="default">$timeout</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">){<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$select </span><span class="keyword">= array();<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$null </span><span class="keyword">= </span><span class="default">NULL</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; foreach(</span><span class="default">$array </span><span class="keyword">as </span><span class="default">$key </span><span class="keyword">=&gt; </span><span class="default">$sock</span><span class="keyword">){<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$x </span><span class="keyword">= </span><span class="default">count</span><span class="keyword">(</span><span class="default">$select</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$select</span><span class="keyword">[</span><span class="default">$x</span><span class="keyword">] = </span><span class="default">$sock</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$keys</span><span class="keyword">[</span><span class="default">$x</span><span class="keyword">] = </span><span class="default">$key</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; if(</span><span class="default">stream_select</span><span class="keyword">(</span><span class="default">$select</span><span class="keyword">, </span><span class="default">$null</span><span class="keyword">, </span><span class="default">$null</span><span class="keyword">, </span><span class="default">$timeout</span><span class="keyword">)){<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; foreach(</span><span class="default">$keys </span><span class="keyword">as </span><span class="default">$key</span><span class="keyword">){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if(</span><span class="default">$array</span><span class="keyword">[</span><span class="default">$key</span><span class="keyword">] == </span><span class="default">$select</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">]){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$vkey </span><span class="keyword">= </span><span class="default">$key</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return(</span><span class="default">$select</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">]);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+<br />
+</span><span class="default">$streams </span><span class="keyword">= array(</span><span class="string">"foo" </span><span class="keyword">=&gt; </span><span class="default">$stream_one</span><span class="keyword">, </span><span class="string">"bar" </span><span class="keyword">=&gt; </span><span class="default">$stream_two</span><span class="keyword">); </span><span class="comment">// Create an array of two (already existant) streams.<br />
+</span><span class="keyword">if(</span><span class="default">$new </span><span class="keyword">= </span><span class="default">select</span><span class="keyword">(</span><span class="default">$streams</span><span class="keyword">, </span><span class="default">$key</span><span class="keyword">, </span><span class="default">60</span><span class="keyword">)){ </span><span class="comment">//Sets $new to the resource that next gets new data, and $key to either "foo", or "bar", depending which one it is.<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">echo </span><span class="default">$key</span><span class="keyword">.</span><span class="string">":"</span><span class="keyword">.</span><span class="default">stream_get_line</span><span class="keyword">(</span><span class="default">$new</span><span class="keyword">, </span><span class="default">2048</span><span class="keyword">).</span><span class="string">"\n"</span><span class="keyword">;<br />
+}<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="77260""></a>
+  <div class="note">
+   <strong class="user">bluej100@gmail</strong>
+   <a href="#77260" class="date">22-Aug-2007 01:31</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+@mbaynton at gmail dot com<br />
+<br />
+A handy syntactic trick:<br />
+<br />
+<span class="default">&lt;?php<br />
+$r </span><span class="keyword">= Array(</span><span class="default">$stream1</span><span class="keyword">, </span><span class="default">$stream2</span><span class="keyword">);<br />
+</span><span class="default">stream_select</span><span class="keyword">(</span><span class="default">$r</span><span class="keyword">, </span><span class="default">$w </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">, </span><span class="default">$x </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">, </span><span class="default">1337</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+I've seen it recommended elsewhere in the documentation for clarifying magic arguments so maintainers don't have to go check the function itself, but it also solves your problem here.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="72796""></a>
+  <div class="note">
+   <strong class="user">Ben</strong>
+   <a href="#72796" class="date">02-Feb-2007 02:35</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+You can key on file descriptors just fine by casting them to an int or a string, which returns what you would expect.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="72587""></a>
+  <div class="note">
+   <strong class="user">maartenwolzak at gmail dot com</strong>
+   <a href="#72587" class="date">25-Jan-2007 10:36</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note that you should change the calctimeout function below to divide the outcome by 1.000.000 otherwise you'll be waiting for two years instead of one minute for the socket to timeout...<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="comment">// The function to calculate the timeout<br />
+</span><span class="keyword">function </span><span class="default">calctimeout</span><span class="keyword">(</span><span class="default">$maxtime</span><span class="keyword">, </span><span class="default">$starttime</span><span class="keyword">)<br />
+{<br />
+&nbsp;&nbsp; return (</span><span class="default">$maxtime </span><span class="keyword">- ((</span><span class="default">microtime</span><span class="keyword">(</span><span class="default">true</span><span class="keyword">) - </span><span class="default">$starttime</span><span class="keyword">) * </span><span class="default">1000000</span><span class="keyword">))/</span><span class="default">1000000</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="71620""></a>
+  <div class="note">
+   <strong class="user">aidan at aidans dot org</strong>
+   <a href="#71620" class="date">08-Dec-2006 04:53</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note that contrary to what the previous poster said, one is not able to use a stream resource as a key for an array. Rather, if you want to know which socket you are dealing with, consider using code similar to this:<br />
+<br />
+<span class="default">&lt;?php<br />
+$sockets </span><span class="keyword">= array(</span><span class="string">"sock_1" </span><span class="keyword">=&gt; </span><span class="default">$sock1</span><span class="keyword">, </span><span class="string">"sock_2" </span><span class="keyword">=&gt; </span><span class="default">$sock2</span><span class="keyword">, </span><span class="string">"sock_3" </span><span class="keyword">=&gt; </span><span class="default">$sock_3</span><span class="keyword">);<br />
+<br />
+</span><span class="default">$read </span><span class="keyword">= </span><span class="default">$write </span><span class="keyword">= </span><span class="default">$error </span><span class="keyword">= </span><span class="default">$sockets</span><span class="keyword">;<br />
+</span><span class="default">$num </span><span class="keyword">= </span><span class="default">stream_select</span><span class="keyword">(</span><span class="default">$read</span><span class="keyword">, </span><span class="default">$write</span><span class="keyword">, </span><span class="default">$error</span><span class="keyword">, </span><span class="default">10</span><span class="keyword">);<br />
+if (</span><span class="default">$n </span><span class="keyword">&gt; </span><span class="default">0</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; foreach (</span><span class="default">$read </span><span class="keyword">as </span><span class="default">$r</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$key </span><span class="keyword">= </span><span class="default">array_search</span><span class="keyword">(</span><span class="default">$r</span><span class="keyword">, </span><span class="default">$sockets</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// $key will be "sock_1", "sock_2", "sock_3", etc.<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">}<br />
+}<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Hope that helps someone out there!</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="50920""></a>
+  <div class="note">
+   <strong class="user">phpdoc at shemesh dot biz</strong>
+   <a href="#50920" class="date">14-Mar-2005 10:33</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Please note that, on return, the key of "read" will be zero based, serially numbered according to the streams for which there is read data ready only. In other words, if you want to know which of the original streams placed in "read" is ready, there is no immediate way of knowing that.<br />
+<br />
+If you want to know which of the original stream is which, you can either use "==", or possibly set a reverse map array, in which the stream is the key, and the key to the original "read" array is the data.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="43473""></a>
+  <div class="note">
+   <strong class="user">aidan at php dot net</strong>
+   <a href="#43473" class="date">22-Jun-2004 08:30</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you want to set an absolute maximum execution time for stream_select in a loop, it's important to decrement the max_time value passed to stream_select.<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">// The maximum time for execution in milliseconds<br />
+</span><span class="default">$maxtime </span><span class="keyword">= </span><span class="default">200000</span><span class="keyword">;<br />
+</span><span class="comment">// The time the loop started<br />
+</span><span class="default">$starttime </span><span class="keyword">= </span><span class="default">microtime</span><span class="keyword">(</span><span class="default">true</span><span class="keyword">);<br />
+</span><span class="comment">// Original array of sockets<br />
+</span><span class="default">$r </span><span class="keyword">= </span><span class="default">$orig_sockets</span><span class="keyword">;<br />
+<br />
+</span><span class="comment">// The function to calculate the timeout<br />
+</span><span class="keyword">function </span><span class="default">calctimeout</span><span class="keyword">(</span><span class="default">$maxtime</span><span class="keyword">, </span><span class="default">$starttime</span><span class="keyword">)<br />
+{<br />
+&nbsp;&nbsp;&nbsp; return </span><span class="default">$maxtime </span><span class="keyword">- ((</span><span class="default">microtime</span><span class="keyword">(</span><span class="default">true</span><span class="keyword">) - </span><span class="default">$starttime</span><span class="keyword">) * </span><span class="default">1000000</span><span class="keyword">);<br />
+}<br />
+<br />
+while (</span><span class="default">stream_select</span><span class="keyword">(</span><span class="default">$r</span><span class="keyword">, </span><span class="default">$w </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">, </span><span class="default">$e </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">, </span><span class="default">calctimeout</span><span class="keyword">(</span><span class="default">$maxtime</span><span class="keyword">, </span><span class="default">$starttime</span><span class="keyword">)) !== </span><span class="default">0</span><span class="keyword">)<br />
+{<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">// loop through the sockets that showed activity<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">foreach (</span><span class="default">$r </span><span class="keyword">as </span><span class="default">$socket</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// $socket talked<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">}<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">// stream_select modifies the contents of $r<br />
+&nbsp;&nbsp;&nbsp; // in a loop we should replace it with the original<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$r </span><span class="keyword">= </span><span class="default">$orig_sockets</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.stream-resolve-include-path.html">stream_resolve_include_path</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.stream-set-blocking.html">stream_set_blocking</a></div>
+ <div class="up"><a href="ref.stream.html">ストリーム 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

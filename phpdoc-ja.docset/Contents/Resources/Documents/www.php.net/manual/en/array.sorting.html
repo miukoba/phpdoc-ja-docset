@@ -1,0 +1,265 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>配列のソート</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="array.constants.html">定義済み定数</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="ref.array.html">配列 関数</a></div>
+ <div class="up"><a href="book.array.html">配列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="array.sorting" class="chapter">
+ <h1>配列のソート</h1>
+
+ <p class="para">
+  PHP には配列をソートする関数が複数用意されています。
+  このページでは、それらの違いについて説明します。
+ </p>
+ <p class="para">
+  主な相違点は次のとおりです。
+ </p>
+ <p class="para">
+  <ul class="simplelist">
+   <li class="member">
+    配列のキーでソートするものと、値でソートするものがあります。
+    <em>$array[&#039;キー&#039;] = &#039;値&#039;;</em>
+   </li>
+   <li class="member">
+    キーと値の相関関係をソート後にも保持するものと保持しないものがあります。
+    保持しないものは、ソート後にキーを (0,1,2 ... と) 振りなおします。
+   </li>
+   <li class="member">
+    ソート順による違いがあります。アルファベット順、
+    昇順、降順、数値順、自然順、ランダム、ユーザー定義の順などです。
+   </li>
+   <li class="member">
+    注意: ソート関数は、すべて配列自身を直接変更します。
+    ソートした配列を新しく作って返すわけではありません。
+   </li>
+   <li class="member">
+    これらのソート関数でふたつのメンバーが等しいと判断されたときの並び順は未定義です
+    (ソート結果は場合によって変わる可能性があります)。
+   </li>
+  </ul>
+ </p>
+ <p class="para">
+  <table class="doctable table">
+   <caption><strong>ソート関数の特性</strong></caption>
+   
+    <thead>
+     <tr>
+      <th>関数名</th>
+      <th>ソートの基準</th>
+      <th>キーと値の相関関係</th>
+      <th>ソート順</th>
+      <th>関連する関数</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+     <tr>
+      <td> <span class="function"><a href="function.array-multisort.html" class="function">array_multisort()</a></span></td>
+      <td>値</td>
+      <td>連想配列の場合は維持し、数値添字配列の場合は維持しない</td>
+      <td>最初の配列、あるいはソートオプション</td>
+      <td> <span class="function"><a href="function.array-walk.html" class="function">array_walk()</a></span></td>
+     </tr>
+
+     <tr>
+      <td> <span class="function"><a href="function.asort.html" class="function">asort()</a></span></td>
+      <td>値</td>
+      <td>維持する</td>
+      <td>昇順</td>
+      <td> <span class="function"><a href="function.arsort.html" class="function">arsort()</a></span></td>
+     </tr>
+
+     <tr>
+      <td> <span class="function"><a href="function.arsort.html" class="function">arsort()</a></span></td>
+      <td>値</td>
+      <td>維持する</td>
+      <td>降順</td>
+      <td> <span class="function"><a href="function.asort.html" class="function">asort()</a></span></td>
+     </tr>
+
+     <tr>
+      <td> <span class="function"><a href="function.krsort.html" class="function">krsort()</a></span></td>
+      <td>キー</td>
+      <td>維持する</td>
+      <td>降順</td>
+      <td> <span class="function"><a href="function.ksort.html" class="function">ksort()</a></span></td>
+     </tr>
+
+     <tr>
+      <td> <span class="function"><a href="function.ksort.html" class="function">ksort()</a></span></td>
+      <td>キー</td>
+      <td>維持する</td>
+      <td>昇順</td>
+      <td> <span class="function"><a href="function.asort.html" class="function">asort()</a></span></td>
+     </tr>
+
+     <tr>
+      <td> <span class="function"><a href="function.natcasesort.html" class="function">natcasesort()</a></span></td>
+      <td>値</td>
+      <td>維持する</td>
+      <td>大文字小文字を区別しない自然順</td>
+      <td> <span class="function"><a href="function.natsort.html" class="function">natsort()</a></span></td>
+     </tr>
+
+     <tr>
+      <td> <span class="function"><a href="function.natsort.html" class="function">natsort()</a></span></td>
+      <td>値</td>
+      <td>維持する</td>
+      <td>自然順</td>
+      <td> <span class="function"><a href="function.natcasesort.html" class="function">natcasesort()</a></span></td>
+     </tr>
+
+     <tr>
+      <td> <span class="function"><a href="function.rsort.html" class="function">rsort()</a></span></td>
+      <td>値</td>
+      <td>維持しない</td>
+      <td>降順</td>
+      <td> <span class="function"><a href="function.sort.html" class="function">sort()</a></span></td>
+     </tr>
+
+     <tr>
+      <td> <span class="function"><a href="function.shuffle.html" class="function">shuffle()</a></span></td>
+      <td>値</td>
+      <td>維持しない</td>
+      <td>ランダム</td>
+      <td> <span class="function"><a href="function.array-rand.html" class="function">array_rand()</a></span></td>
+     </tr>
+
+     <tr>
+      <td> <span class="function"><a href="function.sort.html" class="function">sort()</a></span></td>
+      <td>値</td>
+      <td>維持しない</td>
+      <td>昇順</td>
+      <td> <span class="function"><a href="function.rsort.html" class="function">rsort()</a></span></td>
+     </tr>
+
+     <tr>
+      <td> <span class="function"><a href="function.uasort.html" class="function">uasort()</a></span></td>
+      <td>値</td>
+      <td>維持する</td>
+      <td>ユーザー定義</td>
+      <td> <span class="function"><a href="function.uksort.html" class="function">uksort()</a></span></td>
+     </tr>
+
+     <tr>
+      <td> <span class="function"><a href="function.uksort.html" class="function">uksort()</a></span></td>
+      <td>キー</td>
+      <td>維持する</td>
+      <td>ユーザー定義</td>
+      <td> <span class="function"><a href="function.uasort.html" class="function">uasort()</a></span></td>
+     </tr>
+
+     <tr>
+      <td> <span class="function"><a href="function.usort.html" class="function">usort()</a></span></td>
+      <td>値</td>
+      <td>維持しない</td>
+      <td>ユーザー定義</td>
+      <td> <span class="function"><a href="function.uasort.html" class="function">uasort()</a></span></td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+ </p>
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="112221""></a>
+  <div class="note">
+   <strong class="user">&amp;#34;Matthew Rice&amp;#34;</strong>
+   <a href="#112221" class="date">18-May-2013 05:28</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+While this may seem obvious, user-defined array sorting functions ( uksort(), uasort(), usort() ) will *not* be called if the array does not have *at least two values in it*.<br />
+<br />
+The following code:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="keyword">function </span><span class="default">usortTest</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">, </span><span class="default">$b</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$b</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; return -</span><span class="default">1</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="default">$test </span><span class="keyword">= array(</span><span class="string">'val1'</span><span class="keyword">);<br />
+</span><span class="default">usort</span><span class="keyword">(</span><span class="default">$test</span><span class="keyword">, </span><span class="string">"usortTest"</span><span class="keyword">);<br />
+<br />
+</span><span class="default">$test2 </span><span class="keyword">= array(</span><span class="string">'val2'</span><span class="keyword">, </span><span class="string">'val3'</span><span class="keyword">);<br />
+</span><span class="default">usort</span><span class="keyword">(</span><span class="default">$test2</span><span class="keyword">, </span><span class="string">"usortTest"</span><span class="keyword">);<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Will output: <br />
+<br />
+string(4) "val3"<br />
+string(4) "val2"<br />
+<br />
+The first array doesn't get sent to the function.<br />
+<br />
+Please, under no circumstance, place any logic that modifies values, or applies non-sorting business logic in these functions as they will not always be executed.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="102888""></a>
+  <div class="note">
+   <strong class="user">oculiz at gmail dot com</strong>
+   <a href="#102888" class="date">12-Mar-2011 06:57</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Another way to do a case case-insensitive sort by key would simply be:<br />
+<br />
+<span class="default">&lt;?php<br />
+uksort</span><span class="keyword">(</span><span class="default">$array</span><span class="keyword">, </span><span class="string">'strcasecmp'</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Since strcasecmp is already predefined in php it saves you the trouble to actually write the comparison function yourself.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="97047""></a>
+  <div class="note">
+   <strong class="user">Dirk</strong>
+   <a href="#97047" class="date">29-Mar-2010 10:32</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you need to perform any of these sort functions on an array containing two or more equivalent values, you can get the equivalents to fall next to each other within the overall ordering (similar to how MySQL's ORDER BY works...) instead of breaking the sort() function, by using ksort() as a second parameter to arbitrarily distinguish any equivalent values by their unique keys:<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+sort</span><span class="keyword">(</span><span class="default">$array</span><span class="keyword">, </span><span class="default">ksort</span><span class="keyword">(</span><span class="default">$array</span><span class="keyword">));<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Seems like this effect should be built in.&nbsp; At least the workaround is so short...</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="array.constants.html">定義済み定数</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="ref.array.html">配列 関数</a></div>
+ <div class="up"><a href="book.array.html">配列</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

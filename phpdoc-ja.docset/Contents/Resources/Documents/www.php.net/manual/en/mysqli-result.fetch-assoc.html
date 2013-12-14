@@ -1,0 +1,278 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>結果の行を連想配列で取得する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqli-result.fetch-array.html">mysqli_result::fetch_array</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqli-result.fetch-field-direct.html">mysqli_result::fetch_field_direct</a></div>
+ <div class="up"><a href="class.mysqli-result.html">mysqli_result</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mysqli-result.fetch-assoc" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mysqli_result::fetch_assoc</h1>
+  <h1 class="refname">mysqli_fetch_assoc</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose"><span class="refname">mysqli_result::fetch_assoc</span> -- <span class="refname">mysqli_fetch_assoc</span> &mdash; <span class="dc-title">結果の行を連想配列で取得する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-mysqli-result.fetch-assoc-description">
+  <h3 class="title">説明</h3>
+  <p class="para">オブジェクト指向型</p>
+  <div class="methodsynopsis dc-description">
+   <span class="type">array</span> <span class="methodname"><strong>mysqli_result::fetch_assoc</strong></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+  <p class="para rdfs-comment">手続き型</p>
+  <div class="methodsynopsis dc-description">
+   <span class="type">array</span> <span class="methodname"><strong>mysqli_fetch_assoc</strong></span>
+    ( <span class="methodparam"><span class="type"><a href="class.mysqli-result.html" class="type mysqli_result">mysqli_result</a></span> <code class="parameter">$result</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   取得した行に対応する連想配列を返します。もしもう行がない場合には
+   <strong><code>NULL</code></strong> を返します。
+  </p>
+  <blockquote class="note"><p><strong class="note">注意</strong>: <span class="simpara">この関数により返されるフィー
+ルド名は <em class="emphasis">大文字小文字を区別</em> します。</span></p></blockquote>
+  <blockquote class="note"><p><strong class="note">注意</strong>: <span class="simpara">この関数は、
+NULL フィールドに PHPの <strong><code>NULL</code></strong> 値を設定します。</span></p></blockquote>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-mysqli-result.fetch-assoc-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+<span class="term"><em><code class="parameter">
+result</code></em></span><dd>
+<p class="para">手続き型のみ:
+ <span class="function"><a href="mysqli.query.html" class="function">mysqli_query()</a></span>、 <span class="function"><a href="mysqli.store-result.html" class="function">mysqli_store_result()</a></span>
+あるいは  <span class="function"><a href="mysqli.use-result.html" class="function">mysqli_use_result()</a></span> が返す結果セット ID。</p></dd>
+</dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-mysqli-result.fetch-assoc-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   取得した行に対応する文字列の連想配列を返します。
+   連想配列の各キーが、結果セットのカラムを表します。
+   結果セットにもう行がない場合には <strong><code>NULL</code></strong> を返します。
+  </p>
+  <p class="para">
+   もし 2 つ以上のカラムが同じフィールド名であった場合は、最後に現れた
+   カラムが優先され、以前のデータを上書きします。同名の複数のカラムに
+   アクセスする場合、 <span class="function"><a href="mysqli-result.fetch-row.html" class="function">mysqli_fetch_row()</a></span> を用いて
+   数値添字配列を使用するか、あるいはカラム名にエイリアスを指定する
+   必要があります。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-mysqli-result.fetch-assoc-examples">
+  <h3 class="title">例</h3>
+  <div class="example" id="example-1726">
+   <p><strong>例1 オブジェクト指向型</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$mysqli&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">mysqli</span><span style="color: #007700">(</span><span style="color: #DD0000">"localhost"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"my_user"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"my_password"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"world"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;接続状況をチェックします&nbsp;*/<br /></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">mysqli_connect_errno</span><span style="color: #007700">())&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"Connect&nbsp;failed:&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">mysqli_connect_error</span><span style="color: #007700">());<br />&nbsp;&nbsp;&nbsp;&nbsp;exit();<br />}<br /><br /></span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;Name,&nbsp;CountryCode&nbsp;FROM&nbsp;City&nbsp;ORDER&nbsp;by&nbsp;ID&nbsp;DESC&nbsp;LIMIT&nbsp;50,5"</span><span style="color: #007700">;<br /><br />if&nbsp;(</span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #0000BB">$query</span><span style="color: #007700">))&nbsp;{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;連想配列を取得します&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">while&nbsp;(</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$result</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetch_assoc</span><span style="color: #007700">())&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf&nbsp;</span><span style="color: #007700">(</span><span style="color: #DD0000">"%s&nbsp;(%s)\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">"Name"</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">"CountryCode"</span><span style="color: #007700">]);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;結果セットを開放します&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$result</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">free</span><span style="color: #007700">();<br />}<br /><br /></span><span style="color: #FF8000">/*&nbsp;接続を閉じます&nbsp;*/<br /></span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">close</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+  <div class="example" id="example-1727">
+   <p><strong>例2 手続き型</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$link&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysqli_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">"localhost"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"my_user"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"my_password"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"world"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;接続状況をチェックします&nbsp;*/<br /></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">mysqli_connect_errno</span><span style="color: #007700">())&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"Connect&nbsp;failed:&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">mysqli_connect_error</span><span style="color: #007700">());<br />&nbsp;&nbsp;&nbsp;&nbsp;exit();<br />}<br /><br /></span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;Name,&nbsp;CountryCode&nbsp;FROM&nbsp;City&nbsp;ORDER&nbsp;by&nbsp;ID&nbsp;DESC&nbsp;LIMIT&nbsp;50,5"</span><span style="color: #007700">;<br /><br />if&nbsp;(</span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysqli_query</span><span style="color: #007700">(</span><span style="color: #0000BB">$link</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$query</span><span style="color: #007700">))&nbsp;{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;連想配列を取得します&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">while&nbsp;(</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysqli_fetch_assoc</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf&nbsp;</span><span style="color: #007700">(</span><span style="color: #DD0000">"%s&nbsp;(%s)\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">"Name"</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">"CountryCode"</span><span style="color: #007700">]);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;結果セットを開放します&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">mysqli_free_result</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #FF8000">/*&nbsp;接続を閉じます&nbsp;*/<br /></span><span style="color: #0000BB">mysqli_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$link</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+Pueblo (USA)
+Arvada (USA)
+Cape Coral (USA)
+Green Bay (USA)
+Santa Clara (USA)
+</pre></div>
+   </div>
+  </div>
+  <div class="example" id="mysqli-result.example.iterator">
+   <p><strong>例3 <a href="class.mysqli-result.html" class="classname">mysqli_result</a> での <a href="class.iterator.html" class="classname">iterator</a> の使用法</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$c&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysqli_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'127.0.0.1'</span><span style="color: #007700">,</span><span style="color: #DD0000">'user'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'pass'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;イテレータがあるとき&nbsp;(PHP&nbsp;5.4&nbsp;でサポートされるようになりました)<br /></span><span style="color: #007700">foreach&nbsp;(&nbsp;</span><span style="color: #0000BB">$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">'SELECT&nbsp;user,host&nbsp;FROM&nbsp;mysql.user'</span><span style="color: #007700">)&nbsp;as&nbsp;</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"'%s'@'%s'\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">'user'</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">'host'</span><span style="color: #007700">]);<br />}<br /><br />echo&nbsp;</span><span style="color: #DD0000">"\n==================\n"</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;イテレータのないとき<br /></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">'SELECT&nbsp;user,host&nbsp;FROM&nbsp;mysql.user'</span><span style="color: #007700">);<br />while&nbsp;(</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$result</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetch_assoc</span><span style="color: #007700">())&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"'%s'@'%s'\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">'user'</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">'host'</span><span style="color: #007700">]);<br />}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+&#039;root&#039;@&#039;192.168.1.1&#039;
+&#039;root&#039;@&#039;127.0.0.1&#039;
+&#039;dude&#039;@&#039;localhost&#039;
+&#039;lebowski&#039;@&#039;localhost&#039;
+
+==================
+
+&#039;root&#039;@&#039;192.168.1.1&#039;
+&#039;root&#039;@&#039;127.0.0.1&#039;
+&#039;dude&#039;@&#039;localhost&#039;
+&#039;lebowski&#039;@&#039;localhost&#039;
+</pre></div>
+   </div>
+  </div>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-mysqli-result.fetch-assoc-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="mysqli-result.fetch-array.html" class="function" rel="rdfs-seeAlso">mysqli_fetch_array()</a> - 結果の行を連想配列・数値添字配列あるいはその両方の形式で取得する</span></li>
+    <li class="member"> <span class="function"><a href="mysqli-result.fetch-row.html" class="function" rel="rdfs-seeAlso">mysqli_fetch_row()</a> - 結果の行を数値添字配列で取得する</span></li>
+    <li class="member"> <span class="function"><a href="mysqli-result.fetch-object.html" class="function" rel="rdfs-seeAlso">mysqli_fetch_object()</a> - 結果セットの現在の行をオブジェクトとして返す</span></li>
+    <li class="member"> <span class="function"><a href="mysqli.query.html" class="function" rel="rdfs-seeAlso">mysqli_query()</a> - データベース上でクエリを実行する</span></li>
+    <li class="member"> <span class="function"><a href="mysqli-result.data-seek.html" class="function" rel="rdfs-seeAlso">mysqli_data_seek()</a> - 結果の任意の行にポインタを移動する</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="112924""></a>
+  <div class="note">
+   <strong class="user">Miller</strong>
+   <a href="#112924" class="date">08-Aug-2013 02:26</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I often like to have my results sent elsewhere in the format of an array (although keep in mind that if you just plan on traversing through the array in another part of the script, this extra step is just a waste of time).<br />
+<br />
+This is my one-liner for transforming a mysqli_result set into an array.<br />
+<span class="default">&lt;?php<br />
+$sql </span><span class="keyword">= new </span><span class="default">MySQLi</span><span class="keyword">(</span><span class="default">$host</span><span class="keyword">, </span><span class="default">$username</span><span class="keyword">, </span><span class="default">$password</span><span class="keyword">, </span><span class="default">$database</span><span class="keyword">);<br />
+<br />
+</span><span class="default">$result </span><span class="keyword">= </span><span class="default">$sql</span><span class="keyword">-&gt;</span><span class="default">query</span><span class="keyword">(</span><span class="string">"SELECT * FROM `</span><span class="default">$table</span><span class="string">`;"</span><span class="keyword">);<br />
+for (</span><span class="default">$set </span><span class="keyword">= array (); </span><span class="default">$row </span><span class="keyword">= </span><span class="default">$result</span><span class="keyword">-&gt;</span><span class="default">fetch_assoc</span><span class="keyword">(); </span><span class="default">$set</span><span class="keyword">[] = </span><span class="default">$row</span><span class="keyword">);<br />
+</span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$set</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Outputs:<br />
+Array<br />
+(<br />
+&nbsp;&nbsp;&nbsp; [0] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [id] =&gt; 1<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [field2] =&gt; a<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [field3] =&gt; b<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ),<br />
+&nbsp;&nbsp;&nbsp; [1] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [id] =&gt; 2<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [field2] =&gt; c<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [field3] =&gt; d<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; )<br />
+)<br />
+<br />
+I use other variations to adapt to the situation, i.e. if I am selecting only one field:<br />
+<span class="default">&lt;?php<br />
+$sql </span><span class="keyword">= new </span><span class="default">MySQLi</span><span class="keyword">(</span><span class="default">$host</span><span class="keyword">, </span><span class="default">$username</span><span class="keyword">, </span><span class="default">$password</span><span class="keyword">, </span><span class="default">$database</span><span class="keyword">);<br />
+</span><span class="default">$result </span><span class="keyword">= </span><span class="default">$sql</span><span class="keyword">-&gt;</span><span class="default">query</span><span class="keyword">(</span><span class="string">"SELECT `field2` FROM `</span><span class="default">$table</span><span class="string">`;"</span><span class="keyword">);<br />
+for (</span><span class="default">$set </span><span class="keyword">= array (); </span><span class="default">$row </span><span class="keyword">= </span><span class="default">$result</span><span class="keyword">-&gt;</span><span class="default">fetch_assoc</span><span class="keyword">(); </span><span class="default">$set</span><span class="keyword">[] = </span><span class="default">$row</span><span class="keyword">[</span><span class="string">'field2'</span><span class="keyword">]);<br />
+</span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$set</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span>Outputs:<br />
+Array<br />
+(<br />
+&nbsp;&nbsp;&nbsp; [0] =&gt; a<br />
+&nbsp;&nbsp;&nbsp; [1] =&gt; c<br />
+)<br />
+<br />
+Or, to make the array associative with the primary index (code assumes primary index is the first field in the table):<br />
+<span class="default">&lt;?php<br />
+$sql </span><span class="keyword">= new </span><span class="default">MySQLi</span><span class="keyword">(</span><span class="default">$host</span><span class="keyword">, </span><span class="default">$username</span><span class="keyword">, </span><span class="default">$password</span><span class="keyword">, </span><span class="default">$database</span><span class="keyword">);<br />
+</span><span class="default">$result </span><span class="keyword">= </span><span class="default">$sql</span><span class="keyword">-&gt;</span><span class="default">query</span><span class="keyword">(</span><span class="string">"SELECT * FROM `</span><span class="default">$table</span><span class="string">`;"</span><span class="keyword">);<br />
+for (</span><span class="default">$set </span><span class="keyword">= array (); </span><span class="default">$row </span><span class="keyword">= </span><span class="default">$result</span><span class="keyword">-&gt;</span><span class="default">fetch_assoc</span><span class="keyword">(); </span><span class="default">$set</span><span class="keyword">[</span><span class="default">array_shift</span><span class="keyword">(</span><span class="default">$row</span><span class="keyword">)] = </span><span class="default">$row</span><span class="keyword">);<br />
+</span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$set</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span>Outputs:<br />
+Array<br />
+(<br />
+&nbsp;&nbsp;&nbsp; [1] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [field2] =&gt; a<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [field3] =&gt; b<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ),<br />
+&nbsp;&nbsp;&nbsp; [2] =&gt; Array<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [field2] =&gt; c<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [field3] =&gt; d<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; )<br />
+)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="105365""></a>
+  <div class="note">
+   <strong class="user">james dot phx at gmail dot com</strong>
+   <a href="#105365" class="date">12-Aug-2011 02:58</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+IMPORTANT NOTE:<br />
+<br />
+If you were used to using code like this:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">while(</span><span class="default">false </span><span class="keyword">!== (</span><span class="default">$row </span><span class="keyword">= </span><span class="default">mysql_fetch_assoc</span><span class="keyword">(</span><span class="default">$result</span><span class="keyword">)))<br />
+{<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">//...<br />
+</span><span class="keyword">}<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+You must change it to this for mysqli:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">while(</span><span class="default">null </span><span class="keyword">!== (</span><span class="default">$row </span><span class="keyword">= </span><span class="default">mysqli_fetch_assoc</span><span class="keyword">(</span><span class="default">$result</span><span class="keyword">)))<br />
+{<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">//...<br />
+</span><span class="keyword">}<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+The former will cause your script to run until max_execution_time is reached.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqli-result.fetch-array.html">mysqli_result::fetch_array</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqli-result.fetch-field-direct.html">mysqli_result::fetch_field_direct</a></div>
+ <div class="up"><a href="class.mysqli-result.html">mysqli_result</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

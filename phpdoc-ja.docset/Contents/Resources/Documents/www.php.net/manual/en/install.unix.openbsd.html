@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>OpenBSD へのインストール</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="install.unix.hpux.html">HP-UX へのインストール</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="install.unix.solaris.html">Solaris へのインストール</a></div>
+ <div class="up"><a href="install.unix.html">Unix システムへのインストール</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="install.unix.openbsd" class="sect1">
+ <h2 class="title">OpenBSD へのインストール</h2>
+ <p class="para">
+ このセクションでは、PHP を <a href="http://www.openbsd.org/" class="link external" title="Link : http://www.openbsd.org/">&raquo;&nbsp;OpenBSD 3.6</a> に
+ インストールする場合に固有の注意事項とヒントについて説明します。
+ </p>
+ <div class="sect2" id="install.unix.openbsd.packages">
+  <h3 class="title">バイナリパッケージの使用</h3>
+   <p class="simpara">
+    OpenBSD に PHP をインストールするには、バイナリパッケージを使用することが
+    もっとも簡単で、また推奨される方法です。
+    コアパッケージは他のモジュールと分けられており、別個に
+    インストールしたり、削除したりすることができます。OpenBSD の CD や FTP サイトから
+    必要なファイルを見つけることができます。
+   </p>
+   <p class="simpara">
+    インストールに必要なメインのパッケージは <var class="filename">php4-core-4.3.8.tgz</var>
+    です。これには基本エンジン (と gettext と iconv) が含まれています。次に、
+    <var class="filename">php4-mysql-4.3.8.tgz</var> や
+    <var class="filename">php4-imap-4.3.8.tgz</var> のようなモジュールパッケージを
+    探してください。これらのモジュールを <var class="filename">php.ini</var> 上で有効/無効にするには
+    <strong class="command">phpxs</strong> コマンドを使用する必要があります。
+   </p>
+   <div class="example" id="install.unix.openbsd.ports.example">
+    <p><strong>例1 OpenBSD パッケージインストールの例</strong></p>
+    <div class="example-contents">
+<div class="shellcode"><pre class="shellcode"># pkg_add php4-core-4.3.8.tgz
+# /usr/local/sbin/phpxs -s
+# cp /usr/local/share/doc/php4/php.ini-recommended /var/www/conf/php.ini
+  (add in mysql)
+# pkg_add php4-mysql-4.3.8.tgz
+# /usr/local/sbin/phpxs -a mysql
+  (add in imap)
+# pkg_add php4-imap-4.3.8.tgz
+# /usr/local/sbin/phpxs -a imap
+  (remove mysql as a test)
+# pkg_delete php4-mysql-4.3.8
+# /usr/local/sbin/phpxs -r mysql
+  (install the PEAR libraries)
+# pkg_add php4-pear-4.3.8.tgz</pre>
+</div>
+    </div>
+
+   </div>
+   <p class="simpara">
+   OpenBSD のバイナリパッケージに関する詳細は、man ページの
+   <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=packages" class="link external" title="Link : http://www.openbsd.org/cgi-bin/man.cgi?query=packages">&raquo;&nbsp;packages(7)</a> を
+   参照してください。
+   </p>
+ </div>
+ <div class="sect2" id="install.unix.openbsd.ports">
+  <h3 class="title">Ports の使用</h3>
+  <p class="simpara">
+   <a href="http://www.openbsd.org/faq/ports/ports.html" class="link external" title="Link : http://www.openbsd.org/faq/ports/ports.html">&raquo;&nbsp;ports ツリー</a> を使って PHP のソースを
+   コンパイルすることもできます。ただし、この方法は OpenBSD に詳しいユーザーにのみ
+   推奨されます。PHP 4 ポートは core, extensions の 2 つのサブディレクトリに
+   分割されています。extensions ディレクトリはサポートされているすべての PHP
+   モジュールのサブパッケージを生成します。
+   これらのうちのいずれかのモジュールを生成したくない場合には、
+   <strong class="command">no_*</strong> FLAVOR を使用してください。例えば、imap モジュール
+   のビルドをスキップするには FLAVOR を <strong class="command">no_imap</strong> に
+   セットします。
+  </p>
+ </div>
+ <div class="sect2" id="install.unix.openbsd.faq">
+  <h3 class="title">一般的な問題点</h3>
+  <ul class="itemizedlist">
+   <li class="listitem">
+    <span class="simpara">
+      Apache は、デフォルトインストールでは、
+      <a href="http://www.openbsd.org/cgi-bin/man.cgi?query=chroot" class="link external" title="Link : http://www.openbsd.org/cgi-bin/man.cgi?query=chroot">&raquo;&nbsp;chroot(2) jail</a> 内で実行されます。
+      これにより、PHP は、<var class="filename">/var/www</var> 以下のファイルにしか
+      アクセスできないように制限されます。そのため、セッションを使用するには、
+      <var class="filename">/var/www/tmp</var> ディレクトリを作成するか、他のセッションバックエンドを
+      用いる必要があります。また、データベースのソケットは jail 内に置かれるか、
+      <var class="filename">localhost</var> インターフェイスが listen できるようにする必要があります。
+      ネットワーク関数を使用する場合は、<var class="filename">/etc</var> 内のファイル、たとえば
+      <var class="filename">/etc/resolv.conf</var> や <var class="filename">/etc/services</var> を、
+      <var class="filename">/var/www/etc</var> に移動させる必要があります。
+      OpenBSD の PEAR パッケージは、適切な chroot 内のディレクトリに自動的にインストールされますので、
+      特に修正は必要ありません。OpenBSD における Apache についての詳細は
+      <a href="http://www.openbsd.org/faq/faq10.html#httpdchroot" class="link external" title="Link : http://www.openbsd.org/faq/faq10.html#httpdchroot">&raquo;&nbsp;OpenBSD FAQ</a> を参照してください。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+    OpenBSD 3.6 においては、<a href="http://www.libgd.org/" class="link external" title="Link : http://www.libgd.org/">&raquo;&nbsp;gd</a> 拡張モジュールのパッケージは
+    XFree86 のインストールを必要とします。X11 が必要となるいくつかのフォント機能を使わない場合は、
+    代わりに <var class="filename">php4-gd-4.3.8-no_x11.tgz</var> パッケージをインストールしてください。
+    </span>
+   </li>
+  </ul>
+ </div>
+   
+ <div class="sect2" id="install.unix.openbsd.older">
+  <h3 class="title">過去のリリース</h3>
+  <p class="simpara">
+   OpenBSD の過去のリリースは、静的にリンクされた PHP をコンパイルするために
+   FLAVORS システムを使用していました。
+   この方法でバイナリパッケージを作成することは困難なため、
+   この方法は現在は使用されていません。
+   古い安定版の ports ツリーを使用することもできますが、
+   これらは OpenBSD チームによりサポートされていません。
+   これに関するコメントがある場合、port の現在の管理者は
+   Anil Madhavapeddy (avsm at openbsd dot org) です。
+  </p>
+ </div>
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="52867""></a>
+  <div class="note">
+   <strong class="user">hg at ostc dot de</strong>
+   <a href="#52867" class="date">16-May-2005 07:45</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Also you should add "-a /var/www/dev/log" to the syslogd_flags<br />
+for propper logging of php-extensions like imap.so and create<br />
+a /var/www/etc/master.passwd with an www-user-entry and run<br />
+pwd_mkdb -d /var/www/etc /var/www/etc/master.passwd for propper<br />
+use of libc-client.a functions in imap.so.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="52719""></a>
+  <div class="note">
+   <strong class="user">openbsd-fanatic</strong>
+   <a href="#52719" class="date">10-May-2005 10:51</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I am user that is just migrating to open source and thought I would take openbsd for a spin. This article, by Gregory L. Magnusson, really helped me to get a working apache-php-mysql server going on openbsd.<br />
+<a href="http://www.devx.com/security/Article/28059/0/page/1" rel="nofollow" target="_blank">http://www.devx.com/security/Article/28059/0/page/1</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="37094""></a>
+  <div class="note">
+   <strong class="user">ameen(at)dausha(dot)net</strong>
+   <a href="#37094" class="date">03-Nov-2003 04:47</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I just finished spinning my wheels with PHP/Apache on OpenBSD 3.3, and it took a Google to fix my problem. I followed the instructions by (0429196301 at netcabo dot pt) written on Sep 19, 2003 and kept being fed a segmentation fault when I tried to start httpd. <br />
+<br />
+Then I read the page cited below that suggested playing with the order of the LoadModules, and put the PHP first. I followed that recommendation and httpd started without problems!<br />
+<br />
+Page that saved me:<br />
+<a href="http://archives.neohapsis.com/archives/openbsd/2002-04/3074.html" rel="nofollow" target="_blank">http://archives.neohapsis.com/archives/openbsd/2002-04/3074.html</a><br />
+<br />
+"Change around the order of the Apache modules, this is one of the<br />
+drawbacks to the module API for Apache 1.3 is that the order is very<br />
+important. I would try making the PHP 4 module first, Perl module second<br />
+and FP module last. "</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="31956""></a>
+  <div class="note">
+   <strong class="user">sanchero [at] gvsu [dot] edu</strong>
+   <a href="#31956" class="date">10-May-2003 08:59</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+On OpenBSD 3.2, given the steps outlined above using pre-built packages you will get a new "/var/www/conf/httpd.conf" that contains a section like this:<br />
+<br />
+&lt;IfDefine SSL&gt;<br />
+AddModule mod_ssl.c<br />
+AddModule mod_php4.c<br />
+&lt;/IfDefine&gt;<br />
+<br />
+This causes mod_php4 to load only when starting Apache w/SSL, so if this isn't what you want add the mod_php4 line again above (or below) this section, like so:<br />
+<br />
+AddModule mod_php4.c&nbsp;&nbsp; &lt;&lt;------ SEE? - now should load normally.<br />
+&lt;IfDefine SSL&gt;<br />
+AddModule mod_ssl.c<br />
+AddModule mod_php4.c<br />
+&lt;/IfDefine&gt;<br />
+<br />
+I also added this for good measure:<br />
+<br />
+&lt;IfModule mod_php4.c&gt;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; AddType application/x-httpd-php .php [blah blah]<br />
+&lt;/IfModule&gt;<br />
+<br />
+Seems to work.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="install.unix.hpux.html">HP-UX へのインストール</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="install.unix.solaris.html">Solaris へのインストール</a></div>
+ <div class="up"><a href="install.unix.html">Unix システムへのインストール</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

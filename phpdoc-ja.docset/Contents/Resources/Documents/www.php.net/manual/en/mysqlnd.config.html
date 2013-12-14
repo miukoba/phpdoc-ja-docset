@@ -1,0 +1,473 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>実行時設定</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqlnd.install.html">インストール</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd.incompatibilities.html">非互換性</a></div>
+ <div class="up"><a href="book.mysqlnd.html">Mysqlnd</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mysqlnd.config" class="chapter">
+
+  <h1>実行時設定</h1>
+
+  <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+
+  <p class="para">
+  <table class="doctable table">
+   <caption><strong>MySQL Native Driver 設定オプション</strong></caption>
+   
+    <thead>
+     <tr>
+      <th>名前</th>
+      <th>デフォルト</th>
+      <th>変更可能</th>
+      <th>変更履歴</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+     <tr>
+      <td><a href="mysqlnd.config.html#ini.mysqlnd.collect-statistics" class="link">mysqlnd.collect_statistics</a></td>
+      <td>&quot;1&quot;</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>PHP 5.3.0 以降で利用可能。</td>
+     </tr>
+
+     <tr>
+      <td><a href="mysqlnd.config.html#ini.mysqlnd.collect-memory-statistics" class="link">mysqlnd.collect_memory_statistics</a></td>
+      <td>&quot;0&quot;</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>PHP 5.3.0 以降で利用可能。</td>
+     </tr>
+
+     <tr>
+      <td><a href="mysqlnd.config.html#ini.mysqlnd.debug" class="link">mysqlnd.debug</a></td>
+      <td>&quot;0&quot;</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>PHP 5.3.0 以降で利用可能。</td>
+     </tr>
+
+     <tr>
+      <td><a href="mysqlnd.config.html#ini.ini.mysqlnd.log-mask" class="link">mysqlnd.log_mask</a></td>
+      <td>0</td>
+      <td>PHP_INI_ALL</td>
+      <td>PHP 5.3.0 以降で利用可能。</td>
+     </tr>
+
+     <tr>
+      <td><a href="mysqlnd.config.html#ini.ini.mysqlnd.mempool-default-size" class="link">mysqlnd.mempool_default_size</a></td>
+      <td>16000</td>
+      <td>PHP_INI_ALL</td>
+      <td>PHP 5.3.3 以降で利用可能。</td>
+     </tr>
+
+     <tr>
+      <td><a href="mysqlnd.config.html#ini.mysqlnd.net-read-timeout" class="link">mysqlnd.net_read_timeout</a></td>
+      <td>&quot;31536000&quot;</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>PHP 5.3.0 以降で利用可能。</td>
+     </tr>
+
+     <tr>
+      <td><a href="mysqlnd.config.html#ini.mysqlnd.net-cmd-buffer-size" class="link">mysqlnd.net_cmd_buffer_size</a></td>
+      <td>5.3.0 - &quot;2048&quot;, 5.3.1 - &quot;4096&quot;</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>PHP 5.3.0 以降で利用可能。</td>
+     </tr>
+
+     <tr>
+      <td><a href="mysqlnd.config.html#ini.mysqlnd.net-read-buffer-size" class="link">mysqlnd.net_read_buffer_size</a></td>
+      <td>&quot;32768&quot;</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>PHP 5.3.0 以降で利用可能。</td>
+     </tr>
+
+     <tr>
+      <td><a href="mysqlnd.config.html#ini.mysqlnd.sha256-server-public-key" class="link">mysqlnd.sha256_server_public_key</a></td>
+      <td>&quot;&quot;</td>
+      <td>PHP_INI_PERDIR</td>
+      <td>PHP 5.5.0 以降で利用可能。</td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  PHP_INI_* モードの詳細および定義については
+<a href="configuration.changes.modes.html" class="xref">どこで設定を行うのか</a> を参照してください。
+ </p>
+
+  <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+  <p class="para">
+  <dl>
+
+   <dt id="ini.mysqlnd.collect-statistics">
+    <span class="term">
+     <em><code class="parameter">mysqlnd.collect_statistics</code></em>
+     <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      さまざまなクライアント統計情報の収集を有効にします。収集した情報には
+       <span class="function"><a href="mysqli.get-client-stats.html" class="function">mysqli_get_client_stats()</a></span> や
+       <span class="function"><a href="mysqli.get-connection-stats.html" class="function">mysqli_get_connection_stats()</a></span>、
+       <span class="function"><a href="function.mysqli-get-cache-stats.html" class="function">mysqli_get_cache_stats()</a></span> でアクセスでき、
+       <span class="function"><a href="function.phpinfo.html" class="function">phpinfo()</a></span> 関数の出力の
+      <em>mysqlnd</em> セクションにも表示されます。
+     </p>
+     <p class="para">
+      この設定項目は、メモリ管理に関するもの以外のすべての
+      <a href="mysqlnd.stats.html" class="link">MySQL Native Driver
+      統計情報</a> を有効にします。
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt id="ini.mysqlnd.collect-memory-statistics">
+    <span class="term">
+     <em><code class="parameter">mysqlnd.collect_memory_statistics</code></em>
+     <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      さまざまなメモリ統計情報の収集を有効にします。収集した情報には
+       <span class="function"><a href="mysqli.get-client-stats.html" class="function">mysqli_get_client_stats()</a></span> や
+       <span class="function"><a href="mysqli.get-connection-stats.html" class="function">mysqli_get_connection_stats()</a></span>、
+       <span class="function"><a href="function.mysqli-get-cache-stats.html" class="function">mysqli_get_cache_stats()</a></span> でアクセスでき、
+       <span class="function"><a href="function.phpinfo.html" class="function">phpinfo()</a></span> 関数の出力の
+      <em>mysqlnd</em> セクションにも表示されます。
+     </p>
+     <p class="para">
+      この設定項目は、<a href="mysqlnd.stats.html" class="link">MySQL Native Driver
+      統計情報</a> 全体の中でメモリ管理に関する統計を有効にします。
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt id="ini.mysqlnd.debug">
+    <span class="term">
+     <em><code class="parameter">mysqlnd.debug</code></em> <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      <em>mysqlnd</em> を使うすべての拡張モジュールからの通信を、指定したログファイルに記録します。
+     </p>
+     <p class="para">
+      この項目の書式は <em>mysqlnd.debug =
+      &quot;option1[,parameter_option1][:option2[,parameter_option2]]&quot;</em>
+      となります。
+     </p>
+     <p class="para">
+      書式文字列のオプションは、次のとおりです。
+     </p>
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <p class="para">
+        A[,file] - トレース出力を指定したファイルに追記します。
+        また、データの追記はデータベースへの書き込みのたびに発生することを保証します。
+        それを実現するために、トレースファイルをいったん閉じてから開きなおします
+        (速度は遅くなります)。
+        これで、アプリケーションがクラッシュしたときにも完全なログファイルを残せます。
+       </p>
+      </li>
+      <li class="listitem">
+       <p class="para">
+        a[,file] - トレース出力を指定したファイルに追記します。
+       </p>
+      </li>
+      <li class="listitem">
+       <p class="para">
+        d - DBUG_&lt;N&gt; マクロからの、現在の状態に関する出力を有効にします。
+        キーワードのリストが後に続くことがあり、その場合は
+        指定したキーワードの DBUG マクロからだけ出力させます。
+        空のキーワードリストを指定すると、すべてのマクロを出力します。
+       </p>
+      </li>
+      <li class="listitem">
+       <p class="para">
+        f[,functions] - デバッガの動作を、リストで指定した関数だけに絞り込みます。
+        空の関数リストを指定すると、すべての関数を選択したことになります。
+       </p>
+      </li>
+      <li class="listitem">
+       <p class="para">
+        F - デバッガからの出力の各行に、その出力の元となったマクロが含まれるソースファイル名を付加します。
+       </p>
+      </li>
+      <li class="listitem">
+       <p class="para">
+        i - デバッガからの出力の各行に、現在のプロセスの PID を付加します。
+       </p>
+      </li>
+      <li class="listitem">
+       <p class="para">
+        L - デバッガからの出力の各行に、その出力の元となったマクロが含まれるソースファイル内の行番号を付加します。
+       </p>
+      </li>
+      <li class="listitem">
+       <p class="para">
+        n - デバッガからの出力の各行に、現在の関数のネストレベルを付加します。
+       </p>
+      </li>
+      <li class="listitem">
+       <p class="para">
+        o[,file] - a[,file] と似ていますが、既存のファイルに追記するのではなく既存のファイルを上書きします。
+       </p>
+      </li>
+      <li class="listitem">
+       <p class="para">
+        O[,file] - A[,file] と似ていますが、既存のファイルに追記するのではなく既存のファイルを上書きします。
+       </p>
+      </li>
+      <li class="listitem">
+       <p class="para">
+        t[,N] - 関数の制御フローのトレースを有効にします。最大のネストレベルを N で指定します。
+        N のデフォルトは 200 です。
+       </p>
+      </li>
+      <li class="listitem">
+       <p class="para">
+        x - このオプションはプロファイリングを有効にします。
+       </p>
+      </li>
+     </ul>
+     <p class="para">
+      利用例は、このようになります。
+     </p>
+<div class="example-contents">
+<div class="cdata"><pre>
+d:t:x:O,/tmp/mysqlnd.trace
+</pre></div>
+</div>
+
+     <blockquote class="note"><p><strong class="note">注意</strong>: 
+      <p class="para">
+       この機能は、デバッグビルド版の PHP でしか使えません。
+       Microsoft Windows で使う場合は、Microsoft Visual C
+       バージョン 9 以降でデバッグビルドした PHP を使わなければなりません。
+      </p>
+     </p></blockquote>
+     <p class="para"/>
+    </dd>
+
+   </dt>
+
+   <dt id="ini.ini.mysqlnd.log-mask">
+    <span class="term">
+     <em><code class="parameter">mysqlnd.log_mask</code></em>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      どのクエリをログに記録するかを定義します。デフォルトは 0 で、これはクエリをログに記録しません。
+      値は静数値で定義します。PHP の定数はありません。
+      たとえば 48 (16 + 32) を設定すると、インデックスの選択が悪かったり
+      (SERVER_QUERY_NO_GOOD_INDEX_USED = 16) まったくインデックスを使っていなかったり (SERVER_QUERY_NO_INDEX_USED = 32)
+      といった理由で遅くなっているクエリをログに記録します。
+      2043 (1 + 2 + 8 + ... + 1024) を指定すると、あらゆる型の遅いクエリを記録します。
+     </p>
+     <p class="para">
+      使える型は、次のとおりです。
+      SERVER_STATUS_IN_TRANS=1, SERVER_STATUS_AUTOCOMMIT=2,
+      SERVER_MORE_RESULTS_EXISTS=8, SERVER_QUERY_NO_GOOD_INDEX_USED=16, SERVER_QUERY_NO_INDEX_USED=32,
+      SERVER_STATUS_CURSOR_EXISTS=64, SERVER_STATUS_LAST_ROW_SENT=128, SERVER_STATUS_DB_DROPPED=256,
+      SERVER_STATUS_NO_BACKSLASH_ESCAPES=512, SERVER_QUERY_WAS_SLOW=1024
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt id="ini.ini.mysqlnd.mempool-default-size">
+    <span class="term">
+     <em><code class="parameter">mysqlnd.mempool_default_size</code></em>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      mysqlnd メモリプールのデフォルトサイズ。これは結果セットが使います。
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt id="ini.mysqlnd.net-read-timeout">
+    <span class="term">
+     <em><code class="parameter">mysqlnd.net_read_timeout</code></em>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      <em>mysqlnd</em> は、MySQL Client Library すなわち
+      <em>libmysqlclient</em> とは異なるネットワーク API を使います。
+      <em>mysqlnd</em> は PHP ストリームを使いますが、
+      <em>libmysqlclient</em> は自前のラッパーを用意して操作レベルでのネットワークコールをしています。
+      PHP のデフォルト設定では、ストリームの読み込みタイムアウトは 60 秒です。これは
+      <var class="filename">php.ini</var> の
+      <em>default_socket_timeout</em> で設定します。
+      タイムアウト値を設定しなければ、すべてのストリームに対してデフォルト値が適用されます。
+      <em>mysqlnd</em> は何も値を設定しないので、長いクエリを実行して
+      <em>default_socket_timeout</em> 秒が経過すると、接続を切断して
+      "<span class="quote">2006 - MySQL Server has gone away</span>" というエラーが発生します。
+      MySQL Client Library のデフォルトのタイムアウトは
+      365 * 24 * 3600 秒 (1 年) で、TCP/IP のタイムアウトなどのその他のタイムアウトが発生するのを待ちます。
+      <em>mysqlnd</em> も同様に、非常に長いタイムアウトを使うことができます。この値は、
+      <var class="filename">php.ini</var> の新しい項目
+      <em>mysqlnd.net_read_timeout</em> で設定します。
+      <em>mysqlnd.net_read_timeout</em> は、<em>mysqlnd</em>
+      を使うすべての拡張モジュール (<em>ext/mysql</em> や
+      <em>ext/mysqli</em>、<em>PDO_MySQL</em>) が利用します。
+      <em>mysqlnd</em> は、PHP ストリームに対して
+      <em>mysqlnd.net_read_timeout</em> を使うよう指示します。
+      MySQL Client Library および PHP ストリームの
+      <em>MYSQL_OPT_READ_TIMEOUT</em> とは微妙に違いがあることに注意しましょう。
+      <em>MYSQL_OPT_READ_TIMEOUT</em> は
+      TCP/IP 接続でしか動作しないとドキュメントに記載されており、
+      MySQL 5.1.2 より前のバージョンでは Windows でしか使えません。
+      PHP ストリームにはこの制限はありません。
+      信じられないならストリームのドキュメントを調べるとよいでしょう。
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt id="ini.mysqlnd.net-cmd-buffer-size">
+    <span class="term">
+     <em><code class="parameter">mysqlnd.net_cmd_buffer_size</code></em>
+     <span class="type"><span class="type long">long</span></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      <em>mysqlnd</em> は、内部のコマンド/ネットワークバッファとして
+      <var class="filename">php.ini</var> の <em>mysqlnd.net_cmd_buffer_size</em>
+      で指定しただけのバイト数をすべての接続に対して確保します。
+      MySQL Client Server プロトコルのコマンド、たとえば
+      <em>COM_QUERY</em> (通常のクエリ)
+      がこのバッファに収まらない場合、<em>mysqlnd</em>
+      はコマンドの送信に必要なだけバッファを拡張します。
+      ひとつの接続でバッファの拡張が発生するたびに
+      <em>command_buffer_too_small</em> をひとつ加算します。
+     </p>
+     <p class="para">
+      ほとんどすべての接続で <em>mysqlnd</em> が
+      <em>mysqlnd.net_cmd_buffer_size</em> の初期値よりバッファを拡張せざるを得なくなったら、
+      デフォルトのサイズを大きくしてバッファの再割り当てを回避すべきでしょう。
+     </p>
+     <p class="para">
+      バッファのデフォルトサイズは、PHP 5.3.0 では 2048 バイトです。
+      それより新しいバージョンでは、デフォルトが 4096 バイトになりました。
+      デフォルトを変更するには、<var class="filename">php.ini</var> で
+      <em>mysqlnd.net_cmd_buffer_size</em> を設定するか、あるいは
+      <em>mysqli_options(MYSQLI_OPT_NET_CMD_BUFFER_SIZE, int
+      size)</em> を使います。
+     </p>
+     <p class="para">
+      バッファサイズを 4096 より小さくすることはおすすめしません。というのも、
+      <em>mysqlnd</em> が読み込む MySQL からの通信パケットの中には
+      そのサイズに達するものもあるからです。
+      PHP 5.3.0 では、バッファのサイズを超えるパケットを MySQL が送ってきても
+      <em>mysqlnd</em> はバッファを拡張しませんでした。
+      その結果、<em>mysqlnd</em> はパケットをデコードできずに
+      クライアントアプリケーションがエラーを出すはめになっていました。
+      PHP 5.3.0 における <em>mysqlnd.net_cmd_buffer_size</em>
+      のデフォルトである 2048 バイトを超えるパケットが送られくる可能性があるのは、次の二つの場合だけです。
+      ひとつは非常に巨大なエラーメッセージを送信してくる場合、
+      もうひとつは、パケットに <em>COM_LIST_FIELD</em>
+      (<em>mysql_list_fields()</em>) からのメタデータが含まれており、
+      その中にデフォルト値が非常に長い (&gt;1900 バイト) 文字列型のカラムのメタデータが含まれている場合です。
+     </p>
+     <p class="para">
+      PHP 5.3.2 以降、mysqlnd では 4096 バイト未満のバッファを設定できなくなりました。
+     </p>
+     <p class="para">
+      この値は <em>mysqli_options(link,
+      MYSQLI_OPT_NET_CMD_BUFFER_SIZE, size)</em> でも変更できます。
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt id="ini.mysqlnd.net-read-buffer-size">
+    <span class="term">
+     <em><code class="parameter">mysqlnd.net_read_buffer_size</code></em>
+     <span class="type"><span class="type long">long</span></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      MySQL コマンドパケットのボディを読み込むときの、読み込みチャンクの最大バイト数。
+      MySQL クライアントサーバープロトコルは、すべてのコマンドをパケット内にカプセル化します。
+      パケットは、小さなヘッダと実際の本体を含むボディで構成されています。
+      ボディのサイズはヘッダに書き込まれています。
+      <em>mysqlnd</em> はこのボディを、
+      <em>MIN(header.size, mysqlnd.net_read_buffer_size)</em>
+      バイトごとに分割して読み込みます。パケットのボディが
+      <em>mysqlnd.net_read_buffer_size</em> バイトより長い場合は、
+      <em>mysqlnd</em> は <em>read()</em>
+      を複数回コールする必要があります。
+     </p>
+     <p class="para">
+      この値は <em>mysqli_options(link,
+      MYSQLI_OPT_NET_READ_BUFFER_SIZE, size)</em>
+      でも設定できます。
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt id="ini.mysqlnd.sha256-server-public-key">
+    <span class="term">
+     <em><code class="parameter">mysqlnd.sha256_server_public_key</code></em>
+     <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+    </span>
+    <dd>
+
+     <p class="para">
+      SHA-256 認証プラグイン関連の設定。MySQL サーバーの
+      RSA 公開鍵ファイル。
+     </p>
+     <p class="para">
+      クライアントで RSA 公開鍵の設定をせずに済ませることができます。
+      そのためには、この設定項目で公開鍵を設定するか、実行時に
+       <span class="function"><a href="mysqli.options.html" class="function">mysqli_options()</a></span> で鍵を指定します。
+      RSA 公開鍵をクライアントから渡さなかった場合は、
+      ここで指定した鍵を使って SHA-256 認証プラグインの認証手続きを進めます。
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </p>
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqlnd.install.html">インストール</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd.incompatibilities.html">非互換性</a></div>
+ <div class="up"><a href="book.mysqlnd.html">Mysqlnd</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

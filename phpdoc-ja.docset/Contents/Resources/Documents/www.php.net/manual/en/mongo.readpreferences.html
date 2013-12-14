@@ -1,0 +1,260 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>優先読み込み</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongo.tutorial.indexes.html">インデックスの作成</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongo.writeconcerns.html">書き込み確認</a></div>
+ <div class="up"><a href="mongo.manual.html">マニュアル</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mongo.readpreferences" class="chapter">
+ <h1>優先読み込み</h1>
+
+ <p class="para">
+  MongoDB 2.2 およびドライバのバージョン 1.3.0 以降では
+  <a href="http://docs.mongodb.org/manual/applications/replication/#read-preference" class="link external" title="Link : http://docs.mongodb.org/manual/applications/replication/#read-preference">&raquo;&nbsp;優先読み込み</a>
+  をサポートします。これを使えば、レプリカセット環境内でクエリを
+  mongod インスタンスに振り分ける方法を制御できます。
+  優先読み込みは接続ごとに指定することもできるし、
+  データベース単位やコレクション単位でも指定できます。
+  上位で設定された優先順位がデフォルトで引き継がれます
+  (たとえば、<a href="class.mongocollection.html" class="classname">MongoCollection</a>
+  の優先読み込み設定は、それに対応する
+  <a href="class.mongodb.html" class="classname">MongoDB</a> インスタンスでの定義を引き継ぎます)。
+ </p>
+ <p class="para">
+  優先読み込みの指定は、モードとタグセットの組み合わせで行います。
+  mongod インスタンスの優先順位をどのように決めるのかを指定するのがモードで、
+  ふさわしい mongod インスタンスの条件を指定するのが
+  <a href="http://docs.mongodb.org/manual/reference/replica-configuration/#replica-set-configuration-tag-sets" class="link external" title="Link : http://docs.mongodb.org/manual/reference/replica-configuration/#replica-set-configuration-tag-sets">&raquo;&nbsp;タグセット</a> です。
+ </p>
+ <div class="simplesect">
+  <h3 class="title">優先読み込みのモード</h3>
+  <div class="warning"><strong class="warning">警告</strong>
+   <p class="para">
+    <em>MongoClient::RP_PRIMARY</em> 以外のすべての優先読み込みモードは、
+    古いデータを返す可能性があります。
+    セカンダリがプライマリの操作を受け取るにはある程度時間がかかるからです。
+    <em>MongoClient::RP_PRIMARY</em> 以外のモードを選ぶ場合は、
+    最新のデータではなくてもアプリケーションがうまく動くように作っておかないといけません。
+   </p>
+  </div>
+  <ul class="itemizedlist">
+   <li class="listitem">
+    <p class="para">
+     <em>MongoClient::RP_PRIMARY</em>
+    </p>
+    <p class="para">
+     すべての読み込み操作で、現在のレプリカセットのプライマリだけを使います。
+     これがデフォルト設定です。プライマリが使えないときは、読み込み操作で例外が発生します。
+    </p>
+    <p class="para">
+     このモードを選ぶとタグセットは使えません。
+     <em>MongoClient::RP_PRIMARY</em>
+     のときにタグセットを指定すると、例外が発生します。
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     <em>MongoClient::RP_PRIMARY_PREFERRED</em>
+    </p>
+    <p class="para">
+     大半の場合は、読み込み操作をレプリカセットのプライマリから行います。
+     しかし、もしプライマリが使えない場合 (たとえばフェイルオーバー中の場合など)
+     は、セカンダリのメンバーから読み込みます。
+    </p>
+    <p class="para">
+     優先読み込みにタグセットが含まれる場合、
+     クライアントはまずはプライマリから読み込みます。
+     そして、指定したタグにマッチするセカンダリから読み込みます。
+     タグにマッチするセカンダリがない場合は、読み込み操作で例外が発生します。
+    </p>
+    <div class="warning"><strong class="warning">警告</strong>
+     <p class="para">
+      mongos のバージョン 2.2 で、優先読み込みを完全にサポートするようになりました。
+      それより古いバージョンの mongos インスタンスに接続するときは、
+      <em>MongoClient::RP_PRIMARY_PREFERRED</em>
+      はクエリをセカンダリに送信します。
+     </p>
+    </div>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     <em>MongoClient::RP_SECONDARY</em>
+    </p>
+    <p class="para">
+     読み込み操作で、レプリカセットのセカンダリだけを使います。
+     もし使えるセカンダリがない場合は、読み込み操作で例外が発生します。
+    </p>
+    <p class="para">
+     ほとんどのレプリカセットには少なくとも一つのセカンダリがありますが、
+     場合によっては、使えるセカンダリが一つもないこともあります。
+     たとえばプライマリとセカンダリがそれぞれ一つずつで、
+     どちらかがリカバリ状態や使えない場合のセカンダリをアービターが持っていない場合です。
+    </p>
+    <p class="para">
+     優先読み込みにタグセットが含まれる場合、
+     クライアントは指定したタグにマッチするセカンダリを探します。
+     そして、一番近いグループのセカンダリの中からランダムに直接読み込みを行います。
+     タグにマッチするセカンダリがない場合は、読み込み操作で例外が発生します。
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     <em>MongoClient::RP_SECONDARY_PREFERRED</em>
+    </p>
+    <p class="para">
+     大半の場合は、読み込み操作をレプリカセットのセカンダリから行います。
+     しかし、もしプライマリだけしかメンバーが存在しない場合は、
+     プライマリから読み込みます。
+    </p>
+    <p class="para">
+     優先読み込みにタグセットが含まれる場合、
+     クライアントは指定したタグにマッチするセカンダリを探します。
+     そして、一番近いグループのセカンダリの中からランダムに直接読み込みを行います。
+     タグにマッチするセカンダリがない場合は、読み込み操作で例外が発生します。
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     <em>MongoClient::RP_NEAREST</em>
+    </p>
+    <p class="para">
+     ドライバは、メンバーの選択プロセスに従って一番近いところにあるメンバーから読み込みます。
+     <em>MongoClient::RP_NEAREST</em> モードでの読み込みは
+     メンバーの型を意識しないので、プライマリから読まれることもあればセカンダリから読まれることもあります。
+    </p>
+    <p class="para">
+     このモードにしておくと、読み込み操作のネットワークレイテンシーを最小化できます。
+     現在のデータと古いデータのどちらを優先するかは設定しません。
+    </p>
+    <p class="para">
+     タグセットを指定した場合、
+     クライアントは指定したタグにマッチするメンバーを探します。
+     そして、一番近いグループのノードの中からランダムに直接読み込みを行います。
+    </p>
+    <blockquote class="note"><p><strong class="note">注意</strong>: 
+     <p class="para">
+      すべての読み込み操作は、指定した優先読み込みモードにマッチするレプリカセットの
+      一番近いメンバーから行います。
+      <em>MongoClient::RP_NEAREST</em> モードは、
+      メンバーがプライマリであるかセカンダリであるかは無視してレイテンシーの低い読み込みを行います。
+     </p>
+    </p></blockquote>
+   </li>
+  </ul>
+ </div>
+ <div class="simplesect">
+  <h3 class="title">タグセット</h3>
+  <p class="para">
+   <a href="http://docs.mongodb.org/manual/reference/replica-configuration/#replica-set-configuration-tag-sets" class="link external" title="Link : http://docs.mongodb.org/manual/reference/replica-configuration/#replica-set-configuration-tag-sets">&raquo;&nbsp;タグセット</a>
+   を使うと、カスタムパラメータに基づいて読み込み操作の対象を特定のメンバーに絞り込めます。
+   タグセットでは、読み込み操作の対象となるメンバーを特定のデータセンターに絞り込んだり、
+   レポーティングや分析など操作種別ごとにその対象の mongod インスタンスを絞り込んだりできます。
+  </p>
+  <p class="para">
+   タグセットを指定できるのは、優先読み込みが次のモードの場合です。
+  </p>
+  <ul class="itemizedlist">
+   <li class="listitem">
+    <p class="para">
+     <em>MongoClient::RP_PRIMARY_PREFERRED</em>
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     <em>MongoClient::RP_SECONDARY</em>
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     <em>MongoClient::RP_SECONDARY_PREFERRED</em>
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     <em>MongoClient::RP_NEAREST</em>
+    </p>
+   </li>
+  </ul>
+  <p class="para">
+   優先読み込みモードが
+   <em>MongoClient::RP_PRIMARY</em>
+   の場合はタグセットを指定できません。
+   タグを適用できるのはセカンダリメンバーを選ぶときだけ
+   (ただし、NEAREST モードのときは例外) です。
+  </p>
+ </div>
+ <div class="simplesect">
+  <h3 class="title">優先読み込みの指定</h3>
+  <p class="para">
+   優先読み込みの設定方法は二通りあります。一つは
+    <span class="function"><strong>MongoClient::__construct()</strong></span> に渡す接続 URI で指定する方法で、
+   このときはクエリ文字列の構文を使います。もうひとつはコアクラスのセッターメソッド群を使う方法で、
+   このときはタグセット用の配列構文を使います。
+  </p>
+  <p class="para">
+   優先読み込みモードをクエリ文字列で指定する場合、
+   <em>readPreferenceTags</em> の値用のタグセットは、
+   コロンで区切ったキー/値のペアをカンマでつなげた形式になります。
+  </p>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    クエリ文字列内で定義するタグセットには
+    <em>readPreferenceTags</em> という名前を使います。
+    PHP が URL のクエリ文字列を処理するときとは違って、
+    <em>readPreferenceTags</em>
+    を複数回指定したとしても上書きされることはありません。
+    クエリ文字列の中で登場した順に、ドライバがすべてのタグセットをとりまとめます。
+   </p>
+  </p></blockquote>
+  <div class="warning"><strong class="warning">警告</strong>
+   <p class="para">
+    マッチするタグセットをドライバが見つけられない場合は、読み込みが失敗します!
+    適切な代替策を用意しておくのはプログラマの役割です。たとえば
+    <em>readPreferenceTags</em> の値が空なら &quot;no tag set
+    preference&quot; を使うなどです。
+   </p>
+  </div>
+  <p class="para">
+   <div class="example" id="example-1365">
+    <p><strong>例1 接続 URI でのクエリ文字列構文による優先読み込みの設定</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;一番近いサーバーを優先し、タグは設定しません<br /></span><span style="color: #0000BB">$uri&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'mongodb://rs1.example.com,rs2.example.com/'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$uri&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">'?readPreference=nearest'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #0000BB">$uri</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #DD0000">'replicaSet'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'rs'</span><span style="color: #007700">));<br /><br /></span><span style="color: #FF8000">//&nbsp;"east"&nbsp;データセンターの一番近いサーバーを選びます<br /></span><span style="color: #0000BB">$uri&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'mongodb://rs1.example.com,rs2.example.com/'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$uri&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">'?readPreference=nearest'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$uri&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">'&amp;readPreferenceTags=dc:east'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #0000BB">$uri</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #DD0000">'replicaSet'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'rs'</span><span style="color: #007700">));<br /><br /></span><span style="color: #FF8000">//&nbsp;"east"&nbsp;データセンターの一番近いサーバーを選び、レポーティング用に使います<br />//&nbsp;代替サーバーとして、"west"&nbsp;データセンターのサーバーを使います<br /></span><span style="color: #0000BB">$uri&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'mongodb://rs1.example.com,rs2.example.com/'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$uri&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">'?readPreference=nearest'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$uri&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">'&amp;readPreferenceTags=dc:east,use:reporting'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$uri&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">'&amp;readPreferenceTags=dc:west'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #0000BB">$uri</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #DD0000">'replicaSet'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'rs'</span><span style="color: #007700">));<br /><br /></span><span style="color: #FF8000">//&nbsp;"east"&nbsp;データセンターの一番近いサーバーを優先し、<br />//&nbsp;代替サーバーとして、"west"&nbsp;データセンターのサーバーを使います。<br />//&nbsp;それもだめな場合は、タグセットの設定をせずに接続します。<br /></span><span style="color: #0000BB">$uri&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'mongodb://rs1.example.com,rs2.example.com/'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$uri&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">'?readPreference=nearest'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$uri&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">'&amp;readPreferenceTags=dc:east'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$uri&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">'&amp;readPreferenceTags=dc:west'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$uri&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">'&amp;readPreferenceTags='</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #0000BB">$uri</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #DD0000">'replicaSet'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'rs'</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   <div class="example" id="example-1366">
+    <p><strong>例2 タグセット用の配列構文による優先読み込みの設定</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #DD0000">'mongodb://rs1.example.com,rs2.example.com'</span><span style="color: #007700">,&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'replicaSet'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'rs'</span><span style="color: #007700">,<br />));<br /><br /></span><span style="color: #FF8000">//&nbsp;一番近いサーバーを優先し、タグは設定しません<br /></span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setReadPreference</span><span style="color: #007700">(</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">::</span><span style="color: #0000BB">RP_NEAREST</span><span style="color: #007700">,&nbsp;array());<br /><br /></span><span style="color: #FF8000">//&nbsp;"east"&nbsp;データセンターの一番近いサーバーを優先します<br /></span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setReadPreference</span><span style="color: #007700">(</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">::</span><span style="color: #0000BB">RP_NEAREST</span><span style="color: #007700">,&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">'dc'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'east'</span><span style="color: #007700">),<br />));<br /><br /></span><span style="color: #FF8000">//&nbsp;"east"&nbsp;データセンターの一番近いサーバーを優先し、レポーティング用に使います<br />//&nbsp;代替サーバーとして、"west"&nbsp;データセンターのサーバーを使います<br /></span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setReadPreference</span><span style="color: #007700">(</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">::</span><span style="color: #0000BB">RP_NEAREST</span><span style="color: #007700">,&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">'dc'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'east'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'use'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'reporting'</span><span style="color: #007700">),<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">'dc'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'west'</span><span style="color: #007700">),<br />));<br /><br /></span><span style="color: #FF8000">//&nbsp;"east"&nbsp;データセンターの一番近いサーバーを優先し、<br />//&nbsp;代替サーバーとして、"west"&nbsp;データセンターのサーバーを使います。<br />//&nbsp;それもだめな場合は、タグセットの設定をせずに接続します。<br /></span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setReadPreference</span><span style="color: #007700">(</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">::</span><span style="color: #0000BB">RP_NEAREST</span><span style="color: #007700">,&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">'dc'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'east'</span><span style="color: #007700">),<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">'dc'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'west'</span><span style="color: #007700">),<br />&nbsp;&nbsp;&nbsp;&nbsp;array(),<br />));<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mongo.tutorial.indexes.html">インデックスの作成</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mongo.writeconcerns.html">書き込み確認</a></div>
+ <div class="up"><a href="mongo.manual.html">マニュアル</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

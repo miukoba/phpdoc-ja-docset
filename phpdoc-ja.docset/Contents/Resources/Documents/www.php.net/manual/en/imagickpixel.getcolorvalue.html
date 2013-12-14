@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>指定した色チャネルの値を正規化したものを取得する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="imagickpixel.getcolorcount.html">ImagickPixel::getColorCount</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="imagickpixel.gethsl.html">ImagickPixel::getHSL</a></div>
+ <div class="up"><a href="class.imagickpixel.html">ImagickPixel</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="imagickpixel.getcolorvalue" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ImagickPixel::getColorValue</h1>
+  <p class="verinfo">(PECL imagick 2.0.0)</p><p class="refpurpose"><span class="refname">ImagickPixel::getColorValue</span> &mdash; <span class="dc-title">指定した色チャネルの値を正規化したものを取得する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-imagickpixel.getcolorvalue-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">float</span> <span class="methodname"><strong>ImagickPixel::getColorValue</strong></span>
+    ( <span class="methodparam"><span class="type">int</span> <code class="parameter">$color</code></span>
+   )</div>
+
+  <div class="warning"><strong class="warning">警告</strong><p class="simpara">この関数は、
+現在のところ詳細な情報はありません。引数のリストのみが
+記述されています。</p></div>
+  <p class="para">
+   指定した色チャネルの値を取得します。
+   これは、0 から 1 までの間の浮動小数点数値となります。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-imagickpixel.getcolorvalue-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">color</code></em></span>
+     <dd>
+
+      <p class="para">
+       調べたいチャネル。Imagick のチャネル定数で指定します。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+
+ </div>
+
+ <div class="refsect1 returnvalues" id="refsect1-imagickpixel.getcolorvalue-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   チャネルの値を正規化した浮動小数点数値を返します。
+   エラー時には ImagickPixelException をスローします。
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="108192""></a>
+  <div class="note">
+   <strong class="user">holdoffhunger at gmail dot com</strong>
+   <a href="#108192" class="date">06-Apr-2012 07:34</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+When getting a color value back with getColorValue, you are free to use any color scheme: either the Red/Green/Blue (RGB) scheme or the Cyan/Magenta/Yellow/blacK (CMYK) scheme.&nbsp; For RGB, this function works with the constant values of "COLOR_RED", "COLOR_GREEN", and "COLOR_BLUE," and for CMYK, this function works with the constant values of "COLOR_CYAN", "COLOR_MAGENTA", "COLOR_YELLOW", and "COLOR_BLACK".&nbsp; As a programmer, the main question you're probably asking yourself is "How do I know if one pixel's color is different from the others?"&nbsp; That seems to be defined as a unique combination of RGB *or* CMYK values.&nbsp; Each RGB set of values with have a unique set of CMYK values for only that set of RGB values, so an RGB of 1/0.5/0.5 with have a unique set of CMYK values, shared only by the other pixels of the same exact RGB values.<br />
+<br />
+Why the CMYK?&nbsp; Because that is the standard for printing, or to quote the Imagick site, "As such for printing we use four colored inks: Cyan, Magenta, Yellow, and blacK; and define images using these inks, to form a CMYK color space."&nbsp; By being a "color space", you get the choice of working with either RGB or CMYK when defining a pixel as being unique among a set of pixels.&nbsp; But you are completely free to go with either RGB or CMYK.&nbsp; For more on it from the Imagick Site:<br />
+<br />
+<a href="http://www.imagemagick.org/Usage/color_basics/" rel="nofollow" target="_blank">http://www.imagemagick.org/Usage/color_basics/</a><br />
+<br />
+Some code that demonstrates both methods: (for a purple-ish red pixel)<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Grab Pixel<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; // ---------------------------------------------------<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$pixel_one </span><span class="keyword">= </span><span class="default">$imagick_type</span><span class="keyword">-&gt;</span><span class="default">getImagePixelColor</span><span class="keyword">(</span><span class="default">0</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Grab Alpha/Opacity Values<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; // ---------------------------------------------------<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$pixel_one_color_value_alpha </span><span class="keyword">= </span><span class="default">$pixel_one</span><span class="keyword">-&gt;</span><span class="default">getColorValue</span><span class="keyword">(</span><span class="default">imagick</span><span class="keyword">::</span><span class="default">COLOR_ALPHA</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$pixel_one_color_value_opacity </span><span class="keyword">= </span><span class="default">$pixel_one</span><span class="keyword">-&gt;</span><span class="default">getColorValue</span><span class="keyword">(</span><span class="default">imagick</span><span class="keyword">::</span><span class="default">COLOR_OPACITY</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Grab Red/Green/Blue (RGB) Values<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; // ---------------------------------------------------<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$pixel_one_color_value_red </span><span class="keyword">= </span><span class="default">$pixel_one</span><span class="keyword">-&gt;</span><span class="default">getColorValue</span><span class="keyword">(</span><span class="default">imagick</span><span class="keyword">::</span><span class="default">COLOR_RED</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$pixel_one_color_value_green </span><span class="keyword">= </span><span class="default">$pixel_one</span><span class="keyword">-&gt;</span><span class="default">getColorValue</span><span class="keyword">(</span><span class="default">imagick</span><span class="keyword">::</span><span class="default">COLOR_GREEN</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$pixel_one_color_value_blue </span><span class="keyword">= </span><span class="default">$pixel_one</span><span class="keyword">-&gt;</span><span class="default">getColorValue</span><span class="keyword">(</span><span class="default">imagick</span><span class="keyword">::</span><span class="default">COLOR_BLUE</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Grab Cyna/Magenta/Yellow/blacK (CMYK) Values<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; // ---------------------------------------------------<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$pixel_one_color_value_cyan </span><span class="keyword">= </span><span class="default">$pixel_one</span><span class="keyword">-&gt;</span><span class="default">getColorValue</span><span class="keyword">(</span><span class="default">imagick</span><span class="keyword">::</span><span class="default">COLOR_CYAN</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$pixel_one_color_value_magenta </span><span class="keyword">= </span><span class="default">$pixel_one</span><span class="keyword">-&gt;</span><span class="default">getColorValue</span><span class="keyword">(</span><span class="default">imagick</span><span class="keyword">::</span><span class="default">COLOR_MAGENTA</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$pixel_one_color_value_yellow </span><span class="keyword">= </span><span class="default">$pixel_one</span><span class="keyword">-&gt;</span><span class="default">getColorValue</span><span class="keyword">(</span><span class="default">imagick</span><span class="keyword">::</span><span class="default">COLOR_YELLOW</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$pixel_one_color_value_black </span><span class="keyword">= </span><span class="default">$pixel_one</span><span class="keyword">-&gt;</span><span class="default">getColorValue</span><span class="keyword">(</span><span class="default">imagick</span><span class="keyword">::</span><span class="default">COLOR_BLACK</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Print Results<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; // ---------------------------------------------------<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">print(</span><span class="string">"Alpha: </span><span class="default">$pixel_one_color_value_alpha</span><span class="string">&lt;br&gt;"</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; print(</span><span class="string">"Opacity: </span><span class="default">$pixel_one_color_value_opacity</span><span class="string">&lt;br&gt;&lt;br&gt;"</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp;&nbsp; print(</span><span class="string">"---------------------------------------------&lt;br&gt;&lt;br&gt;"</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; print(</span><span class="string">"Red: </span><span class="default">$pixel_one_color_value_red</span><span class="string">&lt;br&gt;"</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; print(</span><span class="string">"Green: </span><span class="default">$pixel_one_color_value_green</span><span class="string">&lt;br&gt;"</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; print(</span><span class="string">"Blue: </span><span class="default">$pixel_one_color_value_blue</span><span class="string">&lt;br&gt;&lt;br&gt;"</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; print(</span><span class="string">"Cyan: </span><span class="default">$pixel_one_color_value_cyan</span><span class="string">&lt;br&gt;"</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; print(</span><span class="string">"Magenta: </span><span class="default">$pixel_one_color_value_magenta</span><span class="string">&lt;br&gt;"</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; print(</span><span class="string">"Yellow: </span><span class="default">$pixel_one_color_value_yellow</span><span class="string">&lt;br&gt;"</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; print(</span><span class="string">"Black: </span><span class="default">$pixel_one_color_value_black</span><span class="string">&lt;br&gt;&lt;br&gt;"</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">/*<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; Example Results : : :<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; -----------------------<br />
+<br />
+Alpha: 1<br />
+Opacity: 0<br />
+<br />
+---------------------------------------------<br />
+<br />
+Red: 1<br />
+Green: 0.501960784314<br />
+Blue: 0.501960784314<br />
+<br />
+Cyan: 1<br />
+Magenta: 0.501960784314<br />
+Yellow: 0.501960784314<br />
+Black: 0<br />
+<br />
+&nbsp;&nbsp;&nbsp; */<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="97956""></a>
+  <div class="note">
+   <strong class="user">mwwaygoo AT hotmail DOT com</strong>
+   <a href="#97956" class="date">18-May-2010 12:56</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+QUOTE: $color&nbsp;&nbsp; The channel to check, specified as one of the Imagick channel constants.<br />
+<br />
+$color is a COLOR_* constant, not a channel constant<br />
+<br />
+e.g.<br />
+<span class="default">&lt;?php<br />
+$image</span><span class="keyword">=new </span><span class="default">Imagick</span><span class="keyword">();<br />
+</span><span class="default">$image</span><span class="keyword">-&gt;</span><span class="default">readImage</span><span class="keyword">(</span><span class="string">'test.png'</span><span class="keyword">);<br />
+</span><span class="default">$point</span><span class="keyword">=</span><span class="default">$image</span><span class="keyword">-&gt;</span><span class="default">getImagePixelColor</span><span class="keyword">(</span><span class="default">0</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">);<br />
+echo </span><span class="string">' Alpha:'</span><span class="keyword">.</span><span class="default">$point</span><span class="keyword">-&gt;</span><span class="default">getColorValue</span><span class="keyword">(</span><span class="default">imagick</span><span class="keyword">::</span><span class="default">COLOR_ALPHA</span><span class="keyword">);<br />
+echo </span><span class="string">' Opacity:'</span><span class="keyword">.</span><span class="default">$point</span><span class="keyword">-&gt;</span><span class="default">getColorValue</span><span class="keyword">(</span><span class="default">imagick</span><span class="keyword">::</span><span class="default">COLOR_OPACITY</span><span class="keyword">);<br />
+echo </span><span class="string">' R:'</span><span class="keyword">.</span><span class="default">$point</span><span class="keyword">-&gt;</span><span class="default">getColorValue</span><span class="keyword">(</span><span class="default">imagick</span><span class="keyword">::</span><span class="default">COLOR_RED</span><span class="keyword">);<br />
+echo </span><span class="string">' G:'</span><span class="keyword">.</span><span class="default">$point</span><span class="keyword">-&gt;</span><span class="default">getColorValue</span><span class="keyword">(</span><span class="default">imagick</span><span class="keyword">::</span><span class="default">COLOR_GREEN</span><span class="keyword">);<br />
+echo </span><span class="string">' B:'</span><span class="keyword">.</span><span class="default">$point</span><span class="keyword">-&gt;</span><span class="default">getColorValue</span><span class="keyword">(</span><span class="default">imagick</span><span class="keyword">::</span><span class="default">COLOR_BLUE</span><span class="keyword">);<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="imagickpixel.getcolorcount.html">ImagickPixel::getColorCount</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="imagickpixel.gethsl.html">ImagickPixel::getHSL</a></div>
+ <div class="up"><a href="class.imagickpixel.html">ImagickPixel</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

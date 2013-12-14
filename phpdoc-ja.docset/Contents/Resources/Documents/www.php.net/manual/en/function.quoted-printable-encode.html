@@ -1,0 +1,315 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>8 ビット文字列を quoted-printable 文字列に変換する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.quoted-printable-decode.html">quoted_printable_decode</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.quotemeta.html">quotemeta</a></div>
+ <div class="up"><a href="ref.strings.html">String 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.quoted-printable-encode" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">quoted_printable_encode</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.3.0)</p><p class="refpurpose"><span class="refname">quoted_printable_encode</span> &mdash; <span class="dc-title">8 ビット文字列を quoted-printable 文字列に変換する</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.quoted-printable-encode-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">string</span> <span class="methodname"><strong>quoted_printable_encode</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$str</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   <a href="http://www.faqs.org/rfcs/rfc2045" class="link external" title="Link : http://www.faqs.org/rfcs/rfc2045">&raquo;&nbsp;RFC2045</a> の section 6.7
+   に従って作成した quoted printable 文字列を返します。
+  </p>
+  <p class="para">
+   この関数は  <span class="function"><a href="function.imap-8bit.html" class="function">imap_8bit()</a></span> に似ていますが、
+   動作に IMAP モジュールを必要としないという違いがあります。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.quoted-printable-encode-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">str</code></em></span>
+     <dd>
+
+      <p class="para">
+       入力文字列。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.quoted-printable-encode-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   エンコードされた文字列を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.quoted-printable-encode-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="function.quoted-printable-decode.html" class="function" rel="rdfs-seeAlso">quoted_printable_decode()</a> - quoted-printable 文字列を 8 ビット文字列に変換する</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="106078""></a>
+  <div class="note">
+   <strong class="user">ericth at NOSPAM dot pennyworth dot com</strong>
+   <a href="#106078" class="date">07-Oct-2011 10:46</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I have re-written the PHP 5.3.8 function for quoted_printable_encode into PHP for use with PHP &lt; 5.3.&nbsp; Tested with PHP 5.2.11.<br />
+<br />
+<span class="default">&lt;?php<br />
+define</span><span class="keyword">(</span><span class="string">'PHP_QPRINT_MAXL'</span><span class="keyword">, </span><span class="default">75</span><span class="keyword">);<br />
+<br />
+function </span><span class="default">php_quot_print_encode</span><span class="keyword">(</span><span class="default">$str</span><span class="keyword">)<br />
+{<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$lp </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">= </span><span class="string">''</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$hex </span><span class="keyword">= </span><span class="string">"0123456789ABCDEF"</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$length </span><span class="keyword">= </span><span class="default">strlen</span><span class="keyword">(</span><span class="default">$str</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$str_index </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; while (</span><span class="default">$length</span><span class="keyword">--) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if (((</span><span class="default">$c </span><span class="keyword">= </span><span class="default">$str</span><span class="keyword">[</span><span class="default">$str_index</span><span class="keyword">++]) == </span><span class="string">"\015"</span><span class="keyword">) &amp;&amp; (</span><span class="default">$str</span><span class="keyword">[</span><span class="default">$str_index</span><span class="keyword">] == </span><span class="string">"\012"</span><span class="keyword">) &amp;&amp; </span><span class="default">$length </span><span class="keyword">&gt; </span><span class="default">0</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">.= </span><span class="string">"\015"</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">.= </span><span class="default">$str</span><span class="keyword">[</span><span class="default">$str_index</span><span class="keyword">++];<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$length</span><span class="keyword">--;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$lp </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; } else {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (</span><span class="default">ctype_cntrl</span><span class="keyword">(</span><span class="default">$c</span><span class="keyword">) <br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; || (</span><span class="default">ord</span><span class="keyword">(</span><span class="default">$c</span><span class="keyword">) == </span><span class="default">0x7f</span><span class="keyword">) <br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; || (</span><span class="default">ord</span><span class="keyword">(</span><span class="default">$c</span><span class="keyword">) &amp; </span><span class="default">0x80</span><span class="keyword">) <br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; || (</span><span class="default">$c </span><span class="keyword">== </span><span class="string">'='</span><span class="keyword">) <br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; || ((</span><span class="default">$c </span><span class="keyword">== </span><span class="string">' '</span><span class="keyword">) &amp;&amp; (</span><span class="default">$str</span><span class="keyword">[</span><span class="default">$str_index</span><span class="keyword">] == </span><span class="string">"\015"</span><span class="keyword">)))<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if ((</span><span class="default">$lp </span><span class="keyword">+= </span><span class="default">3</span><span class="keyword">) &gt; </span><span class="default">PHP_QPRINT_MAXL</span><span class="keyword">)<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">.= </span><span class="string">'='</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">.= </span><span class="string">"\015"</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">.= </span><span class="string">"\012"</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$lp </span><span class="keyword">= </span><span class="default">3</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">.= </span><span class="string">'='</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">.= </span><span class="default">$hex</span><span class="keyword">[</span><span class="default">ord</span><span class="keyword">(</span><span class="default">$c</span><span class="keyword">) &gt;&gt; </span><span class="default">4</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">.= </span><span class="default">$hex</span><span class="keyword">[</span><span class="default">ord</span><span class="keyword">(</span><span class="default">$c</span><span class="keyword">) &amp; </span><span class="default">0xf</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; } <br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; else <br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if ((++</span><span class="default">$lp</span><span class="keyword">) &gt; </span><span class="default">PHP_QPRINT_MAXL</span><span class="keyword">) <br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">.= </span><span class="string">'='</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">.= </span><span class="string">"\015"</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">.= </span><span class="string">"\012"</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$lp </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">.= </span><span class="default">$c</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp; return </span><span class="default">$ret</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="105402""></a>
+  <div class="note">
+   <strong class="user">arnaudv6</strong>
+   <a href="#105402" class="date">15-Aug-2011 05:56</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+One will like to know and clearly read that RFC2045 specifies a line shall not exceed 75 characters.<br />
+Accordingly, quoted_printable_encode() splits line at this limit.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="100091""></a>
+  <div class="note">
+   <strong class="user">Thorsten Glaser</strong>
+   <a href="#100091" class="date">24-Sep-2010 03:05</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Two bugs:<br />
+<br />
+1) your linebreak is wrong<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; $linebreak = "\r\n";<br />
+<br />
+2) continuation of lines with no whitespace is broken<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; /*<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; * the text after the whitespace will have to <br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; * be read again ( + any additional characters<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; * that came into existence as a result of the<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; * encoding process after the whitespace)<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; *<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; * Also, do not start at 0, if there was *no*<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; * whitespace in the whole line<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; */<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (($i + $addtl_chars) &gt; $whitesp_diff) {&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; $output .= substr($cur_conv_line, 0,<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; (strlen($cur_conv_line) - $whitesp_diff)) .<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; $linebreak;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; $i = $i - $whitesp_diff + $addtl_chars;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; } else {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; /* emit continuation --mirabilos */<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; $output .= $cur_conv_line .<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; '=' . $linebreak;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="97230""></a>
+  <div class="note">
+   <strong class="user">tzangerl [dot] pdc {dot} kth dot se</strong>
+   <a href="#97230" class="date">09-Apr-2010 11:05</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+A function that QP-encodes an input string (written for PHP &lt; 5.3) and<br />
+wordwraps it at the same time, in order to avoid classification according to the MIME QP LONG LINE rule of SpamAssassin.&nbsp; Thanks for Matt Jeffers to point out errors in the below quoted_printable script!<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">quoted_printable_encode</span><span class="keyword">(</span><span class="default">$input</span><span class="keyword">, </span><span class="default">$line_max </span><span class="keyword">= </span><span class="default">75</span><span class="keyword">) {<br />
+&nbsp;&nbsp; </span><span class="default">$hex </span><span class="keyword">= array(</span><span class="string">'0'</span><span class="keyword">,</span><span class="string">'1'</span><span class="keyword">,</span><span class="string">'2'</span><span class="keyword">,</span><span class="string">'3'</span><span class="keyword">,</span><span class="string">'4'</span><span class="keyword">,</span><span class="string">'5'</span><span class="keyword">,</span><span class="string">'6'</span><span class="keyword">,</span><span class="string">'7'</span><span class="keyword">,<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">'8'</span><span class="keyword">,</span><span class="string">'9'</span><span class="keyword">,</span><span class="string">'A'</span><span class="keyword">,</span><span class="string">'B'</span><span class="keyword">,</span><span class="string">'C'</span><span class="keyword">,</span><span class="string">'D'</span><span class="keyword">,</span><span class="string">'E'</span><span class="keyword">,</span><span class="string">'F'</span><span class="keyword">);<br />
+&nbsp;&nbsp; </span><span class="default">$lines </span><span class="keyword">= </span><span class="default">preg_split</span><span class="keyword">(</span><span class="string">"/(?:\r\n|\r|\n)/"</span><span class="keyword">, </span><span class="default">$input</span><span class="keyword">);<br />
+&nbsp;&nbsp; </span><span class="default">$linebreak </span><span class="keyword">= </span><span class="string">"=0D=0A=\r\n"</span><span class="keyword">;<br />
+&nbsp;&nbsp; </span><span class="comment">/* the linebreak also counts as characters in the mime_qp_long_line<br />
+&nbsp;&nbsp;&nbsp; * rule of spam-assassin */<br />
+&nbsp;&nbsp; </span><span class="default">$line_max </span><span class="keyword">= </span><span class="default">$line_max </span><span class="keyword">- </span><span class="default">strlen</span><span class="keyword">(</span><span class="default">$linebreak</span><span class="keyword">);<br />
+&nbsp;&nbsp; </span><span class="default">$escape </span><span class="keyword">= </span><span class="string">"="</span><span class="keyword">;<br />
+&nbsp;&nbsp; </span><span class="default">$output </span><span class="keyword">= </span><span class="string">""</span><span class="keyword">;<br />
+&nbsp;&nbsp; </span><span class="default">$cur_conv_line </span><span class="keyword">= </span><span class="string">""</span><span class="keyword">;<br />
+&nbsp;&nbsp; </span><span class="default">$length </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br />
+&nbsp;&nbsp; </span><span class="default">$whitespace_pos </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br />
+&nbsp;&nbsp; </span><span class="default">$addtl_chars </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br />
+<br />
+&nbsp;&nbsp; </span><span class="comment">// iterate lines<br />
+&nbsp;&nbsp; </span><span class="keyword">for (</span><span class="default">$j</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">; </span><span class="default">$j</span><span class="keyword">&lt;</span><span class="default">count</span><span class="keyword">(</span><span class="default">$lines</span><span class="keyword">); </span><span class="default">$j</span><span class="keyword">++) {<br />
+&nbsp;&nbsp; &nbsp; </span><span class="default">$line </span><span class="keyword">= </span><span class="default">$lines</span><span class="keyword">[</span><span class="default">$j</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp; </span><span class="default">$linlen </span><span class="keyword">= </span><span class="default">strlen</span><span class="keyword">(</span><span class="default">$line</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; </span><span class="comment">// iterate chars<br />
+&nbsp;&nbsp; &nbsp; </span><span class="keyword">for (</span><span class="default">$i </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">; </span><span class="default">$i </span><span class="keyword">&lt; </span><span class="default">$linlen</span><span class="keyword">; </span><span class="default">$i</span><span class="keyword">++) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; </span><span class="default">$c </span><span class="keyword">= </span><span class="default">substr</span><span class="keyword">(</span><span class="default">$line</span><span class="keyword">, </span><span class="default">$i</span><span class="keyword">, </span><span class="default">1</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; </span><span class="default">$dec </span><span class="keyword">= </span><span class="default">ord</span><span class="keyword">(</span><span class="default">$c</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; </span><span class="default">$length</span><span class="keyword">++;<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; if (</span><span class="default">$dec </span><span class="keyword">== </span><span class="default">32</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// space occurring at end of line, need to encode<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if ((</span><span class="default">$i </span><span class="keyword">== (</span><span class="default">$linlen </span><span class="keyword">- </span><span class="default">1</span><span class="keyword">))) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$c </span><span class="keyword">= </span><span class="string">"=20"</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$length </span><span class="keyword">+= </span><span class="default">2</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$addtl_chars </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$whitespace_pos </span><span class="keyword">= </span><span class="default">$i</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; } elseif ( (</span><span class="default">$dec </span><span class="keyword">== </span><span class="default">61</span><span class="keyword">) || (</span><span class="default">$dec </span><span class="keyword">&lt; </span><span class="default">32 </span><span class="keyword">) || (</span><span class="default">$dec </span><span class="keyword">&gt; </span><span class="default">126</span><span class="keyword">) ) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$h2 </span><span class="keyword">= </span><span class="default">floor</span><span class="keyword">(</span><span class="default">$dec</span><span class="keyword">/</span><span class="default">16</span><span class="keyword">); </span><span class="default">$h1 </span><span class="keyword">= </span><span class="default">floor</span><span class="keyword">(</span><span class="default">$dec</span><span class="keyword">%</span><span class="default">16</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$c </span><span class="keyword">= </span><span class="default">$escape </span><span class="keyword">. </span><span class="default">$hex</span><span class="keyword">[</span><span class="string">"</span><span class="default">$h2</span><span class="string">"</span><span class="keyword">] . </span><span class="default">$hex</span><span class="keyword">[</span><span class="string">"</span><span class="default">$h1</span><span class="string">"</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$length </span><span class="keyword">+= </span><span class="default">2</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$addtl_chars </span><span class="keyword">+= </span><span class="default">2</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; }<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; </span><span class="comment">// length for wordwrap exceeded, get a newline into the text<br />
+&nbsp;&nbsp; &nbsp; &nbsp; </span><span class="keyword">if (</span><span class="default">$length </span><span class="keyword">&gt;= </span><span class="default">$line_max</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$cur_conv_line </span><span class="keyword">.= </span><span class="default">$c</span><span class="keyword">;<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// read only up to the whitespace for the current line<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$whitesp_diff </span><span class="keyword">= </span><span class="default">$i </span><span class="keyword">- </span><span class="default">$whitespace_pos </span><span class="keyword">+ </span><span class="default">$addtl_chars</span><span class="keyword">;<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">/* the text after the whitespace will have to be read<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; * again ( + any additional characters that came into<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; * existence as a result of the encoding process after the whitespace)<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; *<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; * Also, do not start at 0, if there was *no* whitespace in<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; * the whole line */<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">if ((</span><span class="default">$i </span><span class="keyword">+ </span><span class="default">$addtl_chars</span><span class="keyword">) &gt; </span><span class="default">$whitesp_diff</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$output </span><span class="keyword">.= </span><span class="default">substr</span><span class="keyword">(</span><span class="default">$cur_conv_line</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">, (</span><span class="default">strlen</span><span class="keyword">(</span><span class="default">$cur_conv_line</span><span class="keyword">) - <br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$whitesp_diff</span><span class="keyword">)) . </span><span class="default">$linebreak</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$i </span><span class="keyword">=&nbsp; </span><span class="default">$i </span><span class="keyword">- </span><span class="default">$whitesp_diff </span><span class="keyword">+ </span><span class="default">$addtl_chars</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; } else {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$output </span><span class="keyword">.= </span><span class="default">$cur_conv_line </span><span class="keyword">. </span><span class="default">$linebreak</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$cur_conv_line </span><span class="keyword">= </span><span class="string">""</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$length </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$whitespace_pos </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; } else {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// length for wordwrap not reached, continue reading<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$cur_conv_line </span><span class="keyword">.= </span><span class="default">$c</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; } </span><span class="comment">// end of for<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$length </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$whitespace_pos </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$output </span><span class="keyword">.= </span><span class="default">$cur_conv_line</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$cur_conv_line </span><span class="keyword">= </span><span class="string">""</span><span class="keyword">;<br />
+<br />
+&nbsp;&nbsp;&nbsp; if (</span><span class="default">$j</span><span class="keyword">&lt;=</span><span class="default">count</span><span class="keyword">(</span><span class="default">$lines</span><span class="keyword">)-</span><span class="default">1</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$output </span><span class="keyword">.= </span><span class="default">$linebreak</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp; } </span><span class="comment">// end for<br />
+<br />
+&nbsp; </span><span class="keyword">return </span><span class="default">trim</span><span class="keyword">(</span><span class="default">$output</span><span class="keyword">);<br />
+} </span><span class="comment">// end quoted_printable_encode<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.quoted-printable-decode.html">quoted_printable_decode</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.quotemeta.html">quotemeta</a></div>
+ <div class="up"><a href="ref.strings.html">String 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>ユーザーが投稿したデータ</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="security.globals.html">グローバル変数の登録機能の使用法</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="security.magicquotes.html">マジッククオート</a></div>
+ <div class="up"><a href="security.html">セキュリティ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="security.variables" class="chapter">
+ <h1>ユーザーが投稿したデータ</h1>
+
+ <p class="para">
+  多くの <acronym title="PHP: Hypertext Preprocessor">PHP</acronym> のプログラムで最も脆弱な部分は、言語自体に起因するものではなく、
+  単にセキュリティを考慮して書かれていないコードの問題です。そのため、
+  指定したコードの部分の意味を常に時間をかけて吟味し、
+  予想外の変数が投稿された場合に有り得る損害を確かめる必要があります。
+  <div class="example" id="example-342">
+   <p><strong>例1 危険な変数の使用</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;ユーザーのホームディレクトリからファイルを削除します...&nbsp;または他の誰<br />//&nbsp;かのディレクトリかも?<br /></span><span style="color: #0000BB">unlink&nbsp;</span><span style="color: #007700">(</span><span style="color: #0000BB">$evil_var</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;彼らのアクセスのログを書き込む..&nbsp;または違うかも?<br /></span><span style="color: #0000BB">fputs&nbsp;</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$evil_var</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;何かちょっとしたことを実行..&nbsp;または&nbsp;rm&nbsp;-rf&nbsp;*?<br /></span><span style="color: #0000BB">system&nbsp;</span><span style="color: #007700">(</span><span style="color: #0000BB">$evil_var</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">exec&nbsp;</span><span style="color: #007700">(</span><span style="color: #0000BB">$evil_var</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+    常に注意してコードをテストし、Webブラウザから投稿された全ての変数
+    について次のような点を確認してください。
+    <ul class="itemizedlist">
+     <li class="listitem">
+      <span class="simpara">
+       このスクリプトは、意図したファイルのみを受け付けるか?
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       例外的なまたは意図したもの以外のデータにより実行することが可能
+       か?
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       このスクリプトは意図した以外の方法で使用することが可能か?
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       このスクリプトは、悪い意味で他のスクリプトと組み合わせて使用す
+       ることが可能か?
+      </span>
+     </li> 
+     <li class="listitem">
+      <span class="simpara">
+       トランザクションは適切に記録されているか?
+      </span>
+     </li>
+    </ul>
+    スクリプトを書いた後ではなく、書いている時にこれらの質問を適宜行う
+    ことにより、セキュリティ改善のために不幸にして書き直しが必要になる
+    ということを避けることができます。こうした考慮をまず行うことにより、
+    システムのセキュリティを保証できるわけではありませんが、改善の一助
+    にはなりえます。
+   </p>
+   <p class="para">
+    register_globals,magic_quotes, または他の便利な設定は、有効性、発
+    信元、指定した変数の値について混乱を生じる可能性があるため、設定を
+    オフにしたいと思うかもしれません。error_reporting(E_ALL) モードで
+    <acronym title="PHP: Hypertext Preprocessor">PHP</acronym>を動作させた場合、確認または初期化する前に使用された変数に関し
+    て警告を発生させることも可能です。(これにより、処理時に通常とは異
+    なるデータを防止することが可能です)
+   </p>
+  </div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="80829""></a>
+  <div class="note">
+   <strong class="user">Livingstone@stonyhills[dot]com</strong>
+   <a href="#80829" class="date">02-Feb-2008 01:51</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+making sure your form is submitted from your page! Could also be adapted to url, by additing &amp;token to the query string and checking this against session data(or what ever array you like) with $_GET, not that this string is randomly generated and stored. If you like you could build your own array to store the generated string if you dont want to use $_SESSION, say you could make yours like $tokens = array(), and in your easysecure class you store all the stuff in that array!<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="keyword">class </span><span class="default">easysecure </span><span class="keyword">{<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; var </span><span class="default">$curr_user</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; var </span><span class="default">$curr_permission</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; var </span><span class="default">$curr_task</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; var </span><span class="default">$validpermission</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; var </span><span class="default">$error</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; function &amp;</span><span class="default">setVar</span><span class="keyword">( </span><span class="default">$name</span><span class="keyword">, </span><span class="default">$value</span><span class="keyword">=</span><span class="default">null </span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if (!</span><span class="default">is_null</span><span class="keyword">( </span><span class="default">$value </span><span class="keyword">)) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">$name </span><span class="keyword">= </span><span class="default">$value</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">$name</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp; function </span><span class="default">maketoken</span><span class="keyword">(</span><span class="default">$formname</span><span class="keyword">, </span><span class="default">$id</span><span class="keyword">){<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$token </span><span class="keyword">= </span><span class="default">md5</span><span class="keyword">(</span><span class="default">uniqid</span><span class="keyword">(</span><span class="default">rand</span><span class="keyword">(), </span><span class="default">true</span><span class="keyword">));<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="default">$formname</span><span class="keyword">.</span><span class="default">$id</span><span class="keyword">] = </span><span class="default">$token</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">$token</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; function </span><span class="default">checktoken</span><span class="keyword">(</span><span class="default">$token</span><span class="keyword">, </span><span class="default">$formname</span><span class="keyword">, </span><span class="default">$id</span><span class="keyword">){<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">//print_r($_SESSION);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; //echo ($token);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; //if we dont have a valid token, return invalid;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if(!</span><span class="default">$token</span><span class="keyword">){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">setVar</span><span class="keyword">(</span><span class="string">'validpermission'</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">setVar</span><span class="keyword">(</span><span class="string">'error'</span><span class="keyword">, </span><span class="string">'no token found, security bridgedetected'</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">false</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">//if we have a valid token check that is is valid<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$key </span><span class="keyword">= </span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="default">$formname</span><span class="keyword">.</span><span class="default">$id</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if(</span><span class="default">$key </span><span class="keyword">!== </span><span class="default">$token </span><span class="keyword">){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">setVar</span><span class="keyword">(</span><span class="string">'validpermission'</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">setVar</span><span class="keyword">(</span><span class="string">'error'</span><span class="keyword">, </span><span class="string">'invalid token'</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">false</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">validpermission </span><span class="keyword">!==</span><span class="default">1</span><span class="keyword">){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="string">'invalid Permissions to run this script'</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">false</span><span class="keyword">;&nbsp; &nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }else{<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">true</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; <br />
+}<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+<span class="default">&lt;?php $userid </span><span class="keyword">= *** </span><span class="comment">//make it what ever id you like </span><span class="default">?&gt;<br />
+</span>&lt;form name="newform" action="index.php" method="post"&gt;<br />
+&lt;input type="text" name="potentialeveilfield" value="" size 30 /&gt;<br />
+&lt;input type="hidden" name="token" value="<span class="default">&lt;?php </span><span class="keyword">echo </span><span class="default">maketoken</span><span class="keyword">(</span><span class="default">newform</span><span class="keyword">, </span><span class="default">$userid</span><span class="keyword">); </span><span class="comment">//$userid here could be user profile id </span><span class="default">?&gt;</span>" /&gt;<br />
+&lt;input type="submit" /&gt;<br />
+&lt;/form&gt;<br />
+<br />
+Now when processing the form... check the value of your token<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="comment">//well you know the form name<br />
+</span><span class="keyword">if(!</span><span class="default">checktoken</span><span class="keyword">(</span><span class="default">$_POST</span><span class="keyword">[</span><span class="string">'token'</span><span class="keyword">], </span><span class="string">'newform'</span><span class="keyword">, </span><span class="default">$userid</span><span class="keyword">))<br />
+{ </span><span class="comment">//failed<br />
+</span><span class="keyword">exit(); </span><span class="comment">//or what ever termination and notification method best suits you.<br />
+//you could also design the class your way to get more accurate fail (error messages from the var) <br />
+</span><span class="keyword">}<br />
+<br />
+</span><span class="comment">//you can now continue with input data clean up (validation)<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="56715""></a>
+  <div class="note">
+   <strong class="user">Uli Kusterer</strong>
+   <a href="#56715" class="date">13-Sep-2005 12:50</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+One thing I would repeat in the docs here is what information actually comes from the user. Many people think a Cookie, since it's written by PHP, was safe. But the fact is that it's stored on the user's computer, transferred by the user's browser, and thus very easy to manipulate.<br />
+<br />
+So, it'd be handy to mention here again that:<br />
+<br />
+CGI parameters in the URL, HTTP POST data and cookie variables are considered "user data" and thus need to be validated. Session data and SQL database contents only need to be validated if they came from untrustworthy sources (like the ones just mentioned).<br />
+<br />
+Not new, but I would have expected this info under this headline, at least as a short recap plus linlk to the actual docs.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="security.globals.html">グローバル変数の登録機能の使用法</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="security.magicquotes.html">マジッククオート</a></div>
+ <div class="up"><a href="security.html">セキュリティ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

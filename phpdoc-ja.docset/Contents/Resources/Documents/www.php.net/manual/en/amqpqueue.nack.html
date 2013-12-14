@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>メッセージを明示的に受付前の状態にする</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="amqpqueue.getname.html">AMQPQueue::getName</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="amqpqueue.purge.html">AMQPQueue::purge</a></div>
+ <div class="up"><a href="class.amqpqueue.html">AMQPQueue</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="amqpqueue.nack" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">AMQPQueue::nack</h1>
+  <p class="verinfo">(PECL amqp &gt;= Unknown)</p><p class="refpurpose"><span class="refname">AMQPQueue::nack</span> &mdash; <span class="dc-title">メッセージを明示的に受付前の状態にする</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-amqpqueue.nack-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type"><span class="type void">void</span></span> <span class="methodname"><strong>AMQPQueue::nack</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$delivery_tag</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$flags</code><span class="initializer"> = <strong><code>AMQP_NOPARAM</code></strong></span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+    メッセージ <em><code class="parameter">delivery_tag</code></em> を、明示的に受付前の状態にします。
+    このメソッドをコールできるのは、まだ受け付けられていないメッセージだけです。
+    つまり、 <span class="methodname"><a href="amqpqueue.consume.html" class="methodname">AMQPQueue::consume()</a></span> や  <span class="methodname"><a href="amqpqueue.get.html" class="methodname">AMQPQueue::get()</a></span>
+    で <strong><code>AMQP_AUTOACK</code></strong> フラグを使った場合はこのメソッドを使えません。
+  </p>
+  <p class="para">
+    このメソッドがコールされると、ブローカは即時にメッセージをキューに戻し、
+    接続を閉じるまで待ちません。
+  </p>
+  <p class="para">
+   このメソッドをサポートするのは RabbitMQ ブローカだけです。
+   他のブローカに接続しているときにこのメソッドをコールした場合の挙動は未定義です。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-amqpqueue.nack-parameters">
+  <h3 class="title">パラメータ</h3>
+  <dl>
+
+   <dt>
+
+    <span class="term"><em><code class="parameter">delivery_tag</code></em></span>
+    <dd>
+
+     <p class="para">
+      メッセージを識別するための配送タグ。
+     </p>
+    </dd>
+
+   </dt>
+
+   <dt>
+
+    <span class="term"><em><code class="parameter">flags</code></em></span>
+    <dd>
+
+     <p class="para">
+      フラグのビットマスク。
+     </p>
+    </dd>
+
+   </dt>
+
+  </dl>
+
+ </div>
+
+
+ <div class="refsect1 errors" id="refsect1-amqpqueue.nack-errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">
+   チャネルが開いていない場合に <strong class="classname">AMQPChannelException</strong> をスローします。
+  </p>
+  <p class="para">
+   ブローカへの接続が途切れた場合に <strong class="classname">AMQPConnectionException</strong> をスローします。
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-amqpqueue.nack-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+    成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="109806""></a>
+  <div class="note">
+   <strong class="user">Olivier</strong>
+   <a href="#109806" class="date">23-Aug-2012 02:37</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+You can use nack with consume, using those flags :<br />
+- On consume method : AMQP_NOPARAM<br />
+- On nack method : AMQP_REQUEUE</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="amqpqueue.getname.html">AMQPQueue::getName</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="amqpqueue.purge.html">AMQPQueue::purge</a></div>
+ <div class="up"><a href="class.amqpqueue.html">AMQPQueue</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

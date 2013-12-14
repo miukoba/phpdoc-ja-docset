@@ -1,0 +1,275 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>接続、および接続の管理</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="pdo.constants.html">定義済み定数</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="pdo.transactions.html">トランザクションおよび自動コミット</a></div>
+ <div class="up"><a href="book.pdo.html">PDO</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="pdo.connections" class="chapter">
+  <h1>接続、および接続の管理</h1>
+
+ <p class="para">
+  PDO 基底クラスのインスタンスを作成することにより、接続が確立されます。
+  どのドライバを使用するのかにかかわらず、常に PDO クラスを指定します。
+  コンストラクタに渡す引数により、データソース (いわゆる DSN) の指定や
+  (もしあれば、オプションで) ユーザー名およびパスワードの指定を行います。
+ </p>
+ <p class="para">
+  <div class="example" id="example-896">
+   <p><strong>例1 MySQL への接続</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$dbh&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">(</span><span style="color: #DD0000">'mysql:host=localhost;dbname=test'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$user</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$pass</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div> 
+   </div>
+
+  </div>
+ </p>
+ <p class="para">
+  接続時になんらかのエラーが発生した場合、<em>PDOException</em>
+  オブジェクトがスローされます。エラー処理を行いたい場合はこの例外を
+  キャッチします。あるいはこれを無視して、
+   <span class="function"><a href="function.set-exception-handler.html" class="function">set_exception_handler()</a></span> で設定した
+  グローバル例外ハンドラに処理を任せることもできます。
+ </p>
+ <p class="para">
+  <div class="example" id="example-897"><p><strong>例2 接続エラーの処理</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">try&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$dbh&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">(</span><span style="color: #DD0000">'mysql:host=localhost;dbname=test'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$user</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$pass</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;foreach(</span><span style="color: #0000BB">$dbh</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">'SELECT&nbsp;*&nbsp;from&nbsp;FOO'</span><span style="color: #007700">)&nbsp;as&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$row</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$dbh&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">;<br />}&nbsp;catch&nbsp;(</span><span style="color: #0000BB">PDOException&nbsp;$e</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #DD0000">"エラー!:&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getMessage</span><span style="color: #007700">()&nbsp;.&nbsp;</span><span style="color: #DD0000">"&lt;br/&gt;"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;die();<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </p>
+ <div class="warning"><strong class="warning">警告</strong>
+  <p class="para">
+   PDO コンストラクタからの例外をアプリケーション内でキャッチしない場合、
+   zend エンジンはスクリプトの実行を終了し、バックトレースを表示します。
+   このバックトレースを見れば、データベースへの接続の詳細がわかってしまいます。
+   その中にはユーザー名やパスワードも含まれます。
+   (<em>catch</em> 文を使用して) 明示的に例外をキャッチするか、
+   あるいは  <span class="function"><a href="function.set-exception-handler.html" class="function">set_exception_handler()</a></span> を使用して
+   暗黙的に例外をキャッチするようにしましょう。
+  </p>
+ </div>
+ <p class="para">
+  データベースへの接続に成功すると、PDO クラスのインスタンスが
+  スクリプトに返されます。この PDO オブジェクトが存在する間、
+  接続がアクティブであり続けます。接続を閉じるには、他から
+  参照されていないことを保障することでオブジェクトを破棄する
+  必要があります。それには、オブジェクトを保持している変数に対して
+  <strong><code>NULL</code></strong> を代入します。
+  明示的にこれを行わなかった場合は、スクリプトの終了時に自動的に
+  接続が閉じられます。
+ </p>
+ <p class="para">
+  <div class="example" id="example-898">
+   <p><strong>例3 接続を閉じる</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$dbh&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">(</span><span style="color: #DD0000">'mysql:host=localhost;dbname=test'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$user</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$pass</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;ここで接続を使用します<br /><br /><br />//&nbsp;使用を終了したので、閉じます<br /></span><span style="color: #0000BB">$dbh&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </p>
+ <p class="para">
+  データベースサーバーへの持続的な接続による恩恵をこうむる web
+  アプリケーションは多いでしょう。持続的な接続は、スクリプトが
+  終了しても閉じられずにキャッシュされ、他のスクリプトが同じ内容の
+  接続を要求してきた際にそれが再利用されます。持続的接続の
+  キャッシュにより、スクリプトがデータベースを使用するたびに
+  新しい接続を確立するオーバーヘッドを避けることができます。
+  それにより、結果として web アプリケーションを高速化できるように
+  なります。
+ </p>
+ <p class="para">
+  <div class="example" id="example-899">
+   <p><strong>例4 持続的な接続</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$dbh&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">(</span><span style="color: #DD0000">'mysql:host=localhost;dbname=test'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$user</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$pass</span><span style="color: #007700">,&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">ATTR_PERSISTENT&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">true<br /></span><span style="color: #007700">));<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </p>
+ <blockquote class="note"><p><strong class="note">注意</strong>: 
+  <p class="para">
+   持続的な接続を使用したい場合は、ドライバのオプションを表す配列に
+   <strong><code>PDO::ATTR_PERSISTENT</code></strong> を設定して
+   PDO のコンストラクタに渡す必要があります。この属性を
+    <span class="function"><a href="pdo.setattribute.html" class="function">PDO::setAttribute()</a></span>
+   を用いてインスタンス作成後に設定した場合は、
+   そのドライバは持続的な接続を使用しません。
+  </p>
+ </p></blockquote>
+ <blockquote class="note"><p><strong class="note">注意</strong>: 
+  <p class="para">
+   PDO ODBC ドライバを使用しており、ODBC ライブラリが ODBC
+   接続プーリングをサポートしている場合 (unixODBC および Windows
+   はこれをサポートしています。他にもあるかもしれません) は、
+   PDO の持続的接続を使用せずに ODBC の接続プーリングに
+   接続キャッシュ処理を任せることを推奨します。
+   ODBC の接続プールは、プロセス内で他のモジュールと共有されています。
+   PDO が接続をキャッシュしてしまうと、その接続は ODBC の
+   接続プールに返されなくなり、他のモジュールによって新たな接続が
+   作成されてしまうようになります。
+  </p>
+ </p></blockquote>
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113477""></a>
+  <div class="note">
+   <strong class="user">a.rueedlinger AT gmail.com</strong>
+   <a href="#113477" class="date">17-Oct-2013 06:24</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+In my opinion the person who is responsible for the PDOException error message should be slapped in the face!<br />
+<br />
+It is unusual to reveal passwords when an error occurs.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="112419""></a>
+  <div class="note">
+   <strong class="user">thz at plista dot com</strong>
+   <a href="#112419" class="date">14-Jun-2013 10:27</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you are using PHP 5.4 and later, you can no longer use persistent connections when you have your own database class that derives from the native PDO object. If you do, you will get segmentation faults during the PHP process shutdown.<br />
+<br />
+Please see this bug report for more information: https://bugs.php.net/bug.php?id=63176</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="104705""></a>
+  <div class="note">
+   <strong class="user">alvaro at demogracia dot com</strong>
+   <a href="#104705" class="date">01-Jul-2011 07:07</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+On connection errors, the PDO constructor seems to do two things no matter your PDO::ATTR_ERRMODE setting:<br />
+<br />
+1. Trigger a warning<br />
+2. Throw a PDOException<br />
+<br />
+If you set the PDO::ATTR_ERRMODE parameter, it will only take effect on further operations.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="103365""></a>
+  <div class="note">
+   <strong class="user">jak dot spalding at gmail dot com</strong>
+   <a href="#103365" class="date">10-Apr-2011 09:35</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Just thought I'd add in and give an explanation as to why you need to use 127.0.0.1 if you have a different port number.<br />
+<br />
+The mysql libraries will automatically use Unix sockets if the host of "localhost" is used. To force TCP/IP you need to set an IP address.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="97168""></a>
+  <div class="note">
+   <strong class="user">angela</strong>
+   <a href="#97168" class="date">06-Apr-2010 11:53</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I spent hours today trying to get my portable wamp to update a database, using localhost:800 and port 3307 for mysql. For it to work I needed to adjust the connect() instruction as described:<br />
+$dsn = "mysql:host=127.0.0.1;port=3307;dbname=mydatabase";</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="94100""></a>
+  <div class="note">
+   <strong class="user">neville at whitespacers dot com</strong>
+   <a href="#94100" class="date">16-Oct-2009 12:40</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+To avoid exposing your connection details should you fail to remember to catch any exception thrown by the PDO constructor you can use the following class to implicitly change the exception handler temporarily.<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="keyword">Class </span><span class="default">SafePDO </span><span class="keyword">extends </span><span class="default">PDO </span><span class="keyword">{<br />
+&nbsp;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; public static function </span><span class="default">exception_handler</span><span class="keyword">(</span><span class="default">$exception</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Output the exception details<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">die(</span><span class="string">'Uncaught exception: '</span><span class="keyword">, </span><span class="default">$exception</span><span class="keyword">-&gt;</span><span class="default">getMessage</span><span class="keyword">());<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$dsn</span><span class="keyword">, </span><span class="default">$username</span><span class="keyword">=</span><span class="string">''</span><span class="keyword">, </span><span class="default">$password</span><span class="keyword">=</span><span class="string">''</span><span class="keyword">, </span><span class="default">$driver_options</span><span class="keyword">=array()) {<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Temporarily change the PHP exception handler while we . . .<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">set_exception_handler</span><span class="keyword">(array(</span><span class="default">__CLASS__</span><span class="keyword">, </span><span class="string">'exception_handler'</span><span class="keyword">));<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// . . . create a PDO object<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">parent</span><span class="keyword">::</span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$dsn</span><span class="keyword">, </span><span class="default">$username</span><span class="keyword">, </span><span class="default">$password</span><span class="keyword">, </span><span class="default">$driver_options</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Change the exception handler back to whatever it was before<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">restore_exception_handler</span><span class="keyword">();<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+<br />
+}<br />
+<br />
+</span><span class="comment">// Connect to the database with defined constants<br />
+</span><span class="default">$dbh </span><span class="keyword">= new </span><span class="default">SafePDO</span><span class="keyword">(</span><span class="default">PDO_DSN</span><span class="keyword">, </span><span class="default">PDO_USER</span><span class="keyword">, </span><span class="default">PDO_PASSWORD</span><span class="keyword">);<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="82591""></a>
+  <div class="note">
+   <strong class="user">dan dot franklin at pearson dot com</strong>
+   <a href="#82591" class="date">17-Apr-2008 06:37</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note that you can specify a port number with "port=####", but this port number will be ignored if the host is localhost.&nbsp; If you want to connect to a local port other than the default, use host=127.0.0.1 instead of localhost.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="pdo.constants.html">定義済み定数</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="pdo.transactions.html">トランザクションおよび自動コミット</a></div>
+ <div class="up"><a href="book.pdo.html">PDO</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

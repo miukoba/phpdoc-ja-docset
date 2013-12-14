@@ -1,0 +1,274 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>PUT メソッドのサポート</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="feature-fileupload.multiple.html">複数ファイルのアップロード</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="features.remote-files.html">リモートファイルの使用</a></div>
+ <div class="up"><a href="features.file-upload.html">ファイルアップロードの処理</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="features.file-upload.put-method" class="sect1">
+   <h2 class="title">PUT メソッドのサポート</h2>
+   <p class="para">
+    PHP は、クライアントがサーバーにファイルを保存するための
+    HTTP PUT メソッドのサポートを提供します。
+    PUT リクエストは POST リクエストによるファイルアップロードよりもシンプルであり、
+    次のような形になります。
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="HTTPcode"><pre class="HTTPcode">PUT /path/filename.html HTTP/1.1</pre>
+</div>
+     </div>
+
+    </div>
+   </p>
+   <p class="para">
+    これは、通常、リモートクライアントが <var class="filename">/path/filename.html</var>
+    が指す内容を Web ツリーに保存したいことを意味します。 Apache または PHP に
+    おいて全ての人が Web ツリー上の任意のファイルを自動的に上書きできる
+    ようにするというのは明らかに良い発想ではありません。よって、このような
+    リクエストを処理する際には、まずそのリクエストを処理する特定の
+    PHP スクリプトが必要なことを web サーバーに通知する必要があります。
+    Apache においては、<em class="emphasis">Script</em> ディレクティブにより
+    これを行うことができます。これは、Apache 設定ファイルのほぼ任意の
+    場所に置くことができます。一般的なのは、<em>&lt;Directory&gt;</em>
+    ブロックまたは <em>&lt;VirtualHost&gt;</em> ブロックの中です。次のように指定します。
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="cdata"><pre>
+Script PUT /put.php
+</pre></div>
+    </div>
+
+    </div>
+   </p>
+   <p class="simpara">
+    これにより、この行を指定したコンテキストにマッチする URI を有する
+    すべての PUT リクエストが <var class="filename">put.php</var> スクリプトに送られるよう Apache に
+    指定します。 もちろん、拡張子 <var class="filename">.php</var> により PHP が実行されるよう設定され、
+    PHP がアクティブであることが必要です。
+    このスクリプトに対するすべての PUT リクエストの対象リソースは、
+    スクリプト自身とします。アップロードされるファイルのファイル名ではありません。
+   </p>
+   <p class="simpara">
+    PHP では、put.php の中で以下のようなことを行います。
+    これは、アップロードされたファイルをサーバー上のファイル
+    <var class="filename">myputfile.ext</var> にコピーします。
+    ファイルコピーを行う前には、
+    何らかの確認やユーザー認証を行いたくなるかもしれません。
+   </p>
+   <p class="para">
+    <div class="example" id="example-357">
+     <p><strong>例1 HTTP PUT されたファイルの保存</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;PUT&nbsp;されたデータは標準入力からやってきます&nbsp;*/<br /></span><span style="color: #0000BB">$putdata&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">"php://input"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"r"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;書き込みモードでファイルをオープンします&nbsp;*/<br /></span><span style="color: #0000BB">$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">"myputfile.ext"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"w"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;データを&nbsp;1&nbsp;KB&nbsp;単位で読み込み、<br />&nbsp;&nbsp;&nbsp;ファイルに書き込みます&nbsp;*/<br /></span><span style="color: #007700">while&nbsp;(</span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fread</span><span style="color: #007700">(</span><span style="color: #0000BB">$putdata</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1024</span><span style="color: #007700">))<br />&nbsp;&nbsp;</span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$data</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;ストリームを閉じます&nbsp;*/<br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$putdata</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+  </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113767""></a>
+  <div class="note">
+   <strong class="user">kicaj</strong>
+   <a href="#113767" class="date">29-Nov-2013 05:46</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+to create variable such as $_GET, $_POST use<br />
+that solution<br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp;&nbsp;&nbsp; $_SERVER</span><span class="keyword">[</span><span class="string">'REQUEST_METHOD'</span><span class="keyword">]===</span><span class="string">"PUT" </span><span class="keyword">? </span><span class="default">parse_str</span><span class="keyword">(</span><span class="default">file_get_contents</span><span class="keyword">(</span><span class="string">'php://input'</span><span class="keyword">, </span><span class="default">false </span><span class="keyword">, </span><span class="default">null</span><span class="keyword">, -</span><span class="default">1 </span><span class="keyword">, </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'CONTENT_LENGTH'</span><span class="keyword">] ), </span><span class="default">$_PUT</span><span class="keyword">): </span><span class="default">$_PUT</span><span class="keyword">=array();<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="99863""></a>
+  <div class="note">
+   <strong class="user">micronix at gmx dot net</strong>
+   <a href="#99863" class="date">11-Sep-2010 04:43</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Hello PHP World After many Hours of worryness :=)<br />
+<br />
+I have found the Solution for Resume or Pause Uploads<br />
+In this Code Snippet it is the Server Side not Client on any Desktop Programm you must use byte ranges to calculate the uploaded bytes and missing of total bytes.<br />
+<br />
+Here the PHP Code<br />
+<br />
+<span class="default">&lt;?php<br />
+$CHUNK </span><span class="keyword">= </span><span class="default">8192</span><span class="keyword">;<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; try {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (!(</span><span class="default">$putData </span><span class="keyword">= </span><span class="default">fopen</span><span class="keyword">(</span><span class="string">"php://input"</span><span class="keyword">, </span><span class="string">"r"</span><span class="keyword">)))<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="string">"Can't get PUT data."</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// now the params can be used like any other variable<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; // see below after input has finished<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$tot_write </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$tmpFileName </span><span class="keyword">= </span><span class="string">"/var/dev/tmp/PUT_FILE"</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Create a temp file<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if (!</span><span class="default">is_file</span><span class="keyword">(</span><span class="default">$tmpFileName</span><span class="keyword">)) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">fclose</span><span class="keyword">(</span><span class="default">fopen</span><span class="keyword">(</span><span class="default">$tmpFileName</span><span class="keyword">, </span><span class="string">"x"</span><span class="keyword">)); </span><span class="comment">//create the file and close it<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; // Open the file for writing<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if (!(</span><span class="default">$fp </span><span class="keyword">= </span><span class="default">fopen</span><span class="keyword">(</span><span class="default">$tmpFileName</span><span class="keyword">, </span><span class="string">"w"</span><span class="keyword">)))<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="string">"Can't write to tmp file"</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Read the data a chunk at a time and write to the file<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">while (</span><span class="default">$data </span><span class="keyword">= </span><span class="default">fread</span><span class="keyword">(</span><span class="default">$putData</span><span class="keyword">, </span><span class="default">$CHUNK</span><span class="keyword">)) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$chunk_read </span><span class="keyword">= </span><span class="default">strlen</span><span class="keyword">(</span><span class="default">$data</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if ((</span><span class="default">$block_write </span><span class="keyword">= </span><span class="default">fwrite</span><span class="keyword">(</span><span class="default">$fp</span><span class="keyword">, </span><span class="default">$data</span><span class="keyword">)) != </span><span class="default">$chunk_read</span><span class="keyword">)<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="string">"Can't write more to tmp file"</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$tot_write </span><span class="keyword">+= </span><span class="default">$block_write</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (!</span><span class="default">fclose</span><span class="keyword">(</span><span class="default">$fp</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="string">"Can't close tmp file"</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; unset(</span><span class="default">$putData</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; } else {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Open the file for writing<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if (!(</span><span class="default">$fp </span><span class="keyword">= </span><span class="default">fopen</span><span class="keyword">(</span><span class="default">$tmpFileName</span><span class="keyword">, </span><span class="string">"a"</span><span class="keyword">)))<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="string">"Can't write to tmp file"</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Read the data a chunk at a time and write to the file<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">while (</span><span class="default">$data </span><span class="keyword">= </span><span class="default">fread</span><span class="keyword">(</span><span class="default">$putData</span><span class="keyword">, </span><span class="default">$CHUNK</span><span class="keyword">)) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$chunk_read </span><span class="keyword">= </span><span class="default">strlen</span><span class="keyword">(</span><span class="default">$data</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if ((</span><span class="default">$block_write </span><span class="keyword">= </span><span class="default">fwrite</span><span class="keyword">(</span><span class="default">$fp</span><span class="keyword">, </span><span class="default">$data</span><span class="keyword">)) != </span><span class="default">$chunk_read</span><span class="keyword">)<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="string">"Can't write more to tmp file"</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$tot_write </span><span class="keyword">+= </span><span class="default">$block_write</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (!</span><span class="default">fclose</span><span class="keyword">(</span><span class="default">$fp</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="string">"Can't close tmp file"</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; unset(</span><span class="default">$putData</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Check file length and MD5<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if (</span><span class="default">$tot_write </span><span class="keyword">!= </span><span class="default">$file_size</span><span class="keyword">)<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="string">"Wrong file size"</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$md5_arr </span><span class="keyword">= </span><span class="default">explode</span><span class="keyword">(</span><span class="string">' '</span><span class="keyword">, </span><span class="default">exec</span><span class="keyword">(</span><span class="string">"md5sum </span><span class="default">$tmpFileName</span><span class="string">"</span><span class="keyword">));<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$md5 </span><span class="keyword">= </span><span class="default">$md5sum_arr</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (</span><span class="default">$md5 </span><span class="keyword">!= </span><span class="default">$md5sum</span><span class="keyword">)<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="string">"Wrong md5"</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; } catch (</span><span class="default">Exception $e</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="string">''</span><span class="keyword">, </span><span class="default">$e</span><span class="keyword">-&gt;</span><span class="default">getMessage</span><span class="keyword">(), </span><span class="string">"\n"</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="59720""></a>
+  <div class="note">
+   <strong class="user">yaogzhan at gmail dot com</strong>
+   <a href="#59720" class="date">14-Dec-2005 01:01</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+PUT raw data comes in php://input, and you have to use fopen() and fread() to get the content. file_get_contents() is useless. <br />
+<br />
+The HTTP PUT request MUST contain a Content-Length header to specify the length (in bytes) of the body, or the server will not be able to know when the input stream is over. This is the common problem for many to find the php://input empty if no such header available. <br />
+<br />
+This should make PUT work properly on win32 using PHP5.1.1 and apache2.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="56983""></a>
+  <div class="note">
+   <strong class="user">warhog at warhog dot net</strong>
+   <a href="#56983" class="date">20-Sep-2005 10:22</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+NOTE: The &lt;Script&gt;-Directive can not be placed in .htaccess files.<br />
+<br />
+So if you're having shared webspace and no access to the apache-configuration file you will have little chance to make something like this work.<br />
+<br />
+But you can solve the problem, using mod_rewrite (for Apache) - for further information see the documentation at <a href="http://httpd.apache.org/docs/2.0/mod/mod_rewrite.html" rel="nofollow" target="_blank">http://httpd.apache.org/docs/2.0/mod/mod_rewrite.html</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="55840""></a>
+  <div class="note">
+   <strong class="user">gherson</strong>
+   <a href="#55840" class="date">15-Aug-2005 11:16</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+A Case Study:&nbsp; To set up publishing with Netscape 7.2 Composer to Apache/PHP, no need to use CGI (which I tried unsuccessfully for too long) or to alter Apache's httpd.conf.&nbsp; I needed only to click Publish As, fill in put2disk.php as the filename (where its contents are the below), and fill in that file's dir as the "Publishing address".<br />
+XAMPP 1.4.14: Apache/2.0.54 (Win32) mod_ssl/2.0.54 OpenSSL/0.9.7g PHP/5.0.4.<br />
+<br />
+&lt;? // filename: put2disk.php.<br />
+<br />
+//file_put_contents ("get_def.out", print_r (get_defined_vars(), TRUE)); // debugging<br />
+<br />
+// Two slurp methods: (a) didn't work, (b) did.<br />
+//$stdin_rsc = fopen("php://input", "r");<br />
+//$putdata='';<br />
+//while ($putdata .= fread($stdin_rsc, 1024)); // a. Hangs the "Publishing..." dialog.<br />
+//while (!feof($stdin_rsc)) $putdata.=fread($stdin_rsc, 8192); // b. Worked, but file_get_contents is faster.<br />
+//fclose($stdin_rsc);<br />
+<br />
+// All that's nec:<br />
+$putdata=file_get_contents('php://input'); // Not php://stdin! (When the ability to see error messages isn't available, the doc (this manual page) needs to be more accurate.)<br />
+<br />
+file_put_contents("stdin.out",$putdata);<br />
+?&gt;</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="37115""></a>
+  <div class="note">
+   <strong class="user">mikeb at mikebanahan dot com</strong>
+   <a href="#37115" class="date">03-Nov-2003 11:41</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I have spent a lot of time trying to make PUT work with Apache 2.0.40. I have not yet been able to find any way of making the Script directive invoke php via mod_php, the only way has been to have a file called example.cgi and invoke it via CGI, with the file starting<br />
+#!/usr/bin/php<br />
+so the PHP interpreter is invoked through the CGI mechanism and not as a module.<br />
+<br />
+If there IS a way of making it work 'right' I'd love to know! After six hours of messing around, I've settled for CGI. The error messages in the apache error log are significantly misleading and the whole thing has been an exercise in frustration.<br />
+<br />
+Attempts to use AddHandler and all 'normal' ways of trying to persuade Apache to do this have been fruitless. It does seem as if PUT can only be handled by CGI invocation.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="feature-fileupload.multiple.html">複数ファイルのアップロード</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="features.remote-files.html">リモートファイルの使用</a></div>
+ <div class="up"><a href="features.file-upload.html">ファイルアップロードの処理</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>HttpQueryString のコンストラクタ</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="class.httpquerystring.html">HttpQueryString</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="httpquerystring.get.html">HttpQueryString::get</a></div>
+ <div class="up"><a href="class.httpquerystring.html">HttpQueryString</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="httpquerystring.construct" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">HttpQueryString::__construct</h1>
+  <p class="verinfo">(PECL pecl_http &gt;= 0.22.0)</p><p class="refpurpose"><span class="refname">HttpQueryString::__construct</span> &mdash; <span class="dc-title">HttpQueryString のコンストラクタ</span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-httpquerystring.construct-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">final public</span>
+    <span class="methodname"><strong>HttpQueryString::__construct</strong></span>
+    ([ <span class="methodparam"><span class="type">bool</span> <code class="parameter">$global</code><span class="initializer"> = true</span></span>
+   [, <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter">$add</code></span>
+  ]] )</div>
+
+
+  <p class="para rdfs-comment">
+   新しい <a href="class.httpquerystring.html" class="classname">HttpQueryString</a> オブジェクトのインスタンスを作成します。
+  </p>
+  <p class="para">
+   global が <strong><code>TRUE</code></strong> の場合は、
+   <var class="varname"><var class="varname"><a href="reserved.variables.get.html" class="classname">$_GET</a></var></var> および
+   <var class="varname"><var class="varname"><a href="reserved.variables.server.html" class="classname">$_SERVER['QUERY_STRING']</a></var></var>
+   を操作して変更します。
+  </p>
+
+ </div>
+
+ <div class="refsect1 parameters" id="refsect1-httpquerystring.construct-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">global</code></em></span>
+     <dd>
+
+      <p class="para">
+       <var class="varname"><var class="varname"><a href="reserved.variables.get.html" class="classname">$_GET</a></var></var> および
+       <var class="varname"><var class="varname"><a href="reserved.variables.server.html" class="classname">$_SERVER['QUERY_STRING']</a></var></var> を操作するかどうか
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">add</code></em></span>
+     <dd>
+
+      <p class="para">
+       追加の、あるいは最初のクエリ文字列パラメータ。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 errors" id="refsect1-httpquerystring.construct-errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">
+   <strong class="classname">HttpRuntimeException</strong> をスローします。
+  </p>
+ </div>
+
+
+
+ 
+
+
+ 
+
+
+ 
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="91471""></a>
+  <div class="note">
+   <strong class="user">michal dot kocarek at brainbox dot cz</strong>
+   <a href="#91471" class="date">11-Jun-2009 04:19</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note about first argument when calling the constructor:<br />
+– if true, instance will have initially exactly same query string as PHP received when user accessed the page<br />
+– if false, instance will be empty.<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">// Imagine that user puts "test.php?name=JamesBond&amp;age=30" into browser, then…<br />
+<br />
+</span><span class="default">$query </span><span class="keyword">= new </span><span class="default">HttpQueryString</span><span class="keyword">(); </span><span class="comment">// query is "name=JamesBond&amp;age=30". (First argument is true by default.)<br />
+</span><span class="default">$query </span><span class="keyword">= new </span><span class="default">HttpQueryString</span><span class="keyword">(</span><span class="default">false</span><span class="keyword">); </span><span class="comment">// query is empty<br />
+</span><span class="default">$query </span><span class="keyword">= new </span><span class="default">HttpQueryString</span><span class="keyword">(</span><span class="default">true</span><span class="keyword">, </span><span class="string">'age=31'</span><span class="keyword">); </span><span class="comment">// query is "name=JamesBond&amp;age=31", name was preserved, age was updated<br />
+</span><span class="default">$query </span><span class="keyword">= new </span><span class="default">HttpQueryString</span><span class="keyword">(</span><span class="default">false</span><span class="keyword">, </span><span class="string">'age=31'</span><span class="keyword">); </span><span class="comment">// query is "age=31"<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Second argument can be string and associative array, same as for HttpQueryString-&gt;set() method.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="class.httpquerystring.html">HttpQueryString</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="httpquerystring.get.html">HttpQueryString::get</a></div>
+ <div class="up"><a href="class.httpquerystring.html">HttpQueryString</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>セキュリティデータベースにユーザーを追加する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="ref.ibase.html">Firebird/InterBase 関数</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.ibase-affected-rows.html">ibase_affected_rows</a></div>
+ <div class="up"><a href="ref.ibase.html">Firebird/InterBase 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.ibase-add-user" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ibase_add_user</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose"><span class="refname">ibase_add_user</span> &mdash; <span class="dc-title">セキュリティデータベースにユーザーを追加する</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.ibase-add-user-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>ibase_add_user</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$service_handle</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$user_name</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$password</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$first_name</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$middle_name</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$last_name</code></span>
+  ]]] )</div>
+
+  <div class="warning"><strong class="warning">警告</strong><p class="simpara">この関数は、
+現在のところ詳細な情報はありません。引数のリストのみが
+記述されています。</p></div>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.ibase-add-user-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.ibase-add-user-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="function.ibase-modify-user.html" class="function" rel="rdfs-seeAlso">ibase_modify_user()</a> - セキュリティデータベースのユーザーを変更する</span></li>
+    <li class="member"> <span class="function"><a href="function.ibase-delete-user.html" class="function" rel="rdfs-seeAlso">ibase_delete_user()</a> - セキュリティデータベースからユーザーを削除する</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="64315""></a>
+  <div class="note">
+   <strong class="user">pabloj</strong>
+   <a href="#64315" class="date">12-Apr-2006 11:10</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+You can create users on Firebird/Interbase this way:<br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">// attach to the server with proper privileges<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">if ((</span><span class="default">$service </span><span class="keyword">= </span><span class="default">ibase_service_attach</span><span class="keyword">(</span><span class="string">'localhost'</span><span class="keyword">, </span><span class="string">'sysdba'</span><span class="keyword">, </span><span class="string">'masterkey'</span><span class="keyword">)) != </span><span class="default">FALSE</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// get server version and implementation strings<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$server_info&nbsp; </span><span class="keyword">= </span><span class="default">ibase_server_info</span><span class="keyword">(</span><span class="default">$service</span><span class="keyword">, </span><span class="default">IBASE_SVC_SERVER_VERSION</span><span class="keyword">) <br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; . </span><span class="string">' / '<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">. </span><span class="default">ibase_server_info</span><span class="keyword">(</span><span class="default">$service</span><span class="keyword">, </span><span class="default">IBASE_SVC_IMPLEMENTATION</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">//ibase_service_detach($service);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">}<br />
+&nbsp;&nbsp;&nbsp; else {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ib_error </span><span class="keyword">= </span><span class="default">ibase_errmsg</span><span class="keyword">();<br />
+&nbsp;&nbsp;&nbsp; }<br />
+echo </span><span class="default">$server_info</span><span class="keyword">;<br />
+<br />
+</span><span class="comment">//add a new user with name 'pippo' and password 'pp'<br />
+</span><span class="keyword">if ((</span><span class="default">$result </span><span class="keyword">= </span><span class="default">ibase_add_user</span><span class="keyword">(</span><span class="default">$service</span><span class="keyword">, </span><span class="string">'pippo'</span><span class="keyword">, </span><span class="string">'pp'</span><span class="keyword">)) != </span><span class="default">FALSE</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="string">'User created'</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">ibase_service_detach</span><span class="keyword">(</span><span class="default">$service</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; else {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ib_error </span><span class="keyword">= </span><span class="default">ibase_errmsg</span><span class="keyword">();<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">//detach from server<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">ibase_service_detach</span><span class="keyword">(</span><span class="default">$service</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; }&nbsp; <br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="ref.ibase.html">Firebird/InterBase 関数</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.ibase-affected-rows.html">ibase_affected_rows</a></div>
+ <div class="up"><a href="ref.ibase.html">Firebird/InterBase 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

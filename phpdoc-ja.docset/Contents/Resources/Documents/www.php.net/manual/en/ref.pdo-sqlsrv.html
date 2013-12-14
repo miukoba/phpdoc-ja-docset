@@ -1,0 +1,283 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Microsoft SQL Server 関数 (PDO_SQLSRV)</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="ref.pdo-mysql.connection.html">PDO_MYSQL DSN</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="ref.pdo-sqlsrv.connection.html">PDO_SQLSRV DSN</a></div>
+ <div class="up"><a href="pdo.drivers.html">PDO ドライバ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="ref.pdo-sqlsrv" class="reference">
+  <h1 class="title">Microsoft SQL Server 関数 (PDO_SQLSRV)</h1>
+  
+  <div class="partintro">
+
+   <div class="section" id="pdo-sqlsrv.intro">
+   <h2 class="title">導入</h2>
+    <p class="para">
+     PDO_SQLSRV は、<a href="intro.pdo.html" class="link">PHP
+     Data Objects (PDO) インターフェイス</a> を実装したドライバです。
+     PHP から、MS SQL Server (SQL Server 2005 以降)
+     および SQL Azure データベースにアクセスできるようになります。
+    </p>
+   </div>
+   
+
+
+<div class="section" id="ref.pdo-sqlsrv.installation">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  PDO_SQLSRV 拡張モジュールを有効にするには、適切な DLL ファイルを PHP
+  の拡張モジュール用ディレクトリに配置して、<var class="filename">php.ini</var> ファイルにエントリを追加します。
+  PDO_SQLSRV をダウンロードすると、その中には 8 個のドライバファイルが入っています。
+  その中の 4 個のファイルが PDO サポート用のファイルです。非スレッドセーフな PHP
+  (PHP 5.3) を実行している場合は php_pdo_sqlsrv_53_nts.dll を使います
+  (ウェブサーバーとして IIS を使っている場合は、非スレッドセーフバージョンを使う必要があります)。
+  スレッドセーフな PHP を実行している場合は php_pdo_sqlsrv_53_ts.dll を使います。
+  同様に、PHP 5.4 の場合についても、非スレッドセーフなのかスレッドセーフなのかによって
+  php_pdo_sqlsrv_54_nts.dll あるいは php_pdo_sqlsrv_54_ts.dll のいずれかを使います。
+ </p>
+ <p class="para">
+  最新版のドライバのダウンロードは
+  <a href="http://msdn.microsoft.com/en-us/sqlserver/ff657782.aspx" class="link external" title="Link : http://msdn.microsoft.com/en-us/sqlserver/ff657782.aspx">&raquo;&nbsp;SQLSRV 3.0 download</a>
+  のページでできます。PHP 5.2 を使っている場合や VC6 でコンパイルしたバージョンが必要な場合は、
+  バージョン 2.0 系を
+  <a href="http://download.microsoft.com/download/C/D/B/CDB0A3BB-600E-42ED-8D5E-E4630C905371/SQLSRV20.EXE" class="link external" title="Link : http://download.microsoft.com/download/C/D/B/CDB0A3BB-600E-42ED-8D5E-E4630C905371/SQLSRV20.EXE">&raquo;&nbsp;SQLSRV 2.0 download</a>
+  からダウンロードして使いましょう。
+ </p>
+ <p class="para">
+  システム要件に関する詳細は
+  <a href="http://msdn.microsoft.com/en-us/library/cc296170.aspx" class="link external" title="Link : http://msdn.microsoft.com/en-us/library/cc296170.aspx">&raquo;&nbsp;SQLSRV System Requirements</a>
+  を参照ください。
+ </p>
+ <p class="para">
+  PDO_SQLSRV 拡張モジュールは Windows 版の PHP でしか使えません。
+  Linux の場合は <a href="ref.pdo-odbc.html" class="link">ODBC</a> および
+  <a href="http://www.microsoft.com/download/en/details.aspx?id=28160" class="link external" title="Link : http://www.microsoft.com/download/en/details.aspx?id=28160">&raquo;&nbsp;Microsoft&#039;s SQL Server ODBC Driver for Linux</a>
+  を参照ください。
+ </p>
+</div>
+
+
+
+   
+
+
+<div class="section" id="pdo-sqlsrv.constants">
+ <h2 class="title">定義済み定数</h2>
+ <p class="simpara">このドライバでは以下の定数が定義されて
+います。これは拡張モジュールが PHP に組み込まれているか、実行時に動的にロード
+されている場合のみ使用可能です。さらに、これらのドライバ固有の定数は
+そのドライバを使用している場合にのみ使用されます。
+あるドライバ固有の属性を別のドライバで使うと、予期せぬ結果を引き起こします。
+もし複数のドライバを使用しているコードを実行している場合、
+ <span class="function"><a href="pdo.getattribute.html" class="function">PDO::getAttribute()</a></span> で <strong><code>PDO_ATTR_DRIVER_NAME</code></strong>
+属性を使用することで、使用中のドライバ名を調べることが可能です。</p>
+ <dl>
+
+  <dt id="pdo.constants.sqlsrv-txn-read-uncommitted">
+   <span class="term">
+    <strong><code>PDO::SQLSRV_TXN_READ_UNCOMMITTED</code></strong>
+     (<span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     この定数は、SQLSRV DSN のキー TransactionIsolation で使えます。
+     この接続のトランザクション隔離レベルを、Read Uncommitted に設定します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt id="pdo.constants.sqlsrv-txn-read-committed">
+   <span class="term">
+    <strong><code>PDO::SQLSRV_TXN_READ_COMMITTED</code></strong>
+     (<span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     この定数は、SQLSRV DSN のキー TransactionIsolation で使えます。
+     この接続のトランザクション隔離レベルを、Read Committed に設定します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt id="pdo.constants.sqlsrv-txn-repeatable-read">
+   <span class="term">
+    <strong><code>PDO::SQLSRV_TXN_REPEATABLE_READ</code></strong>
+     (<span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     この定数は、SQLSRV DSN のキー TransactionIsolation で使えます。
+     この接続のトランザクション隔離レベルを、Repeateable Read に設定します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt id="pdo.constants.sqlsrv-txn-snapshot">
+   <span class="term">
+    <strong><code>PDO::SQLSRV_TXN_SNAPSHOT</code></strong>
+     (<span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     この定数は、SQLSRV DSN のキー TransactionIsolation で使えます。
+     この接続のトランザクション隔離レベルを、Snapshot に設定します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt id="pdo.constants.sqlsrv-txn-serializable">
+   <span class="term">
+    <strong><code>PDO::SQLSRV_TXN_SERIALIZABLE</code></strong>
+     (<span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     この定数は、SQLSRV DSN のキー TransactionIsolation で使えます。
+     この接続のトランザクション隔離レベルを、Serializable に設定します。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt id="pdo.constants.sqlsrv-encoding-binary">
+   <span class="term">
+    <strong><code>PDO::SQLSRV_ENCODING_BINARY</code></strong>
+     (<span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     サーバーとの間のデータの送受信を生のバイトストリームで行い、
+     符号化や変換を一切しないように指示します。
+     この定数は、
+     PDOStatement::setAttribute、PDO::prepare、PDOStatement::bindColumn および
+     PDOStatement::bindParam に渡せます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt id="pdo.constants.sqlsrv-encoding-system">
+   <span class="term">
+    <strong><code>PDO::SQLSRV_ENCODING_SYSTEM</code></strong>
+     (<span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     サーバーとの間のデータの送受信を 8 ビット文字として行い、
+     システムに設定された Windows のロケールのコードページを利用します。
+     このコードページにマップできない文字はすべて、シングルバイトのクエスチョンマークに置き換えられます。
+     この定数は、PDOStatement::setAttribute、PDO::setAttribute、PDO::prepare、
+     PDOStatement::bindColumn および PDOStatement::bindParam に渡せます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt id="pdo.constants.sqlsrv-encoding-utf8">
+   <span class="term">
+    <strong><code>PDO::SQLSRV_ENCODING_UTF8</code></strong>
+     (<span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     サーバーとの間のデータの送受信を UTF-8 エンコーディングで行います。
+     これが、デフォルトの符号化方式です。この定数は、
+     PDOStatement::setAttribute、PDO::setAttribute、PDO::prepare、
+     PDOStatement::bindColumn および PDOStatement::bindParam に渡せます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt id="pdo.constants.sqlsrv-encoding-default">
+   <span class="term">
+    <strong><code>PDO::SQLSRV_ENCODING_DEFAULT</code></strong>
+     (<span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     サーバーとの間のデータの送受信を、接続時に指定した
+     PDO::SQLSRV_ENCODING_SYSTEM に従って行います。プリペアドステートメントの中で指定された場合は、
+     その接続で設定されているエンコーディングを利用します。この定数は、
+     PDOStatement::setAttribute、PDO::setAttribute、PDO::prepare、
+     PDOStatement::bindColumn および PDOStatement::bindParam に渡せます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt id="pdo.constants.sqlsrv-attr-query-timeout">
+   <span class="term">
+    <strong><code>PDO::SQLSRV_ATTR_QUERY_TIMEOUT</code></strong>
+     (<span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     非負の整数で、タイムアウト秒数を指定します。ゼロがデフォルトで、これはタイムアウトしないことを意味します。
+     この定数は、PDOStatement::setAttribute、PDO::setAttribute および PDO::prepare に渡せます。
+    </span>
+   </dd>
+
+  </dt>
+
+  <dt id="pdo.constants.sqlsrv-attr-direct-query">
+   <span class="term">
+    <strong><code>PDO::SQLSRV_ATTR_DIRECT_QUERY</code></strong>
+     (<span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>)
+   </span>
+   <dd>
+
+    <span class="simpara">
+     クエリを直接実行し、準備しないことを指示します。
+     この定数は、PDO::setAttribute および PDO::prepare に渡せます。詳細な情報は
+     <a href="http://msdn.microsoft.com/en-us/library/ff754356.aspx" class="link external" title="Link : http://msdn.microsoft.com/en-us/library/ff754356.aspx">&raquo;&nbsp;Direct and Prepared Statement Execution</a>
+     を参照ください。
+    </span>
+   </dd>
+
+  </dt>
+
+ </dl>
+
+</div>
+
+
+
+  </div>
+
+  
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="ref.pdo-sqlsrv.connection.html">PDO_SQLSRV DSN</a> — MS SQL Server および SQL Azure データベースに接続する</li></ul>
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="ref.pdo-mysql.connection.html">PDO_MYSQL DSN</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="ref.pdo-sqlsrv.connection.html">PDO_SQLSRV DSN</a></div>
+ <div class="up"><a href="pdo.drivers.html">PDO ドライバ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

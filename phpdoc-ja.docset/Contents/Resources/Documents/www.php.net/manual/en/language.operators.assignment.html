@@ -1,0 +1,285 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>代入演算子</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="language.operators.arithmetic.html">代数演算子</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="language.operators.bitwise.html">ビット演算子</a></div>
+ <div class="up"><a href="language.operators.html">演算子</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="language.operators.assignment" class="sect1">
+   <h2 class="title">代入演算子</h2>
+   <p class="simpara">
+    代入演算子の基本となるものは &quot;=&quot; です。この演算子に関して最初に
+    思い付く意味は&quot;等しい&quot;であるかもしれません。しかし、そうではありません。
+    本当は、左オペランドに右オペランドの式の値を設定する(&quot;得て代入する&quot;)
+    ことを意味します。
+   </p>
+   <p class="para">
+    代入式の値は、代入される値です。つまり、&quot;<em>$a = 3</em>&quot; の値は、3 です。
+    これにより、以下のようなトリッキーなことができるようになります。
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$a&nbsp;</span><span style="color: #007700">=&nbsp;(</span><span style="color: #0000BB">$b&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">)&nbsp;+&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;$a&nbsp;は&nbsp;9&nbsp;に等しくなり、$b&nbsp;には&nbsp;4&nbsp;が代入されます<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="para">
+    配列の場合、キーの名前を指定して値を代入するには &quot;=&gt;&quot;
+    演算子を使います。この演算子の <a href="language.operators.precedence.html" class="link">優先順位</a>
+    は、その他の代入演算子と同じです。
+   </p>
+   <p class="para">
+    基本代入演算子に加えて、全ての<a href="language.operators.html" class="link">
+    バイナリ演算子</a>、配列結合および文字列演算子に関して
+    「複合演算子」があります。
+    これにより、式の中の値を使用し、その値をその式の結果とすることができます。
+    例えば、
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">+=&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;$a&nbsp;を&nbsp;8&nbsp;にセットします。$a&nbsp;=&nbsp;$a&nbsp;+&nbsp;5;&nbsp;と同じです。<br /></span><span style="color: #0000BB">$b&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Hello&nbsp;"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$b&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">"There!"</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;$bを"Hello&nbsp;There!"にセットします。$b&nbsp;=&nbsp;$b&nbsp;.&nbsp;"There!";と同じです。<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="para">
+    代入は、元の変数を新しい変数にコピーする(値による代入)ため、
+    片方の変数に対する変更はもう片方に影響を与えないということに
+    注意してください。この動作により、密なループの内側で大きな配列のようなものを
+    コピーする必要がある場合には問題を生じる可能性があります。
+   </p>
+   <p class="para">
+    PHP では通常は値による代入になりますが、オブジェクト型については例外です。
+    PHP 5 以降、オブジェクトは参照で代入されるようになりました。オブジェクトを明示的にコピーするには
+    <a href="language.oop5.cloning.html" class="link">clone</a> キーワードを使います。
+   </p>
+
+   <div class="sect2" id="language.operators.assignment.reference">
+    <h3 class="title">参照による代入</h3>
+    <p class="para">
+     参照による代入もサポートしており、
+     &quot;<span class="computeroutput">$var = &amp;$othervar;</span>&quot; 構文で使うことができます。
+     参照による代入とは、両方の変数が同じデータを指すようにするということです。
+     データのコピーは発生しません。
+    </p>
+    <p class="para">
+     <div class="example" id="example-116">
+      <p><strong>例1 参照による代入</strong></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$b&nbsp;</span><span style="color: #007700">=&nbsp;&amp;</span><span style="color: #0000BB">$a</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;$b&nbsp;は&nbsp;$a&nbsp;への参照です<br /><br /></span><span style="color: #007700">print&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$a</span><span style="color: #DD0000">\n"</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;表示:&nbsp;3<br /></span><span style="color: #007700">print&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$b</span><span style="color: #DD0000">\n"</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;表示:&nbsp;3<br /><br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;change&nbsp;$a<br /><br /></span><span style="color: #007700">print&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$a</span><span style="color: #DD0000">\n"</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;表示:&nbsp;4<br /></span><span style="color: #007700">print&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$b</span><span style="color: #DD0000">\n"</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;表示:&nbsp;4<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;$b&nbsp;の参照先は&nbsp;$a&nbsp;であり、その値が変わったからです<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+    <p class="para">
+     PHP 5 以降では、<a href="language.oop5.basic.html#language.oop5.basic.new" class="link">new</a>
+     演算子が自動的に参照を返すようになりました。そのため、
+     <a href="language.oop5.basic.html#language.oop5.basic.new" class="link">new</a> の結果を参照で代入しようとすると
+     PHP 5.3 以降では <strong><code>E_DEPRECATED</code></strong>、それより前のバージョンでは 
+     <strong><code>E_STRICT</code></strong> が発生します。
+    </p>
+    <p class="para">
+     たとえば、このコードは警告が発生します。
+     <div class="informalexample">
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">C&nbsp;</span><span style="color: #007700">{}<br /><br /></span><span style="color: #FF8000">/*&nbsp;次の行を実行すると、このようなエラーメッセージが出ます<br />&nbsp;*&nbsp;Deprecated:&nbsp;Assigning&nbsp;the&nbsp;return&nbsp;value&nbsp;of&nbsp;new&nbsp;by&nbsp;reference&nbsp;is&nbsp;deprecated&nbsp;in...<br />&nbsp;*/<br /></span><span style="color: #0000BB">$o&nbsp;</span><span style="color: #007700">=&nbsp;&amp;new&nbsp;</span><span style="color: #0000BB">C</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    </p>
+    <p class="para">
+     参照に関する詳細な情報やその使い方については、このマニュアルの
+     <a href="language.references.html" class="link">参照に関する説明</a>
+     をご覧ください。
+    </p>
+   </div>
+  </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="105622""></a>
+  <div class="note">
+   <strong class="user">haubertj at alfredstate dot edu</strong>
+   <a href="#105622" class="date">01-Sep-2011 04:19</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+[[&nbsp;&nbsp; Editor's note: You are much better off using the foreach (array_expression as $key =&gt; $value) control structure in this case&nbsp;&nbsp; ]]<br />
+<br />
+When using <br />
+<br />
+&lt;php<br />
+while ($var = current($array) {<br />
+#do stuff<br />
+next($aray)<br />
+?&gt;<br />
+<br />
+to process an array, if current($array) happens to be falsy but not === false it will still end the loop.&nbsp; In such a case strict typing must be used.<br />
+<br />
+Like this:<br />
+<br />
+&lt;php<br />
+while (($var = current($array)) !== FALSE) {<br />
+#do stuff<br />
+next($aray)<br />
+?&gt;<br />
+<br />
+Of course if your array may contain actual FALSE values you will have to deal with those some other way.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="102385""></a>
+  <div class="note">
+   <strong class="user">Peter, Moscow</strong>
+   <a href="#102385" class="date">11-Feb-2011 10:44</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Using $text .= "additional text"; instead of $text =&nbsp; $text ."additional text"; can seriously enhance performance due to memory allocation efficiency. <br />
+<br />
+I reduced execution time from 5 sec to .5 sec (10 times) by simply switching to the first pattern for a loop with 900 iterations over a string $text that reaches 800K by the end.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="80899""></a>
+  <div class="note">
+   <strong class="user">Hayley Watson</strong>
+   <a href="#80899" class="date">06-Feb-2008 02:54</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+You could also take adam at gmail dot com's xor-assignment operator and use the fact that it's right-associative:<br />
+<br />
+$a ^= $b ^= $a ^= $b;</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="78345""></a>
+  <div class="note">
+   <strong class="user">Hayley Watson</strong>
+   <a href="#78345" class="date">08-Oct-2007 12:22</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+bradlis7 at bradlis7 dot com's description is a bit confusing. Here it is rephrased.<br />
+<br />
+<span class="default">&lt;?php<br />
+$a </span><span class="keyword">= </span><span class="string">'a'</span><span class="keyword">;<br />
+</span><span class="default">$b </span><span class="keyword">= </span><span class="string">'b'</span><span class="keyword">;<br />
+<br />
+</span><span class="default">$a </span><span class="keyword">.= </span><span class="default">$b </span><span class="keyword">.= </span><span class="string">"foo"</span><span class="keyword">;<br />
+<br />
+echo </span><span class="default">$a</span><span class="keyword">,</span><span class="string">"\n"</span><span class="keyword">,</span><span class="default">$b</span><span class="keyword">;</span><span class="default">?&gt;<br />
+</span>outputs<br />
+<br />
+abfoo<br />
+bfoo<br />
+<br />
+Because the assignment operators are right-associative and evaluate to the result of the assignment<br />
+<span class="default">&lt;?php<br />
+$a </span><span class="keyword">.= </span><span class="default">$b </span><span class="keyword">.= </span><span class="string">"foo"</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span>is equivalent to<br />
+<span class="default">&lt;?php<br />
+$a </span><span class="keyword">.= (</span><span class="default">$b </span><span class="keyword">.= </span><span class="string">"foo"</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span>and therefore<br />
+<span class="default">&lt;?php<br />
+$b </span><span class="keyword">.= </span><span class="string">"foo"</span><span class="keyword">;<br />
+</span><span class="default">$a </span><span class="keyword">.= </span><span class="default">$b</span><span class="keyword">;<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="55848""></a>
+  <div class="note">
+   <strong class="user">bradlis7 at bradlis7 dot com</strong>
+   <a href="#55848" class="date">15-Aug-2005 05:13</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note whenever you do this<br />
+<br />
+<span class="default">&lt;?php<br />
+$a </span><span class="keyword">.= </span><span class="default">$b </span><span class="keyword">.= </span><span class="string">"bla bla"</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+it comes out to be the same as the following:<br />
+<br />
+<span class="default">&lt;?php<br />
+$a </span><span class="keyword">.= </span><span class="default">$b</span><span class="keyword">.</span><span class="string">"bla bla"</span><span class="keyword">;<br />
+</span><span class="default">$b </span><span class="keyword">.= </span><span class="string">"bla bla"</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+So $a actually becomes $a and the final $b string. I'm sure it's the same with numerical assignments (+=, *=...).</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="40084""></a>
+  <div class="note">
+   <strong class="user">straz at mac dot nospam dot com</strong>
+   <a href="#40084" class="date">21-Feb-2004 07:18</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This page really ought to have table of assignment operators,<br />
+namely,<br />
+<br />
+See the Arithmetic Operators page (<a href="http://www.php.net/manual/en/language.operators.arithmetic.php" rel="nofollow" target="_blank">http://www.php.net/manual/en/language.operators.arithmetic.php</a>)<br />
+Assignment&nbsp; &nbsp; Same as:<br />
+$a += $b&nbsp; &nbsp;&nbsp; $a = $a + $b&nbsp; &nbsp; Addition<br />
+$a -= $b&nbsp; &nbsp;&nbsp; $a = $a - $b&nbsp; &nbsp;&nbsp; Subtraction<br />
+$a *= $b&nbsp; &nbsp;&nbsp; $a = $a * $b&nbsp; &nbsp;&nbsp; Multiplication<br />
+$a /= $b&nbsp; &nbsp;&nbsp; $a = $a / $b&nbsp; &nbsp; Division<br />
+$a %= $b&nbsp; &nbsp;&nbsp; $a = $a % $b&nbsp; &nbsp; Modulus<br />
+<br />
+See the String Operators page(<a href="http://www.php.net/manual/en/language.operators.string.php" rel="nofollow" target="_blank">http://www.php.net/manual/en/language.operators.string.php</a>)<br />
+$a .= $b&nbsp; &nbsp;&nbsp; $a = $a . $b&nbsp; &nbsp; &nbsp;&nbsp; Concatenate<br />
+<br />
+See the Bitwise Operators page (<a href="http://www.php.net/manual/en/language.operators.bitwise.php" rel="nofollow" target="_blank">http://www.php.net/manual/en/language.operators.bitwise.php</a>)<br />
+$a &amp;= $b&nbsp; &nbsp;&nbsp; $a = $a &amp; $b&nbsp; &nbsp;&nbsp; Bitwise And<br />
+$a |= $b&nbsp; &nbsp;&nbsp; $a = $a | $b&nbsp; &nbsp; &nbsp; Bitwise Or<br />
+$a ^= $b&nbsp; &nbsp;&nbsp; $a = $a ^ $b&nbsp; &nbsp; &nbsp;&nbsp; Bitwise Xor<br />
+$a &lt;&lt;= $b&nbsp; &nbsp;&nbsp; $a = $a &lt;&lt; $b&nbsp; &nbsp;&nbsp; Left shift<br />
+$a &gt;&gt;= $b&nbsp; &nbsp;&nbsp; $a = $a &gt;&gt; $b&nbsp; &nbsp; &nbsp; Right shift</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="language.operators.arithmetic.html">代数演算子</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="language.operators.bitwise.html">ビット演算子</a></div>
+ <div class="up"><a href="language.operators.html">演算子</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

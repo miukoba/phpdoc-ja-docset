@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>セットアップ</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqlnd-memcache.quickstart.html">クイックスタートとサンプル集</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd-memcache.quickstart.usage.html">使いかた</a></div>
+ <div class="up"><a href="mysqlnd-memcache.quickstart.html">クイックスタートとサンプル集</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mysqlnd-memcache.quickstart.configuration" class="section">
+  <h2 class="title">セットアップ</h2>
+  <p class="para">
+   このプラグインは、PHP の拡張モジュールとして実装されています。この拡張モジュールを
+   <a href="mysqlnd-memcache.installation.html" class="link">インストールする方法</a>
+   も参照ください。
+  </p>
+  <p class="para">
+   PHP の MySQL 用拡張モジュール (<a href="ref.mysqli.html" class="link">mysqli</a>、
+   <a href="ref.pdo-mysql.html" class="link">PDO_MYSQL</a> あるいは <a href="ref.mysql.html" class="link">mysql</a>)
+   をコンパイルします。このとき、<a href="book.mysqlnd.html" class="link">mysqlnd</a>
+   ライブラリを使うように指定しないといけません。というのも、mysqlnd_memcache は mysqlnd
+   用のプラグインだからです。さらなる情報は、
+   <a href="memcached.installation.html" class="link">mysqlnd_memcache のインストール方法</a>
+   を参照ください。
+  </p>
+  <p class="para">
+   それから、この拡張モジュールを PHP に読み込んでプラグインを有効化させましょう。
+   PHP の設定ファイルで、
+   <a href="mysqlnd-memcache.configuration.html#ini.mysqlnd-memcache.enable" class="link">mysqlnd_memcache.enable</a>
+   という項目を使います。
+  </p>
+  <p class="para">
+   <div class="example" id="example-1928">
+    <p><strong>例1 プラグインを有効にする (php.ini)</strong></p>
+    <div class="example-contents">
+<div class="inicode"><pre class="inicode">; Windows の場合はファイル名が php_mysqnd_memcache.dll になります
+; 拡張モジュールの読み込み
+extension=mysqlnd_memcache.so
+; 有効化
+mysqlnd_memcache.enable=1</pre>
+</div>
+    </div>
+
+    </div>
+  </p>
+  <p class="para">
+   <a href="http://dev.mysql.com/doc/en/ha-memcached.html" class="link external" title="Link : http://dev.mysql.com/doc/en/ha-memcached.html">&raquo;&nbsp;MySQL
+   Reference Manual の、Memcache プラグインのインストールページ</a>
+   の指示に従って MySQL サーバーを準備します。
+   プラグインを有効化して、Memcache で SQL テーブルにアクセスできるよう設定しましょう。
+  </p>
+  <p class="para">
+   このクイックスタートのサンプルでは、次のようなテーブルがあって
+   Memcache でそこにアクセスできるようになっていることを前提とします。
+  </p>
+  <p class="para">
+   <div class="example" id="example-1929">
+    <p><strong>例2 クイックスタートで使うテーブルの SQL</strong></p>
+    <div class="example-contents">
+<div class="sqlcode"><pre class="sqlcode">CREATE TABLE test(
+  id CHAR(16),
+  f1 VARCHAR(255),
+  f2 VARCHAR(255),
+  f3 VARCHAR(255),
+  flags INT NOT NULL,
+  cas_column INT,
+  expire_time_column INT,
+  PRIMARY KEY(id)
+  ) ENGINE=InnoDB;
+
+INSERT INTO test (id, f1, f2, f3) VALUES (1, &#039;Hello&#039;, &#039;World&#039;, &#039;!&#039;);
+INSERT INTO test (id, f1, f2, f3) VALUES (2, &#039;Lady&#039;, &#039;and&#039;, &#039;the tramp&#039;);
+
+INSERT INTO innodb_memcache.containers(
+  name, db_schema, db_table, key_columns, value_columns, 
+  flags, cas_column, expire_time_column, unique_idx_name_on_key)
+VALUES (
+  &#039;plugin_test&#039;, &#039;test&#039;, &#039;test&#039;, &#039;id&#039;, &#039;f1,f2,f3&#039;,
+  &#039;flags&#039;, &#039;cas_column&#039;, &#039;expire_time_column&#039;, &#039;PRIMARY KEY&#039;);</pre>
+</div>
+    </div>
+
+   </div>
+  </p>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqlnd-memcache.quickstart.html">クイックスタートとサンプル集</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd-memcache.quickstart.usage.html">使いかた</a></div>
+ <div class="up"><a href="mysqlnd-memcache.quickstart.html">クイックスタートとサンプル集</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

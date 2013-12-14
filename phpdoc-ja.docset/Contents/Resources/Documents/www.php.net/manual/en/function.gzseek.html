@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>gz ファイルポインタの位置を移動する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.gzrewind.html">gzrewind</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.gztell.html">gztell</a></div>
+ <div class="up"><a href="ref.zlib.html">Zlib 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.gzseek" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">gzseek</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose"><span class="refname">gzseek</span> &mdash; <span class="dc-title">gz ファイルポインタの位置を移動する</span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-function.gzseek-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">int</span> <span class="methodname"><strong>gzseek</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$zp</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$offset</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$whence</code><span class="initializer"> = SEEK_SET</span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+   与えられたファイルポインタが指すファイルのファイル位置記述子を、
+   ファイルストリーム上の与えられた
+   offset バイトにセットします。
+   <em>gzseek(zp, offset, SEEK_SET)</em> を
+   (C 言語において) コールするのと同じです。
+  </p>
+  <p class="para">
+   ファイルが読み込み用にオープンされた場合、この関数は、
+   エミュレーションされますが、極端に遅くなる可能性があります。
+   ファイルを書き込み用にオープンした場合、
+   前方への移動のみがサポートされます。この場合、 <span class="function"><strong>gzseek()</strong></span>
+   は、新しい開始位置までゼロの並びのデータを圧縮します。
+  </p>
+ </div>
+
+ <div class="refsect1 parameters" id="refsect1-function.gzseek-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">zp</code></em></span>
+     <dd>
+
+      <p class="para">
+       gz ファイルポインタを指定します。これは有効なファイルポインタであり、
+       かつ、 <span class="function"><a href="function.gzopen.html" class="function">gzopen()</a></span>
+       によりオープンできたファイルを指している必要があります。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">offset</code></em></span>
+     <dd>
+
+      <p class="para">
+       移動するオフセットを指定します。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">whence</code></em></span>
+     <dd>
+
+      <p class="para">
+       <em><code class="parameter">whence</code></em> の値は次のいずれかです。
+       <ul class="simplelist">
+        <li class="member"><strong><code>SEEK_SET</code></strong> - <em><code class="parameter">offset</code></em> バイト目に設定します。</li>
+        <li class="member"><strong><code>SEEK_CUR</code></strong> - 現在位置から <em><code class="parameter">offset</code></em> ぶん進んだ位置に設定します。</li>
+       </ul>
+      </p>
+      <p class="para">
+       <em><code class="parameter">whence</code></em> を省略した場合は
+       <strong><code>SEEK_SET</code></strong> とみなします。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues" id="refsect1-function.gzseek-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合、0を返します。それ以外の場合は、-1を返します。
+   移動がEOFを超える場合にもエラーは発生しないことに注意してください。
+  </p>
+ </div>
+
+ <div class="refsect1 examples" id="refsect1-function.gzseek-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-821">
+    <p><strong>例1  <span class="function"><strong>gzseek()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$gz&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">gzopen</span><span style="color: #007700">(</span><span style="color: #DD0000">'somefile.gz'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'r'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">gzseek</span><span style="color: #007700">(</span><span style="color: #0000BB">$gz</span><span style="color: #007700">,</span><span style="color: #0000BB">2</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #0000BB">gzgetc</span><span style="color: #007700">(</span><span style="color: #0000BB">$gz</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">gzclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$gz</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+ <div class="refsect1 seealso" id="refsect1-function.gzseek-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="function.gztell.html" class="function" rel="rdfs-seeAlso">gztell()</a> - gz ファイルポインタの読み込み/書き込み位置を返します</span></li>
+    <li class="member"> <span class="function"><a href="function.gzrewind.html" class="function" rel="rdfs-seeAlso">gzrewind()</a> - gz ファイルポインタの示す位置を元に戻す</span></li>
+   </ul>
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="110357""></a>
+  <div class="note">
+   <strong class="user">liuhaifeng at example dot com</strong>
+   <a href="#110357" class="date">15-Oct-2012 02:43</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Since seek after the end is not considered an error, I doubt that "while (gzseek ($fh, $eof) == 0) $eof += $d;" will get into infinite loop.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="51831""></a>
+  <div class="note">
+   <strong class="user">dperham at wgate dot com</strong>
+   <a href="#51831" class="date">12-Apr-2005 05:47</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+PHP/4.3.9<br />
+contrary to the notes, gzseek() returns -1 if I try to seek past the end of the file.&nbsp; here is a function that will return the last seekable position, and put the file pointer there.<br />
+<br />
+/** sets the file pointer at the end of the file<br />
+&nbsp;*&nbsp; and returns the number of bytes in the file.<br />
+&nbsp;*/<br />
+function gzend($fh)<br />
+{<br />
+&nbsp;&nbsp; $d&nbsp;&nbsp; = 1&lt;&lt;14;<br />
+&nbsp;&nbsp; $eof = $d;<br />
+&nbsp;&nbsp; while ( gzseek($fh, $eof) == 0 ) $eof += $d;<br />
+&nbsp;&nbsp; while ( $d &gt; 1 )<br />
+&nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp;&nbsp; $d &gt;&gt;= 1;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; $eof += $d * (gzseek($fh, $eof)? -1 : 1);<br />
+&nbsp;&nbsp; }<br />
+&nbsp;&nbsp; return $eof;<br />
+}</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.gzrewind.html">gzrewind</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.gztell.html">gztell</a></div>
+ <div class="up"><a href="ref.zlib.html">Zlib 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

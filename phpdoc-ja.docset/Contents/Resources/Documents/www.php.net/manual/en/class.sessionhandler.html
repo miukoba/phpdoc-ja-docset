@@ -1,0 +1,251 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>SessionHandler クラス</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.session-write-close.html">session_write_close</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="sessionhandler.close.html">SessionHandler::close</a></div>
+ <div class="up"><a href="book.session.html">Sessions</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="class.sessionhandler" class="reference">
+
+ <h1 class="title">SessionHandler クラス</h1>
+ 
+
+ <div class="partintro"><p class="verinfo">(PHP 5 &gt;= 5.4.0)</p>
+
+
+  <div class="section" id="sessionhandler.intro">
+   <h2 class="title">導入</h2>
+   <p class="para">
+    <strong class="classname">SessionHandler</strong> は特殊なクラスで、
+    これを継承したクラスを作れば PHP が内部的に使っているセッション保存ハンドラを拡張できます。
+    このクラスには六つのメソッドがあり、それぞれが六つのセッション保存ハンドラコールバック
+    (<em><code class="parameter">open</code></em>, <em><code class="parameter">close</code></em>,
+    <em><code class="parameter">read</code></em>, <em><code class="parameter">write</code></em>, <em><code class="parameter">destroy</code></em> および <em><code class="parameter">gc</code></em>)
+    に対応しています。デフォルトでは、このクラスは
+    <a href="session.configuration.html#ini.session.save-handler" class="link">session.save_handler</a> で定義された内部セッションハンドラをラップします。
+    通常は <em><code class="parameter">files</code></em> がデフォルトになっています。
+    それ以外には、PHP の拡張モジュールとして提供されている SQLite (<em><code class="parameter">sqlite</code></em>) や
+    Memcache (<em><code class="parameter">memcache</code></em>) そして Memcached (<em><code class="parameter">memcached</code></em>) が使えます。
+   </p>
+   <p class="para">
+    <strong class="classname">SessionHandler</strong> のインスタンスを
+     <span class="function"><a href="function.session-set-save-handler.html" class="function">session_set_save_handler()</a></span> でハンドラとして指定すると、
+    そのインスタンスが現在の保存ハンドラをラップします。
+    <strong class="classname">SessionHandler</strong> を継承したクラスを作ると、
+    親クラスのメソッド、つまり PHP の内部セッションハンドラのメソッドをラップして
+    オーバーライドしたり処理を割り込ませたりフィルタをかけたりできるようになります。
+   </p>
+   <p class="para">
+    これを利用すると、たとえば <em><code class="parameter">read</code></em> と <em><code class="parameter">write</code></em>
+    メソッドに処理を割り込ませ、セッションデータの暗号化/復号の処理を追加することができます。
+    あるいは、ガベージコレクションコールバック <em><code class="parameter">gc</code></em>
+    を完全に自前の処理で置き換えてしまうこともできます。
+   </p>
+   <p class="para">
+    <strong class="classname">SessionHandler</strong> は現在の内部保存ハンドラのメソッドをラップしているので、
+    先述の暗号化の例は任意の保存ハンドラに適用することができます。その際に、ハンドラの内部的な動きを知っておく必要はありません。
+   </p>
+   <p class="para">
+    このクラスを使うには、まず最初に公開したいハンドラを
+    <a href="session.configuration.html#ini.session.save-handler" class="link">session.save_handler</a> で設定してから、
+    <strong class="classname">SessionHandler</strong> あるいはそれを継承したクラスのインスタンスを
+     <span class="function"><a href="function.session-set-save-handler.html" class="function">session_set_save_handler()</a></span> に渡します。
+   </p>
+   <p class="para">
+    このクラスのコールバックメソッドは PHP が内部的にコールするものであり、
+    ユーザーのコードから呼ばれることは想定していないことに注意しましょう。
+    コールバックの返り値も、PHP が内部的に利用するだけです。
+    セッションの処理の流れについての詳しい情報は
+     <span class="function"><a href="function.session-set-save-handler.html" class="function">session_set_save_handler()</a></span> を参照ください。
+   </p>
+  </div>
+
+
+  <div class="section" id="sessionhandler.synopsis">
+   <h2 class="title">クラス概要</h2>
+
+
+   <div class="classsynopsis">
+    <div class="ooclass"></div>
+
+
+    <div class="classsynopsisinfo">
+     <span class="ooclass">
+      <strong class="classname">SessionHandler</strong>
+     </span>
+
+     <span class="oointerface">implements 
+      <span class="interfacename"><a href="class.sessionhandlerinterface.html" class="interfacename">SessionHandlerInterface</a></span>
+     </span>
+     {</div>
+
+
+    <div class="classsynopsisinfo classsynopsisinfo_comment">/* メソッド */</div>
+    <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><a href="sessionhandler.close.html" class="methodname">close</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+  <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><a href="sessionhandler.destroy.html" class="methodname">destroy</a></span>
+   ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$session_id</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><a href="sessionhandler.gc.html" class="methodname">gc</a></span>
+    ( <span class="methodparam"><span class="type">int</span> <code class="parameter">$maxlifetime</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><a href="sessionhandler.open.html" class="methodname">open</a></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$save_path</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$session_id</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">string</span> <span class="methodname"><a href="sessionhandler.read.html" class="methodname">read</a></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$session_id</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><a href="sessionhandler.write.html" class="methodname">write</a></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$session_id</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$session_data</code></span>
+   )</div>
+
+   }</div>
+
+
+  </div>
+
+  <div class="section" id="session.notes">
+   <div class="warning"><strong class="warning">警告</strong>
+    <p class="para">
+     このクラスは現在の PHP 内部セッション保存ハンドラを公開するように作られています。
+     自作の保存ハンドラを用意したい場合は、<strong class="classname">SessionHandler</strong>
+     を継承するのではなく <a href="class.sessionhandlerinterface.html" class="classname">SessionHandlerInterface</a>
+     を実装したクラスを作るようにしましょう。
+    </p>
+   </div>
+  </div>
+
+  <div class="section" id="sessionhandler.examples">
+   <div class="example" id="example-4747">
+    <p><strong>例1 
+     <strong class="classname">SessionHandler</strong> を使って PHP の保存ハンドラに暗号化機能を追加する例
+    </strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">EncryptedSessionHandler&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">SessionHandler<br /></span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;</span><span style="color: #0000BB">$key</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">__construct</span><span style="color: #007700">(</span><span style="color: #0000BB">$key</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">key&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$key</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">read</span><span style="color: #007700">(</span><span style="color: #0000BB">$id</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">parent</span><span style="color: #007700">::</span><span style="color: #0000BB">read</span><span style="color: #007700">(</span><span style="color: #0000BB">$id</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">mycrypt_decrypt</span><span style="color: #007700">(</span><span style="color: #0000BB">MCRYPT_3DES</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">key</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$data</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">MCRYPT_MODE_ECB</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">write</span><span style="color: #007700">(</span><span style="color: #0000BB">$id</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$data</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mcrypt_encrypt</span><span style="color: #007700">(</span><span style="color: #0000BB">MCRYPT_3DES</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">key</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$data</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">MCRYPT_MODE_ECB</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">parent</span><span style="color: #007700">::</span><span style="color: #0000BB">write</span><span style="color: #007700">(</span><span style="color: #0000BB">$id</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$data</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;この例では標準の&nbsp;'files'&nbsp;ハンドラを横取りしていますが、他のネイティブハンドラである<br />//&nbsp;PHP&nbsp;拡張モジュール&nbsp;'sqlite'、'memcache'、'memcached'<br />//&nbsp;の場合でもまったく同じように使えます。<br /></span><span style="color: #0000BB">ini_set</span><span style="color: #007700">(</span><span style="color: #DD0000">'session.save_handler'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'files'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$handler&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">EncryptedSessionHandler</span><span style="color: #007700">(</span><span style="color: #DD0000">'mykey'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">session_set_save_handler</span><span style="color: #007700">(</span><span style="color: #0000BB">$handler</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">session_start</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;$_SESSION&nbsp;への値の設定や格納されている値の取得を進めます</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   <blockquote class="note"><p><strong class="note">注意</strong>: 
+    <p class="para">
+     このクラスのメソッドは、セッション処理の一環として PHP が内部的にコールするためのものとして作られています。
+     そのため、子クラスから親のメソッド (実際のネイティブハンドラ) をコールすると、
+     (自動で開始するか、あるいは  <span class="function"><a href="function.session-start.html" class="function">session_start()</a></span> を実行するなどして)
+     セッションを実際に開始していない限りはその返り値が <strong><code>FALSE</code></strong> となります。
+     この点は、ユニットテストを書く際に注意が必要です。というのも、
+     ユニットテストではクラスのメソッドを手動でコールする可能性があるからです。
+    </p>
+   </p></blockquote>
+  </div>
+
+ </div>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="sessionhandler.close.html">SessionHandler::close</a> — セッションを閉じる</li><li><a href="sessionhandler.destroy.html">SessionHandler::destroy</a> — セッションを破棄する</li><li><a href="sessionhandler.gc.html">SessionHandler::gc</a> — 古いセッションを削除する</li><li><a href="sessionhandler.open.html">SessionHandler::open</a> — セッションを開始する</li><li><a href="sessionhandler.read.html">SessionHandler::read</a> — セッションのデータを読み込む</li><li><a href="sessionhandler.write.html">SessionHandler::write</a> — セッションのデータを書き込む</li></ul>
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113656""></a>
+  <div class="note">
+   <strong class="user">bjovas</strong>
+   <a href="#113656" class="date">12-Nov-2013 01:52</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The typo mentioned by the previous commenter has not been fixed.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="108034""></a>
+  <div class="note">
+   <strong class="user">harun[at]isikay[dot]com</strong>
+   <a href="#108034" class="date">23-Mar-2012 11:14</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+return mycrypt_decrypt(MCRYPT_3DES, $this-&gt;key, $data, MCRYPT_MODE_ECB);<br />
+<br />
+should be return mcrypt_decrypt(MCRYPT_3DES, $this-&gt;key, $data, MCRYPT_MODE_ECB);</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.session-write-close.html">session_write_close</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="sessionhandler.close.html">SessionHandler::close</a></div>
+ <div class="up"><a href="book.session.html">Sessions</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

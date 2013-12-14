@@ -1,0 +1,1138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>リファレンス渡し</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="language.references.arent.html">リファレンスが行わないこと</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="language.references.return.html">リファレンスを返す</a></div>
+ <div class="up"><a href="language.references.html">リファレンスの説明</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="language.references.pass" class="sect1">
+   <h2 class="title">リファレンス渡し</h2>
+   <p class="para">
+    リファレンスにより関数に変数を渡すことが可能です。この場合、関数内で
+    その引数を修正可能になります。構文は次のようになります。
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">foo</span><span style="color: #007700">(&amp;</span><span style="color: #0000BB">$var</span><span style="color: #007700">)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$var</span><span style="color: #007700">++;<br />}<br /><br /></span><span style="color: #0000BB">$a</span><span style="color: #007700">=</span><span style="color: #0000BB">5</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">foo</span><span style="color: #007700">(</span><span style="color: #0000BB">$a</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;$a&nbsp;はここでは&nbsp;6&nbsp;です<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+    <blockquote class="note"><p><strong class="note">注意</strong>: 
+     <span class="simpara">
+      関数コールの際には、リファレンス記号がないことに注意してください。
+      関数定義にのみリファレンス記号があります。リファレンスで正しく引数を
+      渡すには、関数定義のみで十分です。以前のバージョンの PHP では
+      <em>foo(&amp;$a);</em> のような形式で &amp; を利用すると
+      &quot;Call-time pass-by-reference&quot; という警告が発生していましたが、
+      PHP 5.3.0 以降では警告は発生しません。
+      また、PHP 5.4.0 以降では call-time pass-by-reference 機能自体が削除されたので、
+      これを使おうとすると fatal エラーが発生します。
+     </span>
+    </p></blockquote>
+  </p>
+  <p class="para">
+    次のものはリファレンスで渡すことが可能です。
+    <ul class="itemizedlist">
+     <li class="listitem">
+      <span class="simpara">
+       変数、すなわち、<em>foo($a)</em>
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       new 命令、すなわち、<em>foo(new foobar())</em>
+      </span>
+     </li>
+     <li class="listitem">
+      <p class="para">
+       関数から返されるリファレンスは、次のようになります。
+       <div class="informalexample">
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">foo</span><span style="color: #007700">(&amp;</span><span style="color: #0000BB">$var</span><span style="color: #007700">)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$var</span><span style="color: #007700">++;<br />}<br />function&nbsp;&amp;</span><span style="color: #0000BB">bar</span><span style="color: #007700">()<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$a</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">foo</span><span style="color: #007700">(</span><span style="color: #0000BB">bar</span><span style="color: #007700">());<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+       </div>
+       <a href="language.references.return.html" class="link">リファレンスによる
+       返り値</a> に関する説明も参照ください。
+      </p>
+     </li>
+    </ul>
+   </p>
+   <p class="para">
+    他の式は、結果が未定義となるため、リファレンスで渡すべきではありません。
+    例えば、リファレンスで渡す次の例は、無効です。
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">foo</span><span style="color: #007700">(&amp;</span><span style="color: #0000BB">$var</span><span style="color: #007700">)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$var</span><span style="color: #007700">++;<br />}<br />function&nbsp;</span><span style="color: #0000BB">bar</span><span style="color: #007700">()&nbsp;</span><span style="color: #FF8000">//&nbsp;&amp;&nbsp;がないことに注意<br /></span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$a</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">foo</span><span style="color: #007700">(</span><span style="color: #0000BB">bar</span><span style="color: #007700">());&nbsp;</span><span style="color: #FF8000">//&nbsp;PHP&nbsp;5.0.5&nbsp;以降、致命的なエラーが発生する<br /><br /></span><span style="color: #0000BB">foo</span><span style="color: #007700">(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;式、変数ではない<br /></span><span style="color: #0000BB">foo</span><span style="color: #007700">(</span><span style="color: #0000BB">5</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;致命的なエラーが発生する<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+    以上の説明は、PHP 4.0.4 以降用です。
+   </p>
+  </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113496""></a>
+  <div class="note">
+   <strong class="user">Aycan Yat</strong>
+   <a href="#113496" class="date">20-Oct-2013 03:12</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Sometimes you might wish to modify value of an existing variable by its name. This is easily accomplishable with a combination of using "passing by reference" and "variable variables".<br />
+<br />
+$first_var = 1;<br />
+$second_var = 2;<br />
+$third_var = 3;<br />
+<br />
+$which_one = array_rand('first', 'second', 'third');<br />
+//Let's consider the result is "second".<br />
+<br />
+$modifier = $$which_one;&nbsp; //Now $modifier has value 2.<br />
+$modifier++; //Now $modifier's value is 3.<br />
+echo $second_var; //Prints out 2<br />
+<br />
+//Consider we wish to modify the value of $second_var<br />
+$modifier = &amp;$$which_one;&nbsp; //Simply passing by reference<br />
+$modifier++; //Now value of $second_var is 3 too.<br />
+echo $second_var; //Prints out 3<br />
+<br />
+It's that simple!</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="109550""></a>
+  <div class="note">
+   <strong class="user">diabolos @t gmail dot com</strong>
+   <a href="#109550" class="date">27-Jul-2012 11:46</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="comment">/*<br />
+<br />
+&nbsp; This function internally swaps the contents between <br />
+&nbsp; two simple variables using 'passing by reference'.<br />
+<br />
+&nbsp; Some programming languages have such a swap function <br />
+&nbsp; built in, but PHP seems to lack such a function.&nbsp; So, <br />
+&nbsp; one was created to fill the need.&nbsp; It only handles <br />
+&nbsp; simple, single variables, not arrays, but it is<br />
+&nbsp; still a very handy tool to have.<br />
+<br />
+&nbsp; No value is actually returned by this function, but <br />
+&nbsp; the contents of the indicated variables will be <br />
+&nbsp; exchanged (swapped) after the call.<br />
+*/<br />
+<br />
+// ------------------------------------------<br />
+// Demo call of the swap(...) function below.<br />
+<br />
+&nbsp;</span><span class="default">$a </span><span class="keyword">= </span><span class="default">123.456</span><span class="keyword">;<br />
+&nbsp;</span><span class="default">$b </span><span class="keyword">= </span><span class="string">'abcDEF'</span><span class="keyword">;<br />
+&nbsp; <br />
+&nbsp;print </span><span class="string">"&lt;pre&gt;Define:\na = </span><span class="default">$a</span><span class="string">\nb = '</span><span class="default">$b</span><span class="string">'&lt;/pre&gt;"</span><span class="keyword">;<br />
+&nbsp;</span><span class="default">swap</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">,</span><span class="default">$b</span><span class="keyword">);<br />
+&nbsp;print </span><span class="string">"&lt;pre&gt;After swap(a,b):\na = '</span><span class="default">$a</span><span class="string">'\nb = </span><span class="default">$b</span><span class="string">&lt;/pre&gt;"</span><span class="keyword">;<br />
+<br />
+</span><span class="comment">// -------------------------------<br />
+<br />
+&nbsp;&nbsp; </span><span class="keyword">function </span><span class="default">swap </span><span class="keyword">(&amp;</span><span class="default">$arg1</span><span class="keyword">, &amp;</span><span class="default">$arg2</span><span class="keyword">)<br />
+{<br />
+<br />
+</span><span class="comment">// Swap contents of indicated variables.<br />
+&nbsp;&nbsp; </span><span class="default">$w</span><span class="keyword">=</span><span class="default">$arg1</span><span class="keyword">;&nbsp;&nbsp; </span><span class="default">$arg1</span><span class="keyword">=</span><span class="default">$arg2</span><span class="keyword">;&nbsp;&nbsp; </span><span class="default">$arg2</span><span class="keyword">=</span><span class="default">$w</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="106208""></a>
+  <div class="note">
+   <strong class="user">jocelyn dot heuze at gmail dot com</strong>
+   <a href="#106208" class="date">19-Oct-2011 07:12</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Please note that you can't pass NULL to a function by reference, unless it's as a default value.<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="keyword">function </span><span class="default">foo</span><span class="keyword">(&amp;</span><span class="default">$a </span><span class="keyword">= </span><span class="default">NULL</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; if (</span><span class="default">$a </span><span class="keyword">=== </span><span class="default">NULL</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="string">"NULL\n"</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; } else {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="string">"</span><span class="default">$a</span><span class="string">\n"</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+<br />
+</span><span class="default">foo</span><span class="keyword">(); </span><span class="comment">// "NULL"<br />
+</span><span class="default">foo</span><span class="keyword">(</span><span class="default">5</span><span class="keyword">); </span><span class="comment">// "5"<br />
+</span><span class="default">foo</span><span class="keyword">(</span><span class="default">NULL</span><span class="keyword">); </span><span class="comment">// Produces an error<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="103794""></a>
+  <div class="note">
+   <strong class="user">4d88 dot results at gmail dot com</strong>
+   <a href="#103794" class="date">04-May-2011 05:15</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This is the way how we use pointer to access variable inside the class.<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">class </span><span class="default">talker</span><span class="keyword">{<br />
+<br />
+&nbsp;&nbsp;&nbsp; private </span><span class="default">$data </span><span class="keyword">= </span><span class="string">'Hi'</span><span class="keyword">;<br />
+<br />
+&nbsp;&nbsp;&nbsp; public function &amp; </span><span class="default">get</span><span class="keyword">(){<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">data</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; public function </span><span class="default">out</span><span class="keyword">(){<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">data</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }&nbsp; &nbsp; <br />
+<br />
+}<br />
+<br />
+</span><span class="default">$aa </span><span class="keyword">= new </span><span class="default">talker</span><span class="keyword">();<br />
+</span><span class="default">$d </span><span class="keyword">= &amp;</span><span class="default">$aa</span><span class="keyword">-&gt;</span><span class="default">get</span><span class="keyword">();<br />
+<br />
+</span><span class="default">$aa</span><span class="keyword">-&gt;</span><span class="default">out</span><span class="keyword">();<br />
+</span><span class="default">$d </span><span class="keyword">= </span><span class="string">'How'</span><span class="keyword">;<br />
+</span><span class="default">$aa</span><span class="keyword">-&gt;</span><span class="default">out</span><span class="keyword">();<br />
+</span><span class="default">$d </span><span class="keyword">= </span><span class="string">'Are'</span><span class="keyword">;<br />
+</span><span class="default">$aa</span><span class="keyword">-&gt;</span><span class="default">out</span><span class="keyword">();<br />
+</span><span class="default">$d </span><span class="keyword">= </span><span class="string">'You'</span><span class="keyword">;<br />
+</span><span class="default">$aa</span><span class="keyword">-&gt;</span><span class="default">out</span><span class="keyword">();<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+the output is "HiHowAreYou"</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="99549""></a>
+  <div class="note">
+   <strong class="user">northhero at gmail dot com</strong>
+   <a href="#99549" class="date">24-Aug-2010 09:25</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Someone mentioned that passing reference doesn't work as&nbsp; expected from within call_user_func(). For example:<br />
+<br />
+<span class="default">&lt;?php<br />
+$string </span><span class="keyword">= </span><span class="string">'string'</span><span class="keyword">; <br />
+function </span><span class="default">change</span><span class="keyword">(&amp;</span><span class="default">$str</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$str </span><span class="keyword">= </span><span class="string">'str'</span><span class="keyword">;<br />
+}<br />
+</span><span class="default">call_user_func</span><span class="keyword">(</span><span class="string">'change'</span><span class="keyword">, </span><span class="default">$string</span><span class="keyword">);<br />
+echo </span><span class="default">$string</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+output:<br />
+string&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; //not as expected 'str'<br />
+<br />
+Here we could assume call_user_func as below<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">call_user_funct</span><span class="keyword">(</span><span class="default">$func</span><span class="keyword">, </span><span class="default">$param</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$func</span><span class="keyword">(</span><span class="default">$param</span><span class="keyword">);<br />
+}<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+As calling $func() inside call_user_funct, here is change(), the variable $param is copied to a third variable then the temp variable is passed to the $func. So $str only hold the reference of the temp variable inside change().<br />
+Of course , if we pass&nbsp; &amp;$string directly to call_user_func we could always get the result as expected (str).</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="99546""></a>
+  <div class="note">
+   <strong class="user">northhero at gmail dot com</strong>
+   <a href="#99546" class="date">24-Aug-2010 04:02</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Passing variable reference to function instead of declaring the function parameter type to reference also could get the result as expected. <br />
+<br />
+<span class="default">&lt;?php<br />
+$string </span><span class="keyword">= </span><span class="string">'string'</span><span class="keyword">;<br />
+function </span><span class="default">change</span><span class="keyword">(</span><span class="default">$str</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$str </span><span class="keyword">= </span><span class="string">'str'</span><span class="keyword">;<br />
+}<br />
+</span><span class="default">change</span><span class="keyword">(&amp;</span><span class="default">$string</span><span class="keyword">);<br />
+echo </span><span class="default">$string</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+yeild<br />
+<br />
+str</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="96098""></a>
+  <div class="note">
+   <strong class="user">rvw at cosninix dot com</strong>
+   <a href="#96098" class="date">08-Feb-2010 11:13</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Watch out that passing an uninitialised variable to a function will create the variable and will NOT give a NOTICE-undefined variable:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">ifnull</span><span class="keyword">(&amp;</span><span class="default">$v</span><span class="keyword">,</span><span class="default">$default</span><span class="keyword">) { <br />
+&nbsp;&nbsp; if (isset(</span><span class="default">$v</span><span class="keyword">)) return </span><span class="default">$v</span><span class="keyword">;<br />
+&nbsp;&nbsp; return </span><span class="default">$default</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="default">$p</span><span class="keyword">=array();<br />
+</span><span class="default">$p</span><span class="keyword">[</span><span class="string">'apple'</span><span class="keyword">]=</span><span class="default">3</span><span class="keyword">;<br />
+echo </span><span class="default">ifnull</span><span class="keyword">(</span><span class="default">$p</span><span class="keyword">[</span><span class="string">'apple'</span><span class="keyword">],</span><span class="default">4</span><span class="keyword">);&nbsp;&nbsp; -&gt; </span><span class="default">3<br />
+</span><span class="keyword">echo </span><span class="default">ifnull</span><span class="keyword">(</span><span class="default">$p</span><span class="keyword">[</span><span class="string">'pear'</span><span class="keyword">],</span><span class="default">5</span><span class="keyword">);&nbsp; &nbsp; -&gt; </span><span class="default">5&nbsp; No </span><span class="string">"undefined index" </span><span class="default">here</span><span class="keyword">. <br />
+if (isset(</span><span class="default">$p</span><span class="keyword">[</span><span class="string">'pear'</span><span class="keyword">])) echo </span><span class="string">"pear is set"</span><span class="keyword">; else echo </span><span class="string">"pear not set"</span><span class="keyword">; -&gt; </span><span class="default">not set<br />
+</span><span class="keyword">if (</span><span class="default">array_key_exists</span><span class="keyword">(</span><span class="string">'pear'</span><span class="keyword">,</span><span class="default">$p</span><span class="keyword">)) echo </span><span class="string">"pear exists"</span><span class="keyword">; else echo </span><span class="string">"pear doesn't exist"</span><span class="keyword">;&nbsp; -&gt; </span><span class="default">pear exists</span><span class="keyword">!<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="92348""></a>
+  <div class="note">
+   <strong class="user">Tom</strong>
+   <a href="#92348" class="date">21-Jul-2009 01:54</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Still puzzled with references?<br />
+<br />
+See this code:<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">a</span><span class="keyword">(&amp;</span><span class="default">$a</span><span class="keyword">, &amp;</span><span class="default">$b</span><span class="keyword">) { </span><span class="default">$a </span><span class="keyword">=&amp; </span><span class="default">$b</span><span class="keyword">; }<br />
+</span><span class="default">$a </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br />
+</span><span class="default">$b </span><span class="keyword">= </span><span class="default">2</span><span class="keyword">;<br />
+</span><span class="default">a</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">, </span><span class="default">$b</span><span class="keyword">);<br />
+</span><span class="default">$b </span><span class="keyword">= </span><span class="default">3</span><span class="keyword">;<br />
+print </span><span class="default">$a</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+If you expect the output to be 3, you are wrong. $a remains unchanged and the output is 1. The reference was NOT assigned to $a.<br />
+<br />
+Now let's try this one:<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">a</span><span class="keyword">(&amp;</span><span class="default">$a</span><span class="keyword">, &amp;</span><span class="default">$b</span><span class="keyword">) { </span><span class="default">$a </span><span class="keyword">= </span><span class="default">$b</span><span class="keyword">; }<br />
+</span><span class="default">$a </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br />
+</span><span class="default">$b </span><span class="keyword">= </span><span class="default">2</span><span class="keyword">;<br />
+</span><span class="default">a</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">, </span><span class="default">$b</span><span class="keyword">);<br />
+</span><span class="default">$b </span><span class="keyword">= </span><span class="default">3</span><span class="keyword">;<br />
+print </span><span class="default">$a</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+If you thought that now the output would be 3, you are wrong again. It's 2.<br />
+<br />
+However this:<br />
+<span class="default">&lt;?php<br />
+$a </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br />
+</span><span class="default">$b </span><span class="keyword">= </span><span class="default">2</span><span class="keyword">;<br />
+</span><span class="default">$a </span><span class="keyword">=&amp; </span><span class="default">$b</span><span class="keyword">;<br />
+</span><span class="default">$b </span><span class="keyword">= </span><span class="default">3</span><span class="keyword">;<br />
+print </span><span class="default">$a</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span>Actually outputs 3.<br />
+<br />
+But how about Objects? Objects, you might think, are always passed by reference. So this should work!<br />
+<br />
+Well, let's check it out:<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">a</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">, </span><span class="default">$b</span><span class="keyword">) { </span><span class="default">$a </span><span class="keyword">= </span><span class="default">$b</span><span class="keyword">; }<br />
+</span><span class="default">$a </span><span class="keyword">= new </span><span class="default">StdClass</span><span class="keyword">;<br />
+</span><span class="default">$a</span><span class="keyword">-&gt;</span><span class="default">i </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br />
+</span><span class="default">$b </span><span class="keyword">= new </span><span class="default">StdClass</span><span class="keyword">;<br />
+</span><span class="default">$b</span><span class="keyword">-&gt;</span><span class="default">i </span><span class="keyword">= </span><span class="default">2</span><span class="keyword">;<br />
+</span><span class="default">a</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">, </span><span class="default">$b</span><span class="keyword">);<br />
+</span><span class="default">$b</span><span class="keyword">-&gt;</span><span class="default">i </span><span class="keyword">= </span><span class="default">3</span><span class="keyword">;<br />
+print </span><span class="default">$a</span><span class="keyword">-&gt;</span><span class="default">i</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span>Outputs 1! So obviously you are wrong again.<br />
+<br />
+What's the reason? Simple! The first (and the last) code example above translates to this fragment:<br />
+<span class="default">&lt;?php<br />
+$a </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br />
+</span><span class="default">$b </span><span class="keyword">= </span><span class="default">2</span><span class="keyword">;<br />
+</span><span class="default">$a1 </span><span class="keyword">=&amp; </span><span class="default">$a</span><span class="keyword">;<br />
+</span><span class="default">$b1 </span><span class="keyword">=&amp; </span><span class="default">$b</span><span class="keyword">;<br />
+</span><span class="default">$a1 </span><span class="keyword">=&amp; </span><span class="default">$b1</span><span class="keyword">;<br />
+</span><span class="default">$b </span><span class="keyword">= </span><span class="default">3</span><span class="keyword">;<br />
+print </span><span class="default">$a</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Now THAT makes it clear, right?<br />
+<br />
+If you are referencing a reference you are NOT making the original pointer change it's destination like in Java or C#, because it is not dereferenced automatically. Instead you are overwriting the local pointer. You will make $a1 point to $b, which has no influence on the original $a.<br />
+<br />
+This is different from all you might expect if you have been programming in other OO-languages before, so you should keep that in mind.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="85696""></a>
+  <div class="note">
+   <strong class="user">me at khurram dot nl</strong>
+   <a href="#85696" class="date">12-Sep-2008 04:55</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+in php 5.2.0 for classes<br />
+<br />
+$obj1&nbsp; =&nbsp; $obj2;<br />
+is equal to<br />
+$obj1&nbsp; =&nbsp; &amp;$obj2;"<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="keyword">class </span><span class="default">z </span><span class="keyword">{<br />
+&nbsp;&nbsp;&nbsp; public </span><span class="default">$var </span><span class="keyword">= </span><span class="string">''</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp; <br />
+</span><span class="default">$a </span><span class="keyword">= new </span><span class="default">z</span><span class="keyword">();<br />
+</span><span class="default">$b&nbsp;&nbsp; </span><span class="keyword">=&amp;&nbsp; </span><span class="default">$a</span><span class="keyword">;<br />
+</span><span class="default">$c&nbsp; </span><span class="keyword">= </span><span class="default">$a</span><span class="keyword">;<br />
+<br />
+</span><span class="default">$a</span><span class="keyword">-&gt;</span><span class="default">var </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">;<br />
+<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">);<br />
+print </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$b</span><span class="keyword">);<br />
+print </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$c</span><span class="keyword">);<br />
+print </span><span class="string">'&lt;br&gt;&lt;br&gt;'</span><span class="keyword">;<br />
+<br />
+</span><span class="default">$a</span><span class="keyword">-&gt;</span><span class="default">var </span><span class="keyword">= </span><span class="default">2</span><span class="keyword">;<br />
+<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">);<br />
+print </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$b</span><span class="keyword">);<br />
+print </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$c</span><span class="keyword">);<br />
+print </span><span class="string">'&lt;br&gt;&lt;br&gt;'</span><span class="keyword">;<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="78799""></a>
+  <div class="note">
+   <strong class="user">Chuckie</strong>
+   <a href="#78799" class="date">28-Oct-2007 05:33</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you intend to pass a copy of an object to a function, then you should use 'clone' to create a copy explicity.&nbsp; In PHP5, objects appear to always be passed by reference (unlike PHP4), but this is not strictly true.<br />
+<br />
+The way I think of it is that if you use '=&amp;' (or you explicitly pass to a function by reference) the variable behaves like a C++ reference, except that you can re-assign the reference to something else (which is not possible in C++).<br />
+<br />
+When you use '=' with an object, it is more like you are dealing with a pointer (if you think in this way, the '-&gt;' access element through pointer operator has the same behaviour in C++).<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="keyword">class </span><span class="default">z </span><span class="keyword">{<br />
+&nbsp;&nbsp;&nbsp; public </span><span class="default">$var </span><span class="keyword">= </span><span class="string">''</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp; <br />
+function </span><span class="default">f</span><span class="keyword">(&amp;</span><span class="default">$obj1</span><span class="keyword">, </span><span class="default">$obj2</span><span class="keyword">, </span><span class="default">$obj3</span><span class="keyword">, </span><span class="default">$obj4</span><span class="keyword">) {<br />
+&nbsp; </span><span class="default">$obj1</span><span class="keyword">-&gt;</span><span class="default">var </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">;<br />
+&nbsp; </span><span class="default">$obj2</span><span class="keyword">-&gt;</span><span class="default">var </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">;<br />
+&nbsp; </span><span class="default">$obj3 </span><span class="keyword">= new </span><span class="default">z</span><span class="keyword">();<br />
+&nbsp; </span><span class="default">$obj3</span><span class="keyword">-&gt;</span><span class="default">var </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">;<br />
+&nbsp; </span><span class="default">$obj4 </span><span class="keyword">= clone </span><span class="default">$obj4</span><span class="keyword">;<br />
+&nbsp; </span><span class="default">$obj4</span><span class="keyword">-&gt;</span><span class="default">var </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">;<br />
+&nbsp; }<br />
+</span><span class="default">$a </span><span class="keyword">= new </span><span class="default">z</span><span class="keyword">();<br />
+</span><span class="default">$b </span><span class="keyword">= new </span><span class="default">z</span><span class="keyword">();<br />
+</span><span class="default">$c </span><span class="keyword">= new </span><span class="default">z</span><span class="keyword">();<br />
+</span><span class="default">$d </span><span class="keyword">= new </span><span class="default">z</span><span class="keyword">();<br />
+</span><span class="default">f</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">, </span><span class="default">$b</span><span class="keyword">, </span><span class="default">$c</span><span class="keyword">, </span><span class="default">$d</span><span class="keyword">);<br />
+<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">); </span><span class="comment">// object(z)#1 (1) { ["var"] =&gt; NULL }<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$b</span><span class="keyword">); </span><span class="comment">// object(z)#2 (1) { ["var"] =&gt; NULL }<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$c</span><span class="keyword">); </span><span class="comment">// object(z)#3 (1) { ["var"] =&gt; string(0) "" }<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$d</span><span class="keyword">); </span><span class="comment">// object(z)#4 (1) { ["var"] =&gt; string(0) "" }<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Stephen<br />
+08-Jul-2007 04:54<br />
+jcastromail at yahoo dot es stated:<br />
+****<br />
+in php 5.2.0 for classes<br />
+<br />
+$obj1&nbsp; =&nbsp; $obj2;<br />
+is equal to<br />
+$obj1&nbsp; =&nbsp; &amp;$obj2;"<br />
+****<br />
+<br />
+However, that is not completely true. While both = and =&amp; will make a variable refer to the same object as the variable being assigned to it, the explicit reference assignment (=&amp;) will keep the two variables joined to each other, whereas the assignment reference (=) will make the assigned variable an independent pointer to the object. An example should make this clearer:<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="keyword">class </span><span class="default">z </span><span class="keyword">{<br />
+&nbsp;&nbsp;&nbsp; public </span><span class="default">$var </span><span class="keyword">= </span><span class="string">''</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp; <br />
+</span><span class="default">$a </span><span class="keyword">= new </span><span class="default">z</span><span class="keyword">();<br />
+</span><span class="default">$b&nbsp;&nbsp; </span><span class="keyword">=&amp;&nbsp; </span><span class="default">$a</span><span class="keyword">;<br />
+</span><span class="default">$c&nbsp; </span><span class="keyword">= </span><span class="default">$a</span><span class="keyword">;<br />
+<br />
+</span><span class="default">$a</span><span class="keyword">-&gt;</span><span class="default">var </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">;<br />
+<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">);<br />
+print </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$b</span><span class="keyword">);<br />
+print </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$c</span><span class="keyword">);<br />
+print </span><span class="string">'&lt;br&gt;&lt;br&gt;'</span><span class="keyword">;<br />
+<br />
+</span><span class="default">$a </span><span class="keyword">= </span><span class="default">2</span><span class="keyword">;<br />
+<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">);<br />
+print </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$b</span><span class="keyword">);<br />
+print </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$c</span><span class="keyword">);<br />
+print </span><span class="string">'&lt;br&gt;&lt;br&gt;'</span><span class="keyword">;<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+This outputs:<br />
+<br />
+object(z)#1 (1) { ["var"]=&gt; NULL }<br />
+object(z)#1 (1) { ["var"]=&gt; NULL }<br />
+object(z)#1 (1) { ["var"]=&gt; NULL }<br />
+<br />
+int(2)<br />
+int(2)<br />
+object(z)#1 (1) { ["var"]=&gt; NULL }<br />
+<br />
+So although all 3 variables reflect changes in the object, if you reassign one of the variables that were previously joined by reference to a different value, BOTH of those variables will adopt the new value.<br />
+<br />
+Perhaps this is because =&amp; statements join the 2 variable names in the symbol table, whereas = statements applied to objects simply create a new independent entry in the symbol table that simply points to the same location as other entries. I don't know for sure - I don't think this behavior is documented in the PHP manual, so perhaps somebody with more knowledge of PHP's internals can clarify what is going on.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="76727""></a>
+  <div class="note">
+   <strong class="user">sony-santos at bol dot com dot br</strong>
+   <a href="#76727" class="date">27-Jul-2007 10:06</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Just another workaround for default values to parameters by ref in response to mogmios, bobbykjack, andrzej, fdelizy, petruzanautico, Train Boy, and php community.<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="comment"># php 4.3.10<br />
+<br />
+# note there's no &amp; in function declaration:<br />
+</span><span class="keyword">function </span><span class="default">f</span><span class="keyword">(</span><span class="default">$a </span><span class="keyword">= array(</span><span class="string">'default value'</span><span class="keyword">)) {<br />
+&nbsp; </span><span class="default">$a</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">] .= </span><span class="string">" processed&lt;br/&gt;"</span><span class="keyword">;<br />
+&nbsp; echo </span><span class="default">$a</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">];<br />
+}<br />
+<br />
+</span><span class="default">f</span><span class="keyword">(); </span><span class="comment"># default value processed<br />
+<br />
+</span><span class="default">$b </span><span class="keyword">= </span><span class="string">'foo'</span><span class="keyword">;<br />
+<br />
+</span><span class="default">f</span><span class="keyword">(array(&amp;</span><span class="default">$b</span><span class="keyword">)); </span><span class="comment"># foo processed (note the &amp; here)<br />
+<br />
+</span><span class="keyword">echo </span><span class="default">$b</span><span class="keyword">; </span><span class="comment"># foo processed<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="76282""></a>
+  <div class="note">
+   <strong class="user">doron</strong>
+   <a href="#76282" class="date">09-Jul-2007 03:06</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I found that <br />
+<br />
+f1(&amp;$par=0);<br />
+<br />
+behaves differently in 5.2.4 thatn in 5.0.4<br />
+in 5.2.4 the par is assined to zero AFTER function call <br />
+and thus, par is allways ZERO !<br />
+in 5.0.4 in is INITIALIZED to zero, BEFORE function call!</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="69901""></a>
+  <div class="note">
+   <strong class="user">petruzanautico at yahoo dot com dot ar</strong>
+   <a href="#69901" class="date">25-Sep-2006 10:30</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Actually there is a way to give a default value to a reference argument, if you need it badly.<br />
+It fires a warning, but you can prefix the function call with an @.<br />
+Of course, you cannot pass literals by reference.<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">byref</span><span class="keyword">( &amp;</span><span class="default">$ref </span><span class="keyword">)<br />
+{<br />
+&nbsp; if( !isset( </span><span class="default">$ref </span><span class="keyword">) )<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$ref </span><span class="keyword">= </span><span class="string">"default value"</span><span class="keyword">;<br />
+&nbsp; print </span><span class="default">$ref</span><span class="keyword">; </span><span class="comment">// default or given value? who knows!<br />
+</span><span class="keyword">}<br />
+<br />
+</span><span class="default">$hi </span><span class="keyword">= </span><span class="string">"some value "</span><span class="keyword">;<br />
+</span><span class="default">byref</span><span class="keyword">( </span><span class="default">$hi </span><span class="keyword">); </span><span class="comment">// works fine<br />
+</span><span class="keyword">@</span><span class="default">byref</span><span class="keyword">(); </span><span class="comment">// missing argument warning, but works<br />
+</span><span class="default">byref</span><span class="keyword">( </span><span class="string">"hey!" </span><span class="keyword">); </span><span class="comment">// this will raise a fatal error<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="68835""></a>
+  <div class="note">
+   <strong class="user">fdelizy at unfreeze dot net</strong>
+   <a href="#68835" class="date">12-Aug-2006 06:32</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Some have noticed that reference parameters can not be assigned a default value. It's actually wrong, they can be assigned a value as the other variables, but can't have a "default reference value", for instance this code won't compile :<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">use_reference</span><span class="keyword">( </span><span class="default">$someParam</span><span class="keyword">, &amp;</span><span class="default">$param </span><span class="keyword">=&amp; </span><span class="default">$POST </span><span class="keyword">)<br />
+{<br />
+&nbsp;...<br />
+} <br />
+</span><span class="default">?&gt;<br />
+</span><br />
+But this one will work :<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">use_reference</span><span class="keyword">( </span><span class="default">$someParam</span><span class="keyword">, &amp;</span><span class="default">$param </span><span class="keyword">= </span><span class="default">null </span><span class="keyword">)<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+So here is a workaround to have a default value for reference parameters :<br />
+<br />
+<span class="default">&lt;?php<br />
+$array1 </span><span class="keyword">= array ( </span><span class="string">'test'</span><span class="keyword">, </span><span class="string">'test2' </span><span class="keyword">);<br />
+<br />
+function </span><span class="default">AddTo</span><span class="keyword">( </span><span class="default">$key</span><span class="keyword">, </span><span class="default">$val</span><span class="keyword">, &amp;</span><span class="default">$array </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">)<br />
+{<br />
+&nbsp;&nbsp;&nbsp; if ( </span><span class="default">$array </span><span class="keyword">== </span><span class="default">null </span><span class="keyword">)<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$array </span><span class="keyword">=&amp; </span><span class="default">$_POST</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$array</span><span class="keyword">[ </span><span class="default">$key </span><span class="keyword">] = </span><span class="default">$val </span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="default">AddTo</span><span class="keyword">( </span><span class="string">"indirect test"</span><span class="keyword">, </span><span class="string">"test"</span><span class="keyword">, </span><span class="default">$array1 </span><span class="keyword">);<br />
+</span><span class="default">AddTo</span><span class="keyword">( </span><span class="string">"indirect POST test"</span><span class="keyword">, </span><span class="string">"test" </span><span class="keyword">);<br />
+<br />
+echo </span><span class="string">"Array 1 " </span><span class="keyword">;<br />
+</span><span class="default">print_r </span><span class="keyword">( </span><span class="default">$array1</span><span class="keyword">);<br />
+<br />
+echo </span><span class="string">"_POST "</span><span class="keyword">;<br />
+</span><span class="default">print_r</span><span class="keyword">( </span><span class="default">$_POST </span><span class="keyword">);<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+And this scripts output is :<br />
+<br />
+Array 1 Array<br />
+(<br />
+&nbsp;&nbsp;&nbsp; [0] =&gt; test<br />
+&nbsp;&nbsp;&nbsp; [1] =&gt; test2<br />
+&nbsp;&nbsp;&nbsp; [indirect test] =&gt; test<br />
+)<br />
+_POST Array<br />
+(<br />
+&nbsp;&nbsp;&nbsp; [indirect POST test] =&gt; test<br />
+)<br />
+<br />
+Of course that means you can only assign default reference to globals or super globals variables. <br />
+<br />
+Have fun</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="56820""></a>
+  <div class="note">
+   <strong class="user">rmarscher</strong>
+   <a href="#56820" class="date">16-Sep-2005 12:42</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Not sure if this is obvious to everyone, but if you pass an object by reference into a function and then set that variable to the reference of a new object, the initial variable outside the function is still pointing to the original object.&nbsp; <br />
+<br />
+It became obvious to me why this is the case when I made a little diagram of what's actually happening in the system's memory, but before that when I was just looking at the code, it took me a while of testing before I realized what was going on.<br />
+<br />
+Here's an example (I haven't tried in PHP5, but I would guess it works the same):<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">class </span><span class="default">Foo </span><span class="keyword">{}<br />
+class </span><span class="default">Bar </span><span class="keyword">{}<br />
+<br />
+function &amp; </span><span class="default">createBar</span><span class="keyword">()<br />
+{<br />
+&nbsp; return new </span><span class="default">Bar</span><span class="keyword">;<br />
+}<br />
+<br />
+function </span><span class="default">setBar</span><span class="keyword">(&amp; </span><span class="default">$obj</span><span class="keyword">)<br />
+{<br />
+&nbsp; echo </span><span class="default">get_class</span><span class="keyword">(</span><span class="default">$obj</span><span class="keyword">) . </span><span class="string">"\n"</span><span class="keyword">;<br />
+&nbsp; </span><span class="default">$obj </span><span class="keyword">= &amp; </span><span class="default">createBar</span><span class="keyword">();<br />
+&nbsp; echo </span><span class="default">get_class</span><span class="keyword">(</span><span class="default">$obj</span><span class="keyword">) . </span><span class="string">"\n"</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="default">$test </span><span class="keyword">= new </span><span class="default">Foo</span><span class="keyword">;<br />
+</span><span class="default">setBar</span><span class="keyword">(</span><span class="default">$test</span><span class="keyword">);<br />
+echo </span><span class="default">get_class</span><span class="keyword">(</span><span class="default">$test</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Outputs:<br />
+foo<br />
+bar<br />
+foo</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="49950""></a>
+  <div class="note">
+   <strong class="user">pillepop2003 at yahoo dot de</strong>
+   <a href="#49950" class="date">13-Feb-2005 05:08</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+PHP has a strange behavior when passing a part of an array by reference, that does not yet exist.<br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">function </span><span class="default">func</span><span class="keyword">(&amp;</span><span class="default">$a</span><span class="keyword">)<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// void();<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">}<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$a</span><span class="keyword">[</span><span class="string">'one'</span><span class="keyword">] =</span><span class="default">1</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">func</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">[</span><span class="string">'two'</span><span class="keyword">]);<br />
+</span><span class="default">?&gt;</span>&nbsp; &nbsp; <br />
+<br />
+var_dump($a) returns<br />
+<br />
+&nbsp;&nbsp;&nbsp; array(2) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ["one"]=&gt;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; int(1)<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ["two"]=&gt;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; NULL<br />
+&nbsp;&nbsp;&nbsp; }<br />
+<br />
+...which seems to be not intentional!</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="48484""></a>
+  <div class="note">
+   <strong class="user">obscvresovl at NOSPAM dot hotmail dot com</strong>
+   <a href="#48484" class="date">26-Dec-2004 07:51</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Just a simple note...<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+$num </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br />
+<br />
+function </span><span class="default">blah</span><span class="keyword">(&amp;</span><span class="default">$var</span><span class="keyword">)<br />
+{<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$var</span><span class="keyword">++;<br />
+}<br />
+<br />
+</span><span class="default">blah</span><span class="keyword">(</span><span class="default">$num</span><span class="keyword">);<br />
+<br />
+echo </span><span class="default">$num</span><span class="keyword">; </span><span class="comment">#2<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+<span class="default">&lt;?php<br />
+<br />
+$num </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br />
+<br />
+function </span><span class="default">blah</span><span class="keyword">()<br />
+{<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$var </span><span class="keyword">=&amp; </span><span class="default">$GLOBALS</span><span class="keyword">[</span><span class="string">"num"</span><span class="keyword">];<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$var</span><span class="keyword">++;<br />
+}<br />
+<br />
+</span><span class="default">blah</span><span class="keyword">();<br />
+<br />
+echo </span><span class="default">$num</span><span class="keyword">; </span><span class="comment">#2<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Both codes do the same thing! The second code "explains" how passage of parameters by reference works.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="46077""></a>
+  <div class="note">
+   <strong class="user">jbr at diasparsoftware dot com</strong>
+   <a href="#46077" class="date">28-Sep-2004 06:46</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Strangely enough, I had to put "&amp;" on the call site, but not on the function parameter list, in order to get this to work. Here is the code:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">class </span><span class="default">TestRunner </span><span class="keyword">{<br />
+&nbsp;&nbsp;&nbsp; var </span><span class="default">$passed</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; var </span><span class="default">$failed</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; var </span><span class="default">$tests</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; function </span><span class="default">TestRunner</span><span class="keyword">() {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">passed </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">failed </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">tests </span><span class="keyword">= array();<br />
+&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp; function </span><span class="default">addTest</span><span class="keyword">(</span><span class="default">$test</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">tests</span><span class="keyword">[] = </span><span class="default">$test</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp; function </span><span class="default">signalFailed</span><span class="keyword">() {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">failed</span><span class="keyword">++;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; function </span><span class="default">runTests</span><span class="keyword">() {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; foreach (</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">tests </span><span class="keyword">as </span><span class="default">$i </span><span class="keyword">=&gt; </span><span class="default">$eachName</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">call_user_func</span><span class="keyword">(</span><span class="default">$eachName</span><span class="keyword">, &amp;</span><span class="default">$this</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; function </span><span class="default">report</span><span class="keyword">() {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">?&gt;<br />
+</span>&nbsp; &nbsp; &nbsp; &nbsp; &lt;p&gt;&lt;?= count($this-&gt;tests) ?&gt; run, &lt;?= $this-&gt;passed ?&gt; passed, &lt;?= $this-&gt;failed ?&gt; failed&lt;/p&gt;&nbsp; &nbsp; &nbsp; &nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <span class="default">&lt;?php<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">}<br />
+}<br />
+<br />
+function </span><span class="default">testNullStringIsEmpty</span><span class="keyword">(</span><span class="default">$testRunner</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$testRunner</span><span class="keyword">-&gt;</span><span class="default">signalFailed</span><span class="keyword">();<br />
+}<br />
+<br />
+</span><span class="default">$testRunner </span><span class="keyword">= new </span><span class="default">TestRunner</span><span class="keyword">;<br />
+</span><span class="default">$testRunner</span><span class="keyword">-&gt;</span><span class="default">addTest</span><span class="keyword">(</span><span class="string">"testNullStringIsEmpty"</span><span class="keyword">);<br />
+</span><span class="default">$testRunner</span><span class="keyword">-&gt;</span><span class="default">runTests</span><span class="keyword">();<br />
+</span><span class="default">$testRunner</span><span class="keyword">-&gt;</span><span class="default">report</span><span class="keyword">();<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Notice that testNullStringIsEmpty() does not declare that it wants a reference to a test runner, whereas on the function call site, we pass in &amp;$this. When I run this, I get "1 run, 0 passed, 1 failed"; but when I switch the location of the &amp; to the function parameter list, I get "1 run, 0 passed, 0 failed". This is the exact opposite to what the manual claims. I have no idea why that is.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="45554""></a>
+  <div class="note">
+   <strong class="user">Sergio Santana: ssantana at tlaloc dot imta dot mx</strong>
+   <a href="#45554" class="date">10-Sep-2004 05:25</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Sometimes we need functions for building or modifying arrays whose elements are to be references to other variables (arrays or objects for instance). In this example, I wrote two functions 'tst' and 'tst1' that perform this task. Note how the functions are written, and how they are used.<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">tst</span><span class="keyword">(&amp;</span><span class="default">$arr</span><span class="keyword">, </span><span class="default">$r</span><span class="keyword">) {<br />
+&nbsp; </span><span class="comment">// The argument '$arr' is declared to be passed by reference, <br />
+&nbsp; // but '$r' is not;<br />
+&nbsp; // however, in the function's body, we use a reference to <br />
+&nbsp; // the '$r' argument<br />
+&nbsp; <br />
+&nbsp; </span><span class="default">array_push</span><span class="keyword">(</span><span class="default">$arr</span><span class="keyword">, &amp;</span><span class="default">$r</span><span class="keyword">); <br />
+&nbsp; </span><span class="comment">// Alternatively, this also could be $arr[] = &amp;$r (in this case)<br />
+</span><span class="keyword">}<br />
+&nbsp; <br />
+</span><span class="default">$arr0 </span><span class="keyword">= array();&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// an empty array<br />
+</span><span class="default">$arr1 </span><span class="keyword">= array(</span><span class="default">1</span><span class="keyword">,</span><span class="default">2</span><span class="keyword">,</span><span class="default">3</span><span class="keyword">);&nbsp;&nbsp; </span><span class="comment">// the array to be referenced in $arr0<br />
+<br />
+// Note how we call the function:<br />
+</span><span class="default">tst</span><span class="keyword">(</span><span class="default">$arr0</span><span class="keyword">, &amp;</span><span class="default">$arr1</span><span class="keyword">); </span><span class="comment">// We are passing a reference to '$arr1' in the call !<br />
+<br />
+</span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$arr0</span><span class="keyword">); </span><span class="comment">// Contains just the reference to $arr1<br />
+<br />
+</span><span class="default">array_push</span><span class="keyword">(</span><span class="default">$arr0</span><span class="keyword">, </span><span class="default">5</span><span class="keyword">); </span><span class="comment">// we add another element to $arr0<br />
+</span><span class="default">array_push</span><span class="keyword">(</span><span class="default">$arr1</span><span class="keyword">, </span><span class="default">18</span><span class="keyword">); </span><span class="comment">// we add another element to $arr1 as well<br />
+<br />
+</span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$arr1</span><span class="keyword">);&nbsp; <br />
+</span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$arr0</span><span class="keyword">); </span><span class="comment">// Changes in $arr1 are reflected in $arr0<br />
+<br />
+// -----------------------------------------<br />
+// A simpler way to do this:<br />
+<br />
+</span><span class="keyword">function </span><span class="default">tst1</span><span class="keyword">(&amp;</span><span class="default">$arr</span><span class="keyword">, &amp;</span><span class="default">$r</span><span class="keyword">) {<br />
+&nbsp; </span><span class="comment">// Both arguments '$arr' and '$r" are declared to be passed by<br />
+&nbsp; // reference, <br />
+&nbsp; // again, in the function's body, we use a reference to <br />
+&nbsp; // the '$r' argument<br />
+&nbsp; <br />
+&nbsp; </span><span class="default">array_push</span><span class="keyword">(</span><span class="default">$arr</span><span class="keyword">, &amp;</span><span class="default">$r</span><span class="keyword">); <br />
+&nbsp; </span><span class="comment">// Alternatively, this also could be $arr[] = &amp;$r (in this case)<br />
+</span><span class="keyword">}<br />
+<br />
+&nbsp; <br />
+</span><span class="default">$arr0 </span><span class="keyword">= array();&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// an empty array<br />
+</span><span class="default">$arr1 </span><span class="keyword">= array(</span><span class="default">1</span><span class="keyword">,</span><span class="default">2</span><span class="keyword">,</span><span class="default">3</span><span class="keyword">);&nbsp;&nbsp; </span><span class="comment">// the array to be referenced in $arr0<br />
+<br />
+// Note how we call the function:<br />
+</span><span class="default">tst1</span><span class="keyword">(</span><span class="default">$arr0</span><span class="keyword">, </span><span class="default">$arr1</span><span class="keyword">); </span><span class="comment">// 'tst1' understands '$r' is a reference to '$arr1'<br />
+<br />
+</span><span class="keyword">echo </span><span class="string">"-------- 2nd. alternative ------------ &lt;br&gt;\n"</span><span class="keyword">;<br />
+<br />
+</span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$arr0</span><span class="keyword">); </span><span class="comment">// Contains just the reference to $arr1<br />
+<br />
+</span><span class="default">array_push</span><span class="keyword">(</span><span class="default">$arr0</span><span class="keyword">, </span><span class="default">5</span><span class="keyword">); </span><span class="comment">// we add another element to $arr0<br />
+</span><span class="default">array_push</span><span class="keyword">(</span><span class="default">$arr1</span><span class="keyword">, </span><span class="default">18</span><span class="keyword">);<br />
+<br />
+</span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$arr1</span><span class="keyword">);&nbsp; <br />
+</span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$arr0</span><span class="keyword">); </span><span class="comment">// Changes in $arr1 are reflected in $arr0<br />
+<br />
+// This outputs:<br />
+// X-Powered-By: PHP/4.1.2<br />
+// Content-type: text/html<br />
+// <br />
+// Array<br />
+// (<br />
+//&nbsp; &nbsp;&nbsp; [0] =&gt; Array<br />
+//&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; (<br />
+//&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [0] =&gt; 1<br />
+//&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [1] =&gt; 2<br />
+//&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [2] =&gt; 3<br />
+//&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; )<br />
+// <br />
+// )<br />
+// Array<br />
+// (<br />
+//&nbsp; &nbsp;&nbsp; [0] =&gt; 1<br />
+//&nbsp; &nbsp;&nbsp; [1] =&gt; 2<br />
+//&nbsp; &nbsp;&nbsp; [2] =&gt; 3<br />
+//&nbsp; &nbsp;&nbsp; [3] =&gt; 18<br />
+// )<br />
+// Array<br />
+// (<br />
+//&nbsp; &nbsp;&nbsp; [0] =&gt; Array<br />
+//&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; (<br />
+//&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [0] =&gt; 1<br />
+//&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [1] =&gt; 2<br />
+//&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [2] =&gt; 3<br />
+//&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [3] =&gt; 18<br />
+//&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; )<br />
+// <br />
+//&nbsp; &nbsp;&nbsp; [1] =&gt; 5<br />
+// )<br />
+// -------- 2nd. alternative ------------ <br />
+// Array<br />
+// (<br />
+//&nbsp; &nbsp;&nbsp; [0] =&gt; Array<br />
+//&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; (<br />
+//&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [0] =&gt; 1<br />
+//&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [1] =&gt; 2<br />
+//&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [2] =&gt; 3<br />
+//&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; )<br />
+// <br />
+// )<br />
+// Array<br />
+// (<br />
+//&nbsp; &nbsp;&nbsp; [0] =&gt; 1<br />
+//&nbsp; &nbsp;&nbsp; [1] =&gt; 2<br />
+//&nbsp; &nbsp;&nbsp; [2] =&gt; 3<br />
+//&nbsp; &nbsp;&nbsp; [3] =&gt; 18<br />
+// )<br />
+// Array<br />
+// (<br />
+//&nbsp; &nbsp;&nbsp; [0] =&gt; Array<br />
+//&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; (<br />
+//&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [0] =&gt; 1<br />
+//&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [1] =&gt; 2<br />
+//&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [2] =&gt; 3<br />
+//&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; [3] =&gt; 18<br />
+//&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; )<br />
+// <br />
+//&nbsp; &nbsp;&nbsp; [1] =&gt; 5<br />
+// )<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+In both cases we get the same result.<br />
+<br />
+I hope this is somehow useful<br />
+<br />
+Sergio.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="45310""></a>
+  <div class="note">
+   <strong class="user">ben at mekhaye dot net</strong>
+   <a href="#45310" class="date">01-Sep-2004 11:27</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Passing arrays by reference doesn't work as I expected from within call_user_func. <br />
+<br />
+I had:<br />
+<br />
+&nbsp; <span class="default">&lt;?php<br />
+&nbsp; $arr </span><span class="keyword">= Array();<br />
+&nbsp; </span><span class="default">call_user_func</span><span class="keyword">(Array(</span><span class="string">"ClassName"</span><span class="keyword">,</span><span class="string">"functionName"</span><span class="keyword">), </span><span class="default">$param1</span><span class="keyword">, </span><span class="default">$param2</span><span class="keyword">, </span><span class="default">$arr</span><span class="keyword">);<br />
+&nbsp; </span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$arr</span><span class="keyword">);<br />
+<br />
+&nbsp; class </span><span class="default">ClassName </span><span class="keyword">{<br />
+<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">functionName</span><span class="keyword">(</span><span class="default">$param1</span><span class="keyword">, </span><span class="default">$param2</span><span class="keyword">, &amp;</span><span class="default">$arr</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$arr</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">] = </span><span class="string">"apple"</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$arr</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">] = </span><span class="string">"banana"</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$arr</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp;&nbsp; } <br />
+&nbsp; }<br />
+&nbsp; </span><span class="default">?&gt;<br />
+</span><br />
+I expected the output to be like:<br />
+<br />
+&nbsp; Array ( [0] =&gt; "apple" [1] =&gt; "banana" )<br />
+&nbsp; Array ( [0] =&gt; "apple" [1] =&gt; "banana" )<br />
+<br />
+but instead it was only:<br />
+<br />
+&nbsp; Array ( [0] =&gt; "apple" [1] =&gt; "banana" )<br />
+<br />
+However, when I changed the function call to plain old:<br />
+<br />
+&nbsp; <span class="default">&lt;?php<br />
+&nbsp; $arr </span><span class="keyword">= Array();<br />
+&nbsp; </span><span class="default">ClassName</span><span class="keyword">::</span><span class="default">functionName</span><span class="keyword">(</span><span class="default">$param1</span><span class="keyword">,</span><span class="default">$param2</span><span class="keyword">,</span><span class="default">$arr</span><span class="keyword">);<br />
+&nbsp; </span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$arr</span><span class="keyword">);<br />
+&nbsp; </span><span class="default">?&gt;<br />
+</span><br />
+Output was the expected:<br />
+<br />
+&nbsp; Array ( [0] =&gt; "apple" [1] =&gt; "banana" )<br />
+&nbsp; Array ( [0] =&gt; "apple" [1] =&gt; "banana" )</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="43094""></a>
+  <div class="note">
+   <strong class="user">php at meKILLTHIStatoandthisols dot org</strong>
+   <a href="#43094" class="date">09-Jun-2004 09:33</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Ever been in a situation where you have to write:<br />
+<br />
+&nbsp; <span class="default">&lt;?php<br />
+&nbsp;&nbsp;&nbsp; $t </span><span class="keyword">= </span><span class="default">1 </span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$x </span><span class="keyword">=&amp; </span><span class="default">$t </span><span class="keyword">;<br />
+&nbsp; </span><span class="default">?&gt;<br />
+</span><br />
+or<br />
+<br />
+&nbsp; <span class="default">&lt;?php<br />
+&nbsp;&nbsp;&nbsp; $t </span><span class="keyword">= </span><span class="default">1 </span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">f</span><span class="keyword">( </span><span class="default">$t </span><span class="keyword">) ;<br />
+&nbsp; </span><span class="default">?&gt;<br />
+</span><br />
+because you cannot pass constants by value. The function<br />
+<br />
+&nbsp; <span class="default">&lt;?php<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">function&amp; </span><span class="default">pclone</span><span class="keyword">( </span><span class="default">$v </span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp;&nbsp; return( </span><span class="default">$v </span><span class="keyword">) ;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp; </span><span class="default">?&gt;<br />
+</span><br />
+lets you get ridd of the temporary variable. You can write:<br />
+<br />
+&nbsp; <span class="default">&lt;?php<br />
+&nbsp;&nbsp;&nbsp; $x </span><span class="keyword">=&amp; </span><span class="default">pclone</span><span class="keyword">( </span><span class="default">1 </span><span class="keyword">) ;<br />
+&nbsp; </span><span class="default">?&gt;<br />
+</span><br />
+or<br />
+<br />
+&nbsp; <span class="default">&lt;?php<br />
+&nbsp;&nbsp;&nbsp; f</span><span class="keyword">( </span><span class="default">pclone</span><span class="keyword">( </span><span class="default">1 </span><span class="keyword">) ) ;<br />
+&nbsp; </span><span class="default">?&gt;<br />
+</span><br />
+Alternatively you can use the other alternative ;-)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="language.references.arent.html">リファレンスが行わないこと</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="language.references.return.html">リファレンスを返す</a></div>
+ <div class="up"><a href="language.references.html">リファレンスの説明</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

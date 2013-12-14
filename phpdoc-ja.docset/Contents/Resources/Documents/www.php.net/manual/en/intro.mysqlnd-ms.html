@@ -1,0 +1,346 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>導入</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="book.mysqlnd-ms.html">mysqlnd_ms</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd-ms.quickstart.html">Quickstart and Examples</a></div>
+ <div class="up"><a href="book.mysqlnd-ms.html">mysqlnd_ms</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="intro.mysqlnd-ms" class="preface">
+  <h1 class="title">導入</h1>
+  <p class="para">
+   このプラグインは、MySQL のレプリケーション機能を <a href="book.mysqlnd.html" class="link">mysqlnd</a>
+   を使うすべての PHP MySQL 拡張モジュールで容易に使えるようにします。
+  </p>
+  <p class="para">
+   PHP 5.3.3 以降で、PHP の MySQL Native Driver
+   (<em>mysqlnd</em>) は C の内部プラグイン API を提供するようになりました。
+   レプリケーションおよびロードバランシング用プラグインのように C でプラグインを書いて、
+   <a href="book.mysqlnd.html" class="link">mysqlnd</a> の機能を拡張できるようになったのです。
+  </p>
+  <p class="para">
+   MySQL Native Driver は C のライブラリで、PHP 5.3.0
+   以降で PHP に同梱されるようになりました。MySQL Client Library (libmysqlclient)
+   の代替として機能します。mysqlnd を使う利点はいろいろあります。
+   PHP に同梱されているので追加のダウンロードが不要であること、
+   PHP ライセンスで公開されていること、メモリの消費量が抑えられること、
+   そして非同期クエリなどの新たな機能が含まれていることなどです。
+  </p>
+  <p class="para">
+   <em>mysqlnd_ms</em> のような mysqlnd 用プラグインの機能の大部分は、
+   ユーザーの視点からはプラグインの存在を意識せずに使えます。このプラグインはすべての
+   PHP アプリケーションをサポートし、そしてすべての MySQL 用 PHP
+   拡張モジュールに対応します。既存の API には何も手を加えません。
+   そのため、既存の PHP アプリケーションにも容易に組み込めます。
+  </p>
+  <div class="section" id="mysqlnd-ms.key-features">
+   <h2 class="title">主要な機能</h2>
+   <p class="para">
+   PECL/mysqlnd_ms の主要な機能をまとめます。
+   </p>
+   <p class="para">
+    <ul class="itemizedlist">
+     <li class="listitem">
+      <p class="para">
+       透過的に組み込め、簡単に使える
+      </p>
+      <p class="para">
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <p class="para">
+          すべての MySQL 用 PHP 拡張モジュールに対応
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          SSL のサポート
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          一貫性のある <acronym title="Application Programming Interface">API</acronym>
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          使う場面にもよるが、アプリケーション側の変更はほんの少しで済む (あるいは一切変更しなくてもかまわない)
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          遅延接続: マスタやスレーブへの接続は、
+          SQL 文を実行する時点までオープンされない
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          オプション: ウェブからの最初の書き込みリクエストの後は、自動的にマスタを使うようにする。
+          これにより、レプリケーションの遅延の影響を低く抑える。
+         </p>
+        </li>
+       </ul>
+      </p>
+     </li>
+
+     <li class="listitem">
+      <p class="para">
+       MySQL クラスタリングソリューションとの併用
+      </p>
+      <p class="para">
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <p class="para">
+          MySQL Replication: 読み書きの分離はプラグインが行う。
+          このプラグインが主に想定しているソリューションである。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          MySQL Cluster: 読み書きの分離は無効化できる。
+          マルチマスタ構成に対応。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          サードパーティのソリューション: このプラグインは MySQL Replication
+          用に最適化されているが、その他の MySQL クラスタリングソリューションとも併用可能。
+         </p>
+        </li>
+       </ul>
+      </p>
+     </li>
+
+     <li class="listitem">
+      <p class="para">
+       読み込みと書き込みの分離機能
+      </p>
+      <p class="para">
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <p class="para">
+          SELECT の自動検出
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          SQL ヒントを使った、自動処理の無効化
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          ユーザー定義
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          MySQL Cluster のような同期クラスタを使っている場合には無効化も可能
+         </p>
+        </li>
+       </ul>
+      </p>
+     </li>
+
+     <li class="listitem">
+      <p class="para">
+       ロードバランシング機能
+      </p>
+      <p class="para">
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <p class="para">
+          ラウンドロビン: スレーブへのすべてのリクエストに対して、ラウンドロビン方式でスレーブを選択する
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          ランダム: スレーブへのすべてのリクエストに対して、ランダムにスレーブを選択する
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          ランダムワンス (sticky): 最初にひとつのスレーブをランダムで選び、ひとつのウェブリクエスト内でのすべてのスレーブへのリクエストを同じスレーブで実行する
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          ユーザー定義: アプリケーション側で、mysqlnd_ms 用のコールバックを登録する
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          PHP 5.4.0 以降では、トランザクション制御のためだけの API コールについてはトランザクションを考慮する
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          重みつきロードバランシング:
+          サーバーにさまざまな優先度を設定可能。高性能なマシンにより多くのリクエストを振り分けたり、
+          近くにあるマシンを優先してレイテンシーを軽減させたりすることができる。
+         </p>
+        </li>
+       </ul>
+      </p>
+     </li>
+
+     <li class="listitem">
+      <p class="para">
+       グローバルトランザクション ID
+      </p>
+      <p class="para">
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <p class="para">
+          クライアント側でのエミュレート: MySQL Replication のような非同期クラスタにおける、
+          手動でのマスタサーバーのフェイルオーバーそしてスレーブからの昇格を容易にする
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          組み込みのグローバルトランザクション ID 機能をサポートする。
+          MySQL 5.6.5 以降で導入された機能。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          セッション整合性を要求される読み込みでの、
+          トランザクション ID を使った最新の非同期スレーブの識別に対応
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          スロットリング: オプションで、スレーブの処理を待って「同期」
+          してから処理を続行させることもできる
+         </p>
+        </li>
+       </ul>
+      </p>
+     </li>
+
+     <li class="listitem">
+      <p class="para">
+       サービスおよび整合性レベル
+      </p>
+      <p class="para">
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <p class="para">
+          アプリケーション側からは、接続に対して
+          結果整合性・セッション整合性・強整合性
+          のいずれかのサービスレベルを要求できます。
+          それにあわせて、適切なクラスタノードを自動的に検索します。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          結果整合性レベルの MySQL Replication スレーブへのアクセスを、
+          高速なローカルキャッシュアクセスに置き換えることができます。
+          透過的なアクセスで、サーバーの負荷を軽減します。
+         </p>
+        </li>
+       </ul>
+      </p>
+     </li>
+
+     <li class="listitem">
+      <p class="para">
+       パーティショニングおよびシャーディング
+      </p>
+      <p class="para">
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <p class="para">
+          レプリケーションクラスタのサーバーをグループで管理できます。
+          SQL ヒントを使うと、クエリを特定のグループに向けるようにできます。
+          グループを使うと、データのパーティショニング (シャーディング) ができるようになります。
+          また、更新時のホットスポット問題にも対応できます。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          MySQL Replication フィルターは、テーブルフィルターを使ってサポートしています。
+         </p>
+        </li>
+       </ul>
+      </p>
+     </li>
+    </ul>
+   </p>
+  </div>
+
+  <div class="section" id="mysqlnd-ms.limitations">
+   <h2 class="title">制限</h2>
+   <p class="para">
+    読み込み/書き込みの分離の仕組みとして組み込まれている機能は、非常に基本的なものです。
+    <em>SELECT</em> で始まるクエリは読み込みリクエストとみなして
+    MySQL のスレーブサーバーに送り、それ以外のすべてのクエリは
+    (<em>SHOW</em> ステートメントなども含めて)
+    書き込みリクエストとみなして MySQL マスタサーバーに送ります。
+    この組み込みの挙動を上書きするために、
+    <a href="mysqlnd-ms.constants.html" class="link">SQL ヒント</a> やユーザー定義の
+    <a href="mysqlnd-ms.plugin-ini-json.html#ini.mysqlnd-ms-plugin-config-v2.filter-user" class="link">コールバック関数</a>
+    を使えます。
+   </p>
+   <p class="para">
+    読み込み/書き込みの分離機能は、複数ステートメントの場合を考慮しません。
+    複数のステートメントも単一のステートメントとみなします。
+    そして、その先頭の文字を見て、どこで実行させるのかを判断します。たとえば
+     <span class="function"><a href="mysqli.multi-query.html" class="function">mysqli_multi_query()</a></span> を使って
+    <em>SELECT id FROM test ; INSERT INTO test(id) VALUES (1)</em>
+    を実行したとすると、この処理はスレーブサーバーに送られます。先頭が
+    <em>SELECT</em> で始まるからです。後半には
+    <em>INSERT</em> ステートメントも含まれていますが、
+    これもそのままスレーブサーバー上で実行されます。
+   </p>
+   <blockquote class="note"><p><strong class="note">注意</strong>: 
+    <p class="para">
+     アプリケーション側では、ロードバランシングのための接続の切り替えが発生することを想定しなければなりません。
+     マニュアルの
+     <a href="mysqlnd-ms.pooling.html" class="link">接続プーリングと切り替え</a>、
+     <a href="mysqlnd-ms.transaction.html" class="link">トランザクションの処理</a>、
+     <a href="mysqlnd-ms.failover.html" class="link">フェイルオーバー</a>、
+     <a href="mysqlnd-ms.loadbalancing.html" class="link">ロードバランシング</a> そして
+     <a href="mysqlnd-ms.rwsplit.html" class="link">読み込み/書き込みの分離</a>
+     を確認しましょう。
+    </p>
+   </p></blockquote>
+  </div>
+
+  <div class="section" id="mysqlnd-ms.name">
+   <h2 class="title">名前の由来</h2>
+   <p class="para">
+    <em>mysqlnd_ms</em>
+    は <em>mysqlnd master slave plugin</em> の略です。
+    概念実証のためのコードをざっと書きあげるときに、この名前を選びました。
+    当時は、まさかそのコードを使い続けることになるとは思わなかったのです。
+   </p>
+  </div>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="112589""></a>
+  <div class="note">
+   <strong class="user">Max</strong>
+   <a href="#112589" class="date">02-Jul-2013 08:09</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Does it work with Amazon RDS MySQL instances?</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="book.mysqlnd-ms.html">mysqlnd_ms</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd-ms.quickstart.html">Quickstart and Examples</a></div>
+ <div class="up"><a href="book.mysqlnd-ms.html">mysqlnd_ms</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

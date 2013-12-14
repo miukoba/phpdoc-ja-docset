@@ -1,0 +1,257 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>マジッククオートを無効にする</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="security.magicquotes.whynot.html">なぜマジッククオートを使用しないのか</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="security.hiding.html">PHPの隠蔽</a></div>
+ <div class="up"><a href="security.magicquotes.html">マジッククオート</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="security.magicquotes.disabling" class="sect1">
+   <h2 class="title">マジッククオートを無効にする</h2>
+   <p class="para">
+    <a href="info.configuration.html#ini.magic-quotes-gpc" class="link">magic_quotes_gpc</a>
+    ディレクティブはシステムレベルでのみ無効にすることができ、
+    実行時に行うことはできません。
+    つまり、 <span class="function"><a href="function.ini-set.html" class="function">ini_set()</a></span> では指定できません。
+   </p>
+   <p class="para">
+    <div class="example" id="example-343">
+     <p><strong>例1 マジッククオートをサーバー側で無効にする</strong></p>
+     <div class="example-contents"><p>
+      このディレクティブを<var class="filename">php.ini</var>で <em>Off</em> にする
+      例を示します。
+      より詳細については、
+      <a href="configuration.changes.html" class="link">
+       設定を変更する方法</a>というタイトルのマニュアルのセクションを
+      参照してください。
+     </p></div>
+     <div class="example-contents screen">
+<div class="cdata"><pre>
+; Magic quotes
+;
+
+; Magic quotes for incoming GET/POST/Cookie data.
+magic_quotes_gpc = Off
+
+; Magic quotes for runtime-generated data, e.g. data from SQL, from exec(), etc.
+magic_quotes_runtime = Off
+
+; Use Sybase-style magic quotes (escape &#039; with &#039;&#039; instead of \&#039;).
+magic_quotes_sybase = Off
+</pre></div>
+     </div>
+     <div class="example-contents"><p>
+      サーバーの設定を変更できない場合には、
+      <var class="filename">.htaccess</var>も使用できます。
+      例えば、
+     </p></div>
+     <div class="example-contents screen">
+<div class="cdata"><pre>
+php_flag magic_quotes_gpc Off
+</pre></div>
+     </div>
+    </div>
+   </p>
+   <p class="para">
+    サーバーレベルの設定を変更できない場合に対応するといったように、
+    移植性の高いコード(あらゆる環境で動作するコード)を書く要望に
+    対して、以下に、
+    <a href="info.configuration.html#ini.magic-quotes-gpc" class="link">
+     magic_quotes_gpc</a>を実行時に無効にする例を示します。
+    この方法は非効率であるため、どこかでディレクティブを適切に
+    設定する方が良いでしょう。
+   </p>
+   <p class="para">
+    <div class="example" id="example-344">
+     <p><strong>例2 マジッククオートを実行時に無効にする</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">get_magic_quotes_gpc</span><span style="color: #007700">())&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$process&nbsp;</span><span style="color: #007700">=&nbsp;array(&amp;</span><span style="color: #0000BB">$_GET</span><span style="color: #007700">,&nbsp;&amp;</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">,&nbsp;&amp;</span><span style="color: #0000BB">$_COOKIE</span><span style="color: #007700">,&nbsp;&amp;</span><span style="color: #0000BB">$_REQUEST</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(list(</span><span style="color: #0000BB">$key</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$val</span><span style="color: #007700">)&nbsp;=&nbsp;</span><span style="color: #0000BB">each</span><span style="color: #007700">(</span><span style="color: #0000BB">$process</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(</span><span style="color: #0000BB">$val&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$k&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$v</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unset(</span><span style="color: #0000BB">$process</span><span style="color: #007700">[</span><span style="color: #0000BB">$key</span><span style="color: #007700">][</span><span style="color: #0000BB">$k</span><span style="color: #007700">]);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">is_array</span><span style="color: #007700">(</span><span style="color: #0000BB">$v</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$process</span><span style="color: #007700">[</span><span style="color: #0000BB">$key</span><span style="color: #007700">][</span><span style="color: #0000BB">stripslashes</span><span style="color: #007700">(</span><span style="color: #0000BB">$k</span><span style="color: #007700">)]&nbsp;=&nbsp;</span><span style="color: #0000BB">$v</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$process</span><span style="color: #007700">[]&nbsp;=&nbsp;&amp;</span><span style="color: #0000BB">$process</span><span style="color: #007700">[</span><span style="color: #0000BB">$key</span><span style="color: #007700">][</span><span style="color: #0000BB">stripslashes</span><span style="color: #007700">(</span><span style="color: #0000BB">$k</span><span style="color: #007700">)];<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$process</span><span style="color: #007700">[</span><span style="color: #0000BB">$key</span><span style="color: #007700">][</span><span style="color: #0000BB">stripslashes</span><span style="color: #007700">(</span><span style="color: #0000BB">$k</span><span style="color: #007700">)]&nbsp;=&nbsp;</span><span style="color: #0000BB">stripslashes</span><span style="color: #007700">(</span><span style="color: #0000BB">$v</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;unset(</span><span style="color: #0000BB">$process</span><span style="color: #007700">);<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+  </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="91653""></a>
+  <div class="note">
+   <strong class="user">metala at metala dot org</strong>
+   <a href="#91653" class="date">22-Jun-2009 12:38</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I have recently found out that magic quotes affects not only the values of the GPC arrays, but also the keys.<br />
+<br />
+For now, my way to solve with the problem is:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">if (</span><span class="default">get_magic_quotes_gpc</span><span class="keyword">()) {<br />
+&nbsp;&nbsp;&nbsp; function </span><span class="default">magicQuotes_awStripslashes</span><span class="keyword">(&amp;</span><span class="default">$value</span><span class="keyword">, </span><span class="default">$key</span><span class="keyword">) {</span><span class="default">$value </span><span class="keyword">= </span><span class="default">stripslashes</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">);}<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$gpc </span><span class="keyword">= array(&amp;</span><span class="default">$_GET</span><span class="keyword">, &amp;</span><span class="default">$_POST</span><span class="keyword">, &amp;</span><span class="default">$_COOKIE</span><span class="keyword">, &amp;</span><span class="default">$_REQUEST</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">array_walk_recursive</span><span class="keyword">(</span><span class="default">$gpc</span><span class="keyword">, </span><span class="string">'magicQuotes_awStripslashes'</span><span class="keyword">);<br />
+}<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Unfortunately it doesn't fix the keys... and cannot determinate if the slashes are already stripped.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="91585""></a>
+  <div class="note">
+   <strong class="user">booboogotu at gmail dot com</strong>
+   <a href="#91585" class="date">18-Jun-2009 12:46</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+A php5 way:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">if (</span><span class="default">get_magic_quotes_gpc</span><span class="keyword">()) {<br />
+&nbsp;&nbsp;&nbsp; function </span><span class="default">stripslashes_gpc</span><span class="keyword">(&amp;</span><span class="default">$value</span><span class="keyword">)<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$value </span><span class="keyword">= </span><span class="default">stripslashes</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">array_walk_recursive</span><span class="keyword">(</span><span class="default">$_GET</span><span class="keyword">, </span><span class="string">'stripslashes_gpc'</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">array_walk_recursive</span><span class="keyword">(</span><span class="default">$_POST</span><span class="keyword">, </span><span class="string">'stripslashes_gpc'</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">array_walk_recursive</span><span class="keyword">(</span><span class="default">$_COOKIE</span><span class="keyword">, </span><span class="string">'stripslashes_gpc'</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">array_walk_recursive</span><span class="keyword">(</span><span class="default">$_REQUEST</span><span class="keyword">, </span><span class="string">'stripslashes_gpc'</span><span class="keyword">);<br />
+}<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="82777""></a>
+  <div class="note">
+   <strong class="user">stuart at horuskol dot co dot uk</strong>
+   <a href="#82777" class="date">25-Apr-2008 10:26</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I have discovered that my host doesn't like either of the following directives in the .htaccess file:<br />
+<br />
+php_flag magic_quotes_gpc Off<br />
+php_value magic_quotes_gpc Off<br />
+<br />
+However, there is another way to disable this setting even if you don't have access to the server configuration - you can put a php.ini file in the directory where your scripts are with the directive:<br />
+<br />
+magic_quotes_gpc = Off<br />
+<br />
+However, these does not propogate unlike&nbsp; .htaccess rules, so if you launch from a sub-directory, you need the php.ini file in each directory you have as script entry points.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="71817""></a>
+  <div class="note">
+   
+   <a href="#71817" class="date">17-Dec-2006 09:20</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+PHP's magic quotes function has the strange behavior of not adding slashes to top level keys in GPC key/value pairs but adding the slashes in deeper level keys. To demonstrate, a URI of:<br />
+<br />
+example.php?a'b[c'd]=e'f<br />
+produces:<br />
+array("a'b" =&gt; array("c\'d" =&gt; "e\'f"))<br />
+<br />
+The current example for removing magic quotes does not do anything to keys, so after running stripslashes_deep, you would end up with:<br />
+array("a'b" =&gt; array("c\'d" =&gt; "e'f"))<br />
+<br />
+Which, needless to say, is wrong. As if you had magic quotes off, it would have been:<br />
+array("a'b" =&gt; array("c'd" =&gt; "e'f"))<br />
+<br />
+I have written a snippet of code compatible with PHP 4.0.0 and above that handles this correctly:<br />
+<br />
+if (get_magic_quotes_gpc()) {<br />
+&nbsp;&nbsp;&nbsp; function undoMagicQuotes($array, $topLevel=true) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; $newArray = array();<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; foreach($array as $key =&gt; $value) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (!$topLevel) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; $key = stripslashes($key);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (is_array($value)) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; $newArray[$key] = undoMagicQuotes($value, false);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; else {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; $newArray[$key] = stripslashes($value);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; return $newArray;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; $_GET = undoMagicQuotes($_GET);<br />
+&nbsp;&nbsp;&nbsp; $_POST = undoMagicQuotes($_POST);<br />
+&nbsp;&nbsp;&nbsp; $_COOKIE = undoMagicQuotes($_COOKIE);<br />
+&nbsp;&nbsp;&nbsp; $_REQUEST = undoMagicQuotes($_REQUEST);<br />
+}</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="69524""></a>
+  <div class="note">
+   <strong class="user">rdk</strong>
+   <a href="#69524" class="date">08-Sep-2006 08:44</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The function parse_str() (<a href="http://us3.php.net/manual/en/function.parse-str.php" rel="nofollow" target="_blank">http://us3.php.net/manual/en/function.parse-str.php</a>) is also affected by magic_quotes_gpc, so if that function is called anywhere, stripslashes_deep won't be sufficient by itself.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="69024""></a>
+  <div class="note">
+   <strong class="user">dedlfix</strong>
+   <a href="#69024" class="date">20-Aug-2006 02:18</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The function stripslashes_deep() ignores slashes in the keys<br />
+<br />
+For example a query string like this: ?foo'bar=baz'bal<br />
+<br />
+Output of var_dump($_GET) is:<br />
+<br />
+array(1) {<br />
+&nbsp; ["foo\'bar"]=&gt;<br />
+&nbsp; string(8) "baz\'bal"<br />
+}<br />
+<br />
+after stripslashes_deep():<br />
+<br />
+array(1) {<br />
+&nbsp; ["foo\'bar"]=&gt;<br />
+&nbsp; string(7) "baz'bal"<br />
+}<br />
+<br />
+If you want the keys to be stripslashed too, you have to unset() the addslahed key and to add a stripslashed version. But keep in mind that this will change the order of the array.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="security.magicquotes.whynot.html">なぜマジッククオートを使用しないのか</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="security.hiding.html">PHPの隠蔽</a></div>
+ <div class="up"><a href="security.magicquotes.html">マジッククオート</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

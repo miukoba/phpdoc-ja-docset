@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>属性を設定する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="pdo.rollback.html">PDO::rollBack</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="class.pdostatement.html">PDOStatement</a></div>
+ <div class="up"><a href="class.pdo.html">PDO</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="pdo.setattribute" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">PDO::setAttribute</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.1.0, PECL pdo &gt;= 0.1.0)</p><p class="refpurpose"><span class="refname">PDO::setAttribute</span> &mdash; <span class="dc-title">
+   属性を設定する
+  </span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-pdo.setattribute-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><strong>PDO::setAttribute</strong></span>
+    ( <span class="methodparam"><span class="type">int</span> <code class="parameter">$attribute</code></span>
+   , <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter">$value</code></span>
+   )</div>
+
+
+  <p class="para rdfs-comment">
+   データベースハンドルの属性を設定します。
+   利用可能な通常の属性は以下の一覧の通りです。いくつかのドライバでは、
+   ドライバ固有の属性を使用することが可能です。
+   <ul class="itemizedlist">
+    <li class="listitem"><p class="para">
+     <em>PDO::ATTR_CASE</em>: 強制的にカラム名を指定したケースにする
+     <ul class="itemizedlist">
+      <li class="listitem"><p class="para">
+       <em>PDO::CASE_LOWER</em>: 強制的にカラム名を小文字にする
+      </p></li>
+      <li class="listitem"><p class="para">
+       <em>PDO::CASE_NATURAL</em>:
+       データベースドライバによって返されるカラム名をそのままにする
+      </p></li>
+      <li class="listitem"><p class="para">
+       <em>PDO::CASE_UPPER</em>: 強制的にカラム名を大文字にする
+      </p></li>
+     </ul>
+    </p></li>
+    <li class="listitem"><p class="para"><em>PDO::ATTR_ERRMODE</em>: エラーレポート
+     <ul class="itemizedlist">
+      <li class="listitem"><p class="para"><em>PDO::ERRMODE_SILENT</em>:
+       エラーコードのみ設定する</p></li>
+      <li class="listitem"><p class="para"><em>PDO::ERRMODE_WARNING</em>:
+       <a href="" class="link">E_WARNING</a>
+       を発生させる</p></li>
+      <li class="listitem"><p class="para"><em>PDO::ERRMODE_EXCEPTION</em>:
+       <a href="class.pdoexception.html" class="link">例外</a>
+       を投げる</p></li>
+     </ul>
+    </p></li>
+    <li class="listitem"><p class="para"><em>PDO::ATTR_ORACLE_NULLS</em>
+     (Oracle だけでなく、全てのドライバで利用可能):
+     NULL と空文字列の変換
+     <ul class="itemizedlist">
+      <li class="listitem"><p class="para"><em>PDO::NULL_NATURAL</em>:
+       変換しない</p></li>
+      <li class="listitem"><p class="para"><em>PDO::NULL_EMPTY_STRING</em>:
+       空文字は <strong><code>NULL</code></strong> に変換される</p></li>
+      <li class="listitem"><p class="para"><em>PDO::NULL_TO_STRING</em>:
+       NULL は空文字に変換される</p></li>
+     </ul>
+    </p></li>
+    <li class="listitem"><p class="para"><em>PDO::ATTR_STRINGIFY_FETCHES</em>:
+     フェッチする際、数値を文字列に変換する。<span class="type"><a href="language.types.boolean.html" class="type bool">bool</a></span>
+     を必要とする
+    </p></li>
+    <li class="listitem"><p class="para"><em>PDO::ATTR_STATEMENT_CLASS</em>:
+     PDOStatement
+     に由来するユーザーが提供するステートメントクラスを設定する。
+     永続的な PDO インスタンスは使用できない。
+     <em>array(string classname, array(mixed constructor_args))</em>
+     を必要とする。
+    </p></li>
+    <li class="listitem"><p class="para"><em>PDO::ATTR_TIMEOUT</em>:
+     タイムアウト秒数を指定する。すべてのドライバがこのオプションに対応しているわけではなく、
+     またドライバによってこのオプションの扱いは異なる。たとえば sqlite
+     は書き込み可能なロックを確保するのをこの秒数まで待ち続けるが、
+     他のドライバではこの秒数を接続時のタイムアウトや読み込みのタイムアウトとして扱うこともある。
+     <span class="type"><a href="language.types.integer.html" class="type int">int</a></span> を渡す。
+    </p></li>
+    <li class="listitem"><p class="para"><em>PDO::ATTR_AUTOCOMMIT</em>
+     (OCI, Firebird そして MySQL で利用可能):
+     それぞれの単一文で自動コミットするかどうか。
+    </p></li>
+    <li class="listitem"><p class="para"><em>PDO::ATTR_EMULATE_PREPARES</em>
+     プリペアドステートメントのエミュレーションを有効または無効にする。
+     ドライバによってはネイティブのプリペアドステートメントをサポートしていなかったり
+     完全には対応していなかったりするものがある。この設定を使うと、常に
+     プリペアドステートメントをエミュレートする (<strong><code>TRUE</code></strong> の場合) か、
+     ネイティブのプリペアドステートメントを使おうとする (<strong><code>FALSE</code></strong> の場合)
+     かを設定できる。現在のクエリを正しく準備できなかった場合は、常にエミュレート方式を使う。
+     <span class="type"><a href="language.types.boolean.html" class="type bool">bool</a></span> で指定する。
+     </p></li>
+    <li class="listitem"><p class="para"><em>PDO::MYSQL_ATTR_USE_BUFFERED_QUERY</em>
+    (MySQL で利用可能):
+    バッファされたクエリを使用する。
+    </p></li>
+    <li class="listitem"><p class="para"><em>PDO::ATTR_DEFAULT_FETCH_MODE</em>:
+    デフォルトのフェッチモードを設定する。このモードについての説明は
+     <span class="function"><a href="pdostatement.fetch.html" class="function">PDOStatement::fetch()</a></span> のドキュメントを参照。
+    </p></li>
+   </ul>
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-pdo.setattribute-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="101800""></a>
+  <div class="note">
+   <strong class="user">antoyo</strong>
+   <a href="#101800" class="date">12-Jan-2011 02:49</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+There is also a way to specifie the default fetch mode :<br />
+<span class="default">&lt;?php<br />
+$connection </span><span class="keyword">= new </span><span class="default">PDO</span><span class="keyword">(</span><span class="default">$connection_string</span><span class="keyword">);<br />
+</span><span class="default">$connection</span><span class="keyword">-&gt;</span><span class="default">setAttribute</span><span class="keyword">(</span><span class="default">PDO</span><span class="keyword">::</span><span class="default">ATTR_DEFAULT_FETCH_MODE</span><span class="keyword">, </span><span class="default">PDO</span><span class="keyword">::</span><span class="default">FETCH_OBJ</span><span class="keyword">);<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="75221""></a>
+  <div class="note">
+   <strong class="user">colinganderson [at] gmail [dot] com</strong>
+   <a href="#75221" class="date">18-May-2007 04:59</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Because no examples are provided, and to alleviate any confusion as a result, the setAttribute() method is invoked like so:<br />
+<br />
+setAttribute(ATTRIBUTE, OPTION);<br />
+<br />
+So, if I wanted to ensure that the column names returned from a query were returned in the case the database driver returned them (rather than having them returned in all upper case [as is the default on some of the PDO extensions]), I would do the following:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">// Create a new database connection.<br />
+</span><span class="default">$dbConnection </span><span class="keyword">= new </span><span class="default">PDO</span><span class="keyword">(</span><span class="default">$dsn</span><span class="keyword">, </span><span class="default">$user</span><span class="keyword">, </span><span class="default">$pass</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">// Set the case in which to return column_names.<br />
+</span><span class="default">$dbConnection</span><span class="keyword">-&gt;</span><span class="default">setAttribute</span><span class="keyword">(</span><span class="default">PDO</span><span class="keyword">::</span><span class="default">ATTR_CASE</span><span class="keyword">, </span><span class="default">PDO</span><span class="keyword">::</span><span class="default">CASE_NATURAL</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Hope this helps some of you who learn by example (as is the case with me).<br />
+<br />
+.Colin</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="73263""></a>
+  <div class="note">
+   <strong class="user">gregory dot szorc at gmail dot com</strong>
+   <a href="#73263" class="date">15-Feb-2007 05:32</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+It is worth noting that not all attributes may be settable via setAttribute().&nbsp; For example, PDO::MYSQL_ATTR_MAX_BUFFER_SIZE is only settable in PDO::__construct().&nbsp; You must pass PDO::MYSQL_ATTR_MAX_BUFFER_SIZE as part of the optional 4th parameter to the constructor.&nbsp; This is detailed in <a href="http://bugs.php.net/bug.php?id=38015" rel="nofollow" target="_blank">http://bugs.php.net/bug.php?id=38015</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="68413""></a>
+  <div class="note">
+   <strong class="user">m dot leuffen at gmx dot de</strong>
+   <a href="#68413" class="date">26-Jul-2006 03:44</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Hi,<br />
+<br />
+if you are wondering about a size-bound (1 MB) on blob and text fields after upgrading to PHP5.1.4. You might try to increase this limit by using the setAttribute() method.<br />
+<br />
+This will fail. Instead use the options array when instantiating the pdo:<br />
+<br />
+$pdo = new PDO ("connection_settings", "user", "pass", array<br />
+(PDO::MYSQL_ATTR_MAX_BUFFER_SIZE=&gt;1024*1024*50));<br />
+<br />
+This should fix the problem and increase the limit to 50 MB.<br />
+<br />
+Bye,<br />
+&nbsp; Matthias</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="pdo.rollback.html">PDO::rollBack</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="class.pdostatement.html">PDOStatement</a></div>
+ <div class="up"><a href="class.pdo.html">PDO</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

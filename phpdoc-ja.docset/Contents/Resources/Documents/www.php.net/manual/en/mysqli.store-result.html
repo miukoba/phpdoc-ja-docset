@@ -1,0 +1,282 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>直近のクエリから結果セットを転送する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqli.stmt-init.html">mysqli::stmt_init</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqli.thread-id.html">mysqli::$thread_id</a></div>
+ <div class="up"><a href="class.mysqli.html">mysqli</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mysqli.store-result" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mysqli::store_result</h1>
+  <h1 class="refname">mysqli_store_result</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose"><span class="refname">mysqli::store_result</span> -- <span class="refname">mysqli_store_result</span> &mdash; <span class="dc-title">直近のクエリから結果セットを転送する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-mysqli.store-result-description">
+  <h3 class="title">説明</h3>
+  <p class="para">オブジェクト指向型</p>
+  <div class="methodsynopsis dc-description">
+   <span class="type"><a href="class.mysqli-result.html" class="type mysqli_result">mysqli_result</a></span> <span class="methodname"><strong>mysqli::store_result</strong></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+  <p class="para rdfs-comment">手続き型</p>
+  <div class="methodsynopsis dc-description">
+   <span class="type"><a href="class.mysqli-result.html" class="type mysqli_result">mysqli_result</a></span> <span class="methodname"><strong>mysqli_store_result</strong></span>
+    ( <span class="methodparam"><span class="type"><a href="class.mysqli.html" class="type mysqli">mysqli</a></span> <code class="parameter">$link</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+    <span class="function"><a href="mysqli-result.data-seek.html" class="function">mysqli_data_seek()</a></span> で使用される、
+   <em><code class="parameter">link</code></em> で表されたデータベース接続の直近のクエリ
+   から結果セットを転送します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-mysqli.store-result-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+<span class="term"><em><code class="parameter">
+link</code></em></span><dd>
+<p class="para">手続き型のみ:
+ <span class="function"><a href="function.mysqli-connect.html" class="function">mysqli_connect()</a></span> あるいは  <span class="function"><a href="mysqli.init.html" class="function">mysqli_init()</a></span> が返すリンク ID。
+</p></dd>
+</dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-mysqli.store-result-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   バッファに格納した結果オブジェクトを返します。エラー時には <strong><code>FALSE</code></strong> を返します。
+  </p>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+     <span class="function"><strong>mysqli_store_result()</strong></span> は、クエリが結果セットを
+    返さなかった場合（例えば、クエリが INSERT 文であった場合）に
+    <strong><code>FALSE</code></strong> を返します。また、結果セットの読み込みに失敗した場合にも
+    <strong><code>FALSE</code></strong> を返します。エラーが発生したかどうかを調べるには、
+     <span class="function"><a href="mysqli.error.html" class="function">mysqli_error()</a></span> が空文字列以外を返す・
+     <span class="function"><a href="mysqli.errno.html" class="function">mysqli_errno()</a></span> がゼロ以外の値を返す・あるいは
+     <span class="function"><a href="mysqli.field-count.html" class="function">mysqli_field_count()</a></span> がゼロ以外の値を返す
+    のいずれかを確認します。それ以外にこの関数が <strong><code>FALSE</code></strong> を返す理由としては
+     <span class="function"><a href="mysqli.query.html" class="function">mysqli_query()</a></span> のコールに成功して返された
+    結果セットが大きすぎる（メモリに割り当てられない）場合がありえます。
+    もし  <span class="function"><a href="mysqli.field-count.html" class="function">mysqli_field_count()</a></span> がゼロ以外の値を
+    返した場合、文は空でない結果セットを生成しています。
+   </p>
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 notes" id="refsect1-mysqli.store-result-notes">
+  <h3 class="title">注意</h3>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    クエリ結果が使用するメモリを  <span class="function"><a href="mysqli-result.free.html" class="function">mysqli_free_result()</a></span>
+    関数で開放するのは、どんな場合でも大切です。しかし、大きい結果セットを
+     <span class="function"><strong>mysqli_store_result()</strong></span> で転送した際は、特にこれが
+    重要となります。
+   </p>
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-mysqli.store-result-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+    <span class="function"><a href="mysqli.multi-query.html" class="function">mysqli_multi_query()</a></span> を参照ください。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-mysqli.store-result-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="mysqli.real-query.html" class="function" rel="rdfs-seeAlso">mysqli_real_query()</a> - SQL クエリを実行する</span></li>
+    <li class="member"> <span class="function"><a href="mysqli.use-result.html" class="function" rel="rdfs-seeAlso">mysqli_use_result()</a> - 結果セットの取得を開始する</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="112634""></a>
+  <div class="note">
+   <strong class="user">Tex Morgan</strong>
+   <a href="#112634" class="date">07-Jul-2013 07:45</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+There's a simpler way to clear out database stored procedure problems:<br />
+<br />
+class MySQLiQuery {<br />
+&nbsp;&nbsp; &nbsp; protected $_resultSet;<br />
+&nbsp;&nbsp; &nbsp; protected $databaseConnection;<br />
+....<br />
+<br />
+&nbsp;&nbsp;&nbsp; protected function free(){<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; $this-&gt;_resultSet-&gt;free();<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; $this-&gt;_resultSet=null;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp; protected function checkMoreResults(){<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if($this-&gt;databaseConnection-&gt;more_results()){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return true;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; } else {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return false;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp; protected function clearResults(){<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if($this-&gt;checkMoreResults()){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if($this-&gt;databaseConnection-&gt;next_result()){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if($this-&gt;_resultSet=$this-&gt;databaseConnection-&gt;store_result()){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; $this-&gt;free();<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; $this-&gt;clearResults(); // &lt;----------- recursive call is your friend<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+.......<br />
+}</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="96048""></a>
+  <div class="note">
+   <strong class="user">mitchind</strong>
+   <a href="#96048" class="date">05-Feb-2010 05:28</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+After reading through original notes and example above as well as wading through the documentation, I finally got a loop to work with two stored procedures.<br />
+<br />
+Using the results of the first one as a parameter for the second one. Easier to do this way than a huge modified sequence of Inner Join queries.<br />
+<br />
+Hope this helps others...<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">// Connect to server and database<br />
+</span><span class="default">$mysqli&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">= new </span><span class="default">mysqli</span><span class="keyword">(</span><span class="string">"</span><span class="default">$dbServer</span><span class="string">"</span><span class="keyword">, </span><span class="string">"</span><span class="default">$dbUser</span><span class="string">"</span><span class="keyword">, </span><span class="string">"</span><span class="default">$dbPass</span><span class="string">"</span><span class="keyword">, </span><span class="string">"</span><span class="default">$dbName</span><span class="string">"</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">// Open First Stored Procedure using MYSQLI_STORE_RESULT to retain for looping<br />
+</span><span class="default">$resultPicks </span><span class="keyword">= </span><span class="default">$mysqli</span><span class="keyword">-&gt;</span><span class="default">query</span><span class="keyword">(</span><span class="string">"CALL </span><span class="default">$proc</span><span class="string"> (</span><span class="default">$searchDate</span><span class="string">, </span><span class="default">$maxRSI</span><span class="string">, </span><span class="default">$incRSI</span><span class="string">, </span><span class="default">$minMACD</span><span class="string">, </span><span class="default">$minVol</span><span class="string">, </span><span class="default">$minTrades</span><span class="string">, </span><span class="default">$minClose</span><span class="string">, </span><span class="default">$maxClose</span><span class="string">)"</span><span class="keyword">, </span><span class="default">MYSQLI_STORE_RESULT</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">// process one row at a time from first SP<br />
+</span><span class="keyword">while(</span><span class="default">$picksRow </span><span class="keyword">= </span><span class="default">$resultPicks</span><span class="keyword">-&gt;</span><span class="default">fetch_array</span><span class="keyword">(</span><span class="default">MYSQLI_ASSOC</span><span class="keyword">)) {<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">// Get Parameter for next SP<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$symbol&nbsp; &nbsp;&nbsp; </span><span class="keyword">= </span><span class="default">$picksRow</span><span class="keyword">[</span><span class="string">'Symbol'</span><span class="keyword">];<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">// Free stored results<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">clearStoredResults</span><span class="keyword">(</span><span class="default">$mysqli</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">// Execute second SP using value from first as a parameter (MYSQLI_USE_RESULT and free result right away)<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$resultData&nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">$mysqli</span><span class="keyword">-&gt;</span><span class="default">query</span><span class="keyword">(</span><span class="string">"CALL prcGetLastMACDDatesBelowZero('</span><span class="default">$symbol</span><span class="string">', </span><span class="default">$searchDate</span><span class="string">)"</span><span class="keyword">, </span><span class="default">MYSQLI_USE_RESULT</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$dataRow&nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">$resultData</span><span class="keyword">-&gt;</span><span class="default">fetch_array</span><span class="keyword">(</span><span class="default">MYSQLI_ASSOC</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">// Dump result from both related queries<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">echo </span><span class="string">"&lt;p&gt;</span><span class="default">$symbol</span><span class="string"> ... Num Dates: " </span><span class="keyword">. </span><span class="default">$dataRow</span><span class="keyword">[</span><span class="string">'NumDates'</span><span class="keyword">];<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">// Free results from second SP<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$resultData</span><span class="keyword">-&gt;</span><span class="default">free</span><span class="keyword">();<br />
+<br />
+}<br />
+<br />
+</span><span class="comment">// Free results from first SP<br />
+</span><span class="default">$resultPicks</span><span class="keyword">-&gt;</span><span class="default">free</span><span class="keyword">();<br />
+<br />
+</span><span class="comment">// close connections<br />
+</span><span class="default">$mysqli</span><span class="keyword">-&gt;</span><span class="default">close</span><span class="keyword">();<br />
+<br />
+</span><span class="comment">#------------------------------------------<br />
+</span><span class="keyword">function </span><span class="default">clearStoredResults</span><span class="keyword">(</span><span class="default">$mysqli_link</span><span class="keyword">){<br />
+</span><span class="comment">#------------------------------------------<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">while(</span><span class="default">$mysqli_link</span><span class="keyword">-&gt;</span><span class="default">next_result</span><span class="keyword">()){<br />
+&nbsp;&nbsp; &nbsp;&nbsp; if(</span><span class="default">$l_result </span><span class="keyword">= </span><span class="default">$mysqli_link</span><span class="keyword">-&gt;</span><span class="default">store_result</span><span class="keyword">()){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$l_result</span><span class="keyword">-&gt;</span><span class="default">free</span><span class="keyword">();<br />
+&nbsp;&nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="92352""></a>
+  <div class="note">
+   <strong class="user">Warner</strong>
+   <a href="#92352" class="date">21-Jul-2009 11:45</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+It also seems, that executing a SET statement in multi_query() returns an extra recordset too, which one would not expect.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="74478""></a>
+  <div class="note">
+   <strong class="user">lau at goldenweb dot com dot au</strong>
+   <a href="#74478" class="date">13-Apr-2007 10:29</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Beware when using stored procedures:<br />
+If you connect to the database and then call dbproc A followed by a call to db proc B and then close the connection to the db, the second procedure call will not work.<br />
+<br />
+It looks like there is a bug in MYSQL or mysqli that returns an extra recordset than you would expect. It then doesn't let you call another stored procedure until you finish processing all the recordsets from the first stored procedure call. <br />
+<br />
+The solution is to simply loop through the additional recordsets between calls to db procs. Here is a function that I call between db proc calls:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">#--------------------------------<br />
+</span><span class="keyword">function </span><span class="default">ClearRecordsets</span><span class="keyword">(</span><span class="default">$p_Result</span><span class="keyword">){<br />
+</span><span class="comment">#--------------------------------<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$p_Result</span><span class="keyword">-&gt;</span><span class="default">free</span><span class="keyword">();&nbsp; &nbsp; <br />
+&nbsp;&nbsp;&nbsp; while(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">Mysqli</span><span class="keyword">-&gt;</span><span class="default">next_result</span><span class="keyword">()){<br />
+&nbsp;&nbsp; &nbsp;&nbsp; if(</span><span class="default">$l_result </span><span class="keyword">= </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">Mysqli</span><span class="keyword">-&gt;</span><span class="default">store_result</span><span class="keyword">()){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$l_result</span><span class="keyword">-&gt;</span><span class="default">free</span><span class="keyword">();<br />
+&nbsp;&nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqli.stmt-init.html">mysqli::stmt_init</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqli.thread-id.html">mysqli::$thread_id</a></div>
+ <div class="up"><a href="class.mysqli.html">mysqli</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

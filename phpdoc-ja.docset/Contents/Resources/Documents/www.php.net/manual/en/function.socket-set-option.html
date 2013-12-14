@@ -1,0 +1,305 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>ソケットのオプションを設定する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.socket-set-nonblock.html">socket_set_nonblock</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.socket-shutdown.html">socket_shutdown</a></div>
+ <div class="up"><a href="ref.sockets.html">ソケット 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.socket-set-option" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">socket_set_option</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.3.0, PHP 5)</p><p class="refpurpose"><span class="refname">socket_set_option</span> &mdash; <span class="dc-title">ソケットのオプションを設定する</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.socket-set-option-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>socket_set_option</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$socket</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$level</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$optname</code></span>
+   , <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter">$optval</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+    <span class="function"><strong>socket_set_option()</strong></span> 関数は、<em><code class="parameter">level</code></em>
+   が指すプロトコルレベルでソケット <em><code class="parameter">socket</code></em> のオプション
+   <em><code class="parameter">optname</code></em> に値 <em><code class="parameter">optval</code></em> を設定します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.socket-set-option-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">socket</code></em></span>
+     <dd>
+
+      <p class="para">
+        <span class="function"><a href="function.socket-create.html" class="function">socket_create()</a></span> あるいは  <span class="function"><a href="function.socket-accept.html" class="function">socket_accept()</a></span>
+       で作成したソケットリソース。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">level</code></em></span>
+     <dd>
+
+      <p class="para">
+       <em><code class="parameter">level</code></em> パラメータは、オプションのプロトコルレベルを指定します。
+       例えば、オプションをソケットレベルで取得するには
+       <em><code class="parameter">level</code></em> パラメータに SOL_SOCKET を指定します。
+       TCP のようなそれ以外のレベルの場合、そのレベルのプロトコル番号を指定します。
+       プロトコル番号は  <span class="function"><a href="function.getprotobyname.html" class="function">getprotobyname()</a></span>
+       関数を使用して取得可能です。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">optname</code></em></span>
+     <dd>
+
+      <p class="para">
+       使用可能なソケットオプションは  <span class="function"><a href="function.socket-get-option.html" class="function">socket_get_option()</a></span>
+       関数と同じです。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">optval</code></em></span>
+     <dd>
+
+      <p class="para">
+       オプションの値。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.socket-set-option-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.socket-set-option-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-4582">
+    <p><strong>例1  <span class="function"><strong>socket_set_option()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$socket&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">socket_create</span><span style="color: #007700">(</span><span style="color: #0000BB">AF_INET</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">SOCK_STREAM</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">SOL_TCP</span><span style="color: #007700">);<br /><br />if&nbsp;(!</span><span style="color: #0000BB">is_resource</span><span style="color: #007700">(</span><span style="color: #0000BB">$socket</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'ソケットを作成できません:&nbsp;'</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">socket_strerror</span><span style="color: #007700">(</span><span style="color: #0000BB">socket_last_error</span><span style="color: #007700">())&nbsp;.&nbsp;</span><span style="color: #0000BB">PHP_EOL</span><span style="color: #007700">;<br />}<br /><br />if&nbsp;(!</span><span style="color: #0000BB">socket_set_option</span><span style="color: #007700">(</span><span style="color: #0000BB">$socket</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">SOL_SOCKET</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">SO_REUSEADDR</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'ソケットのオプションを設定できません:&nbsp;'</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">socket_strerror</span><span style="color: #007700">(</span><span style="color: #0000BB">socket_last_error</span><span style="color: #007700">())&nbsp;.&nbsp;</span><span style="color: #0000BB">PHP_EOL</span><span style="color: #007700">;<br />}<br /><br />if&nbsp;(!</span><span style="color: #0000BB">socket_bind</span><span style="color: #007700">(</span><span style="color: #0000BB">$socket</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'127.0.0.1'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1223</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'ソケットをバインドできません:&nbsp;'</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">socket_strerror</span><span style="color: #007700">(</span><span style="color: #0000BB">socket_last_error</span><span style="color: #007700">())&nbsp;.&nbsp;</span><span style="color: #0000BB">PHP_EOL</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #0000BB">$rval&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">socket_get_option</span><span style="color: #007700">(</span><span style="color: #0000BB">$socket</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">SOL_SOCKET</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">SO_REUSEADDR</span><span style="color: #007700">);<br /><br />if&nbsp;(</span><span style="color: #0000BB">$rval&nbsp;</span><span style="color: #007700">===&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'ソケットのオプションを取得できません:&nbsp;'</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">socket_strerror</span><span style="color: #007700">(</span><span style="color: #0000BB">socket_last_error</span><span style="color: #007700">())&nbsp;.&nbsp;</span><span style="color: #0000BB">PHP_EOL</span><span style="color: #007700">;<br />}&nbsp;else&nbsp;if&nbsp;(</span><span style="color: #0000BB">$rval&nbsp;</span><span style="color: #007700">!==&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'SO_REUSEADDR&nbsp;がソケットに設定されています!'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">PHP_EOL</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog" id="refsect1-function.socket-set-option-changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>4.3.0</td>
+       <td>
+        関数の名前が変わりました。以前は
+         <span class="function"><strong>socket_setopt()</strong></span> という名前でした。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="107980""></a>
+  <div class="note">
+   <strong class="user">ckozler at kozler dot net</strong>
+   <a href="#107980" class="date">20-Mar-2012 04:06</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+It appears that Winsock does not acknowledge timeout (send and receive) on Windows.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="101108""></a>
+  <div class="note">
+   <strong class="user">DaveRandom</strong>
+   <a href="#101108" class="date">26-Nov-2010 01:13</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Setting the socket timeout microseconds ('usec') does not work under Windows, at least under PHP/5.2.9:<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+&nbsp; $timeout </span><span class="keyword">= array(</span><span class="string">'sec'</span><span class="keyword">=&gt;</span><span class="default">1</span><span class="keyword">,</span><span class="string">'usec'</span><span class="keyword">=&gt;</span><span class="default">500000</span><span class="keyword">);<br />
+&nbsp; </span><span class="default">socket_set_option</span><span class="keyword">(</span><span class="default">$socket</span><span class="keyword">,</span><span class="default">SOL_SOCKET</span><span class="keyword">,</span><span class="default">SO_RCVTIMEO</span><span class="keyword">,</span><span class="default">$timeout</span><span class="keyword">);<br />
+&nbsp; </span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">socket_set_option</span><span class="keyword">(</span><span class="default">$socket</span><span class="keyword">,</span><span class="default">SOL_SOCKET</span><span class="keyword">,</span><span class="default">SO_RCVTIMEO</span><span class="keyword">));<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Output on Windows box:<br />
+<br />
+array(2) {<br />
+&nbsp; ["sec"]=&gt;<br />
+&nbsp; int(1)<br />
+&nbsp; ["usec"]=&gt;<br />
+&nbsp; int(0)<br />
+}<br />
+<br />
+Output on Linux box:<br />
+<br />
+array(2) {<br />
+&nbsp; ["sec"]=&gt;<br />
+&nbsp; int(1)<br />
+&nbsp; ["usec"]=&gt;<br />
+&nbsp; int(500000)<br />
+}</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="84083""></a>
+  <div class="note">
+   <strong class="user">aeolianmeson at ifacfchi dot blitzeclipse dot com</strong>
+   <a href="#84083" class="date">27-Jun-2008 12:31</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Lingering will sometimes not work when you're working with non-blocking sockets. Even if the socket is set to linger and you keep tying to close until the socket doesn't return an error and the resource is no longer identifiable as type 'Socket', the socket may STILL close without sending everything.<br />
+<br />
+Therefore, in the event that you are using non-blocking sockets (which is preferable if you care at all about signaling), you should set the socket as blocking (socket_set_block()) before calling to close it. This will allow everything to flush before it returns.<br />
+<br />
+Dustin Oprea</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="71904""></a>
+  <div class="note">
+   <strong class="user">ludvig dot ericson at gmail dot com</strong>
+   <a href="#71904" class="date">21-Dec-2006 10:06</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I would like to comment on the previous note regarding blocking sockets.<br />
+There is more to blocking sockets than waiting for data to be received when trying to be read upon, just to make example, a listening blocking socket will wait for a client to try to connect before it returns when you socket_accept() it.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="52429""></a>
+  <div class="note">
+   <strong class="user">drenintell</strong>
+   <a href="#52429" class="date">01-May-2005 02:19</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+To expand a bit more on what "tim at e2-media dot co dot nz" started.<br />
+<br />
+SO_SNDTIMEO is one of the many constants you can use with socket_set_option.<br />
+<br />
+See <a href="http://ca.php.net/manual/en/ref.sockets.php for the available Predefind Constants and visit http://man.he.net/man2/setsockopt for the meaning of the ones relevant." rel="nofollow" target="_blank">http://ca.php.net/manual/en/ref.sockets.php for the available Predefind Constants and visit http://man.he.net/man2/setsockopt for the meaning of the ones relevant.</a><br />
+<br />
+Tim's example might seem at first a bit non-intuitive since he is using the SO_SNDTIMEO constant. Which means, if the socket has to send out data, it must do it within the limit specified - in his case 10 seconds. Usually you won't set a timeout for sending out data. Nevertheless, the example is valid, and there are situations where you need to do so.<br />
+<br />
+A more intuitive use of socket_set_option would be to set a time out for a blocking socket (a socket that waits for data to be receive when read from). You would do this like so:<br />
+<br />
+socket_set_option($socket,SOL_SOCKET, SO_RCVTIMEO, array("sec"=&gt;0, "usec"=&gt;100));<br />
+<br />
+Notice that sec= 0 and usec= 100; Depending on how long you want your program to wait to recieve data, you might want to change these values.<br />
+<br />
+Regards,<br />
+&nbsp; drenintell</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="42438""></a>
+  <div class="note">
+   <strong class="user">tim at e2-media dot co dot nz</strong>
+   <a href="#42438" class="date">17-May-2004 05:00</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+To set a socket timeout value (assuming you've set it blocking) use:<br />
+<br />
+socket_set_option(<br />
+&nbsp; $socket,<br />
+&nbsp; SOL_SOCKET,&nbsp; // socket level<br />
+&nbsp; SO_SNDTIMEO, // timeout option<br />
+&nbsp; array(<br />
+&nbsp;&nbsp;&nbsp; "sec"=&gt;10, // Timeout in seconds<br />
+&nbsp;&nbsp;&nbsp; "usec"=&gt;0&nbsp; // I assume timeout in microseconds<br />
+&nbsp;&nbsp;&nbsp; )<br />
+&nbsp; );</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.socket-set-nonblock.html">socket_set_nonblock</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.socket-shutdown.html">socket_shutdown</a></div>
+ <div class="up"><a href="ref.sockets.html">ソケット 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

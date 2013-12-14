@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>カスタムセッションハンドラ</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="session.idpassing.html">セッションIDの受渡し</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="session.upload-progress.html">セッションのアップロード状況</a></div>
+ <div class="up"><a href="session.examples.html">例</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="session.customhandler" class="section">
+  <h2 class="title">カスタムセッションハンドラ</h2>
+  <p class="para">
+   セッション情報をデータベースに保存する機能か他の保存法を実装するには、
+   一連のユーザーレベルの保存関数を作成し、
+    <span class="function"><a href="function.session-set-save-handler.html" class="function">session_set_save_handler()</a></span>を使用する必要があります。
+   PHP 5.4.0 以降では、<a href="class.sessionhandlerinterface.html" class="classname">SessionHandlerInterface</a>
+   を使ったり、<a href="class.sessionhandler.html" class="classname">SessionHandler</a> を継承して
+   PHP の内部セッションハンドラを拡張したりしてセッションハンドラを作成できます。
+  </p>
+  <p class="para">
+    <span class="function"><a href="function.session-set-save-handler.html" class="function">session_set_save_handler()</a></span> で指定したコールバックメソッドが、
+   セッションのライフサイクル内で PHP からコールされます。
+   セッションの <em><code class="parameter">open</code></em>、<em><code class="parameter">read</code></em>、<em><code class="parameter">write</code></em>、
+   <em><code class="parameter">close</code></em>、そしてセッションの削除 (<em><code class="parameter">destroy</code></em>)
+   や定期的なガベージコレクション (<em><code class="parameter">gc</code></em>) などのときです。
+  </p>
+  <p class="para">
+   したがって、PHP では常にセッション保存ハンドラが必要となります。デフォルトは、通常はファイルベースの保存ハンドラです。
+   自作の保存ハンドラは  <span class="function"><a href="function.session-set-save-handler.html" class="function">session_set_save_handler()</a></span> で設定できます。
+   内部的な保存ハンドラとして、デフォルト以外のものも PHP の拡張モジュールとして用意されています。
+   <em><code class="parameter">sqlite</code></em> や <em><code class="parameter">memcache</code></em> そして
+   <em><code class="parameter">memcached</code></em> などで、これらは <a href="session.configuration.html#ini.session.save-handler" class="link">session.save_handler</a>
+   で設定できます。
+  </p>
+  <p class="para">
+   セッションが開始するときに、PHP は内部的に <em><code class="parameter">open</code></em> ハンドラをコールします。
+   それに続けて <em><code class="parameter">read</code></em> コールバックを実行し、
+   このコールバックがエンコードされた文字列を返します。これは最初にセッションストレージに渡されたものと同じ形式になります。
+   <em><code class="parameter">read</code></em> コールバックがエンコードした文字列を返したら、
+   PHP がそれをデコードしてデコード後の配列をスーパーグローバル
+   <var class="varname"><var class="varname"><a href="reserved.variables.session.html" class="classname">$_SESSION</a></var></var> に格納します。
+  </p>
+  <p class="para">
+   PHP のスクリプトが終了するとき (あるいは  <span class="function"><a href="function.session-write-close.html" class="function">session_write_close()</a></span> がコールされたとき) には、
+   PHP が内部的にスーパーグローバル <var class="varname"><var class="varname"><a href="reserved.variables.session.html" class="classname">$_SESSION</a></var></var> をエンコードします。
+   そして、それをセッション ID とともに <em><code class="parameter">write</code></em> コールバックに渡します。
+   <em><code class="parameter">write</code></em> コールバックが終了すると、PHP は内部的に
+   <em><code class="parameter">close</code></em> コールバックハンドラを実行します。
+  </p>
+  <p class="para">
+   セッションが明確に破棄されたときには、PHP は
+   <em><code class="parameter">destroy</code></em> ハンドラをセッション ID つきでコールします。
+  </p>
+ <p class="para">
+   PHP はときどき <em><code class="parameter">gc</code></em> コールバックを実行し、
+   設定されているセッション有効期限にもとづいて期限切れのセッションレコードを無効化します。
+   この処理では、最後にアクセスされてからの時間が <em><code class="parameter">$lifetime</code></em>
+   を超えているすべてのレコードを永続ストレージから削除しなければなりません。
+ </p>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="session.idpassing.html">セッションIDの受渡し</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="session.upload-progress.html">セッションのアップロード状況</a></div>
+ <div class="up"><a href="session.examples.html">例</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

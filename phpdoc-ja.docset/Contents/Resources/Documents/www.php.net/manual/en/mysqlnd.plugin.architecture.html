@@ -1,0 +1,498 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>MySQL Native Driverプラグイン のアーキテクチャ</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqlnd.plugin.obtaining.html">mysqlnd plugin APIを取得する</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd.plugin.api.html">mysqlnd のプラグインAPI</a></div>
+ <div class="up"><a href="mysqlnd.plugin.html">MySQL Native Driver プラグインAPI</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="mysqlnd.plugin.architecture" class="section">
+  <h2 class="title">MySQL Native Driverプラグイン のアーキテクチャ</h2>
+  <p class="para">
+   このセクションでは、<em>mysqlnd</em>プラグイン のアーキテクチャについての概要を示します。
+  </p>
+  <p class="para">
+   <em class="emphasis"> MySQL Native Driver の概要</em>
+  </p>
+  <p class="para">
+   <em>mysqlnd</em>プラグイン を開発する前に、<em>mysqlnd</em> そのものがどのように成り立っているのかを少し知っておくと役に立ちます。<em>mysqlnd</em> は次に示すモジュールからなります:
+  </p>
+  <table class="doctable table">
+   <caption><strong>mysqlnd のモジュール毎のソースコードの組み合わせを示した表</strong></caption>
+   
+    <tbody class="tbody">
+     <tr>
+      <td>モジュールの統計情報</td>
+      <td>mysqlnd_statistics.c</td>
+     </tr>
+
+     <tr>
+      <td>データベース接続</td>
+      <td>mysqlnd.c</td>
+     </tr>
+
+     <tr>
+      <td>結果セット</td>
+      <td>mysqlnd_result.c</td>
+     </tr>
+
+     <tr>
+      <td>結果セットのメタデータ</td>
+      <td>mysqlnd_result_meta.c</td>
+     </tr>
+
+     <tr>
+      <td>プリペアドステートメント</td>
+      <td>mysqlnd_ps.c</td>
+     </tr>
+
+     <tr>
+      <td>ネットワーク</td>
+      <td>mysqlnd_net.c</td>
+     </tr>
+
+     <tr>
+      <td>Wire protocol</td>
+      <td>mysqlnd_wireprotocol.c</td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  <p class="para">
+   <em class="emphasis">C言語のオブジェクト指向パラダイム</em>
+  </p>
+  <p class="para">
+   ソースコードレベルで、<em>mysqlnd</em> は オブジェクト指向を実装するためのパターンを採用しています。
+  </p>
+  <p class="para">
+   C言語では、オブジェクトを表現するために <em>struct</em>(構造体) を使います。struct のメンバがオブジェクトのプロパティを表現します。関数を指している struct のメンバがメソッドを表現します。
+  </p>
+  <p class="para">
+   C++ や Java のような言語と異なり、C言語におけるオブジェクト指向のパラダイムでは決まった継承のルールがありませんが、従う必要があるルールがいくつかあります。このルールについては後に述べます。
+  </p>
+  <p class="para">
+   <em class="emphasis">PHP のライフサイクル</em>
+  </p>
+  <p class="para">
+   PHP のライフサイクルを考えるとき、ふたつの基本的なサイクルが存在します。
+  </p>
+  <ul class="itemizedlist">
+   <li class="listitem">
+    <p class="para">
+     PHPエンジンの起動と終了までのサイクル
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     リクエスト毎のライフサイクル
+    </p>
+   </li>
+  </ul>
+  <p class="para">
+   PHPエンジンが起動するとき、PHP はモジュールを初期化する (MINIT) 関数を登録されたエクステンションごとに呼び出します。これによって、各々のモジュールが PHPエンジンが処理を行うライフサイクルの間存在するリソースを割り当てたり、変数を定義することができます。PHPエンジンが終了するときには、 エンジンが終了(MSHUTDOWN)関数をエクステンション毎に呼び出します。
+  </p>
+  <p class="para">
+   PHPエンジンが起動している間、エンジンはたくさんのリクエストを受けとります。それぞれのリクエストは別のライフサイクルを構成します。リクエスト毎にPHPエンジンはリクエストの初期化関数をエクステンション毎に呼び出します。エクステンション側では、リクエストの処理に必要な変数の定義やリソースの割り当てを行うことができます。リクエストのサイクルが終了するときは、PHPエンジンがリクエストの終了(RSHUTDOWN)関数をエクステンション毎に呼び出します。これによって、エクステンションは必要となるあらゆるクリーンアップ処理を行うことができます。
+  </p>
+  <p class="para">
+   <em class="emphasis">プラグインはどうやって動くか</em>
+  </p>
+  <p class="para">
+   <em>mysqlnd</em>プラグイン は <em>mysqlnd</em> を使うエクステンションが <em>mysqlnd</em> を呼び出すときの制御を奪うことによって動作します。これは <em>mysqlnd</em> の関数テーブルを取得し、バックアップし、カスタムの関数テーブルと置き換えることによって実現されます。この関数テーブルが、プラグインが必要とする関数を呼び出すのです。
+  </p>
+  <p class="para">
+   次のコードは、<em>mysqlnd</em> の関数テーブルを置き換える方法を示しています:
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre>
+/* a place to store original function table */
+struct st_mysqlnd_conn_methods org_methods;
+
+void minit_register_hooks(TSRMLS_D) {
+  /* active function table */
+  struct st_mysqlnd_conn_methods * current_methods
+    = mysqlnd_conn_get_methods();
+
+  /* backup original function table */
+  memcpy(&amp;org_methods, current_methods,
+    sizeof(struct st_mysqlnd_conn_methods);
+
+  /* install new methods */
+  current_methods-&gt;query = MYSQLND_METHOD(my_conn_class, query);
+}
+</pre></div>
+</div>
+
+  <p class="para">
+   接続関数テーブルの管理は、モジュールを初期化(MINIT)している間に行わなければなりません。関数テーブルはグローバルに共有されるリソースです。マルチスレッド環境で、TSRMを有効にしてPHPをビルドした環境では、グローバルに共有されたリソースをリクエストを処理している間に操作すると、ほぼ確実に衝突が起こります。
+  </p>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    <em>mysqlnd</em> の関数テーブルを管理するときに、固定サイズを割り当てるロジックは絶対に使わないでください。新しいメソッドが関数テーブルの最後に追加される可能性があるからです。関数テーブルは将来どんな場合でも変更される可能性があります。
+   </p>
+  </p></blockquote>
+  <p class="para">
+   <em class="emphasis">親クラスのメソッドを呼び出す</em>
+  </p>
+  <p class="para">
+   オリジナルの関数テーブルをバックアップしている場合、オリジナルの関数テーブルのエントリに含まれる関数を呼び出すことができます - これが親メソッドです。
+  </p>
+  <p class="para">
+   場合によっては、<em>Connection::stmt_init()</em> のように、派生メソッドで他のあらゆる処理より先に親メソッドを呼び出すことが決定的に重要な場合があります。
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre>
+MYSQLND_METHOD(my_conn_class, query)(MYSQLND *conn,
+  const char *query, unsigned int query_len TSRMLS_DC) {
+
+  php_printf(&quot;my_conn_class::query(query = %s)\n&quot;, query);
+
+  query = &quot;SELECT &#039;query rewritten&#039; FROM DUAL&quot;;
+  query_len = strlen(query);
+
+  return org_methods.query(conn, query, query_len); /* return with call to parent */
+}
+</pre></div>
+</div>
+
+  <p class="para">
+   <em class="emphasis">プロパティを拡張する</em>
+  </p>
+  <p class="para">
+   <em>mysqlnd</em>オブジェクトは C言語の構造体で表現されます。実行時に、C言語の構造体に新たにメンバを追加することは不可能です。<em>mysqlnd</em>オブジェクト のユーザーは、プロパティを単純にオブジェクトに追加することはできません。
+  </p>
+  <p class="para">
+   <em>mysqlnd_plugin_get_plugin_&lt;object&gt;_data()</em>ファミリーの適切な関数を使って、任意のデータ (プロパティ) を <em>mysqlnd</em> オブジェクトに追加することができます。オブジェクトをメモリに割り付ける際に、<em>mysqlnd</em> はオブジェクトの最後に 任意のデータ向けの <em>void *</em> ポインタを保持するためのメモリ空間を予約しておきます。 <em>mysqlnd</em> は プラグインひとつにつき、ひとつの <em>void *</em>ポインタ を保持する空間を予約しています。
+  </p>
+  <p class="para">
+   次の表で、特定のプラグインでポインタの位置を計算する方法を示します:
+  </p>
+  <table class="doctable table">
+   <caption><strong>mysqlnd のポインタの位置を計算する方法</strong></caption>
+   
+    <tbody class="tbody">
+     <tr>
+      <td>メモリアドレス</td>
+      <td>メモリの内容</td>
+     </tr>
+
+     <tr>
+      <td>0</td>
+      <td>mysqlndオブジェクト を表現する構造体の開始</td>
+     </tr>
+
+     <tr>
+      <td>n</td>
+      <td>mysqlndオブジェクト を表現する構造体の終了</td>
+     </tr>
+
+     <tr>
+      <td>n + (m x sizeof(void*))</td>
+      <td>m 番目のプラグインのオブジェクトデータを表現する void* ポインタ</td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  <p class="para">
+   <em>mysqlnd</em>オブジェクト のコンストラクタを継承する計画がある場合、それが許可されていることを必ず頭にいれておいてください！
+  </p>
+  <p class="para">
+   次のコードはプロパティを拡張する方法を示しています:
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre>
+/* any data we want to associate */
+typedef struct my_conn_properties {
+  unsigned long query_counter;
+} MY_CONN_PROPERTIES;
+
+/* plugin id */
+unsigned int my_plugin_id;
+
+void minit_register_hooks(TSRMLS_D) {
+  /* obtain unique plugin ID */
+  my_plugin_id = mysqlnd_plugin_register();
+  /* snip - see Extending Connection: methods */
+}
+
+static MY_CONN_PROPERTIES** get_conn_properties(const MYSQLND *conn TSRMLS_DC) {
+  MY_CONN_PROPERTIES** props;
+  props = (MY_CONN_PROPERTIES**)mysqlnd_plugin_get_plugin_connection_data(
+    conn, my_plugin_id);
+  if (!props || !(*props)) {
+    *props = mnd_pecalloc(1, sizeof(MY_CONN_PROPERTIES), conn-&gt;persistent);
+    (*props)-&gt;query_counter = 0;
+  }
+  return props;
+}
+</pre></div>
+</div>
+
+  <p class="para">
+   プラグインの開発者には、プラグイン用のデータに使われるメモリを管理する責任があります。
+  </p>
+  <p class="para">
+   <em>mysqlnd</em> のメモリアロケータを使うことを推奨します。これらのメモリアロケータ関数は次のような規約に従って命名されています: <em>mnd_*loc()</em> <em>mysqlnd</em> のメモリアロケーターには役に立つ機能がいくつかあります。たとえばデバッグビルドでない環境でデバッグ用のアロケータを使う機能などです。
+  </p>
+  <table class="doctable table">
+   <caption><strong>いつ、どのように継承するか</strong></caption>
+   
+    <tbody class="tbody">
+     <tr>
+      <td class="empty">&nbsp;</td>
+      <td>いつ継承するか?</td>
+      <td>各々のインスタンスが自分のプライベートな関数テーブルを持っているか?</td>
+      <td>どのように継承するか?</td>
+     </tr>
+
+     <tr>
+      <td>Connection (MYSQLND)</td>
+      <td>MINIT</td>
+      <td>No</td>
+      <td>mysqlnd_conn_get_methods()</td>
+     </tr>
+
+     <tr>
+      <td>Resultset (MYSQLND_RES)</td>
+      <td>MINIT (モジュール初期化) 時 またはその後</td>
+      <td>Yes</td>
+      <td>mysqlnd_result_get_methods() または、オブジェクトのメソッド関数テーブルを変更する</td>
+     </tr>
+
+     <tr>
+      <td>Resultset Meta (MYSQLND_RES_METADATA)</td>
+      <td>MINIT (モジュール初期化) 時</td>
+      <td>No</td>
+      <td>mysqlnd_result_metadata_get_methods()</td>
+     </tr>
+
+     <tr>
+      <td>Statement (MYSQLND_STMT)</td>
+      <td>MINIT (モジュール初期化) 時</td>
+      <td>No</td>
+      <td>mysqlnd_stmt_get_methods()</td>
+     </tr>
+
+     <tr>
+      <td>Network (MYSQLND_NET)</td>
+      <td>MINIT (モジュール初期化) 時 またはその後</td>
+      <td>Yes</td>
+      <td>mysqlnd_net_get_methods() または、オブジェクトのメソッド関数テーブルを変更する</td>
+     </tr>
+
+     <tr>
+      <td>Wire protocol (MYSQLND_PROTOCOL)</td>
+      <td>MINIT (モジュール初期化) 時 またはその後</td>
+      <td>Yes</td>
+      <td>mysqlnd_protocol_get_methods() または、オブジェクトのメソッド関数テーブルを変更する</td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  <p class="para">
+   上記の表で許可されていない場合は、モジュールを初期化した(MINIT)後のいかなる場合であっても関数テーブルを変更してはいけません。
+  </p>
+  <p class="para">
+   クラスによっては、メソッドの関数テーブルへのポインタが含まれている場合があります。このようなクラスのインスタンスはすべて、同じ関数テーブルを共有しています。混乱を避けるため、特にマルチスレッドの環境下では、このような関数テーブルは MINIT (モジュール初期化) 時にだけ変更するようにしてください。
+  </p>
+  <p class="para">
+   そうでないクラスでは、グローバルに共有された関数テーブルのコピーを使っています。クラスの関数テーブルのコピーがオブジェクトとともに作成されます。それぞれのオブジェクトは自分の関数テーブルを使います。これによって開発者は二つの選択肢が得られます: MINIT(モジュール初期化) 時にオブジェクトのデフォルトの関数テーブルを変更するか、同じクラスの他のインスタンスに影響を与えることなくオブジェクトのメソッドを追加で変更することができます。
+  </p>
+  <p class="para">
+   関数テーブルを共有する利点は、パフォーマンスの向上です。関数テーブルをそれぞれの、すべてのオブジェクトにコピーする必要がないからです。
+  </p>
+  <table class="doctable table">
+   <caption><strong>コンストラクタの状態</strong></caption>
+   
+    <tbody class="tbody">
+     <tr>
+      <td class="empty">&nbsp;</td>
+      <td>メモリ割り当て、オブジェクトの生成、リセット</td>
+      <td>変更可能か?</td>
+      <td>呼び出し元</td>
+     </tr>
+
+     <tr>
+      <td>Connection (MYSQLND)</td>
+      <td>mysqlnd_init()</td>
+      <td>No</td>
+      <td>mysqlnd_connect()</td>
+     </tr>
+
+     <tr>
+      <td>Resultset(MYSQLND_RES)</td>
+      <td><p class="para">
+        メモリ割り当て:
+       </p>
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <p class="para">
+          Connection::result_init()
+         </p>
+        </li>
+       </ul>
+       <p class="para">
+        リセットし、再初期化されるタイミング:
+       </p>
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <p class="para">
+          Result::use_result()
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          Result::store_result
+         </p>
+        </li>
+       </ul></td>
+      <td>Yes, ただし親メソッドを呼び出すこと！</td>
+      <td><ul class="itemizedlist">
+        <li class="listitem">
+         <p class="para">
+          Connection::list_fields()
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          Statement::get_result()
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          Statement::prepare() (メタデータのみ)
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          Statement::resultMetaData()
+         </p>
+        </li>
+       </ul></td>
+     </tr>
+
+     <tr>
+      <td>Resultset Meta (MYSQLND_RES_METADATA)</td>
+      <td>Connection::result_meta_init()</td>
+      <td>Yes, ただし親メソッドを呼び出すこと！</td>
+      <td>Result::read_result_metadata()</td>
+     </tr>
+
+     <tr>
+      <td>Statement (MYSQLND_STMT)</td>
+      <td>Connection::stmt_init()</td>
+      <td>Yes, ただし親メソッドを呼び出すこと！</td>
+      <td>Connection::stmt_init()</td>
+     </tr>
+
+     <tr>
+      <td>Network (MYSQLND_NET)</td>
+      <td>mysqlnd_net_init()</td>
+      <td>No</td>
+      <td>Connection::init()</td>
+     </tr>
+
+     <tr>
+      <td>Wire protocol (MYSQLND_PROTOCOL)</td>
+      <td>mysqlnd_protocol_init()</td>
+      <td>No</td>
+      <td>Connection::init()</td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  <p class="para">
+   コンストラクタを全面的に置き換えないことを強く推奨します。コンストラクタはメモリへの割り当てを実行します。<em>mysqlnd</em>プラグインAPI と オブジェクトのロジックにとってメモリへの割り当ては決定的に重要です。開発者が警告を無視してコンストラクタへのフックを強行する場合、コンストラクタで何かをする前に親のコンストラクタを少なくとも呼び出すべきです。
+  </p>
+  <p class="para">
+   すべての警告に関わらず、コンストラクタを継承することが役に立つ場合があります。コンストラクタは、オブジェクトの関数テーブルを共有されていないオブジェクトの関数テーブルと一緒に修正するのにぴったりな場所です。共有されていないオブジェクトの関数テーブルの例としては、結果セットやネットワーク、wire protocol が挙げられます。
+  </p>
+  <table class="doctable table">
+   <caption><strong>オブジェクトの破棄に関する状態</strong></caption>
+   
+    <tbody class="tbody">
+     <tr>
+      <td class="empty">&nbsp;</td>
+      <td>継承したメソッドは親メソッドを呼ばねばならないか?</td>
+      <td>デストラクタ</td>
+     </tr>
+
+     <tr>
+      <td>Connection</td>
+      <td>Yes, メソッドの実行後に呼び出さなければなりません</td>
+      <td>free_contents(), end_psession()</td>
+     </tr>
+
+     <tr>
+      <td>Resultset</td>
+      <td>Yes, メソッドの実行後に呼び出さなければなりません</td>
+      <td>free_result()</td>
+     </tr>
+
+     <tr>
+      <td>Resultset Meta</td>
+      <td>Yes, メソッドの実行後に呼び出さなければなりません</td>
+      <td>free()</td>
+     </tr>
+
+     <tr>
+      <td>Statement</td>
+      <td>Yes, メソッドの実行後に呼び出さなければなりません</td>
+      <td>dtor(), free_stmt_content()</td>
+     </tr>
+
+     <tr>
+      <td>Network</td>
+      <td>Yes, メソッドの実行後に呼び出さなければなりません</td>
+      <td>free()</td>
+     </tr>
+
+     <tr>
+      <td>Wire protocol</td>
+      <td>Yes, メソッドの実行後に呼び出さなければなりません</td>
+      <td>free()</td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  <p class="para">
+   デストラクタは、<em>mysqlnd_plugin_get_plugin_<span class="replaceable">&lt;object&gt;</span>_data()</em> で取得したプロパティを破棄するのに適切な場所です。
+  </p>
+  <p class="para">
+   ここで挙げたデストラクタは、オブジェクトそのものを破棄する 実際の <em>mysqlnd</em> メソッドと一致しないかもしれません。しかし、これらのデストラクタは、開発者がフックし、プラグインデータを解放する最良の場所なのです。コンストラクタに関しては、開発者がメソッドを完全に置き換えることができるものの、推奨されません。上の表に複数のメソッドが示されていた場合、<em>mysqlnd</em> がどのメソッドをはじめに呼び出したかに関わらず、開発者はここで示されているすべてのメソッドをフックし、プラグインのデータを解放する必要があります。
+  </p>
+  <p class="para">
+   プラグインに推奨されるやり方は、単純にメソッドをフックし、メモリを解放した後に親クラスの実装を速やかに呼び出すことです。
+  </p>
+  <div class="caution"><strong class="caution">警告</strong>
+   <p class="para">
+    PHP 5.3.0 から 5.3.3 までは、PHPに存在するバグによって、プラグインはプラグイン固有のデータを持続的接続に結びつけることができませんでした。これは、<em>ext/mysql</em> と <em>ext/mysqli</em> が <em>mysqlnd</em> で必要な <em>end_psession()</em> メソッドを呼び出していなかったため、プラグインがメモリリークしていた可能性があったためでした。このバグは PHP 5.3.4 で修正されています。
+   </p>
+  </div>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="mysqlnd.plugin.obtaining.html">mysqlnd plugin APIを取得する</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="mysqlnd.plugin.api.html">mysqlnd のプラグインAPI</a></div>
+ <div class="up"><a href="mysqlnd.plugin.html">MySQL Native Driver プラグインAPI</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

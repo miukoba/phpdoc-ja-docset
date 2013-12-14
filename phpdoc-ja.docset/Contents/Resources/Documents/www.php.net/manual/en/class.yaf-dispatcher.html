@@ -1,0 +1,538 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Yaf_Dispatcher クラス</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="class.yaf-bootstrap-abstract.html">Yaf_Bootstrap_Abstract</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="yaf-dispatcher.autorender.html">Yaf_Dispatcher::autoRender</a></div>
+ <div class="up"><a href="book.yaf.html">Yaf</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="class.yaf-dispatcher" class="reference">
+
+ <h1 class="title">Yaf_Dispatcher クラス</h1>
+ 
+
+ <div class="partintro"><p class="verinfo">(Yaf &gt;=1.0.0)</p>
+
+
+  <div class="section" id="yaf-dispatcher.intro">
+   <h2 class="title">導入</h2>
+   <p class="para">
+    <strong class="classname">Yaf_Dispatcher</strong> の役割は、
+    リクエスト環境の初期化、やってきたリクエストのルーティング、
+    そして見つかったアクションへのディスパッチです。
+    あらゆるレスポンスを取りまとめ、処理が完了した後でそれを返します。
+   </p>
+   <p class="para">
+    <strong class="classname">Yaf_Dispatcher</strong> はシングルトンパターンを実装しています。
+    つまり、同時に複数のインスタンスは作れないということです。
+    そのため、このクラスをレジストリとして使い、
+    ディスパッチ中に他のオブジェクトから参照させることもできます。
+   </p>
+  </div>
+
+
+  <div class="section" id="yaf-dispatcher.synopsis">
+   <h2 class="title">クラス概要</h2>
+
+
+   <div class="classsynopsis">
+    <div class="ooclass"></div>
+
+
+    <div class="classsynopsisinfo">
+     <span class="ooclass">
+      <span class="modifier">final</span>
+      <strong class="classname">Yaf_Dispatcher</strong>
+     </span>
+     {</div>
+
+    <div class="classsynopsisinfo classsynopsisinfo_comment">/* プロパティ */</div>
+    <div class="fieldsynopsis">
+     <span class="modifier">protected</span>
+      <var class="varname"><a href="class.yaf-dispatcher.html#yaf-dispatcher.props.router">$<var class="varname">_router</var></a></var>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">protected</span>
+      <var class="varname"><a href="class.yaf-dispatcher.html#yaf-dispatcher.props.view">$<var class="varname">_view</var></a></var>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">protected</span>
+      <var class="varname"><a href="class.yaf-dispatcher.html#yaf-dispatcher.props.request">$<var class="varname">_request</var></a></var>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">protected</span>
+      <var class="varname"><a href="class.yaf-dispatcher.html#yaf-dispatcher.props.plugins">$<var class="varname">_plugins</var></a></var>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">protected</span>
+     <span class="modifier">static</span>
+      <var class="varname"><a href="class.yaf-dispatcher.html#yaf-dispatcher.props.instance">$<var class="varname">_instance</var></a></var>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">protected</span>
+      <var class="varname"><a href="class.yaf-dispatcher.html#yaf-dispatcher.props.auto-render">$<var class="varname">_auto_render</var></a></var>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">protected</span>
+      <var class="varname"><a href="class.yaf-dispatcher.html#yaf-dispatcher.props.return-response">$<var class="varname">_return_response</var></a></var>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">protected</span>
+      <var class="varname"><a href="class.yaf-dispatcher.html#yaf-dispatcher.props.instantly-flush">$<var class="varname">_instantly_flush</var></a></var>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">protected</span>
+      <var class="varname"><a href="class.yaf-dispatcher.html#yaf-dispatcher.props.default-module">$<var class="varname">_default_module</var></a></var>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">protected</span>
+      <var class="varname"><a href="class.yaf-dispatcher.html#yaf-dispatcher.props.default-controller">$<var class="varname">_default_controller</var></a></var>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">protected</span>
+      <var class="varname"><a href="class.yaf-dispatcher.html#yaf-dispatcher.props.default-action">$<var class="varname">_default_action</var></a></var>
+    ;</div>
+
+
+    
+    <div class="classsynopsisinfo classsynopsisinfo_comment">/* メソッド */</div>
+    <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">Yaf_Dispatcher</span> <span class="methodname"><a href="yaf-dispatcher.autorender.html" class="methodname">autoRender</a></span>
+    ([ <span class="methodparam"><span class="type">bool</span> <code class="parameter">$flag</code></span>
+  ] )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">Yaf_Dispatcher</span> <span class="methodname"><a href="yaf-dispatcher.catchexception.html" class="methodname">catchException</a></span>
+    ([ <span class="methodparam"><span class="type">bool</span> <code class="parameter">$flag</code></span>
+  ] )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">private</span> <span class="type">void</span> <span class="methodname"><a href="yaf-dispatcher.clone.html" class="methodname">__clone</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="methodname"><a href="yaf-dispatcher.construct.html" class="methodname">__construct</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><a href="yaf-dispatcher.disableview.html" class="methodname">disableView</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">Yaf_Response_Abstract</span> <span class="methodname"><a href="yaf-dispatcher.dispatch.html" class="methodname">dispatch</a></span>
+    ( <span class="methodparam"><span class="type"><a href="class.yaf-request-abstract.html" class="type Yaf_Request_Abstract">Yaf_Request_Abstract</a></span> <code class="parameter">$request</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">Yaf_Dispatcher</span> <span class="methodname"><a href="yaf-dispatcher.enableview.html" class="methodname">enableView</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">Yaf_Dispatcher</span> <span class="methodname"><a href="yaf-dispatcher.flushinstantly.html" class="methodname">flushInstantly</a></span>
+    ([ <span class="methodparam"><span class="type">bool</span> <code class="parameter">$flag</code></span>
+  ] )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">Yaf_Application</span> <span class="methodname"><a href="yaf-dispatcher.getapplication.html" class="methodname">getApplication</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="modifier">static</span> <span class="type">Yaf_Dispatcher</span> <span class="methodname"><a href="yaf-dispatcher.getinstance.html" class="methodname">getInstance</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">Yaf_Request_Abstract</span> <span class="methodname"><a href="yaf-dispatcher.getrequest.html" class="methodname">getRequest</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">Yaf_Router</span> <span class="methodname"><a href="yaf-dispatcher.getrouter.html" class="methodname">getRouter</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">Yaf_View_Interface</span> <span class="methodname"><a href="yaf-dispatcher.initview.html" class="methodname">initView</a></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$templates_dir</code></span>
+   [, <span class="methodparam"><span class="type">array</span> <code class="parameter">$options</code></span>
+  ] )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">Yaf_Dispatcher</span> <span class="methodname"><a href="yaf-dispatcher.registerplugin.html" class="methodname">registerPlugin</a></span>
+    ( <span class="methodparam"><span class="type"><a href="class.yaf-plugin-abstract.html" class="type Yaf_Plugin_Abstract">Yaf_Plugin_Abstract</a></span> <code class="parameter">$plugin</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">Yaf_Dispatcher</span> <span class="methodname"><a href="yaf-dispatcher.returnresponse.html" class="methodname">returnResponse</a></span>
+    ( <span class="methodparam"><span class="type">bool</span> <code class="parameter">$flag</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">Yaf_Dispatcher</span> <span class="methodname"><a href="yaf-dispatcher.setdefaultaction.html" class="methodname">setDefaultAction</a></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$action</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">Yaf_Dispatcher</span> <span class="methodname"><a href="yaf-dispatcher.setdefaultcontroller.html" class="methodname">setDefaultController</a></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$controller</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">Yaf_Dispatcher</span> <span class="methodname"><a href="yaf-dispatcher.setdefaultmodule.html" class="methodname">setDefaultModule</a></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$module</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">Yaf_Dispatcher</span> <span class="methodname"><a href="yaf-dispatcher.seterrorhandler.html" class="methodname">setErrorHandler</a></span>
+    ( <span class="methodparam"><span class="type"><span class="type call">call</span></span> <code class="parameter">$callback</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$error_types</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">Yaf_Dispatcher</span> <span class="methodname"><a href="yaf-dispatcher.setrequest.html" class="methodname">setRequest</a></span>
+    ( <span class="methodparam"><span class="type"><a href="class.yaf-request-abstract.html" class="type Yaf_Request_Abstract">Yaf_Request_Abstract</a></span> <code class="parameter">$request</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">Yaf_Dispatcher</span> <span class="methodname"><a href="yaf-dispatcher.setview.html" class="methodname">setView</a></span>
+    ( <span class="methodparam"><span class="type"><a href="class.yaf-view-interface.html" class="type Yaf_View_Interface">Yaf_View_Interface</a></span> <code class="parameter">$view</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">private</span> <span class="type">void</span> <span class="methodname"><a href="yaf-dispatcher.sleep.html" class="methodname">__sleep</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">Yaf_Dispatcher</span> <span class="methodname"><a href="yaf-dispatcher.throwexception.html" class="methodname">throwException</a></span>
+    ([ <span class="methodparam"><span class="type">bool</span> <code class="parameter">$flag</code></span>
+  ] )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">private</span> <span class="type">void</span> <span class="methodname"><a href="yaf-dispatcher.wakeup.html" class="methodname">__wakeup</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+   }</div>
+
+
+  </div>
+
+  
+
+  <div class="section" id="yaf-dispatcher.props">
+   <h2 class="title">プロパティ</h2>
+   <dl>
+
+    <dt id="yaf-dispatcher.props.router">
+     <span class="term"><var class="varname"><var class="varname">_router</var></var></span>
+     <dd>
+
+      <p class="para"/>
+     </dd>
+
+    </dt>
+
+    <dt id="yaf-dispatcher.props.view">
+     <span class="term"><var class="varname"><var class="varname">_view</var></var></span>
+     <dd>
+
+      <p class="para"/>
+     </dd>
+
+    </dt>
+
+    <dt id="yaf-dispatcher.props.request">
+     <span class="term"><var class="varname"><var class="varname">_request</var></var></span>
+     <dd>
+
+      <p class="para"/>
+     </dd>
+
+    </dt>
+
+    <dt id="yaf-dispatcher.props.plugins">
+     <span class="term"><var class="varname"><var class="varname">_plugins</var></var></span>
+     <dd>
+
+      <p class="para"/>
+     </dd>
+
+    </dt>
+
+    <dt id="yaf-dispatcher.props.instance">
+     <span class="term"><var class="varname"><var class="varname">_instance</var></var></span>
+     <dd>
+
+      <p class="para"/>
+     </dd>
+
+    </dt>
+
+    <dt id="yaf-dispatcher.props.auto-render">
+     <span class="term"><var class="varname"><var class="varname">_auto_render</var></var></span>
+     <dd>
+
+      <p class="para"/>
+     </dd>
+
+    </dt>
+
+    <dt id="yaf-dispatcher.props.return-response">
+     <span class="term"><var class="varname"><var class="varname">_return_response</var></var></span>
+     <dd>
+
+      <p class="para"/>
+     </dd>
+
+    </dt>
+
+    <dt id="yaf-dispatcher.props.instantly-flush">
+     <span class="term"><var class="varname"><var class="varname">_instantly_flush</var></var></span>
+     <dd>
+
+      <p class="para"/>
+     </dd>
+
+    </dt>
+
+    <dt id="yaf-dispatcher.props.default-module">
+     <span class="term"><var class="varname"><var class="varname">_default_module</var></var></span>
+     <dd>
+
+      <p class="para"/>
+     </dd>
+
+    </dt>
+
+    <dt id="yaf-dispatcher.props.default-controller">
+     <span class="term"><var class="varname"><var class="varname">_default_controller</var></var></span>
+     <dd>
+
+      <p class="para"/>
+     </dd>
+
+    </dt>
+
+    <dt id="yaf-dispatcher.props.default-action">
+     <span class="term"><var class="varname"><var class="varname">_default_action</var></var></span>
+     <dd>
+
+      <p class="para"/>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </div>
+
+
+
+ </div>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="yaf-dispatcher.autorender.html">Yaf_Dispatcher::autoRender</a> — 自動レンダリングのオン/オフを切り替える</li><li><a href="yaf-dispatcher.catchexception.html">Yaf_Dispatcher::catchException</a> — 例外のキャッチのオン/オフを切り替える</li><li><a href="yaf-dispatcher.clone.html">Yaf_Dispatcher::__clone</a> — Yaf_Dispatcher はクローンできない</li><li><a href="yaf-dispatcher.construct.html">Yaf_Dispatcher::__construct</a> — Yaf_Dispatcher のコンストラクタ</li><li><a href="yaf-dispatcher.disableview.html">Yaf_Dispatcher::disableView</a> — ビューのレンダリングを無効にする</li><li><a href="yaf-dispatcher.dispatch.html">Yaf_Dispatcher::dispatch</a> — リクエストをディスパッチする</li><li><a href="yaf-dispatcher.enableview.html">Yaf_Dispatcher::enableView</a> — ビューのレンダリングを有効にする</li><li><a href="yaf-dispatcher.flushinstantly.html">Yaf_Dispatcher::flushInstantly</a> — その場でのフラッシュのオン/オフを切り替える</li><li><a href="yaf-dispatcher.getapplication.html">Yaf_Dispatcher::getApplication</a> — アプリケーションを取得する</li><li><a href="yaf-dispatcher.getinstance.html">Yaf_Dispatcher::getInstance</a> — ディスパッチャのインスタンスを取得する</li><li><a href="yaf-dispatcher.getrequest.html">Yaf_Dispatcher::getRequest</a> — リクエストのインスタンスを取得する</li><li><a href="yaf-dispatcher.getrouter.html">Yaf_Dispatcher::getRouter</a> — ルーターのインスタンスを取得する</li><li><a href="yaf-dispatcher.initview.html">Yaf_Dispatcher::initView</a> — ビューを初期化して返す</li><li><a href="yaf-dispatcher.registerplugin.html">Yaf_Dispatcher::registerPlugin</a> — プラグインを登録する</li><li><a href="yaf-dispatcher.returnresponse.html">Yaf_Dispatcher::returnResponse</a> — The returnResponse purpose</li><li><a href="yaf-dispatcher.setdefaultaction.html">Yaf_Dispatcher::setDefaultAction</a> — デフォルトのアクション名を変更する</li><li><a href="yaf-dispatcher.setdefaultcontroller.html">Yaf_Dispatcher::setDefaultController</a> — デフォルトのコントローラ名を変更する</li><li><a href="yaf-dispatcher.setdefaultmodule.html">Yaf_Dispatcher::setDefaultModule</a> — デフォルトのモジュール名を変更する</li><li><a href="yaf-dispatcher.seterrorhandler.html">Yaf_Dispatcher::setErrorHandler</a> — エラーハンドラを設定する</li><li><a href="yaf-dispatcher.setrequest.html">Yaf_Dispatcher::setRequest</a> — The setRequest purpose</li><li><a href="yaf-dispatcher.setview.html">Yaf_Dispatcher::setView</a> — カスタムビューエンジンを設定する</li><li><a href="yaf-dispatcher.sleep.html">Yaf_Dispatcher::__sleep</a> — Yaf_Dispatcher はシリアライズできない</li><li><a href="yaf-dispatcher.throwexception.html">Yaf_Dispatcher::throwException</a> — 例外のスローのオン/オフを切り替える</li><li><a href="yaf-dispatcher.wakeup.html">Yaf_Dispatcher::__wakeup</a> — Yaf_Dispatcher はデシリアライズできない</li></ul>
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="class.yaf-bootstrap-abstract.html">Yaf_Bootstrap_Abstract</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="yaf-dispatcher.autorender.html">Yaf_Dispatcher::autoRender</a></div>
+ <div class="up"><a href="book.yaf.html">Yaf</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

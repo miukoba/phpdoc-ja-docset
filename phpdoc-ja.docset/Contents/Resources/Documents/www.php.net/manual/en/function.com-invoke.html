@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>COM コンポーネントのメソッドをコールする [非推奨]</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.com-get.html">com_get</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.com-isenum.html">com_isenum</a></div>
+ <div class="up"><a href="ref.com.html">COM関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.com-invoke" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">com_invoke</h1>
+  <p class="verinfo">(PHP 4)</p><p class="refpurpose"><span class="refname">com_invoke</span> &mdash; <span class="dc-title">COM コンポーネントのメソッドをコールする [非推奨]</span></p>
+
+ </div>
+ <div class="refsect1 unknown-notet" id="refsect1-function.com-invoke-unknown-notet">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <span class="methodname"><strong>com_invoke</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$com_object</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$function_name</code></span>
+   [, <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter">$function_parameters</code></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+    <span class="function"><strong>com_invoke()</strong></span> は、
+   <em><code class="parameter">com_object</code></em> が指す COM コンポーネントの
+   メソッド <em><code class="parameter">function_name</code></em> をコールします。
+    <span class="function"><strong>com_invoke()</strong></span> はエラーの場合に <strong><code>FALSE</code></strong> を返し、
+   成功時に <em><code class="parameter">function_name</code></em> の返り値を返します。
+   追加パラメータ <em><code class="parameter">function_parameters</code></em> の値が
+   メソッド <em><code class="parameter">function_name</code></em> に渡されます。
+  </p>
+  <p class="para">
+   <div class="example" id="example-5318">
+    <p><strong>例1 com_invoke() を使用せず、かわりにオブジェクト指向の構文を使用する</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;こちらを使用します<br /></span><span style="color: #0000BB">$val&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$obj</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">method</span><span style="color: #007700">(</span><span style="color: #0000BB">$one</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$two</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;こちらは推奨しません<br /></span><span style="color: #0000BB">$val&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">com_invoke</span><span style="color: #007700">(</span><span style="color: #0000BB">$obj</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'method'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$one</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$two</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+ <span class="simpara">
+  この関数は PHP 5 には存在しません。
+  より自然なオブジェクト指向形式の構文で、
+  プロパティにアクセスしたりメソッドをコールしたりすることになります。
+ </span>
+</p></blockquote>
+
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="49568""></a>
+  <div class="note">
+   <strong class="user">tomer at parity-bit dot com</strong>
+   <a href="#49568" class="date">01-Feb-2005 09:21</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note that if you want to use a string to specify the method to call (e.g. a drop-down list to decide what to do to a server process) you can do this in three ways.<br />
+<br />
+The first is to use this function, as in <span class="default">&lt;?php com_invoke</span><span class="keyword">(</span><span class="default">$obj</span><span class="keyword">, </span><span class="default">$_GET</span><span class="keyword">[</span><span class="string">'func'</span><span class="keyword">]); </span><span class="default">?&gt;<br />
+</span>That's bad.<br />
+<br />
+The second is to use eval(), as in <span class="default">&lt;?php </span><span class="keyword">eval(</span><span class="string">"\$obj-&gt;</span><span class="keyword">{</span><span class="default">$_GET</span><span class="keyword">[</span><span class="string">'func'</span><span class="keyword">]}</span><span class="string">();"</span><span class="keyword">); </span><span class="default">?&gt;<br />
+</span>That's very very very *very* bad.<br />
+<br />
+The third is to use call_user_func(), as in <span class="default">&lt;?php call_user_func</span><span class="keyword">(array(</span><span class="default">$obj</span><span class="keyword">, </span><span class="default">$_GET</span><span class="keyword">[</span><span class="string">'func'</span><span class="keyword">])); </span><span class="default">?&gt;<br />
+</span>That's very good.<br />
+<br />
+Remember to validate the user input against a list of allowed methods if a non-admin is at the console.<br />
+<br />
+<a href="http://php.net/manual/en/function.call-user-func.php" rel="nofollow" target="_blank">http://php.net/manual/en/function.call-user-func.php</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.com-get.html">com_get</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.com-isenum.html">com_isenum</a></div>
+ <div class="up"><a href="ref.com.html">COM関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

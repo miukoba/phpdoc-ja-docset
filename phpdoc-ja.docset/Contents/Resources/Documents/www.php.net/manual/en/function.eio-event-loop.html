@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>すべてのリクエストを処理し終えるまで libeio をポールする</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.eio-dup2.html">eio_dup2</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.eio-fallocate.html">eio_fallocate</a></div>
+ <div class="up"><a href="ref.eio.html">Eio 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.eio-event-loop" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">eio_event_loop</h1>
+  <p class="verinfo">(PECL eio &gt;= 0.0.1dev)</p><p class="refpurpose"><span class="refname">eio_event_loop</span> &mdash; <span class="dc-title">すべてのリクエストを処理し終えるまで libeio をポールする</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-function.eio-event-loop-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>eio_event_loop</strong></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   <span class="function"><strong>eio_event_loop()</strong></span> は、すべてのリクエストを処理し終えるまで libeio をポールします。
+  </p>
+
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.eio-event-loop-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">この関数にはパラメータはありません。</p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.eio-event-loop-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+    <span class="function"><strong>eio_event_loop()</strong></span> は、成功した場合に <strong><code>TRUE</code></strong> を返します。エラー時に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.eio-event-loop-examples">
+  <h3 class="title">例</h3>
+ <div class="example" id="example-3570">
+ <p><strong>例1  <span class="function"><strong>eio_event_loop()</strong></span> の例</strong></p>
+ <div class="example-contents">
+ <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$temp_filename&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"eio-temp-file.tmp"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">touch</span><span style="color: #007700">(</span><span style="color: #0000BB">$temp_filename</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;eio_chmod()&nbsp;が終了したときに呼ばれます&nbsp;*/<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">my_chmod_callback</span><span style="color: #007700">(</span><span style="color: #0000BB">$data</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$result</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;global&nbsp;</span><span style="color: #0000BB">$temp_filename</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">0&nbsp;</span><span style="color: #007700">&amp;&amp;&nbsp;!</span><span style="color: #0000BB">is_readable</span><span style="color: #007700">(</span><span style="color: #0000BB">$temp_filename</span><span style="color: #007700">)&nbsp;&amp;&amp;&nbsp;</span><span style="color: #0000BB">is_writable</span><span style="color: #007700">(</span><span style="color: #0000BB">$temp_filename</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"eio_chmod_ok"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;@</span><span style="color: #0000BB">unlink</span><span style="color: #007700">(</span><span style="color: #0000BB">$temp_filename</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">eio_chmod</span><span style="color: #007700">(</span><span style="color: #0000BB">$temp_filename</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0200</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">EIO_PRI_DEFAULT</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"my_chmod_callback"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">eio_event_loop</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+</div>
+
+<div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+<div class="example-contents screen">
+ <div class="cdata"><pre>
+eio_chmod_ok
+ </pre></div>
+ </div>
+ </div>
+
+ </div>
+
+
+
+ <div class="refsect1 seealso" id="refsect1-function.eio-event-loop-seealso">
+  <h3 class="title">参考</h3>
+  <ul class="simplelist">
+   <li class="member">eio_poll</li>
+  </ul>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.eio-dup2.html">eio_dup2</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.eio-fallocate.html">eio_fallocate</a></div>
+ <div class="up"><a href="ref.eio.html">Eio 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>数値アイテムの値を増やす</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="memcached.getversion.html">Memcached::getVersion</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="memcached.incrementbykey.html">Memcached::incrementByKey</a></div>
+ <div class="up"><a href="class.memcached.html">Memcached</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="memcached.increment" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">Memcached::increment</h1>
+  <p class="verinfo">(PECL memcached &gt;= 0.1.0)</p><p class="refpurpose"><span class="refname">Memcached::increment</span> &mdash; <span class="dc-title">数値アイテムの値を増やす</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-memcached.increment-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">int</span> <span class="methodname"><strong>Memcached::increment</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$key</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$offset</code><span class="initializer"> = 1</span></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$initial_value</code><span class="initializer"> = 0</span></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$expiry</code><span class="initializer"> = 0</span></span>
+  ]]] )</div>
+
+  <p class="para rdfs-comment">
+    <span class="function"><strong>Memcached::increment()</strong></span> は、数値アイテムの値を
+   <em><code class="parameter">offset</code></em> で指定しただけ増やします。
+   アイテムの値が数値でない場合はエラーとなります。
+   アイテムが存在しない場合、 <span class="function"><strong>Memcached::increment()</strong></span> は値を
+   <em><code class="parameter">initial_value</code></em> に設定します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-memcached.increment-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">key</code></em></span>
+     <dd>
+
+      <p class="para">
+       増やしたいアイテムのキー。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">offset</code></em></span>
+     <dd>
+
+      <p class="para">
+       値を増やしたい量。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">initial_value</code></em></span>
+     <dd>
+
+      <p class="para">
+       そのアイテムが存在しない場合に設定する値。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">expiry</code></em></span>
+     <dd>
+
+      <p class="para">
+       そのアイテムに設定する有効期限。
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-memcached.increment-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合にアイテムの新しい値、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-memcached.increment-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-4429">
+    <p><strong>例1  <span class="function"><strong>Memcached::increment()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Memcached</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">addServer</span><span style="color: #007700">(</span><span style="color: #DD0000">'localhost'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">11211</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">set</span><span style="color: #007700">(</span><span style="color: #DD0000">'counter'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">increment</span><span style="color: #007700">(</span><span style="color: #DD0000">'counter'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$n&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">increment</span><span style="color: #007700">(</span><span style="color: #DD0000">'counter'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$n</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">set</span><span style="color: #007700">(</span><span style="color: #DD0000">'counter'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'abc'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$n&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">increment</span><span style="color: #007700">(</span><span style="color: #DD0000">'counter'</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;アイテムの値が数値でないので、これは失敗します<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$n</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+int(11)
+bool(false)
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-memcached.increment-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="methodname"><a href="memcached.decrement.html" class="methodname" rel="rdfs-seeAlso">Memcached::decrement()</a> - 数値アイテムの値を減らす</span></li>
+    <li class="member"> <span class="methodname"><a href="memcached.decrementbykey.html" class="methodname" rel="rdfs-seeAlso">Memcached::decrementByKey()</a> - 指定したサーバー上にある数値アイテムの値を減らす</span></li>
+    <li class="member"> <span class="methodname"><a href="memcached.incrementbykey.html" class="methodname" rel="rdfs-seeAlso">Memcached::incrementByKey()</a> - 指定したサーバー上にある数値アイテムの値を増やす</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113004""></a>
+  <div class="note">
+   <strong class="user">Anonymous</strong>
+   <a href="#113004" class="date">17-Aug-2013 08:46</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If it'll save others some head-scratching, the PECL Memcached extension only supports initializing increment (or decrement) values from 2.0.0b2 onwards - i.e. not the version (1.0.2) that comes out of the box with Ubuntu 12.04.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="111187""></a>
+  <div class="note">
+   <strong class="user">Anonymous</strong>
+   <a href="#111187" class="date">24-Jan-2013 05:27</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Spent a long time frustrated with this.&nbsp; If you read the patch notes carefully:<br />
+<br />
+- Make increment/decrement initialize value when it is not available (when using binary protocol).<br />
+<br />
+If you dont have the opt binary protocol set the arguments for initial value just return an error 38 - INVALID ARGUMENTS. This is not documented.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="111131""></a>
+  <div class="note">
+   <strong class="user">jbaginski</strong>
+   <a href="#111131" class="date">18-Jan-2013 04:29</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+PECL memcached &lt; 0.2.0<br />
+<br />
+public int Memcached::increment ( string $key [, int $offset = 1 ] )</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="109258""></a>
+  <div class="note">
+   <strong class="user">Sam</strong>
+   <a href="#109258" class="date">30-Jun-2012 09:50</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+increment does not alter the time to live of the object.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="memcached.getversion.html">Memcached::getVersion</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="memcached.incrementbykey.html">Memcached::incrementByKey</a></div>
+ <div class="up"><a href="class.memcached.html">Memcached</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

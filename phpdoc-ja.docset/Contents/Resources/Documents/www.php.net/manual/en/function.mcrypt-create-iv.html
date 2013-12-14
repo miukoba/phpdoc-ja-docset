@@ -1,0 +1,424 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>乱数ソースから初期化ベクトル(IV)を生成する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.mcrypt-cfb.html">mcrypt_cfb</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.mcrypt-decrypt.html">mcrypt_decrypt</a></div>
+ <div class="up"><a href="ref.mcrypt.html">Mcrypt 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mcrypt-create-iv" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mcrypt_create_iv</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose"><span class="refname">mcrypt_create_iv</span> &mdash; <span class="dc-title">乱数ソースから初期化ベクトル(IV)を生成する</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.mcrypt-create-iv-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">string</span> <span class="methodname"><strong>mcrypt_create_iv</strong></span>
+    ( <span class="methodparam"><span class="type">int</span> <code class="parameter">$size</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$source</code><span class="initializer"> = MCRYPT_DEV_RANDOM</span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+   初期化ベクトルを、ランダムなソースから作成します。
+  </p>
+  <p class="para">
+   IV は、単に暗号化ルーチンに異なる初期値を与えるためだけのものです。
+   この IV は、たとえ要求されていたとしても秘密にしておく必要はありません。
+   暗号化したデータとともに IV を送信したとしても、セキュリティを損ねる
+   ことはありません。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.mcrypt-create-iv-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">size</code></em></span>
+     <dd>
+
+      <p class="para">
+       IV のサイズ。
+      </p>
+     </dd>
+
+    </dt>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">source</code></em></span>
+     <dd>
+
+      <p class="para">
+       IV のソース。
+       <strong><code>MCRYPT_RAND</code></strong> (システムの乱数生成器)、
+       <strong><code>MCRYPT_DEV_RANDOM</code></strong> (<var class="filename">/dev/random</var>
+       からデータを読む)および <strong><code>MCRYPT_DEV_URANDOM</code></strong>
+       (<var class="filename">/dev/urandom</var> からデータを読む) を指定できます。
+       5.3.0 より前は、 Windows でサポートされているのは <strong><code>MCRYPT_RAND</code></strong>
+       のみでした。
+      </p>
+      <blockquote class="note"><p><strong class="note">注意</strong>: 
+       <p class="para">
+        <strong><code>MCRYPT_RAND</code></strong> を使用する場合、乱数生成器を初期化するために、
+        必ず  <span class="function"><strong>mcrypt_create_iv()</strong></span> の前に  <span class="function"><a href="function.srand.html" class="function">srand()</a></span>
+        をコールしてください。 <span class="function"><a href="function.rand.html" class="function">rand()</a></span> のように、自動的に
+        初期化されるわけではありません。
+       </p>
+      </p></blockquote>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.mcrypt-create-iv-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   初期化ベクトル、あるいはエラー時に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog" id="refsect1-function.mcrypt-create-iv-changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>5.3.0</td>
+       <td>
+        <strong><code>MCRYPT_DEV_RANDOM</code></strong> 及び
+        <strong><code>MCRYPT_DEV_URANDOM</code></strong> が Windows プラットフォーム上で利用可能になりました。
+       </td>
+      </tr>
+
+      <tr>
+       <td>5.3.0</td>
+       <td>
+         <span class="function"><a href="function.srand.html" class="function">srand()</a></span> を最初に呼び出す必要はもはやありません。
+        これは現在自動的に行われます。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.mcrypt-create-iv-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-836">
+    <p><strong>例1  <span class="function"><strong>mcrypt_create_iv()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;&nbsp;&nbsp;$size&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mcrypt_get_iv_size</span><span style="color: #007700">(</span><span style="color: #0000BB">MCRYPT_CAST_256</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">MCRYPT_MODE_CFB</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$iv&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mcrypt_create_iv</span><span style="color: #007700">(</span><span style="color: #0000BB">$size</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">MCRYPT_DEV_RANDOM</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.mcrypt-create-iv-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="http://www.ciphersbyritter.com/GLOSSARY.HTM#IV" class="link external" title="Link : http://www.ciphersbyritter.com/GLOSSARY.HTM#IV">&raquo;&nbsp;http://www.ciphersbyritter.com/GLOSSARY.HTM#IV</a></li>
+    <li class="member"><a href="http://www.quadibloc.com/crypto/co0409.htm" class="link external" title="Link : http://www.quadibloc.com/crypto/co0409.htm">&raquo;&nbsp;http://www.quadibloc.com/crypto/co0409.htm</a></li>
+    <li class="member">Applied Cryptography by Schneier (ISBN 0-471-11709-9) の Chapter 9.3</li>
+   </ul>
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="109079""></a>
+  <div class="note">
+   <strong class="user">nils at nm dot cx</strong>
+   <a href="#109079" class="date">19-Jun-2012 09:26</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you use /dev/random you need a well filled entropy pool or the application will block until enough good entropy comes available</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="108479""></a>
+  <div class="note">
+   <strong class="user">hans at llis dot nl</strong>
+   <a href="#108479" class="date">29-Apr-2012 07:01</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This does NOT generate randomly distributed IV's on all systems and therefore poses a big security risk. Using a script (based on the one that Alex Khimch's posted on the rand() page) one can easily check this:<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+$td </span><span class="keyword">= </span><span class="default">mcrypt_module_open </span><span class="keyword">(</span><span class="default">MCRYPT_RIJNDAEL_256</span><span class="keyword">, </span><span class="string">""</span><span class="keyword">, </span><span class="default">MCRYPT_MODE_CBC</span><span class="keyword">, </span><span class="string">""</span><span class="keyword">);<br />
+</span><span class="default">$iv </span><span class="keyword">= </span><span class="default">mcrypt_create_iv </span><span class="keyword">(</span><span class="default">mcrypt_enc_get_iv_size </span><span class="keyword">(</span><span class="default">$td</span><span class="keyword">), </span><span class="default">MCRYPT_DEV_RANDOM</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">// header("Content-type: image/png");<br />
+</span><span class="default">$img </span><span class="keyword">= </span><span class="default">imagecreatetruecolor</span><span class="keyword">(</span><span class="default">255</span><span class="keyword">,</span><span class="default">255</span><span class="keyword">);<br />
+<br />
+</span><span class="default">$ink </span><span class="keyword">= </span><span class="default">imagecolorallocate</span><span class="keyword">(</span><span class="default">$img</span><span class="keyword">,</span><span class="default">255</span><span class="keyword">,</span><span class="default">255</span><span class="keyword">,</span><span class="default">255</span><span class="keyword">);<br />
+for(</span><span class="default">$i</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">;</span><span class="default">$i</span><span class="keyword">&lt;</span><span class="default">255</span><span class="keyword">;</span><span class="default">$i</span><span class="keyword">++) {<br />
+&nbsp; for(</span><span class="default">$j</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">;</span><span class="default">$j</span><span class="keyword">&lt;</span><span class="default">255</span><span class="keyword">;</span><span class="default">$j</span><span class="keyword">++) {<br />
+&nbsp; </span><span class="default">$twobytes </span><span class="keyword">= </span><span class="default">substr </span><span class="keyword">(</span><span class="default">$iv</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">, </span><span class="default">2</span><span class="keyword">);<br />
+&nbsp; </span><span class="default">$iv </span><span class="keyword">= </span><span class="default">substr </span><span class="keyword">(</span><span class="default">$iv</span><span class="keyword">, </span><span class="default">2</span><span class="keyword">);<br />
+&nbsp; if (!</span><span class="default">strlen </span><span class="keyword">(</span><span class="default">$iv</span><span class="keyword">)) </span><span class="default">$iv </span><span class="keyword">= </span><span class="default">mcrypt_create_iv </span><span class="keyword">(</span><span class="default">mcrypt_enc_get_iv_size </span><span class="keyword">(</span><span class="default">$td</span><span class="keyword">), </span><span class="default">MCRYPT_RAND</span><span class="keyword">);<br />
+<br />
+&nbsp; </span><span class="default">imagesetpixel</span><span class="keyword">(</span><span class="default">$img</span><span class="keyword">, </span><span class="default">ord</span><span class="keyword">(</span><span class="default">$twobytes</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">]), </span><span class="default">ord</span><span class="keyword">(</span><span class="default">$twobytes</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">]), </span><span class="default">$ink</span><span class="keyword">);<br />
+&nbsp; }<br />
+}<br />
+<br />
+</span><span class="default">imagepng</span><span class="keyword">(</span><span class="default">$img</span><span class="keyword">);<br />
+</span><span class="default">imagedestroy</span><span class="keyword">(</span><span class="default">$img</span><span class="keyword">);<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+The resulting image should show random noise, but on the windows systems I tested (running PHP 5.3.x) it showed very distinct patterns.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="85954""></a>
+  <div class="note">
+   <strong class="user">Matthew</strong>
+   <a href="#85954" class="date">26-Sep-2008 04:09</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I encrypt a few items on a page in a project i am working on and I have found the IV create function to introduce huge delays in rendering the page too (I noticed someone else here had this problem).<br />
+<br />
+It's quite common for a 4 second render time for what should be a snappy site. I would recommend that if speed is essential that an alternative method be used to create your IV (such as the one below if you feel it secure enough).<br />
+<br />
+After using an alternative IV creation method my page went from a 4 second render to a 0.01 second render time.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="70947""></a>
+  <div class="note">
+   <strong class="user">Chris</strong>
+   <a href="#70947" class="date">06-Nov-2006 12:07</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+&gt;First, the IV should be random and variable. The whole &gt;point of it is to ensure that the same plaintext does not &gt;encrypt to the same ciphertext every time. You most &gt;certainly do lose security if the IV is constant or public.<br />
+<br />
+Wrong, Wrong WRONG! The initialization vector is ALLOWED to be PUBLIC! It is generally sent along with the ciphertext, UNENCRYPTED.<br />
+<br />
+&gt;The ciphertext should be E(IV | plaintext, key)<br />
+<br />
+Wrong again! The initialization vector is NOT prepended to the plaintext before encryption. The IV is used to seed the feedback system! (which is why you don't need one in ECB mode - there is no feedback)<br />
+<br />
+&gt;Second, the IV should not be part of the decryption &gt;parameters at all. You should be able to decrypt the cipher &gt;text, throw away the initial vector at the front w/o even &gt;reading it, and have your plaintext:<br />
+<br />
+Nope. You need to seed the feedback mechanism during decryption to the SAME state as it was seeded during encryption. This means using the SAME IV!</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="68078""></a>
+  <div class="note">
+   <strong class="user">kkaiser at dataresolutions dot com</strong>
+   <a href="#68078" class="date">12-Jul-2006 03:04</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Clarification: I meant to type MCRYPT_DEV_RANDOM, MCRYPT_DEV_URANDOM and MCRYPT_RAND in the previous note, instead of DEV_RANDOM, DEV_URANDOM and DEV_RAND. :)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="68054""></a>
+  <div class="note">
+   <strong class="user">kkaiser at dataresolutions dot com</strong>
+   <a href="#68054" class="date">11-Jul-2006 10:26</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+After profiling a rather large, dynamic website I maintain to determine the cause of intermittent freezing in execution, I found that calls to mcrypt_create_iv() using DEV_RANDOM as the source consistently halted execution for anywhere from 0.2 to ~12 seconds per call, ironically at random. I'm making the assumption that the halts were caused by insufficient random input being currently available in /dev/random due to its intended function to block until enough random input is provided back to the device. I've found it to be sufficient for my needs to use a modified version of the alt_mcrypt_create_iv() function found below.<br />
+<br />
+Although untested, I assume using DEV_URANDOM or a combination of DEV_RAND with srand() would've solved the problem as well; I found out after the fact that /dev/urandom's intended function is to seamlessly provide cryptographically secure output from the random number generator when the /dev/urandom buffer was empty, and DEV_RAND would simply use the same rand() function as alt_mcrypt_create_iv().<br />
+<br />
+-Kevin Kaiser</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="57873""></a>
+  <div class="note">
+   <strong class="user">Anonymous</strong>
+   <a href="#57873" class="date">17-Oct-2005 06:01</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+At:<br />
+edwardzyang at thewritingpot dot com<br />
+19-Jul-2005 10:06<br />
+<br />
+This is because of the fact, that (like described in the manual above) this function does NOT reseed the random number generator, in contrary to rand(). Use srand() like suggested above to get correct IVs.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="56484""></a>
+  <div class="note">
+   
+   <a href="#56484" class="date">04-Sep-2005 08:12</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Correction to the last comment, the second parameter of rtrim() uses double quotes, not single quotes.<br />
+<br />
+So the corrected code is as follows:<br />
+<br />
+&nbsp;&nbsp;&nbsp; $retval = rtrim($retval, "\0");&nbsp; &nbsp; // trim ONLY the nulls at the END<br />
+<br />
+;)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="40878""></a>
+  <div class="note">
+   <strong class="user">tim at indigopixel dot com</strong>
+   <a href="#40878" class="date">18-Mar-2004 01:32</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+From <a href="http://www.ciphersbyritter.com/GLOSSARY.HTM#IV (linked to above" rel="nofollow" target="_blank">http://www.ciphersbyritter.com/GLOSSARY.HTM#IV (linked to above</a>): <br />
+<br />
+"While it is often said that IV values need only be random-like or unpredictable, and need not be confidential, in the case of CBC mode, that advice can lead to man-in-the-middle attacks on the first plaintext block. If a MITM opponent knows the usual content of the first block, they can change the IV to manipulate that block (and only that block) to deliver a different address, or different dollar amounts, or different commands, or whatever. And while the conventional advice is to use a MAC at a higher level to detect changed plaintext, that is not always desirable or properly executed. But the CBC first-block problem is easily solved at the CBC level simply by enciphering the IV and otherwise keeping it confidential, and that can be reasonable even when a MAC will be used later."</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="40434""></a>
+  <div class="note">
+   <strong class="user">robert at peakepro dot com</strong>
+   <a href="#40434" class="date">03-Mar-2004 09:25</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+It is important to note that all cipher modes except ecb require the same IV to be used in decryption as was used in encryption. <br />
+<br />
+You need to pass the key *and* the IV to your decrypt function. Initializing a new IV in the decrypt routine will not work.<br />
+<br />
+Since, "you even can send [the IV] along with your ciphertext without&nbsp; loosing security," a nice way to handle this is to prepend your IV to your ciphertext. Since the IV is fixed-width, you can then easily recover the IV and original ciphertext using mcrypt_get_iv_size() and substr().<br />
+<br />
+Here is an example:<br />
+<br />
+<span class="default">&lt;?PHP<br />
+</span><span class="keyword">function </span><span class="default">my_encrypt</span><span class="keyword">(</span><span class="default">$string</span><span class="keyword">,</span><span class="default">$key</span><span class="keyword">) {<br />
+&nbsp;&nbsp; </span><span class="default">srand</span><span class="keyword">((double) </span><span class="default">microtime</span><span class="keyword">() * </span><span class="default">1000000</span><span class="keyword">); </span><span class="comment">//for sake of MCRYPT_RAND<br />
+&nbsp;&nbsp; </span><span class="default">$key </span><span class="keyword">= </span><span class="default">md5</span><span class="keyword">(</span><span class="default">$key</span><span class="keyword">); </span><span class="comment">//to improve variance<br />
+&nbsp; /* Open module, and create IV */<br />
+&nbsp; </span><span class="default">$td </span><span class="keyword">= </span><span class="default">mcrypt_module_open</span><span class="keyword">(</span><span class="string">'des'</span><span class="keyword">, </span><span class="string">''</span><span class="keyword">,</span><span class="string">'cfb'</span><span class="keyword">, </span><span class="string">''</span><span class="keyword">);<br />
+&nbsp; </span><span class="default">$key </span><span class="keyword">= </span><span class="default">substr</span><span class="keyword">(</span><span class="default">$key</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">, </span><span class="default">mcrypt_enc_get_key_size</span><span class="keyword">(</span><span class="default">$td</span><span class="keyword">));<br />
+&nbsp; </span><span class="default">$iv_size </span><span class="keyword">= </span><span class="default">mcrypt_enc_get_iv_size</span><span class="keyword">(</span><span class="default">$td</span><span class="keyword">);<br />
+&nbsp; </span><span class="default">$iv </span><span class="keyword">= </span><span class="default">mcrypt_create_iv</span><span class="keyword">(</span><span class="default">$iv_size</span><span class="keyword">, </span><span class="default">MCRYPT_RAND</span><span class="keyword">);<br />
+&nbsp; </span><span class="comment">/* Initialize encryption handle */<br />
+&nbsp;&nbsp; </span><span class="keyword">if (</span><span class="default">mcrypt_generic_init</span><span class="keyword">(</span><span class="default">$td</span><span class="keyword">, </span><span class="default">$key</span><span class="keyword">, </span><span class="default">$iv</span><span class="keyword">) != -</span><span class="default">1</span><span class="keyword">) {<br />
+<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="comment">/* Encrypt data */<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$c_t </span><span class="keyword">= </span><span class="default">mcrypt_generic</span><span class="keyword">(</span><span class="default">$td</span><span class="keyword">, </span><span class="default">$string</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">mcrypt_generic_deinit</span><span class="keyword">(</span><span class="default">$td</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">mcrypt_module_close</span><span class="keyword">(</span><span class="default">$td</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; </span><span class="default">$c_t </span><span class="keyword">= </span><span class="default">$iv</span><span class="keyword">.</span><span class="default">$c_t</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; return </span><span class="default">$c_t</span><span class="keyword">;<br />
+&nbsp;&nbsp; } </span><span class="comment">//end if<br />
+</span><span class="keyword">}<br />
+<br />
+function </span><span class="default">my_decrypt</span><span class="keyword">(</span><span class="default">$string</span><span class="keyword">,</span><span class="default">$key</span><span class="keyword">) {<br />
+&nbsp;&nbsp; </span><span class="default">$key </span><span class="keyword">= </span><span class="default">md5</span><span class="keyword">(</span><span class="default">$key</span><span class="keyword">); </span><span class="comment">//to improve variance<br />
+&nbsp; /* Open module, and create IV */<br />
+&nbsp; </span><span class="default">$td </span><span class="keyword">= </span><span class="default">mcrypt_module_open</span><span class="keyword">(</span><span class="string">'des'</span><span class="keyword">, </span><span class="string">''</span><span class="keyword">,</span><span class="string">'cfb'</span><span class="keyword">, </span><span class="string">''</span><span class="keyword">);<br />
+&nbsp; </span><span class="default">$key </span><span class="keyword">= </span><span class="default">substr</span><span class="keyword">(</span><span class="default">$key</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">, </span><span class="default">mcrypt_enc_get_key_size</span><span class="keyword">(</span><span class="default">$td</span><span class="keyword">));<br />
+&nbsp; </span><span class="default">$iv_size </span><span class="keyword">= </span><span class="default">mcrypt_enc_get_iv_size</span><span class="keyword">(</span><span class="default">$td</span><span class="keyword">);<br />
+&nbsp; </span><span class="default">$iv </span><span class="keyword">= </span><span class="default">substr</span><span class="keyword">(</span><span class="default">$string</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">,</span><span class="default">$iv_size</span><span class="keyword">);<br />
+&nbsp; </span><span class="default">$string </span><span class="keyword">= </span><span class="default">substr</span><span class="keyword">(</span><span class="default">$string</span><span class="keyword">,</span><span class="default">$iv_size</span><span class="keyword">);<br />
+&nbsp; </span><span class="comment">/* Initialize encryption handle */<br />
+&nbsp;&nbsp; </span><span class="keyword">if (</span><span class="default">mcrypt_generic_init</span><span class="keyword">(</span><span class="default">$td</span><span class="keyword">, </span><span class="default">$key</span><span class="keyword">, </span><span class="default">$iv</span><span class="keyword">) != -</span><span class="default">1</span><span class="keyword">) {<br />
+<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="comment">/* Encrypt data */<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$c_t </span><span class="keyword">= </span><span class="default">mdecrypt_generic</span><span class="keyword">(</span><span class="default">$td</span><span class="keyword">, </span><span class="default">$string</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">mcrypt_generic_deinit</span><span class="keyword">(</span><span class="default">$td</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">mcrypt_module_close</span><span class="keyword">(</span><span class="default">$td</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; return </span><span class="default">$c_t</span><span class="keyword">;<br />
+&nbsp;&nbsp; } </span><span class="comment">//end if<br />
+</span><span class="keyword">}<br />
+</span><span class="comment">// to test:<br />
+//print my_decrypt(my_encrypt("Hello, world.","foo"),"foo");<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="19647""></a>
+  <div class="note">
+   <strong class="user">fandelem at hotmail dot com</strong>
+   <a href="#19647" class="date">07-Mar-2002 12:59</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+note: if you are experiencing a problem about complaining that the second parameter has to be a 'long' and you are giving a 'string' (for me, it was using MCRYPT_URANDOM) you might want to try MCRYPT_DEV_URANDOM :)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.mcrypt-cfb.html">mcrypt_cfb</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.mcrypt-decrypt.html">mcrypt_decrypt</a></div>
+ <div class="up"><a href="ref.mcrypt.html">Mcrypt 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

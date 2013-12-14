@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>現在のキャッシュの有効期限を返す</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="ref.session.html">セッション関数</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.session-cache-limiter.html">session_cache_limiter</a></div>
+ <div class="up"><a href="ref.session.html">セッション関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.session-cache-expire" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">session_cache_expire</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.2.0, PHP 5)</p><p class="refpurpose"><span class="refname">session_cache_expire</span> &mdash; <span class="dc-title">現在のキャッシュの有効期限を返す</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.session-cache-expire-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">int</span> <span class="methodname"><strong>session_cache_expire</strong></span>
+    ([ <span class="methodparam"><span class="type">string</span> <code class="parameter">$new_cache_expire</code></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+    <span class="function"><strong>session_cache_expire()</strong></span> は現在の
+   <em>session.cache_expire</em> の設定を返します。
+  </p>
+  <p class="para">
+   リクエストがあった時点で、キャッシュの有効期限は
+   <a href="session.configuration.html#ini.session.cache-expire" class="link">session.cache_expire</a>
+   で設定されたデフォルト値にリセットされます。
+   そのため、すべてのリクエストにおいて
+   (そして <span class="function"><a href="function.session-start.html" class="function">session_start()</a></span> をコールする前に)
+    <span class="function"><strong>session_cache_expire()</strong></span> をコールする必要があります。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.session-cache-expire-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+
+     <span class="term"><em><code class="parameter">new_cache_expire</code></em></span>
+     <dd>
+
+      <p class="para">
+       <em><code class="parameter">new_cache_expire</code></em> が指定された場合、
+       現在のキャッシュの有効期限は、
+       <em><code class="parameter">new_cache_expire</code></em> で置換されます。
+      </p>
+      <p class="para">
+       <blockquote class="note"><p><strong class="note">注意</strong>: 
+        <span class="simpara">
+         <em>session.cache_limiter</em>が
+         <em>nocache</em><em class="emphasis">以外の</em>値にセットされている場合にのみ
+         <em><code class="parameter">new_cache_expire</code></em>が有効となります。
+        </span>
+       </p></blockquote>
+      </p>
+     </dd>
+
+    </dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.session-cache-expire-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <em>session.cache_expire</em> の現在の設定を返します。
+   返り値は分単位で、デフォルトは 180 です。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.session-cache-expire-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-4738">
+    <p><strong>例1  <span class="function"><strong>session_cache_expire()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">/*&nbsp;set&nbsp;the&nbsp;cache&nbsp;limiter&nbsp;to&nbsp;'private'&nbsp;*/<br /><br /></span><span style="color: #0000BB">session_cache_limiter</span><span style="color: #007700">(</span><span style="color: #DD0000">'private'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$cache_limiter&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">session_cache_limiter</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">/*&nbsp;set&nbsp;the&nbsp;cache&nbsp;expire&nbsp;to&nbsp;30&nbsp;minutes&nbsp;*/<br /></span><span style="color: #0000BB">session_cache_expire</span><span style="color: #007700">(</span><span style="color: #0000BB">30</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$cache_expire&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">session_cache_expire</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">/*&nbsp;start&nbsp;the&nbsp;session&nbsp;*/<br /><br /></span><span style="color: #0000BB">session_start</span><span style="color: #007700">();<br /><br />echo&nbsp;</span><span style="color: #DD0000">"The&nbsp;cache&nbsp;limiter&nbsp;is&nbsp;now&nbsp;set&nbsp;to&nbsp;</span><span style="color: #0000BB">$cache_limiter</span><span style="color: #DD0000">&lt;br&nbsp;/&gt;"</span><span style="color: #007700">;<br />echo&nbsp;</span><span style="color: #DD0000">"The&nbsp;cached&nbsp;session&nbsp;pages&nbsp;expire&nbsp;after&nbsp;</span><span style="color: #0000BB">$cache_expire</span><span style="color: #DD0000">&nbsp;minutes"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.session-cache-expire-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="session.configuration.html#ini.session.cache-expire" class="link">session.cache_expire</a></li>
+    <li class="member"><a href="session.configuration.html#ini.session.cache-limiter" class="link">session.cache_limiter</a></li>
+    <li class="member"> <span class="function"><a href="function.session-cache-limiter.html" class="function" rel="rdfs-seeAlso">session_cache_limiter()</a> - 現在のキャッシュリミッタを取得または設定する</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113123""></a>
+  <div class="note">
+   <strong class="user">WooDzu</strong>
+   <a href="#113123" class="date">03-Sep-2013 04:50</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Just to make things clear. If session.cache_limiter is set to private the following header will be sent in HTTP response:<br />
+<br />
+Cache-Control&nbsp; &nbsp; private, max-age=10800, pre-check=10800<br />
+<br />
+Where 10800 is the amount of seconds - default value of 180 minutes set by session.cache_expire which you are enabled to change with session_cache_expire() on run-time</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="81265""></a>
+  <div class="note">
+   <strong class="user">Anonymous</strong>
+   <a href="#81265" class="date">20-Feb-2008 05:50</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The manual probably doesn't stress this enough:<br />
+<br />
+** This has nothing to do with lifetime of a session **<br />
+<br />
+Whatever you set this setting to, it won't change how long sessions live on your server.<br />
+<br />
+This only changes HTTP cache expiration time (Expires: and Cache-Control: max-age headers), which advise browser for how long it can keep pages cached in user's cache without having to reload them from the server.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="53946""></a>
+  <div class="note">
+   <strong class="user">lance_rushing at hotmail dot com</strong>
+   <a href="#53946" class="date">17-Jun-2005 11:47</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I've encountered the same problem of loosing focus when using IE and a javascript window.location.refresh/replace().<br />
+<br />
+After fusing around I found that a &lt;meta http-equiv="refresh" content="600"&gt; works without move the focus on the parent frame's form.&nbsp; The down side is loading up the browser history and an annoying 'click' in IE on the page load.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="ref.session.html">セッション関数</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.session-cache-limiter.html">session_cache_limiter</a></div>
+ <div class="up"><a href="ref.session.html">セッション関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

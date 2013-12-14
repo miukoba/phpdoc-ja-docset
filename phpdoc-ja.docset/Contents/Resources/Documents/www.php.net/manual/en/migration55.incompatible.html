@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>下位互換性のない変更点</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="migration55.changes.html">PHP 5.5.x における変更点</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="migration55.new-features.html">新機能</a></div>
+ <div class="up"><a href="migration55.html">PHP 5.4.x から PHP 5.5.x への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="migration55.incompatible" class="sect1">
+  <h2 class="title">下位互換性のない変更点</h2>
+  <p class="simpara">
+   既存の PHP5 のコードのほとんどは変更なしで動作するはずですが、
+   以下の下位互換性のない変更点については注意しましょう。
+  </p>
+  
+  <div class="sect2" id="migration55.incompatible.windows">
+   <h3 class="title">Windows XP および 2003 のサポートの終了</h3>
+   
+   <p class="para">
+    Windows XP および 2003 はサポートされなくなります。
+    Windows 版の PHP は、Windows Vista 以降でしか動かなくなります。
+   </p>
+  </div>
+
+  <div class="sect2" id="migration55.incompatible.case">
+   <h3 class="title">大文字小文字を区別しない比較がロケールに依存しなくなる</h3>
+   
+   <p class="para">
+    関数名やクラス名そして定数名は大文字小文字を区別しませんが、
+    このマッチ方法が ASCII のルールに基づいたロケールに依存しない動きに変わります。
+    ラテンアルファベットを通常とは異なる照合規則で使っている言語
+    (トルコ語やアゼルバイジャン語など) にきちんと対応するようになりました。
+   </p>
+   <p class="para">
+    これは、マルチバイト文字セット (UTF-8 も含む) で非 ASCII
+    文字に対して大文字小文字を区別しないマッチングをしているコードで問題になるかもしれません。
+    ヨーロッパ諸国語のアクセント記号などがこれにあてはまります。
+    英語以外の非 ASCII コードベースを使っている場合は、
+    無意識のうちにこの振る舞いに依存してしまっていないかどうかを確かめてから
+    PHP 5.5 を実運用環境に投入するようにしましょう。
+   </p>
+  </div>
+
+  <div class="sect2" id="migration55.incompatible.pack">
+   <h3 class="title"> <span class="function"><a href="function.pack.html" class="function">pack()</a></span> と  <span class="function"><a href="function.unpack.html" class="function">unpack()</a></span> の変更</h3>
+
+   <p class="para">
+     <span class="function"><a href="function.pack.html" class="function">pack()</a></span> と
+     <span class="function"><a href="function.unpack.html" class="function">unpack()</a></span> が、より Perl との互換性を高めるように変更されました。
+   </p>
+
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+       <span class="function"><a href="function.pack.html" class="function">pack()</a></span> が書式文字 &quot;Z&quot; に対応しました。この文字の挙動は
+      &quot;a&quot; とまったく同じです。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+       <span class="function"><a href="function.unpack.html" class="function">unpack()</a></span> も書式文字 &quot;Z&quot; に対応しました。これは
+      NULL 埋めの文字列に使うもので、以前のバージョンの &quot;a&quot; と同じ挙動です。
+      最後の NULL バイトは切り捨てます。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+       <span class="function"><a href="function.unpack.html" class="function">unpack()</a></span> で書式文字 &quot;a&quot; を使ったときに、
+      最後の NULL バイトを維持するようになりました。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+       <span class="function"><a href="function.unpack.html" class="function">unpack()</a></span> で書式文字 &quot;A&quot; を使ったときに、
+      最後の ASCII 空白文字をすべて切り捨てるようになりました。
+     </span>
+    </li>
+   </ul>
+
+   <p class="para">
+     <span class="function"><a href="function.unpack.html" class="function">unpack()</a></span> で &quot;a&quot; を使っているコードで過去のバージョンとの互換性を保つには、
+     <span class="function"><a href="function.version-compare.html" class="function">version_compare()</a></span> を使う必要があります。
+    過去との互換性が崩れてしまったからです。
+   </p>
+   <p class="para">
+    たとえば、このようにします。
+   </p>
+   <div class="informalexample">
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;古いコード<br /></span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">unpack</span><span style="color: #007700">(</span><span style="color: #DD0000">'a5'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$packed</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;新しいコード<br /></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">version_compare</span><span style="color: #007700">(</span><span style="color: #0000BB">PHP_VERSION</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'5.5.0-dev'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'&gt;='</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">unpack</span><span style="color: #007700">(</span><span style="color: #DD0000">'Z5'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$packed</span><span style="color: #007700">);<br />}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">unpack</span><span style="color: #007700">(</span><span style="color: #DD0000">'a5'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$packed</span><span style="color: #007700">);<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </div>
+
+  <div class="sect2" id="migration55.incompatible.self-parent-static">
+   <h3 class="title"><em>self</em> や <em>parent</em> そして <em>static</em>
+   が、どんな場合であっても大文字小文字を区別しないようになる</h3>
+
+   <p class="para">
+    PHP 5.5 より前のバージョンでは、キーワード
+    <a href="language.oop5.paamayim-nekudotayim.html" class="link">self</a>、
+    <a href="language.oop5.paamayim-nekudotayim.html" class="link">parent</a> そして
+    <a href="language.oop5.late-static-bindings.html" class="link">static</a>
+    について大文字小文字を区別した扱いになる場合がありました。
+    この問題は解決し、PHP 5.5 からはどんな場合であっても大文字小文字を区別しないようになります。
+    つまり、<em>SELF::CONSTANT</em> と
+    <em>self::CONSTANT</em> はまったく同じ扱いになるということです。
+   </p>
+  </div>
+
+  <div class="sect2" id="migration55.incompatible.guid">
+   <h3 class="title">PHP ロゴの GUID の削除</h3>
+
+   <p class="para">
+    PHP でいろいろなロゴを出すために使われていた GUID が削除されました。
+    それに伴って、GUID を返す関数も削除されました。削除された関数は次のとおりです。
+   </p>
+
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+       <span class="function"><a href="function.php-logo-guid.html" class="function">php_logo_guid()</a></span>
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+       <span class="function"><strong>php_egg_logo_guid()</strong></span>
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+       <span class="function"><strong>php_real_logo_guid()</strong></span>
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+       <span class="function"><a href="function.zend-logo-guid.html" class="function">zend_logo_guid()</a></span>
+     </span>
+    </li>
+   </ul>
+  </div>
+
+  <div class="sect2" id="migration55.incompatible.execution">
+   <h3 class="title">内部的な実行方法の変更</h3>
+
+   <p class="para">
+    拡張モジュールの作者が注意すべきなのは、<strong class="command">zend_execute()</strong>
+    関数がオーバーライドできなくなったということです。さらに、
+    <em>execute_data</em> 構造体やそれに関連する関数、
+    そしてオペコードを扱うメソッドにもさまざまな変更がありました。
+   </p>
+
+   <p class="para">
+    この変更の影響を受ける拡張モジュールはほとんどないでしょう。
+    しかし、Zend Engine の内部に深く食い込んだ拡張モジュールを書いている人は、
+    <a href="migration55.internals.html" class="link">変更点に関するメモ</a>
+    をしっかり読んでおきましょう。
+   </p>
+  </div>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="migration55.changes.html">PHP 5.5.x における変更点</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="migration55.new-features.html">新機能</a></div>
+ <div class="up"><a href="migration55.html">PHP 5.4.x から PHP 5.5.x への移行</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

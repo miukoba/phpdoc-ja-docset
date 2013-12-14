@@ -1,0 +1,250 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>現在のシステムの状態を取得する</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.mysql-set-charset.html">mysql_set_charset</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.mysql-tablename.html">mysql_tablename</a></div>
+ <div class="up"><a href="ref.mysql.html">MySQL 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="function.mysql-stat" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mysql_stat</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.3.0, PHP 5)</p><p class="refpurpose"><span class="refname">mysql_stat</span> &mdash; <span class="dc-title">現在のシステムの状態を取得する</span></p>
+
+ </div>
+
+ <div id="function.mysql-stat-refsynopsisdiv">
+  <div class="warning"><strong class="warning">警告</strong>
+   <p class="para">
+この拡張モジュールは PHP 5.5.0 で非推奨になりました。将来のバージョンで削除される予定です。
+<a href="book.mysqli.html" class="link">MySQLi</a> あるいは
+<a href="ref.pdo-mysql.html" class="link">PDO_MySQL</a> を使うべきです。詳細な情報は
+<a href="mysqlinfo.api.choosing.html" class="link">MySQL: API の選択</a> や
+<a href="faq.databases.html#faq.databases.mysql.deprecated" class="link">それに関連する FAQ</a> を参照ください。
+この関数の代替として、これらが使えます。</p>
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="mysqli.stat.html" class="function">mysqli_stat()</a></span></li>
+    <li class="member"> <span class="methodname"><a href="pdo.getattribute.html" class="methodname">PDO::getAttribute(PDO::ATTR_SERVER_INFO)</a></span></li>
+   </ul>
+  </div>
+ </div>
+
+ <div class="refsect1 description" id="refsect1-function.mysql-stat-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">string</span> <span class="methodname"><strong>mysql_stat</strong></span>
+    ([ <span class="methodparam"><span class="type">resource</span> <code class="parameter">$link_identifier</code><span class="initializer"> = NULL</span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+    <span class="function"><strong>mysql_stat()</strong></span> は現在のサーバーの状態を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.mysql-stat-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+<span class="term"><em><code class="parameter">
+link_identifier</code></em></span><dd>
+<p class="para">MySQL 接続。
+指定されない場合、 <span class="function"><a href="function.mysql-connect.html" class="function">mysql_connect()</a></span> により直近にオープンされたリンクが
+指定されたと仮定されます。そのようなリンクがない場合、引数を指定せずに
+ <span class="function"><a href="function.mysql-connect.html" class="function">mysql_connect()</a></span> がコールした時と同様にリンクを確立します。
+リンクが見付からない、または、確立できない場合、
+<strong><code>E_WARNING</code></strong> レベルのエラーが生成されます。</p></dd>
+
+</dt>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.mysql-stat-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   稼働時間、スレッド、クエリ、オープンされているテーブル、フラッシュされた
+   テーブル、そして 1 秒あたりのクエリ数を文字列で返します。その他のデータも
+   含めた完全な状態を得るには、<em>SHOW STATUS</em> SQL コマンドを
+   実行する必要があります。<em><code class="parameter">link_identifier</code></em> が不正な
+   場合には <strong><code>NULL</code></strong> が返されます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.mysql-stat-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-1611">
+    <p><strong>例1  <span class="function"><strong>mysql_stat()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$link&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysql_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'localhost'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'mysql_user'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'mysql_password'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$status&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">explode</span><span style="color: #007700">(</span><span style="color: #DD0000">'&nbsp;&nbsp;'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">mysql_stat</span><span style="color: #007700">(</span><span style="color: #0000BB">$link</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$status</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+Array
+(
+    [0] =&gt; Uptime: 5380
+    [1] =&gt; Threads: 2
+    [2] =&gt; Questions: 1321299
+    [3] =&gt; Slow queries: 0
+    [4] =&gt; Opens: 26
+    [5] =&gt; Flush tables: 1
+    [6] =&gt; Open tables: 17
+    [7] =&gt; Queries per second avg: 245.595
+)
+</pre></div>
+    </div>
+   </div>
+  </p>
+  <p class="para">
+   <div class="example" id="example-1612">
+    <p><strong>例2  <span class="function"><strong>mysql_stat()</strong></span> の別の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$link&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysql_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'localhost'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'mysql_user'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'mysql_password'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysql_query</span><span style="color: #007700">(</span><span style="color: #DD0000">'SHOW&nbsp;STATUS'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$link</span><span style="color: #007700">);<br />while&nbsp;(</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysql_fetch_assoc</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">'Variable_name'</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">'&nbsp;=&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">'Value'</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+back_log = 50
+basedir = /usr/local/
+bdb_cache_size = 8388600
+bdb_log_buffer_size = 32768
+bdb_home = /var/db/mysql/
+bdb_max_lock = 10000
+bdb_logdir =
+bdb_shared_data = OFF
+bdb_tmpdir = /var/tmp/
+...
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.mysql-stat-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"> <span class="function"><a href="function.mysql-get-server-info.html" class="function" rel="rdfs-seeAlso">mysql_get_server_info()</a> - MySQL サーバー情報を取得する</span></li>
+    <li class="member"> <span class="function"><a href="function.mysql-list-processes.html" class="function" rel="rdfs-seeAlso">mysql_list_processes()</a> - MySQL プロセスのリストを得る</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="101720""></a>
+  <div class="note">
+   <strong class="user">billbilljr at gmail dot com</strong>
+   <a href="#101720" class="date">06-Jan-2011 08:46</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The following script can be used to clearly print out the results of mysql_stat().<br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp;&nbsp;&nbsp; mysql_connect</span><span class="keyword">(</span><span class="string">"localhost"</span><span class="keyword">, </span><span class="string">"username"</span><span class="keyword">, </span><span class="string">"password"</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$array </span><span class="keyword">= </span><span class="default">explode</span><span class="keyword">(</span><span class="string">"&nbsp; "</span><span class="keyword">, </span><span class="default">mysql_stat</span><span class="keyword">());<br />
+&nbsp;&nbsp;&nbsp; foreach (</span><span class="default">$array </span><span class="keyword">as </span><span class="default">$value</span><span class="keyword">){<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="default">$value </span><span class="keyword">. </span><span class="string">"&lt;br /&gt;"</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Outputs something similar to:<br />
+<br />
+Uptime: 698<br />
+Threads: 1<br />
+Questions: 4<br />
+Slow queries: 0<br />
+Opens: 19<br />
+Flush tables: 1<br />
+Open tables: 12<br />
+Queries per second avg: 0.5</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="83555""></a>
+  <div class="note">
+   <strong class="user">Enzo_01 at abv dot bg</strong>
+   <a href="#83555" class="date">31-May-2008 09:22</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+<span class="default">&lt;?php<br />
+</span><span class="comment">// function that return stat elements into array<br />
+</span><span class="keyword">function </span><span class="default">mysql_stat_array</span><span class="keyword">(</span><span class="default">$A</span><span class="keyword">=</span><span class="default">null</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$status </span><span class="keyword">= </span><span class="default">explode</span><span class="keyword">(</span><span class="string">'&nbsp; '</span><span class="keyword">, </span><span class="default">mysql_stat</span><span class="keyword">());<br />
+&nbsp;&nbsp;&nbsp; foreach(</span><span class="default">$status </span><span class="keyword">as </span><span class="default">$k</span><span class="keyword">=&gt;</span><span class="default">$v</span><span class="keyword">) { </span><span class="default">$v</span><span class="keyword">=</span><span class="default">explode</span><span class="keyword">(</span><span class="string">':'</span><span class="keyword">,</span><span class="default">$v</span><span class="keyword">,</span><span class="default">2</span><span class="keyword">); </span><span class="default">$status</span><span class="keyword">[</span><span class="default">$v</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">]]=</span><span class="default">$v</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">]; }<br />
+&nbsp;&nbsp;&nbsp; return (isset(</span><span class="default">$status</span><span class="keyword">[</span><span class="default">$A</span><span class="keyword">])?</span><span class="default">$status</span><span class="keyword">[</span><span class="default">$A</span><span class="keyword">]:</span><span class="default">$status</span><span class="keyword">);<br />
+}<br />
+</span><span class="comment">/*<br />
+example return:<br />
+Array ( [0] =&gt; Uptime: 385815 [1] =&gt; Threads: 1 [2] =&gt; Questions: 3515 [3] =&gt; Slow queries: 0 [4] =&gt; Opens: 32 [5] =&gt; Flush tables: 1 [6] =&gt; Open tables: 8 [7] =&gt; Queries per second avg: 0.009 [Uptime] =&gt; Array ( [0] =&gt; Uptime [1] =&gt; 385815 ) [Threads] =&gt; Array ( [0] =&gt; Threads [1] =&gt; 1 ) [Questions] =&gt; Array ( [0] =&gt; Questions [1] =&gt; 3515 ) [Slow queries] =&gt; Array ( [0] =&gt; Slow queries [1] =&gt; 0 ) [Opens] =&gt; Array ( [0] =&gt; Opens [1] =&gt; 32 ) [Flush tables] =&gt; Array ( [0] =&gt; Flush tables [1] =&gt; 1 ) [Open tables] =&gt; Array ( [0] =&gt; Open tables [1] =&gt; 8 ) [Queries per second avg] =&gt; Array ( [0] =&gt; Queries per second avg [1] =&gt; 0.009 ) )<br />
+*/<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="49801""></a>
+  <div class="note">
+   
+   <a href="#49801" class="date">09-Feb-2005 03:16</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+if you need the complete status as outputted by the "show status" command. Try this function.<br />
+&lt;?<br />
+function mysql_status($db=NULL) {<br />
+if(!mysql_ping($db))<br />
+$db=mysql_connect("localhost","user","password");<br />
+$res=mysql_query("show status",$db);<br />
+while (list($key,$value)=mysql_fetch_array($res))<br />
+$sql[$key]=$value;<br />
+return $sql;<br />
+}<br />
+?&gt;</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="function.mysql-set-charset.html">mysql_set_charset</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="function.mysql-tablename.html">mysql_tablename</a></div>
+ <div class="up"><a href="ref.mysql.html">MySQL 関数</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

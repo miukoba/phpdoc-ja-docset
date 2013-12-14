@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>SQLite 関数 (PDO_SQLITE)</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="pdo.pgsqllobunlink.html">PDO::pgsqlLOBUnlink</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="ref.pdo-sqlite.connection.html">PDO_SQLITE DSN</a></div>
+ <div class="up"><a href="pdo.drivers.html">PDO ドライバ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="ref.pdo-sqlite" class="reference">
+  
+  <h1 class="title">SQLite 関数 (PDO_SQLITE)</h1>
+  
+  <div class="partintro">
+
+   <div class="section" id="pdo-sqlite.intro">
+   <h2 class="title">導入</h2>
+    <p class="para">
+     PDO_SQLITE は、PHP から SQLite 2 や SQLite 3
+     データベースへのアクセスを可能にするための <a href="intro.pdo.html" class="link">PHP
+     Data Objects (PDO) インターフェイス</a> を実装したドライバです。
+    </p>
+    <p class="para">
+     PHP 5.1 では、<a href="ref.sqlite.html" class="link">SQLite</a>
+     拡張モジュールも SQLite 2 データベースに対するドライバを提供しています。
+     これは厳密には PDO_SQLITE ドライバの一部ではありませんが、
+     同じような動きをするので一緒に説明します。PDO 用 SQLite 2 ドライバは主に
+     レガシーな SQLite 2 データベースファイルをより高速でより効果的な
+     SQLite 3 ドライバを使用するアプリケーションへ
+     簡単にインポートするために提供されています。
+     結果として、SQLite 2 ドライバは SQLite 3
+     ドライバよりも機能豊富ではありません。
+    </p>
+    <blockquote class="note"><p><strong class="note">注意</strong>: 
+     <p class="para">
+      PDO_SQLITE は、文字列と
+      <strong><code>PDO::PARAM_LOB</code></strong> のストリームを区別して使うことができます。
+     </p>
+    </p></blockquote>
+   </div>
+
+   
+
+
+<div class="section" id="ref.pdo-sqlite.installation">
+ <h2 class="title">インストール手順</h2>
+ <p class="para">
+  PDO_SQLITE PDO ドライバはデフォルトで有効になります。無効にするには
+  <strong class="option configure">--without-pdo-sqlite[=DIR]</strong>
+ を使います。
+  オプションの <em>[=DIR]</em> は sqlite の基底インストールディレクトリです。
+ </p>
+</div>
+
+
+
+
+  </div>
+
+  
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="ref.pdo-sqlite.connection.html">PDO_SQLITE DSN</a> — SQLite データベースに接続する</li><li><a href="pdo.sqlitecreateaggregate.html">PDO::sqliteCreateAggregate</a> — SQL 文で使用する集約ユーザー定義関数 (UDF) を登録する</li><li><a href="pdo.sqlitecreatefunction.html">PDO::sqliteCreateFunction</a> — SQL 文で使用するユーザー定義関数 (UDF) を登録する</li></ul>
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="110595""></a>
+  <div class="note">
+   <strong class="user">nospam8715 at dririan dot com</strong>
+   <a href="#110595" class="date">11-Nov-2012 06:22</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Instead of compiling an old version of SQLite to create a database using an older database format that the version of SQLite bundled with PDO can handle, you can (much more easily) just run the query "PRAGMA legacy_file_format = TRUE;" BEFORE creating the database (if you have an existing database, run ".dump" from the sqlite shell on your database, run the sqlite shell on a new database, run the PRAGMA, then paste the contents of the .dump). That will ensure SQLite creates a database readable by SQLite 3.0 and later.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="74139""></a>
+  <div class="note">
+   <strong class="user">gopal at gopalarathnam dot com</strong>
+   <a href="#74139" class="date">27-Mar-2007 11:36</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you get an error reporting "invalid resource" when trying to query the database table and looping through it, the version of the SQLite extension compiled in to PHP might be incompatible with the version that had created the database (like SQLite 2.x vs 3.x).<br />
+<br />
+The database open itself might be successful, failing only when querying.<br />
+<br />
+$dbh = new PDO('sqlite:/tmp/foo.db'); // success<br />
+foreach ($dbh-&gt;query('SELECT * FROM bar') as $row) // prints invalid resource<br />
+&nbsp;&nbsp;&nbsp; // ...</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="68780""></a>
+  <div class="note">
+   <strong class="user">gmac63 at charter dot net</strong>
+   <a href="#68780" class="date">10-Aug-2006 04:38</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Issue:<br />
+Error: SQLSTATE[HY000]: General error: 1 unsupported file format <br />
+<br />
+Resolution:<br />
+To solve this (and/or many issues) involving this type of error, I assumed the error to be generated from php. Well, it was to an extent. The sqlite pdo code offered the solution:<br />
+<br />
+I researched the error by grep'ing the php source code and found the error string to come from php-5.1.4/ext/pdo_sqlite/sqlite/src/prepare.c, lines 265:278 :<br />
+<br />
+/*<br />
+&nbsp;** file_format==1&nbsp; &nbsp; Version 3.0.0.<br />
+&nbsp;** file_format==2&nbsp; &nbsp; Version 3.1.3.<br />
+&nbsp;** file_format==3&nbsp; &nbsp; Version 3.1.4.<br />
+&nbsp;**<br />
+&nbsp;** Version 3.0 can only use files with file_format==1. Version 3.1.3<br />
+&nbsp;** can read and write files with file_format==1 or file_format==2.<br />
+&nbsp;** Version 3.1.4 can read and write file formats 1, 2 and 3.<br />
+&nbsp;*/<br />
+&nbsp;if( meta[1]&gt;3 ){<br />
+&nbsp;&nbsp; sqlite3BtreeCloseCursor(curMain);<br />
+&nbsp;&nbsp; sqlite3SetString(pzErrMsg, "unsupported file format", (char*)0);<br />
+&nbsp;&nbsp; return SQLITE_ERROR;<br />
+&nbsp;}<br />
+<br />
+This is interesting as I am running SQLite version 3.3.5 which the databases were created in. I see that the SQLite PDO source in the php source is :<br />
+&nbsp;&nbsp; &nbsp;&nbsp; # cat ext/pdo_sqlite/sqlite/VERSION<br />
+&nbsp;&nbsp; &nbsp; &nbsp; 3.2.8<br />
+<br />
+My solution was then to find a version of sqlite that was =&lt; 3.1.4. I found source for 3.1.3, compiled, recreated my database using that version (NOTE: the databases are unsupported between 3.1.x and 3.2.x versions of SQLite). Once I did this it worked.<br />
+<br />
+Also as a side note, to get SQLite compiled as a PDO, I had to:<br />
+<br />
+1) configure with<br />
+...<br />
+--enable-pdo=shared \<br />
+--with-sqlite=shared \<br />
+--with-pdo-sqlite=shared<br />
+--with-zlib<br />
+... \<br />
+'make &amp;&amp; make install' if configure is successful.<br />
+<br />
+2) Make sure the pdo libs were copied/installed to the correct directory. On my installation it was /usr/local/include/php/ext/pdo/<br />
+<br />
+3) Make these changes in my php.ini:<br />
+&nbsp; - change ' extension_dir = "./" ' to ' extension_dir="/usr/local/include/php/ext/pdo/" '<br />
+&nbsp; - add/edit in this order:<br />
+&nbsp;&nbsp; &nbsp;&nbsp; extension=pdo.so<br />
+&nbsp;&nbsp; &nbsp;&nbsp; extension=pdo_sqlite.so<br />
+&nbsp;&nbsp; &nbsp;&nbsp; extension=sqlite.so<br />
+<br />
+4) test php with : 'php -m' at the command line and solve any issues from there. Mostly php.ini config issues. Also restart the http service!</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="67937""></a>
+  <div class="note">
+   <strong class="user">Duffalo</strong>
+   <a href="#67937" class="date">07-Jul-2006 01:41</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note that as of the date of this post, PDO_SQLITE will not interact with database files created with the current version of the SQLite console application, sqlite-3.3.6.<br />
+<br />
+It is currently necessary to obtain version 3.2.8, available from <a href="http://www.sqlite.org/ but only by entering the URI manually, as there is no link. Go to http://www.sqlite.org/download.html and find the URI of the version you" rel="nofollow" target="_blank">http://www.sqlite.org/ but only by entering the URI manually, as there is no link. Go to http://www.sqlite.org/download.html and find the URI of the version you</a>'re looking for, then make the appropriate version number substitution.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="57356""></a>
+  <div class="note">
+   <strong class="user">aidan at php dot net</strong>
+   <a href="#57356" class="date">01-Oct-2005 11:36</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you receive an error while trying to write to a sqlite database (update, delete, drop):<br />
+<br />
+Warning: PDO::query() [function.query]: SQLSTATE[HY000]: General error: 1 unable to open database<br />
+<br />
+The folder that houses the database file must be writeable.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="pdo.pgsqllobunlink.html">PDO::pgsqlLOBUnlink</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="ref.pdo-sqlite.connection.html">PDO_SQLITE DSN</a></div>
+ <div class="up"><a href="pdo.drivers.html">PDO ドライバ</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>

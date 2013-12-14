@@ -1,0 +1,197 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Internet ドメイン: TCP、UDP、SSL、および TLS</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs"><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="transports.html">サポートされるソケットトランスポートのリスト</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="transports.unix.html">Unix ドメイン: Unix および UDG</a></div>
+ <div class="up"><a href="transports.html">サポートされるソケットトランスポートのリスト</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div><hr /><div id="transports.inet" class="section">
+  <h2 class="title">Internet ドメイン: TCP、UDP、SSL、および TLS</h2>
+  <p class="simpara">
+   PHP 4、PHP 5。
+   <em>ssl://</em> &amp; <em>tls://</em> PHP 4.3.0 以降
+   <em>sslv2://</em> &amp; <em>sslv3://</em> PHP 5.0.2 以降
+  </p>
+
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <span class="simpara">
+    トランスポートが指定されなければ、<em>tcp://</em> と仮定されます。
+   </span>
+  </p></blockquote>
+
+  <ul class="itemizedlist">
+   <li class="listitem"><span class="simpara"><em>127.0.0.1</em></span></li>
+   <li class="listitem"><span class="simpara"><em>fe80::1</em></span></li>
+   <li class="listitem"><span class="simpara"><em>www.example.com</em></span></li>
+   <li class="listitem"><span class="simpara"><em>tcp://127.0.0.1</em></span></li>
+   <li class="listitem"><span class="simpara"><em>tcp://fe80::1</em></span></li>
+   <li class="listitem"><span class="simpara"><em>tcp://www.example.com</em></span></li>
+   <li class="listitem"><span class="simpara"><em>udp://www.example.com</em></span></li>
+   <li class="listitem"><span class="simpara"><em>ssl://www.example.com</em></span></li>
+   <li class="listitem"><span class="simpara"><em>sslv2://www.example.com</em></span></li>
+   <li class="listitem"><span class="simpara"><em>sslv3://www.example.com</em></span></li>
+   <li class="listitem"><span class="simpara"><em>tls://www.example.com</em></span></li>
+  </ul>
+
+  <p class="simpara">
+   Internet ドメインソケットは、対象のアドレスに加えてポート番号を
+   受け付けます。 <span class="function"><a href="function.fsockopen.html" class="function">fsockopen()</a></span> の場合、これは 2 番目の
+   パラメータとして指定するので、トランスポートの URL には影響を与えません。
+   しかし、 <span class="function"><a href="function.stream-socket-client.html" class="function">stream_socket_client()</a></span> および関連する関数では
+   伝統的な URL を使用します。この場合、ポート番号はトランスポート URL の
+   後にコロンで区切ってつなげます。
+  </p>
+
+  <ul class="itemizedlist">
+   <li class="listitem"><span class="simpara"><em>tcp://127.0.0.1:80</em></span></li>
+   <li class="listitem"><span class="simpara"><em>tcp://[fe80::1]:80</em></span></li>
+   <li class="listitem"><span class="simpara"><em>tcp://www.example.com:80</em></span></li>
+  </ul>
+
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <strong>IPv6 数値アドレスとポート番号</strong><br />
+   <span class="simpara">
+    IPv4 やホスト名形式の例では、ポート番号はアドレスやホスト名の直後に
+    コロンでつながっていますが、上の 2 番目の例では IPv6 アドレスが
+    角括弧でかこまれて <em>[fe80::1]</em> となっています。
+    これは、IPv6 アドレスに使用されるコロンとポート番号を表す際のコロンを
+    区別するためです。
+   </span>
+  </p></blockquote>
+
+  <p class="simpara">
+   <em>ssl://</em> および <em>tls://</em> のトランスポート
+   （PHP が openssl サポートを含めてコンパイルされている場合のみ有効）は、
+   <em>tcp://</em> トランスポートに SSL 暗号化を含めた拡張です。
+   PHP 4.3.0 以降では OpenSSL サポートは PHP に静的に組み込まれている
+   必要があります。PHP 5.0.0 以降では静的に組み込むだけではなくモジュールとして
+   コンパイルされていてもよくなりました。
+  </p>
+
+  <p class="simpara">
+   <em>ssl://</em> は SSL V2 での接続を試みます。
+   あるいはリモートホストの設定によっては SSL V3 での接続を試みます。
+   <em>sslv2://</em> および
+   <em>sslv3://</em> は、SSL V2 と SSL V3 のどちらのプロトコルを
+   使用するかを明示的に指定します。
+  </p>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113244""></a>
+  <div class="note">
+   <strong class="user">christian at lantian dot eu</strong>
+   <a href="#113244" class="date">17-Sep-2013 09:46</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+@pablo dot livardo&nbsp; :&nbsp; I think that the problem you found is caused by the difference between the client/server encryption methods used.<br />
+<br />
+The 465 port is used for SMTPS, and the server starts the encryption immediately it receives your connection. So, your code will work.<br />
+<br />
+The 587 port is used for Submission (MSA or Mail Submission Agent) which works like the port 25. The server accepts your connection and doesn't activate the encryption. If you want an encrypted connection on the port 587, you must connect on it without encryption, you must start to dialog with the server (with EHLO) and after that you must ask the server to start the encrypted connection using the STARTTLS command. The server starts the encryption and now you can start as well the encryption on your client. <br />
+<br />
+So, in few words, you can not use : <br />
+<br />
+<span class="default">&lt;?php $fp </span><span class="keyword">= </span><span class="default">fsockopen</span><span class="keyword">(</span><span class="string">"tls://mail.example.com"</span><span class="keyword">, </span><span class="default">587</span><span class="keyword">, </span><span class="default">$errno</span><span class="keyword">, </span><span class="default">$errstr</span><span class="keyword">);&nbsp; </span><span class="default">?&gt;</span>&nbsp; <br />
+<br />
+but you can use:<br />
+<br />
+&nbsp;<span class="default">&lt;?php $fp </span><span class="keyword">= </span><span class="default">stream_socket_client</span><span class="keyword">(</span><span class="string">"mail.example.com:587"</span><span class="keyword">, </span><span class="default">$errno</span><span class="keyword">, </span><span class="default">$errstr</span><span class="keyword">); </span><span class="default">?&gt;</span>&nbsp; <br />
+<br />
+and after you send the STARTTLS command, you can enable the crypto:<br />
+<br />
+<span class="default">&lt;?php stream_socket_enable_crypto</span><span class="keyword">(</span><span class="default">$fp</span><span class="keyword">, </span><span class="default">true</span><span class="keyword">, </span><span class="default">STREAM_CRYPTO_METHOD_SSLv23_CLIENT</span><span class="keyword">); </span><span class="default">?&gt;<br />
+</span><br />
+P.S. My previous note on this page was totally wrong, so I ask the php.net admin to remove it.<br />
+<br />
+:)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="113239""></a>
+  <div class="note">
+   <strong class="user">christian at lantian dot eu</strong>
+   <a href="#113239" class="date">17-Sep-2013 05:17</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+@pablo dot livardo&nbsp; :&nbsp; I think that the problem you found is caused by the difference between the client/server encryption methods used.<br />
+<br />
+You tried to access the port 587 using TLS encryption, but the server uses the SSLv3 encryption on this port.<br />
+<br />
+You can communicate with the Google server on port 465 because on this port the communication is encrypted using TLS and your client is configured to recognize the TLS.<br />
+<br />
+So, if you want to connect on the Google server over the port 587, you simply must write:<br />
+<br />
+<span class="default">&lt;?php <br />
+$fp </span><span class="keyword">= </span><span class="default">fsockopen</span><span class="keyword">(</span><span class="string">"ssl://mail.example.com"</span><span class="keyword">, </span><span class="default">587</span><span class="keyword">, </span><span class="default">$errno</span><span class="keyword">, </span><span class="default">$errstr</span><span class="keyword">); <br />
+</span><span class="default">?&gt;</span> <br />
+<br />
+instead of:<br />
+<br />
+<span class="default">&lt;?php <br />
+$fp </span><span class="keyword">= </span><span class="default">fsockopen</span><span class="keyword">(</span><span class="string">"tls://mail.example.com"</span><span class="keyword">, </span><span class="default">587</span><span class="keyword">, </span><span class="default">$errno</span><span class="keyword">, </span><span class="default">$errstr</span><span class="keyword">); <br />
+</span><span class="default">?&gt;</span> <br />
+<br />
+:)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="99503""></a>
+  <div class="note">
+   <strong class="user">stefan at example dot com</strong>
+   <a href="#99503" class="date">20-Aug-2010 02:42</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Actually, PHP is very able to start with an unencrypted connection and then switch to an encrypted one - refer to <a href="http://php.net/stream_socket_enable_crypto ." rel="nofollow" target="_blank">http://php.net/stream_socket_enable_crypto .</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="95022""></a>
+  <div class="note">
+   <strong class="user">pablo dot livardo at gmail dot com</strong>
+   <a href="#95022" class="date">09-Dec-2009 06:56</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I've been having a problem with a TLS connection.<br />
+<br />
+<span class="default">&lt;?php<br />
+$fp </span><span class="keyword">= </span><span class="default">fsockopen</span><span class="keyword">(</span><span class="string">"tls://mail.example.com"</span><span class="keyword">, </span><span class="default">587</span><span class="keyword">, </span><span class="default">$errno</span><span class="keyword">, </span><span class="default">$errstr</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Which gives me an error of:<br />
+<br />
+SSL operation failed with code 1. OpenSSL Error messages: error:1408F10B:SSL routines:SSL3_GET_RECORD:wrong version number<br />
+<br />
+I believe this is caused by PHP not being able to start with an unencrypted connection and then switch to encryption even though the functionality is built into OpenSSL.<br />
+<br />
+For Google Mail users you can avoid this by using port 465 instead of 587.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+<hr /><div class="manualnavbar" style="text-align: center;">
+ <div class="prev" style="text-align: left; float: left;"><a href="transports.html">サポートされるソケットトランスポートのリスト</a></div>
+ <div class="next" style="text-align: right; float: right;"><a href="transports.unix.html">Unix ドメイン: Unix および UDG</a></div>
+ <div class="up"><a href="transports.html">サポートされるソケットトランスポートのリスト</a></div>
+ <div class="home"><a href="index.html">PHP Manual</a></div>
+</div></body></html>
