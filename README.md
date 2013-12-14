@@ -5,15 +5,19 @@ PHP マニュアル (http://www.php.net/manual/ja/) を Dash (http://kapeli.com/
 試しては居ませんが、Zeal (https://github.com/jkozera/zeal) を使用することで、Windows や Ubuntu で閲覧することも可能なようです。
 
 
-# 作り方
+# 使い方
+
+このリポジトリをcloneするか、「Download ZIP」からダウンロードしたファイルを解凍した後、phpdoc-ja.docset を Dash で開いて下さい。
+
+
+# この Docsets の作り方
 
 - http://www.miukoba.net/blog/2013/12/14/Japanese-PHP-Docset-for-Dash/
 
-ダウンロード (http://www.php.net/download-docs.php) が可能な言語であれば、同じ方法で日本語以外も作成可能と思われます。
+PHPマニュアルのダウンロード (http://www.php.net/download-docs.php) が可能な言語であれば、同じ方法で日本語以外も作成可能と思われます。
 
 
 # ライセンス
 
 - PHP マニュアルは Creative Commons Attribution 3.0 (http://www.php.net/manual/ja/copyright.php) で配布されています。
 - docSet.dsidx の再配布は、Kapeli(http://kapeli.com/)より許可を頂いております。
-
