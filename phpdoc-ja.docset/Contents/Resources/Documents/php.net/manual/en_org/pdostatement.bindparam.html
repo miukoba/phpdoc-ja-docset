@@ -1,0 +1,596 @@
+<html><!-- Mirrored from php.net/manual/en/pdostatement.bindparam.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 16:57:31 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>PDOStatement::bindParam</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="pdostatement.bindparam.html">
+ <link rel="shorturl" href="pdostatement.bindparam.html">
+ <link rel="alternate" href="pdostatement.bindparam.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="class.pdostatement.html">
+ <link rel="prev" href="pdostatement.bindcolumn.html">
+ <link rel="next" href="pdostatement.bindvalue.html">
+
+ <link rel="alternate" href="pdostatement.bindparam.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/pdostatement.bindparam.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/pdostatement.bindparam.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/pdostatement.bindparam.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/pdostatement.bindparam.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/pdostatement.bindparam.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/pdostatement.bindparam.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/pdostatement.bindparam.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/pdostatement.bindparam.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/pdostatement.bindparam.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/pdostatement.bindparam.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.database.html">Database Extensions</a></li>      <li><a href="refs.database.abstract.html">Abstraction Layers</a></li>      <li><a href="book.pdo.html">PDO</a></li>      <li><a href="class.pdostatement.html">PDOStatement</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="pdostatement.bindparam" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">PDOStatement::bindParam</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.1.0, PECL pdo &gt;= 0.1.0)</p><p class="refpurpose"><span class="refname">PDOStatement::bindParam</span> — <span class="dc-title">
+   Binds a parameter to the specified variable name
+  </span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-pdostatement.bindparam-description">
+  <h3 class="title">Description</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><strong>PDOStatement::bindParam</strong></span>
+    ( <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter">$parameter</code></span>
+   , <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter reference">&amp;$variable</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$data_type</code><span class="initializer"> = PDO::PARAM_STR</span></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$length</code></span>
+   [, <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter">$driver_options</code></span>
+  ]]] )</div>
+
+  <p class="para rdfs-comment">
+   Binds a PHP variable to a corresponding named or question mark placeholder
+   in the SQL statement that was used to prepare the statement.  Unlike
+   <span class="function"><a href="pdostatement.bindvalue.html" class="function">PDOStatement::bindValue()</a></span>, the variable is bound as a
+   reference and will only be evaluated at the time that
+   <span class="function"><a href="pdostatement.execute.html" class="function">PDOStatement::execute()</a></span> is called.
+  </p>
+  <p class="para">
+   Most parameters are input parameters, that is, parameters that are used
+   in a read-only fashion to build up the query.  Some drivers support the
+   invocation of stored procedures that return data as output parameters,
+   and some also as input/output parameters that both send in data and are
+   updated to receive it.
+  </p>
+
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-pdostatement.bindparam-parameters">
+  <h3 class="title">Parameters</h3>
+  <p class="para">
+   </p><dl>
+
+    
+     <dt>
+<code class="parameter">parameter</code></dt>
+
+      <dd>
+
+       <p class="para">
+        Parameter identifier. For a prepared statement using named
+        placeholders, this will be a parameter name of the form
+        <var class="varname"><var class="varname">:name</var></var>. For a prepared statement using
+        question mark placeholders, this will be the 1-indexed position of
+        the parameter. 
+       </p>
+      </dd>
+
+     
+    
+     <dt>
+<code class="parameter">variable</code></dt>
+
+      <dd>
+
+       <p class="para">
+        Name of the PHP variable to bind to the SQL statement parameter.
+       </p>
+      </dd>
+
+     
+    
+     <dt>
+<code class="parameter">data_type</code></dt>
+
+      <dd>
+
+       <p class="para">
+        Explicit data type for the parameter using the <a href="pdo.constants.html" class="link"><em>PDO::PARAM_*</em>
+        constants</a>.
+        To return an INOUT parameter from a stored procedure, 
+        use the bitwise OR operator to set the PDO::PARAM_INPUT_OUTPUT bits
+        for the <code class="parameter">data_type</code> parameter.
+       </p>
+      </dd>
+
+     
+    
+     <dt>
+<code class="parameter">length</code></dt>
+
+      <dd>
+
+       <p class="para">
+        Length of the data type. To indicate that a parameter is an OUT
+        parameter from a stored procedure, you must explicitly set the
+        length.
+       </p>
+      </dd>
+
+     
+    
+     <dt>
+<code class="parameter">driver_options</code></dt>
+
+     <dd>
+
+      <p class="para">
+         
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  <p></p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-pdostatement.bindparam-returnvalues">
+  <h3 class="title">Return Values</h3>
+  <p class="para">
+   Returns <strong><code>TRUE</code></strong> on success or <strong><code>FALSE</code></strong> on failure.
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-pdostatement.bindparam-examples">
+  <h3 class="title">Examples</h3>
+  <div class="example" id="example-982"><p><strong>Example #1 Execute a prepared statement with named placeholders</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #FF8000">/*&nbsp;Execute&nbsp;a&nbsp;prepared&nbsp;statement&nbsp;by&nbsp;binding&nbsp;PHP&nbsp;variables&nbsp;*/<br></span><span style="color: #0000BB">$calories&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">150</span><span style="color: #007700">;<br></span><span style="color: #0000BB">$colour&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'red'</span><span style="color: #007700">;<br></span><span style="color: #0000BB">$sth&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$dbh</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">prepare</span><span style="color: #007700">(</span><span style="color: #DD0000">'SELECT&nbsp;name,&nbsp;colour,&nbsp;calories<br>&nbsp;&nbsp;&nbsp;&nbsp;FROM&nbsp;fruit<br>&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;calories&nbsp;&lt;&nbsp;:calories&nbsp;AND&nbsp;colour&nbsp;=&nbsp;:colour'</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$sth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">bindParam</span><span style="color: #007700">(</span><span style="color: #DD0000">':calories'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$calories</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">PARAM_INT</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$sth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">bindParam</span><span style="color: #007700">(</span><span style="color: #DD0000">':colour'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$colour</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">PARAM_STR</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">12</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$sth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">execute</span><span style="color: #007700">();<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+
+  <div class="example" id="example-983"><p><strong>Example #2 Execute a prepared statement with question mark placeholders</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #FF8000">/*&nbsp;Execute&nbsp;a&nbsp;prepared&nbsp;statement&nbsp;by&nbsp;binding&nbsp;PHP&nbsp;variables&nbsp;*/<br></span><span style="color: #0000BB">$calories&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">150</span><span style="color: #007700">;<br></span><span style="color: #0000BB">$colour&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'red'</span><span style="color: #007700">;<br></span><span style="color: #0000BB">$sth&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$dbh</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">prepare</span><span style="color: #007700">(</span><span style="color: #DD0000">'SELECT&nbsp;name,&nbsp;colour,&nbsp;calories<br>&nbsp;&nbsp;&nbsp;&nbsp;FROM&nbsp;fruit<br>&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;calories&nbsp;&lt;&nbsp;?&nbsp;AND&nbsp;colour&nbsp;=&nbsp;?'</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$sth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">bindParam</span><span style="color: #007700">(</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$calories</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">PARAM_INT</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$sth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">bindParam</span><span style="color: #007700">(</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$colour</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">PARAM_STR</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">12</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$sth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">execute</span><span style="color: #007700">();<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+
+
+  <div class="example" id="example-984"><p><strong>Example #3 Call a stored procedure with an INOUT parameter</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #FF8000">/*&nbsp;Call&nbsp;a&nbsp;stored&nbsp;procedure&nbsp;with&nbsp;an&nbsp;INOUT&nbsp;parameter&nbsp;*/<br></span><span style="color: #0000BB">$colour&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'red'</span><span style="color: #007700">;<br></span><span style="color: #0000BB">$sth&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$dbh</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">prepare</span><span style="color: #007700">(</span><span style="color: #DD0000">'CALL&nbsp;puree_fruit(?)'</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$sth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">bindParam</span><span style="color: #007700">(</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$colour</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">PARAM_STR</span><span style="color: #007700">|</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">PARAM_INPUT_OUTPUT</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">12</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$sth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">execute</span><span style="color: #007700">();<br>print(</span><span style="color: #DD0000">"After&nbsp;pureeing&nbsp;fruit,&nbsp;the&nbsp;colour&nbsp;is:&nbsp;</span><span style="color: #0000BB">$colour</span><span style="color: #DD0000">"</span><span style="color: #007700">);<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-pdostatement.bindparam-seealso">
+  <h3 class="title">See Also</h3>
+  <p class="para">
+   </p><ul class="simplelist">
+    <li class="member"><span class="function"><a href="pdo.prepare.html" class="function" rel="rdfs-seeAlso">PDO::prepare()</a> - Prepares a statement for execution and returns a statement object</span></li>
+    <li class="member"><span class="function"><a href="pdostatement.execute.html" class="function" rel="rdfs-seeAlso">PDOStatement::execute()</a> - Executes a prepared statement</span></li>
+    <li class="member"><span class="function"><a href="pdostatement.bindvalue.html" class="function" rel="rdfs-seeAlso">PDOStatement::bindValue()</a> - Binds a value to a parameter</span></li>
+   </ul>
+  <p></p>
+
+ </div>
+
+</div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="98145">  
+  <a class="name">
+  <strong class="user"><em>Vili</em></strong></a><div class="date" title="2010-05-28 12:01"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom98145">
+<div class="phpcode"><code><span class="html">
+This works ($val by reference):<br><span class="default">&lt;?php<br></span><span class="keyword">foreach (</span><span class="default">$params </span><span class="keyword">as </span><span class="default">$key </span><span class="keyword">=&gt; &amp;</span><span class="default">$val</span><span class="keyword">) {<br>&nbsp; &nbsp; </span><span class="default">$sth</span><span class="keyword">-&gt;</span><span class="default">bindParam</span><span class="keyword">(</span><span class="default">$key</span><span class="keyword">, </span><span class="default">$val</span><span class="keyword">);<br>}<br></span><span class="default">?&gt;<br></span><br>This will fail ($val by value, because bindParam needs &amp;$variable):<br><span class="default">&lt;?php<br></span><span class="keyword">foreach (</span><span class="default">$params </span><span class="keyword">as </span><span class="default">$key </span><span class="keyword">=&gt; </span><span class="default">$val</span><span class="keyword">) {<br>&nbsp; &nbsp; </span><span class="default">$sth</span><span class="keyword">-&gt;</span><span class="default">bindParam</span><span class="keyword">(</span><span class="default">$key</span><span class="keyword">, </span><span class="default">$val</span><span class="keyword">);<br>}<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="99698">  
+  <a class="name">
+  <strong class="user"><em>atrandafirc at yahoo dot com</em></strong></a><div class="date" title="2010-08-31 06:37"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom99698">
+<div class="phpcode"><code><span class="html">
+I know this has been said before but I'll write a note on it too because I think it's important to keep in mind:<br><br>If you use PDO bindParam to do a search with a LIKE condition you cannot put the percentages and quotes to the param placeholder '%:keyword%'.<br><br>This is WRONG:<br>"SELECT * FROM `users` WHERE `firstname` LIKE '%:keyword%'";<br><br>The CORRECT solution is to leave clean the placeholder like this:<br>"SELECT * FROM `users` WHERE `firstname` LIKE :keyword";<br><br>And then add the percentages to the php variable where you store the keyword:<br>$keyword = "%".$keyword."%";<br><br>And finally the quotes will be automatically added by PDO when executing the query so you don't have to worry about them.<br><br>So the full example would be:<br><span class="default">&lt;?php<br></span><span class="comment">// Get the keyword from query string<br></span><span class="default">$keyword </span><span class="keyword">= </span><span class="default">$_GET</span><span class="keyword">[</span><span class="string">'keyword'</span><span class="keyword">];<br></span><span class="comment">// Prepare the command<br></span><span class="default">$sth </span><span class="keyword">= </span><span class="default">$dbh</span><span class="keyword">-&gt;</span><span class="default">prepare</span><span class="keyword">(</span><span class="string">'SELECT * FROM `users` WHERE `firstname` LIKE :keyword'</span><span class="keyword">);<br></span><span class="comment">// Put the percentage sing on the keyword<br></span><span class="default">$keyword </span><span class="keyword">= </span><span class="string">"%"</span><span class="keyword">.</span><span class="default">$keyword</span><span class="keyword">.</span><span class="string">"%"</span><span class="keyword">;<br></span><span class="comment">// Bind the parameter<br></span><span class="default">$sth</span><span class="keyword">-&gt;</span><span class="default">bindParam</span><span class="keyword">(</span><span class="string">':keyword'</span><span class="keyword">, </span><span class="default">$keyword</span><span class="keyword">, </span><span class="default">PDO</span><span class="keyword">::</span><span class="default">PARAM_STR</span><span class="keyword">);<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="94711">  
+  <a class="name">
+  <strong class="user"><em>Steve M</em></strong></a><div class="date" title="2009-11-19 11:28"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom94711">
+<div class="phpcode"><code><span class="html">
+Note that when using PDOStatement::bindParam an integer is changed to a string value upon PDOStatement::execute(). (Tested with MySQL). <br><br>This can cause problems when trying to compare values using the === operator.<br><br>Example:<br><span class="default">&lt;?php<br>$active </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br></span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$active</span><span class="keyword">);<br></span><span class="default">$ps</span><span class="keyword">-&gt;</span><span class="default">bindParam</span><span class="keyword">(</span><span class="string">":active"</span><span class="keyword">, </span><span class="default">$active</span><span class="keyword">, </span><span class="default">PDO</span><span class="keyword">::</span><span class="default">PARAM_INT</span><span class="keyword">);<br></span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$active</span><span class="keyword">);<br></span><span class="default">$ps</span><span class="keyword">-&gt;</span><span class="default">execute</span><span class="keyword">();<br></span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$active</span><span class="keyword">);<br>if (</span><span class="default">$active </span><span class="keyword">=== </span><span class="default">1</span><span class="keyword">) {<br>&nbsp; &nbsp; </span><span class="comment">// do something here<br>&nbsp; &nbsp; // note: this will fail since $active is now "1"<br></span><span class="keyword">}<br></span><span class="default">?&gt;<br></span><br>results in:<br>int(1) <br>int(1) <br>string(1) "1"</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="109783">  
+  <a class="name">
+  <strong class="user"><em>khkiley at adamsautomation dot com</em></strong></a><div class="date" title="2012-08-20 09:56"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom109783">
+<div class="phpcode"><code><span class="html">
+SQL Server 2008 R2
+<br>
+<br>If this was in the documentation, I didn't stumble across it. When using bound output parameters with a stored procedure, the output parameters are updated AFTER the LAST rowset has been processed.
+<br>
+<br>If your stored procedure does not return any rowsets (no SELECT statements) then you are set, your output parameters will be ready as soon as the stored procedure is processed.
+<br>
+<br>Otherwise you need to process the rows, and then:
+<br><span class="default">&lt;?php $stmt</span><span class="keyword">-&gt;</span><span class="default">nextRowset</span><span class="keyword">(); </span><span class="default">?&gt;
+<br></span>
+<br>Once that is done for each returning rowset you will have access to the output parameters.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="101764">  
+  <a class="name">
+  <strong class="user"><em>cyrylas at gmail dot com</em></strong></a><div class="date" title="2011-01-10 01:23"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom101764">
+<div class="phpcode"><code><span class="html">
+Please note, that PDO format numbers according to current locale. So if, locale set number format to something else, that standard that query WILL NOT work properly.<br><br>For example:<br>in Polish locale (pl_PL) proper decimal separator is coma (","), so: 123,45, not 123.45. If we try bind 123.45 to the query, we will end up with coma in the query.<br><br><span class="default">&lt;?php<br>setlocale</span><span class="keyword">(</span><span class="default">LC_ALL</span><span class="keyword">, </span><span class="string">'pl_PL'</span><span class="keyword">);<br></span><span class="default">$sth </span><span class="keyword">= </span><span class="default">$dbh</span><span class="keyword">-&gt;</span><span class="default">prepare</span><span class="keyword">(</span><span class="string">'SELECT name FROM products WHERE price &lt; :price'</span><span class="keyword">);<br></span><span class="default">$sth</span><span class="keyword">-&gt;</span><span class="default">bindParam</span><span class="keyword">(</span><span class="string">':price'</span><span class="keyword">, </span><span class="default">123.45</span><span class="keyword">, </span><span class="default">PDO</span><span class="keyword">::</span><span class="default">PARAM_STR</span><span class="keyword">);<br></span><span class="default">$sth</span><span class="keyword">-&gt;</span><span class="default">execute</span><span class="keyword">();<br></span><span class="comment">// result:<br>// SELECT name FROM products WHERE price &lt; '123,45';<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="109791">  
+  <a class="name">
+  <strong class="user"><em>flannell</em></strong></a><div class="date" title="2012-08-21 12:27"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom109791">
+<div class="phpcode"><code><span class="html">
+Spent all day banging my head against a brick wall.
+<br>
+<br>Tried to use INOUT or OUT and getting the return variable into PHP using Mysql v5.5.16 on XAMPP.
+<br>
+<br>"MySQL doesn't supporting binding output parameters via its C API.&nbsp; You must use SQL level variables:"
+<br>
+<br><span class="default">&lt;?php
+<br>$stm </span><span class="keyword">= </span><span class="default">$db</span><span class="keyword">-&gt;</span><span class="default">prepare</span><span class="keyword">(</span><span class="string">"CALL sp_mysp(:Name, :Email, @sp_result)"</span><span class="keyword">);
+<br>
+<br></span><span class="default">$outputArray </span><span class="keyword">= </span><span class="default">$db</span><span class="keyword">-&gt;</span><span class="default">query</span><span class="keyword">(</span><span class="string">"select @sp_result"</span><span class="keyword">)-&gt;</span><span class="default">fetch</span><span class="keyword">(</span><span class="default">PDO</span><span class="keyword">::</span><span class="default">FETCH_ASSOC</span><span class="keyword">);
+<br></span><span class="default">?&gt;
+<br></span>
+<br>So the 'workaround' for Mysql and PDO is to use two SQL calls.
+<br>
+<br>Hope this helps someone.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="61505">  
+  <a class="name"><strong class="user"><em>Anonymous</em></strong></a><div class="date" title="2006-02-05 02:25"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom61505">
+<div class="phpcode"><code><span class="html">
+A caution for those using bindParam() on a placeholder in a 
+<br>LIKE '%...%' clause, the following code will likely not work:
+<br>
+<br><span class="default">&lt;?php
+<br>$q </span><span class="keyword">= </span><span class="string">"SELECT id, name FROM test WHERE name like '%:foo%'"</span><span class="keyword">;
+<br></span><span class="default">$s </span><span class="keyword">= </span><span class="string">"carrot"</span><span class="keyword">;
+<br></span><span class="default">$sth </span><span class="keyword">= </span><span class="default">$dbh</span><span class="keyword">-&gt;</span><span class="default">prepare</span><span class="keyword">(</span><span class="default">$q</span><span class="keyword">);
+<br></span><span class="default">$sth</span><span class="keyword">-&gt;</span><span class="default">bindParam</span><span class="keyword">(</span><span class="string">':foo'</span><span class="keyword">, </span><span class="default">$s</span><span class="keyword">);
+<br></span><span class="default">$sth</span><span class="keyword">-&gt;</span><span class="default">execute</span><span class="keyword">();
+<br></span><span class="default">?&gt;
+<br></span>
+<br>What is needed is something like the following:
+<br>
+<br><span class="default">&lt;?php
+<br>$s </span><span class="keyword">= </span><span class="string">"%</span><span class="default">$s</span><span class="string">%"</span><span class="keyword">;
+<br></span><span class="default">$sth</span><span class="keyword">-&gt;</span><span class="default">bindParam</span><span class="keyword">(</span><span class="string">':foo'</span><span class="keyword">, </span><span class="default">$s</span><span class="keyword">);
+<br></span><span class="default">?&gt;
+<br></span>
+<br>This should work. Tested against mysql 4.1, PHP 5.1.3.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="111215">  
+  <a class="name">
+  <strong class="user"><em>Mike Robinson</em></strong></a><div class="date" title="2013-01-26 11:56"><strong>1 year ago</strong></div>
+  <div class="text" id="Hcom111215">
+<div class="phpcode"><code><span class="html">
+Note that with bindParam the second parameter is passed by reference. This means that the following will produce a warning if E_STRICT is enabled:<br><br><span class="default">&lt;?php<br>$stmt</span><span class="keyword">-&gt;</span><span class="default">bindParam</span><span class="keyword">(</span><span class="string">'type'</span><span class="keyword">, </span><span class="default">$object</span><span class="keyword">-&gt;</span><span class="default">getType</span><span class="keyword">());<br><br></span><span class="comment">// Strict Standards: Only variables should be passed by reference in /path/to/file.php on line 123<br></span><span class="default">?&gt;<br></span><br>If the second parameter is not an actual variable, either set the result of $object-&gt;getType(); to a variable and use that variable in bindParam or use bindValue instead.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="100494">  
+  <a class="name">
+  <strong class="user"><em>ReK_</em></strong></a><div class="date" title="2010-10-19 10:59"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom100494">
+<div class="phpcode"><code><span class="html">
+This confused me for some time because it is never explicitly mentioned, but PDO will automagically encapsulate parameters for you, so a prepared query that is manually escaped like so:<br><br>"INSERT INTO table (column) VALUES (':value');"<br><br>Will actually end up being double-quoted and can cause problems.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="115407">  
+  <a class="name">
+  <strong class="user"><em>Ofir Attia</em></strong></a><div class="date" title="2014-07-19 06:09"><strong>1 month ago</strong></div>
+  <div class="text" id="Hcom115407">
+<div class="phpcode"><code><span class="html">
+/*<br>&nbsp;&nbsp; method for pdo class connection, you can add your cases by&nbsp; &nbsp; yourself and use it.<br>*/<br>class Conn{<br>....<br>....<br>private $stmt;<br>public function bind($parameter, $value, $var_type = null){<br>&nbsp; &nbsp; &nbsp; &nbsp; if (is_null($var_type)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; switch (true) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; case is_bool($value):<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $var_type = PDO::PARAM_BOOL;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; break;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; case is_int($value):<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $var_type = PDO::PARAM_INT;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; break;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; case is_null($value):<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $var_type = PDO::PARAM_NULL;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; break;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; default:<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $var_type = PDO::PARAM_STR;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; $this-&gt;stmt-&gt;bindValue($parameter, $value, $var_type);<br>&nbsp; &nbsp; }</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="113908">  
+  <a class="name">
+  <strong class="user"><em>pegas1981 at yandex dot ru</em></strong></a><div class="date" title="2013-12-16 11:56"><strong>8 months ago</strong></div>
+  <div class="text" id="Hcom113908">
+<div class="phpcode"><code><span class="html">
+<a rel="nofollow" target="_blank">http://technet.microsoft.com/en-us/library/ff628166(v=sql.105</a>).aspx<br><br>When binding null data to server columns of type varbinary, binary, or varbinary(max) you should specify binary encoding (PDO::SQLSRV_ENCODING_BINARY) using the $driver_options. See Constants for more information about encoding constants.<br>Support for PDO was added in version 2.0 of the Microsoft Drivers for PHP for SQL Server.<br><br> <span class="default">&lt;?php<br>$db </span><span class="keyword">= new </span><span class="default">PDO</span><span class="keyword">(</span><span class="string">'sqlsrv:server=SQLSERVERNAME;Database=own_exchange'</span><span class="keyword">, </span><span class="string">'user'</span><span class="keyword">, </span><span class="string">'password'</span><span class="keyword">);<br></span><span class="default">$sql </span><span class="keyword">= </span><span class="string">"INSERT INTO dbo.files(file_name, file_source) VALUES(:file_name, :file_source)"</span><span class="keyword">;<br></span><span class="default">$stmt </span><span class="keyword">= </span><span class="default">$db</span><span class="keyword">-&gt;</span><span class="default">prepare</span><span class="keyword">(</span><span class="default">$sql</span><span class="keyword">);<br></span><span class="default">$stmt</span><span class="keyword">-&gt;</span><span class="default">bindParam</span><span class="keyword">(</span><span class="string">":file_name"</span><span class="keyword">, </span><span class="default">$files</span><span class="keyword">-&gt;</span><span class="default">name</span><span class="keyword">, </span><span class="default">PDO</span><span class="keyword">::</span><span class="default">PARAM_STR</span><span class="keyword">);<br></span><span class="default">$stmt</span><span class="keyword">-&gt;</span><span class="default">bindParam</span><span class="keyword">(</span><span class="string">":file_source"</span><span class="keyword">, </span><span class="default">file_get_contents</span><span class="keyword">(</span><span class="default">$files</span><span class="keyword">-&gt;</span><span class="default">tempName</span><span class="keyword">), </span><span class="default">PDO</span><span class="keyword">::</span><span class="default">PARAM_LOB</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">, </span><span class="default">PDO</span><span class="keyword">::</span><span class="default">SQLSRV_ENCODING_BINARY</span><span class="keyword">);<br></span><span class="default">$stmt</span><span class="keyword">-&gt;</span><span class="default">execute</span><span class="keyword">();<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="95934">  
+  <a class="name">
+  <strong class="user"><em>geompse at gmail dot com</em></strong></a><div class="date" title="2010-01-29 03:30"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom95934">
+<div class="phpcode"><code><span class="html">
+if you are storing files (or binary data), using PARAM_LOB (and moreover trying to do this with Oracle), don't miss this page :<br><br><a rel="nofollow" target="_blank">http://php.net/manual/en/pdo.lobs.php</a><br><br>You will there notice that PDO-PGSQL and PDO-OCI don't work the same at all : not the same argument nor the same behaviour.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="76357">  
+  <a class="name">
+  <strong class="user"><em>jeffwa+php at gmail dot com</em></strong></a><div class="date" title="2007-07-11 01:49"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom76357">
+<div class="phpcode"><code><span class="html">
+Took me forever to find this elsewhere in the notes in the manual, so I'd thought I'd put this tidbit here to help others in the future.<br><br>When using a LIKE search in MySQL along with a prepared statement, the *value* must have the appropriate parentheses attached before the bindParam() statement as such:<br><br><span class="default">&lt;?php<br>$dbc </span><span class="keyword">= </span><span class="default">$GLOBALS</span><span class="keyword">[</span><span class="string">'dbc'</span><span class="keyword">];<br></span><span class="default">$sql </span><span class="keyword">= </span><span class="string">"SELECT * FROM `tbl_name` WHERE tbl_col LIKE ?"</span><span class="keyword">;<br></span><span class="default">$stmt </span><span class="keyword">= </span><span class="default">$dbc</span><span class="keyword">-&gt;</span><span class="default">prepare</span><span class="keyword">(</span><span class="default">$sql</span><span class="keyword">);<br><br></span><span class="default">$value </span><span class="keyword">= </span><span class="string">"%</span><span class="keyword">{</span><span class="default">$value</span><span class="keyword">}</span><span class="string">%"</span><span class="keyword">;<br></span><span class="default">$stmt</span><span class="keyword">-&gt;</span><span class="default">bindParam</span><span class="keyword">(</span><span class="default">$i</span><span class="keyword">, </span><span class="default">$value</span><span class="keyword">, </span><span class="default">PDO</span><span class="keyword">::</span><span class="default">PARAM_STR</span><span class="keyword">);<br></span><span class="default">?&gt;<br></span><br>Trying to use<br><span class="default">&lt;?php<br>$stmt</span><span class="keyword">-&gt;</span><span class="default">bindParam</span><span class="keyword">(</span><span class="default">$i</span><span class="keyword">, </span><span class="string">"%</span><span class="keyword">{</span><span class="default">$value</span><span class="keyword">}</span><span class="string">%"</span><span class="keyword">, </span><span class="default">PDO</span><span class="keyword">::</span><span class="default">PARAM_STR</span><span class="keyword">);<br></span><span class="default">?&gt;<br></span><br>will fail.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="92097">  
+  <a class="name">
+  <strong class="user"><em>dhammari at q90 dot com</em></strong></a><div class="date" title="2009-07-08 11:22"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom92097">
+<div class="phpcode"><code><span class="html">
+There seems to be some confusion about whether you can bind a single value to multiple identical placeholders. For example:<br><br>$sql = "SELECT * FROM user WHERE is_admin = :myValue AND is_deleted = :myValue ";<br><br>$params = array("myValue" =&gt; "0");<br><br>Some users have reported that attempting to bind a single parameter to multiple placeholders yields a parameter mismatch error in PHP version 5.2.0 and earlier. Starting with version 5.2.1, however, this seems to work just fine.<br><br>For details, see bug report 40417:<br><a rel="nofollow" target="_blank">http://bugs.php.net/bug.php?id=40417</a></span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="64226">  
+  <a class="name">
+  <strong class="user"><em>Filofox</em></strong></a><div class="date" title="2006-04-10 03:09"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom64226">
+<div class="phpcode"><code><span class="html">
+Do not try to use the same named parameter twice in a single SQL statement, for example
+<br>
+<br><span class="default">&lt;?php
+<br>$sql </span><span class="keyword">= </span><span class="string">'SELECT * FROM some_table WHERE&nbsp; some_value &gt; :value OR some_value &lt; :value'</span><span class="keyword">;
+<br></span><span class="default">$stmt </span><span class="keyword">= </span><span class="default">$dbh</span><span class="keyword">-&gt;</span><span class="default">prepare</span><span class="keyword">(</span><span class="default">$sql</span><span class="keyword">);
+<br></span><span class="default">$stmt</span><span class="keyword">-&gt;</span><span class="default">execute</span><span class="keyword">( array( </span><span class="string">':value' </span><span class="keyword">=&gt; </span><span class="default">3 </span><span class="keyword">) );
+<br></span><span class="default">?&gt;
+<br></span>
+<br>...this will return no rows and no error -- you must use each parameter once and only once. Apparently this is expected behavior (according to this bug report: <a rel="nofollow" target="_blank">http://bugs.php.net/bug.php?id=33886</a>)&nbsp; because of portability issues.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="75764">  
+  <a class="name">
+  <strong class="user"><em>willie at spenlen dot com</em></strong></a><div class="date" title="2007-06-14 11:49"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom75764">
+<div class="phpcode"><code><span class="html">
+If you're using the MySQL driver and have a stored procedure with an OUT or INOUT parameter, you can't (currently) use bindValue(). See <a rel="nofollow" target="_blank">http://bugs.php.net/bug.php?id=35935</a> for a workaround.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="98715">  
+  <a class="name">
+  <strong class="user"><em>sergiy dot sokolenko at gmail dot com</em></strong></a><div class="date" title="2010-07-02 03:22"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom98715">
+<div class="phpcode"><code><span class="html">
+Note that you cannot mix named and positional parameters in one query:<br><br><span class="default">&lt;?php<br>$stmt </span><span class="keyword">= </span><span class="default">$conn</span><span class="keyword">-&gt;</span><span class="default">prepare</span><span class="keyword">(</span><span class="string">'SELECT * FROM employees WHERE name LIKE :name OR email LIKE ?'</span><span class="keyword">);<br></span><span class="default">$name </span><span class="keyword">= </span><span class="string">'John%'</span><span class="keyword">;<br></span><span class="default">$email </span><span class="keyword">= </span><span class="string">'john%'</span><span class="keyword">;<br><br></span><span class="default">$stmt</span><span class="keyword">-&gt;</span><span class="default">bindParam</span><span class="keyword">(</span><span class="string">':name'</span><span class="keyword">, </span><span class="default">$name</span><span class="keyword">);<br></span><span class="default">$stmt</span><span class="keyword">-&gt;</span><span class="default">bindParam</span><span class="keyword">(</span><span class="default">1</span><span class="keyword">, </span><span class="default">$email</span><span class="keyword">);<br><br></span><span class="default">$stmt</span><span class="keyword">-&gt;</span><span class="default">execute</span><span class="keyword">();<br></span><span class="default">?&gt;<br></span><br>Fatal error: Uncaught exception 'PDOException' with message 'SQLSTATE[HY093]: Invalid parameter number: mixed named and positional parameters' in ...<br><br>Running PHP 5.3.2 on Linux x86-64</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/pdostatement.bindparam.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 16:57:32 GMT -->
+
+
+</body></html>

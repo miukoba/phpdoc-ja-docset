@@ -1,0 +1,605 @@
+<html><!-- Mirrored from php.net/manual/en/context.ssl.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:28:34 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>SSL context options</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="context.ssl.html">
+ <link rel="shorturl" href="context.ssl.html">
+ <link rel="alternate" href="context.ssl.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="context.html">
+ <link rel="prev" href="context.ftp.html">
+ <link rel="next" href="context.curl.html">
+
+ <link rel="alternate" href="context.ssl.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/context.ssl.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/context.ssl.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/context.ssl.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/context.ssl.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/context.ssl.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/context.ssl.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/context.ssl.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/context.ssl.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/context.ssl.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/context.ssl.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="langref.html">Language Reference</a></li>      <li><a href="context.html">Context options and parameters</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="context.ssl" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">SSL context options</h1>
+  <p class="refpurpose"><span class="refname">SSL context options</span> — <span class="dc-title">SSL context option listing</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-context.ssl-description">
+  <h3 class="title">Description</h3>
+  <p class="para">
+   Context options for <em>ssl://</em> and <em>tls://</em>
+   transports.
+  </p>
+ </div>
+
+
+ <div class="refsect1 options" id="refsect1-context.ssl-options">
+  <h3 class="title">Options</h3>
+  <p class="para">
+   </p><dl>
+
+    
+     <dt id="context.ssl.verify-peer">
+      <code class="parameter">verify_peer</code>
+      <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       Require verification of SSL certificate used.
+      </p>
+      <p class="para">
+       Defaults to <strong><code>FALSE</code></strong>.
+      </p>
+     </dd>
+
+    
+    
+     <dt id="context.ssl.allow-self-signed">
+      <code class="parameter">allow_self_signed</code>
+      <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       Allow self-signed certificates. Requires
+       <a href="context.ssl.html#context.ssl.verify-peer" class="link"><code class="parameter">verify_peer</code></a>.
+      </p>
+      <p class="para">
+       Defaults to <strong><code>FALSE</code></strong>
+      </p>
+     </dd>
+
+    
+    
+     <dt id="context.ssl.cafile">
+      <code class="parameter">cafile</code>
+      <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       Location of Certificate Authority file on local filesystem
+       which should be used with the <em>verify_peer</em>
+       context option to authenticate the identity of the remote peer.
+      </p>
+     </dd>
+
+    
+    
+     <dt id="context.ssl.capath">
+      <code class="parameter">capath</code>
+      <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       If <em>cafile</em> is not specified or if the certificate
+       is not found there, the directory pointed to by <em>capath</em> 
+       is searched for a suitable certificate.  <em>capath</em>
+       must be a correctly hashed certificate directory.
+      </p>
+     </dd>
+
+    
+    
+     <dt id="context.ssl.local-cert">
+      <code class="parameter">local_cert</code>
+      <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       Path to local certificate file on filesystem.  It must be a PEM
+       encoded file which contains your certificate and private key.
+       It can optionally contain the certificate chain of issuers.
+      </p>
+     </dd>
+
+    
+    
+     <dt id="context.ssl.passphrase">
+      <code class="parameter">passphrase</code>
+      <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       Passphrase with which your <em>local_cert</em> file
+       was encoded.
+      </p>
+     </dd>
+
+    
+    
+     <dt id="context.ssl.cn-match">
+      <code class="parameter">CN_match</code>
+      <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       Common Name we are expecting.  PHP will perform limited wildcard
+       matching.  If the Common Name does not match this, the connection
+       attempt will fail.
+      </p>
+     </dd>
+
+    
+    
+     <dt id="context.ssl.verify-depth">
+      <code class="parameter">verify_depth</code>
+      <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       Abort if the certificate chain is too deep.
+      </p>
+      <p class="para">
+       Defaults to no verification.
+      </p>
+     </dd>
+
+    
+    
+     <dt id="context.ssl.ciphers">
+      <code class="parameter">ciphers</code>
+      <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       Sets the list of available ciphers. The format of the string is described
+       in <a href="http://www.openssl.org/docs/apps/ciphers.html#CIPHER_LIST_FORMAT" class="link external">»&nbsp;ciphers(1)</a>.
+      </p>
+      <p class="para">
+       Defaults to <em>DEFAULT</em>.
+      </p>
+     </dd>
+
+    
+    
+     <dt id="context.ssl.capture-peer-cert">
+      <code class="parameter">capture_peer_cert</code>
+      <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       If set to <strong><code>TRUE</code></strong> a <em>peer_certificate</em> context option
+       will be created containing the peer certificate.
+      </p>
+     </dd>
+
+    
+    
+     <dt id="context.ssl.capture-peer-cert-chain">
+      <code class="parameter">capture_peer_cert_chain</code>
+      <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       If set to <strong><code>TRUE</code></strong> a <em>peer_certificate_chain</em> context
+       option will be created containing the certificate chain.
+      </p>
+     </dd>
+
+    
+    
+     <dt id="context.ssl.sni-enabled">
+      <code class="parameter">SNI_enabled</code>
+      <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       If set to <strong><code>TRUE</code></strong> server name indication will be enabled. Enabling SNI 
+       allows multiple certificates on the same IP address.
+      </p>
+     </dd>
+
+    
+    
+     <dt id="context.ssl.sni-server-name">
+      <code class="parameter">SNI_server_name</code>
+      <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       If set, then this value will be used as server name for server name 
+       indication. If this value is not set, then the server name is guessed 
+       based on the hostname used when opening the stream.
+      </p>
+     </dd>
+
+    
+    
+     <dt id="context.ssl.disable-compression">
+      <code class="parameter">disable_compression</code>
+      <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       If set, disable TLS compression. This can help mitigate the CRIME attack
+       vector. 
+      </p>
+     </dd>
+
+    
+    
+     <dt id="context.ssl.peer-fingerprint">
+      <code class="parameter">peer_fingerprint</code>
+      <span class="type"><a href="language.types.string.html" class="type string">string</a></span> | <span class="type"><a href="language.types.array.html" class="type array">array</a></span>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       Aborts when the remote certificate digest doesn't match the specified
+       hash.
+      </p>
+      <p class="para">
+       When a <span class="type"><a href="language.types.string.html" class="type string">string</a></span> is used, the length will determine which hashing algorithm
+       is applied, either "md5" (32) or "sha1" (40).
+      </p>
+      <p class="para">
+       When an <span class="type"><a href="language.types.array.html" class="type array">array</a></span> is used, the keys indicate the hashing algorithm name
+       and each corresponding value is the expected digest.
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  <p></p>
+ </div>
+
+ 
+ <div class="refsect1 changelog" id="refsect1-context.ssl-changelog">
+  <h3 class="title">Changelog</h3>
+  <p class="para">
+   </p><table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>Version</th>
+       <th>Description</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>5.6.0</td>
+       <td>
+        Added <code class="parameter">peer_fingerprint</code>.
+       </td>
+      </tr>
+
+      <tr>
+       <td>5.4.13</td>
+       <td>
+        Added <code class="parameter">disable_compression</code>. Requires OpenSSL &gt;= 1.0.0.
+       </td>
+      </tr>
+
+      <tr>
+       <td>5.3.2</td>
+       <td>
+        Added <code class="parameter">SNI_enabled</code> and
+        <code class="parameter">SNI_server_name</code>.
+       </td>
+      </tr>
+
+      <tr>
+       <td>5.0.0</td>
+       <td>
+        Added <code class="parameter">capture_peer_cert</code>,
+        <code class="parameter">capture_peer_chain</code> and
+        <code class="parameter">ciphers</code>.
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  <p></p>
+ </div>
+
+
+ <div class="refsect1 notes" id="refsect1-context.ssl-notes">
+  <h3 class="title">Notes</h3>
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   <span class="simpara">
+    Because <em>ssl://</em> is the underlying transport for the
+    <a href="wrappers.http.html" class="link"><em>https://</em></a> and
+    <a href="wrappers.ftp.html" class="link"><em>ftps://</em></a> wrappers, 
+    any context options which apply to <em>ssl://</em> also apply to
+    <em>https://</em> and <em>ftps://</em>.
+   </span>
+  </p></blockquote>
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   <span class="simpara">
+    For SNI (Server Name Indication) to be available, then PHP must be compiled 
+    with OpenSSL 0.9.8j or greater. Use the 
+    <strong><code>OPENSSL_TLSEXT_SERVER_NAME</code></strong> to determine whether SNI is 
+    supported.
+   </span>
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-context.ssl-seealso">
+  <h3 class="title">See Also</h3>
+  <p class="para">
+   </p><ul class="simplelist">
+    <li class="member"><a href="context.socket.html" class="xref">Socket context options</a></li>
+   </ul>
+  <p></p>
+ </div>
+
+
+</div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="115020">  
+  <a class="name">
+  <strong class="user"><em>Anonymous</em></strong></a><div class="date" title="2014-05-13 05:26"><strong>3 months ago</strong></div>
+  <div class="text" id="Hcom115020">
+<div class="phpcode"><code><span class="html">
+If I read the UPGRADING file correctly, in PHP 5.6 the default value of verify_peer has changed.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="114269">  
+  <a class="name">
+  <strong class="user"><em>borbas dot geri at gmail dot com</em></strong></a><div class="date" title="2014-01-31 12:06"><strong>6 months ago</strong></div>
+  <div class="text" id="Hcom114269">
+<div class="phpcode"><code><span class="html">
+I used this for Apple Push Notification Service.<br>Passed in a local certificate filename `cert.pem` trough local_cert option. <br>Worked fine, when invoked the script directly.<br><br>But when I included/required the script from a different location, it stopped working, without any explicit error message.<br><br>Resolved by passed in the full path for the file `&lt;FullPathTo&gt;cert.pem`.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="96328">  
+  <a class="name">
+  <strong class="user"><em>Botjan kufca</em></strong></a><div class="date" title="2010-02-20 11:11"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom96328">
+<div class="phpcode"><code><span class="html">
+CN_match works contrary to intuitive thinking. I came across this when I was developing SSL server implemented in PHP. I stated (in code): <br><br>- do not allow self signed certs (works)<br>- verify peer certs against CA cert (works)<br>- verify the client's CN against CN_match (does not work), like this:<br><br>stream_context_set_option($context, 'ssl', 'CN_match', '*.example.org');<br><br>I presumed this would match any client with CN below .example.org domain.<br>Unfortunately this is NOT the case. The option above does not do that.<br><br>What it really does is this:<br>- it takes client's CN and compares it to CN_match<br>- IF CLIENT's CN CONTAINS AN ASTERISK like *.example.org, then it is matched against CN_match in wildcard matching fashion<br><br>Examples to illustrate behaviour:<br>(CNM = server's CN_match)<br>(CCN = client's CN)<br><br>- CNM=host.example.org, CCN=host.example.org ---&gt; OK<br>- CNM=host.example.org, CCN=*.example.org ---&gt; OK<br>- CNM=.example.org, CCN=*.example.org ---&gt; OK<br>- CNM=example.org, CCN=*.example.org ---&gt; ERROR<br><br>- CNM=*.example.org, CCN=host.example.org ---&gt; ERROR<br>- CNM=*.example.org, CCN=*.example.org ---&gt; OK<br><br>According to PHP sources I believe that the same applies if you are trying to act as Client and the server contains a wildcard certificate. If you set CN_match to myserver.example.org and server presents itself with *.example.org, the connection is allowed.<br><br>Everything above applies to PHP version 5.2.12.<br>I will supply a patch to support CN_match starting with asterisk.</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/context.ssl.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:28:34 GMT -->
+
+
+</body></html>

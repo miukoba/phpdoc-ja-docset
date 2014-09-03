@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>リモートセッションのデバッグを開始する</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="function.apd-set-pprof-trace.html">≪ apd_set_pprof_trace</a></li>
+      <li style="float: right;"><a href="function.apd-set-session-trace.html">apd_set_session_trace ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="ref.apd.html">APD 関数</a></li>
+    <li>リモートセッションのデバッグを開始する</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="function.apd-set-session-trace-socket" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">apd_set_session_trace_socket</h1>
+  <p class="verinfo">(PECL apd &gt;= 0.2)</p><p class="refpurpose"><span class="refname">apd_set_session_trace_socket</span> &mdash; <span class="dc-title">リモートセッションのデバッグを開始する</span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-function.apd-set-session-trace-socket-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>apd_set_session_trace_socket</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$tcp_server</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$socket_type</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$port</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$debug_level</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   指定した <code class="parameter">tcp_server</code> (<em>tcplisten</em> など) に接続し、
+   デバッグデータをソケットに送信します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.apd-set-session-trace-socket-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+<code class="parameter">tcp_server</code></dt>
+
+     <dd>
+
+      <p class="para">
+       TCP サーバーの IP あるいは Unix ドメインソケット (ファイルなど)。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">socket_type</code></dt>
+
+     <dd>
+
+      <p class="para">
+       ファイルベースのソケットなら <strong><code>AF_UNIX</code></strong>、
+       標準の tcp/ip なら <strong><code>APD_AF_INET</code></strong>。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">port</code></dt>
+
+     <dd>
+
+      <p class="para">
+       任意のポートを使用できますが、できるだけ大きめの数を使用するほうがいいでしょう。
+       小さい数は他のシステムサービスが使っている可能性があります。
+      </p>
+     </dd>
+
+    
+    <dt>
+<code class="parameter">
+debug_level</code></dt>
+<dd>
+
+<p class="para"><em>XXX_TRACE</em> 定数の組み合わせによる整数値。</p>
+<p class="para"><strong><code>MEMORY_TRACE</code></strong> を用いることは推奨しません。
+これは非常に低速で、またあまり正確ではないようだからです。
+<strong><code>ASSIGNMENT_TRACE</code></strong> は、まだ実装されていません。</p>
+<p class="para">すべての機能 (TIMING, FUNCTIONS, ARGS SUMMARY (strace -c のようなもの))
+のトレースを有効にするには、値 99 を指定します。</p>
+</dd>
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.apd-set-session-trace-socket-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.apd-set-session-trace-socket-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-448">
+    <p><strong>例1 <span class="function"><strong>apd_set_session_trace_socket()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;apd_set_session_trace_socket</span><span style="color: #007700">(</span><span style="color: #DD0000">"127.0.0.1"</span><span style="color: #007700">,</span><span style="color: #0000BB">APD_AF_INET</span><span style="color: #007700">,</span><span style="color: #0000BB">7112</span><span style="color: #007700">,</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

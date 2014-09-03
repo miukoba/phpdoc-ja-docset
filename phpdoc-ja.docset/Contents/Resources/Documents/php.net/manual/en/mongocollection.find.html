@@ -1,0 +1,493 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>コレクションに問い合わせ、結果セットの MongoCursor を返す</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="mongocollection.ensureindex.html">≪ MongoCollection::ensureIndex</a></li>
+      <li style="float: right;"><a href="mongocollection.findandmodify.html">MongoCollection::findAndModify ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="class.mongocollection.html">MongoCollection</a></li>
+    <li>コレクションに問い合わせ、結果セットの MongoCursor を返す</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="mongocollection.find" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">MongoCollection::find</h1>
+  <p class="verinfo">(PECL mongo &gt;=0.9.0)</p><p class="refpurpose"><span class="refname">MongoCollection::find</span> &mdash; <span class="dc-title">コレクションに問い合わせ、結果セットの <a href="class.mongocursor.html" class="classname">MongoCursor</a> を返す</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-mongocollection.find-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type"><a href="class.mongocursor.html" class="type MongoCursor">MongoCursor</a></span> <span class="methodname"><strong>MongoCollection::find</strong></span>
+    ([ <span class="methodparam"><span class="type">array</span> <code class="parameter">$query</code><span class="initializer"> = array()</span></span>
+   [, <span class="methodparam"><span class="type">array</span> <code class="parameter">$fields</code><span class="initializer"> = array()</span></span>
+  ]] )</div>
+
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-mongocollection.find-parameters">
+  <h3 class="title">パラメータ</h3>  
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+
+      <code class="parameter">query</code>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       検索したいフィールド。
+       MongoDB のクエリ言語は極めて幅広いものです。
+       PHP ドライバはほとんどの場合クエリをそのままサーバーに流すので、
+       MongoDB コアドキュメントの
+       <a href="http://docs.mongodb.org/manual/reference/method/db.collection.find/" class="link external" title="Link : http://docs.mongodb.org/manual/reference/method/db.collection.find/">&raquo;&nbsp;find</a> を読むといいでしょう。
+      </p>
+      <div class="warning"><strong class="warning">警告</strong>
+       <p class="para">
+        クエリの特別な演算子 (<em>$</em> ではじまるもの)
+        は、すべてシングルクォートで囲まなければならないことに注意しましょう。
+        <em>&quot;$exists&quot;</em> などとすると、PHP がそれを変数
+        <em>$exists</em> の値で置き換えてしまいます。
+       </p>
+      </div>
+     </dd>
+
+       
+    
+     <dt>
+
+      <code class="parameter">fields</code>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       返される結果のフィールド。配列の形式は
+       <em>array(&#039;fieldname&#039; =&gt; true, &#039;fieldname2&#039; =&gt; true)</em>
+       のようになります。<em>_id</em> フィールドは常に返されます。
+      </p>
+     </dd>
+
+       
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-mongocollection.find-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   検索結果のカーソルを返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-mongocollection.find-examples">
+  <h3 class="title">例</h3>
+   <div class="example" id="example-1506">
+   <p><strong>例1 <span class="function"><strong>MongoCollection::find()</strong></span> の例</strong></p>
+   <div class="example-contents"><p>この例は、基本的な検索オプションを示します。</p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">selectDB</span><span style="color: #007700">(</span><span style="color: #DD0000">'test'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$collection&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoCollection</span><span style="color: #007700">(</span><span style="color: #0000BB">$db</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'produce'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;フルーツを検索します<br /></span><span style="color: #0000BB">$fruitQuery&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">'Type'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'Fruit'</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$cursor&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$collection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">find</span><span style="color: #007700">(</span><span style="color: #0000BB">$fruitQuery</span><span style="color: #007700">);<br />foreach&nbsp;(</span><span style="color: #0000BB">$cursor&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$doc</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$doc</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;甘いやつを検索します&nbsp;(Taste&nbsp;は&nbsp;Details&nbsp;の子です)<br /></span><span style="color: #0000BB">$sweetQuery&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">'Details.Taste'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'Sweet'</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #DD0000">"Sweet\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$cursor&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$collection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">find</span><span style="color: #007700">(</span><span style="color: #0000BB">$sweetQuery</span><span style="color: #007700">);<br />foreach&nbsp;(</span><span style="color: #0000BB">$cursor&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$doc</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$doc</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+array(4) {
+  [&quot;_id&quot;]=&gt;
+  object(MongoId)#7 (1) {
+    [&quot;$id&quot;]=&gt;
+    string(24) &quot;50a87dd084f045a19b220dd6&quot;
+  }
+  [&quot;Name&quot;]=&gt;
+  string(5) &quot;Apple&quot;
+  [&quot;Type&quot;]=&gt;
+  string(5) &quot;Fruit&quot;
+  [&quot;Details&quot;]=&gt;
+  array(2) {
+    [&quot;Taste&quot;]=&gt;
+    string(5) &quot;Sweet&quot;
+    [&quot;Colour&quot;]=&gt;
+    string(3) &quot;Red&quot;
+  }
+}
+array(4) {
+  [&quot;_id&quot;]=&gt;
+  object(MongoId)#8 (1) {
+    [&quot;$id&quot;]=&gt;
+    string(24) &quot;50a87de084f045a19b220dd7&quot;
+  }
+  [&quot;Name&quot;]=&gt;
+  string(5) &quot;Lemon&quot;
+  [&quot;Type&quot;]=&gt;
+  string(5) &quot;Fruit&quot;
+  [&quot;Details&quot;]=&gt;
+  array(2) {
+    [&quot;Taste&quot;]=&gt;
+    string(4) &quot;Sour&quot;
+    [&quot;Colour&quot;]=&gt;
+    string(5) &quot;Green&quot;
+  }
+}
+
+Sweet:
+array(4) {
+  [&quot;_id&quot;]=&gt;
+  object(MongoId)#7 (1) {
+    [&quot;$id&quot;]=&gt;
+    string(24) &quot;50a87dd084f045a19b220dd6&quot;
+  }
+  [&quot;Name&quot;]=&gt;
+  string(5) &quot;Apple&quot;
+  [&quot;Type&quot;]=&gt;
+  string(5) &quot;Fruit&quot;
+  [&quot;Details&quot;]=&gt;
+  array(2) {
+    [&quot;Taste&quot;]=&gt;
+    string(5) &quot;Sweet&quot;
+    [&quot;Colour&quot;]=&gt;
+    string(3) &quot;Red&quot;
+  }
+}
+</pre></div>
+   </div>
+   <div class="example-contents"><p>
+     カーソルの使いかたについての詳しい情報は <a href="class.mongocursor.html" class="classname">MongoCursor</a> を参照ください。
+   </p></div>
+  </div>
+  <div class="example" id="example-1507">
+   <p><strong>例2 <span class="function"><strong>MongoCollection::find()</strong></span> の例</strong></p>
+   <div class="example-contents"><p>この例は、範囲指定検索の方法を示します。</p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">selectDB</span><span style="color: #007700">(</span><span style="color: #DD0000">'test'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$collection&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoCollection</span><span style="color: #007700">(</span><span style="color: #0000BB">$db</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'phpmanual'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;5&nbsp;&lt;&nbsp;x&nbsp;&lt;&nbsp;20&nbsp;であるドキュメントを検索します<br /></span><span style="color: #0000BB">$rangeQuery&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">'x'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(&nbsp;</span><span style="color: #DD0000">'$gt'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'$lt'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">20&nbsp;</span><span style="color: #007700">));<br /><br /></span><span style="color: #0000BB">$cursor&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$collection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">find</span><span style="color: #007700">(</span><span style="color: #0000BB">$rangeQuery</span><span style="color: #007700">);<br />foreach&nbsp;(</span><span style="color: #0000BB">$cursor&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$doc</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$doc</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+array(2) {
+  [&quot;_id&quot;]=&gt;
+  object(MongoId)#10 (1) {
+    [&quot;$id&quot;]=&gt;
+    string(24) &quot;4ebc3e3710b89f2349000000&quot;
+  }
+  [&quot;x&quot;]=&gt;
+  int(12)
+}
+array(2) {
+  [&quot;_id&quot;]=&gt;
+  object(MongoId)#11 (1) {
+    [&quot;$id&quot;]=&gt;
+    string(24) &quot;4ebc3e3710b89f2349000001&quot;
+  }
+  [&quot;x&quot;]=&gt;
+  int(12)
+}
+</pre></div>
+   </div>
+   <div class="example-contents"><p>
+     カーソルの挙動についての詳細な情報は <a href="class.mongocursor.html" class="classname">MongoCursor</a> を参照ください。
+   </p></div>
+  </div>
+  <div class="example" id="example-1508">
+   <p><strong>例3 <span class="function"><strong>MongoCollection::find()</strong></span> での $where の使用例</strong></p>
+   <div class="example-contents"><p>この例は、コレクションの検索に javascript コードを使って結果セットを小さくする方法を示します。</p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">selectDB</span><span style="color: #007700">(</span><span style="color: #DD0000">'test'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$collection&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoCollection</span><span style="color: #007700">(</span><span style="color: #0000BB">$db</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'phpmanual'</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$js&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"function()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;this.name&nbsp;==&nbsp;'Joe'&nbsp;||&nbsp;this.age&nbsp;==&nbsp;50;<br />}"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$cursor&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$collection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">find</span><span style="color: #007700">(array(</span><span style="color: #DD0000">'$where'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$js</span><span style="color: #007700">));<br />foreach&nbsp;(</span><span style="color: #0000BB">$cursor&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$doc</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$doc</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+array(3) {
+  [&quot;_id&quot;]=&gt;
+  object(MongoId)#7 (1) {
+    [&quot;$id&quot;]=&gt;
+    string(24) &quot;4ebc3e3710b89f2349000002&quot;
+  }
+  [&quot;name&quot;]=&gt;
+  string(3) &quot;Joe&quot;
+  [&quot;age&quot;]=&gt;
+  int(20)
+}
+</pre></div>
+   </div>
+  </div>
+  <div class="example" id="example-1509">
+   <p><strong>例4 <span class="function"><strong>MongoCollection::find()</strong></span> での $in の使用例</strong></p>
+   <div class="example-contents"><p>この例は、コレクションの検索に $in 演算子を使う方法を示します。</p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">selectDB</span><span style="color: #007700">(</span><span style="color: #DD0000">'test'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$collection&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoCollection</span><span style="color: #007700">(</span><span style="color: #0000BB">$db</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'phpmanual'</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$cursor&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$collection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">find</span><span style="color: #007700">(array(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'name'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(</span><span style="color: #DD0000">'$in'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(</span><span style="color: #DD0000">'Joe'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'Wendy'</span><span style="color: #007700">))<br />));<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+array(3) {
+  [&quot;_id&quot;]=&gt;
+  object(MongoId)#7 (1) {
+    [&quot;$id&quot;]=&gt;
+    string(24) &quot;4ebc3e3710b89f2349000002&quot;
+  }
+  [&quot;name&quot;]=&gt;
+  string(3) &quot;Joe&quot;
+  [&quot;age&quot;]=&gt;
+  int(20)
+}
+</pre></div>
+   </div>
+  </div>
+
+  <div class="example" id="example-1510">
+   <p><strong>例5 配列形式での結果の取得</strong></p>
+   <div class="example-contents"><p>
+    このメソッドは <a href="class.mongocursor.html" class="classname">MongoCursor</a> を返します。
+    しかし、配列形式のほうが使いやすいという人もいるでしょう。
+    カーソルを配列に変換するには <span class="function"><a href="function.iterator-to-array.html" class="function">iterator_to_array()</a></span>
+    関数を使います。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">selectDB</span><span style="color: #007700">(</span><span style="color: #DD0000">'test'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$collection&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoCollection</span><span style="color: #007700">(</span><span style="color: #0000BB">$db</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'phpmanual'</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$cursor&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$collection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">find</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$array&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">iterator_to_array</span><span style="color: #007700">(</span><span style="color: #0000BB">$cursor</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+array(3) {
+  [&quot;4ebc40af10b89f5149000000&quot;]=&gt;
+  array(2) {
+    [&quot;_id&quot;]=&gt;
+    object(MongoId)#6 (1) {
+      [&quot;$id&quot;]=&gt;
+      string(24) &quot;4ebc40af10b89f5149000000&quot;
+    }
+    [&quot;x&quot;]=&gt;
+    int(12)
+  }
+  [&quot;4ebc40af10b89f5149000001&quot;]=&gt;
+  array(2) {
+    [&quot;_id&quot;]=&gt;
+    object(MongoId)#11 (1) {
+      [&quot;$id&quot;]=&gt;
+      string(24) &quot;4ebc40af10b89f5149000001&quot;
+    }
+    [&quot;x&quot;]=&gt;
+    int(12)
+  }
+  [&quot;4ebc40af10b89f5149000002&quot;]=&gt;
+  array(3) {
+    [&quot;_id&quot;]=&gt;
+    object(MongoId)#12 (1) {
+      [&quot;$id&quot;]=&gt;
+      string(24) &quot;4ebc40af10b89f5149000002&quot;
+    }
+    [&quot;name&quot;]=&gt;
+    string(3) &quot;Joe&quot;
+    [&quot;age&quot;]=&gt;
+    int(20)
+  }
+}
+</pre></div>
+   </div>
+   <div class="example-contents"><p>
+    <span class="function"><a href="function.iterator-to-array.html" class="function">iterator_to_array()</a></span> を使うと、結果全体をメモリに展開することになります。
+    メモリサイズを超える結果セットではこれを使わないでください!
+   </p></div>
+   <div class="example-contents"><p>
+    また、一部のシステムコレクションには <em>_id</em>
+    フィールドを持たないものがあります。<em>_id</em>
+    がないドキュメントを含むかもしれないコレクションを扱う場合は、
+    <span class="function"><a href="function.iterator-to-array.html" class="function">iterator_to_array()</a></span> の二番目の引数に <strong><code>FALSE</code></strong>
+    を渡します (そうすれば、存在しない
+    <em>_id</em> の値をキーとして使うことがなくなります)。
+   </p></div>
+  </div>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-mongocollection.find-seealso">
+  <h3 class="title">参考</h3>
+  <ul class="simplelist">
+   <li class="member"><span class="function"><a href="mongocollection.findone.html" class="function" rel="rdfs-seeAlso">MongoCollection::findOne()</a> - コレクションに問い合わせ、単一の要素を返す</span></li>
+   <li class="member"><span class="function"><a href="mongocollection.insert.html" class="function" rel="rdfs-seeAlso">MongoCollection::insert()</a> - ドキュメントをコレクションに追加する</span></li>
+   <li class="member">MongoDB コアドキュメントの <a href="http://docs.mongodb.org/manual/reference/method/db.collection.find/" class="link external" title="Link : http://docs.mongodb.org/manual/reference/method/db.collection.find/">&raquo;&nbsp;find</a></li>
+  </ul>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113632""></a>
+  <div class="note">
+   <strong class="user">Nanhe Kumar</strong>
+   <a href="#113632" class="date">08-Nov-2013 06:13</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+<span class="default">&lt;?php<br />
+$m </span><span class="keyword">= new </span><span class="default">MongoClient</span><span class="keyword">();<br />
+</span><span class="default">$db </span><span class="keyword">= </span><span class="default">$m</span><span class="keyword">-&gt;</span><span class="default">selectDB</span><span class="keyword">(</span><span class="string">'school'</span><span class="keyword">);<br />
+</span><span class="default">$collection </span><span class="keyword">= new </span><span class="default">MongoCollection</span><span class="keyword">(</span><span class="default">$db</span><span class="keyword">, </span><span class="string">'student'</span><span class="keyword">);<br />
+</span><span class="comment">//Find where class=5<br />
+</span><span class="default">$where</span><span class="keyword">=array(</span><span class="string">'class'</span><span class="keyword">=&gt;</span><span class="default">5</span><span class="keyword">);<br />
+</span><span class="default">$cursor </span><span class="keyword">= </span><span class="default">$collection</span><span class="keyword">-&gt;</span><span class="default">find</span><span class="keyword">(</span><span class="default">$where</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">//Find where class !=5<br />
+</span><span class="default">$where</span><span class="keyword">=array(</span><span class="string">'class' </span><span class="keyword">=&gt; array(</span><span class="string">'$ne'</span><span class="keyword">=&gt;</span><span class="default">5</span><span class="keyword">));<br />
+</span><span class="default">$cursor </span><span class="keyword">= </span><span class="default">$collection</span><span class="keyword">-&gt;</span><span class="default">find</span><span class="keyword">(</span><span class="default">$where</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">//Find where age &gt;20<br />
+</span><span class="default">$where</span><span class="keyword">=array(</span><span class="string">'age' </span><span class="keyword">=&gt; array(</span><span class="string">'$gt'</span><span class="keyword">=&gt;</span><span class="default">20</span><span class="keyword">));<br />
+</span><span class="default">$cursor </span><span class="keyword">= </span><span class="default">$collection</span><span class="keyword">-&gt;</span><span class="default">find</span><span class="keyword">(</span><span class="default">$where</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">//Find where age &gt;=20<br />
+</span><span class="default">$where</span><span class="keyword">=array(</span><span class="string">'age' </span><span class="keyword">=&gt; array(</span><span class="string">'$gte'</span><span class="keyword">=&gt;</span><span class="default">20</span><span class="keyword">));<br />
+</span><span class="default">$cursor </span><span class="keyword">= </span><span class="default">$collection</span><span class="keyword">-&gt;</span><span class="default">find</span><span class="keyword">(</span><span class="default">$where</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">//Find where age &lt;20<br />
+</span><span class="default">$where</span><span class="keyword">=array(</span><span class="string">'age' </span><span class="keyword">=&gt; array(</span><span class="string">'$le'</span><span class="keyword">=&gt;</span><span class="default">20</span><span class="keyword">));<br />
+</span><span class="default">$cursor </span><span class="keyword">= </span><span class="default">$collection</span><span class="keyword">-&gt;</span><span class="default">find</span><span class="keyword">(</span><span class="default">$where</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">//Find where age &lt;=20<br />
+</span><span class="default">$where</span><span class="keyword">=array(</span><span class="string">'age' </span><span class="keyword">=&gt; array(</span><span class="string">'$lte'</span><span class="keyword">=&gt;</span><span class="default">20</span><span class="keyword">));<br />
+</span><span class="default">$cursor </span><span class="keyword">= </span><span class="default">$collection</span><span class="keyword">-&gt;</span><span class="default">find</span><span class="keyword">(</span><span class="default">$where</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">//Finc where class=10 or marks=80<br />
+</span><span class="default">$where</span><span class="keyword">=array( </span><span class="string">'$or' </span><span class="keyword">=&gt; array( array(</span><span class="string">' class' </span><span class="keyword">=&gt;</span><span class="default">10</span><span class="keyword">), array(</span><span class="string">'marks'</span><span class="keyword">=&gt;</span><span class="default">80</span><span class="keyword">) ) );<br />
+</span><span class="default">$cursor </span><span class="keyword">= </span><span class="default">$collection</span><span class="keyword">-&gt;</span><span class="default">find</span><span class="keyword">(</span><span class="default">$where</span><span class="keyword">);<br />
+</span><span class="comment">//Finc where class=12 AND marks=70<br />
+</span><span class="default">$where</span><span class="keyword">=array( </span><span class="string">'$and' </span><span class="keyword">=&gt; array( array(</span><span class="string">' class' </span><span class="keyword">=&gt;</span><span class="default">12</span><span class="keyword">), array(</span><span class="string">'marks'</span><span class="keyword">=&gt;</span><span class="default">70</span><span class="keyword">) ) );<br />
+</span><span class="default">$cursor </span><span class="keyword">= </span><span class="default">$collection</span><span class="keyword">-&gt;</span><span class="default">find</span><span class="keyword">(</span><span class="default">$where</span><span class="keyword">);<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="113544""></a>
+  <div class="note">
+   <strong class="user">artusdebenque at yahoo dot fr</strong>
+   <a href="#113544" class="date">28-Oct-2013 10:17</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+For the fields parameter, the documentaion says: "The _id field is always returned".<br />
+Knowing that mongodb allows you to uncheck the _id field ("the _id field is the only field that you can explicitly exclude"; source: <a href="http://docs.mongodb.org/manual/reference/method/db.collection.find/#db.collection.find" rel="nofollow" target="_blank">http://docs.mongodb.org/manual/reference/method/db.collection.find/#db.collection.find</a>), I tried it with php and it works : you can exclude the _id field.<br />
+<br />
+Example : the following fields parameter will exclude the field "_id"<br />
+<br />
+$fields = array('timestamp' =&gt; true, 'rank' =&gt; true, '_id' =&gt; false);</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="101316""></a>
+  <div class="note">
+   <strong class="user">nospam at alexyves dot fr</strong>
+   <a href="#101316" class="date">09-Dec-2010 03:28</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This will work with versions &gt;=1.5.3, please note that this is just a example of the way to use the or statement.<br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp; $connection </span><span class="keyword">= new </span><span class="default">Mongo</span><span class="keyword">();<br />
+<br />
+&nbsp; </span><span class="default">$db </span><span class="keyword">= </span><span class="default">$connection</span><span class="keyword">-&gt;</span><span class="default">test</span><span class="keyword">;<br />
+&nbsp; </span><span class="default">$collection </span><span class="keyword">= </span><span class="default">$db</span><span class="keyword">-&gt;</span><span class="default">test</span><span class="keyword">;<br />
+&nbsp; </span><span class="comment">// Clean the DB before the test.<br />
+&nbsp; </span><span class="default">$collection</span><span class="keyword">-&gt;</span><span class="default">drop</span><span class="keyword">();<br />
+&nbsp; </span><span class="default">$collection </span><span class="keyword">= </span><span class="default">$db</span><span class="keyword">-&gt;</span><span class="default">test</span><span class="keyword">;<br />
+<br />
+&nbsp; </span><span class="default">$apple </span><span class="keyword">= array(<br />
+&nbsp;&nbsp;&nbsp; </span><span class="string">'fruit' </span><span class="keyword">=&gt; </span><span class="string">'Apple'</span><span class="keyword">,<br />
+&nbsp;&nbsp;&nbsp; </span><span class="string">'type' </span><span class="keyword">=&gt; </span><span class="string">'Juice'</span><span class="keyword">,<br />
+&nbsp; );<br />
+<br />
+&nbsp; </span><span class="default">$orange </span><span class="keyword">= array(<br />
+&nbsp;&nbsp;&nbsp; </span><span class="string">'fruit' </span><span class="keyword">=&gt; </span><span class="string">'Orange'</span><span class="keyword">,<br />
+&nbsp;&nbsp;&nbsp; </span><span class="string">'type' </span><span class="keyword">=&gt; </span><span class="string">'Marmalade'</span><span class="keyword">,<br />
+&nbsp; );<br />
+<br />
+&nbsp; </span><span class="default">$collection</span><span class="keyword">-&gt;</span><span class="default">insert</span><span class="keyword">(</span><span class="default">$apple</span><span class="keyword">);<br />
+&nbsp; </span><span class="default">$collection</span><span class="keyword">-&gt;</span><span class="default">insert</span><span class="keyword">(</span><span class="default">$orange</span><span class="keyword">);<br />
+<br />
+&nbsp; </span><span class="comment">// Basic find<br />
+&nbsp; </span><span class="default">$results </span><span class="keyword">= </span><span class="default">$collection</span><span class="keyword">-&gt;</span><span class="default">find</span><span class="keyword">(array(</span><span class="string">'fruit' </span><span class="keyword">=&gt; </span><span class="string">'Apple'</span><span class="keyword">));<br />
+<br />
+&nbsp; foreach(</span><span class="default">$results </span><span class="keyword">as </span><span class="default">$result</span><span class="keyword">)<br />
+&nbsp; {<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="default">sprintf</span><span class="keyword">(</span><span class="string">"Fruit: %s, Type: %s%s"</span><span class="keyword">, </span><span class="default">$result</span><span class="keyword">[</span><span class="string">'fruit'</span><span class="keyword">], </span><span class="default">$result</span><span class="keyword">[</span><span class="string">'type'</span><span class="keyword">], </span><span class="default">PHP_EOL</span><span class="keyword">);<br />
+&nbsp; }<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Output:<br />
+<br />
+Fruit: Apple, Type: Juice<br />
+<br />
+Now an advanced search with "or" statement.<br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp; </span><span class="comment">// Advanced find with "OR" note the double array.<br />
+&nbsp; // if you use double quotes escape the or "\$or"<br />
+&nbsp; </span><span class="default">$results </span><span class="keyword">= </span><span class="default">$collection</span><span class="keyword">-&gt;</span><span class="default">find</span><span class="keyword">( array( </span><span class="string">'$or' </span><span class="keyword">=&gt; array( array(</span><span class="string">'fruit' </span><span class="keyword">=&gt; </span><span class="string">'Apple'</span><span class="keyword">), array(</span><span class="string">'fruit' </span><span class="keyword">=&gt; </span><span class="string">'Orange'</span><span class="keyword">) ) ) );<br />
+<br />
+&nbsp; foreach(</span><span class="default">$results </span><span class="keyword">as </span><span class="default">$result</span><span class="keyword">)<br />
+&nbsp; {<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="default">sprintf</span><span class="keyword">(</span><span class="string">"Fruit: %s, Type: %s%s"</span><span class="keyword">, </span><span class="default">$result</span><span class="keyword">[</span><span class="string">'fruit'</span><span class="keyword">], </span><span class="default">$result</span><span class="keyword">[</span><span class="string">'type'</span><span class="keyword">], </span><span class="default">PHP_EOL</span><span class="keyword">);<br />
+&nbsp; }<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Output:<br />
+<br />
+Fruit: Apple, Type: Juice<br />
+Fruit: Orange, Type: Marmalade</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

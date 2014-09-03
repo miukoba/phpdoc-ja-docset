@@ -1,0 +1,385 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>ジェネレータの構文</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="language.generators.overview.html">≪ ジェネレータとは</a></li>
+      <li style="float: right;"><a href="language.generators.comparison.html">ジェネレータと Iterator オブジェクトとの比較 ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="language.generators.html">ジェネレータ</a></li>
+    <li>ジェネレータの構文</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="language.generators.syntax" class="sect1">
+  <h2 class="title">ジェネレータの構文</h2>
+
+  <p class="para">
+   ジェネレータ関数の見た目はふつうの関数とほぼ同じです。違うのは、値を返すのではなく、
+   必要なだけ値を <a href="language.generators.syntax.html#control-structures.yield" class="link">yield</a> することです。
+  </p>
+
+  <p class="para">
+   ジェネレータ関数が呼ばれると、反復処理が可能なオブジェクトを返します。
+   このオブジェクトを (<a href="control-structures.foreach.html" class="link">foreach</a> ループなどで) 反復させると、
+   値が必要になるたびに PHP がジェネレータ関数を呼びます。
+   そして、ジェネレータが値を yield した時点の状態を保存しておき、
+   次に値が必要になったときにはそこから再開できるようにします。
+  </p>
+
+  <p class="para">
+   yield できる値がなくなると、ジェネレータ関数は何もせず単純に終了します。
+   呼び出し元のコードでは、配列の要素をすべて処理し終えた後のように、そのまま処理が続きます。
+  </p>
+
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    ジェネレータは値を返すことができません。値を返そうとすると、コンパイルエラーになります。
+    ジェネレータの中で空の <strong class="command">return</strong> 文を書いても文法上は問題ありませんが、
+    そこでジェネレータは終了します。
+   </p>
+  </p></blockquote>
+
+  <div class="sect2" id="control-structures.yield">
+   <h3 class="title"><strong class="command">yield</strong> キーワード</h3>
+
+   <p class="para">
+    ジェネレータ関数の肝となるのが <strong class="command">yield</strong> キーワードです。
+    最もシンプルな書きかたをすると、yield 文の見た目は return 文とほぼ同じになります。
+    ただ、return の場合はそこで関数の実行を終了して値を返すのに対して、
+    yield の場合はジェネレータを呼び出しているループに値を戻して
+    ジェネレータ関数の実行を一時停止します。
+   </p>
+
+   <div class="example" id="example-293">
+    <p><strong>例1 値を yield する単純な例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">gen_one_to_three</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;(</span><span style="color: #0000BB">$i&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;&nbsp;</span><span style="color: #0000BB">$i&nbsp;</span><span style="color: #007700">&lt;=&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">;&nbsp;</span><span style="color: #0000BB">$i</span><span style="color: #007700">++)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;yield&nbsp;を繰り返す間、$i&nbsp;の値が維持されることに注目しましょう<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">yield&nbsp;</span><span style="color: #0000BB">$i</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #0000BB">$generator&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">gen_one_to_three</span><span style="color: #007700">();<br />foreach&nbsp;(</span><span style="color: #0000BB">$generator&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$value</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$value</span><span style="color: #DD0000">\n"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+1
+2
+3
+</pre></div>
+    </div>
+   </div>
+
+   <blockquote class="note"><p><strong class="note">注意</strong>: 
+    <p class="para">
+     内部的には整数の連番のキーが yield する値とペアになり、
+     配列と同じようになります。
+    </p>
+   </p></blockquote>
+
+   <div class="caution"><strong class="caution">警告</strong>
+    <p class="para">
+     yield を式のコンテキスト (代入文の右辺など)
+     で使うときは、yield 文を括弧で囲む必要があります。
+     たとえば次のようになります。
+    </p>
+
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+$data&nbsp;=&nbsp;(yield&nbsp;$value);</span>
+</code></div>
+     </div>
+
+    </div>
+
+    <p class="para">
+     次のように書くと、パースエラーになります。
+    </p>
+
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+$data&nbsp;=&nbsp;yield&nbsp;$value;</span>
+</code></div>
+     </div>
+
+    </div>
+
+    <p class="para">
+     この構文は、
+     <span class="methodname"><a href="generator.send.html" class="methodname">Generator::send()</a></span>
+     メソッドと組み合わせて使えます。
+    </p>
+   </div>
+
+   <div class="sect3" id="control-structures.yield.associative">
+    <h4 class="title">値とキーの yield</h4>
+
+    <p class="para">
+     PHP は、数値添字の配列だけでなく連想配列にも対応しています。ジェネレータも例外ではありません。
+     先ほどの例のように単なる値を yield するだけでなく、
+     値と同時にキーも yield することができます。
+    </p>
+
+    <p class="para">
+     キーと値のペアを yield する構文は連想配列の定義とよく似ており、次のようになります。
+    </p>
+
+    <div class="example" id="example-294">
+     <p><strong>例2 キー/値 のペアの yield</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*<br />&nbsp;*&nbsp;入力は各フィールドをセミコロンで区切ったものです<br />&nbsp;*&nbsp;最初のフィールドが&nbsp;ID&nbsp;となり、これをキーとして使います<br />&nbsp;*/<br /><br /></span><span style="color: #0000BB">$input&nbsp;</span><span style="color: #007700">=&nbsp;&lt;&lt;&lt;'EOF'<br /></span><span style="color: #DD0000">1;PHP;$が大好き<br />2;Python;インデントが大好き<br />3;Ruby;ブロックが大好き<br /></span><span style="color: #007700">EOF;<br /><br />function&nbsp;</span><span style="color: #0000BB">input_parser</span><span style="color: #007700">(</span><span style="color: #0000BB">$input</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(</span><span style="color: #0000BB">explode</span><span style="color: #007700">(</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$input</span><span style="color: #007700">)&nbsp;as&nbsp;</span><span style="color: #0000BB">$line</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$fields&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">explode</span><span style="color: #007700">(</span><span style="color: #DD0000">';'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$line</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$id&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">array_shift</span><span style="color: #007700">(</span><span style="color: #0000BB">$fields</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yield&nbsp;</span><span style="color: #0000BB">$id&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$fields</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br />foreach&nbsp;(</span><span style="color: #0000BB">input_parser</span><span style="color: #007700">(</span><span style="color: #0000BB">$input</span><span style="color: #007700">)&nbsp;as&nbsp;</span><span style="color: #0000BB">$id&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$fields</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$id</span><span style="color: #DD0000">:\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$fields</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">]</span><span style="color: #DD0000">\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$fields</span><span style="color: #007700">[</span><span style="color: #0000BB">1</span><span style="color: #007700">]</span><span style="color: #DD0000">\n"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+     <div class="example-contents screen">
+<div class="cdata"><pre>
+1:
+    PHP
+    $が大好き
+2:
+    Python
+    インデントが大好き
+3:
+    Ruby
+    ブロックが大好き
+</pre></div>
+     </div>
+    </div>
+
+    <div class="caution"><strong class="caution">警告</strong>
+     <p class="para">
+      先ほどの例のように値だけを yield するときと同様に、
+      キー/値 のペアを式のコンテキストで yield するときにも
+      yield 文を括弧で囲む必要があります。
+     </p>
+
+     <div class="informalexample">
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+$data&nbsp;=&nbsp;(yield&nbsp;$key&nbsp;=&gt;&nbsp;$value);</span>
+</code></div>
+      </div>
+
+     </div>
+    </div>
+   </div>
+
+   <div class="sect3" id="control-structures.yield.null">
+    <h4 class="title">null 値の yield</h4>
+
+    <p class="para">
+     何も引数を渡さずに yield を呼ぶと、<strong><code>NULL</code></strong> 値を yield します。キーは自動的に割り振られます。
+    </p>
+
+    <div class="example" id="example-295">
+     <p><strong>例3 <strong><code>NULL</code></strong> の yield</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">gen_three_nulls</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(</span><span style="color: #0000BB">range</span><span style="color: #007700">(</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">)&nbsp;as&nbsp;</span><span style="color: #0000BB">$i</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yield;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">iterator_to_array</span><span style="color: #007700">(</span><span style="color: #0000BB">gen_three_nulls</span><span style="color: #007700">()));<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+     <div class="example-contents screen">
+<div class="cdata"><pre>
+array(3) {
+  [0]=&gt;
+  NULL
+  [1]=&gt;
+  NULL
+  [2]=&gt;
+  NULL
+}
+</pre></div>
+     </div>
+    </div>
+   </div>
+
+   <div class="sect3" id="control-structures.yield.references">
+    <h4 class="title">参照による yield</h4>
+
+    <p class="para">
+     ジェネレータ関数は、値を参照として yield することもできます。
+     <a href="functions.returning-values.html" class="link">関数の結果を参照で返す</a>
+     ときと同じように、関数名の前にアンパサンドを付けます。
+    </p>
+
+    <div class="example" id="example-296">
+     <p><strong>例4 参照による値の yield</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">function&nbsp;&amp;</span><span style="color: #0000BB">gen_reference</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(</span><span style="color: #0000BB">$value&nbsp;</span><span style="color: #007700">&gt;&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yield&nbsp;</span><span style="color: #0000BB">$value</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #FF8000">/*<br />&nbsp;*&nbsp;$number&nbsp;をループ内で変更していることに注目しましょう。<br />&nbsp;*&nbsp;このジェネレータは参照を&nbsp;yield&nbsp;するので、<br />&nbsp;*&nbsp;gen_reference()&nbsp;内の&nbsp;$value&nbsp;が変わります。<br />&nbsp;*/<br /></span><span style="color: #007700">foreach&nbsp;(</span><span style="color: #0000BB">gen_reference</span><span style="color: #007700">()&nbsp;as&nbsp;&amp;</span><span style="color: #0000BB">$number</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;(--</span><span style="color: #0000BB">$number</span><span style="color: #007700">).</span><span style="color: #DD0000">'...&nbsp;'</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+     <div class="example-contents screen">
+<div class="cdata"><pre>
+2... 1... 0... 
+</pre></div>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <div class="sect2" id="language.generators.object">
+   <h3 class="title"><a href="class.generator.html" class="classname">Generator</a> オブジェクト</h3>
+   <p class="para">
+    ジェネレータ関数を最初に呼んだときには、内部クラス
+    <a href="class.generator.html" class="classname">Generator</a> のオブジェクトを返します。
+    このオブジェクトは <a href="class.iterator.html" class="classname">Iterator</a> インターフェイスを実装しており、
+    前進しかできないイテレータオブジェクトと同じように振る舞います。
+   </p>
+  </div>
+   
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="114844""></a>
+  <div class="note">
+   <strong class="user">denshadewillspam at HOTMAIL dot com</strong>
+   <a href="#114844" class="date">13-Apr-2014 07:46</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note that you can't use count() on generators.<br />
+<br />
+/**<br />
+&nbsp;* @return integer[]<br />
+&nbsp;*/<br />
+function xrange() {<br />
+&nbsp;&nbsp;&nbsp; for ($a = 0; $a &lt; 10; $a++)<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; yield $a;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+<br />
+function mycount(Traversable $traversable)<br />
+{<br />
+&nbsp;&nbsp;&nbsp; $skip = 0;<br />
+&nbsp;&nbsp;&nbsp; foreach($traversable as $skip)<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; $skip++;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; return $skip;<br />
+}<br />
+echo "Count:" . count(xrange()). PHP_EOL;<br />
+echo "Count:" . mycount(xrange()). PHP_EOL;</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="113636""></a>
+  <div class="note">
+   <strong class="user">Shumeyko Dmitriy</strong>
+   <a href="#113636" class="date">08-Nov-2013 04:46</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This is little example of using generators with recursion. Used version of php is 5.5.5<br />
+[php]<br />
+<span class="default">&lt;?php<br />
+define </span><span class="keyword">(</span><span class="string">"DS"</span><span class="keyword">, </span><span class="default">DIRECTORY_SEPARATOR</span><span class="keyword">);<br />
+</span><span class="default">define </span><span class="keyword">(</span><span class="string">"ZERO_DEPTH"</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">);<br />
+</span><span class="default">define </span><span class="keyword">(</span><span class="string">"DEPTHLESS"</span><span class="keyword">, -</span><span class="default">1</span><span class="keyword">);<br />
+</span><span class="default">define </span><span class="keyword">(</span><span class="string">"OPEN_SUCCESS"</span><span class="keyword">, </span><span class="default">True</span><span class="keyword">);<br />
+</span><span class="default">define </span><span class="keyword">(</span><span class="string">"END_OF_LIST"</span><span class="keyword">, </span><span class="default">False</span><span class="keyword">);<br />
+</span><span class="default">define </span><span class="keyword">(</span><span class="string">"CURRENT_DIR"</span><span class="keyword">, </span><span class="string">"."</span><span class="keyword">);<br />
+</span><span class="default">define </span><span class="keyword">(</span><span class="string">"PARENT_DIR"</span><span class="keyword">, </span><span class="string">".."</span><span class="keyword">);<br />
+<br />
+function </span><span class="default">DirTreeTraversal</span><span class="keyword">(</span><span class="default">$DirName</span><span class="keyword">, </span><span class="default">$MaxDepth </span><span class="keyword">= </span><span class="default">DEPTHLESS</span><span class="keyword">, </span><span class="default">$CurrDepth </span><span class="keyword">= </span><span class="default">ZERO_DEPTH</span><span class="keyword">)<br />
+{<br />
+&nbsp; if ((</span><span class="default">$MaxDepth </span><span class="keyword">=== </span><span class="default">DEPTHLESS</span><span class="keyword">) || (</span><span class="default">$CurrDepth </span><span class="keyword">&lt; </span><span class="default">$MaxDepth</span><span class="keyword">)) { <br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$DirHandle </span><span class="keyword">= </span><span class="default">opendir</span><span class="keyword">(</span><span class="default">$DirName</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; if (</span><span class="default">$DirHandle </span><span class="keyword">!== </span><span class="default">OPEN_SUCCESS</span><span class="keyword">) { <br />
+&nbsp;&nbsp; &nbsp;&nbsp; try{<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; while ((</span><span class="default">$FileName </span><span class="keyword">= </span><span class="default">readdir</span><span class="keyword">(</span><span class="default">$DirHandle</span><span class="keyword">)) !== </span><span class="default">END_OF_LIST</span><span class="keyword">) { </span><span class="comment">//read all file in directory<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if ((</span><span class="default">$FileName </span><span class="keyword">!= </span><span class="default">CURRENT_DIR</span><span class="keyword">) &amp;&amp; (</span><span class="default">$FileName </span><span class="keyword">!= </span><span class="default">PARENT_DIR</span><span class="keyword">)) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$FullName </span><span class="keyword">= </span><span class="default">$DirName</span><span class="keyword">.</span><span class="default">$FileName</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; yield </span><span class="default">$FullName</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if(</span><span class="default">is_dir</span><span class="keyword">(</span><span class="default">$FullName</span><span class="keyword">)) { </span><span class="comment">//include sub files and directories<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$SubTrav </span><span class="keyword">= </span><span class="default">DirTreeTraversal</span><span class="keyword">(</span><span class="default">$FullName</span><span class="keyword">.</span><span class="default">DS</span><span class="keyword">, </span><span class="default">$MaxDepth</span><span class="keyword">, (</span><span class="default">$CurrDepth </span><span class="keyword">+ </span><span class="default">1</span><span class="keyword">));<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; foreach(</span><span class="default">$SubTrav </span><span class="keyword">as </span><span class="default">$SubItem</span><span class="keyword">) yield </span><span class="default">$SubItem</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp;&nbsp; } finally {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">closedir</span><span class="keyword">(</span><span class="default">$DirHandle</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp; }<br />
+}<br />
+<br />
+</span><span class="default">$PathTrav </span><span class="keyword">= </span><span class="default">DirTreeTraversal</span><span class="keyword">(</span><span class="string">"C:"</span><span class="keyword">.</span><span class="default">DS</span><span class="keyword">, </span><span class="default">2</span><span class="keyword">);<br />
+print </span><span class="string">"&lt;pre&gt;"</span><span class="keyword">;<br />
+foreach(</span><span class="default">$PathTrav </span><span class="keyword">as </span><span class="default">$FileName</span><span class="keyword">) </span><span class="default">printf</span><span class="keyword">(</span><span class="string">"%s\n"</span><span class="keyword">, </span><span class="default">$FileName</span><span class="keyword">);<br />
+print </span><span class="string">"&lt;/pre&gt;"</span><span class="keyword">;<br />
+[/</span><span class="default">php</span><span class="keyword">]</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="111969""></a>
+  <div class="note">
+   <strong class="user">Adil lhan (adilmedya at gmail dot com)</strong>
+   <a href="#111969" class="date">18-Apr-2013 06:02</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+For example yield keyword with Fibonacci:<br />
+<br />
+function getFibonacci()<br />
+{<br />
+&nbsp;&nbsp;&nbsp; $i = 0;<br />
+&nbsp;&nbsp;&nbsp; $k = 1; //first fibonacci value<br />
+&nbsp;&nbsp;&nbsp; yield $k;<br />
+&nbsp;&nbsp;&nbsp; while(true)<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; $k = $i + $k;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; $i = $k - $i;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; yield $k;&nbsp; &nbsp; &nbsp; &nbsp; <br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+<br />
+$y = 0;<br />
+<br />
+foreach(getFibonacci() as $fibonacci)<br />
+{<br />
+&nbsp;&nbsp;&nbsp; echo $fibonacci . "\n";<br />
+&nbsp;&nbsp;&nbsp; $y++;&nbsp; &nbsp; <br />
+&nbsp;&nbsp;&nbsp; if($y &gt; 30)<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; break; // infinite loop prevent<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

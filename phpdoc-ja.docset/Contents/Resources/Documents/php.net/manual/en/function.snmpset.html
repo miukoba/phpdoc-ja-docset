@@ -1,0 +1,398 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>SNMP オブジェクトの値を設定する</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="function.snmprealwalk.html">≪ snmprealwalk</a></li>
+      <li style="float: right;"><a href="function.snmpwalk.html">snmpwalk ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="ref.snmp.html">SNMP 関数</a></li>
+    <li>SNMP オブジェクトの値を設定する</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="function.snmpset" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">snmpset</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose"><span class="refname">snmpset</span> &mdash; <span class="dc-title"><acronym title="Simple Network Management Protocol">SNMP</acronym> オブジェクトの値を設定する</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.snmpset-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>snmpset</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$host</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$community</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$object_id</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$type</code></span>
+   , <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter">$value</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$timeout</code><span class="initializer"> = 1000000</span></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$retries</code><span class="initializer"> = 5</span></span>
+  ]] )</div>
+
+  
+  <p class="para rdfs-comment">
+   <span class="function"><strong>snmpset()</strong></span> 関数は、
+   <code class="parameter">object_id</code>で指定した <acronym title="Simple Network Management Protocol">SNMP</acronym> オブジェクトの
+   値を設定するために使用します。
+  </p>
+  
+ </div>
+
+ 
+ <div class="refsect1 parameters" id="refsect1-function.snmpset-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+<code class="parameter">host</code></dt>
+
+     <dd>
+
+      <p class="para">
+       <acronym title="Simple Network Management Protocol">SNMP</acronym> エージェント (サーバー) のホスト名。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">community</code></dt>
+
+     <dd>
+
+      <p class="para">
+       ライトコミュニティ。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">object_id</code></dt>
+
+     <dd>
+
+      <p class="para">
+       <acronym title="Simple Network Management Protocol">SNMP</acronym> オブジェクト ID。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">type</code></dt>
+
+     <dd>
+
+      <p class="para">
+ The <acronym>MIB</acronym> defines the type of each object id. It has to be specified as a single character from the below list.
+</p>
+<table class="doctable table">
+ <caption><strong>types</strong></caption>
+ 
+  <tbody class="tbody">
+   <tr><td>=</td><td>The type is taken from the MIB</td></tr>
+
+   <tr><td>i</td><td>INTEGER</td> </tr>
+
+   <tr><td>u</td><td>INTEGER</td></tr>
+
+   <tr><td>s</td><td>STRING</td></tr>
+
+   <tr><td>x</td><td>HEX STRING</td></tr>
+
+   <tr><td>d</td><td>DECIMAL STRING</td></tr>
+
+   <tr><td>n</td><td>NULLOBJ</td></tr>
+
+   <tr><td>o</td><td>OBJID</td></tr>
+
+   <tr><td>t</td><td>TIMETICKS</td></tr>
+
+   <tr><td>a</td><td>IPADDRESS</td></tr>
+
+   <tr><td>b</td><td>BITS</td></tr>
+
+  </tbody>
+ 
+</table>
+
+<p class="para">
+ If <strong><code>OPAQUE_SPECIAL_TYPES</code></strong> was defined while compiling the <acronym title="Simple Network Management Protocol">SNMP</acronym> library, the following are also valid:
+</p>
+<table class="doctable table">
+ <caption><strong>types</strong></caption>
+ 
+  <tbody class="tbody">
+   <tr><td>U</td><td>unsigned int64</td></tr>
+
+   <tr><td>I</td><td>signed int64</td></tr>
+
+   <tr><td>F</td><td>float</td></tr>
+
+   <tr><td>D</td><td>double</td></tr>
+
+  </tbody>
+ 
+</table>
+
+
+      <p class="para">
+ これらの大半は、対応する ASN.1 の型を使います。&#039;s&#039;, &#039;x&#039;, &#039;d&#039; および &#039;b&#039; はどれも OCTET STRING
+ を異なる方法で表したものであり、&#039;u&#039; も Gauge32 値を扱うためのものです。
+</p>
+
+      <p class="para">
+ MIB ファイルが &quot;snmp_read_mib&quot; や libsnmp の設定で MIB ツリーに読み込まれている場合は、
+ <code class="parameter">type</code> に &#039;=&#039; を使うことができます。
+ これはすべてのオブジェクト ID を表し、型は自動的に MIB から読み込みます。
+</p>
+
+      <p class="para">
+ &quot;SYNTAX    BITS {telnet(0), ftp(1), http(2), icmp(3), snmp(4), ssh(5), https(6)}&quot;
+ のような BITS 型の値変数を設定する方法は二通りあることに注意しましょう。
+</p>
+<ul class="itemizedlist">
+ <li class="listitem">
+  <span class="simpara">
+   型として &quot;b&quot; を使い、ビット番号の一覧を指定する。この方法はおすすめしません。
+   同じ OID に対して GET クエリを実行しても 0xF8 などを返すからです。
+  </span>
+ </li>
+ <li class="listitem">
+  <span class="simpara">
+   Using type &quot;x&quot; and a hex number but without(!) the usual &quot;0x&quot; prefix.
+   型として &quot;x&quot; を使い、通常のプレフィックス &quot;0x&quot; をつけずに(!) 16 進数を指定する。
+  </span>
+ </li>
+</ul>
+<p class="para">
+ 詳細は、サンプルを参照ください。
+</p>
+
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">value</code></dt>
+
+     <dd>
+
+      <p class="para">
+       新しい値。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">timeout</code></dt>
+
+     <dd>
+
+      <p class="para">
+       最初のタイムアウトまでのマイクロ秒数。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">retries</code></dt>
+
+     <dd>
+
+      <p class="para">
+       タイムアウト発生時の再試行回数。
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 returnvalues" id="refsect1-function.snmpset-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+  <p class="para">
+   SNMP ホストがデータ型を却下すると、&quot;Warning: Error in packet. 
+   Reason: (badValue) The value given has the wrong type or length.&quot; のような'
+   E_WARNING メッセージが表示されます。未知の OID あるいは無効な OID
+   を指定した場合は、おそらく &quot;Could not add variable&quot; のような警告となります。
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 examples" id="refsect1-function.snmpset-examples">
+  <h3 class="title">例</h3>
+   <div class="example" id="example-4676">
+    <p><strong>例1 <span class="function"><strong>snmpset()</strong></span> の使用法</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;snmpset</span><span style="color: #007700">(</span><span style="color: #DD0000">"localhost"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"public"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"IF-MIB::ifAlias.3"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"s"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"foo"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   <div class="example" id="example-4677">
+    <p><strong>例2 BITS <acronym title="Simple Network Management Protocol">SNMP</acronym> オブジェクト ID を設定した <span class="function"><strong>snmpset()</strong></span> の使用法</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;snmpset</span><span style="color: #007700">(</span><span style="color: #DD0000">"localhost"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"public"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'FOO-MIB::bar.42'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'b'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'0&nbsp;1&nbsp;2&nbsp;3&nbsp;4'</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">//&nbsp;あるいは<br />&nbsp;&nbsp;</span><span style="color: #0000BB">snmpset</span><span style="color: #007700">(</span><span style="color: #DD0000">"localhost"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"public"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'FOO-MIB::bar.42'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'x'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'F0'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+ </div>
+
+ 
+ <div class="refsect1 seealso" id="refsect1-function.snmpset-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><span class="function"><a href="function.snmpget.html" class="function" rel="rdfs-seeAlso">snmpget()</a> - SNMP オブジェクトを取得する</span></li>
+   </ul>
+  </p>
+ </div>
+
+ 
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="95634""></a>
+  <div class="note">
+   <strong class="user">ch at lathspell dot de</strong>
+   <a href="#95634" class="date">13-Jan-2010 03:22</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note that there are two ways to set a variable of the type BITS like e.g.: <br />
+&nbsp; SYNTAX&nbsp; &nbsp; &nbsp; &nbsp; BITS {telnet(0), ftp(1), http(2), icmp(3), snmp(4), ssh(5), https(6)}<br />
+<br />
+1. Using type "b" and a list of bit numbers like:<br />
+&nbsp; snmpset('FOO-MIB::bar.42', 'b', '0 1 2 3 4');<br />
+with the disadvantage that the success is not easily verifyable as an snmpget() for the same OID would return e.g. 0xF8.<br />
+<br />
+2. Using type "x" and a hex number but without(!) the usual "0x" prefix:<br />
+&nbsp; snmpset('FOO-MIB::bar.42', 'x', 'F0');</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="74600""></a>
+  <div class="note">
+   <strong class="user">tridman</strong>
+   <a href="#74600" class="date">19-Apr-2007 04:19</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you have importet the MIB-Files into the MIB Tree with "snmp_read_mib" you may use '=' as the "type" parameter.<br />
+In this case the type will also be taken from the loaded mib file. (Octest strings will be interpreted like strings though)<br />
+Comes in handy for a more dynamic use of snmpset.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="72000""></a>
+  <div class="note">
+   <strong class="user">deivis dot jakstas at gmail dot com</strong>
+   <a href="#72000" class="date">28-Dec-2006 03:53</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you setting hex values correct format is:<br />
+snmpset($source_ip,$community,"$oid","x","10 10 10 10");</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="1192""></a>
+  <div class="note">
+   <strong class="user">slawrance at technologist dot com</strong>
+   <a href="#1192" class="date">21-Jul-1999 09:01</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The "type" parameter must be one of the following, depending on the type of variable to set on the SNMP host:
+<br />
+
+<br />
+i&nbsp; &nbsp; INTEGER
+<br />
+u&nbsp; &nbsp; unsigned INTEGER
+<br />
+t&nbsp; &nbsp; TIMETICKS
+<br />
+a&nbsp; &nbsp; IPADDRESS
+<br />
+o&nbsp; &nbsp; OBJID
+<br />
+s&nbsp; &nbsp; STRING
+<br />
+x&nbsp; &nbsp; HEX STRING
+<br />
+d&nbsp; &nbsp; DECIMAL STRING
+<br />
+n&nbsp; &nbsp; NULLOBJ
+<br />
+b&nbsp; &nbsp; BITS
+<br />
+
+<br />
+If OPAQUE_SPECIAL_TYPES was defined while compiling the SNMP library, the
+<br />
+following are also valid:
+<br />
+
+<br />
+U&nbsp; &nbsp; unsigned int64
+<br />
+I&nbsp; &nbsp; signed int64
+<br />
+F&nbsp; &nbsp; float
+<br />
+D&nbsp; &nbsp; double
+<br />
+
+<br />
+As an example, using "i" would set an integer, and "s" would set a string.&nbsp; If the SNMP host rejects the data type, you might get the following message: "Warning: Error in packet. Reason: (badValue) The value given has the wrong type or length."
+<br />
+
+<br />
+If you specify an unknown or invalid OID, you might get a "Could not add variable" message.&nbsp; When specifying an absolute OID (one that is already resolved) that is completely numeric, prepend it with a period.&nbsp; For example, an OID that could enable/disable Ethernet ports on an Asante hub might be "1.3.6.1.2.1.22.1.3.1.1.3.6.4.0", but you would need to use ".1.3.6.1.2.1.22.1.3.1.1.3.6.4.0" in the OID parameter so that the SNMP library won't try to resolve an already resolved OID.&nbsp; Friendly, unresolved OIDs do not need the period prepended, such as "system.SysContact.0"</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

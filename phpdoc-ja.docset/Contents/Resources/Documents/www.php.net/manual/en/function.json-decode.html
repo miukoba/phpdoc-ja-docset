@@ -1,1000 +1,0 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
- <head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <title>JSON 文字列をデコードする</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
- </head>
- <body class="docs"><div class="manualnavbar" style="text-align: center;">
- <div class="prev" style="text-align: left; float: left;"><a href="ref.json.html">JSON 関数</a></div>
- <div class="next" style="text-align: right; float: right;"><a href="function.json-encode.html">json_encode</a></div>
- <div class="up"><a href="ref.json.html">JSON 関数</a></div>
- <div class="home"><a href="index.html">PHP Manual</a></div>
-</div><hr /><div id="function.json-decode" class="refentry">
- <div class="refnamediv">
-  <h1 class="refname">json_decode</h1>
-  <p class="verinfo">(PHP 5 &gt;= 5.2.0, PECL json &gt;= 1.2.0)</p><p class="refpurpose"><span class="refname">json_decode</span> &mdash; <span class="dc-title">JSON 文字列をデコードする</span></p>
-
- </div>
-
- <div class="refsect1 description" id="refsect1-function.json-decode-description">
-  <h3 class="title">説明</h3>
-  <div class="methodsynopsis dc-description">
-   <span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <span class="methodname"><strong>json_decode</strong></span>
-    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$json</code></span>
-   [, <span class="methodparam"><span class="type">bool</span> <code class="parameter">$assoc</code><span class="initializer"> = false</span></span>
-   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$depth</code><span class="initializer"> = 512</span></span>
-   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$options</code><span class="initializer"> = 0</span></span>
-  ]]] )</div>
-
-  <p class="para rdfs-comment">
-   JSON エンコードされた文字列を受け取り、それを
-   PHP の変数に変換します。
-  </p>
- </div>
-
-
- <div class="refsect1 parameters" id="refsect1-function.json-decode-parameters">
-  <h3 class="title">パラメータ</h3>
-  <p class="para">
-   <dl>
-
-    <dt>
-
-     <span class="term"><em><code class="parameter">json</code></em></span>
-     <dd>
-
-      <p class="para">
-       デコード対象となる <em><code class="parameter">json</code></em> 文字列。
-      </p>
-      <p class="para">
-       この関数は UTF-8 でエンコードされた文字列でのみ動作します。
-      </p>
-      <blockquote class="note"><p><strong class="note">注意</strong>: <p class="para">
-PHP は JSON のスーパーセットを実装しており、スカラー型や <strong><code>NULL</code></strong> のエンコードやデコードもします。
-JSON の標準規格では、これらの値は配列やオブジェクトの内部でネストする場合にだけ対応しています。
-</p></p></blockquote>
-     </dd>
-
-    </dt>
-
-    <dt>
-
-     <span class="term"><em><code class="parameter">assoc</code></em></span>
-     <dd>
-
-      <p class="para">
-       <strong><code>TRUE</code></strong> の場合、返されるオブジェクトは連想配列形式になります。
-      </p>
-     </dd>
-
-    </dt>
-
-    <dt>
-
-     <span class="term"><em><code class="parameter">depth</code></em></span>
-     <dd>
-
-      <p class="para">
-       ユーザー指定の再帰の深さ。
-      </p>
-     </dd>
-
-    </dt>
-
-    <dt>
-
-     <span class="term"><em><code class="parameter">options</code></em></span>
-     <dd>
-
-      <p class="para">
-       JSON デコードオプションのビットマスクです。現在サポートされるオプションは
-       <strong><code>JSON_BIGINT_AS_STRING</code></strong> のみです
-       (デフォルトでは、大きな整数値を float に変換します)。
-      </p>
-     </dd>
-
-    </dt>
-
-   </dl>
-
-  </p>
- </div>
-
-
- <div class="refsect1 returnvalues" id="refsect1-function.json-decode-returnvalues">
-  <h3 class="title">返り値</h3>
-  <p class="para">
-   <em><code class="parameter">json</code></em> でエンコードされたデータを、適切な PHP の型として返します。
-   <em>true</em>、<em>false</em> および
-   <em>null</em> (大文字小文字を区別しません) はそれぞれ <strong><code>TRUE</code></strong>、<strong><code>FALSE</code></strong>
-   そして <strong><code>NULL</code></strong> として返されます。
-   <em><code class="parameter">json</code></em> のデコードに失敗したり
-   エンコードされたデータが再帰制限を超えているなどの場合、<strong><code>NULL</code></strong> を返します。
-  </p>
- </div>
-
-
- <div class="refsect1 examples" id="refsect1-function.json-decode-examples">
-  <h3 class="title">例</h3>
-  <p class="para">
-   <div class="example" id="example-3736">
-    <p><strong>例1  <span class="function"><strong>json_decode()</strong></span> の例</strong></p>
-    <div class="example-contents">
-<div class="phpcode"><code><span style="color: #000000">
-<span style="color: #0000BB">&lt;?php<br />$json&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'{"a":1,"b":2,"c":3,"d":4,"e":5}'</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">json_decode</span><span style="color: #007700">(</span><span style="color: #0000BB">$json</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">json_decode</span><span style="color: #007700">(</span><span style="color: #0000BB">$json</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">));<br /><br /></span><span style="color: #0000BB">?&gt;</span>
-</span>
-</code></div>
-    </div>
-
-    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
-    <div class="example-contents screen">
-<div class="cdata"><pre>
-object(stdClass)#1 (5) {
-    [&quot;a&quot;] =&gt; int(1)
-    [&quot;b&quot;] =&gt; int(2)
-    [&quot;c&quot;] =&gt; int(3)
-    [&quot;d&quot;] =&gt; int(4)
-    [&quot;e&quot;] =&gt; int(5)
-}
-
-array(5) {
-    [&quot;a&quot;] =&gt; int(1)
-    [&quot;b&quot;] =&gt; int(2)
-    [&quot;c&quot;] =&gt; int(3)
-    [&quot;d&quot;] =&gt; int(4)
-    [&quot;e&quot;] =&gt; int(5)
-}
-</pre></div>
-    </div>
-   </div>
-   <div class="example" id="example-3737">
-    <p><strong>例2 無効なオブジェクトプロパティへのアクセス</strong></p>
-    <div class="example-contents"><p>
-     オブジェクトの中にある、
-     PHP の命名規約では使えない文字 (ハイフンなど) を含む要素にアクセスするには、
-     要素名を波括弧とアポストロフィで囲みます。
-    </p></div>
-    <div class="example-contents">
-<div class="phpcode"><code><span style="color: #000000">
-<span style="color: #0000BB">&lt;?php<br /><br />$json&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'{"foo-bar":&nbsp;12345}'</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$obj&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">json_decode</span><span style="color: #007700">(</span><span style="color: #0000BB">$json</span><span style="color: #007700">);<br />print&nbsp;</span><span style="color: #0000BB">$obj</span><span style="color: #007700">-&gt;{</span><span style="color: #DD0000">'foo-bar'</span><span style="color: #007700">};&nbsp;</span><span style="color: #FF8000">//&nbsp;12345<br /><br /></span><span style="color: #0000BB">?&gt;</span>
-</span>
-</code></div>
-    </div>
-
-   </div>
-   <div class="example" id="example-3738">
-    <p><strong>例3  <span class="function"><strong>json_decode()</strong></span> でのありがちな間違い</strong></p>
-    <div class="example-contents">
-<div class="phpcode"><code><span style="color: #000000">
-<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;以下の文字列は&nbsp;JavaScript&nbsp;としては有効ですが&nbsp;JSON&nbsp;としては無効です<br /><br />//&nbsp;名前と値はダブルクォートで囲む必要があります。<br />//&nbsp;シングルクォートは使えません<br /></span><span style="color: #0000BB">$bad_json&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"{&nbsp;'bar':&nbsp;'baz'&nbsp;}"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">json_decode</span><span style="color: #007700">(</span><span style="color: #0000BB">$bad_json</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;null<br /><br />//&nbsp;名前をダブルクォートで囲まなければなりません<br /></span><span style="color: #0000BB">$bad_json&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'{&nbsp;bar:&nbsp;"baz"&nbsp;}'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">json_decode</span><span style="color: #007700">(</span><span style="color: #0000BB">$bad_json</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;null<br /><br />//&nbsp;最後にカンマをつけてはいけません<br /></span><span style="color: #0000BB">$bad_json&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'{&nbsp;bar:&nbsp;"baz",&nbsp;}'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">json_decode</span><span style="color: #007700">(</span><span style="color: #0000BB">$bad_json</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;null<br /><br /></span><span style="color: #0000BB">?&gt;</span>
-</span>
-</code></div>
-    </div>
-
-   </div>
-   <div class="example" id="example-3739">
-    <p><strong>例4 <em><code class="parameter">depth</code></em> エラー</strong></p>
-    <div class="example-contents">
-<div class="phpcode"><code><span style="color: #000000">
-<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;データをエンコードします<br /></span><span style="color: #0000BB">$json&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">json_encode</span><span style="color: #007700">(<br />&nbsp;&nbsp;&nbsp;&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">1&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'English'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'One'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'January'<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">),<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'French'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'Une'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'Janvier'<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">)<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br />&nbsp;&nbsp;&nbsp;&nbsp;)<br />);<br /><br /></span><span style="color: #FF8000">//&nbsp;エラーを定義します<br /></span><span style="color: #0000BB">$constants&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">get_defined_constants</span><span style="color: #007700">(</span><span style="color: #0000BB">true</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$json_errors&nbsp;</span><span style="color: #007700">=&nbsp;array();<br />foreach&nbsp;(</span><span style="color: #0000BB">$constants</span><span style="color: #007700">[</span><span style="color: #DD0000">"json"</span><span style="color: #007700">]&nbsp;as&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$value</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!</span><span style="color: #0000BB">strncmp</span><span style="color: #007700">(</span><span style="color: #0000BB">$name</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"JSON_ERROR_"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">11</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$json_errors</span><span style="color: #007700">[</span><span style="color: #0000BB">$value</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;さまざまな深さのエラーを表示します<br /></span><span style="color: #007700">foreach&nbsp;(</span><span style="color: #0000BB">range</span><span style="color: #007700">(</span><span style="color: #0000BB">4</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">,&nbsp;-</span><span style="color: #0000BB">1</span><span style="color: #007700">)&nbsp;as&nbsp;</span><span style="color: #0000BB">$depth</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">json_decode</span><span style="color: #007700">(</span><span style="color: #0000BB">$json</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$depth</span><span style="color: #007700">));<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'Last&nbsp;error:&nbsp;'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$json_errors</span><span style="color: #007700">[</span><span style="color: #0000BB">json_last_error</span><span style="color: #007700">()],&nbsp;</span><span style="color: #0000BB">PHP_EOL</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">PHP_EOL</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
-</span>
-</code></div>
-    </div>
-
-    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
-    <div class="example-contents screen">
-<div class="cdata"><pre>
-array(1) {
-  [1]=&gt;
-  array(2) {
-    [&quot;English&quot;]=&gt;
-    array(2) {
-      [0]=&gt;
-      string(3) &quot;One&quot;
-      [1]=&gt;
-      string(7) &quot;January&quot;
-    }
-    [&quot;French&quot;]=&gt;
-    array(2) {
-      [0]=&gt;
-      string(3) &quot;Une&quot;
-      [1]=&gt;
-      string(7) &quot;Janvier&quot;
-    }
-  }
-}
-Last error: JSON_ERROR_NONE
-
-NULL
-Last error: JSON_ERROR_DEPTH
-</pre></div>
-    </div>
-   </div>
-   <div class="example" id="example-3740">
-    <p><strong>例5  <span class="function"><strong>json_decode()</strong></span> で大きな整数値を扱う例</strong></p>
-    <div class="example-contents">
-<div class="phpcode"><code><span style="color: #000000">
-<span style="color: #0000BB">&lt;?php<br />$json&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'{"number":&nbsp;12345678901234567890}'</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">json_decode</span><span style="color: #007700">(</span><span style="color: #0000BB">$json</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">json_decode</span><span style="color: #007700">(</span><span style="color: #0000BB">$json</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">512</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">JSON_BIGINT_AS_STRING</span><span style="color: #007700">));<br /><br /></span><span style="color: #0000BB">?&gt;</span>
-</span>
-</code></div>
-    </div>
-
-    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
-    <div class="example-contents screen">
-<div class="cdata"><pre>
-object(stdClass)#1 (1) {
-  [&quot;number&quot;]=&gt;
-  float(1.2345678901235E+19)
-}
-object(stdClass)#1 (1) {
-  [&quot;number&quot;]=&gt;
-  string(20) &quot;12345678901234567890&quot;
-}
-</pre></div>
-    </div>
-   </div>
-  </p>
- </div>
-
-
- <div class="refsect1 notes" id="refsect1-function.json-decode-notes">
-  <h3 class="title">注意</h3>
-  <blockquote class="note"><p><strong class="note">注意</strong>: 
-   <p class="para">
-    JSON の仕様は JavaScript そのものではなく、JavaScript のサブセットです。
-   </p>
-  </p></blockquote>
-  <blockquote class="note"><p><strong class="note">注意</strong>: 
-   <p class="para">
-    デコードに失敗した場合は、 <span class="function"><a href="function.json-last-error.html" class="function">json_last_error()</a></span>
-    を使用すればエラーの正確な状態を知ることができます。
-   </p>
-  </p></blockquote>
- </div>
-
-
- <div class="refsect1 changelog" id="refsect1-function.json-decode-changelog">
-  <h3 class="title">変更履歴</h3>
-  <p class="para">
-   <table class="doctable informaltable">
-    
-     <thead>
-      <tr>
-       <th>バージョン</th>
-       <th>説明</th>
-      </tr>
-
-     </thead>
-
-     <tbody class="tbody">
-      <tr>
-       <td>5.4.0</td>
-       <td>
-        <em><code class="parameter">options</code></em> パラメータが追加されました。
-       </td>
-      </tr>
-
-      <tr>
-       <td>5.3.0</td>
-       <td>オプションの <em><code class="parameter">depth</code></em> が追加されました。デフォルトの再帰の深さが 128 から 512 に増えました。</td>
-      </tr>
-
-      <tr>
-       <td>5.2.3</td>
-       <td>ネストの制限が 20 から 128 に拡張されました。</td>
-      </tr>
-
-      <tr>
-       <td>5.2.1</td>
-       <td>
-        基本型の JSON デコードに対応しました。
-       </td>
-      </tr>
-
-     </tbody>
-    
-   </table>
-
-  </p>
- </div>
-
-
- <div class="refsect1 seealso" id="refsect1-function.json-decode-seealso">
-  <h3 class="title">参考</h3>
-  <p class="para">
-   <ul class="simplelist">
-    <li class="member"> <span class="function"><a href="function.json-encode.html" class="function" rel="rdfs-seeAlso">json_encode()</a> - 値を JSON 形式にして返す</span></li>
-    <li class="member"> <span class="function"><a href="function.json-last-error.html" class="function" rel="rdfs-seeAlso">json_last_error()</a> - 直近に発生したエラーを返す</span></li>
-   </ul>
-  </p>
- </div>
-
-</div><div id="usernotes">
- <div class="head">
-  <h3 class="title">User Contributed Notes</h3>
- </div>
-<div id="allnotes">  <a name="113137""></a>
-  <div class="note">
-   <strong class="user">hellolwq at gmail dot com</strong>
-   <a href="#113137" class="date">04-Sep-2013 03:39</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-json_decode can not handle string like:\u0014,it will return null,and with the error <br />
-<span class="default">&lt;?php json_last_error</span><span class="keyword">()=</span><span class="default">JSON_ERROR_CTRL_CHAR ?&gt;<br />
-</span>according ascii_class from json module, use the next codes to fix the bug:<br />
-<span class="default">&lt;?php<br />
-$str </span><span class="keyword">= </span><span class="default">preg_replace_callback</span><span class="keyword">(</span><span class="string">'/([\x{0000}-\x{0008}]|[\x{000b}-\x{000c}]|[\x{000E}-\x{001F}])/u'</span><span class="keyword">, function(</span><span class="default">$sub_match</span><span class="keyword">){return </span><span class="string">'\u00' </span><span class="keyword">. </span><span class="default">dechex</span><span class="keyword">(</span><span class="default">ord</span><span class="keyword">(</span><span class="default">$sub_match</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">]));},</span><span class="default">$str</span><span class="keyword">);<br />
-</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="default">$str</span><span class="keyword">));<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="113136""></a>
-  <div class="note">
-   <strong class="user">hellolwq at gmail dot com</strong>
-   <a href="#113136" class="date">04-Sep-2013 03:39</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-json_decode can not handle string like:\u0014,it will return null,and with the error <br />
-<span class="default">&lt;?php json_last_error</span><span class="keyword">()=</span><span class="default">JSON_ERROR_CTRL_CHAR ?&gt;<br />
-</span>according ascii_class from json module, use the next codes to fix the bug:<br />
-<span class="default">&lt;?php<br />
-$str </span><span class="keyword">= </span><span class="default">preg_replace_callback</span><span class="keyword">(</span><span class="string">'/([\x{0000}-\x{0008}]|[\x{000b}-\x{000c}]|[\x{000E}-\x{001F}])/u'</span><span class="keyword">, function(</span><span class="default">$sub_match</span><span class="keyword">){return </span><span class="string">'\u00' </span><span class="keyword">. </span><span class="default">dechex</span><span class="keyword">(</span><span class="default">ord</span><span class="keyword">(</span><span class="default">$sub_match</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">]));},</span><span class="default">$str</span><span class="keyword">);<br />
-</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="default">$str</span><span class="keyword">));<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="112735""></a>
-  <div class="note">
-   <strong class="user">Matt Browne</strong>
-   <a href="#112735" class="date">18-Jul-2013 12:44</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-The function by 1franck to allow comments works except if there is a comment at the very beginning of the file. Here's a modified version (only the regex was changed) that accounts for that.<br />
-<br />
-<span class="default">&lt;?php<br />
-</span><span class="keyword">function </span><span class="default">json_clean_decode</span><span class="keyword">(</span><span class="default">$json</span><span class="keyword">, </span><span class="default">$assoc </span><span class="keyword">= </span><span class="default">false</span><span class="keyword">, </span><span class="default">$depth </span><span class="keyword">= </span><span class="default">512</span><span class="keyword">, </span><span class="default">$options </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">) {<br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">// search and remove comments like /* */ and //<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$json </span><span class="keyword">= </span><span class="default">preg_replace</span><span class="keyword">(</span><span class="string">"#(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|([\s\t]//.*)|(^//.*)#"</span><span class="keyword">, </span><span class="string">''</span><span class="keyword">, </span><span class="default">$json</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; <br />
-&nbsp;&nbsp;&nbsp; if(</span><span class="default">version_compare</span><span class="keyword">(</span><span class="default">phpversion</span><span class="keyword">(), </span><span class="string">'5.4.0'</span><span class="keyword">, </span><span class="string">'&gt;='</span><span class="keyword">)) {<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$json </span><span class="keyword">= </span><span class="default">json_decode</span><span class="keyword">(</span><span class="default">$json</span><span class="keyword">, </span><span class="default">$assoc</span><span class="keyword">, </span><span class="default">$depth</span><span class="keyword">, </span><span class="default">$options</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; }<br />
-&nbsp;&nbsp;&nbsp; elseif(</span><span class="default">version_compare</span><span class="keyword">(</span><span class="default">phpversion</span><span class="keyword">(), </span><span class="string">'5.3.0'</span><span class="keyword">, </span><span class="string">'&gt;='</span><span class="keyword">)) {<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$json </span><span class="keyword">= </span><span class="default">json_decode</span><span class="keyword">(</span><span class="default">$json</span><span class="keyword">, </span><span class="default">$assoc</span><span class="keyword">, </span><span class="default">$depth</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; }<br />
-&nbsp;&nbsp;&nbsp; else {<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$json </span><span class="keyword">= </span><span class="default">json_decode</span><span class="keyword">(</span><span class="default">$json</span><span class="keyword">, </span><span class="default">$assoc</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; }<br />
-<br />
-&nbsp;&nbsp;&nbsp; return </span><span class="default">$json</span><span class="keyword">;<br />
-}<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="112631""></a>
-  <div class="note">
-   <strong class="user">christian dot knoop at gmx dot net</strong>
-   <a href="#112631" class="date">06-Jul-2013 06:40</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-If you store your json-string in an utf8-file and read it with file_get_contents, please make sure to strip leading BOM (byte order mark) before decoding it with json_decode. Otherwise json_decode will fail creating an associative array. Instead it will return your data as a string.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="112084""></a>
-  <div class="note">
-   <strong class="user">php_net_01_weber at nachvorne de</strong>
-   <a href="#112084" class="date">01-May-2013 08:18</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-json_decode_nice + keep linebreaks:<br />
-<br />
-function json_decode_nice($json, $assoc = TRUE){<br />
-&nbsp;&nbsp;&nbsp; $json = str_replace(array("\n","\r"),"\\n",$json);<br />
-&nbsp;&nbsp;&nbsp; $json = preg_replace('/([{,]+)(\s*)([^"]+?)\s*:/','$1"$3":',$json);<br />
-&nbsp;&nbsp;&nbsp; $json = preg_replace('/(,)\s*}$/','}',$json);<br />
-&nbsp;&nbsp;&nbsp; return json_decode($json,$assoc);<br />
-}<br />
-<br />
-by phpdoc at badassawesome dot com, I just changed line 2.<br />
-If you want to keep the linebreaks just escape the slash.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="111928""></a>
-  <div class="note">
-   <strong class="user">phpdoc at badassawesome dot com</strong>
-   <a href="#111928" class="date">13-Apr-2013 06:39</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-I added a 3rd regex to the json_decode_nice function by "colin.mollenhour.com" to handle a trailing comma in json definition.<br />
-<br />
-<span class="default">&lt;?php<br />
-</span><span class="comment">// <a href="http://www.php.net/manual/en/function.json-decode.php#95782" rel="nofollow" target="_blank">http://www.php.net/manual/en/function.json-decode.php#95782</a><br />
-</span><span class="keyword">function </span><span class="default">json_decode_nice</span><span class="keyword">(</span><span class="default">$json</span><span class="keyword">, </span><span class="default">$assoc </span><span class="keyword">= </span><span class="default">FALSE</span><span class="keyword">){ <br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$json </span><span class="keyword">= </span><span class="default">str_replace</span><span class="keyword">(array(</span><span class="string">"\n"</span><span class="keyword">,</span><span class="string">"\r"</span><span class="keyword">),</span><span class="string">""</span><span class="keyword">,</span><span class="default">$json</span><span class="keyword">); <br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$json </span><span class="keyword">= </span><span class="default">preg_replace</span><span class="keyword">(</span><span class="string">'/([{,]+)(\s*)([^"]+?)\s*:/'</span><span class="keyword">,</span><span class="string">'$1"$3":'</span><span class="keyword">,</span><span class="default">$json</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$json </span><span class="keyword">= </span><span class="default">preg_replace</span><span class="keyword">(</span><span class="string">'/(,)\s*}$/'</span><span class="keyword">,</span><span class="string">'}'</span><span class="keyword">,</span><span class="default">$json</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; return </span><span class="default">json_decode</span><span class="keyword">(</span><span class="default">$json</span><span class="keyword">,</span><span class="default">$assoc</span><span class="keyword">); <br />
-}<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-Example:<br />
-<br />
-<span class="default">&lt;?php<br />
-$dat_json </span><span class="keyword">= &lt;&lt;&lt;EOF<br />
-</span><span class="string">{<br />
-&nbsp;&nbsp;&nbsp; "foo"&nbsp; &nbsp; : "bam",<br />
-&nbsp;&nbsp;&nbsp; "bar"&nbsp; &nbsp; : "baz",<br />
-}<br />
-</span><span class="keyword">EOF;<br />
-</span><span class="default">$dat_array </span><span class="keyword">= </span><span class="default">json_decode_nice</span><span class="keyword">( </span><span class="default">$dat_json </span><span class="keyword">);<br />
-</span><span class="default">var_dump </span><span class="keyword">( </span><span class="default">$dat_json</span><span class="keyword">, </span><span class="default">$dat_array </span><span class="keyword">); <br />
-<br />
-</span><span class="comment">/* RESULTS:<br />
-<br />
-string(35) "{<br />
-&nbsp;&nbsp;&nbsp; "foo"&nbsp; &nbsp; : "bam",<br />
-&nbsp;&nbsp;&nbsp; "bar"&nbsp; &nbsp; : "baz",<br />
-}"<br />
-array(2) {<br />
-&nbsp; ["foo"]=&gt;<br />
-&nbsp; string(3) "bam"<br />
-&nbsp; ["bar"]=&gt;<br />
-&nbsp; string(3) "baz"<br />
-}<br />
-*/<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="111551""></a>
-  <div class="note">
-   <strong class="user">1franck</strong>
-   <a href="#111551" class="date">04-Mar-2013 01:47</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Sometime, i need to allow comments in json file. So i wrote a small func to clean comments in a json string before decoding it:<br />
-<span class="default">&lt;?php<br />
-</span><span class="comment">/**<br />
-&nbsp;* Clean comments of json content and decode it with json_decode().<br />
-&nbsp;* Work like the original php json_decode() function with the same params<br />
-&nbsp;*<br />
-&nbsp;* @param&nbsp;&nbsp; string&nbsp; $json&nbsp; &nbsp; The json string being decoded<br />
-&nbsp;* @param&nbsp;&nbsp; bool&nbsp; &nbsp; $assoc&nbsp;&nbsp; When TRUE, returned objects will be converted into associative arrays. <br />
-&nbsp;* @param&nbsp;&nbsp; integer $depth&nbsp;&nbsp; User specified recursion depth. (&gt;=5.3)<br />
-&nbsp;* @param&nbsp;&nbsp; integer $options Bitmask of JSON decode options. (&gt;=5.4)<br />
-&nbsp;* @return&nbsp; string<br />
-&nbsp;*/<br />
-</span><span class="keyword">function </span><span class="default">json_clean_decode</span><span class="keyword">(</span><span class="default">$json</span><span class="keyword">, </span><span class="default">$assoc </span><span class="keyword">= </span><span class="default">false</span><span class="keyword">, </span><span class="default">$depth </span><span class="keyword">= </span><span class="default">512</span><span class="keyword">, </span><span class="default">$options </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">) {<br />
-<br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">// search and remove comments like /* */ and //<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$json </span><span class="keyword">= </span><span class="default">preg_replace</span><span class="keyword">(</span><span class="string">"#(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|([\s\t](//).*)#"</span><span class="keyword">, </span><span class="string">''</span><span class="keyword">, </span><span class="default">$json</span><span class="keyword">);<br />
-<br />
-&nbsp;&nbsp;&nbsp; if(</span><span class="default">version_compare</span><span class="keyword">(</span><span class="default">phpversion</span><span class="keyword">(), </span><span class="string">'5.4.0'</span><span class="keyword">, </span><span class="string">'&gt;='</span><span class="keyword">)) { <br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$json </span><span class="keyword">= </span><span class="default">json_decode</span><span class="keyword">(</span><span class="default">$json</span><span class="keyword">, </span><span class="default">$assoc</span><span class="keyword">, </span><span class="default">$depth</span><span class="keyword">, </span><span class="default">$options</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; }<br />
-&nbsp;&nbsp;&nbsp; elseif(</span><span class="default">version_compare</span><span class="keyword">(</span><span class="default">phpversion</span><span class="keyword">(), </span><span class="string">'5.3.0'</span><span class="keyword">, </span><span class="string">'&gt;='</span><span class="keyword">)) { <br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$json </span><span class="keyword">= </span><span class="default">json_decode</span><span class="keyword">(</span><span class="default">$json</span><span class="keyword">, </span><span class="default">$assoc</span><span class="keyword">, </span><span class="default">$depth</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; }<br />
-&nbsp;&nbsp;&nbsp; else {<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$json </span><span class="keyword">= </span><span class="default">json_decode</span><span class="keyword">(</span><span class="default">$json</span><span class="keyword">, </span><span class="default">$assoc</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; }<br />
-<br />
-&nbsp;&nbsp;&nbsp; return </span><span class="default">$json</span><span class="keyword">;<br />
-}<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="110820""></a>
-  <div class="note">
-   <strong class="user">skypppher at gmail dot com</strong>
-   <a href="#110820" class="date">12-Dec-2012 04:40</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-First of all, since JSON is not native PHP format or even native JavaScript format, everyone who wants to use JSON wisely should carefuly read official documentation. There is a link to it here, in "Introduction" section. Many questions like "it doesn't recognize my strings" and those like previous one (about zip codes) will drop if you will be attentive!<br />
-<br />
-And second. I've found that there is no good, real working example of how to validate string if it is a JSON or not.<br />
-There are two ways to make this: parse input string for yourself using regular expressions or anything else, use json_decode to do it for you.<br />
-Parsing for yourself is like writing your own compiler, too difficult.<br />
-Just testing result of json_decode is not enough because you should test it with NULL, but valid JSON could be like this 'null' and it will evaluate to NULL. So you should use another function - json_last_error. It will return error code of the last encode/decode operation. If no error occured it will be JSON_ERROR_NONE. So here is the function you should use for testing:<br />
-<span class="default">&lt;?php<br />
-</span><span class="keyword">function </span><span class="default">isValidJson</span><span class="keyword">(</span><span class="default">$strJson</span><span class="keyword">) {<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">json_decode</span><span class="keyword">(</span><span class="default">$strJson</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; return (</span><span class="default">json_last_error</span><span class="keyword">() === </span><span class="default">JSON_ERROR_NONE</span><span class="keyword">);<br />
-}<br />
-</span><span class="default">?&gt;<br />
-</span>It's so simple, that there is no need to use it and slow down your script with extra delay for function call. Just do it manualy in you code while working with input data:<br />
-<span class="default">&lt;?php<br />
-</span><span class="comment">//here is my initial string<br />
-</span><span class="default">$sJson </span><span class="keyword">= </span><span class="default">$_POST</span><span class="keyword">[</span><span class="string">'json'</span><span class="keyword">];<br />
-</span><span class="comment">//try to decode it<br />
-</span><span class="default">$json </span><span class="keyword">= </span><span class="default">json_decode</span><span class="keyword">(</span><span class="default">$sJson</span><span class="keyword">);<br />
-if (</span><span class="default">json_last_error</span><span class="keyword">() === </span><span class="default">JSON_ERROR_NONE</span><span class="keyword">) {<br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">//do something with $json. It's ready to use<br />
-</span><span class="keyword">} else {<br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">//yep, it's not JSON. Log error or alert someone or do nothing<br />
-</span><span class="keyword">}<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="105892""></a>
-  <div class="note">
-   <strong class="user">alexvonweiss at googlemail dot com</strong>
-   <a href="#105892" class="date">23-Sep-2011 05:49</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Consider that JSON can differ between int and string. So<br />
-<br />
-<span class="default">&lt;?php<br />
-var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="string">'{"foo": 12}'</span><span class="keyword">));<br />
-</span><span class="comment">// array(1) { ["foo"]=&gt; int(12) }<br />
-<br />
-</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="string">'{"foo": "12"}'</span><span class="keyword">));<br />
-</span><span class="comment">// array(1) { ["foo"]=&gt; string(12) }<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-Numbers that cannot be handled by integer seems to become float casted. This can be a problem if you transfer big numbers like facebook ids over JSON. Either you avoid numbers by cast everything to string before JSON.stringify or you have to use number_format if the value bacome a float value.<br />
-<br />
-<span class="default">&lt;?php<br />
-</span><span class="comment">// test<br />
-</span><span class="default">$x </span><span class="keyword">= </span><span class="default">json_decode</span><span class="keyword">(</span><span class="string">'{"foo": 123456789012345}'</span><span class="keyword">);<br />
-echo </span><span class="default">sprintf</span><span class="keyword">(</span><span class="string">'%1$f'</span><span class="keyword">, </span><span class="default">$x</span><span class="keyword">-&gt;</span><span class="default">foo</span><span class="keyword">).</span><span class="default">PHP_EOL</span><span class="keyword">;<br />
-echo </span><span class="default">sprintf</span><span class="keyword">(</span><span class="string">'%1$u'</span><span class="keyword">, </span><span class="default">$x</span><span class="keyword">-&gt;</span><span class="default">foo</span><span class="keyword">).</span><span class="default">PHP_EOL</span><span class="keyword">;<br />
-echo </span><span class="default">sprintf</span><span class="keyword">(</span><span class="string">'%1$s'</span><span class="keyword">, </span><span class="default">$x</span><span class="keyword">-&gt;</span><span class="default">foo</span><span class="keyword">).</span><span class="default">PHP_EOL</span><span class="keyword">;<br />
-echo </span><span class="default">strval</span><span class="keyword">(</span><span class="default">$x</span><span class="keyword">-&gt;</span><span class="default">foo</span><span class="keyword">).</span><span class="default">PHP_EOL</span><span class="keyword">;<br />
-echo (string) </span><span class="default">$x</span><span class="keyword">-&gt;</span><span class="default">foo</span><span class="keyword">.</span><span class="default">PHP_EOL</span><span class="keyword">;<br />
-echo </span><span class="default">number_format</span><span class="keyword">(</span><span class="default">$x</span><span class="keyword">-&gt;</span><span class="default">foo</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">, </span><span class="string">''</span><span class="keyword">, </span><span class="string">''</span><span class="keyword">).</span><span class="default">PHP_EOL</span><span class="keyword">;<br />
-<br />
-</span><span class="comment">// output<br />
-</span><span class="default">123456789012345.000000&nbsp; </span><span class="comment">// printf %f<br />
-</span><span class="default">2249056121&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// printf %u<br />
-</span><span class="default">1.2345678901234E+14&nbsp; &nbsp;&nbsp; </span><span class="comment">// printf %s<br />
-</span><span class="default">1.2345678901234E+14&nbsp; &nbsp;&nbsp; </span><span class="comment">// strval()<br />
-</span><span class="default">1.2345678901234E+14&nbsp; &nbsp;&nbsp; </span><span class="comment">// cast (string)<br />
-</span><span class="default">2249056121&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// cast (int)<br />
-</span><span class="default">123456789012345&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// number_format()<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="103438""></a>
-  <div class="note">
-   <strong class="user">evengard at trioptimum dot com</strong>
-   <a href="#103438" class="date">13-Apr-2011 05:58</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-There is a problem when passing to json_decode a string with the "\" symbol. It seems to identify it as an escape character and trying to follow it. So sometimes it leads to failed parsing.<br />
-<br />
-It seems that just replacing it with "\\" helps.<br />
-<span class="default">&lt;?php<br />
-print_r</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="default">str_replace</span><span class="keyword">(</span><span class="string">'\\'</span><span class="keyword">, </span><span class="string">'\\\\'</span><span class="keyword">, </span><span class="string">'{"name":"/\"}'</span><span class="keyword">)));<br />
-</span><span class="default">?&gt;<br />
-</span>where /\ is the string which doesn't worked.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="99325""></a>
-  <div class="note">
-   <strong class="user">T erkif</strong>
-   <a href="#99325" class="date">11-Aug-2010 12:03</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-it seems, that some of the people are not aware, that if you are using json_decode to decode a string it HAS to be a propper json string:<br />
-<br />
-<span class="default">&lt;?php<br />
-var_dump</span><span class="keyword">(</span><span class="default">json_encode</span><span class="keyword">(</span><span class="string">'Hello'</span><span class="keyword">));<br />
-<br />
-</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="string">'Hello'</span><span class="keyword">));&nbsp; </span><span class="comment">// wrong<br />
-</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="string">"Hello"</span><span class="keyword">)); </span><span class="comment">// wrong<br />
-</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="string">'"Hello"'</span><span class="keyword">)); </span><span class="comment">// correct<br />
-</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="string">"'Hello'"</span><span class="keyword">)); </span><span class="comment">// wrong<br />
-<br />
-</span><span class="default">result</span><span class="keyword">:<br />
-<br />
-</span><span class="default">string</span><span class="keyword">(</span><span class="default">7</span><span class="keyword">) </span><span class="string">""</span><span class="default">Hello</span><span class="string">""<br />
-</span><span class="default">NULL<br />
-NULL<br />
-string</span><span class="keyword">(</span><span class="default">5</span><span class="keyword">) </span><span class="string">"Hello"<br />
-</span><span class="default">NULL</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="98273""></a>
-  <div class="note">
-   <strong class="user">majca J</strong>
-   <a href="#98273" class="date">06-Jun-2010 02:42</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Noted in a comment below is that this function will return NULL when given a simple string.<br />
-<br />
-This is new behavior - see the result in PHP 5.2.4 :<br />
-php &gt; var_dump(json_decode('this is a simple string'));<br />
-string(23) "this is a simple string"<br />
-<br />
-in PHP 5.3.2 :<br />
-php &gt; var_dump(json_decode('this is a simple string'));<br />
-NULL<br />
-<br />
-I had several functions that relied on checking the value of a purported JSON string if it didn't decode into an object/array. If you do too, be sure to be aware of this when upgrading to PHP 5.3.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="96169""></a>
-  <div class="note">
-   <strong class="user">php at hm2k.org</strong>
-   <a href="#96169" class="date">12-Feb-2010 01:45</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-If var_dump produces NULL, you may be experiencing JSONP aka JSON with padding, here's a quick fix...<br />
-<br />
-<span class="default">&lt;?php<br />
-<br />
-</span><span class="comment">//remove padding<br />
-</span><span class="default">$body</span><span class="keyword">=</span><span class="default">preg_replace</span><span class="keyword">(</span><span class="string">'/.+?({.+}).+/'</span><span class="keyword">,</span><span class="string">'$1'</span><span class="keyword">,</span><span class="default">$body</span><span class="keyword">);<br />
-<br />
-</span><span class="comment">// now, process the JSON string<br />
-</span><span class="default">$result </span><span class="keyword">= </span><span class="default">json_decode</span><span class="keyword">(</span><span class="default">$body</span><span class="keyword">);<br />
-<br />
-</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$result</span><span class="keyword">);<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="95935""></a>
-  <div class="note">
-   <strong class="user">nix</strong>
-   <a href="#95935" class="date">29-Jan-2010 12:39</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Be aware, when decoding JSON strings, where an empty string is a key, this library replaces the empty string with "_empty_".<br />
-<br />
-So the following code gives an unexpected result:<br />
-<span class="default">&lt;?php<br />
-var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="string">'{"":"arbitrary"}'</span><span class="keyword">));<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-The result is as follows:<br />
-object(stdClass)#1 (1) {<br />
-&nbsp; ["_empty_"]=&gt;<br />
-&nbsp; string(6) "arbitrary"<br />
-}<br />
-<br />
-Any subsequent key named "_empty_" (or "" [the empty string] again) will overwrite the value.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="95782""></a>
-  <div class="note">
-   <strong class="user">colin.mollenhour.com</strong>
-   <a href="#95782" class="date">21-Jan-2010 07:51</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-For those of you wanting json_decode to be a little more lenient (more like Javascript), here is a wrapper:<br />
-<br />
-<span class="default">&lt;?php<br />
-</span><span class="keyword">function </span><span class="default">json_decode_nice</span><span class="keyword">(</span><span class="default">$json</span><span class="keyword">, </span><span class="default">$assoc </span><span class="keyword">= </span><span class="default">FALSE</span><span class="keyword">){<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$json </span><span class="keyword">= </span><span class="default">str_replace</span><span class="keyword">(array(</span><span class="string">"\n"</span><span class="keyword">,</span><span class="string">"\r"</span><span class="keyword">),</span><span class="string">""</span><span class="keyword">,</span><span class="default">$json</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$json </span><span class="keyword">= </span><span class="default">preg_replace</span><span class="keyword">(</span><span class="string">'/([{,]+)(\s*)([^"]+?)\s*:/'</span><span class="keyword">,</span><span class="string">'$1"$3":'</span><span class="keyword">,</span><span class="default">$json</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; return </span><span class="default">json_decode</span><span class="keyword">(</span><span class="default">$json</span><span class="keyword">,</span><span class="default">$assoc</span><span class="keyword">);<br />
-}<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-Some examples of accepted syntax:<br />
-<br />
-<span class="default">&lt;?php<br />
-$json </span><span class="keyword">= </span><span class="string">'{a:{b:"c",d:["e","f",0]}}'</span><span class="keyword">;<br />
-</span><span class="default">$json </span><span class="keyword">= <br />
-</span><span class="string">'{<br />
-&nbsp;&nbsp; a : {<br />
-&nbsp;&nbsp; &nbsp;&nbsp; b : "c",<br />
-&nbsp;&nbsp; &nbsp;&nbsp; "d.e.f": "g"<br />
-&nbsp;&nbsp; }<br />
-}'</span><span class="keyword">;<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-If your content needs to have newlines, do this:<br />
-<br />
-<span class="default">&lt;?php<br />
-$string </span><span class="keyword">= </span><span class="string">"This<br />
-Text<br />
-Has<br />
-Newlines"</span><span class="keyword">;<br />
-</span><span class="default">$json </span><span class="keyword">= </span><span class="string">'{withnewlines:'</span><span class="keyword">.</span><span class="default">json_encode</span><span class="keyword">(</span><span class="default">$string</span><span class="keyword">).</span><span class="string">'}'</span><span class="keyword">;<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-Note: This does not fix trailing commas or single quotes.<br />
-<br />
-[EDIT BY danbrown AT php DOT net: Contains a bugfix provided by (sskaje AT gmail DOT com) on 05-DEC-2012 with the following note.]<br />
-<br />
-Old regexp failed when json like<br />
-{aaa:[{a:1},{a:2}]}</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="91656""></a>
-  <div class="note">
-   <strong class="user">premiersullivan at gmail dot com</strong>
-   <a href="#91656" class="date">22-Jun-2009 01:14</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-This function will remove trailing commas and encode in utf8, which might solve many people's problems. Someone might want to expand it to also change single quotes to double quotes, and fix other kinds of json breakage.<br />
-<br />
-<span class="default">&lt;?php<br />
-&nbsp;&nbsp;&nbsp; </span><span class="keyword">function </span><span class="default">mjson_decode</span><span class="keyword">(</span><span class="default">$json</span><span class="keyword">)<br />
-&nbsp;&nbsp;&nbsp; {<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">json_decode</span><span class="keyword">(</span><span class="default">removeTrailingCommas</span><span class="keyword">(</span><span class="default">utf8_encode</span><span class="keyword">(</span><span class="default">$json</span><span class="keyword">)));<br />
-&nbsp;&nbsp;&nbsp; }<br />
-&nbsp;&nbsp;&nbsp; <br />
-&nbsp;&nbsp;&nbsp; function </span><span class="default">removeTrailingCommas</span><span class="keyword">(</span><span class="default">$json</span><span class="keyword">)<br />
-&nbsp;&nbsp;&nbsp; {<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$json</span><span class="keyword">=</span><span class="default">preg_replace</span><span class="keyword">(</span><span class="string">'/,\s*([\]}])/m'</span><span class="keyword">, </span><span class="string">'$1'</span><span class="keyword">, </span><span class="default">$json</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">$json</span><span class="keyword">;<br />
-&nbsp;&nbsp;&nbsp; }<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="90790""></a>
-  <div class="note">
-   <strong class="user">Gravis</strong>
-   <a href="#90790" class="date">10-May-2009 04:38</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-with two lines you can convert your string from JavaScript toSource() (see <a href="http://www.w3schools.com/jsref/jsref_toSource.asp" rel="nofollow" target="_blank">http://www.w3schools.com/jsref/jsref_toSource.asp</a>) output format to JSON accepted format.&nbsp; this works with subobjects too!<br />
-note: toSource() is part of JavaScript 1.3 but only implemented in Mozilla based javascript engines (not Opera/IE/Safari/Chrome).<br />
-<br />
-<span class="default">&lt;?php<br />
-&nbsp; $str </span><span class="keyword">= </span><span class="string">'({strvar:"string", number:40, boolvar:true, subobject:{substrvar:"sub string", subsubobj:{deep:"deeply nested"}, strnum:"56"}, false_val:false, false_str:"false"})'</span><span class="keyword">; </span><span class="comment">// example javascript object toSource() output<br />
-<br />
-&nbsp; </span><span class="default">$str </span><span class="keyword">= </span><span class="default">substr</span><span class="keyword">(</span><span class="default">$str</span><span class="keyword">, </span><span class="default">1</span><span class="keyword">, </span><span class="default">strlen</span><span class="keyword">(</span><span class="default">$str</span><span class="keyword">) - </span><span class="default">2</span><span class="keyword">); </span><span class="comment">// remove outer ( and )<br />
-&nbsp; </span><span class="default">$str </span><span class="keyword">= </span><span class="default">preg_replace</span><span class="keyword">(</span><span class="string">"/([a-zA-Z0-9_]+?):/" </span><span class="keyword">, </span><span class="string">"\"$1\":"</span><span class="keyword">, </span><span class="default">$str</span><span class="keyword">); </span><span class="comment">// fix variable names<br />
-<br />
-&nbsp; </span><span class="default">$output </span><span class="keyword">= </span><span class="default">json_decode</span><span class="keyword">(</span><span class="default">$str</span><span class="keyword">, </span><span class="default">true</span><span class="keyword">);<br />
-&nbsp; </span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$output</span><span class="keyword">);<br />
-</span><span class="default">?&gt;</span> <br />
-<br />
-var_dump output:<br />
-array(6) {<br />
-&nbsp; ["strvar"]=&gt;<br />
-&nbsp; string(6) "string"<br />
-&nbsp; ["number"]=&gt;<br />
-&nbsp; int(40)<br />
-&nbsp; ["boolvar"]=&gt;<br />
-&nbsp; bool(true)<br />
-&nbsp; ["subobject"]=&gt;<br />
-&nbsp; array(3) {<br />
-&nbsp;&nbsp;&nbsp; ["substrvar"]=&gt;<br />
-&nbsp;&nbsp;&nbsp; string(10) "sub string"<br />
-&nbsp;&nbsp;&nbsp; ["subsubobj"]=&gt;<br />
-&nbsp;&nbsp;&nbsp; array(1) {<br />
-&nbsp;&nbsp; &nbsp;&nbsp; ["deep"]=&gt;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; string(13) "deeply nested"<br />
-&nbsp;&nbsp;&nbsp; }<br />
-&nbsp;&nbsp;&nbsp; ["strnum"]=&gt;<br />
-&nbsp;&nbsp;&nbsp; string(2) "56"<br />
-&nbsp; }<br />
-&nbsp; ["false_val"]=&gt;<br />
-&nbsp; bool(false)<br />
-&nbsp; ["false_str"]=&gt;<br />
-&nbsp; string(5) "false"<br />
-}<br />
-<br />
-hope this saves someone some time.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="86997""></a>
-  <div class="note">
-   <strong class="user">Aaron Kardell</strong>
-   <a href="#86997" class="date">14-Nov-2008 04:39</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Make sure you pass in utf8 content, or json_decode may error out and just return a null value.&nbsp; For a particular web service I was using, I had to do the following:<br />
-<br />
-<span class="default">&lt;?php<br />
-$contents </span><span class="keyword">= </span><span class="default">file_get_contents</span><span class="keyword">(</span><span class="default">$url</span><span class="keyword">);<br />
-</span><span class="default">$contents </span><span class="keyword">= </span><span class="default">utf8_encode</span><span class="keyword">(</span><span class="default">$contents</span><span class="keyword">);<br />
-</span><span class="default">$results </span><span class="keyword">= </span><span class="default">json_decode</span><span class="keyword">(</span><span class="default">$contents</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-Hope this helps!</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="86181""></a>
-  <div class="note">
-   <strong class="user">steven at acko dot net</strong>
-   <a href="#86181" class="date">07-Oct-2008 09:49</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-json_decode()'s handling of invalid JSON is very flaky, and it is very hard to reliably determine if the decoding succeeded or not. Observe the following examples, none of which contain valid JSON:<br />
-<br />
-The following each returns NULL, as you might expect:<br />
-<br />
-<span class="default">&lt;?php<br />
-var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="string">'['</span><span class="keyword">));&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// unmatched bracket<br />
-</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="string">'{'</span><span class="keyword">));&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// unmatched brace<br />
-</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="string">'{}}'</span><span class="keyword">));&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// unmatched brace<br />
-</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="string">'{error error}'</span><span class="keyword">)); </span><span class="comment">// invalid object key/value<br />
-</span><span class="default">notation<br />
-var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="string">'["\"]'</span><span class="keyword">));&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// unclosed string<br />
-</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="string">'[" \x "]'</span><span class="keyword">));&nbsp; &nbsp; &nbsp; </span><span class="comment">// invalid escape code<br />
-<br />
-</span><span class="default">Yet the following each returns the literal string you passed to it</span><span class="keyword">:<br />
-<br />
-</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="string">' ['</span><span class="keyword">)); </span><span class="comment">// unmatched bracket<br />
-</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="string">' {'</span><span class="keyword">)); </span><span class="comment">// unmatched brace<br />
-</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="string">' {}}'</span><span class="keyword">)); </span><span class="comment">// unmatched brace<br />
-</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="string">' {error error}'</span><span class="keyword">)); </span><span class="comment">// invalid object key/value notation<br />
-</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="string">'"\"'</span><span class="keyword">)); </span><span class="comment">// unclosed string<br />
-</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">json_decode</span><span class="keyword">(</span><span class="string">'" \x "'</span><span class="keyword">)); </span><span class="comment">// invalid escape code<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-(this is on PHP 5.2.6)<br />
-<br />
-Reported as a bug, but oddly enough, it was closed as not a bug.<br />
-<br />
-[NOTE BY danbrown AT php DOT net: This was later re-evaluated and it was determined that an issue did in fact exist, and was patched by members of the Development Team.&nbsp; See <a href="http://bugs.php.net/bug.php?id=45989 for details.]" rel="nofollow" target="_blank">http://bugs.php.net/bug.php?id=45989 for details.]</a></span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="85980""></a>
-  <div class="note">
-   <strong class="user">jrevillini</strong>
-   <a href="#85980" class="date">26-Sep-2008 09:01</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-When decoding strings from the database, make sure the input was encoded with the correct charset when it was input to the database.<br />
-<br />
-I was using a form to create records in the DB which had a content field that was valid JSON, but it included curly apostrophes.&nbsp; If the page with the form did not have <br />
-<br />
-&lt;meta http-equiv="Content-Type" content="text/html;charset=utf-8"&gt;<br />
-<br />
-in the head, then the data was sent to the database with the wrong encoding.&nbsp; Then, when json_decode tried to convert the string to an object, it failed every time.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="74658""></a>
-  <div class="note">
-   <strong class="user">nospam (AT) hjcms (DOT) de</strong>
-   <a href="#74658" class="date">22-Apr-2007 06:15</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-You can't transport Objects or serialize Classes, json_* replace it bei stdClass!<br />
-<span class="default">&lt;?php<br />
-<br />
-$dom </span><span class="keyword">= new </span><span class="default">DomDocument</span><span class="keyword">( </span><span class="string">'1.0'</span><span class="keyword">, </span><span class="string">'utf-8' </span><span class="keyword">);<br />
-</span><span class="default">$body </span><span class="keyword">= </span><span class="default">$dom</span><span class="keyword">-&gt;</span><span class="default">appendChild</span><span class="keyword">( </span><span class="default">$dom</span><span class="keyword">-&gt;</span><span class="default">createElement</span><span class="keyword">( </span><span class="string">"body" </span><span class="keyword">) );<br />
-</span><span class="default">$body</span><span class="keyword">-&gt;</span><span class="default">appendChild</span><span class="keyword">( </span><span class="default">$dom</span><span class="keyword">-&gt;</span><span class="default">createElement</span><span class="keyword">( </span><span class="string">"forward"</span><span class="keyword">, </span><span class="string">"Hallo" </span><span class="keyword">) );<br />
-<br />
-</span><span class="default">$JSON_STRING </span><span class="keyword">= </span><span class="default">json_encode</span><span class="keyword">(<br />
-&nbsp;&nbsp; array(<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="string">"aArray" </span><span class="keyword">=&gt; </span><span class="default">range</span><span class="keyword">( </span><span class="string">"a"</span><span class="keyword">, </span><span class="string">"z" </span><span class="keyword">),<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="string">"bArray" </span><span class="keyword">=&gt; </span><span class="default">range</span><span class="keyword">( </span><span class="default">1</span><span class="keyword">, </span><span class="default">50 </span><span class="keyword">),<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="string">"cArray" </span><span class="keyword">=&gt; </span><span class="default">range</span><span class="keyword">( </span><span class="default">1</span><span class="keyword">, </span><span class="default">50</span><span class="keyword">, </span><span class="default">5 </span><span class="keyword">),<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="string">"String" </span><span class="keyword">=&gt; </span><span class="string">"Value"</span><span class="keyword">,<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="string">"stdClass" </span><span class="keyword">=&gt; </span><span class="default">$dom</span><span class="keyword">,<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="string">"XML" </span><span class="keyword">=&gt; </span><span class="default">$dom</span><span class="keyword">-&gt;</span><span class="default">saveXML</span><span class="keyword">()<br />
-&nbsp;&nbsp; )<br />
-);<br />
-<br />
-unset( </span><span class="default">$dom </span><span class="keyword">);<br />
-<br />
-</span><span class="default">$Search </span><span class="keyword">= </span><span class="string">"XML"</span><span class="keyword">;<br />
-</span><span class="default">$MyStdClass </span><span class="keyword">= </span><span class="default">json_decode</span><span class="keyword">( </span><span class="default">$JSON_STRING </span><span class="keyword">);<br />
-</span><span class="comment">// var_dump( "&lt;pre&gt;" , $MyStdClass , "&lt;/pre&gt;" );<br />
-<br />
-</span><span class="keyword">try {<br />
-<br />
-&nbsp;&nbsp; throw new </span><span class="default">Exception</span><span class="keyword">( </span><span class="string">"</span><span class="default">$Search</span><span class="string"> isn't a Instance of 'stdClass' Class by json_decode()." </span><span class="keyword">);<br />
-<br />
-&nbsp;&nbsp; if ( </span><span class="default">$MyStdClass</span><span class="keyword">-&gt;</span><span class="default">$Search </span><span class="keyword">instanceof </span><span class="default">$MyStdClass </span><span class="keyword">)<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">var_dump</span><span class="keyword">( </span><span class="string">"&lt;pre&gt;instanceof:" </span><span class="keyword">, </span><span class="default">$MyStdClass</span><span class="keyword">-&gt;</span><span class="default">$Search </span><span class="keyword">, </span><span class="string">"&lt;/pre&gt;" </span><span class="keyword">);<br />
-<br />
-} catch( </span><span class="default">Exception $ErrorHandle </span><span class="keyword">) {<br />
-<br />
-&nbsp;&nbsp; echo </span><span class="default">$ErrorHandle</span><span class="keyword">-&gt;</span><span class="default">getMessage</span><span class="keyword">();<br />
-<br />
-&nbsp;&nbsp; if ( </span><span class="default">property_exists</span><span class="keyword">( </span><span class="default">$MyStdClass</span><span class="keyword">, </span><span class="default">$Search </span><span class="keyword">) ) {<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$dom </span><span class="keyword">= new </span><span class="default">DomDocument</span><span class="keyword">( </span><span class="string">"1.0"</span><span class="keyword">, </span><span class="string">"utf-8" </span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$dom</span><span class="keyword">-&gt;</span><span class="default">loadXML</span><span class="keyword">( </span><span class="default">$MyStdClass</span><span class="keyword">-&gt;</span><span class="default">$Search </span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$body </span><span class="keyword">= </span><span class="default">$dom</span><span class="keyword">-&gt;</span><span class="default">getElementsByTagName</span><span class="keyword">( </span><span class="string">"body" </span><span class="keyword">)-&gt;</span><span class="default">item</span><span class="keyword">(</span><span class="default">0</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$body</span><span class="keyword">-&gt;</span><span class="default">appendChild</span><span class="keyword">( </span><span class="default">$dom</span><span class="keyword">-&gt;</span><span class="default">createElement</span><span class="keyword">( </span><span class="string">"rewind"</span><span class="keyword">, </span><span class="string">"Nice" </span><span class="keyword">) );<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">var_dump</span><span class="keyword">( </span><span class="default">htmlentities</span><span class="keyword">( </span><span class="default">$dom</span><span class="keyword">-&gt;</span><span class="default">saveXML</span><span class="keyword">(), </span><span class="default">ENT_QUOTES</span><span class="keyword">, </span><span class="string">'utf-8' </span><span class="keyword">) );<br />
-&nbsp;&nbsp; }<br />
-}<br />
-<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-</div>
-</div>
-<hr /><div class="manualnavbar" style="text-align: center;">
- <div class="prev" style="text-align: left; float: left;"><a href="ref.json.html">JSON 関数</a></div>
- <div class="next" style="text-align: right; float: right;"><a href="function.json-encode.html">json_encode</a></div>
- <div class="up"><a href="ref.json.html">JSON 関数</a></div>
- <div class="home"><a href="index.html">PHP Manual</a></div>
-</div></body></html>

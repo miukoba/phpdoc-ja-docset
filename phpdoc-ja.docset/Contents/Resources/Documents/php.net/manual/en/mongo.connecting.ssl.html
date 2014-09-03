@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>SSL での接続</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="mongo.connecting.html">≪ 接続</a></li>
+      <li style="float: right;"><a href="mongo.connecting.auth.html">認証 ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="mongo.connecting.html">接続</a></li>
+    <li>SSL での接続</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="mongo.connecting.ssl" class="section">
+  <h2 class="title">SSL での接続</h2>
+  <p class="para">
+   このドライバは <a href="http://docs.mongodb.org/manual/tutorial/configure-ssl/" class="link external" title="Link : http://docs.mongodb.org/manual/tutorial/configure-ssl/">&raquo;&nbsp;MongoDB over SSL</a>
+   接続に対応しています。また、オプションで <a href="context.ssl.html" class="link">SSL ストリームコンテキスト</a> を使えば、
+   指定した証明書チェーンによる証明書の検証や、
+   <a href="http://docs.mongodb.org/manual/tutorial/configure-x509/" class="link external" title="Link : http://docs.mongodb.org/manual/tutorial/configure-x509/">&raquo;&nbsp;X509 証明書による MongoDB</a>
+   への接続といった機能も利用できます。
+  </p>
+
+  <div class="example" id="mongo.connecting.context.ssl">
+   <p><strong>例1 SSL を使った MongoDB インスタンスへの接続</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$mc&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #DD0000">"mongodb://server1"</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #DD0000">"ssl"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+
+  <div class="example" id="mongo.connecting.context.ssl.verify">
+   <p><strong>例2 SSL を使った MongoDB インスタンスへの接続と、証明書の検証</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$ctx&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">stream_context_create</span><span style="color: #007700">(array(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"ssl"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;Optionally&nbsp;verify&nbsp;the&nbsp;server&nbsp;is&nbsp;who&nbsp;he&nbsp;says&nbsp;he&nbsp;is,&nbsp;and&nbsp;has&nbsp;been&nbsp;certified&nbsp;by&nbsp;CA&nbsp;we&nbsp;trust&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"verify_peer"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"allow_self_signed"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"cafile"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"/vagrant/certs/ca.pem"</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;),<br />));<br /><br /></span><span style="color: #0000BB">$mc&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"mongodb://server1"</span><span style="color: #007700">,&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">"ssl"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">),&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">"context"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$ctx</span><span style="color: #007700">)<br />);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+
+
+  <div class="example" id="mongo.connecting.context.ssl.certificate">
+   <p><strong>例3 クライアント証明書を要求する MongoDB インスタンスへの接続</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$ctx&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">stream_context_create</span><span style="color: #007700">(array(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"ssl"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"local_cert"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"/vagrant/certs/client.pem"</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;If&nbsp;the&nbsp;certificate&nbsp;we&nbsp;are&nbsp;providing&nbsp;was&nbsp;passphrase&nbsp;encoded,&nbsp;we&nbsp;need&nbsp;to&nbsp;set&nbsp;it&nbsp;here&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"passphrase"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"My&nbsp;Passphrase&nbsp;for&nbsp;the&nbsp;local_cert"</span><span style="color: #007700">,<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;Optionally&nbsp;verify&nbsp;the&nbsp;server&nbsp;is&nbsp;who&nbsp;he&nbsp;says&nbsp;he&nbsp;is&nbsp;*/<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"verify_peer"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"cafile"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"/vagrant/certs/ca.pem"</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;),<br />));<br /><br /></span><span style="color: #0000BB">$mc&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"mongodb://server1/?ssl=true"</span><span style="color: #007700">,&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;array(),&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">"context"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$ctx</span><span style="color: #007700">)<br />);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+
+  <div class="example" id="mongo.connecting.authenticate.ssl.x509">
+   <p><strong>例4 X.509 証明書による認証</strong></p>
+   <div class="example-contents"><p>
+    ユーザー名は、X509 の <em>certificate subject</em> から次のように取得できます。
+   </p></div>
+   <div class="example-contents">
+<div class="shellcode"><pre class="shellcode">openssl x509 -in /vagrant/certs/ca-signed-client.pem -inform PEM -subject -nameopt RFC2253</pre>
+</div>
+   </div>
+
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$ctx&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">stream_context_create</span><span style="color: #007700">(&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"ssl"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"local_cert"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"/vagrant/certs/ca-signed-client.pem"</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;)<br />)&nbsp;);<br /><br /></span><span style="color: #0000BB">$mc&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'mongodb://username@server1/?authSource=$external&amp;authMechanism=MONGODB-X509&amp;ssl=true'</span><span style="color: #007700">,&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;array(),&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">"context"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$ctx</span><span style="color: #007700">)<br />);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>
+    ここで、<em>username</em> は certificate subject となります。
+   </p></div>
+  </div>
+
+  <div class="simplesect">
+   <h3 class="title">変更履歴</h3>
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>1.5.0</td>
+       <td>
+        X509 認証のサポートが追加されました。
+       </td>
+      </tr>
+
+      <tr>
+       <td>1.4.0</td>
+       <td>
+        SSL を使って MongoDB に接続できるようになりました。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </div>
+
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

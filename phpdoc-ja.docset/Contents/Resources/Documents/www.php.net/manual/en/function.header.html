@@ -1,2747 +1,0 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
- <head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <title>生の HTTP ヘッダを送信する</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
- </head>
- <body class="docs"><div class="manualnavbar" style="text-align: center;">
- <div class="prev" style="text-align: left; float: left;"><a href="function.header-remove.html">header_remove</a></div>
- <div class="next" style="text-align: right; float: right;"><a href="function.headers-list.html">headers_list</a></div>
- <div class="up"><a href="ref.network.html">ネットワーク 関数</a></div>
- <div class="home"><a href="index.html">PHP Manual</a></div>
-</div><hr /><div id="function.header" class="refentry">
- <div class="refnamediv">
-  <h1 class="refname">header</h1>
-  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose"><span class="refname">header</span> &mdash; <span class="dc-title">生の HTTP ヘッダを送信する</span></p>
-
- </div>
- 
- <div class="refsect1 description" id="refsect1-function.header-description">
-  <h3 class="title">説明</h3>
-  <div class="methodsynopsis dc-description">
-   <span class="type"><span class="type void">void</span></span> <span class="methodname"><strong>header</strong></span>
-    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$string</code></span>
-   [, <span class="methodparam"><span class="type">bool</span> <code class="parameter">$replace</code><span class="initializer"> = true</span></span>
-   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$http_response_code</code></span>
-  ]] )</div>
-
-  <p class="para rdfs-comment">
-    <span class="function"><strong>header()</strong></span> は、生の
-   <acronym title="Hypertext Transfer Protocol">HTTP</acronym> ヘッダを送信するために使用されます。
-   <acronym title="Hypertext Transfer Protocol">HTTP</acronym> ヘッダについての詳細な情報は
-   <a href="http://www.faqs.org/rfcs/rfc2616" class="link external" title="Link : http://www.faqs.org/rfcs/rfc2616">&raquo;&nbsp;HTTP/1.1 仕様</a>
-   を参照ください。
-  </p>
-  <p class="para">
-   覚えておいて頂きたいのは、 <span class="function"><strong>header()</strong></span> 関数は、
-   通常の HTML タグまたは PHP からの出力にかかわらず、すべての実際の
-   出力の前にコールする必要があることです。
-   頻出するエラーとして、 <span class="function"><a href="function.include.html" class="function">include</a></span>
-   または  <span class="function"><a href="function.require.html" class="function">require</a></span> 関数、他のファイルをアクセスする関数に
-   空白または空行があり、 <span class="function"><strong>header()</strong></span> の前に出力が
-   行われてしまうというものがあります。同じ問題は、単一の PHP/HTML
-   ファイルを使用している場合でも存在します。
-   <div class="informalexample">
-    <div class="example-contents">
-<div class="phpcode"><code><span style="color: #000000">
-&lt;html&gt;<br /><span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;これはエラーとなります。この上に出力があることに注目してください。<br />&nbsp;*&nbsp;それはheader()のコールより前であるということになります&nbsp;*/<br /></span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">'Location:&nbsp;http://www.example.com/'</span><span style="color: #007700">);<br />exit;<br /></span><span style="color: #0000BB">?&gt;</span>
-</span>
-</code></div>
-    </div>
-
-   </div>
-  </p>
- </div>
-
-
- <div class="refsect1 parameters" id="refsect1-function.header-parameters">
-  <h3 class="title">パラメータ</h3>
-  <p class="para">
-   <dl>
-
-    <dt>
-
-     <span class="term"><em><code class="parameter">string</code></em></span>
-     <dd>
-
-      <p class="para">
-       ヘッダ文字列。
-      </p>
-      <p class="para">
-       特殊な header コールが 2 種類あります。最初のものは、
-       文字列 &quot;<em>HTTP/</em>&quot;
-       から始まる全てのヘッダ (大文字・小文字は区別されません) です。
-       このヘッダは、送信する HTTP ステータスコードを示すために使用されます。
-       例えば、存在しないファイルへのリクエストを処理するためにある PHP
-       スクリプトを使用するよう (<em>ErrorDocument</em>
-       ディレクティブにより) Apache を設定する場合、
-       そのスクリプトが正しいステータスコードを返すようにする必要があります。
-      </p>
-      <p class="para">
-       <div class="informalexample">
-        <div class="example-contents">
-<div class="phpcode"><code><span style="color: #000000">
-<span style="color: #0000BB">&lt;?php<br />header</span><span style="color: #007700">(</span><span style="color: #DD0000">"HTTP/1.0&nbsp;404&nbsp;Not&nbsp;Found"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
-</span>
-</code></div>
-        </div>
-
-       </div>
-      </p>
-      <p class="para">
-       2 番目の特別なヘッダは、&quot;Location:&quot;
-       ヘッダです。このヘッダがブラウザに返されるだけではなく、
-       ブラウザに <em>REDIRECT</em> (302) ステータスコードを返します
-       (<em>201</em> や <em>3xx</em>
-       ステータスコードが既に送信されていない場合にのみ)。
-      </p>
-      <p class="para">
-       <div class="informalexample">
-        <div class="example-contents">
-<div class="phpcode"><code><span style="color: #000000">
-<span style="color: #0000BB">&lt;?php<br />header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Location:&nbsp;http://www.example.com/"</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">/*&nbsp;ブラウザをリダイレクトします&nbsp;*/<br /><br />/*&nbsp;リダイレクトする際に、これ以降のコードが実行されないことを確認してください&nbsp;*/<br /></span><span style="color: #007700">exit;<br /></span><span style="color: #0000BB">?&gt;</span>
-</span>
-</code></div>
-        </div>
-
-       </div>
-      </p>
-     </dd>
-
-    </dt>
-
-    <dt>
-
-     <span class="term"><em><code class="parameter">replace</code></em></span>
-     <dd>
-
-      <p class="para">
-       オプションのパラメータ <em><code class="parameter">replace</code></em> は、ヘッダが
-       前に送信された類似のヘッダを置換するか、または、同じ形式の二番目の
-       ヘッダを追加するかどうかを指定します。デフォルトでは、この関数は
-       置換を行ないますが、二番目の引数に <strong><code>FALSE</code></strong> を指定すると、同じ型の
-       複数のヘッダを強制的に生成します。例えば、
-      </p>
-      <p class="para">
-       <div class="informalexample">
-        <div class="example-contents">
-<div class="phpcode"><code><span style="color: #000000">
-<span style="color: #0000BB">&lt;?php<br />header</span><span style="color: #007700">(</span><span style="color: #DD0000">'WWW-Authenticate:&nbsp;Negotiate'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">'WWW-Authenticate:&nbsp;NTLM'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
-</span>
-</code></div>
-        </div>
-
-       </div>
-      </p>
-     </dd>
-
-    </dt>
-
-    <dt>
-
-     <span class="term"><em><code class="parameter">http_response_code</code></em></span>
-     <dd>
-
-      <p class="para">
-       HTTP レスポンスコードを強制的に指定の値にします。このパラメータが意味をなすのは
-       <em><code class="parameter">string</code></em> が空文字列でないときだけであることに注意しましょう。
-      </p>
-     </dd>
-
-    </dt>
-
-   </dl>
-
-  </p>
- </div>
-
-
- <div class="refsect1 returnvalues" id="refsect1-function.header-returnvalues">
-  <h3 class="title">返り値</h3>
-  <p class="para">
-   値を返しません。
-  </p>
- </div>
-
-
- <div class="refsect1 changelog" id="refsect1-function.header-changelog">
-  <h3 class="title">変更履歴</h3>
-  <p class="para">
-   <table class="doctable informaltable">
-    
-     <thead>
-      <tr>
-       <th>バージョン</th>
-       <th>説明</th>
-      </tr>
-
-     </thead>
-
-     <tbody class="tbody">
-      <tr>
-       <td>4.4.2 および 5.1.2</td>
-       <td>
-        この関数は一度に複数のヘッダを送信できないようになりました。
-        これは、ヘッダインジェクション攻撃への対策です。
-       </td>
-      </tr>
-
-      <tr>
-       <td>4.3.0</td>
-       <td>
-        <em><code class="parameter">http_response_code</code></em> パラメータが追加されました。
-       </td>
-      </tr>
-
-      <tr>
-       <td>4.0.4</td>
-       <td>
-        <em><code class="parameter">replace</code></em> パラメータが追加されました。
-       </td>
-      </tr>
-
-     </tbody>
-    
-   </table>
-
-  </p>
- </div>
-
-
- <div class="refsect1 examples" id="refsect1-function.header-examples">
-  <h3 class="title">例</h3>
-  <p class="para">
-   <div class="example" id="example-4463">
-    <p><strong>例1 ダウンロードダイアログ</strong></p>
-    <div class="example-contents"><p>
-     PDF ファイルを生成した場合など、
-     それをダウンロードするかの確認ダイアログを表示させたいことがあるでしょう。
-     そんな場合は、<a href="http://www.faqs.org/rfcs/rfc2183" class="link external" title="Link : http://www.faqs.org/rfcs/rfc2183">&raquo;&nbsp;Content-Disposition</a>
-     ヘッダを使用してファイル名を指定すると、ブラウザ側でダイアログを表示させることができます。
-    </p></div>
-    <div class="example-contents">
-<div class="phpcode"><code><span style="color: #000000">
-<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;PDFを出力します<br /></span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">'Content-type:&nbsp;application/pdf'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;downloaded.pdf&nbsp;という名前で保存させます<br /></span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">'Content-Disposition:&nbsp;attachment;&nbsp;filename="downloaded.pdf"'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;もとの&nbsp;PDF&nbsp;ソースは&nbsp;original.pdf&nbsp;です<br /></span><span style="color: #0000BB">readfile</span><span style="color: #007700">(</span><span style="color: #DD0000">'original.pdf'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
-</span>
-</code></div>
-    </div>
-
-   </div>
-  </p>
-  <p class="para">
-   <div class="example" id="example-4464">
-    <p><strong>例2 キャッシュディレクティブ</strong></p>
-    <div class="example-contents"><p>
-     PHP スクリプトはしばしば動的に HTML を生成するため、クライアント
-     ブラウザやサーバーおよびクライアントブラウザの間でプロキシがキャッシュを
-     行ったりするべきではありません。多くのプロキシとクライアントでは、
-     以下のコードにより強制的にキャッシュを無効にできます。
-    </p></div>
-    <div class="example-contents">
-<div class="phpcode"><code><span style="color: #000000">
-<span style="color: #0000BB">&lt;?php<br />header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Cache-Control:&nbsp;no-cache,&nbsp;must-revalidate"</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;HTTP/1.1<br /></span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Expires:&nbsp;Sat,&nbsp;26&nbsp;Jul&nbsp;1997&nbsp;05:00:00&nbsp;GMT"</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;過去の日付<br /></span><span style="color: #0000BB">?&gt;</span>
-</span>
-</code></div>
-    </div>
-
-    <div class="example-contents"><p>
-     <blockquote class="note"><p><strong class="note">注意</strong>: 
-      <p class="para">
-       上記のヘッダを全て出力しなかったとしてもページのキャッシュが
-       行われない場合があることに気付くかもしれません。デフォルトの
-       ブラウザのキャッシュの動作をユーザーが変更できる手段はいくつもあります。
-       上記のヘッダを送信することにより、スクリプトの出力がキャッシュされる
-       可能性がある設定を上書きするべきです。
-      </p>
-      <p class="para">
-       さらに、 <span class="function"><a href="function.session-cache-limiter.html" class="function">session_cache_limiter()</a></span> および
-       設定 <em>session.cache_limiter</em> を用いると、
-       セッションが使用された際にキャッシュ関係の正しいヘッダを
-       自動的に生成させることもできます。
-      </p>
-     </p></blockquote>
-    </p></div>
-   </div>
-  </p>
- </div>
-
-
- <div class="refsect1 notes" id="refsect1-function.header-notes">
-  <h3 class="title">注意</h3>
-  <blockquote class="note"><p><strong class="note">注意</strong>: 
-   <p class="para">
-    ヘッダにアクセスできたりヘッダを出力したりするのは、
-    それに対応した SAPI を使っている場合のみです。
-   </p>
-  </p></blockquote>
-
-  <blockquote class="note"><p><strong class="note">注意</strong>: 
-   <p class="para">
-    出力のバッファリングを使用してこの問題を回避することができます。
-    この場合、ブラウザへの出力が送信するまでサーバーに
-    全てバッファリングされるオーバーヘッドがあります。出力バッファリングは、
-     <span class="function"><a href="function.ob-start.html" class="function">ob_start()</a></span> と
-     <span class="function"><a href="function.ob-end-flush.html" class="function">ob_end_flush()</a></span> をスクリプトでコールするか
-    <var class="filename">php.ini</var> またはサーバー設定ファイルの設定ディレクティブ
-    <em>output_buffering</em> を設定することにより
-    行うことが可能です。
-   </p>
-  </p></blockquote>
-  <blockquote class="note"><p><strong class="note">注意</strong>: 
-   <p class="para">
-    実際に  <span class="function"><strong>header()</strong></span> が最初にコールされたか
-    どうかにかかわらず、HTTP ステータスヘッダ行は
-    クライアントに対し常に最初に送信されます。
-    HTTP ヘッダが既に送信されていない限り、
-     <span class="function"><strong>header()</strong></span> をコールすることでステータスは
-    常に上書きされます。
-   </p>
-  </p></blockquote>
-  <blockquote class="note"><p><strong class="note">注意</strong>: 
-   <p class="para">
-    Microsoft Internet Explorer 4.01 にはバグがあり、
-    この方法が動作しません。これを解決する方法はありません。
-    同様に Microsoft Internet Explorer 5.5 にもこれを妨げるバグがあります。
-    こちらは、サービスパック 2 以降にアップグレードすることで対応できます。
-   </p>
-  </p></blockquote>
-  <blockquote class="note"><p><strong class="note">注意</strong>: 
-   <span class="simpara">
-    <a href="ini.sect.safe-mode.html#ini.safe-mode" class="link">セーフモード</a>が有効な場合は、
-    <em>WWW-Authenticate</em> ヘッダ (HTTP 認証に使用する)
-    を設定した際に、スクリプトの uid が <em>realm</em>
-    部に追加されます。
-   </span>
-  </p></blockquote>
-  <blockquote class="note"><p><strong class="note">注意</strong>: 
-   <p class="para">
-    HTTP/1.1 では、スキーム、ホスト名、絶対パスを含む絶対
-    <acronym title="Uniform Resource Identifier">URI</acronym> が <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.30" class="link external" title="Link : http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.30">&raquo;&nbsp;Location:</a>
-    の引数として必要ですが、相対 URI を受け付けるクライアントもあります。
-    通常は、相対 URI から絶対 URI を作成するためには
-    <var class="varname"><var class="varname"><a href="reserved.variables.server.html" class="classname">$_SERVER['HTTP_HOST']</a></var></var>、
-    <var class="varname"><var class="varname"><a href="reserved.variables.server.html" class="classname">$_SERVER['PHP_SELF']</a></var></var> および
-     <span class="function"><a href="function.dirname.html" class="function">dirname()</a></span> を使用できます。
-    <div class="informalexample">
-     <div class="example-contents">
-<div class="phpcode"><code><span style="color: #000000">
-<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;カレントディレクトリの別のページにリダイレクトします&nbsp;*/<br /></span><span style="color: #0000BB">$host&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$_SERVER</span><span style="color: #007700">[</span><span style="color: #DD0000">'HTTP_HOST'</span><span style="color: #007700">];<br /></span><span style="color: #0000BB">$uri&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">rtrim</span><span style="color: #007700">(</span><span style="color: #0000BB">dirname</span><span style="color: #007700">(</span><span style="color: #0000BB">$_SERVER</span><span style="color: #007700">[</span><span style="color: #DD0000">'PHP_SELF'</span><span style="color: #007700">]),&nbsp;</span><span style="color: #DD0000">'/\\'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$extra&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'mypage.php'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">header</span><span style="color: #007700">(</span><span style="color: #DD0000">"Location:&nbsp;http://</span><span style="color: #0000BB">$host$uri</span><span style="color: #DD0000">/</span><span style="color: #0000BB">$extra</span><span style="color: #DD0000">"</span><span style="color: #007700">);<br />exit;<br /></span><span style="color: #0000BB">?&gt;</span>
-</span>
-</code></div>
-     </div>
-
-    </div>
-   </p>
-  </p></blockquote>
-  <blockquote class="note"><p><strong class="note">注意</strong>: 
-   <p class="para">
-    <a href="session.configuration.html#ini.session.use-trans-sid" class="link">session.use_trans_sid</a>
-    が有効であったとしても、セッション ID が Location ヘッダとともに
-    渡されることはありません。<strong><code>SID</code></strong> 定数を使用して
-    手動で渡す必要があります。
-   </p>
-  </p></blockquote>
- </div>
-
-
- <div class="refsect1 seealso" id="refsect1-function.header-seealso">
-  <h3 class="title">参考</h3>
-  <p class="para">
-   <ul class="simplelist">
-    <li class="member"> <span class="function"><a href="function.headers-sent.html" class="function" rel="rdfs-seeAlso">headers_sent()</a> - ヘッダが既に送信されているかどうかを調べる</span></li>
-    <li class="member"> <span class="function"><a href="function.setcookie.html" class="function" rel="rdfs-seeAlso">setcookie()</a> - クッキーを送信する</span></li>
-    <li class="member"> <span class="function"><a href="function.http-response-code.html" class="function" rel="rdfs-seeAlso">http_response_code()</a> - HTTP レスポンスコードを取得または設定</span></li>
-    <li class="member">
-     <a href="features.http-auth.html" class="link">HTTP
-     認証</a>
-    </li>
-   </ul>
-  </p>
- </div>
-
-
-</div><div id="usernotes">
- <div class="head">
-  <h3 class="title">User Contributed Notes</h3>
- </div>
-<div id="allnotes">  <a name="113474""></a>
-  <div class="note">
-   <strong class="user">nileshyadav326 at gmail dot com</strong>
-   <a href="#113474" class="date">16-Oct-2013 10:30</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-if you want to make a script Download&nbsp;&nbsp; in excel format<br />
-<br />
-header("Content-type: application/vnd.ms-excel");<br />
-<br />
-header("Content-Disposition:attachment;filename=celebration.xls");<br />
-<br />
-header("Pragma: no-cache");<br />
-<br />
-header("Expires: 0");</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="113336""></a>
-  <div class="note">
-   <strong class="user">Anonymous</strong>
-   <a href="#113336" class="date">29-Sep-2013 03:41</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-User blinki bill got upvoted for saying that all downloads start with a newline and providing a workaround. Lol, did nobody see his error?<br />
-<br />
-<span class="default">&lt;?php<br />
-header</span><span class="keyword">(</span><span class="string">"Content-Transfer-Encoding: binary\n"</span><span class="keyword">);<br />
-</span><span class="default">readfile</span><span class="keyword">(</span><span class="default">$fullpath</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-Look closely at the content-transfer-encoding. He ends it with a newline before he begins sending the content. That is where his extra newline came from. A user bug. Not a PHP bug.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="113048""></a>
-  <div class="note">
-   <strong class="user">udaykiran dot pulipati at gmail dot com</strong>
-   <a href="#113048" class="date">22-Aug-2013 09:08</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-<span class="default">&lt;?php <br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">// for refreshing a page<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$sec </span><span class="keyword">= </span><span class="default">10</span><span class="keyword">;<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Refresh: </span><span class="default">$sec</span><span class="string">;"</span><span class="keyword">);<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="111488""></a>
-  <div class="note">
-   <strong class="user">chris at willowsconsulting dot ie</strong>
-   <a href="#111488" class="date">25-Feb-2013 10:30</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-It seems that this line of code is triggering a long TTFB on some Apache servers (either on Linux or MacOS) having a GZIP compression ON:<br />
-<span class="default">&lt;?php<br />
-header</span><span class="keyword">(</span><span class="string">"Content-Length: "</span><span class="keyword">.</span><span class="default">strlen</span><span class="keyword">(</span><span class="default">$content</span><span class="keyword">));<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-If you are not serving binary files to download (like CSS, JS, or whatever), you can remove the line of code.<br />
-<br />
-This is what I have experienced:<br />
-TTFB without the line: 144ms<br />
-TTFB with the line: 5147ms (!!)<br />
-<br />
-This weird behavior has been documented on some (old) version of IIS as well.<br />
-Conflict between mod_deflate and mod_fastcgi seems still unresolved... <br />
-<br />
-It is your duty has a PHP programmer to cope with architecture/server problem~.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="109474""></a>
-  <div class="note">
-   <strong class="user">mahdi at jowkar dot ir</strong>
-   <a href="#109474" class="date">20-Jul-2012 05:48</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-You can use header(); function to show programs Errors<br />
-for example<br />
-<br />
-// Errors.php<br />
-<span class="default">&lt;?php<br />
-</span><span class="keyword">if(isset(</span><span class="default">$_GET</span><span class="keyword">[</span><span class="string">'iderror'</span><span class="keyword">]))<br />
-{<br />
-echo </span><span class="string">'&lt;div align="center"&gt;'</span><span class="keyword">;<br />
-switch(</span><span class="default">$_GET</span><span class="keyword">[</span><span class="string">'iderror'</span><span class="keyword">])<br />
-{<br />
-case </span><span class="default">1</span><span class="keyword">:<br />
-echo </span><span class="string">"we can not found your username or password"</span><span class="keyword">;<br />
-</span><span class="default">breaak</span><span class="keyword">;<br />
-case </span><span class="default">2</span><span class="keyword">:<br />
-echo </span><span class="string">"please login"</span><span class="keyword">;<br />
-break;<br />
-}<br />
-echo </span><span class="string">'&lt;/div&gt;'</span><span class="keyword">;<br />
-}<br />
-else<br />
-{<br />
-echo </span><span class="string">"please send your Errors code"</span><span class="keyword">;<br />
-}<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-//panel.php<br />
-<span class="default">&lt;?php<br />
-</span><span class="comment">// ...<br />
-</span><span class="keyword">if(</span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="string">'access'</span><span class="keyword">] == </span><span class="string">""</span><span class="keyword">)<br />
-{<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Location: Errors.php?id=1"</span><span class="keyword">);<br />
-}<br />
-if(</span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="string">'username'</span><span class="keyword">] == </span><span class="string">""</span><span class="keyword">)<br />
-{<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Location: Errors.php?id=2"</span><span class="keyword">);<br />
-}<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="108766""></a>
-  <div class="note">
-   <strong class="user">ben at indietorrent dot org</strong>
-   <a href="#108766" class="date">24-May-2012 02:34</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Be aware that sending binary files to the user-agent (browser) over an encrypted connection (SSL/TLS) will fail in IE (Internet Explorer) versions 5, 6, 7, and 8 if any of the following headers is included:<br />
-<br />
-Cache-control:no-store<br />
-Cache-control:no-cache<br />
-<br />
-See: <a href="http://support.microsoft.com/kb/323308" rel="nofollow" target="_blank">http://support.microsoft.com/kb/323308</a><br />
-<br />
-Workaround: do not send those headers.<br />
-<br />
-Also, be aware that IE versions 5, 6, 7, and 8 double-compress already-compressed files and do not reverse the process correctly, so ZIP files and similar are corrupted on download.<br />
-<br />
-Workaround: disable compression (beyond text/html) for these particular versions of IE, e.g., using Apache's "BrowserMatch" directive. The following example disables compression in all versions of IE:<br />
-<br />
-BrowserMatch ".*MSIE.*" gzip-only-text/html</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="108748""></a>
-  <div class="note">
-   <strong class="user">rodelopiana at gmail dot com</strong>
-   <a href="#108748" class="date">23-May-2012 05:25</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-I resolve the problem ' header not working ' by editing the ob_start at the php.ini file</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="108111""></a>
-  <div class="note">
-   <strong class="user">Yousha dot A at Mail dot com</strong>
-   <a href="#108111" class="date">30-Mar-2012 01:29</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Safe redirect:<br />
-<br />
-<span class="default">&lt;?php<br />
-<br />
-</span><span class="keyword">function </span><span class="default">Redirect</span><span class="keyword">(</span><span class="default">$Str_Location</span><span class="keyword">, </span><span class="default">$Bln_Replace </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">, </span><span class="default">$Int_HRC </span><span class="keyword">= </span><span class="default">NULL</span><span class="keyword">)<br />
-{<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if(!</span><span class="default">headers_sent</span><span class="keyword">())<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; {<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">'location: ' </span><span class="keyword">. </span><span class="default">urldecode</span><span class="keyword">(</span><span class="default">$Str_Location</span><span class="keyword">), </span><span class="default">$Bln_Replace</span><span class="keyword">, </span><span class="default">$Int_HRC</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; exit;<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
-<br />
-&nbsp;&nbsp;&nbsp; exit(</span><span class="string">'&lt;meta http-equiv="refresh" content="0; url=' </span><span class="keyword">. </span><span class="default">urldecode</span><span class="keyword">(</span><span class="default">$Str_Location</span><span class="keyword">) . </span><span class="string">'"/&gt;'</span><span class="keyword">); </span><span class="comment"># | exit('&lt;script&gt;document.location.href=' . urldecode($Str_Location) . ';&lt;/script&gt;');<br />
-&nbsp;&nbsp;&nbsp; </span><span class="keyword">return;<br />
-}<br />
-<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="107930""></a>
-  <div class="note">
-   <strong class="user">wong</strong>
-   <a href="#107930" class="date">15-Mar-2012 07:15</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-I had to battle with the "header already sent" problem recently. I read the manual and understand "Do not send spaces or empty lines before header() is called" and made sure it wasn't happening in my code. But still have "header already sent" problem.<br />
-It turned out to be the UTF BOM (byte order mark) problem pete mentioned in 2004. It's probably worth to mention it again, maybe put this in the official manual. Those BOM bytes are not visible to normal text editor and caused me a lot of pain trying to figure out what went wrong.<br />
-In short, if you are sure your code didn't send any strings before header() is called but still have "header already sent" problem, it is probably because your source code is saved using UTF BOM. To verify that, open the source code in a binary editor, you should see the first 3 bytes are EF BB BF. They should be deleted for the source code to work.<br />
-The bug has been logged under https://bugs.php.net/bug.php?id=22108.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="107635""></a>
-  <div class="note">
-   <strong class="user">Aldo</strong>
-   <a href="#107635" class="date">23-Feb-2012 11:32</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Be carefull about the header("Content-length: $size");<br />
-If the size is lower than the actual size, your file will be corrupted when is downloaded.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="107044""></a>
-  <div class="note">
-   <strong class="user">lava</strong>
-   <a href="#107044" class="date">02-Jan-2012 10:22</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-I often see the Content-Transfer-Encoding header in user-provided examples. It should be noted that this is a MIME header and is not actually used in HTTP, which uses Transfer-Encoding and Content-Encoding instead (see <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.11 and http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.41" rel="nofollow" target="_blank">http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.11 and http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.41</a>). For example, the HTTP equivalent to the MIME header 'Content-Transfer-Encoding: binary' is 'Content-Encoding: identity'.<br />
-Keep that in mind when sending headers.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="106138""></a>
-  <div class="note">
-   <strong class="user">filip dot rydlo at email dot cz</strong>
-   <a href="#106138" class="date">13-Oct-2011 04:10</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-// Just a quick note to this header() function *today*, as of 2011-10-13:<br />
-// Latest Firefox (7.01) suddenly&nbsp; will *NOT* let users download file&nbsp; WHEN there is some extra character after the Content-type&nbsp; header !! So be CAREFUL!<br />
-<br />
-// for example:&nbsp; ";" and space... like this:<br />
-<br />
-header("Content-type: application/octet-stream; ");<br />
-<br />
-// THIS IS NO LONGER OPERATIONAL in Firefox 7.01!&nbsp; Be warned! - some pages STOPPED working - in terms of letting download attachments / files !<br />
-(in Firefox 6.02 it works, in IE8 and others&nbsp; it also still works... but it may change in the future!)</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="104137""></a>
-  <div class="note">
-   <strong class="user">audvare at gmail dot com</strong>
-   <a href="#104137" class="date">25-May-2011 08:36</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Hide away your environment information (if you cannot do this at server level):<br />
-<br />
-<span class="default">&lt;?php<br />
-header</span><span class="keyword">(</span><span class="string">'Server: '</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">'X-Powered-By: '</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-Why? Attackers are ALWAYS looking for servers with old versions running to exploit unpatched vulnerabilities. Now let's see what a typical server says:<br />
-<br />
-Server: Apache/2.2.17 (Unix) mod_ssl/2.2.17 OpenSSL/0.9.8e-fips-rhel5 mod_fcgid/2.3.5 Phusion_Passenger/2.2.15 mod_auth_passthrough/2.1 mod_bwlimited/1.4 FrontPage/5.0.2.2635<br />
-<br />
-I have so much information from this it's incredible.<br />
-Apache 2.2.17 on a Unix-style distro (instead of Windows)<br />
-mod_ssl 2.2.17<br />
-OpenSSL 0.9.8, and guess what rhel5 means? Red Hat<br />
-<br />
-Overall, WAY too much information. Why not just 'Server: Apache'?<br />
-<br />
-So what do I do if I'm an attacker? I have already scanned this information to find it like usual and now I just have to find exploits on sites like <a href="http://seclists.org/ or if I have already have something usable I can use it. Not only that, but often:" rel="nofollow" target="_blank">http://seclists.org/ or if I have already have something usable I can use it. Not only that, but often:</a><br />
-X-Powered-By: PHP/5.2.17<br />
-might show up. Now all I have to do is search for vulnerabilities in that PHP EXACT version which was given to me. Execute code remotely, get the information I need, then break in and do whatever I like with the target once an exploit succeeds.<br />
-<br />
-(Note the above is completely theoretical.)<br />
-<br />
-X-Powered-By is sometimes sent by mod_php. It seems to always be over-ridable. It is not sent by PHP-FPM.<br />
-<br />
-The Server header is of course, sent by almost every server. What is strange is that Apache and many distros decide to display everything about their environment by default. Don't get why. There are no issues if Server or X-Powered-By is not present in any browser. Generally speaking, no other end should need to know what the server is running, ever.<br />
-<br />
-With nginx, the Server header can be overriden by PHP probably because PHP is handled by a separate process and is AFTER nginx has prepared its header (which is usually simply nginx/&lt;version&gt;). You can turn off version number displaying with 'server_tokens off' in your nginx configuration. This will result in 'Server: nginx' as your header.<br />
-<br />
-With Apache, it doesn't seem to be overridable with mod_php. Perhaps it's overridable with FastCGI but I have not tested.<br />
-<br />
-Also, I have not tested lighttpd.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="103934""></a>
-  <div class="note">
-   <strong class="user">krzysztof at wildfire dot pl</strong>
-   <a href="#103934" class="date">12-May-2011 11:24</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-I found a lot of problems with downloading file in IE.<br />
-<br />
-You might use my code to download files:<br />
-<br />
-<span class="default">&lt;?php<br />
-</span><span class="keyword">if(</span><span class="default">ini_get</span><span class="keyword">(</span><span class="string">'zlib.output_compression'</span><span class="keyword">)) <br />
-&nbsp; </span><span class="default">ini_set</span><span class="keyword">(</span><span class="string">'zlib.output_compression'</span><span class="keyword">, </span><span class="string">'Off'</span><span class="keyword">); <br />
-if (</span><span class="default">file_exists</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">)) {<br />
-&nbsp; if(</span><span class="default">strstr</span><span class="keyword">(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">"HTTP_USER_AGENT"</span><span class="keyword">],</span><span class="string">"MSIE"</span><span class="keyword">)==</span><span class="default">false</span><span class="keyword">) {<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Type: application/force-download"</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">'Content-Description: File Transfer'</span><span class="keyword">);<br />
-&nbsp; }<br />
-&nbsp; </span><span class="default">readfile</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">);<br />
-}<br />
-exit;<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="103619""></a>
-  <div class="note">
-   <strong class="user">Bharath Gandhi</strong>
-   <a href="#103619" class="date">23-Apr-2011 12:33</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-I wanted to redirect my page, after displaying a status result from feedback form submit click, to the home page of the website. I tried displaying the status message for 'n' seconds, before redirecting to the homepage, using the 'sleep()' function but I was stuck with the header ("Location=$url") command, as it always returned the message "headers already sent", after displaying the status message, and the page was stuck there.<br />
-<br />
-using 'url' instead of 'location' along with the 'refresh' parameter, instead of 'sleep()' function, worked for me in this case.<br />
-<br />
-<span class="default">&lt;?php<br />
-&nbsp; header</span><span class="keyword">( </span><span class="string">"refresh:5;url=wherever.php" </span><span class="keyword">);<br />
-&nbsp; echo </span><span class="string">'You\'ll be redirected in about 5 secs. If not, click &lt;a href="wherever.php"&gt;here&lt;/a&gt;.'</span><span class="keyword">;<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="103526""></a>
-  <div class="note">
-   <strong class="user">jphansen at uga dot edu</strong>
-   <a href="#103526" class="date">18-Apr-2011 05:47</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-When using header(Location:), if you have the same site that you use which has different URIs, for example:<br />
-<br />
-www.example.com/a/mysite<br />
-www.example.net<br />
-<br />
-you must remain consistent in how you reference it, or $_SESSION[] contents will be lost. <br />
-<br />
-An example would be a user enters www.example.com/a/mysite, then based on some decision they make, you want to header(Location:) them to another page. If you header(Location: <a href="http://www.example.net/page.php" rel="nofollow" target="_blank">http://www.example.net/page.php</a>), $_SESSION[] will be lost. <br />
-<br />
-I solved this by forwarding them to a particular URI before I start saving $_SESSION[] variables:<br />
-<br />
-<span class="default">&lt;?php<br />
-</span><span class="keyword">if (</span><span class="default">strpos</span><span class="keyword">(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'REQUEST_URI'</span><span class="keyword">], </span><span class="string">"/a/mysite/"</span><span class="keyword">) !== </span><span class="default">false</span><span class="keyword">)<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">'Location: <a href="http://www.example.net" rel="nofollow" target="_blank">http://www.example.net</a>'</span><span class="keyword">);<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="103426""></a>
-  <div class="note">
-   <strong class="user">polo at polosson dot com</strong>
-   <a href="#103426" class="date">12-Apr-2011 05:17</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-It seems that Internet Explorer can not execute an @ before the function 'header ("location: $ page")' (to ignore it if the contained variable is not defined). At launch, IE loads the page indefinitely, without displaying anything (not even an error message) as if there were an infinite loop of redirection.<br />
-However, Firefox supports this escape character and passes through the 'header()' without running it, and everything goes well. I am not able to explain why, but I wanted to say that in order to help those like me who have lost a lot of time with this problem!<br />
-<br />
-Example:<br />
-My original code was :<br />
-<br />
-<span class="default">&lt;?php<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="keyword">@</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Location: </span><span class="default">$redirection</span><span class="string">"</span><span class="keyword">) ;<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-and to make it work with Internet Explorer, I had to replace it with :<br />
-<br />
-<span class="default">&lt;?php<br />
-&nbsp;&nbsp; &nbsp; </span><span class="keyword">if (isset(</span><span class="default">$redirection</span><span class="keyword">)) {<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Location: </span><span class="default">$redirection</span><span class="string">"</span><span class="keyword">) ;<br />
-&nbsp;&nbsp; &nbsp; }<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-Sincerely,<br />
-. Polosson</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="103142""></a>
-  <div class="note">
-   <strong class="user">richardphilip at linkcsik dot net</strong>
-   <a href="#103142" class="date">28-Mar-2011 10:44</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Hi there,<br />
-<br />
-I see lots of you have difficulties with utf-8 and BOM.<br />
-Some of the respected HTML editors have problem with it... <br />
-If your files are in utf-8 for wathever reason and you can switch of insert BOM, most of time if the file reloaded into the editor it changes it's character coding even with the newest tools (2011).<br />
-The first thing is ("headers already sent") almost every time, you can notice this. (Even when you didn't give any visible output, before the headers.) But if you change character encoding, your project could be a mess espedcially if you prints out characters outside the english alphabet like ű ő ú and such... <br />
-<br />
-I had a hard time figure out, how can keep the utf-8 after reopen the file and edit it if I don't include BOM in it.<br />
-<br />
-The solution is soo simple. <br />
-Every module which is included or not I allways write a special character in comment. something like: //ű.<br />
-or in the html section: print "&lt;!--ű--&gt;"; <br />
-<br />
-in this way you absolutely not have to include bom and yet, your files will be encoded in utf-8.<br />
-(If your editor gives you an opportunity to change the encoding, then you are good to go.)</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="102527""></a>
-  <div class="note">
-   <strong class="user">ben at netsup-spa@m-portchat dot com</strong>
-   <a href="#102527" class="date">19-Feb-2011 04:58</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Doh!&nbsp; I kept getting the "headers already sent" error message on a header("Location: .....") call.&nbsp; I checked, re-checked, and re-checked and the scripts nor the files it included had any output - no trailing whitespace, nothing.&nbsp; I was stumped for quite some time and then realized I had used:<br />
-<br />
-<span class="default">&lt;?php<br />
-header</span><span class="keyword">(</span><span class="string">"Something Else"</span><span class="keyword">);<br />
-</span><span class="default">flush</span><span class="keyword">(); </span><span class="comment">// !!!!<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-In one of the includes.&nbsp; Obviously, when you flush() for the first time it must complete sending the headers, so you can't make any more header() calls!</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="102175""></a>
-  <div class="note">
-   <strong class="user">phpnet at holodyn dot com</strong>
-   <a href="#102175" class="date">31-Jan-2011 10:01</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-I've written this function so many times, but every time I find a new problem - this one is working in all browsers.<br />
-<br />
-<span class="default">&lt;?php<br />
-</span><span class="keyword">function </span><span class="default">downloadFile</span><span class="keyword">( </span><span class="default">$fullPath </span><span class="keyword">){<br />
-<br />
-&nbsp; </span><span class="comment">// Must be fresh start<br />
-&nbsp; </span><span class="keyword">if( </span><span class="default">headers_sent</span><span class="keyword">() )<br />
-&nbsp;&nbsp;&nbsp; die(</span><span class="string">'Headers Sent'</span><span class="keyword">);<br />
-<br />
-&nbsp; </span><span class="comment">// Required for some browsers<br />
-&nbsp; </span><span class="keyword">if(</span><span class="default">ini_get</span><span class="keyword">(</span><span class="string">'zlib.output_compression'</span><span class="keyword">))<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">ini_set</span><span class="keyword">(</span><span class="string">'zlib.output_compression'</span><span class="keyword">, </span><span class="string">'Off'</span><span class="keyword">);<br />
-<br />
-&nbsp; </span><span class="comment">// File Exists?<br />
-&nbsp; </span><span class="keyword">if( </span><span class="default">file_exists</span><span class="keyword">(</span><span class="default">$fullPath</span><span class="keyword">) ){<br />
-&nbsp;&nbsp;&nbsp; <br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">// Parse Info / Get Extension<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$fsize </span><span class="keyword">= </span><span class="default">filesize</span><span class="keyword">(</span><span class="default">$fullPath</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$path_parts </span><span class="keyword">= </span><span class="default">pathinfo</span><span class="keyword">(</span><span class="default">$fullPath</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$ext </span><span class="keyword">= </span><span class="default">strtolower</span><span class="keyword">(</span><span class="default">$path_parts</span><span class="keyword">[</span><span class="string">"extension"</span><span class="keyword">]);<br />
-&nbsp;&nbsp;&nbsp; <br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">// Determine Content Type<br />
-&nbsp;&nbsp;&nbsp; </span><span class="keyword">switch (</span><span class="default">$ext</span><span class="keyword">) {<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"pdf"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"application/pdf"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"exe"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"application/octet-stream"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"zip"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"application/zip"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"doc"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"application/msword"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"xls"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"application/vnd.ms-excel"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"ppt"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"application/vnd.ms-powerpoint"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"gif"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"image/gif"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"png"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"image/png"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"jpeg"</span><span class="keyword">:<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"jpg"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"image/jpg"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; default: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"application/force-download"</span><span class="keyword">;<br />
-&nbsp;&nbsp;&nbsp; }<br />
-<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Pragma: public"</span><span class="keyword">); </span><span class="comment">// required<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Expires: 0"</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Cache-Control: must-revalidate, post-check=0, pre-check=0"</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Cache-Control: private"</span><span class="keyword">,</span><span class="default">false</span><span class="keyword">); </span><span class="comment">// required for certain browsers<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Type: </span><span class="default">$ctype</span><span class="string">"</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Disposition: attachment; filename=\""</span><span class="keyword">.</span><span class="default">basename</span><span class="keyword">(</span><span class="default">$fullPath</span><span class="keyword">).</span><span class="string">"\";" </span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Transfer-Encoding: binary"</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Length: "</span><span class="keyword">.</span><span class="default">$fsize</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">ob_clean</span><span class="keyword">();<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">flush</span><span class="keyword">();<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">readfile</span><span class="keyword">( </span><span class="default">$fullPath </span><span class="keyword">);<br />
-<br />
-&nbsp; } else <br />
-&nbsp;&nbsp;&nbsp; die(</span><span class="string">'File Not Found'</span><span class="keyword">);<br />
-<br />
-}<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="102009""></a>
-  <div class="note">
-   <strong class="user">cedric at gn dot apc dot org</strong>
-   <a href="#102009" class="date">22-Jan-2011 08:47</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Setting a Location header "returns a REDIRECT (302) status code to the browser unless the 201 or a 3xx status code has already been set".&nbsp; If you are sending a response to a POST request, you might want to look at RFC 2616 sections 10.3.3 and 10.3.4.&nbsp;&nbsp; It is suggested that if you want the browser to immediately GET the resource in the Location header in this circumstance, you should use a 303 status code not the 302 (with the same link as hypertext in the body for very old browsers).&nbsp; This may have (rare) consequences as mentioned in bug 42969.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="101665""></a>
-  <div class="note">
-   <strong class="user">anthon at piwik dot org</strong>
-   <a href="#101665" class="date">03-Jan-2011 05:24</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-I see a couple of notes where multiple Content-Type headers are sent.&nbsp; Don't do that.<br />
-<br />
-RFC2616 only presents two scenarios for multiple Content-Type headers in a response:<br />
-<br />
-&nbsp;&nbsp; 1. a "300 Multiple Choice" status for agent-drive negotiation, or<br />
-&nbsp;&nbsp; 2. a response containing multi-part content.<br />
-<br />
-Note also that multiple Content-Type headers reportedly breaks FastCGI.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="101581""></a>
-  <div class="note">
-   <strong class="user">giacomo at dove_vuoi_tu.com</strong>
-   <a href="#101581" class="date">27-Dec-2010 10:45</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-For avoiding double prompt when choose open (not save)<br />
-&nbsp;&nbsp;&nbsp; header('Content-Type: application/download');<br />
-&nbsp;&nbsp;&nbsp; header('Content-Disposition: filename=dati.txt');</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="100282""></a>
-  <div class="note">
-   <strong class="user">vedran-b at email dot htnet dot hr</strong>
-   <a href="#100282" class="date">06-Oct-2010 02:49</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-As known redirecting to a page inside your domain with header() does not pass along $_session variables.<br />
-Strange thing is that it is client dependant.<br />
-sometimes as stated session_write_close() before using header helps.<br />
-<br />
-I've noticed that if the redirect doesn't point to the full URL of the page e.g. <br />
-"Location: example.com/page2.php" <br />
-but instead to <br />
-"Location: /page2.php"<br />
-<br />
-The session does get perserved with no need to append data manually to the url.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="99190""></a>
-  <div class="note">
-   <strong class="user">Cody G.</strong>
-   <a href="#99190" class="date">02-Aug-2010 06:53</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-After lots of research and testing, I'd like to share my findings about my problems with Internet Explorer and file downloads.<br />
-<br />
-&nbsp; Take a look at this code, which replicates the normal download of a Javascript:<br />
-<br />
-<span class="default">&lt;?php<br />
-&nbsp;</span><span class="keyword">if(</span><span class="default">strstr</span><span class="keyword">(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">"HTTP_USER_AGENT"</span><span class="keyword">],</span><span class="string">"MSIE"</span><span class="keyword">)==</span><span class="default">false</span><span class="keyword">) {<br />
-&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-type: text/javascript"</span><span class="keyword">);<br />
-&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Disposition: inline; filename=\"download.js\""</span><span class="keyword">);<br />
-&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Length: "</span><span class="keyword">.</span><span class="default">filesize</span><span class="keyword">(</span><span class="string">"my-file.js"</span><span class="keyword">));<br />
-&nbsp;} else {<br />
-&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-type: application/force-download"</span><span class="keyword">);<br />
-&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Disposition: attachment; filename=\"download.js\""</span><span class="keyword">);<br />
-&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Length: "</span><span class="keyword">.</span><span class="default">filesize</span><span class="keyword">(</span><span class="string">"my-file.js"</span><span class="keyword">));<br />
-&nbsp;}<br />
-&nbsp;</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Expires: Fri, 01 Jan 2010 05:00:00 GMT"</span><span class="keyword">);<br />
-&nbsp;if(</span><span class="default">strstr</span><span class="keyword">(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">"HTTP_USER_AGENT"</span><span class="keyword">],</span><span class="string">"MSIE"</span><span class="keyword">)==</span><span class="default">false</span><span class="keyword">) {<br />
-&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Cache-Control: no-cache"</span><span class="keyword">);<br />
-&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Pragma: no-cache"</span><span class="keyword">);<br />
-&nbsp;}<br />
-&nbsp;include(</span><span class="string">"my-file.js"</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-Now let me explain:<br />
-<br />
-&nbsp; I start out by checking for IE, then if not IE, I set Content-type (case-sensitive) to JS and set Content-Disposition (every header is case-sensitive from now on) to inline, because most browsers outside of IE like to display JS inline. (User may change settings). The Content-Length header is required by some browsers to activate download box. Then, if it is IE, the "application/force-download" Content-type is sometimes required to show the download box. Use this if you don't want your PDF to display in the browser (in IE). I use it here to make sure the box opens. Anyway, I set the Content-Disposition to attachment because I already know that the box will appear. Then I have the Content-Length again.<br />
-<br />
-&nbsp; Now, here's my big point. I have the Cache-Control and Pragma headers sent only if not IE. THESE HEADERS WILL PREVENT DOWNLOAD ON IE!!! Only use the Expires header, after all, it will require the file to be downloaded again the next time. This is not a bug! IE stores downloads in the Temporary Internet Files folder until the download is complete. I know this because once I downloaded a huge file to My Documents, but the Download Dialog box put it in the Temp folder and moved it at the end. Just think about it. If IE requires the file to be downloaded to the Temp folder, setting the Cache-Control and Pragma headers will cause an error!<br />
-<br />
-I hope this saves someone some time!<br />
-~Cody G.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="97114""></a>
-  <div class="note">
-   <strong class="user">Marcel G</strong>
-   <a href="#97114" class="date">02-Apr-2010 03:37</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Several times this one is asked on the net but an answer could not be found in the docs on php.net ...<br />
-<br />
-If you want to redirect an user and tell him he will be redirected, e. g. "You will be redirected in about 5 secs. If not, click here." you cannot use header( 'Location: ...' ) as you can't sent any output before the headers are sent.<br />
-<br />
-So, either you have to use the HTML meta refresh thingy or you use the following:<br />
-<br />
-<span class="default">&lt;?php<br />
-&nbsp; header</span><span class="keyword">( </span><span class="string">"refresh:5;url=wherever.php" </span><span class="keyword">);<br />
-&nbsp; echo </span><span class="string">'You\'ll be redirected in about 5 secs. If not, click &lt;a href="wherever.php"&gt;here&lt;/a&gt;.'</span><span class="keyword">;<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-Hth someone</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="97026""></a>
-  <div class="note">
-   <strong class="user">xxxbunker dot com</strong>
-   <a href="#97026" class="date">29-Mar-2010 07:32</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-there are times when one would want to output a html status 500 'mid response'.<br />
-<br />
-i wasn't able to get a clear answer weather sending a (be it incomplete) body with a 500 is proper, but what i found works nicely (assuming you are using output buffering, and haven't flushed the buffer before requiring a 500):<br />
-<br />
-a) ..... some of the document body is buffered .....<br />
-b) ..... something happens that merits a html status 500 .....<br />
-c) ob_end_clean() - this will basically purge whatever document body is in the buffer 'to this point'<br />
-d) use header('.... to display the html status 500.<br />
-e) die();<br />
-<br />
-what you are left with, is a html status 500, with no body. <br />
-<br />
-nice and clean, just the way we like it :)</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="96934""></a>
-  <div class="note">
-   <strong class="user">SDPhantom</strong>
-   <a href="#96934" class="date">23-Mar-2010 10:41</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Also note, if you add a header line in addition to supply a status code in the same call, it will do both.<br />
-<br />
-Example:<br />
-<span class="default">&lt;?php header</span><span class="keyword">(</span><span class="string">'WWW-Authenticate: Basic realm="My Realm"'</span><span class="keyword">,</span><span class="default">true</span><span class="keyword">,</span><span class="default">401</span><span class="keyword">); </span><span class="default">?&gt;<br />
-</span><br />
-Will output both:<br />
-HTTP/1.1 401 Unauthorized<br />
-WWW-Authenticate: Basic realm="My Realm"</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="96442""></a>
-  <div class="note">
-   <strong class="user">xxxbunker dot com</strong>
-   <a href="#96442" class="date">27-Feb-2010 09:58</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-we use 204's extensively.<br />
-<br />
-after doing some spring cleanup, we found out (as many others might have), that even tho you header('204..., the user agent will wait until the content-length header is received. which, at least via apache 2 (others probably) is not sent until the script has completed executing completely.<br />
-<br />
-so, after doing some testing:<br />
-<br />
-HTTP/1.0 204 No Content<br />
-Date: Sat, 27 Feb 2010 08:23:49 GMT<br />
-Server: Apache<br />
-Content-Length: 0<br />
-Vary: User-Agent,Accept-Encoding<br />
-Connection: close<br />
-Content-Type: text/html<br />
-<br />
-is what is sent during a standard 204 response... so to reproduce this, the function we are using is:<br />
-<br />
-header('HTTP/1.0 204 No Content');<br />
-header('Content-Length: 0',true);<br />
-header('Content-Type: text/html',true);<br />
-flush();<br />
-<br />
-when the above is called prior to doing any processing, the user agent will be left alone to do other things, and you may continue doing (at times 'time' heavy) processing on the server end.<br />
-<br />
-enjoy!</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="96017""></a>
-  <div class="note">
-   <strong class="user">Refugnic</strong>
-   <a href="#96017" class="date">03-Feb-2010 02:43</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-My files are in a compressed state (bz2). When the user clicks the link, I want them to get the uncompressed version of the file.<br />
-<br />
-After decompressing the file, I ran into the problem, that the download dialog would always pop up, even when I told the dialog to 'Always perform this operation with this file type'.<br />
-<br />
-As I found out, the problem was in the header directive 'Content-Disposition', namely the 'attachment' directive.<br />
-<br />
-If you want your browser to simulate a plain link to a file, either change 'attachment' to 'inline' or omit it alltogether and you'll be fine.<br />
-<br />
-This took me a while to figure out and I hope it will help someone else out there, who runs into the same problem.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="95954""></a>
-  <div class="note">
-   <strong class="user">alvinwong_1234 at yahoo dot com dot hk</strong>
-   <a href="#95954" class="date">31-Jan-2010 12:05</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Normally, using<br />
-<span class="default">&lt;?php<br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">// Request URI is /boo/blah.php<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Location: /foo/bar.php"</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span>generates a header just like<br />
-<span class="default">&lt;?php<br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">// Request URI is /boo/blah.php<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Location: /foo/bar.php"</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-But when I once used<br />
-<span class="default">&lt;?php<br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">// Request URI is /boo/blah.php<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Location: ../foo/bar.php"</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span>today, it generates an absolute path like<br />
-<span class="default">&lt;?php<br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">// Request URI is /boo/blah.php<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Location: <a href="http://www.example.com/foo/bar.php" rel="nofollow" target="_blank">http://www.example.com/foo/bar.php</a>"</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-Funny. I guess php done the work.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="95864""></a>
-  <div class="note">
-   <strong class="user">this dot person at joaocunha dot eti dot br</strong>
-   <a href="#95864" class="date">26-Jan-2010 07:39</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-AVOID ZERO BYTE ORDER MARK!<br />
-<br />
-Header MUST be sent before EVERYTHING in the page. Even a single space will break your script. In my case, there was BOM setted in the encoding, so I opened the file with notepad++ and set the encoding to UTF-8 (no BOM) and voila, everything is working great now.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="95058""></a>
-  <div class="note">
-   <strong class="user">marlinf at datashaman dot com</strong>
-   <a href="#95058" class="date">11-Dec-2009 08:13</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Many of the issues with headers can be solved quite quickly by using the following code before you set your headers:<br />
-<br />
-<span class="default">&lt;?php<br />
-headers_sent</span><span class="keyword">(&amp;</span><span class="default">$file</span><span class="keyword">, &amp;</span><span class="default">$line</span><span class="keyword">);<br />
-</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">, </span><span class="default">$line</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-This will show you exactly where the first line of output is coming from, which will prevent your headers from being set.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="94646""></a>
-  <div class="note">
-   <strong class="user">dmitry dot babinov at gmail dot com</strong>
-   <a href="#94646" class="date">16-Nov-2009 07:31</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Microsoft KB <a href="http://support.microsoft.com/kb/234067 strongly recommends to set up " rel="nofollow" target="_blank">http://support.microsoft.com/kb/234067 strongly recommends to set up </a>"expires" header for best cache control.<br />
-Everything else is workaround.<br />
-I had download error with first attempt always till i had cache-control header within script using Internet Explorer.<br />
-Such code works fine with IE 7-8:<br />
-<span class="default">&lt;?php<br />
-header</span><span class="keyword">(</span><span class="string">"Expires: Mon, 26 Jul 1997 05:00:00 GMT\n"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Last-Modified: " </span><span class="keyword">. </span><span class="default">gmdate</span><span class="keyword">(</span><span class="string">"D, d M Y H:i:s"</span><span class="keyword">) . </span><span class="string">" GMT"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-type: application/zip;\n"</span><span class="keyword">); </span><span class="comment">//or yours?<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Transfer-Encoding: binary"</span><span class="keyword">);<br />
-</span><span class="default">$len </span><span class="keyword">= </span><span class="default">filesize</span><span class="keyword">(</span><span class="default">$filename</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Length: </span><span class="default">$len</span><span class="string">;\n"</span><span class="keyword">);<br />
-</span><span class="default">$outname</span><span class="keyword">=</span><span class="string">"downfile.zip"</span><span class="keyword">;<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Disposition: attachment; filename=\"</span><span class="default">$outname</span><span class="string">\";\n\n"</span><span class="keyword">);<br />
-<br />
-</span><span class="default">readfile</span><span class="keyword">(</span><span class="default">$filename</span><span class="keyword">);<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="94118""></a>
-  <div class="note">
-   <strong class="user">dev at omikrosys dot com</strong>
-   <a href="#94118" class="date">17-Oct-2009 07:45</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Just to inform you all, do not get confused between Content-Transfer-Encoding and Content-Encoding<br />
-<br />
-Content-Transfer-Encoding specifies the encoding used to transfer the data within the HTTP protocol, like raw binary or base64. (binary is more compact than base64. base64 having 33% overhead).<br />
-Eg Use:- header('Content-Transfer-Encoding: binary');<br />
-<br />
-Content-Encoding is used to apply things like gzip compression to the content/data.<br />
-Eg Use:- header('Content-Encoding: gzip');</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="94114""></a>
-  <div class="note">
-   <strong class="user">scott at lucentminds dot com</strong>
-   <a href="#94114" class="date">17-Oct-2009 01:42</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-If you want to remove a header and keep it from being sent as part of the header response, just provide nothing as the header value after the header name. For example...<br />
-<br />
-PHP, by default, always returns the following header:<br />
-<br />
-"Content-Type: text/html"<br />
-<br />
-Which your entire header response will look like<br />
-<br />
-HTTP/1.1 200 OK<br />
-Server: Apache/2.2.11 (Unix)<br />
-X-Powered-By: PHP/5.2.8<br />
-Date: Fri, 16 Oct 2009 23:05:07 GMT<br />
-Content-Type: text/html; charset=UTF-8<br />
-Connection: close<br />
-<br />
-If you call the header name with no value like so...<br />
-<br />
-<span class="default">&lt;?php<br />
-<br />
-&nbsp;&nbsp;&nbsp; header</span><span class="keyword">( </span><span class="string">'Content-Type:' </span><span class="keyword">);<br />
-<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-Your headers now look like this:<br />
-<br />
-HTTP/1.1 200 OK<br />
-Server: Apache/2.2.11 (Unix)<br />
-X-Powered-By: PHP/5.2.8<br />
-Date: Fri, 16 Oct 2009 23:05:07 GMT<br />
-Connection: close</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="93377""></a>
-  <div class="note">
-   <strong class="user">Justin S</strong>
-   <a href="#93377" class="date">06-Sep-2009 09:36</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-If you want to ENABLE cache:<br />
-<span class="default">&lt;?php<br />
-</span><span class="comment">// seconds, minutes, hours, days<br />
-</span><span class="default">$expires </span><span class="keyword">= </span><span class="default">60</span><span class="keyword">*</span><span class="default">60</span><span class="keyword">*</span><span class="default">24</span><span class="keyword">*</span><span class="default">14</span><span class="keyword">;<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Pragma: public"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Cache-Control: maxage="</span><span class="keyword">.</span><span class="default">$expires</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">'Expires: ' </span><span class="keyword">. </span><span class="default">gmdate</span><span class="keyword">(</span><span class="string">'D, d M Y H:i:s'</span><span class="keyword">, </span><span class="default">time</span><span class="keyword">()+</span><span class="default">$expires</span><span class="keyword">) . </span><span class="string">' GMT'</span><span class="keyword">);<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="92620""></a>
-  <div class="note">
-   <strong class="user">Anonymous</strong>
-   <a href="#92620" class="date">31-Jul-2009 05:02</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-I just want to add, becuase I see here lots of wrong formated headers.<br />
-<br />
-1. All used headers have first letters uppercase, so you MUST follow this. For example:<br />
-<br />
-Location, not location<br />
-Content-Type, not content-type or CONTENT-TYPE<br />
-<br />
-2. Then there MUST be colon and space, like<br />
-<br />
-good: header("Content-Type: text/plain");<br />
-<br />
-wrong: header("Content-Type:text/plain");<br />
-<br />
-3. Location header MUST be absolute uri with scheme, port and so on.<br />
-<br />
-good: header("Location: <a href="http://www.example.com/something.php?a=1" rel="nofollow" target="_blank">http://www.example.com/something.php?a=1</a>");<br />
-<br />
-4. It cann't be relative:<br />
-<br />
-wrong:&nbsp; Location: /something.php?a=1<br />
-wrong:&nbsp; Location: ?a=1<br />
-<br />
-It will make proxy server and http clients happier.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="92305""></a>
-  <div class="note">
-   <strong class="user">mjt at jpeto dot net</strong>
-   <a href="#92305" class="date">18-Jul-2009 08:01</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-I strongly recommend, that you use<br />
-<br />
-header($_SERVER["SERVER_PROTOCOL"]." 404 Not Found");<br />
-<br />
-instead of <br />
-<br />
-header("HTTP/1.1 404 Not Found");<br />
-<br />
-I had big troubles with an Apache/2.0.59 (Unix) answering in HTTP/1.0 while I (accidentially) added a "HTTP/1.1 200 Ok" - Header.<br />
-<br />
-Most of the pages were displayed correct, but on some of them apache added weird content to it:<br />
-<br />
-A 4-digits HexCode on top of the page (before any output of my php script), seems to be some kind of checksum, because it changes from page to page and browser to browser. (same code for same page and browser)<br />
-<br />
-"0" at the bottom of the page (after the complete output of my php script) <br />
-<br />
-It took me quite a while to find out about the wrong protocol in the HTTP-header.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="89452""></a>
-  <div class="note">
-   <strong class="user">Jamesb</strong>
-   <a href="#89452" class="date">08-Mar-2009 02:25</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Here is a php script I wrote to stream a file and crypt it with a xor operation on the bytes and with a key :<br />
-<br />
-The encryption works very good but the speed is decrease by 2, it is now 520KiB/s. The user is now asked for a md5 password (instead of keeping it in the code directly). There is some part in French because it's my native language so modify it as you want.<br />
-<br />
-<span class="default">&lt;?php<br />
-</span><span class="comment">// Stream files and encrypt the data on-the-fly<br />
-<br />
-// Settings<br />
-// -- File to stream<br />
-</span><span class="default">$file </span><span class="keyword">= </span><span class="string">"FILE_out"</span><span class="keyword">;<br />
-</span><span class="comment">// -- Reading buffer<br />
-</span><span class="default">$bufferlength </span><span class="keyword">= </span><span class="default">3840</span><span class="keyword">;<br />
-</span><span class="comment">// -- Key in hex<br />
-//$keychar = "9cdfb439c7876e703e307864c9167a15";<br />
-<br />
-// Function: Convertion hex key in a string into binary<br />
-</span><span class="keyword">function </span><span class="default">hex2bin</span><span class="keyword">(</span><span class="default">$h</span><span class="keyword">) {<br />
-&nbsp;&nbsp;&nbsp; if (!</span><span class="default">is_string</span><span class="keyword">(</span><span class="default">$h</span><span class="keyword">)) return </span><span class="default">null</span><span class="keyword">;<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$r </span><span class="keyword">= array();<br />
-&nbsp;&nbsp;&nbsp; for (</span><span class="default">$a</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">; (</span><span class="default">$a</span><span class="keyword">*</span><span class="default">2</span><span class="keyword">)&lt;</span><span class="default">strlen</span><span class="keyword">(</span><span class="default">$h</span><span class="keyword">); </span><span class="default">$a</span><span class="keyword">++) {<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ta </span><span class="keyword">= </span><span class="default">hexdec</span><span class="keyword">(</span><span class="default">$h</span><span class="keyword">[</span><span class="default">2</span><span class="keyword">*</span><span class="default">$a</span><span class="keyword">]);<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$tb </span><span class="keyword">= </span><span class="default">hexdec</span><span class="keyword">(</span><span class="default">$h</span><span class="keyword">[(</span><span class="default">2</span><span class="keyword">*</span><span class="default">$a</span><span class="keyword">+</span><span class="default">1</span><span class="keyword">)]);<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$r</span><span class="keyword">[</span><span class="default">$a</span><span class="keyword">] = (int) ((</span><span class="default">$ta </span><span class="keyword">&lt;&lt; </span><span class="default">4</span><span class="keyword">) + </span><span class="default">$tb</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; }<br />
-&nbsp;&nbsp;&nbsp; return </span><span class="default">$r</span><span class="keyword">;<br />
-}<br />
-<br />
-</span><span class="comment">// Function to send the auth headers<br />
-</span><span class="keyword">function </span><span class="default">askPassword</span><span class="keyword">(</span><span class="default">$text</span><span class="keyword">=</span><span class="string">"Enter the password"</span><span class="keyword">) {<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">'WWW-Authenticate: Basic realm="'</span><span class="keyword">. </span><span class="default">utf8_decode</span><span class="keyword">(</span><span class="default">$text</span><span class="keyword">) .</span><span class="string">'"'</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">'HTTP/1.0 401 Unauthorized'</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; return </span><span class="default">1</span><span class="keyword">;<br />
-}<br />
-<br />
-</span><span class="comment">// Key is asked at the first start<br />
-</span><span class="keyword">if (!isset(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'PHP_AUTH_PW'</span><span class="keyword">])) {<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">askPassword</span><span class="keyword">();<br />
-&nbsp;&nbsp;&nbsp; echo </span><span class="string">"Une clé est nécessaire !&lt;br /&gt;"</span><span class="keyword">;<br />
-&nbsp;&nbsp;&nbsp; exit;<br />
-}<br />
-</span><span class="comment">// Get the key in hex<br />
-</span><span class="default">$keychar </span><span class="keyword">= </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'PHP_AUTH_PW'</span><span class="keyword">];<br />
-<br />
-</span><span class="comment">// Convert key and set the size of the key<br />
-</span><span class="default">$key </span><span class="keyword">= </span><span class="default">hex2bin</span><span class="keyword">(</span><span class="default">$keychar</span><span class="keyword">);<br />
-</span><span class="default">$keylength </span><span class="keyword">= </span><span class="default">count</span><span class="keyword">(</span><span class="default">$key</span><span class="keyword">);<br />
-</span><span class="comment">// Teste si la clé est valide en hex<br />
-</span><span class="keyword">if (</span><span class="default">$key </span><span class="keyword">== </span><span class="string">"" </span><span class="keyword">|| </span><span class="default">$keylength </span><span class="keyword">&lt;= </span><span class="default">4</span><span class="keyword">) {<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">askPassword</span><span class="keyword">(</span><span class="string">"Clé incorrecte !"</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">//echo "Clé incorrecte !&lt;br /&gt;";<br />
-&nbsp;&nbsp;&nbsp; </span><span class="keyword">exit();<br />
-}<br />
-</span><span class="comment">// Teste si la clé est de longueur d'une puissance de 2<br />
-</span><span class="keyword">if ( (</span><span class="default">$keylength</span><span class="keyword">%</span><span class="default">2</span><span class="keyword">) != </span><span class="default">0</span><span class="keyword">) {<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">askPassword</span><span class="keyword">(</span><span class="string">"Clé de longueur incorrecte (multiple de 2 uniquement)"</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">//echo "Clé de longueur incorrecte (puissance de 2 uniquement)&lt;br /&gt;";<br />
-&nbsp;&nbsp;&nbsp; </span><span class="keyword">exit();<br />
-}<br />
-<br />
-</span><span class="comment">// Headers<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Type: application/octet-stream; "</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Transfer-Encoding: binary"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Length: " </span><span class="keyword">. </span><span class="default">filesize</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">) .</span><span class="string">"; "</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"filename=\""</span><span class="keyword">.</span><span class="default">$file</span><span class="keyword">.</span><span class="string">"\"; "</span><span class="keyword">);<br />
-</span><span class="default">flush</span><span class="keyword">(); </span><span class="comment">// this doesn't really matter.<br />
-<br />
-// Opening the file in read-only<br />
-</span><span class="default">$fp </span><span class="keyword">= </span><span class="default">fopen</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">, </span><span class="string">"r"</span><span class="keyword">);<br />
-while (!</span><span class="default">feof</span><span class="keyword">(</span><span class="default">$fp</span><span class="keyword">))<br />
-{<br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">// Read a buffer size of the file<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$buffer </span><span class="keyword">= </span><span class="default">fread</span><span class="keyword">(</span><span class="default">$fp</span><span class="keyword">, </span><span class="default">$bufferlength</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$j</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">;<br />
-&nbsp;&nbsp;&nbsp; for (</span><span class="default">$i</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">; </span><span class="default">$i </span><span class="keyword">&lt; </span><span class="default">$bufferlength</span><span class="keyword">; </span><span class="default">$i</span><span class="keyword">++) {<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// The key is read in loop to crypt the whole file<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if (</span><span class="default">$i</span><span class="keyword">%</span><span class="default">$keylength </span><span class="keyword">== </span><span class="default">0</span><span class="keyword">) {<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$j</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">;<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Apply a xor operation between the key and the file to crypt<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; // This operation eats a lots of CPU time (Stream at 1MiB/s on my server; Intel E2180)<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$tmp </span><span class="keyword">= </span><span class="default">pack</span><span class="keyword">(</span><span class="string">"C"</span><span class="keyword">, </span><span class="default">$key</span><span class="keyword">[</span><span class="default">$j</span><span class="keyword">]);<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$bufferE </span><span class="keyword">= ( </span><span class="default">$buffer</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">]^</span><span class="default">$tmp</span><span class="keyword">); </span><span class="comment">// &lt;==== Le fameux XOR<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; /*<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo "&lt;br /&gt;key[".$j."]: ";<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; var_dump($tmp);<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo "&lt;br /&gt;buffer[".$i."]: ";<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; var_dump($buffer[$i]);<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo "&lt;br /&gt;bufferE: ";<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; var_dump($bufferE);<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo "&lt;br /&gt;";<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; //*/<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; // Send the encrypted data<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">echo </span><span class="default">$bufferE</span><span class="keyword">;<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Clean the memory<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$bufferE </span><span class="keyword">= </span><span class="string">""</span><span class="keyword">;<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$j</span><span class="keyword">++;<br />
-&nbsp;&nbsp;&nbsp; }<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$buffer </span><span class="keyword">= </span><span class="string">""</span><span class="keyword">;<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">flush</span><span class="keyword">(); </span><span class="comment">// this is essential for large downloads<br />
-&nbsp;&nbsp;&nbsp; /*<br />
-&nbsp;&nbsp;&nbsp; fclose($fp);<br />
-&nbsp;&nbsp;&nbsp; exit();<br />
-&nbsp;&nbsp;&nbsp; //*/<br />
-</span><span class="keyword">}<br />
-</span><span class="comment">// Close the file and it's finished<br />
-</span><span class="default">fclose</span><span class="keyword">(</span><span class="default">$fp</span><span class="keyword">);<br />
-<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="88875""></a>
-  <div class="note">
-   <strong class="user">info at vanylla dot it</strong>
-   <a href="#88875" class="date">11-Feb-2009 09:05</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-WARNING:<br />
-<br />
-In order to make Internet Explorer 6 (probably also 7)&nbsp; not to cache pages you should use only these headers:<br />
-<br />
-<span class="default">&lt;?php<br />
-header</span><span class="keyword">(</span><span class="string">"Cache-Control: no-cache"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Expires: -1"</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-as suggested by Microsoft itself [source: <a href="http://support.microsoft.com/kb/234067]" rel="nofollow" target="_blank">http://support.microsoft.com/kb/234067]</a><br />
-<br />
-if you add all the headers suggested in "Example #2 Caching directives" above:<br />
-<br />
-<span class="default">&lt;?php<br />
-header</span><span class="keyword">(</span><span class="string">"Cache-Control: no-cache, must-revalidate"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Expires: Sat, 26 Jul 1997 05:00:00 GMT"</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-IE browser goes on CACHING THE PAGE!!!</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="88775""></a>
-  <div class="note">
-   <strong class="user">nullhility at gmail dot com</strong>
-   <a href="#88775" class="date">07-Feb-2009 01:15</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-I ran into problems when trying to get php to use a transparent ErrorDocument redirect. <br />
-<br />
-My document root .htaccess was set up to redirect select error codes to error.php which tests against $_SERVER['REDIRECT_STATUS'] and templates a document based on the status code. <br />
-<br />
-I had hoped to raise a 404 after a mysql query turned up empty (fyi; before output had started) but page output continued "normally", ie incorrectly.<br />
-Because this was inside a template class I was able to manually change the template's include file and $_SERVER['REDIRECT_STATUS'] to output the desired result. I wasn't actually sure if header() worked or not because apache2 has already returned 200 OK after which any header change would only affect the browser, wouldn't it?<br />
-<br />
-I have read about header() working with apache redirects before, is this still available with apache2? Here's some code just to explain the concept:<br />
-<br />
-<span class="default">&lt;?php<br />
-</span><span class="keyword">class </span><span class="default">page_template<br />
-</span><span class="keyword">{<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$include_file</span><span class="keyword">;<br />
-</span><span class="comment">//...<br />
-<br />
-&nbsp;&nbsp;&nbsp; </span><span class="keyword">function </span><span class="default">getData </span><span class="keyword">()<br />
-&nbsp;&nbsp;&nbsp; {<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; try {<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">//...<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if (</span><span class="default">$result</span><span class="keyword">-&gt;</span><span class="default">num_rows </span><span class="keyword">== </span><span class="default">0</span><span class="keyword">) {<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; throw new </span><span class="default">MysqlException</span><span class="keyword">(</span><span class="string">"Empty result set"</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">//...<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">} catch (</span><span class="default">MysqlException $e</span><span class="keyword">) {<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (</span><span class="default">$e</span><span class="keyword">-&gt;</span><span class="default">getMessage</span><span class="keyword">() == </span><span class="string">"Empty result set"</span><span class="keyword">) {<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"HTTP/1.0 404 Not Found"</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Status: 404 Not Found"</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">//the below two lines fixed the issue for me<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'REDIRECT_STATUS'</span><span class="keyword">] = </span><span class="default">404</span><span class="keyword">;<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">template_file </span><span class="keyword">= </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'DOCUMTENT_ROOT'</span><span class="keyword">].</span><span class="string">'error.php'</span><span class="keyword">;<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; }<br />
-&nbsp;&nbsp;&nbsp; }<br />
-}<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="88038""></a>
-  <div class="note">
-   <strong class="user">eonrglez at gmail dot com</strong>
-   <a href="#88038" class="date">07-Jan-2009 11:11</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-When you are trying to download a file using PHP it´s important to take into acount the definition of de Header element.<br />
-<br />
-I have seen various examples where the people use a <br />
-<br />
-<span class="default">&lt;?php<br />
-header</span><span class="keyword">(</span><span class="string">"Content-Type: application/octet-stream"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Disposition: attachment; filename=\""</span><span class="keyword">.</span><span class="default">$filename</span><span class="keyword">.</span><span class="string">"\";"</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-however in adition to this is important add the definition of the cache because if you dont do it you will have problems with some navigators for example IE 7.0 under https protocol will show you a message saying that the file is not available.<br />
-<br />
-here is a working example:<br />
-<br />
-<span class="default">&lt;?php<br />
-header</span><span class="keyword">(</span><span class="string">"Pragma: public"</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Expires: 0"</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Cache-Control: must-revalidate, post-check=0, pre-check=0"</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Cache-Control: private"</span><span class="keyword">,</span><span class="default">false</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">header </span><span class="keyword">( </span><span class="string">"Content-Type: </span><span class="default">$filedatatype</span><span class="string">" </span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Disposition: attachment; filename=\""</span><span class="keyword">.</span><span class="default">$FileObj</span><span class="keyword">-&gt;</span><span class="default">name</span><span class="keyword">.</span><span class="string">"\";"</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Transfer-Encoding:­ binary"</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Length: "</span><span class="keyword">.</span><span class="default">$filesize</span><span class="keyword">);<br />
-&nbsp; </span><span class="default">readfile</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">);<br />
-exit;<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-where $filedatatype is the data type of the file for example:<br />
-<br />
-&nbsp;&nbsp; application/pdf</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="87970""></a>
-  <div class="note">
-   <strong class="user">AllportPC</strong>
-   <a href="#87970" class="date">03-Jan-2009 02:30</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-If using header in Safari, make sure you use complete pahge names.&nbsp; For example, we were using <br />
-<br />
-<span class="default">&lt;?php<br />
-header</span><span class="keyword">(</span><span class="string">"Location: ?mng=" </span><span class="keyword">. </span><span class="default">$_GET</span><span class="keyword">[</span><span class="string">'mng'</span><span class="keyword">]);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-but it didnt work in Safari so we are using this<br />
-<br />
-<span class="default">&lt;?php<br />
-header</span><span class="keyword">(</span><span class="string">"Location: index.php?mng=" </span><span class="keyword">. </span><span class="default">$_GET</span><span class="keyword">[</span><span class="string">'mng'</span><span class="keyword">]);<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="87449""></a>
-  <div class="note">
-   <strong class="user">bebertjean at yahoo dot fr</strong>
-   <a href="#87449" class="date">05-Dec-2008 02:46</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-If using the 'header' function for the downloading of files, especially if you're passing the filename as a variable, remember to surround the filename with double quotes, otherwise you'll have problems in Firefox as soon as there's a space in the filename.<br />
-<br />
-So instead of typing:<br />
-<br />
-<span class="default">&lt;?php<br />
-&nbsp; header</span><span class="keyword">(</span><span class="string">"Content-Disposition: attachment; filename=" </span><span class="keyword">. </span><span class="default">basename</span><span class="keyword">(</span><span class="default">$filename</span><span class="keyword">));<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-you should type:<br />
-<br />
-<span class="default">&lt;?php<br />
-&nbsp; header</span><span class="keyword">(</span><span class="string">"Content-Disposition: attachment; filename=\"" </span><span class="keyword">. </span><span class="default">basename</span><span class="keyword">(</span><span class="default">$filename</span><span class="keyword">) . </span><span class="string">"\""</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-If you don't do this then when the user clicks on the link for a file named "Example file with spaces.txt", then Firefox's Save As dialog box will give it the name "Example", and it will have no extension.<br />
-<br />
-See the page called "Filenames_with_spaces_are_truncated_upon_download" at <br />
-<a href="http://kb.mozillazine.org/ for more information. (Sorry, the site won" rel="nofollow" target="_blank">http://kb.mozillazine.org/ for more information. (Sorry, the site won</a>'t let me post such a long link...)</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="87348""></a>
-  <div class="note">
-   <strong class="user">jamie</strong>
-   <a href="#87348" class="date">01-Dec-2008 04:57</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-The encoding of a file is discovered by the Content-Type, either in the HTML meta tag or as part of the HTTP header. Thus, the server and browser does not need - nor expect - a Unicode file to begin with a BOM mark. BOMs can confuse *nix systems too. More info at <a href="http://unicode.org/faq/utf_bom.html#bom1" rel="nofollow" target="_blank">http://unicode.org/faq/utf_bom.html#bom1</a><br />
-<br />
-On another note: Safari can display CMYK images (at least the OS X version, because it uses the services of QuickTime)</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="86554""></a>
-  <div class="note">
-   <strong class="user">mzheng[no-spam-thx] at ariba dot com</strong>
-   <a href="#86554" class="date">23-Oct-2008 05:50</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-For large files (100+ MBs), I found that it is essential to flush the file content ASAP, otherwise the download dialog doesn't show until a long time or never. <br />
-<br />
-<span class="default">&lt;?php<br />
-header</span><span class="keyword">(</span><span class="string">"Content-Disposition: attachment; filename=" </span><span class="keyword">. </span><span class="default">urlencode</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">));&nbsp; &nbsp; <br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Type: application/force-download"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Type: application/octet-stream"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Type: application/download"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Description: File Transfer"</span><span class="keyword">);&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Length: " </span><span class="keyword">. </span><span class="default">filesize</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">));<br />
-</span><span class="default">flush</span><span class="keyword">(); </span><span class="comment">// this doesn't really matter.<br />
-<br />
-</span><span class="default">$fp </span><span class="keyword">= </span><span class="default">fopen</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">, </span><span class="string">"r"</span><span class="keyword">); <br />
-while (!</span><span class="default">feof</span><span class="keyword">(</span><span class="default">$fp</span><span class="keyword">))<br />
-{<br />
-&nbsp;&nbsp;&nbsp; echo </span><span class="default">fread</span><span class="keyword">(</span><span class="default">$fp</span><span class="keyword">, </span><span class="default">65536</span><span class="keyword">); <br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">flush</span><span class="keyword">(); </span><span class="comment">// this is essential for large downloads<br />
-</span><span class="keyword">}&nbsp; <br />
-</span><span class="default">fclose</span><span class="keyword">(</span><span class="default">$fp</span><span class="keyword">); <br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="86522""></a>
-  <div class="note">
-   <strong class="user">Pr Ahrn</strong>
-   <a href="#86522" class="date">23-Oct-2008 12:39</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Set a fast ETAG:<br />
-<br />
-<span class="default">&lt;?php<br />
-$fp </span><span class="keyword">= </span><span class="default">fopen</span><span class="keyword">(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">"SCRIPT_FILENAME"</span><span class="keyword">], </span><span class="string">"r"</span><span class="keyword">);<br />
-</span><span class="default">$etag </span><span class="keyword">= </span><span class="default">md5</span><span class="keyword">(</span><span class="default">serialize</span><span class="keyword">(</span><span class="default">fstat</span><span class="keyword">(</span><span class="default">$fp</span><span class="keyword">)));<br />
-</span><span class="default">fclose</span><span class="keyword">(</span><span class="default">$fp</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">'Etag: '</span><span class="keyword">.</span><span class="default">$etag</span><span class="keyword">);<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="85254""></a>
-  <div class="note">
-   <strong class="user">shutout2730 at yahoo dot com</strong>
-   <a href="#85254" class="date">22-Aug-2008 08:57</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-It is important to note that headers are actually sent when the first byte is output to the browser. If you are replacing headers in your scripts, this means that the placement of echo/print statements and output buffers may actually impact which headers are sent. In the case of redirects, if you forget to terminate your script after sending the header, adding a buffer or sending a character may change which page your users are sent to.<br />
-<br />
-This redirects to 2.html since the second header replaces the first.<br />
-<br />
-<span class="default">&lt;?php<br />
-header</span><span class="keyword">(</span><span class="string">"location: 1.html"</span><span class="keyword">); <br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"location: 2.html"</span><span class="keyword">); </span><span class="comment">//replaces 1.html<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-This redirects to 1.html since the header is sent as soon as the echo happens. You also won't see any "headers already sent" errors because the browser follows the redirect before it can display the error.<br />
-<br />
-<span class="default">&lt;?php<br />
-header</span><span class="keyword">(</span><span class="string">"location: 1.html"</span><span class="keyword">);<br />
-echo </span><span class="string">"send data"</span><span class="keyword">; <br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"location: 2.html"</span><span class="keyword">); </span><span class="comment">//1.html already sent <br />
-</span><span class="default">?&gt;<br />
-</span><br />
-Wrapping the previous example in an output buffer actually changes the behavior of the script! This is because headers aren't sent until the output buffer is flushed.<br />
-<br />
-<span class="default">&lt;?php<br />
-ob_start</span><span class="keyword">();<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"location: 1.html"</span><span class="keyword">); <br />
-echo </span><span class="string">"send data"</span><span class="keyword">; <br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"location: 2.html"</span><span class="keyword">); </span><span class="comment">//replaces 1.html<br />
-</span><span class="default">ob_end_flush</span><span class="keyword">(); </span><span class="comment">//now the headers are sent<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="85146""></a>
-  <div class="note">
-   <strong class="user">sk89q</strong>
-   <a href="#85146" class="date">17-Aug-2008 08:41</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-You can use HTTP's etags and last modified dates to ensure that you're not sending the browser data it already has cached.<br />
-<br />
-<span class="default">&lt;?php<br />
-$last_modified_time </span><span class="keyword">= </span><span class="default">filemtime</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">);<br />
-</span><span class="default">$etag </span><span class="keyword">= </span><span class="default">md5_file</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">);<br />
-<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Last-Modified: "</span><span class="keyword">.</span><span class="default">gmdate</span><span class="keyword">(</span><span class="string">"D, d M Y H:i:s"</span><span class="keyword">, </span><span class="default">$last_modified_time</span><span class="keyword">).</span><span class="string">" GMT"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Etag: </span><span class="default">$etag</span><span class="string">"</span><span class="keyword">);<br />
-<br />
-if (@</span><span class="default">strtotime</span><span class="keyword">(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTP_IF_MODIFIED_SINCE'</span><span class="keyword">]) == </span><span class="default">$last_modified_time </span><span class="keyword">||<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">trim</span><span class="keyword">(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTP_IF_NONE_MATCH'</span><span class="keyword">]) == </span><span class="default">$etag</span><span class="keyword">) {<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"HTTP/1.1 304 Not Modified"</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; exit;<br />
-}<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="84380""></a>
-  <div class="note">
-   <strong class="user">Orca8767</strong>
-   <a href="#84380" class="date">11-Jul-2008 03:35</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Note that if you don't want to go through the process of making sure that there is no output before you send a header, you can use<br />
-<br />
-<span class="default">&lt;?php<br />
-ob_start</span><span class="keyword">();<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-at the beginning of your page.<br />
-This starts the output buffer, which allows you to send headers whenever you feel like it. Make sure that you put it at the BEGINNING, after the first php tag.<br />
-<br />
-It allows you to do something like<br />
-<br />
-<span class="default">&lt;?php<br />
-ob_start</span><span class="keyword">();<br />
-echo </span><span class="string">'foo'</span><span class="keyword">;<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Status: 404 Not Found"</span><span class="keyword">);<br />
-echo </span><span class="string">'bar'</span><span class="keyword">;<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="84291""></a>
-  <div class="note">
-   <strong class="user">kc8yds at gmail dot com</strong>
-   <a href="#84291" class="date">08-Jul-2008 06:14</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-if you use php to create custom error pages (such as header('HTTP/1.1 500 Internal Server Error');) Internet Explorer ignores you custom page unless it is at least 512 (or sometimes 1024 bytes)<br />
-<br />
-IE ignores custom error pages that are less than 512 (or from what i've read 1024) bytes.<br />
-<br />
-just place this before any output on your custom error page--- and be sure that your custom error page includes proper html tags (it must have a &lt;/body&gt; for this specific example to work)<br />
-<br />
-<span class="default">&lt;?php<br />
-</span><span class="comment">// set your custom error header --- example --- header('HTTP/1.1 503 Service Unavailable');<br />
-<br />
-</span><span class="keyword">function </span><span class="default">padding</span><span class="keyword">(</span><span class="default">$html</span><span class="keyword">){<br />
-return (</span><span class="default">$padding</span><span class="keyword">=</span><span class="default">1024</span><span class="keyword">-</span><span class="default">ob_get_length</span><span class="keyword">()) &gt; </span><span class="default">0 </span><span class="keyword">? </span><span class="default">str_replace</span><span class="keyword">(</span><span class="string">'&lt;/body&gt;'</span><span class="keyword">,</span><span class="string">'&lt;!--'</span><span class="keyword">. (</span><span class="default">$padding</span><span class="keyword">&gt;</span><span class="default">8</span><span class="keyword">?</span><span class="default">str_repeat</span><span class="keyword">(</span><span class="string">' '</span><span class="keyword">,</span><span class="default">$padding</span><span class="keyword">-</span><span class="default">8</span><span class="keyword">) :</span><span class="default">null </span><span class="keyword">).</span><span class="string">'--&gt;'</span><span class="keyword">.</span><span class="string">"\n"</span><span class="keyword">.</span><span class="string">'&lt;/body&gt;'</span><span class="keyword">,</span><span class="default">$html</span><span class="keyword">) : </span><span class="default">$html</span><span class="keyword">;<br />
-}<br />
-<br />
-</span><span class="default">ob_start</span><span class="keyword">(</span><span class="string">'padding'</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-and then place this somewhere within the html error page output<br />
-<br />
-&lt;!-- ---- --&gt;<br />
-<br />
-that will auto-adjust to pad the file to 1024 bytes to override the default Internet Explorer error pages.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="84212""></a>
-  <div class="note">
-   <strong class="user">Yasser Khan (MYKSP)</strong>
-   <a href="#84212" class="date">03-Jul-2008 05:34</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-To get PHP to load a PDF (for example) from file, use the following code.<br />
-<br />
-<span class="default">&lt;?php<br />
-$filename </span><span class="keyword">= </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'DOCUMENT_ROOT'</span><span class="keyword">] . </span><span class="string">"/path/to/file/my_file.pdf"</span><span class="keyword">;<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Cache-Control: public"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Description: File Transfer"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">'Content-disposition: attachment; filename='</span><span class="keyword">.</span><span class="default">basename</span><span class="keyword">(</span><span class="default">$filename</span><span class="keyword">));<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Type: application/pdf"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Transfer-Encoding: binary"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">'Content-Length: '</span><span class="keyword">. </span><span class="default">filesize</span><span class="keyword">(</span><span class="default">$filename</span><span class="keyword">));<br />
-</span><span class="default">readfile</span><span class="keyword">(</span><span class="default">$filename</span><span class="keyword">);<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="83448""></a>
-  <div class="note">
-   <strong class="user">stevenwebster at gmail dot com</strong>
-   <a href="#83448" class="date">27-May-2008 04:56</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-These functions turn on SSL, and turn off SSL. The Redirect function is also good to use for all redirects... tries PHP, then Java, then HTML for redirects.<br />
-<br />
-Here are the improved functions... had an error in the&nbsp; one I posted yesterday if you guys could please delete that one.<br />
-<br />
-<span class="default">&lt;?php<br />
-</span><span class="comment">//This works in 5.2.3<br />
-//First function turns SSL on if it is off.<br />
-//Second function detects if SSL is on, if it is, turns it off.<br />
-<br />
-//==== Redirect... Try PHP header redirect, then Java redirect, then try http redirect.:<br />
-</span><span class="keyword">function </span><span class="default">redirect</span><span class="keyword">(</span><span class="default">$url</span><span class="keyword">){<br />
-&nbsp;&nbsp;&nbsp; if (!</span><span class="default">headers_sent</span><span class="keyword">()){&nbsp; &nbsp; </span><span class="comment">//If headers not sent yet... then do php redirect<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">'Location: '</span><span class="keyword">.</span><span class="default">$url</span><span class="keyword">); exit;<br />
-&nbsp;&nbsp;&nbsp; }else{&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">//If headers are sent... do java redirect... if java disabled, do html redirect.<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">echo </span><span class="string">'&lt;script type="text/javascript"&gt;'</span><span class="keyword">;<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="string">'window.location.href="'</span><span class="keyword">.</span><span class="default">$url</span><span class="keyword">.</span><span class="string">'";'</span><span class="keyword">;<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="string">'&lt;/script&gt;'</span><span class="keyword">;<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="string">'&lt;noscript&gt;'</span><span class="keyword">;<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="string">'&lt;meta http-equiv="refresh" content="0;url='</span><span class="keyword">.</span><span class="default">$url</span><span class="keyword">.</span><span class="string">'" /&gt;'</span><span class="keyword">;<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="string">'&lt;/noscript&gt;'</span><span class="keyword">; exit;<br />
-&nbsp;&nbsp;&nbsp; }<br />
-}</span><span class="comment">//==== End -- Redirect<br />
-<br />
-//==== Turn on HTTPS - Detect if HTTPS, if not on, then turn on HTTPS:<br />
-</span><span class="keyword">function </span><span class="default">SSLon</span><span class="keyword">(){<br />
-&nbsp;&nbsp;&nbsp; if(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTPS'</span><span class="keyword">] != </span><span class="string">'on'</span><span class="keyword">){<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$url </span><span class="keyword">= </span><span class="string">"https://"</span><span class="keyword">.</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTP_HOST'</span><span class="keyword">].</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'REQUEST_URI'</span><span class="keyword">];<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">redirect</span><span class="keyword">(</span><span class="default">$url</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; }<br />
-}</span><span class="comment">//==== End -- Turn On HTTPS<br />
-<br />
-//==== Turn Off HTTPS -- Detect if HTTPS, if so, then turn off HTTPS:<br />
-</span><span class="keyword">function </span><span class="default">SSLoff</span><span class="keyword">(){<br />
-&nbsp;&nbsp;&nbsp; if(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTPS'</span><span class="keyword">] == </span><span class="string">'on'</span><span class="keyword">){<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$url </span><span class="keyword">= </span><span class="string">"<a href="http://" rel="nofollow" target="_blank">http://</a>"</span><span class="keyword">.</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'HTTP_HOST'</span><span class="keyword">].</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'REQUEST_URI'</span><span class="keyword">];<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">redirect</span><span class="keyword">(</span><span class="default">$url</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; }<br />
-}</span><span class="comment">//==== End -- Turn Off HTTPS<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="83384""></a>
-  <div class="note">
-   <strong class="user">milin_mestry at yahoo dot com</strong>
-   <a href="#83384" class="date">23-May-2008 09:54</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Hi,<br />
-<br />
-I was trying to save the '.xls' on user machine, which works correctly on<br />
-Firefox(developer friendly) but not on Microsoft's IE(Microsoft friendly);<br />
-<br />
-after searching on the net, i found this code which works on both the browser.<br />
-Source link: <a href="http://www.webdeveloper.com/forum/archive/index.php/t-30248.html" rel="nofollow" target="_blank">http://www.webdeveloper.com/forum/archive/index.php/t-30248.html</a><br />
-<br />
-here is the code:<br />
--------------------------<br />
-<span class="default">&lt;?php<br />
-</span><span class="comment">// downloading a file<br />
-</span><span class="default">$filename </span><span class="keyword">= </span><span class="default">$_GET</span><span class="keyword">[</span><span class="string">'path'</span><span class="keyword">];<br />
-<br />
-</span><span class="comment">// fix for IE catching or PHP bug issue<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Pragma: public"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Expires: 0"</span><span class="keyword">); </span><span class="comment">// set expiration time<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Cache-Control: must-revalidate, post-check=0, pre-check=0"</span><span class="keyword">);<br />
-</span><span class="comment">// browser must download file from server instead of cache<br />
-<br />
-// force download dialog<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Type: application/force-download"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Type: application/octet-stream"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Type: application/download"</span><span class="keyword">);<br />
-<br />
-</span><span class="comment">// use the Content-Disposition header to supply a recommended filename and<br />
-// force the browser to display the save dialog.<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Disposition: attachment; filename="</span><span class="keyword">.</span><span class="default">basename</span><span class="keyword">(</span><span class="default">$filename</span><span class="keyword">).</span><span class="string">";"</span><span class="keyword">);<br />
-<br />
-</span><span class="comment">/*<br />
-The Content-transfer-encoding header should be binary, since the file will be read<br />
-directly from the disk and the raw bytes passed to the downloading computer.<br />
-The Content-length header is useful to set for downloads. The browser will be able to<br />
-show a progress meter as a file downloads. The content-lenght can be determines by<br />
-filesize function returns the size of a file.<br />
-*/<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Transfer-Encoding: binary"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Length: "</span><span class="keyword">.</span><span class="default">filesize</span><span class="keyword">(</span><span class="default">$filename</span><span class="keyword">));<br />
-<br />
-@</span><span class="default">readfile</span><span class="keyword">(</span><span class="default">$filename</span><span class="keyword">);<br />
-exit(</span><span class="default">0</span><span class="keyword">);<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="83219""></a>
-  <div class="note">
-   <strong class="user">kenaniah at bestphp dot net</strong>
-   <a href="#83219" class="date">15-May-2008 08:51</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-If you are looking to send files such as PDFs or Excel spreadsheets or Microsoft Office documents and are having issues with IE7, IE6, or IE5.5 not being able to open/download the files over an SSL connection, but still need not allow caching, then set these two headers:<br />
-<span class="default">&lt;?php<br />
-header</span><span class="keyword">(</span><span class="string">"Cache-Control: maxage=1"</span><span class="keyword">); </span><span class="comment">//In seconds<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Pragma: public"</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span>Granted, this will cache your file for one second, but it's as close to an un-cached download as you can get when using IE over SSL.<br />
-<br />
-Some basic info on the issue can be found here: <a href="http://support.microsoft.com/kb/812935" rel="nofollow" target="_blank">http://support.microsoft.com/kb/812935</a></span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="83056""></a>
-  <div class="note">
-   <strong class="user">Patrick</strong>
-   <a href="#83056" class="date">08-May-2008 02:56</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-If you come across cache error (when trying to cache your images or other files) like this:<br />
-<br />
-[code=CACHE_FILL_OPEN_FILE] An internal error prevented the object from being sent to the client and cached. Try again later.<br />
-<br />
-You may try sending Cache-Control: private header at the beginning to sort that out<br />
-<br />
-header('Cache-Control: private');</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="82936""></a>
-  <div class="note">
-   <strong class="user">cduke420 at gmail dot com</strong>
-   <a href="#82936" class="date">02-May-2008 08:33</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-If you have Apache, you can setup your ErrorDocument to point <br />
-to a php file that instructs search engines to try again in 120 seconds.&nbsp; <br />
-This can be helpful when you are doing maintenance on the site.<br />
-<br />
-Then in .htaccess<br />
-<br />
-ErrorDocument 503 /cgi-bin/503.php <br />
-ErrorDocument 500 /cgi-bin/503.php <br />
-<br />
-<span class="default">&lt;?php<br />
-ob_start</span><span class="keyword">();<br />
-@</span><span class="default">header</span><span class="keyword">(</span><span class="string">"HTTP/1.1 503 Service Temporarily Unavailable"</span><span class="keyword">);<br />
-@</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Status: 503 Service Temporarily Unavailable"</span><span class="keyword">);<br />
-@</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Retry-After: 120"</span><span class="keyword">);<br />
-@</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Connection: Close"</span><span class="keyword">);<br />
-</span><span class="default">?&gt;</span>&lt;!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"&gt;<br />
-&lt;html&gt;&lt;head&gt;<br />
-&lt;title&gt;503 Service Temporarily Unavailable&lt;/title&gt;<br />
-&lt;/head&gt;&lt;body&gt;<br />
-&lt;h1&gt;Service Temporarily Unavailable&lt;/h1&gt;<br />
-&lt;p&gt;The server is temporarily unable to service your<br />
-request due to maintenance downtime or capacity<br />
-problems. Please try again later.&lt;/p&gt;<br />
-&lt;/body&gt;&lt;/html&gt;<span class="default">&lt;?php<br />
-$g</span><span class="keyword">=</span><span class="default">ob_get_clean</span><span class="keyword">();<br />
-echo </span><span class="default">$g</span><span class="keyword">;<br />
-exit;<br />
-exit();<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-See: <br />
-<a href="http://askapache.com/htaccess/503-service-temporarily-unavailable.html" rel="nofollow" target="_blank">http://askapache.com/htaccess/503-service-temporarily-unavailable.html</a></span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="81971""></a>
-  <div class="note">
-   <strong class="user">gilthans at nospam dot gmail dot com</strong>
-   <a href="#81971" class="date">21-Mar-2008 07:16</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-I've been having trouble with a simple page that simply redirects the page elsewhere. Even the simple:<br />
-<br />
-<span class="default">&lt;?php<br />
-Header</span><span class="keyword">(</span><span class="string">"Location: <a href="http://www.google.com/" rel="nofollow" target="_blank">http://www.google.com/</a>"</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-Wouldn't work ("Warning: Headers already sent!").<br />
-After double checking for extra spaces, I found out that because I saved the file as a UTF-8 file, and the page wasn't loaded as a UTF-8 page, so some weird character was prepended to the page. After saving the file as a windows-1252 file it worked ok. Hope this someone some headaches.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="81045""></a>
-  <div class="note">
-   <strong class="user">blinki bill</strong>
-   <a href="#81045" class="date">12-Feb-2008 05:33</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-if you are planing to make a download script like this one:<br />
-<br />
-<span class="default">&lt;?php<br />
-$mm_type</span><span class="keyword">=</span><span class="string">"application/octet-stream"</span><span class="keyword">;<br />
-<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Cache-Control: public, must-revalidate"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Pragma: hack"</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Type: " </span><span class="keyword">. </span><span class="default">$mm_type</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Length: " </span><span class="keyword">.(string)(</span><span class="default">filesize</span><span class="keyword">(</span><span class="default">$fullpath</span><span class="keyword">)) );<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">'Content-Disposition: attachment; filename="'</span><span class="keyword">.</span><span class="default">$filename</span><span class="keyword">.</span><span class="string">'"'</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Transfer-Encoding: binary\n"</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <br />
-</span><span class="default">readfile</span><span class="keyword">(</span><span class="default">$fullpath</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-you will notice that the zip files becomes invalid after download, thats because all files downloaded starts with empty line which is a problem for the zip files<br />
-This can be fixed with adding ob_start() at the beginning of the script and od_end_clean() just before the readfile()</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="79579""></a>
-  <div class="note">
-   <strong class="user">henfiber at gmail dot com</strong>
-   <a href="#79579" class="date">04-Dec-2007 02:19</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Is there a serious problem with utf8 encoding?<br />
-Answer: no- utf8 with bom is a problem..<br />
-<br />
-I spent about 10 hours trying every tip or fix suggested by users to fix the problem with " headers already sent ".<br />
-<br />
-Finally I found the problem with a hex editor.<br />
-<br />
-As it is previously mentioned header() should be the first statement. Moreover php opening and closing tags should be clean of spaces:<br />
-<br />
-So something like this should work:<br />
-<br />
-<span class="default">&lt;?php<br />
-header</span><span class="keyword">(</span><span class="string">'something ..'</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-I had applied an authentication scheme to my pages using sessions. The encoding of my files was "utf-8". Though I <br />
-tried cleaning everything about spaces,tabs and other dirt&nbsp; through my code, I kept getting these " headers already sent errors..". The problem was in utf-8 encoding ( I don't mean the meta:http-equiv=" charset='utf-8' tag but the actual encoding of my file.) When I changed to ANSI everything worked. Actually the utf-8 encoding added three characters at the start of my file : ο»Ώ. This is called bom in utf-8. So if you are going to use utf-8 encodings to your pages and need to put php header code in these pages choose to save "utf8 without bom". (I hope your editor has such an option - I use notepad++ in win32 )<br />
-Hope it helps..</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="79028""></a>
-  <div class="note">
-   <strong class="user">bholbrook at servillian dot com</strong>
-   <a href="#79028" class="date">07-Nov-2007 06:06</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-The first element of the header (i.e. "Location") is case sensitive depending on the browser. In IE7, <span class="default">&lt;?php header</span><span class="keyword">(</span><span class="string">"location:<a href="http://www.example.com" rel="nofollow" target="_blank">http://www.example.com</a>"</span><span class="keyword">); </span><span class="default">?&gt;</span> does not work as expected whereas <span class="default">&lt;?php header </span><span class="keyword">(</span><span class="string">"Location:<a href="http://www.example.com" rel="nofollow" target="_blank">http://www.example.com</a>"</span><span class="keyword">); </span><span class="default">?&gt;</span> does work as expected.<br />
-<br />
-For a full list of headers and their values go here: <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html" rel="nofollow" target="_blank">http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html</a></span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="79009""></a>
-  <div class="note">
-   <strong class="user">ik at dynamique dot nl</strong>
-   <a href="#79009" class="date">07-Nov-2007 03:52</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-If you want your download script to work in Safari you'll have to print quotation marks around the filename:<br />
-header('Content-Disposition: attachment; filename="'.$fileName.'"');<br />
-,otherwise Safari will just save the file as 'scriptname.php'.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="79004""></a>
-  <div class="note">
-   <strong class="user">Aleks</strong>
-   <a href="#79004" class="date">07-Nov-2007 02:06</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-I recently had a hair-threatening problem with Firefox and XHTML 1.0 transitional.<br />
-<br />
-It worked fine with other browsers, and also with HTML 4.1.<br />
-<br />
-To cut a long story short, PHP-generated JS and CSS files were still being reported by the headers as text/html, while in the HTML they were text/css and application/javascript; Firefox having been told the page was XHTML 1.0 became anal-retentive and refused to style the page. (I think the JS still worked but I fixed it anyway.)<br />
-<br />
-Solution:<br />
-<br />
-header('Content-type: text/css');<br />
-and<br />
-header('Content-type: application/javascript');</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="78470""></a>
-  <div class="note">
-   <strong class="user">Dylan at WeDefy dot com</strong>
-   <a href="#78470" class="date">13-Oct-2007 05:17</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-A quick way to make redirects permanent or temporary is to make use of the $http_response_code parameter in header().<br />
-<br />
-<span class="default">&lt;?php<br />
-</span><span class="comment">// 301 Moved Permanently<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Location: /foo.php"</span><span class="keyword">,</span><span class="default">TRUE</span><span class="keyword">,</span><span class="default">301</span><span class="keyword">);<br />
-<br />
-</span><span class="comment">// 302 Found<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Location: /foo.php"</span><span class="keyword">,</span><span class="default">TRUE</span><span class="keyword">,</span><span class="default">302</span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Location: /foo.php"</span><span class="keyword">);<br />
-<br />
-</span><span class="comment">// 303 See Other<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Location: /foo.php"</span><span class="keyword">,</span><span class="default">TRUE</span><span class="keyword">,</span><span class="default">303</span><span class="keyword">);<br />
-<br />
-</span><span class="comment">// 307 Temporary Redirect<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Location: /foo.php"</span><span class="keyword">,</span><span class="default">TRUE</span><span class="keyword">,</span><span class="default">307</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-The HTTP status code changes the way browsers and robots handle redirects, so if you are using header(Location:) it's a good idea to set the status code at the same time.&nbsp; Browsers typically re-request a 307 page every time, cache a 302 page for the session, and cache a 301 page for longer, or even indefinitely.&nbsp; Search engines typically transfer "page rank" to the new location for 301 redirects, but not for 302, 303 or 307. If the status code is not specified, header('Location:') defaults to 302.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="77028""></a>
-  <div class="note">
-   <strong class="user">ryanhanekamp at yahoo dot com</strong>
-   <a href="#77028" class="date">11-Aug-2007 11:10</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-I strongly recommend the "Live HTTP Headers" plugin for Firefox for any work when manually setting headers. (Find it in the addons section on mozilla.com) This allows you to see the headers your PHP script and server are sending, plus Firefox's request headers.<br />
-<br />
-One important thing to note is a conflict with many of the scripts here, including in lasitha dot alawatta's Excel post just a few below me, is that sending multiple headers of the same type from your script does not actually cause multiple lines of output to the browser, at least for the version of PHP5 I'm running, and it's doubtful the browser would process any other than the last line anyhow.<br />
-<br />
-So sending multiple "Pragma: " or "Cache-Control: " headers results in only the last one set in your script to actually be sent.<br />
-<br />
-Also, it's already been pointed out, but setting "Cache-Control: Pre-Check=0, Post-Check=0" does absolutely nothing. I believe only MSIE even uses these values and it specifically IGNORES both of them when both are set to zero.<br />
-<br />
-I've actually had more trouble trying to encourage caching than preventing it, because PHP sends "Cache-Control" and "Pragma" headers either always or at least always with sessions on (and I always have sessions on). The trick is to always send BOTH "Cache-Control" and "Pragma" because if they conflict it's completely up to the browser to resolve. And if you have a custom server in PHP like I'm working on right now, you'll need to sniff for $_SERVER['IF-MODIFIED-SINCE'] and serve up "HTTP/1.1 304 Not Modified" as appropriate.<br />
-<br />
-If you are doing something like this and want to ensure caching of static files, the best way I found was to give an honest "Last-Modified", set an "Expires:" a reasonable time in the future (a few minutes through the year 2038, depending on what you're doing), set "Cache-Control" to "private" or "public", and stay away from "Max-Age".</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="76758""></a>
-  <div class="note">
-   <strong class="user">Kal</strong>
-   <a href="#76758" class="date">29-Jul-2007 10:07</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-I spent a long time trying to determine why Internet Explorer 7 wasn't prompting the user to save a download based on the filename specified on a "'Content-Disposition: attachment; filename=..." header line.<br />
-<br />
-I eventually determined that my Apache installation was adding an additional header: "Vary: Host", which was throwing IE - as per <a href="http://support.microsoft.com/kb/824847" rel="nofollow" target="_blank">http://support.microsoft.com/kb/824847</a><br />
-<br />
-I found manually setting the Vary header from within PHP as follows header('Vary: User-Agent'); allowed IE to behave as intended.<br />
-<br />
-Hope this saves someone else some time,<br />
-<br />
-- Kal</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="76749""></a>
-  <div class="note">
-   <strong class="user">lasitha dot alawatta at gmail dot com</strong>
-   <a href="#76749" class="date">29-Jul-2007 07:15</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Create MS-Excel file:<br />
-<br />
-<span class="default">&lt;?php<br />
-<br />
-&nbsp;&nbsp;&nbsp; $export_file </span><span class="keyword">= </span><span class="string">"my_name.xls"</span><span class="keyword">;<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">ob_end_clean</span><span class="keyword">();<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">ini_set</span><span class="keyword">(</span><span class="string">'zlib.output_compression'</span><span class="keyword">,</span><span class="string">'Off'</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; <br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">'Pragma: public'</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Expires: Sat, 26 Jul 1997 05:00:00 GMT"</span><span class="keyword">);&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// Date in the past&nbsp; &nbsp; <br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">'Last-Modified: '</span><span class="keyword">.</span><span class="default">gmdate</span><span class="keyword">(</span><span class="string">'D, d M Y H:i:s'</span><span class="keyword">) . </span><span class="string">' GMT'</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">'Cache-Control: no-store, no-cache, must-revalidate'</span><span class="keyword">);&nbsp; &nbsp;&nbsp; </span><span class="comment">// HTTP/1.1 <br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">'Cache-Control: pre-check=0, post-check=0, max-age=0'</span><span class="keyword">);&nbsp; &nbsp; </span><span class="comment">// HTTP/1.1<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header </span><span class="keyword">(</span><span class="string">"Pragma: no-cache"</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Expires: 0"</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">'Content-Transfer-Encoding: none'</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">'Content-Type: application/vnd.ms-excel;'</span><span class="keyword">);&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// This should work for IE &amp; Opera<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-type: application/x-msexcel"</span><span class="keyword">);&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// This should work for the rest<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">'Content-Disposition: attachment; filename="'</span><span class="keyword">.</span><span class="default">basename</span><span class="keyword">(</span><span class="default">$export_file</span><span class="keyword">).</span><span class="string">'"'</span><span class="keyword">);<br />
-<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="76375""></a>
-  <div class="note">
-   <strong class="user">jasper at jtey dot com</strong>
-   <a href="#76375" class="date">12-Jul-2007 04:30</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-If you are finding that header() is not working for no obvious reason, make use of the headers_sent() function to drill down to the cause of the problem.<br />
-<br />
-Consider the following scenario,<br />
-<br />
-<span class="default">&lt;?php<br />
-</span><span class="comment">// Sign out<br />
-</span><span class="default">signOut</span><span class="keyword">();<br />
-<br />
-</span><span class="comment">// Redirect back to the main page<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Location: <a href="http://example.com/mainpage" rel="nofollow" target="_blank">http://example.com/mainpage</a>"</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-If for some reason, the header() call to redirect is not working, there won't be any error messages, making it difficult to debug.&nbsp; However, using headers_sent(), you may easily find the source of the problem.<br />
-<br />
-<span class="default">&lt;?php<br />
-</span><span class="comment">// Sign out<br />
-</span><span class="default">signOut</span><span class="keyword">();<br />
-<br />
-</span><span class="comment">/*<br />
-&nbsp;* If headers were already sent for some reason, <br />
-&nbsp;* the upcoming call to header() will not work...<br />
-&nbsp;*/<br />
-</span><span class="keyword">if(</span><span class="default">headers_sent</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">, </span><span class="default">$line</span><span class="keyword">)){<br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">// ... where were the mysterious headers sent from?<br />
-&nbsp;&nbsp;&nbsp; </span><span class="keyword">echo </span><span class="string">"Headers were already sent in </span><span class="default">$file</span><span class="string"> on line </span><span class="default">$line</span><span class="string">..."</span><span class="keyword">;<br />
-}<br />
-<br />
-</span><span class="comment">// Redirect back to the main page<br />
-</span><span class="default">header</span><span class="keyword">(</span><span class="string">"Location: <a href="http://example.com/mainpage" rel="nofollow" target="_blank">http://example.com/mainpage</a>"</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-As the documentation states, "header() must be called before any actual output is sent, either by normal HTML tags, blank lines in a file, or from PHP."&nbsp; In the above debugging solution, you will find out exactly where any of these problematic output or blank lines exist.&nbsp; You should then be able to resolve the issues with much more ease than if you hunted for the problems aimlessly.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="75924""></a>
-  <div class="note">
-   <strong class="user">greg dot jones at senokian dot com</strong>
-   <a href="#75924" class="date">21-Jun-2007 06:16</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-In case anyone else is having trouble:<br />
-using a web-server behind the pound load balancer, we found that trying to redirect to https://example.com for requests to <a href="http://example.com were getting into an infinite loop because pound, by default, " rel="nofollow" target="_blank">http://example.com were getting into an infinite loop because pound, by default, </a>'fixes' changes of protocol for you. You want to set RewriteLocation to 0 to turn this behaviour off.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="75507""></a>
-  <div class="note">
-   <strong class="user">nobileelpirata at hotmail dot com</strong>
-   <a href="#75507" class="date">03-Jun-2007 12:04</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-This is the Headers to force a browser to use fresh content (no caching) in HTTP/1.0 and HTTP/1.1:<br />
-<br />
-<span class="default">&lt;?PHP<br />
-header</span><span class="keyword">( </span><span class="string">'Expires: Sat, 26 Jul 1997 05:00:00 GMT' </span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">( </span><span class="string">'Last-Modified: ' </span><span class="keyword">. </span><span class="default">gmdate</span><span class="keyword">( </span><span class="string">'D, d M Y H:i:s' </span><span class="keyword">) . </span><span class="string">' GMT' </span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">( </span><span class="string">'Cache-Control: no-store, no-cache, must-revalidate' </span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">( </span><span class="string">'Cache-Control: post-check=0, pre-check=0'</span><span class="keyword">, </span><span class="default">false </span><span class="keyword">);<br />
-</span><span class="default">header</span><span class="keyword">( </span><span class="string">'Pragma: no-cache' </span><span class="keyword">);<br />
-<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="75394""></a>
-  <div class="note">
-   <strong class="user">Jean-Pierre</strong>
-   <a href="#75394" class="date">27-May-2007 01:21</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-You can use the Header command to force a browser to use fresh content (no caching).<br />
-<br />
-However, this only works for the HTML code your code generates. When you have updated images for example (with the same filename) then there's a chance that these are still cached.<br />
-<br />
-The easiest way to solve this problem I found is changing:<br />
-<br />
-<span class="default">&lt;?php<br />
-</span><span class="keyword">print </span><span class="string">"&lt;img src='yourfile.jpg'&gt;"</span><span class="keyword">;<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-into:<br />
-<br />
-<span class="default">&lt;?php<br />
-</span><span class="keyword">print </span><span class="string">"&lt;img src='yourfile.jpg?"</span><span class="keyword">.</span><span class="default">time</span><span class="keyword">().</span><span class="string">"'&gt;"</span><span class="keyword">;<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-This adds an unique number to the url and wont hurt at all.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="69002""></a>
-  <div class="note">
-   <strong class="user">aooa83(a)dsldotpipexdotcom</strong>
-   <a href="#69002" class="date">19-Aug-2006 11:26</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-apache_request_headers() is only available if PHP is running as an apache module. Various request header values are available in the $_SERVER array, for example:<br />
-<br />
-$_SERVER["HTTP_IF_MODIFIED_SINCE"]<br />
-<br />
-Gives the if modified date in "Sat, 12 Aug 2006 19:12:08 GMT" format.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="61903""></a>
-  <div class="note">
-   <strong class="user">mandor at mandor dot net</strong>
-   <a href="#61903" class="date">15-Feb-2006 02:14</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-When using PHP to output an image, it won't be cached by the client so if you don't want them to download the image each time they reload the page, you will need to emulate part of the HTTP protocol.<br />
-<br />
-Here's how:<br />
-<br />
-<span class="default">&lt;?php<br />
-<br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">// Test image.<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$fn </span><span class="keyword">= </span><span class="string">'/test/foo.png'</span><span class="keyword">;<br />
-<br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">// Getting headers sent by the client.<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$headers </span><span class="keyword">= </span><span class="default">apache_request_headers</span><span class="keyword">(); <br />
-<br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">// Checking if the client is validating his cache and if it is current.<br />
-&nbsp;&nbsp;&nbsp; </span><span class="keyword">if (isset(</span><span class="default">$headers</span><span class="keyword">[</span><span class="string">'If-Modified-Since'</span><span class="keyword">]) &amp;&amp; (</span><span class="default">strtotime</span><span class="keyword">(</span><span class="default">$headers</span><span class="keyword">[</span><span class="string">'If-Modified-Since'</span><span class="keyword">]) == </span><span class="default">filemtime</span><span class="keyword">(</span><span class="default">$fn</span><span class="keyword">))) {<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Client's cache IS current, so we just respond '304 Not Modified'.<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">'Last-Modified: '</span><span class="keyword">.</span><span class="default">gmdate</span><span class="keyword">(</span><span class="string">'D, d M Y H:i:s'</span><span class="keyword">, </span><span class="default">filemtime</span><span class="keyword">(</span><span class="default">$fn</span><span class="keyword">)).</span><span class="string">' GMT'</span><span class="keyword">, </span><span class="default">true</span><span class="keyword">, </span><span class="default">304</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; } else {<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Image not cached or cache outdated, we respond '200 OK' and output the image.<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">'Last-Modified: '</span><span class="keyword">.</span><span class="default">gmdate</span><span class="keyword">(</span><span class="string">'D, d M Y H:i:s'</span><span class="keyword">, </span><span class="default">filemtime</span><span class="keyword">(</span><span class="default">$fn</span><span class="keyword">)).</span><span class="string">' GMT'</span><span class="keyword">, </span><span class="default">true</span><span class="keyword">, </span><span class="default">200</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">'Content-Length: '</span><span class="keyword">.</span><span class="default">filesize</span><span class="keyword">(</span><span class="default">$fn</span><span class="keyword">));<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">'Content-Type: image/png'</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; print </span><span class="default">file_get_contents</span><span class="keyword">(</span><span class="default">$fn</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; }<br />
-<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-That way foo.png will be properly cached by the client and you'll save bandwith. :)</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="48538""></a>
-  <div class="note">
-   <strong class="user">aarondunlap.com</strong>
-   <a href="#48538" class="date">28-Dec-2004 11:17</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-I just made a function to allow a file to force-download (for a script to disallow file links from untrusted sites -- preventing mp3/video leeching on forums), and I realized that a script like that could potentially be very dangerous.<br />
-<br />
-Someone could possibly exploit the script to download sensitive files from your server, like your index.php or passwords.txt -- so I made this switch statement to both allow for many file types for a download script, and to prevent certain types from being accessed.<br />
-<br />
-<span class="default">&lt;?php<br />
-<br />
-</span><span class="keyword">function </span><span class="default">dl_file</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">){<br />
-<br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">//First, see if the file exists<br />
-&nbsp;&nbsp;&nbsp; </span><span class="keyword">if (!</span><span class="default">is_file</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">)) { die(</span><span class="string">"&lt;b&gt;404 File not found!&lt;/b&gt;"</span><span class="keyword">); }<br />
-<br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">//Gather relevent info about file<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$len </span><span class="keyword">= </span><span class="default">filesize</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$filename </span><span class="keyword">= </span><span class="default">basename</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$file_extension </span><span class="keyword">= </span><span class="default">strtolower</span><span class="keyword">(</span><span class="default">substr</span><span class="keyword">(</span><span class="default">strrchr</span><span class="keyword">(</span><span class="default">$filename</span><span class="keyword">,</span><span class="string">"."</span><span class="keyword">),</span><span class="default">1</span><span class="keyword">));<br />
-<br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">//This will set the Content-Type to the appropriate setting for the file<br />
-&nbsp;&nbsp;&nbsp; </span><span class="keyword">switch( </span><span class="default">$file_extension </span><span class="keyword">) {<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; case </span><span class="string">"pdf"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"application/pdf"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"exe"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"application/octet-stream"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"zip"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"application/zip"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"doc"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"application/msword"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"xls"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"application/vnd.ms-excel"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"ppt"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"application/vnd.ms-powerpoint"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"gif"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"image/gif"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"png"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"image/png"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"jpeg"</span><span class="keyword">:<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"jpg"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"image/jpg"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"mp3"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"audio/mpeg"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"wav"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"audio/x-wav"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"mpeg"</span><span class="keyword">:<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"mpg"</span><span class="keyword">:<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"mpe"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"video/mpeg"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"mov"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"video/quicktime"</span><span class="keyword">; break;<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"avi"</span><span class="keyword">: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"video/x-msvideo"</span><span class="keyword">; break;<br />
-<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="comment">//The following are for extensions that shouldn't be downloaded (sensitive stuff, like php files)<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="keyword">case </span><span class="string">"php"</span><span class="keyword">:<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"htm"</span><span class="keyword">:<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"html"</span><span class="keyword">:<br />
-&nbsp;&nbsp; &nbsp;&nbsp; case </span><span class="string">"txt"</span><span class="keyword">: die(</span><span class="string">"&lt;b&gt;Cannot be used for "</span><span class="keyword">. </span><span class="default">$file_extension </span><span class="keyword">.</span><span class="string">" files!&lt;/b&gt;"</span><span class="keyword">); break;<br />
-<br />
-&nbsp;&nbsp; &nbsp;&nbsp; default: </span><span class="default">$ctype</span><span class="keyword">=</span><span class="string">"application/force-download"</span><span class="keyword">;<br />
-&nbsp;&nbsp;&nbsp; }<br />
-<br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">//Begin writing headers<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Pragma: public"</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Expires: 0"</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Cache-Control: must-revalidate, post-check=0, pre-check=0"</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Cache-Control: public"</span><span class="keyword">); <br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Description: File Transfer"</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; <br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">//Use the switch-generated Content-Type<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Type: </span><span class="default">$ctype</span><span class="string">"</span><span class="keyword">);<br />
-<br />
-&nbsp;&nbsp;&nbsp; </span><span class="comment">//Force the download<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$header</span><span class="keyword">=</span><span class="string">"Content-Disposition: attachment; filename="</span><span class="keyword">.</span><span class="default">$filename</span><span class="keyword">.</span><span class="string">";"</span><span class="keyword">;<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="default">$header </span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Transfer-Encoding: binary"</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Length: "</span><span class="keyword">.</span><span class="default">$len</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; @</span><span class="default">readfile</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; exit;<br />
-}<br />
-<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-This works in both IE and Firefox.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="46846""></a>
-  <div class="note">
-   <strong class="user">guvnor</strong>
-   <a href="#46846" class="date">25-Oct-2004 08:38</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-One that tripped me up for a while...<br />
-<br />
-When I use PHP sessions, the following headers are sent automatically to force the browser not to cache:<br />
-<br />
-Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0 <br />
-Pragma: no-cache <br />
-<br />
-If you are having trouble with inline PDFs etc., thses may be causing you problems. As per other notes here if you overwrite these headers before outputting your file, the download problems will go away.<br />
-<br />
-header('Cache-Control:');<br />
-header('Pragma:');<br />
-<br />
-If you wish to retain the dynamic content, only send the above if the document you are returning is not HTML.<br />
-<br />
-Its well worth examining your own headers (call your PHP script from another script using get_headers() for instance) before going mad trying to fix something - better still compare the headers from your script with headers from a static web page - it might save you hours of time.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="46049""></a>
-  <div class="note">
-   <strong class="user">j dot gizmo at aon dot at</strong>
-   <a href="#46049" class="date">28-Sep-2004 11:09</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-some browsers always reload stylesheets, javascripts and other seldomnly changing files, which causes nasty delays when loading a website (Safari on MacOS is an example)<br />
-<br />
-to tell the browser to keep files in cache for at least a day, you can use<br />
-<span class="default">&lt;?php<br />
-header</span><span class="keyword">(</span><span class="string">'Expires: ' </span><span class="keyword">. </span><span class="default">gmdate</span><span class="keyword">(</span><span class="string">'D, d M Y H:i:s'</span><span class="keyword">, </span><span class="default">time</span><span class="keyword">()+</span><span class="default">24</span><span class="keyword">*</span><span class="default">60</span><span class="keyword">*</span><span class="default">60</span><span class="keyword">) . </span><span class="string">' GMT'</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span>This has the nice sideeffect of telling other browser that never refresh pages to refresh them at least once a day.<br />
-<br />
-PS: i figure this is trivial, but it cost me some headache</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="45756""></a>
-  <div class="note">
-   <strong class="user">ondrew at quick dot cz</strong>
-   <a href="#45756" class="date">17-Sep-2004 02:19</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-How to force browser to use already downloaded and cached file.<br />
-<br />
-If you have images in DB, they will reload each time user views them. To prevent this, web server must identify each file with ID.<br />
-<br />
-When sending a file, web server attaches ID of the file in header called ETag.<br />
-header("ETag: \"uniqueID\");<br />
-<br />
-When requesting file, browser checks if the file was already downloaded. If cached file is found, server sends the ID with the file request to server.<br />
-<br />
-Server checks if the IDs match and if they do, sends back <br />
-header("HTTP/1.1 304 Not Modified");<br />
-else<br />
-Server sends the file normally.<br />
-<br />
-<span class="default">&lt;?php<br />
-<br />
-&nbsp; $file </span><span class="keyword">= </span><span class="default">getFileFromDB</span><span class="keyword">();<br />
-<br />
-&nbsp; </span><span class="comment">// generate unique ID<br />
-&nbsp; </span><span class="default">$hash </span><span class="keyword">= </span><span class="default">md5</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">[</span><span class="string">'contents'</span><span class="keyword">]);<br />
-&nbsp;&nbsp;&nbsp; <br />
-&nbsp; </span><span class="default">$headers </span><span class="keyword">= </span><span class="default">getallheaders</span><span class="keyword">();<br />
-&nbsp;&nbsp;&nbsp; <br />
-&nbsp; </span><span class="comment">// if Browser sent ID, we check if they match<br />
-&nbsp; </span><span class="keyword">if (</span><span class="default">ereg</span><span class="keyword">(</span><span class="default">$hash</span><span class="keyword">, </span><span class="default">$headers</span><span class="keyword">[</span><span class="string">'If-None-Match'</span><span class="keyword">]))<br />
-&nbsp; {<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">'HTTP/1.1 304 Not Modified'</span><span class="keyword">);<br />
-&nbsp; }<br />
-&nbsp; else<br />
-&nbsp; {<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"ETag: \"</span><span class="keyword">{</span><span class="default">$hash</span><span class="keyword">}</span><span class="string">\""</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Accept-Ranges: bytes"</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Length: "</span><span class="keyword">.</span><span class="default">strlen</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">[</span><span class="string">'content'</span><span class="keyword">]));<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Type: </span><span class="keyword">{</span><span class="default">$mime</span><span class="keyword">}</span><span class="string">"</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">"Content-Disposition: inline; filename=\"</span><span class="keyword">{</span><span class="default">$file</span><span class="keyword">[</span><span class="string">'filename'</span><span class="keyword">]}</span><span class="string">\";"</span><span class="keyword">);<br />
-<br />
-&nbsp;&nbsp;&nbsp; echo </span><span class="default">$file</span><span class="keyword">[</span><span class="string">'content'</span><span class="keyword">];<br />
-&nbsp; }<br />
-&nbsp; exit();<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="37645""></a>
-  <div class="note">
-   <strong class="user">jp at webgraphe dot com</strong>
-   <a href="#37645" class="date">22-Nov-2003 12:56</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-A call to session_write_close() before the statement<br />
-<br />
-<span class="default">&lt;?php<br />
-&nbsp;&nbsp;&nbsp; header</span><span class="keyword">(</span><span class="string">"Location: URL"</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; exit();<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-is recommended if you want to be sure the session is updated before proceeding to the redirection.<br />
-<br />
-We encountered a situation where the script accessed by the redirection wasn't loading the session correctly because the precedent script hadn't the time to update it (we used a database handler).<br />
-<br />
-JP.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="32569""></a>
-  <div class="note">
-   <strong class="user">bMindful at fleetingiamge dot org</strong>
-   <a href="#32569" class="date">01-Jun-2003 12:08</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-If you haven't used, HTTP Response 204 can be very convenient. 204 tells the server to immediately termiante this request. This is helpful if you want a javascript (or similar) client-side function to execute a server-side function without refreshing or changing the current webpage. Great for updating database, setting global variables, etc.<br />
-<br />
-&nbsp;&nbsp; &nbsp; header("status: 204");&nbsp; (or the other call)<br />
-&nbsp;&nbsp; &nbsp; header("HTTP/1.0 204 No Response");</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="23508""></a>
-  <div class="note">
-   <strong class="user">dadarden_nospamola at iti2 dot nospamola dot net</strong>
-   <a href="#23508" class="date">20-Jul-2002 02:38</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-If you use session_start() at the top of a php script that also has header() calls later in the script for a file download then you must add some form of cache control for IE to work properly.&nbsp; I use header('Cache-Control: public'); immediately after the code at the top of the script with the session_start() call that verifies that I have a properly logged in user.&nbsp; That allows the header() and fpassthru() calls to download a file later in the script using IE 5.5 SP2.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-</div>
-</div>
-<hr /><div class="manualnavbar" style="text-align: center;">
- <div class="prev" style="text-align: left; float: left;"><a href="function.header-remove.html">header_remove</a></div>
- <div class="next" style="text-align: right; float: right;"><a href="function.headers-list.html">headers_list</a></div>
- <div class="up"><a href="ref.network.html">ネットワーク 関数</a></div>
- <div class="home"><a href="index.html">PHP Manual</a></div>
-</div></body></html>

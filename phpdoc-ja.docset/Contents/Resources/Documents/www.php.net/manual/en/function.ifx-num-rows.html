@@ -1,147 +1,0 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
- <head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <title>クエリから既に取得された行の数を数える</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
- </head>
- <body class="docs"><div class="manualnavbar" style="text-align: center;">
- <div class="prev" style="text-align: left; float: left;"><a href="function.ifx-num-fields.html">ifx_num_fields</a></div>
- <div class="next" style="text-align: right; float: right;"><a href="function.ifx-pconnect.html">ifx_pconnect</a></div>
- <div class="up"><a href="ref.ifx.html">Informix 関数</a></div>
- <div class="home"><a href="index.html">PHP Manual</a></div>
-</div><hr /><div id="function.ifx-num-rows" class="refentry">
- <div class="refnamediv">
-  <h1 class="refname">ifx_num_rows</h1>
-  <p class="verinfo">(PHP 4, PHP &lt;=5.2.0)</p><p class="refpurpose"><span class="refname">ifx_num_rows</span> &mdash; <span class="dc-title">クエリから既に取得された行の数を数える</span></p>
-
- </div>
- 
- <div class="refsect1 description" id="refsect1-function.ifx-num-rows-description">
-  <h3 class="title">説明</h3>
-  <div class="methodsynopsis dc-description">
-   <span class="type">int</span> <span class="methodname"><strong>ifx_num_rows</strong></span>
-    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$result_id</code></span>
-   )</div>
-
-  <p class="para rdfs-comment">
-    <span class="function"><a href="function.ifx-query.html" class="function">ifx_query()</a></span> または  <span class="function"><a href="function.ifx-do.html" class="function">ifx_do()</a></span>
-   クエリの後、<em><code class="parameter">result_id</code></em> を有する
-   クエリに関してこれまで取得された行の数を返します。
-  </p>
- </div>
-
-
- <div class="refsect1 parameters" id="refsect1-function.ifx-num-rows-parameters">
-  <h3 class="title">パラメータ</h3>
-  <p class="para">
-   <dl>
-
-    <dt>
-
-     <span class="term"><em><code class="parameter">result_id</code></em></span>
-     <dd>
-
-      <p class="para">
-       <em><code class="parameter">result_id</code></em> は、
-        <span class="function"><a href="function.ifx-query.html" class="function">ifx_query()</a></span> または
-        <span class="function"><a href="function.ifx-prepare.html" class="function">ifx_prepare()</a></span> (select 型のクエリのみ!)
-       により返された有効な結果 ID です。
-      </p>
-     </dd>
-
-    </dt>
-
-   </dl>
-
-  </p>
- </div>
-
-
- <div class="refsect1 returnvalues" id="refsect1-function.ifx-num-rows-returnvalues">
-  <h3 class="title">返り値</h3>
-  <p class="para">
-   取得した行の数、あるいはエラー時に <strong><code>FALSE</code></strong> を返します。
-  </p>
- </div>
-
-
- <div class="refsect1 seealso" id="refsect1-function.ifx-num-rows-seealso">
-  <h3 class="title">参考</h3>
-  <p class="para">
-   <ul class="simplelist">
-    <li class="member"> <span class="function"><a href="function.ifx-num-fields.html" class="function" rel="rdfs-seeAlso">ifx_num_fields()</a> - クエリのカラム数を返す</span></li>
-   </ul>
-  </p>
- </div>
-
-
-</div><div id="usernotes">
- <div class="head">
-  <h3 class="title">User Contributed Notes</h3>
- </div>
-<div id="allnotes">  <a name="88157""></a>
-  <div class="note">
-   <strong class="user">evandrosimenes at hotmail dot com</strong>
-   <a href="#88157" class="date">13-Jan-2009 01:10</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-if you use this function following:<br />
-<br />
-<span class="default">&lt;?php<br />
-$query </span><span class="keyword">= </span><span class="default">ifx_query</span><span class="keyword">(</span><span class="string">"SELECT * FROM systables"</span><span class="keyword">, </span><span class="default">$connection</span><span class="keyword">);<br />
-</span><span class="default">$rows&nbsp; </span><span class="keyword">= </span><span class="default">ifx_num_rows</span><span class="keyword">(</span><span class="default">$query</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-this way it doesn't work...<br />
-<br />
-the correct is:<br />
-<br />
-<span class="default">&lt;?php<br />
-$query </span><span class="keyword">= </span><span class="default">ifx_query</span><span class="keyword">(</span><span class="string">"SELECT * FROM systables"</span><span class="keyword">, </span><span class="default">$connection</span><span class="keyword">);<br />
-</span><span class="default">$fetch </span><span class="keyword">= </span><span class="default">ifx_fetch_row</span><span class="keyword">(</span><span class="default">$query</span><span class="keyword">);<br />
-</span><span class="default">$rows&nbsp; </span><span class="keyword">= </span><span class="default">ifx_num_rows</span><span class="keyword">(</span><span class="default">$query</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-this way it work...<br />
-<br />
-the informix doesn't returns anything (only with ifx_num_rows) if you don't open the results of query (with ifx_fetch_row)</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="52087""></a>
-  <div class="note">
-   <strong class="user">icespawn11882 at hotmail dot com</strong>
-   <a href="#52087" class="date">21-Apr-2005 12:56</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-This function give always 0 as result so I used ifx_affected_rows to count rows of a query's result...<br />
-<br />
-An example of this function:<br />
-<br />
-$conn_id = ifx_connect("db", "user", "password");<br />
-$res_id = ifx_query("select * from systables", $conn_id);<br />
-$res = ifx_affected_rows($res_id);<br />
-echo $res;<br />
-<br />
-$res contains the number of rows in the result of the query after his execution.<br />
-<br />
-Para Massimiliano</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-</div>
-</div>
-<hr /><div class="manualnavbar" style="text-align: center;">
- <div class="prev" style="text-align: left; float: left;"><a href="function.ifx-num-fields.html">ifx_num_fields</a></div>
- <div class="next" style="text-align: right; float: right;"><a href="function.ifx-pconnect.html">ifx_pconnect</a></div>
- <div class="up"><a href="ref.ifx.html">Informix 関数</a></div>
- <div class="home"><a href="index.html">PHP Manual</a></div>
-</div></body></html>

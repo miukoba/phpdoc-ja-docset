@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>サーバー上で実行中のトランザクションの状態を返す</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="function.pg-trace.html">≪ pg_trace</a></li>
+      <li style="float: right;"><a href="function.pg-tty.html">pg_tty ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="ref.pgsql.html">PostgreSQL 関数</a></li>
+    <li>サーバー上で実行中のトランザクションの状態を返す</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="function.pg-transaction-status" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">pg_transaction_status</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.1.0)</p><p class="refpurpose"><span class="refname">pg_transaction_status</span> &mdash; <span class="dc-title">サーバー上で実行中のトランザクションの状態を返す</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-function.pg-transaction-status-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">int</span> <span class="methodname"><strong>pg_transaction_status</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$connection</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+    サーバー上で実行中のトランザクションの状態を返します。
+  </p>
+  <div class="caution"><strong class="caution">警告</strong>
+    <p class="para">
+      PostgreSQL 7.3 サーバーで <em>autocommit</em> を off に
+      設定している場合、<span class="function"><strong>pg_transaction_status()</strong></span> は
+      不正確な値を返します。サーバー側での自動コミット機能は非推奨と
+      されており、最近のバージョンのサーバーでは存在しません。
+    </p>
+  </div>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.pg-transaction-status-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+<code class="parameter">connection</code></dt>
+
+     <dd>
+
+      <p class="para">
+       PostgreSQL データベースの接続リソース。
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.pg-transaction-status-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para"><strong><code>PGSQL_TRANSACTION_IDLE</code></strong>（アイドル状態）、
+    <strong><code>PGSQL_TRANSACTION_ACTIVE</code></strong>（コマンドの実行中）、
+    <strong><code>PGSQL_TRANSACTION_INTRANS</code></strong>（正常なトランザクション内でアイドル状態）、
+    あるいは <strong><code>PGSQL_TRANSACTION_INERROR</code></strong>（失敗したトランザクション内でアイドル状態）
+    のいずれかを返します。
+    接続が異常な場合は <strong><code>PGSQL_TRANSACTION_UNKNOWN</code></strong> を返します。
+    <strong><code>PGSQL_TRANSACTION_ACTIVE</code></strong> が返されるのは、クエリを
+    サーバーに送信した後まだそれが完了していない場合のみです。
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 examples" id="refsect1-function.pg-transaction-status-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-2214">
+    <p><strong>例1 <span class="function"><strong>pg_transaction_status()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />&nbsp;&nbsp;$dbconn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">pg_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">"dbname=publisher"</span><span style="color: #007700">)&nbsp;or&nbsp;die(</span><span style="color: #DD0000">"Could&nbsp;not&nbsp;connect"</span><span style="color: #007700">);<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$stat&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">pg_transaction_status</span><span style="color: #007700">(</span><span style="color: #0000BB">$dbconn</span><span style="color: #007700">);<br />&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">$stat&nbsp;</span><span style="color: #007700">===&nbsp;</span><span style="color: #0000BB">PGSQL_TRANSACTION_UNKNOWN</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'Connection&nbsp;is&nbsp;bad'</span><span style="color: #007700">;<br />&nbsp;&nbsp;}&nbsp;else&nbsp;if&nbsp;(</span><span style="color: #0000BB">$stat&nbsp;</span><span style="color: #007700">===&nbsp;</span><span style="color: #0000BB">PGSQL_TRANSACTION_IDLE</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'Connection&nbsp;is&nbsp;currently&nbsp;idle'</span><span style="color: #007700">;<br />&nbsp;&nbsp;}&nbsp;else&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'Connection&nbsp;is&nbsp;in&nbsp;a&nbsp;transaction&nbsp;state'</span><span style="color: #007700">;<br />&nbsp;&nbsp;}&nbsp;&nbsp;&nbsp;&nbsp;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="68199""></a>
+  <div class="note">
+   <strong class="user">btherl at yahoo dot com dot au</strong>
+   <a href="#68199" class="date">18-Jul-2006 04:27</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This function is implemented in C, so there's no way to mimic it in SQL for older versions of PHP.&nbsp; But you can mimic some of the functionality by using a wrapper which keeps track of when you begin and commit/rollback transactions.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

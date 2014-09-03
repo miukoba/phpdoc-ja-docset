@@ -1,0 +1,779 @@
+<html><!-- Mirrored from php.net/manual/en/features.file-upload.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:21:02 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Handling file uploads</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="features.file-upload.html">
+ <link rel="shorturl" href="http://php.net/file-upload">
+ <link rel="alternate" href="http://php.net/file-upload" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="features.html">
+ <link rel="prev" href="features.xforms.html">
+ <link rel="next" href="features.file-upload.post-method.html">
+
+ <link rel="alternate" href="features.file-upload.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/features.file-upload.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/features.file-upload.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/features.file-upload.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/features.file-upload.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/features.file-upload.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/features.file-upload.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/features.file-upload.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/features.file-upload.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/features.file-upload.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/features.file-upload.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="features.html">Features</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="features.file-upload" class="chapter">
+  <h1>Handling file uploads</h1>
+<h2>Table of Contents</h2><ul class="chunklist chunklist_chapter"><li><a href="features.file-upload.post-method.html">POST method uploads</a></li><li><a href="features.file-upload.errors.html">Error Messages Explained</a></li><li><a href="features.file-upload.common-pitfalls.html">Common Pitfalls</a></li><li><a href="features.file-upload.multiple.html">Uploading multiple files</a></li><li><a href="features.file-upload.put-method.html">PUT method support</a></li></ul>
+
+
+  
+
+  
+
+  
+  
+  
+
+  
+
+ </div>
+
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="114004">  
+  <a class="name">
+  <strong class="user"><em>CertaiN</em></strong></a><div class="date" title="2013-12-29 11:09"><strong>7 months ago</strong></div>
+  <div class="text" id="Hcom114004">
+<div class="phpcode"><code><span class="html">
+You'd better check $_FILES structure and values throughly.<br>The following code cannot cause any errors absolutely.<br><br>Example:<br><span class="default">&lt;?php<br><br>header</span><span class="keyword">(</span><span class="string">'Content-Type: text/plain; charset=utf-8'</span><span class="keyword">);<br><br>try {<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="comment">// Undefined | Multiple Files | $_FILES Corruption Attack<br>&nbsp; &nbsp; // If this request falls under any of them, treat it invalid.<br>&nbsp; &nbsp; </span><span class="keyword">if (<br>&nbsp; &nbsp; &nbsp; &nbsp; !isset(</span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">'upfile'</span><span class="keyword">][</span><span class="string">'error'</span><span class="keyword">]) ||<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">is_array</span><span class="keyword">(</span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">'upfile'</span><span class="keyword">][</span><span class="string">'error'</span><span class="keyword">])<br>&nbsp; &nbsp; ) {<br>&nbsp; &nbsp; &nbsp; &nbsp; throw new </span><span class="default">RuntimeException</span><span class="keyword">(</span><span class="string">'Invalid parameters.'</span><span class="keyword">);<br>&nbsp; &nbsp; }<br><br>&nbsp; &nbsp; </span><span class="comment">// Check $_FILES['upfile']['error'] value.<br>&nbsp; &nbsp; </span><span class="keyword">switch (</span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">'upfile'</span><span class="keyword">][</span><span class="string">'error'</span><span class="keyword">]) {<br>&nbsp; &nbsp; &nbsp; &nbsp; case </span><span class="default">UPLOAD_ERR_OK</span><span class="keyword">:<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; break;<br>&nbsp; &nbsp; &nbsp; &nbsp; case </span><span class="default">UPLOAD_ERR_NO_FILE</span><span class="keyword">:<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; throw new </span><span class="default">RuntimeException</span><span class="keyword">(</span><span class="string">'No file sent.'</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; case </span><span class="default">UPLOAD_ERR_INI_SIZE</span><span class="keyword">:<br>&nbsp; &nbsp; &nbsp; &nbsp; case </span><span class="default">UPLOAD_ERR_FORM_SIZE</span><span class="keyword">:<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; throw new </span><span class="default">RuntimeException</span><span class="keyword">(</span><span class="string">'Exceeded filesize limit.'</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; default:<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; throw new </span><span class="default">RuntimeException</span><span class="keyword">(</span><span class="string">'Unknown errors.'</span><span class="keyword">);<br>&nbsp; &nbsp; }<br><br>&nbsp; &nbsp; </span><span class="comment">// You should also check filesize here. <br>&nbsp; &nbsp; </span><span class="keyword">if (</span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">'upfile'</span><span class="keyword">][</span><span class="string">'size'</span><span class="keyword">] &gt; </span><span class="default">1000000</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; throw new </span><span class="default">RuntimeException</span><span class="keyword">(</span><span class="string">'Exceeded filesize limit.'</span><span class="keyword">);<br>&nbsp; &nbsp; }<br><br>&nbsp; &nbsp; </span><span class="comment">// DO NOT TRUST $_FILES['upfile']['mime'] VALUE !!<br>&nbsp; &nbsp; // Check MIME Type by yourself.<br>&nbsp; &nbsp; </span><span class="default">$finfo </span><span class="keyword">= new </span><span class="default">finfo</span><span class="keyword">(</span><span class="default">FILEINFO_MIME_TYPE</span><span class="keyword">);<br>&nbsp; &nbsp; if (</span><span class="default">false </span><span class="keyword">=== </span><span class="default">$ext </span><span class="keyword">= </span><span class="default">array_search</span><span class="keyword">(<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$finfo</span><span class="keyword">-&gt;</span><span class="default">file</span><span class="keyword">(</span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">'upfile'</span><span class="keyword">][</span><span class="string">'tmp_name'</span><span class="keyword">]),<br>&nbsp; &nbsp; &nbsp; &nbsp; array(<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'jpg' </span><span class="keyword">=&gt; </span><span class="string">'image/jpeg'</span><span class="keyword">,<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'png' </span><span class="keyword">=&gt; </span><span class="string">'image/png'</span><span class="keyword">,<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'gif' </span><span class="keyword">=&gt; </span><span class="string">'image/gif'</span><span class="keyword">,<br>&nbsp; &nbsp; &nbsp; &nbsp; ),<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">true<br>&nbsp; &nbsp; </span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; throw new </span><span class="default">RuntimeException</span><span class="keyword">(</span><span class="string">'Invalid file format.'</span><span class="keyword">);<br>&nbsp; &nbsp; }<br><br>&nbsp; &nbsp; </span><span class="comment">// You should name it uniquely.<br>&nbsp; &nbsp; // DO NOT USE $_FILES['upfile']['name'] WITHOUT ANY VALIDATION !!<br>&nbsp; &nbsp; // On this example, obtain safe unique name from its binary data.<br>&nbsp; &nbsp; </span><span class="keyword">if (!</span><span class="default">move_uploaded_file</span><span class="keyword">(<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">'upfile'</span><span class="keyword">][</span><span class="string">'tmp_name'</span><span class="keyword">],<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">sprintf</span><span class="keyword">(</span><span class="string">'./uploads/%s.%s'</span><span class="keyword">,<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">sha1_file</span><span class="keyword">(</span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">'upfile'</span><span class="keyword">][</span><span class="string">'tmp_name'</span><span class="keyword">]),<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$ext<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">)<br>&nbsp; &nbsp; )) {<br>&nbsp; &nbsp; &nbsp; &nbsp; throw new </span><span class="default">RuntimeException</span><span class="keyword">(</span><span class="string">'Failed to move uploaded file.'</span><span class="keyword">);<br>&nbsp; &nbsp; }<br><br>&nbsp; &nbsp; echo </span><span class="string">'File is uploaded successfully.'</span><span class="keyword">;<br><br>} catch (</span><span class="default">RuntimeException $e</span><span class="keyword">) {<br><br>&nbsp; &nbsp; echo </span><span class="default">$e</span><span class="keyword">-&gt;</span><span class="default">getMessage</span><span class="keyword">();<br><br>}<br><br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="53133">  
+  <a class="name">
+  <strong class="user"><em>keith at phpdiary dot org</em></strong></a><div class="date" title="2005-05-24 04:14"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom53133">
+<div class="phpcode"><code><span class="html">
+Caution: *DO NOT* trust $_FILES['userfile']['type'] to verify the uploaded filetype; if you do so your server could be compromised.&nbsp; I'll show you why below:<br><br>The manual (if you scroll above) states: $_FILES['userfile']['type'] -&nbsp; The mime type of the file, if the browser provided this information. An example would be "image/gif".<br><br>Be reminded that this mime type can easily be faked as PHP doesn't go very far in verifying whether it really is what the end user reported!<br><br>So, someone could upload a nasty .php script as an "image/gif" and execute the url to the "image".<br><br>My best bet would be for you to check the extension of the file and using exif_imagetype() to check for valid images.&nbsp; Many people have suggested the use of getimagesize() which returns an array if the file is indeed an image and false otherwise, but exif_imagetype() is much faster. (the manual says it so)</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="88591">  
+  <a class="name">
+  <strong class="user"><em>info at levaravel dot com</em></strong></a><div class="date" title="2009-01-30 07:39"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom88591">
+<div class="phpcode"><code><span class="html">
+A little codesnippet which returns a filesize in a more legible format.<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">function </span><span class="default">display_filesize</span><span class="keyword">(</span><span class="default">$filesize</span><span class="keyword">){<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; if(</span><span class="default">is_numeric</span><span class="keyword">(</span><span class="default">$filesize</span><span class="keyword">)){<br>&nbsp; &nbsp; </span><span class="default">$decr </span><span class="keyword">= </span><span class="default">1024</span><span class="keyword">; </span><span class="default">$step </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br>&nbsp; &nbsp; </span><span class="default">$prefix </span><span class="keyword">= array(</span><span class="string">'Byte'</span><span class="keyword">,</span><span class="string">'KB'</span><span class="keyword">,</span><span class="string">'MB'</span><span class="keyword">,</span><span class="string">'GB'</span><span class="keyword">,</span><span class="string">'TB'</span><span class="keyword">,</span><span class="string">'PB'</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; while((</span><span class="default">$filesize </span><span class="keyword">/ </span><span class="default">$decr</span><span class="keyword">) &gt; </span><span class="default">0.9</span><span class="keyword">){<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$filesize </span><span class="keyword">= </span><span class="default">$filesize </span><span class="keyword">/ </span><span class="default">$decr</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$step</span><span class="keyword">++;<br>&nbsp; &nbsp; } <br>&nbsp; &nbsp; return </span><span class="default">round</span><span class="keyword">(</span><span class="default">$filesize</span><span class="keyword">,</span><span class="default">2</span><span class="keyword">).</span><span class="string">' '</span><span class="keyword">.</span><span class="default">$prefix</span><span class="keyword">[</span><span class="default">$step</span><span class="keyword">];<br>&nbsp; &nbsp; } else {<br><br>&nbsp; &nbsp; return </span><span class="string">'NaN'</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>}<br><br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="111489">  
+  <a class="name">
+  <strong class="user"><em>jan at lanteraudio dot nl</em></strong></a><div class="date" title="2013-02-25 01:31"><strong>1 year ago</strong></div>
+  <div class="text" id="Hcom111489">
+<div class="phpcode"><code><span class="html">
+Also stumbled on the max_file_size problem, in particular getting no response, no error whatsoever when uploading a file bigger than the set upload_max_filesize.<br><br>I found that it's not the upload_max_filesize setting, but instead the post_max_size setting causing this no response issue. So if you set post_max_size way larger than upload_max_filesize, at least you are likely to get an error response when filesize exceeds upload_max_filesize but is still within the limits of post_max_size.<br><br>Hope this helps anyone.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="49807">  
+  <a class="name">
+  <strong class="user"><em>Leevi at izilla dot com dot au</em></strong></a><div class="date" title="2005-02-08 10:52"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom49807">
+<div class="phpcode"><code><span class="html">
+This may help a newbie to file uploads.. it took advice from a friend to fix it..<br><br>If you are using<br>-windows xp<br>-iis 5<br>-php 5<br><br>If you keep getting permission errors on file uploads... and you have sworn you set the permissions to write to the directory in iis... <br><br>double check that<br>a) in windows explorer under tools &gt; folder options<br>click the view tab<br>scroll down all the way to "use simple file sharing (recommended)"<br>uncheck this box<br><br>b) find the folder you wish to upload to on your server<br>c) click properties and then the security tab<br>d) make sure the appropriate write settings are checked.<br><br>you may want to test by setting "everyone" to have full permission....<br><br>BEWARE doing this will open up big security holes on your server....<br><br>hope this helps<br><br>Leevi Graham</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="55958">  
+  <a class="name">
+  <strong class="user"><em>warwickbarnes at yahoo dot co dot uk</em></strong></a><div class="date" title="2005-08-18 04:58"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom55958">
+<div class="phpcode"><code><span class="html">
+You may come across the following problem using PHP on Microsoft IIS: getting permission denied errors from the move_uploaded_file function even when all the folder permissions seem correct. I had to set the following to get it to work:<br><br>1. Write permissions on the the folder through the IIS management console.<br>2. Write permissions to IUSR_'server' in the folder's security settings.<br>3. Write permissions to "Domain Users" in the folder's security settings.<br><br>The third setting was required because my application itself lives in a secure folder - using authentication (either Basic or Windows Integrated) to identify the users. When the uploads happen IIS seems to be checking that these users have write access to the folder, not just whether the web server (IUSR_'server') has access.<br><br>Also, remember to set "Execute Permissions" to "None" in the IIS management console, so that people can't upload a script file and then run it. (Other checks of the uploaded file are recommended as well but 'Execute None' is a good start.)</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="109495">  
+  <a class="name">
+  <strong class="user"><em>Thomas</em></strong></a><div class="date" title="2012-07-22 06:08"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom109495">
+<div class="phpcode"><code><span class="html">
+MIME type can be faked.
+<br>
+<br>VVV
+<br>
+<br>$_FILES['userfile']['type']
+<br>
+<br>The mime type of the file, if the browser provided this information. An example would be "image/gif". This mime type is however not checked on the PHP side and therefore don't take its value for granted.
+<br>
+<br><a rel="nofollow" target="_blank">http://www.php.net/manual/en/features.file-upload.post-method.php</a>
+<br>
+<br>[Editor's note: removed a reference to a deleted note, and edited the note to make sense by itself.]</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="51541">  
+  <a class="name">
+  <strong class="user"><em>robpet at tds dot net</em></strong></a><div class="date" title="2005-04-02 10:35"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom51541">
+<div class="phpcode"><code><span class="html">
+People have remarked that incorrect permissions on the upload directory may prevent photos or other files from uploading.&nbsp; Setting the Apache owner of the directory incorrectly will also prevent files from uploading -- I use a PHP script that creates a directory (if it doesn't exist already) before placing an uploaded file into it.&nbsp; When the script creates the directory and then copies the uploaded file into the directory there is no problem because the owner of the file is whatever Apache is running as, typically "nobody". However, lets say that I've moved the site to a new server and have copied over existing file directories using FTP.&nbsp; In this case the owner will have a different name from the Apache owner and files will not upload. The solution is to TelNet into the site and reset the owner to "nobody" or whatever Apache is running as using the CHOWN command.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="107406">  
+  <a class="name">
+  <strong class="user"><em>xmontero at dsitelecom dot com</em></strong></a><div class="date" title="2012-02-06 10:23"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom107406">
+<div class="phpcode"><code><span class="html">
+If "large files" (ie: 50 or 100 MB) fail, check this:<br><br>It may happen that your outgoing connection to the server is slow, and it may timeout not the "execution time" but the "input time", which for example in our system defaulted to 60s. In our case a large upload could take 1 or 2 hours.<br><br>Additionally we had "session settings" that should be preserved after upload.<br><br>1) You might want review those ini entries:<br><br>* session.gc_maxlifetime<br>* max_input_time<br>* max_execution_time<br>* upload_max_filesize<br>* post_max_size<br><br>2) Still fails? Caution, not all are changeable from the script itself. ini_set() might fail to override.<br><br>More info here:<br><a rel="nofollow" target="_blank">http://www.php.net/manual/es/ini.list.php</a><br><br>You can see that the "upload_max_filesize", among others, is PHP_INI_PERDIR and not PHP_INI_ALL. This invalidates to use ini_set():<br><a rel="nofollow" target="_blank">http://www.php.net/manual/en/configuration.changes.modes.php</a><br><br>Use .htaccess instead.<br><br>3) Still fails?. Just make sure you enabled ".htaccess" to overwrite your php settings. This is made in the apache file. You need at least AllowOverride Options.<br><br>See this here:<br><a rel="nofollow" target="_blank">http://www.php.net/manual/en/configuration.changes.php</a><br><br>You will necessarily allow this manually in the case your master files come with AllowOverride None.<br><br>Conclussion:<br><br>Depending on the system, to allow "large file uploads" you must go up and up and up and touch your config necessarily up to the apache config.<br><br>Sample files:<br><br>These work for me, for 100MB uploads, lasting 2 hours:<br><br>In apache-virtual-host:<br>-----------------------------------------------------------<br>&lt;Directory /var/www/MyProgram&gt;<br>&nbsp; &nbsp; AllowOverride Options<br>&lt;/Directory&gt;<br>-----------------------------------------------------------<br><br>In .htaccess:<br>-----------------------------------------------------------<br>php_value session.gc_maxlifetime 10800<br>php_value max_input_time&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; 10800<br>php_value max_execution_time&nbsp; &nbsp;&nbsp; 10800<br>php_value upload_max_filesize&nbsp; &nbsp; 110M<br>php_value post_max_size&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 120M<br>-----------------------------------------------------------<br><br>In the example,<br>- As I last 1 to 2 hours, I allow 3 hours (3600x3)<br>- As I need 100MB, I allow air above for the file (110M) and a bit more for the whole post (120M).</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="48809">  
+  <a class="name">
+  <strong class="user"><em>Tyfud</em></strong></a><div class="date" title="2005-01-07 08:44"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom48809">
+<div class="phpcode"><code><span class="html">
+It's important to note that when using the move_uploaded_file() command, that some configurations (Especially IIS) will fail if you prefix the destination path with a leading "/". Try the following:
+<br>
+<br><span class="default">&lt;?php move_uploaded_file</span><span class="keyword">(</span><span class="default">$tmpFileName</span><span class="keyword">,</span><span class="string">'uploads/'</span><span class="keyword">.</span><span class="default">$fileName</span><span class="keyword">); </span><span class="default">?&gt;
+<br></span>
+<br>Setting up permissions is also a must. Make sure all accounts have write access to your upload directory, and read access if you wish to view these files later. You might have to chmod() the directory or file afterwards as well if you're still getting access errors.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="74692">  
+  <a class="name">
+  <strong class="user"><em>svenr at selfhtml dot org</em></strong></a><div class="date" title="2007-04-23 03:13"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom74692">
+<div class="phpcode"><code><span class="html">
+Clarification on the MAX_FILE_SIZE hidden form field:<br><br>PHP has the somewhat strange feature of checking multiple "maximum file sizes". <br><br>The two widely known limits are the php.ini settings "post_max_size" and "upload_max_size", which in combination impose a hard limit on the maximum amount of data that can be received.<br><br>In addition to this PHP somehow got implemented a soft limit feature. It checks the existance of a form field names "max_file_size" (upper case is also OK), which should contain an integer with the maximum number of bytes allowed. If the uploaded file is bigger than the integer in this field, PHP disallows this upload and presents an error code in the $_FILES-Array.<br><br>The PHP documentation also makes (or made - see bug #40387 - <a rel="nofollow" target="_blank">http://bugs.php.net/bug.php?id=40387</a>) vague references to "allows browsers to check the file size before uploading". This, however, is not true and has never been. Up til today there has never been a RFC proposing the usage of such named form field, nor has there been a browser actually checking its existance or content, or preventing anything. The PHP documentation implies that a browser may alert the user that his upload is too big - this is simply wrong.<br><br>Please note that using this PHP feature is not a good idea. A form field can easily be changed by the client. If you have to check the size of a file, do it conventionally within your script, using a script-defined integer, not an arbitrary number you got from the HTTP client (which always must be mistrusted from a security standpoint).</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="78017">  
+  <a class="name">
+  <strong class="user"><em>ragtime at alice-dsl dot com</em></strong></a><div class="date" title="2007-09-24 08:55"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom78017">
+<div class="phpcode"><code><span class="html">
+I don't believe the myth that 'memory_size' should be the size of the uploaded file. The files are definitely not kept in memory... instead uploaded chunks of 1MB each are stored under /var/tmp and later on rebuild under /tmp before moving to the web/user space.
+<br>
+<br>I'm running a linux-box with only 64MB RAM, setting the memory_limit to 16MB and uploading files of sizes about 100MB is no problem at all! Nevertheless, some users reported a problem at a few 100MB, but that's not confirmed... ;-)
+<br>
+<br>The other sizes in php.ini are set to 1GB and the times to 300... maybe the execution_time limits before, since the CPU is just a 233MHz one... :-)
+<br>
+<br>====
+<br>
+<br>OK,... I got it... finally!
+<br>
+<br>If some of you have also problems uploading large files but the usual sizes/times in php.ini are ok, please check 
+<br>
+<br>&nbsp; &nbsp; session.gc_maxlifetime
+<br>
+<br>when you are using session management with your upload script!
+<br>
+<br>The default value is 1440 which is just 24min... so with only 600kbit/s upload rate the session will be closed automatically after uploading
+<br>about 100MB. Actually you are able to upload more, but the file won't be copied from the temporary to the destination folder... ;-)
+<br>
+<br>You can set the value also directly inside the php-script via 
+<br><span class="default">&lt;?php ini_set</span><span class="keyword">(</span><span class="string">"session.gc_maxlifetime"</span><span class="keyword">,</span><span class="string">"10800"</span><span class="keyword">); </span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="93602">  
+  <a class="name">
+  <strong class="user"><em>Phil Ciebiera</em></strong></a><div class="date" title="2009-09-17 01:54"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom93602">
+<div class="phpcode"><code><span class="html">
+On a Microsoft platform utilizing IIS, you may run into a situation where, upon moving the uploaded file, anonymous web users can't access the content without being prompted to authenticate first...<br><br>The reason for this is, the uploaded file will inherit the permissions of the directory specified in the directive upload_tmp_dir of php.ini.&nbsp; If this directive isn't set, the default of C:\Windows\Temp is used.<br><br>You can work around this by granting the IUSR_[server name] user read access to your temporary upload directory, so that after you move_uploaded_file the permissions will already be set properly.<br><br>It's also a good idea to set the Execute Permissions of the upload directory to NOT include Executables, for security reasons.&nbsp; <br>To accomplish this:<br>-Open the IIS Manager<br>-Browse to the relevant sites directory where the uploads will be placed<br>-Right Click the folder and select Properties<br>-In the Directory tab of the resulting dialog, set the Execute permissions to be None<br><br>This took me a while to figure out, so I hope this helps save some other peoples time.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="82762">  
+  <a class="name">
+  <strong class="user"><em>Rob</em></strong></a><div class="date" title="2008-04-24 01:07"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom82762">
+<div class="phpcode"><code><span class="html">
+You should not have any directories within your website root that has the permissions required for file upload.&nbsp; If you are going to do a file upload, I recommend you use the PHP FTP Functions in conjunction with your file field, that way the files are transferred to a remote FTP location separate from your server.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="66025">  
+  <a class="name">
+  <strong class="user"><em>david at cygnet dot be</em></strong></a><div class="date" title="2006-05-12 05:14"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom66025">
+<div class="phpcode"><code><span class="html">
+If you are experiencing problems posting files from Internet Explorer to a PHP script over an SSL connection, for instance "Page can not be displayed" or empty $_FILES and $_POST arrays (described by jason 10-Jan-2006 02:08), then check out this microsoft knowledgebase article:<br><br><a rel="nofollow" target="_blank">http://support.microsoft.com/?kbid=889334</a><br><br>This knowledgebase article explains how since service pack 2 there may be problems posting from IE over SSL. It is worth checking whether your problem is IE specific since this is definitely not a PHP problem!</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="60024">  
+  <a class="name">
+  <strong class="user"><em>geert dot php at myrosoft dot com</em></strong></a><div class="date" title="2005-12-23 12:16"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom60024">
+<div class="phpcode"><code><span class="html">
+When file names do contain single quote parts of the filename are being lost.<br>eg.: uploading a filename <br>&nbsp; &nbsp; &nbsp; startName 'middlepart' endName.txt<br>will be uploaded (and hence stored in the _Files ['userfile'] variable as <br>&nbsp; &nbsp; &nbsp; endName.txt <br>skipping everything before the second single quote.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="39796">  
+  <a class="name">
+  <strong class="user"><em>~caetin~ ( at ) ~hotpop~ ( dot ) ~com~</em></strong></a><div class="date" title="2004-02-10 08:37"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom39796">
+<div class="phpcode"><code><span class="html">
+From the manual: <br><br>&nbsp; &nbsp;&nbsp; If no file is selected for upload in your form, PHP will return $_FILES['userfile']['size'] as 0, and $_FILES['userfile']['tmp_name'] as none. <br><br>As of PHP 4.2.0, the "none" is no longer a reliable determinant of no file uploaded. It's documented if you click on the "error codes" link, but you need to look at the $_FILES['your_file']['error']. If it's 4, then no file was selected.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="55886">  
+  <a class="name">
+  <strong class="user"><em>myko AT blue needle DOT com</em></strong></a><div class="date" title="2005-08-16 09:13"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom55886">
+<div class="phpcode"><code><span class="html">
+Just a quick note that there's an issue with Apache, the MAX_FILE_SIZE hidden form field, and zlib.output_compression = On.&nbsp; Seems that the browser continues to post up the entire file, even though PHP throws the MAX_FILE_SIZE error properly.&nbsp; Turning zlib compression to OFF seems to solve the issue.&nbsp; Don't have time to dig in and see who's at fault, but wanted to save others the hassle of banging their head on this one.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="52989">  
+  <a class="name">
+  <strong class="user"><em>ceo at l-i-e dot com</em></strong></a><div class="date" title="2005-05-19 08:25"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom52989">
+<div class="phpcode"><code><span class="html">
+Using /var/www/uploads in the example code is just criminal, imnsho.<br><br>One should *NOT* upload untrusted files into your web tree, on any server.<br><br>Nor should any directory within your web tree have permissions sufficient for an upload to succeed, on a shared server. Any other user on that shared server could write a PHP script to dump anything they want in there!<br><br>The $_FILES['userfile']['type'] is essentially USELESS.<br>A. Browsers aren't consistent in their mime-types, so you'll never catch all the possible combinations of types for any given file format.<br>B. It can be forged, so it's crappy security anyway.<br><br>One's code should INSPECT the actual file to see if it looks kosher.<br><br>For example, images can quickly and easily be run through imagegetsize and you at least know the first N bytes LOOK like an image.&nbsp; That doesn't guarantee it's a valid image, but it makes it much less likely to be a workable security breaching file.<br><br>For Un*x based servers, one could use exec and 'file' command to see if the Operating System thinks the internal contents seem consistent with the data type you expect.<br><br>I've had trouble in the past with reading the '/tmp' file in a file upload.&nbsp; It would be nice if PHP let me read that file BEFORE I tried to move_uploaded_file on it, but PHP won't, presumably under the assumption that I'd be doing something dangerous to read an untrusted file.&nbsp; Fine.&nbsp;&nbsp; One should move the uploaded file to some staging directory.&nbsp; Then you check out its contents as thoroughly as you can.&nbsp; THEN, if it seems kosher, move it into a directory outside your web tree.&nbsp; Any access to that file should be through a PHP script which reads the file.&nbsp; Putting it into your web tree, even with all the checks you can think of, is just too dangerous, imnsho.<br><br>There are more than a few User Contributed notes here with naive (bad) advice.&nbsp; Be wary.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="45168">  
+  <a class="name">
+  <strong class="user"><em>therhinoman at hotmail dot com</em></strong></a><div class="date" title="2004-08-27 01:20"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom45168">
+<div class="phpcode"><code><span class="html">
+If your upload script is meant only for uploading images, you can use the image function getimagesize() (does not require the GD image library) to make sure you're really getting an image and also filter image types.
+<br>
+<br><span class="default">&lt;?php getimagesize</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">); </span><span class="default">?&gt;
+<br></span>
+<br>...will return false if the file is not an image or is not accessable, otherwise it will return an array...
+<br>
+<br><span class="default">&lt;?php
+<br>$file </span><span class="keyword">= </span><span class="string">'somefile.jpg'</span><span class="keyword">;
+<br>
+<br></span><span class="comment"># assuming you've already taken some other
+<br># preventive measures such as checking file
+<br># extensions...
+<br>
+<br></span><span class="default">$result_array </span><span class="keyword">= </span><span class="default">getimagesize</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">);
+<br>
+<br>if (</span><span class="default">$result_array </span><span class="keyword">!== </span><span class="default">false</span><span class="keyword">) {
+<br>&nbsp; &nbsp; </span><span class="default">$mime_type </span><span class="keyword">= </span><span class="default">$result_array</span><span class="keyword">[</span><span class="string">'mime'</span><span class="keyword">];
+<br>&nbsp; &nbsp; switch(</span><span class="default">$mime_type</span><span class="keyword">) {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; case </span><span class="string">"image/jpeg"</span><span class="keyword">:
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo </span><span class="string">"file is jpeg type"</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; break;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; case </span><span class="string">"image/gif"</span><span class="keyword">:
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo </span><span class="string">"file is gif type"</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; break;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; default:
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo </span><span class="string">"file is an image, but not of gif or jpeg type"</span><span class="keyword">;
+<br>&nbsp; &nbsp; }
+<br>} else {
+<br>&nbsp; &nbsp; echo </span><span class="string">"file is not a valid image file"</span><span class="keyword">;
+<br>}
+<br></span><span class="default">?&gt;
+<br></span>
+<br>using this function along with others mentioned on this page, image ploading can be made pretty much fool-proof.
+<br>
+<br>See <a rel="nofollow" target="_blank">http://php.net/manual/en/function.getimagesize.php</a> for supported image types and more info.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="43372">  
+  <a class="name">
+  <strong class="user"><em>olijon, iceland</em></strong></a><div class="date" title="2004-06-18 08:24"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom43372">
+<div class="phpcode"><code><span class="html">
+When uploading large images, I got a "Document contains no data" error when using Netscape and an error page when using Explorer. My server setup is RH Linux 9, Apache 2 and PHP 4.3.<br><br>I found out that the following entry in the httpd.conf file was missing:<br><br>&lt;Files *.php&gt;<br>&nbsp; SetOutputFilter PHP<br>&nbsp; SetInputFilter PHP<br>&nbsp; LimitRequestBody 524288 (max size in bytes)<br>&lt;/Files&gt;<br><br>When this had been added, everything worked smoothly.<br><br>- Oli Jon, Iceland</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="42280">  
+  <a class="name">
+  <strong class="user"><em>brion at pobox dot com</em></strong></a><div class="date" title="2004-05-10 06:08"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom42280">
+<div class="phpcode"><code><span class="html">
+Note that with magic_quotes_gpc on, the uploaded filename has backslashes added *but the tmp_name does not*. On Windows where the tmp_name path includes backslashes, you *must not* run stripslashes() on the tmp_name, so keep that in mind when de-magic_quotes-izing your input.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="19926">  
+  <a class="name">
+  <strong class="user"><em>am at netactor dot NO_SPAN dot com</em></strong></a><div class="date" title="2002-03-14 10:20"><strong>12 years ago</strong></div>
+  <div class="text" id="Hcom19926">
+<div class="phpcode"><code><span class="html">
+Your binary files may be uploaded incorrectly if you use modules what recode characters. For example, for Russian Apache, you should use <br>&lt;Files ScriptThatReceivesUploads.php&gt;<br>CharsetDisable On<br>&lt;/Files&gt;</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="39654">  
+  <a class="name">
+  <strong class="user"><em>maya_gomez ~ at ~ mail ~ dot ~ ru</em></strong></a><div class="date" title="2004-02-06 05:20"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom39654">
+<div class="phpcode"><code><span class="html">
+when you upload the file, $_FILES['file']['name'] contains its original name converted into server's default charset.
+<br>if a name contain characters that aren't present in default charset, the conversion fails and the $_FILES['file']['name'] remains in original charset.
+<br>
+<br>i've got this behavior when uploading from a windows-1251 environment into koi8-r. if a filename has the number sign "�" (0xb9), it DOES NOT GET CONVERTED as soon as there is no such character in koi8-r.
+<br>
+<br>Workaround i use:
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">if (</span><span class="default">strstr </span><span class="keyword">(</span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">'file'</span><span class="keyword">][</span><span class="string">'name'</span><span class="keyword">], </span><span class="default">chr</span><span class="keyword">(</span><span class="default">0xb9</span><span class="keyword">)) != </span><span class="string">""</span><span class="keyword">)
+<br>{
+<br>&nbsp; &nbsp; </span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">'file'</span><span class="keyword">][</span><span class="string">'name'</span><span class="keyword">] = </span><span class="default">iconv </span><span class="keyword">(
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">"windows-1251"</span><span class="keyword">,
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">"koi8-r"</span><span class="keyword">,
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">str_replace </span><span class="keyword">(</span><span class="default">chr</span><span class="keyword">(</span><span class="default">0xb9</span><span class="keyword">), </span><span class="string">"N."</span><span class="keyword">, </span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">'file'</span><span class="keyword">][</span><span class="string">'name'</span><span class="keyword">]));
+<br>};
+<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="30377">  
+  <a class="name">
+  <strong class="user"><em>garyds at miraclemedia dot ca</em></strong></a><div class="date" title="2003-03-15 06:12"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom30377">
+<div class="phpcode"><code><span class="html">
+As it has been mentioned, Windows-based servers have trouble with the path to move the uploaded file to when using move_uploaded_file()... this may also be the reason copy() works and not move_uploaded_file(), but of course move_uploaded_file() is a much better method to use. The solution in the aforementioned note said you must use "\\" in the path, but I found "/" works as well. So to get a working path, I used something to the effect of:
+<br>
+<br>"g:/rootdir/default/www/".$_FILES['userfile']['name']
+<br>
+<br>...which worked like a charm.
+<br>
+<br>I am using PHP 4.3.0 on a win2k server.
+<br>
+<br>Hope this helps!</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="30165">  
+  <a class="name">
+  <strong class="user"><em>ov at xs4all dot nl</em></strong></a><div class="date" title="2003-03-08 07:08"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom30165">
+<div class="phpcode"><code><span class="html">
+This took me a few days to find out: when uploading large files with a slow connection to my WIN2K/IIS5/PHP4 server the POST form kept timing out at exactly 5 minutes. All PHP.INI settings were large enough to accomodate huge file uploads. Searched like hell with keywords like "file upload php timeout script" until I realised that I installed PHP as CGI and added that as a keyword. This was the solution:
+<br>
+<br>To set the timeout value:
+<br>1. In the Internet Information Services snap-in, select the computer icon and open its property sheets. 
+<br>2. Under Master Properties, select WWW Service, and then click the Edit button 
+<br>3. Click the Home Directory tab. 
+<br>4. Click the Configuration button. 
+<br>5. Click the Process Options tab, and then type the timeout period in the CGI Script Timeout box.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="27401">  
+  <a class="name">
+  <strong class="user"><em>travis dot lewis at amd dot com</em></strong></a><div class="date" title="2002-12-04 12:58"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom27401">
+<div class="phpcode"><code><span class="html">
+If you we dumb like me you installed Redhat 8.0 and kept the default install of packages for Apache 2.0 and PHP4.2.2.&nbsp; I could not upload any files larger than 512kB and all the php directorives were set to 32MB or higher.<br>memory_limit = 128M<br>post_max_size = 64M<br>upload_max_filesize = 32M<br><br>And my upload web page was set to 32MB as well:<br>&lt;Form ID="frmAttach" Name="frmAttach" enctype="multipart/form-data" action="attachments.php" method="POST"&gt;<br>&lt;input type="hidden" name="MAX_FILE_SIZE" value="33554432" /&gt;<br><br>However, the insiduous php.conf (/etc/httpd/conf.d/php.conf) file used by default RPM install of Redhat httpd has a LimitRequestBody set to 512kB ("524288" ).&nbsp; Adjusting this to 32MB ("33554432") got things going for the larger files.&nbsp; Here is my php.conf file in its entirety.&nbsp; Hope this helps someone.&nbsp; L8er.<br><br>#<br># PHP is an HTML-embedded scripting language which attempts to make it<br># easy for developers to write dynamically generated webpages.<br>#<br><br>LoadModule php4_module modules/libphp4.so<br><br>#<br># Cause the PHP interpreter handle files with a .php extension.<br>#<br>&lt;Files *.php&gt;<br>&nbsp; &nbsp; SetOutputFilter PHP<br>&nbsp; &nbsp; SetInputFilter PHP<br>&nbsp; &nbsp; LimitRequestBody 33554432<br>&lt;/Files&gt;<br><br>#<br># Add index.php to the list of files that will be served as directory<br># indexes.<br>#</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="87989">  
+  <a class="name">
+  <strong class="user"><em>damien from valex</em></strong></a><div class="date" title="2009-01-04 05:53"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom87989">
+<div class="phpcode"><code><span class="html">
+This is simpler method of checking for too much POST data (alternative to that by v3 from sonic-world.ru).<br><br><span class="default">&lt;?php<br>&nbsp; &nbsp; </span><span class="keyword">if (</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'REQUEST_METHOD'</span><span class="keyword">] == </span><span class="string">'POST' </span><span class="keyword">&amp;&amp; empty(</span><span class="default">$_POST</span><span class="keyword">) &amp;&amp; </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'CONTENT_LENGTH'</span><span class="keyword">] &gt; </span><span class="default">0</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="default">sprintf</span><span class="keyword">(</span><span class="string">'The server was unable to handle that much POST data (%s bytes) due to its current configuration'</span><span class="keyword">, </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'CONTENT_LENGTH'</span><span class="keyword">]));<br>&nbsp; &nbsp; }<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="82869">  
+  <a class="name">
+  <strong class="user"><em>jahajee</em></strong></a><div class="date" title="2008-04-29 04:27"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom82869">
+<div class="phpcode"><code><span class="html">
+hi , i was having difficulty with the upload_max_filesize , if u set the max file size lesser than the php setting then ur script to report error will only work till this difference between ur max set file size and the php set max size .Hence if the uploaded file exceeds the php max file size then php end abruptly without a trace of error that is it behaves like no file is uploaded and hence no error reported .Sure if uploading a file is optional for a form then a user who uploads larger file will get no error and still the form will be processed only without the file.<br>The method of using GET can't be used for optional uploads. Can't find help even in the bugs .Be careful with optional uploads.<br>jahajee</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="59156">  
+  <a class="name">
+  <strong class="user"><em>djot at hotmail dot com</em></strong></a><div class="date" title="2005-11-27 02:02"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom59156">
+<div class="phpcode"><code><span class="html">
+-
+<br>Be carefull with setting max_file_size via
+<br><span class="default">&lt;?php ini_get</span><span class="keyword">(</span><span class="string">'upload_max_filesize'</span><span class="keyword">); </span><span class="default">?&gt;
+<br></span>
+<br>ini_get might return values like "2M" which will result in non working uploads.
+<br>
+<br>This was the "no no" in my case:
+<br>
+<br><span class="default">&lt;?php
+<br>$form </span><span class="keyword">= </span><span class="string">'&lt;input type="hidden" name="MAX_FILE_SIZE" value=".ini_get('</span><span class="default">upload_max_filesize</span><span class="string">')." /&gt;'</span><span class="keyword">;
+<br></span><span class="default">?&gt;
+<br></span>
+<br>Files were uploaded to the server, but than there was not any upload information, not even an error message. $_FILES was completly empty.
+<br>
+<br>djot
+<br>-</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="87216">  
+  <a class="name">
+  <strong class="user"><em>rnagavel at yahoo dot com dot au</em></strong></a><div class="date" title="2008-11-25 01:10"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom87216">
+<div class="phpcode"><code><span class="html">
+If $_FILES is always empty, check the method of your form.<br>It should be POST. Default method of a form is GET.<br><br>&lt;form action="myaction.php"&gt;<br> &lt;input type="file" name"userfile"&gt;<br>&lt;/form&gt;<br>File will not be uploaded as default method of the form is GET.<br><br>&lt;form action="myaction.php" method="POST"&gt;<br> &lt;input type="file" name"userfile"&gt;<br>&lt;/form&gt;<br>Files will be uploaded and $_FILES will be populated.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="85395">  
+  <a class="name">
+  <strong class="user"><em>romke at romke dot nl</em></strong></a><div class="date" title="2008-08-28 04:26"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom85395">
+<div class="phpcode"><code><span class="html">
+IIS7 <br>has a upload limit of 30000000 (about 30mb)<br><br>You can change this with the command (for 250mb):<br><br>c:\windows\system32\inetsrv\appcmd set config -section:requestFiltering -requestLimits.maxAllowedContentLength:262144000<br><br>Or manual define it in:<br>%windir%\system32\inetsrv\config\applicationhost.config<br><br>Add this rule before the &lt;/requestFiltering&gt; tag:<br>&lt;requestLimits maxAllowedContentLength ="262144000" /&gt;</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="52268">  
+  <a class="name">
+  <strong class="user"><em>dmsuperman at comcast dot net</em></strong></a><div class="date" title="2005-04-26 11:00"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom52268">
+<div class="phpcode"><code><span class="html">
+I needed a file uploader for a client a little while ago, then the client didn't want it, so I'll share with all of you. I know I hated coding it, it was confusing (for me anyway), but I made it fairly simple to use:
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">function </span><span class="default">uploader</span><span class="keyword">(</span><span class="default">$num_of_uploads</span><span class="keyword">=</span><span class="default">1</span><span class="keyword">, </span><span class="default">$file_types_array</span><span class="keyword">=array(</span><span class="string">"txt"</span><span class="keyword">), </span><span class="default">$max_file_size</span><span class="keyword">=</span><span class="default">1048576</span><span class="keyword">, </span><span class="default">$upload_dir</span><span class="keyword">=</span><span class="string">""</span><span class="keyword">){
+<br>&nbsp; if(!</span><span class="default">is_numeric</span><span class="keyword">(</span><span class="default">$max_file_size</span><span class="keyword">)){
+<br>&nbsp; &nbsp; </span><span class="default">$max_file_size </span><span class="keyword">= </span><span class="default">1048576</span><span class="keyword">;
+<br>&nbsp; }
+<br>&nbsp; if(!isset(</span><span class="default">$_POST</span><span class="keyword">[</span><span class="string">"submitted"</span><span class="keyword">])){
+<br>&nbsp; &nbsp; </span><span class="default">$form </span><span class="keyword">= </span><span class="string">"&lt;form action='"</span><span class="keyword">.</span><span class="default">$PHP_SELF</span><span class="keyword">.</span><span class="string">"' method='post' enctype='multipart/form-data'&gt;Upload files:&lt;br /&gt;&lt;input type='hidden' name='submitted' value='TRUE' id='"</span><span class="keyword">.</span><span class="default">time</span><span class="keyword">().</span><span class="string">"'&gt;&lt;input type='hidden' name='MAX_FILE_SIZE' value='"</span><span class="keyword">.</span><span class="default">$max_file_size</span><span class="keyword">.</span><span class="string">"'&gt;"</span><span class="keyword">;
+<br>&nbsp; &nbsp; for(</span><span class="default">$x</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">;</span><span class="default">$x</span><span class="keyword">&lt;</span><span class="default">$num_of_uploads</span><span class="keyword">;</span><span class="default">$x</span><span class="keyword">++){
+<br>&nbsp; &nbsp; &nbsp; </span><span class="default">$form </span><span class="keyword">.= </span><span class="string">"&lt;input type='file' name='file[]'&gt;&lt;font color='red'&gt;*&lt;/font&gt;&lt;br /&gt;"</span><span class="keyword">;
+<br>&nbsp; &nbsp; }
+<br>&nbsp; &nbsp; </span><span class="default">$form </span><span class="keyword">.= </span><span class="string">"&lt;input type='submit' value='Upload'&gt;&lt;br /&gt;&lt;font color='red'&gt;*&lt;/font&gt;Maximum file length (minus extension) is 15 characters. Anything over that will be cut to only 15 characters. Valid file type(s): "</span><span class="keyword">;
+<br>&nbsp; &nbsp; for(</span><span class="default">$x</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">;</span><span class="default">$x</span><span class="keyword">&lt;</span><span class="default">count</span><span class="keyword">(</span><span class="default">$file_types_array</span><span class="keyword">);</span><span class="default">$x</span><span class="keyword">++){
+<br>&nbsp; &nbsp; &nbsp; if(</span><span class="default">$x</span><span class="keyword">&lt;</span><span class="default">count</span><span class="keyword">(</span><span class="default">$file_types_array</span><span class="keyword">)-</span><span class="default">1</span><span class="keyword">){
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$form </span><span class="keyword">.= </span><span class="default">$file_types_array</span><span class="keyword">[</span><span class="default">$x</span><span class="keyword">].</span><span class="string">", "</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; }else{
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$form </span><span class="keyword">.= </span><span class="default">$file_types_array</span><span class="keyword">[</span><span class="default">$x</span><span class="keyword">].</span><span class="string">"."</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; }
+<br>&nbsp; &nbsp; </span><span class="default">$form </span><span class="keyword">.= </span><span class="string">"&lt;/form&gt;"</span><span class="keyword">;
+<br>&nbsp; &nbsp; echo(</span><span class="default">$form</span><span class="keyword">);
+<br>&nbsp; }else{
+<br>&nbsp; &nbsp; foreach(</span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">"file"</span><span class="keyword">][</span><span class="string">"error"</span><span class="keyword">] as </span><span class="default">$key </span><span class="keyword">=&gt; </span><span class="default">$value</span><span class="keyword">){
+<br>&nbsp; &nbsp; &nbsp; if(</span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">"file"</span><span class="keyword">][</span><span class="string">"name"</span><span class="keyword">][</span><span class="default">$key</span><span class="keyword">]!=</span><span class="string">""</span><span class="keyword">){
+<br>&nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">$value</span><span class="keyword">==</span><span class="default">UPLOAD_ERR_OK</span><span class="keyword">){
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$origfilename </span><span class="keyword">= </span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">"file"</span><span class="keyword">][</span><span class="string">"name"</span><span class="keyword">][</span><span class="default">$key</span><span class="keyword">];
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$filename </span><span class="keyword">= </span><span class="default">explode</span><span class="keyword">(</span><span class="string">"."</span><span class="keyword">, </span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">"file"</span><span class="keyword">][</span><span class="string">"name"</span><span class="keyword">][</span><span class="default">$key</span><span class="keyword">]);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$filenameext </span><span class="keyword">= </span><span class="default">$filename</span><span class="keyword">[</span><span class="default">count</span><span class="keyword">(</span><span class="default">$filename</span><span class="keyword">)-</span><span class="default">1</span><span class="keyword">];
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; unset(</span><span class="default">$filename</span><span class="keyword">[</span><span class="default">count</span><span class="keyword">(</span><span class="default">$filename</span><span class="keyword">)-</span><span class="default">1</span><span class="keyword">]);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$filename </span><span class="keyword">= </span><span class="default">implode</span><span class="keyword">(</span><span class="string">"."</span><span class="keyword">, </span><span class="default">$filename</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$filename </span><span class="keyword">= </span><span class="default">substr</span><span class="keyword">(</span><span class="default">$filename</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">, </span><span class="default">15</span><span class="keyword">).</span><span class="string">"."</span><span class="keyword">.</span><span class="default">$filenameext</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$file_ext_allow </span><span class="keyword">= </span><span class="default">FALSE</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; for(</span><span class="default">$x</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">;</span><span class="default">$x</span><span class="keyword">&lt;</span><span class="default">count</span><span class="keyword">(</span><span class="default">$file_types_array</span><span class="keyword">);</span><span class="default">$x</span><span class="keyword">++){
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">$filenameext</span><span class="keyword">==</span><span class="default">$file_types_array</span><span class="keyword">[</span><span class="default">$x</span><span class="keyword">]){
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$file_ext_allow </span><span class="keyword">= </span><span class="default">TRUE</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">$file_ext_allow</span><span class="keyword">){
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">"file"</span><span class="keyword">][</span><span class="string">"size"</span><span class="keyword">][</span><span class="default">$key</span><span class="keyword">]&lt;</span><span class="default">$max_file_size</span><span class="keyword">){
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">move_uploaded_file</span><span class="keyword">(</span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">"file"</span><span class="keyword">][</span><span class="string">"tmp_name"</span><span class="keyword">][</span><span class="default">$key</span><span class="keyword">], </span><span class="default">$upload_dir</span><span class="keyword">.</span><span class="default">$filename</span><span class="keyword">)){
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo(</span><span class="string">"File uploaded successfully. - &lt;a href='"</span><span class="keyword">.</span><span class="default">$upload_dir</span><span class="keyword">.</span><span class="default">$filename</span><span class="keyword">.</span><span class="string">"' target='_blank'&gt;"</span><span class="keyword">.</span><span class="default">$filename</span><span class="keyword">.</span><span class="string">"&lt;/a&gt;&lt;br /&gt;"</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }else{
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo(</span><span class="default">$origfilename</span><span class="keyword">.</span><span class="string">" was not successfully uploaded&lt;br /&gt;"</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }else{
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo(</span><span class="default">$origfilename</span><span class="keyword">.</span><span class="string">" was too big, not uploaded&lt;br /&gt;"</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }else{
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo(</span><span class="default">$origfilename</span><span class="keyword">.</span><span class="string">" had an invalid file extension, not uploaded&lt;br /&gt;"</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; }else{
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo(</span><span class="default">$origfilename</span><span class="keyword">.</span><span class="string">" was not successfully uploaded&lt;br /&gt;"</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; }
+<br>&nbsp; }
+<br>}
+<br></span><span class="default">?&gt;
+<br></span>
+<br>uploader([int num_uploads [, arr file_types [, int file_size [, str upload_dir ]]]]);
+<br>
+<br>num_uploads = Number of uploads to handle at once.
+<br>
+<br>file_types = An array of all the file types you wish to use. The default is txt only.
+<br>
+<br>file_size = The maximum file size of EACH file. A non-number will results in using the default 1mb filesize.
+<br>
+<br>upload_dir = The directory to upload to, make sure this ends with a /
+<br>
+<br>This functions echo()'s the whole uploader, and submits to itself, you need not do a thing but put uploader(); to have a simple 1 file upload with all defaults.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="56138">  
+  <a class="name">
+  <strong class="user"><em>mariodivece at bytedive dot com</em></strong></a><div class="date" title="2005-08-24 11:33"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom56138">
+<div class="phpcode"><code><span class="html">
+Just wanted to point out a detail that might be of interest to some:<br><br>when using base64_encode to store binary data in a database, you are increasing the size of the data by 1.33 times. There is a nicer way of storing the data directly. Try the following: <br><br><span class="default">&lt;?php $data </span><span class="keyword">= </span><span class="default">mysql_real_escape_string</span><span class="keyword">(</span><span class="default">$data</span><span class="keyword">); </span><span class="default">?&gt;<br></span><br>This will leave the data untouched and formatted in the correct way and ready to be inserted right into a MySQL statement without wasting space.<br><br>By the way, I'd like to thank therebechips for his excellent advice on data chunks.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="70471">  
+  <a class="name">
+  <strong class="user"><em>jedi_aka at yahoo dot com</em></strong></a><div class="date" title="2006-10-18 12:12"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom70471">
+<div class="phpcode"><code><span class="html">
+For those of you trying to make the upload work with IIS on windows XP/2000/XP Media and alike here is a quick todo.<br><br>1) Once you have created subdirectories "uploads/"&nbsp; in the same directory wher you code is running use the code from oportocala above and to make absolutely sure sure that the file you are trying to right is written under that folder. ( I recomend printing it using echo $uploadfile; )<br><br>2) In windows explorer browse to the upload directory created above and share it. To do that execute the following substeps.<br>&nbsp; &nbsp;&nbsp; a) Right click the folder click "sharing and security..."<br>&nbsp; &nbsp;&nbsp; b) Check 'Share this folder on the network'<br>&nbsp; &nbsp;&nbsp; c) Check 'Allow network users to change my files' ( THIS STEP IS VERY IMPORTANT )<br>&nbsp; &nbsp;&nbsp; d) click 'ok' or 'apply' <br><br>3) you can then go in the IIS to set read and write permissions for it. To do that execute the followin substeps.<br>&nbsp; &nbsp;&nbsp; a) Open IIS (Start/Controp Panel (classic View)/ Admistrative tools/Internet Information Service<br>&nbsp; &nbsp;&nbsp; b) Browse to your folder (the one we created above)<br>&nbsp; &nbsp;&nbsp; c) right click and select properties.<br>&nbsp; &nbsp;&nbsp; d) in the Directory tab, make sure, READ, WRITE, AND DIRECTORY BROWSING are checked.<br>&nbsp; &nbsp;&nbsp; e) For the security freaks out there, You should also make sure that 'execute permissions:' are set to Script only or lower (DO NOT SET IT TO 'script and executable)'( that is because someone could upload a script to your directory and run it. And, boy, you do not want that to happen).<br><br>there U go.<br><br>Send me feed back it if worked for you or not so that I can update the todo.<br><br>jedi_aka@yahoo.com<br><br>PS: BIG thanks to oportocala</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="41615">  
+  <a class="name">
+  <strong class="user"><em>steve dot criddle at crd-sector dot com</em></strong></a><div class="date" title="2004-04-16 11:43"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom41615">
+<div class="phpcode"><code><span class="html">
+IE on the Mac is a bit troublesome.&nbsp; If you are uploading a file with an unknown file suffix, IE uploads the file with a mime type of "application/x-macbinary".&nbsp; The resulting file includes the resource fork wrapped around the file.&nbsp; Not terribly useful.
+<br>
+<br>The following code assumes that the mime type is in $type, and that you have loaded the file's contents into $content.&nbsp; If the file is in MacBinary format, it delves into the resource fork header, gets the length of the data fork (bytes 83-86) and uses that to get rid of the resource fork.
+<br>
+<br>(There is probably a better way to do it, but this solved my problem):
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">if (</span><span class="default">$type </span><span class="keyword">== </span><span class="string">'application/x-macbinary'</span><span class="keyword">) {
+<br>&nbsp; &nbsp; if (</span><span class="default">strlen</span><span class="keyword">(</span><span class="default">$content</span><span class="keyword">) &lt; </span><span class="default">128</span><span class="keyword">) die(</span><span class="string">'File too small'</span><span class="keyword">);
+<br>&nbsp; &nbsp; </span><span class="default">$length </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;
+<br>&nbsp; &nbsp; for (</span><span class="default">$i</span><span class="keyword">=</span><span class="default">83</span><span class="keyword">; </span><span class="default">$i</span><span class="keyword">&lt;=</span><span class="default">86</span><span class="keyword">; </span><span class="default">$i</span><span class="keyword">++) {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$length </span><span class="keyword">= (</span><span class="default">$length </span><span class="keyword">* </span><span class="default">256</span><span class="keyword">) + </span><span class="default">ord</span><span class="keyword">(</span><span class="default">substr</span><span class="keyword">(</span><span class="default">$content</span><span class="keyword">,</span><span class="default">$i</span><span class="keyword">,</span><span class="default">1</span><span class="keyword">));
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; </span><span class="default">$content </span><span class="keyword">= </span><span class="default">substr</span><span class="keyword">(</span><span class="default">$content</span><span class="keyword">,</span><span class="default">128</span><span class="keyword">,</span><span class="default">$length</span><span class="keyword">);
+<br>}
+<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="51436">  
+  <a class="name">
+  <strong class="user"><em>javasri at yahoo dot com</em></strong></a><div class="date" title="2005-03-30 02:34"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom51436">
+<div class="phpcode"><code><span class="html">
+On windows XP, SP2, Explorer at times fails to upload files without extensions.<br><br>$_FILES array is null in that case. Microsoft says its a security feature(!)<br><br>The only solution we could comeup is to enforce uploaded file&nbsp; to have an extention.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="114577">  
+  <a class="name">
+  <strong class="user"><em>Matze</em></strong></a><div class="date" title="2014-03-08 12:55"><strong>5 months ago</strong></div>
+  <div class="text" id="Hcom114577">
+<div class="phpcode"><code><span class="html">
+Ahri<br>Cait<br>Mundo<br>Elise<br>draven<br>ezreal<br>eve<br>fizz<br>Jax<br>Jinx<br>Kassadin<br>Kayle<br>Khazinx<br>Leblanc<br>Leesin<br>Leona<br>Lucian<br>lulu<br>lux<br>nami<br>nasus<br>nid<br>noc<br>pant<br>renek<br>rengar<br>riven<br>shyvana<br>trundel<br>varus<br>vi<br>vayne<br>yasuo<br>zed<br>zac<br>zigs</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/features.file-upload.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:21:03 GMT -->
+
+
+</body></html>

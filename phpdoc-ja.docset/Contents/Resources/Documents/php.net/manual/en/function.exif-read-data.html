@@ -1,0 +1,1081 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>JPEG あるいは TIFF から
+   EXIF ヘッダを読み込む</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="function.exif-imagetype.html">≪ exif_imagetype</a></li>
+      <li style="float: right;"><a href="function.exif-tagname.html">exif_tagname ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="ref.exif.html">Exif 関数</a></li>
+    <li>JPEG あるいは TIFF から
+   EXIF ヘッダを読み込む</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="function.exif-read-data" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">exif_read_data</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.2.0, PHP 5)</p><p class="refpurpose"><span class="refname">exif_read_data</span> &mdash; <span class="dc-title">
+   <acronym title="Joint Photographic Experts Group">JPEG</acronym> あるいは <acronym title="Tagged Image File Format">TIFF</acronym> から
+   <acronym title="Exchangeable Image File ">EXIF</acronym> ヘッダを読み込む
+  </span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-function.exif-read-data-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">array</span> <span class="methodname"><strong>exif_read_data</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$filename</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$sections</code><span class="initializer"> = <strong><code>NULL</code></strong></span></span>
+   [, <span class="methodparam"><span class="type">bool</span> <code class="parameter">$arrays</code><span class="initializer"> = false</span></span>
+   [, <span class="methodparam"><span class="type">bool</span> <code class="parameter">$thumbnail</code><span class="initializer"> = false</span></span>
+  ]]] )</div>
+
+  <p class="para rdfs-comment">
+   <span class="function"><strong>exif_read_data()</strong></span> は、<acronym title="Joint Photographic Experts Group">JPEG</acronym> あるいは
+   <acronym title="Tagged Image File Format">TIFF</acronym> の画像ファイルから <acronym title="Exchangeable Image File ">EXIF</acronym>
+   ヘッダを読み込みます。この方法で、デジタルカメラが生成したメタデータを
+   読み込むことが可能です。
+  </p>
+  <p class="para">
+   <acronym title="Exchangeable Image File ">EXIF</acronym> ヘッダは、デジタルカメラが作成した JPEG/TIFF
+   画像によく含まれています。しかし残念なことに、
+   そのタグ付けの方法はメーカーによって異なります。
+   したがって、特定の Exif ヘッダが常に存在すると仮定することはできません。
+  </p>
+  <p class="para">
+   <em>Height</em> および <em>Width</em>
+   は、<span class="function"><a href="function.getimagesize.html" class="function">getimagesize()</a></span> と同じ方法で計算されます。
+   よって、これらの値は決してヘッダの一部として返してはいけません。
+   また、<em>html</em> は高さ/幅を表すテキスト文字列で、
+   通常の <acronym title="Hyper Text Markup Language">HTML</acronym> の中で用いられます。
+  </p>
+  <p class="para">
+   Exif ヘッダに著作権表示が含まれている場合、それ自身には 2 つの値を
+   含めることが可能です。Exif 2.10 のこの矛盾した規格に対応するため、
+   <em>COMPUTED</em> セクションは <em>Copyright.Photographer</em>
+   および <em>Copyright.Editor</em> の両方を返します。
+   また <em>IFD0</em> セクションには 2 つのエントリを NULL 文字で区切った
+   バイト配列を含めます。データ型が間違っている場合は最初のエントリのみを
+   かえします（Exif の通常の挙動）。<em>COMPUTED</em> には、元の著作権文字列あるいは
+   カンマで区切られた写真と編集者の著作権表示のどちらかを
+   <em>Copyright</em> エントリに含めることが可能です。
+  </p>
+  <p class="para">
+   <em>UserComment</em> タグにも Copyright タグと同様の問題があります。ここにも
+   2 つの値を格納することが可能です。それは使用しているエンコーディングと
+   値自身の 2 つです。そうなると、<em>IFD</em> セクションにはエンコーディングのみを
+   含めるか、あるいはバイト配列を格納することになります。<em>COMPUTED</em> セクションは
+   <em>UserCommentEncoding</em> および <em>UserComment</em>
+   を両方格納することができます。<em>UserComment</em> はどちらの
+   場合でも有効なので、<em>IFD0</em> セクションではこちらを優先すべきです。
+  </p>
+  <p class="para">
+   <span class="function"><strong>exif_read_data()</strong></span> は、EXIF 仕様（<a href="http://exif.org/Exif2-2.PDF" class="link external" title="Link : http://exif.org/Exif2-2.PDF">&raquo;&nbsp;http://exif.org/Exif2-2.PDF</a>, 20 ページ）に基づいて
+   EXIF データタグの検証も行います。
+  </p>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    Windows Me/XP は、カメラと接続した際に Exif ヘッダを書き換えることが可能です。
+   </p>
+  </p></blockquote>
+ </div>
+
+ <div class="refsect1 parameters" id="refsect1-function.exif-read-data-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+<code class="parameter">filename</code></dt>
+
+     <dd>
+
+      <p class="para">
+       読み込む画像ファイルの名前。
+       <acronym title="Uniform Resource Locator">URL</acronym> 形式は使用できません。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">sections</code></dt>
+
+     <dd>
+
+      <p class="para">
+       結果の配列を作成するために存在する必要のあるセクションのカンマ区切り
+       リスト。要求されたセクションがひとつも見つからなかった場合の返り値は
+       <strong><code>FALSE</code></strong> となります。
+       <table class="doctable informaltable">
+        
+         <tbody class="tbody">
+          <tr>
+           <td>FILE</td>
+           <td>FileName, FileSize, FileDateTime, SectionsFound</td>
+          </tr>
+
+          <tr>
+           <td>COMPUTED</td>
+           <td>
+            html, Width, Height, IsColor, および他の取得可能なもの。Height および
+            Width は <span class="function"><a href="function.getimagesize.html" class="function">getimagesize()</a></span> と同じ方法で取得した
+            もので、その値はヘッダの一部ではありません。また、<em>html</em> は
+            通常の <acronym title="Hyper Text Markup Language">HTML</acronym> 内で使用される height/width の
+            文字列です。
+           </td>
+          </tr>
+
+          <tr>
+           <td>ANY_TAG</td>
+           <td>タグを有するすべての情報。例えば <em>IFD0</em>, <em>EXIF</em>, ...</td>
+          </tr>
+
+          <tr>
+           <td>IFD0</td>
+           <td>
+            IFD0 のすべてのタグつきデータ。通常の画像ファイルでは、
+            ここに画像のサイズが含まれます。
+           </td>
+          </tr>
+
+          <tr>
+           <td>THUMBNAIL</td>
+           <td>
+            2 番目の <em>IFD</em> がある場合、ファイルにサムネイルが含まれている
+            可能性があります。埋め込まれたサムネイルに関するすべての
+            タグつき情報はこのセクションに格納されます。
+           </td>
+          </tr>
+
+          <tr>
+           <td>COMMENT</td>
+           <td>JPEG 画像のコメントヘッダ。</td>
+          </tr>
+
+          <tr>
+           <td>EXIF</td>
+           <td>
+            EXIF セクションは <em>IFD0</em> のサブセクションです。ここには
+            画像に関する詳細な情報が含まれています。これらのエントリの
+            ほとんどはデジタルカメラに関連するものです。
+           </td>
+          </tr>
+
+         </tbody>
+        
+       </table>
+
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">arrays</code></dt>
+
+      <dd>
+
+      <p class="para">
+       各セクションを配列とするかどうかを指定します。
+       <em>COMPUTED</em>、
+       <em>THUMBNAIL</em> および <em>COMMENT</em> 
+       のセクションは常に配列となります。これは、これらのセクションに
+       含まれる値の名前が他のセクションと衝突する可能性があるからです。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">thumbnail</code></dt>
+
+     <dd>
+
+      <p class="para">
+       <strong><code>TRUE</code></strong> を指定すると、サムネイル本体を読み込みます。それ以外の場合は
+       タグつきデータのみを読み込みます。
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+ </div>
+    
+ <div class="refsect1 returnvalues" id="refsect1-function.exif-read-data-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   ヘッダ名がキー・ヘッダの内容が値となる連想配列を返します。
+   返されるデータがない場合は
+   <span class="function"><strong>exif_read_data()</strong></span> は <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+ <div class="refsect1 changelog" id="refsect1-function.exif-read-data-changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>4.3.0</td>
+       <td>
+        埋め込まれた <acronym title="Image File Directory">IFD</acronym> データを、配列を含めて
+        すべて読み込めます（そして返せます）。また、埋め込まれた
+        サムネイルの大きさもサブ配列 <em>THUMBNAIL</em> に
+        格納され、<acronym title="Tagged Image File Format">TIFF</acronym> フォーマットのサムネイルを
+        返すことが可能です。さらに、（メモリの制限に達しない限り）
+        返り値の長さの最大長には制限はありません。
+       </td>
+      </tr>
+
+      <tr>
+       <td>4.3.0</td>
+       <td>
+        PHP の <a href="ref.mbstring.html" class="link">mbstring</a> サポートが
+        有効になっている場合、ユーザーコメントのエンコーディングは自動的に
+        変換されます。また、ユーザーコメントが <em>Unicode</em> あるいは <em>JIS</em>
+        エンコーディングを使用している場合は <var class="filename">php.ini</var> の exif 設定に応じて
+        エンコーディングが自動的に変換されます。
+       </td>
+      </tr>
+
+      <tr>
+       <td>4.3.0</td>
+       <td>
+        画像に何らかの <em>IFD0</em> データが含まれている場合、
+        <em>COMPUTED</em> にはエントリ
+        <em>ByteOrderMotorola</em> が含まれます。このエントリは、バイトオーダーが
+        リトルエンディアン（intel）の場合に 0 、ビッグエンディアン
+        （motorola）の場合に 1 となります。また、<em>COMPUTED</em> および
+        <em>UserComment</em> は、仮にデータ型が間違っていても最初の copyright
+        エントリだけを格納するということはありません。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+ <div class="refsect1 examples" id="refsect1-function.exif-read-data-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-3255">
+    <p><strong>例1 <span class="function"><strong>exif_read_data()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"test1.jpg:&lt;br&nbsp;/&gt;\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$exif&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">exif_read_data</span><span style="color: #007700">(</span><span style="color: #DD0000">'tests/test1.jpg'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'IFD0'</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #0000BB">$exif</span><span style="color: #007700">===</span><span style="color: #0000BB">false&nbsp;</span><span style="color: #007700">?&nbsp;</span><span style="color: #DD0000">"No&nbsp;header&nbsp;data&nbsp;found.&lt;br&nbsp;/&gt;\n"&nbsp;</span><span style="color: #007700">:&nbsp;</span><span style="color: #DD0000">"Image&nbsp;contains&nbsp;headers&lt;br&nbsp;/&gt;\n"</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$exif&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">exif_read_data</span><span style="color: #007700">(</span><span style="color: #DD0000">'tests/test2.jpg'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #DD0000">"test2.jpg:&lt;br&nbsp;/&gt;\n"</span><span style="color: #007700">;<br />foreach&nbsp;(</span><span style="color: #0000BB">$exif&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$key&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$section</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(</span><span style="color: #0000BB">$section&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$name&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$val</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$key</span><span style="color: #DD0000">.</span><span style="color: #0000BB">$name</span><span style="color: #DD0000">:&nbsp;</span><span style="color: #0000BB">$val</span><span style="color: #DD0000">&lt;br&nbsp;/&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>
+     最初のコールは失敗します。画像がヘッダ情報を有していないためです。
+    </p></div>
+    <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+test1.jpg:
+No header data found.
+test2.jpg:
+FILE.FileName: test2.jpg
+FILE.FileDateTime: 1017666176
+FILE.FileSize: 1240
+FILE.FileType: 2
+FILE.SectionsFound: ANY_TAG, IFD0, THUMBNAIL, COMMENT
+COMPUTED.html: width=&quot;1&quot; height=&quot;1&quot;
+COMPUTED.Height: 1
+COMPUTED.Width: 1
+COMPUTED.IsColor: 1
+COMPUTED.ByteOrderMotorola: 1
+COMPUTED.UserComment: Exif test image.
+COMPUTED.UserCommentEncoding: ASCII
+COMPUTED.Copyright: Photo (c) M.Boerger, Edited by M.Boerger.
+COMPUTED.Copyright.Photographer: Photo (c) M.Boerger
+COMPUTED.Copyright.Editor: Edited by M.Boerger.
+IFD0.Copyright: Photo (c) M.Boerger
+IFD0.UserComment: ASCII
+THUMBNAIL.JPEGInterchangeFormat: 134
+THUMBNAIL.JPEGInterchangeFormatLength: 523
+COMMENT.0: Comment #1.
+COMMENT.1: Comment #2.
+COMMENT.2: Comment #3end
+THUMBNAIL.JPEGInterchangeFormat: 134
+THUMBNAIL.Thumbnail.Height: 1
+THUMBNAIL.Thumbnail.Height: 1
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+ <div class="refsect1 seealso" id="refsect1-function.exif-read-data-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><span class="function"><a href="function.exif-thumbnail.html" class="function" rel="rdfs-seeAlso">exif_thumbnail()</a> - TIFF あるいは JPEG 形式の画像に埋め込まれたサムネイルを取得する</span></li>
+    <li class="member"><span class="function"><a href="function.getimagesize.html" class="function" rel="rdfs-seeAlso">getimagesize()</a> - 画像の大きさを取得する</span></li>
+   </ul>
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113944""></a>
+  <div class="note">
+   <strong class="user">iam at thatguy dot co dot za</strong>
+   <a href="#113944" class="date">20-Dec-2013 05:15</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I posted the original version of the function, but after using it for a while I discovered I didn't do enough error checking. <br />
+<br />
+I have re-factored it somewhat, and it now returns an empty array should it not be able to read the image's exif. If it is able to, it will return the details it was able to retrieve. And this should be without error. <br />
+<br />
+I am suppressing errors, because if you pass it images which cannot parse, you will get a warning. <br />
+<br />
+<span class="default">&lt;?php <br />
+<br />
+</span><span class="comment"># Modified Version of cameraUsed, no longer returns date. <br />
+</span><span class="keyword">public function </span><span class="default">cameraUsed</span><span class="keyword">(</span><span class="default">$imagePath</span><span class="keyword">)<br />
+{<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment"># The default empty return<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$return </span><span class="keyword">= array(<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">'make'&nbsp; &nbsp; &nbsp; </span><span class="keyword">=&gt; </span><span class="string">""</span><span class="keyword">,<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">'model'&nbsp; &nbsp;&nbsp; </span><span class="keyword">=&gt; </span><span class="string">""</span><span class="keyword">,<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">'exposure'&nbsp; </span><span class="keyword">=&gt; </span><span class="string">""</span><span class="keyword">,<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">'aperture'&nbsp; </span><span class="keyword">=&gt; </span><span class="string">""</span><span class="keyword">,<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">'iso'&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">=&gt; </span><span class="string">""<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">// Check if the variable is set and if the file itself exists before continuing<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">if ((isset(</span><span class="default">$imagePath</span><span class="keyword">)) AND (</span><span class="default">file_exists</span><span class="keyword">(</span><span class="default">$imagePath</span><span class="keyword">)))<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// There are 2 arrays which contains the information we are after, so it's easier to state them both<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$exif_ifd0 </span><span class="keyword">= @</span><span class="default">read_exif_data</span><span class="keyword">(</span><span class="default">$imagePath </span><span class="keyword">,</span><span class="string">'IFD0' </span><span class="keyword">,</span><span class="default">0</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$exif_exif </span><span class="keyword">= @</span><span class="default">read_exif_data</span><span class="keyword">(</span><span class="default">$imagePath </span><span class="keyword">,</span><span class="string">'EXIF' </span><span class="keyword">,</span><span class="default">0</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment"># Ensure that we actually got some information<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if ((</span><span class="default">$exif_ifd0 </span><span class="keyword">!== </span><span class="default">false</span><span class="keyword">) AND (</span><span class="default">$exif_exif </span><span class="keyword">!== </span><span class="default">false</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Make<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if (@</span><span class="default">array_key_exists</span><span class="keyword">(</span><span class="string">'Make'</span><span class="keyword">, </span><span class="default">$exif_ifd0</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$return</span><span class="keyword">[</span><span class="string">'make'</span><span class="keyword">]&nbsp; &nbsp;&nbsp; = </span><span class="default">$exif_ifd0</span><span class="keyword">[</span><span class="string">'Make'</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Model<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if (@</span><span class="default">array_key_exists</span><span class="keyword">(</span><span class="string">'Model'</span><span class="keyword">, </span><span class="default">$exif_ifd0</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$return</span><span class="keyword">[</span><span class="string">'model'</span><span class="keyword">]&nbsp; &nbsp; = </span><span class="default">$exif_ifd0</span><span class="keyword">[</span><span class="string">'Model'</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Exposure<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if (@</span><span class="default">array_key_exists</span><span class="keyword">(</span><span class="string">'ExposureTime'</span><span class="keyword">, </span><span class="default">$exif_ifd0</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$return</span><span class="keyword">[</span><span class="string">'exposure'</span><span class="keyword">] = </span><span class="default">$exif_ifd0</span><span class="keyword">[</span><span class="string">'ExposureTime'</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// Aperture<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if (@</span><span class="default">array_key_exists</span><span class="keyword">(</span><span class="string">'ApertureFNumber'</span><span class="keyword">, </span><span class="default">$exif_ifd0</span><span class="keyword">[</span><span class="string">'COMPUTED'</span><span class="keyword">]))<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$return</span><span class="keyword">[</span><span class="string">'aperture'</span><span class="keyword">] = </span><span class="default">$exif_ifd0</span><span class="keyword">[</span><span class="string">'COMPUTED'</span><span class="keyword">][</span><span class="string">'ApertureFNumber'</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// ISO<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if (@</span><span class="default">array_key_exists</span><span class="keyword">(</span><span class="string">'ISOSpeedRatings'</span><span class="keyword">,</span><span class="default">$exif_exif</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$return</span><span class="keyword">[</span><span class="string">'iso'</span><span class="keyword">]&nbsp; &nbsp;&nbsp; = </span><span class="default">$exif_exif</span><span class="keyword">[</span><span class="string">'ISOSpeedRatings'</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment"># Return either an empty array, or the details which we were able to extrapolate.<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">return </span><span class="default">$return</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="113834""></a>
+  <div class="note">
+   <strong class="user">Clive dot Moore at ma-design dot com</strong>
+   <a href="#113834" class="date">06-Dec-2013 06:19</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Following up on darkain at darkain dot com&nbsp; script for grabbing the ShutterSpeedValue from exif data...<br />
+@<a href="http://php.net/manual/en/function.exif-read-data.php" rel="nofollow" target="_blank">http://php.net/manual/en/function.exif-read-data.php</a><br />
+<br />
+I have found that the option shown for ShutterSppedValue, can also be ExposureTime in the exif data. <br />
+<br />
+Also the code as written provides a WRONG return, as the return is always 1 so you get 1/1sec.<br />
+<br />
+Here is corrected code, or a version that corrects what is obviously not working after 5 years since it was originally developed::<br />
+<br />
+Here is the updated version for:: $exif[ExposureTime]<br />
+<br />
+&nbsp;&nbsp;&nbsp; function exif_get_float($value) { <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; $pos = strpos($value, '/'); <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if ($pos === false) return (float) $value; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; $a = (float) substr($value, 0, $pos); <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; $b = (float) substr($value, $pos+1); <br />
+&nbsp;&nbsp;&nbsp; return ($b == 0) ? ($a) : ($a / $b); <br />
+&nbsp;&nbsp;&nbsp; };<br />
+<br />
+&nbsp;&nbsp;&nbsp; function exif_get_exposureTime(&amp;$exif) { <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if (!isset($exif['ExposureTime'])) return false; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; $apex&nbsp; &nbsp; = exif_get_float($exif['ExposureTime']);&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; $shutter = 1/$apex; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; // above 1 sec exposure time::<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if ($shutter &lt;= 1) return round($apex) . ' seconds'; <br />
+<br />
+&nbsp;&nbsp;&nbsp; return '1/' . round(1 / $apex) . 'sec';<br />
+&nbsp;&nbsp;&nbsp; };</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="112274""></a>
+  <div class="note">
+   <strong class="user">hoangvu4000 at gmail dot com</strong>
+   <a href="#112274" class="date">27-May-2013 02:47</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This is function, resize image and don't rotates images have exif info
+<br />
+
+<br />
+PHP must be enabled: 
+<br />
+extension=php_mbstring.dll 
+<br />
+extension=php_exif.dll
+<br />
+
+<br />
+<span class="default">&lt;?php
+<br />
+</span><span class="keyword">function </span><span class="default">CreateThumbnail</span><span class="keyword">(</span><span class="default">$pic</span><span class="keyword">,</span><span class="default">$thumb</span><span class="keyword">,</span><span class="default">$thumbwidth</span><span class="keyword">, </span><span class="default">$quality </span><span class="keyword">= </span><span class="default">100</span><span class="keyword">)
+<br />
+{
+<br />
+
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$im1</span><span class="keyword">=</span><span class="default">ImageCreateFromJPEG</span><span class="keyword">(</span><span class="default">$pic</span><span class="keyword">);
+<br />
+
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">//if(function_exists("exif_read_data")){
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$exif </span><span class="keyword">= </span><span class="default">exif_read_data</span><span class="keyword">(</span><span class="default">$pic</span><span class="keyword">);
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if(!empty(</span><span class="default">$exif</span><span class="keyword">[</span><span class="string">'Orientation'</span><span class="keyword">])) {
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; switch(</span><span class="default">$exif</span><span class="keyword">[</span><span class="string">'Orientation'</span><span class="keyword">]) {
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; case </span><span class="default">8</span><span class="keyword">:
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$im1 </span><span class="keyword">= </span><span class="default">imagerotate</span><span class="keyword">(</span><span class="default">$im1</span><span class="keyword">,</span><span class="default">90</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">);
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; break;
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; case </span><span class="default">3</span><span class="keyword">:
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$im1 </span><span class="keyword">= </span><span class="default">imagerotate</span><span class="keyword">(</span><span class="default">$im1</span><span class="keyword">,</span><span class="default">180</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">);
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; break;
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; case </span><span class="default">6</span><span class="keyword">:
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$im1 </span><span class="keyword">= </span><span class="default">imagerotate</span><span class="keyword">(</span><span class="default">$im1</span><span class="keyword">,-</span><span class="default">90</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">);
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; break;
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; } 
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">//}
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$info </span><span class="keyword">= @</span><span class="default">getimagesize</span><span class="keyword">(</span><span class="default">$pic</span><span class="keyword">);
+<br />
+
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$width </span><span class="keyword">= </span><span class="default">$info</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">];
+<br />
+
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$w2</span><span class="keyword">=</span><span class="default">ImageSx</span><span class="keyword">(</span><span class="default">$im1</span><span class="keyword">);
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$h2</span><span class="keyword">=</span><span class="default">ImageSy</span><span class="keyword">(</span><span class="default">$im1</span><span class="keyword">);
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$w1 </span><span class="keyword">= (</span><span class="default">$thumbwidth </span><span class="keyword">&lt;= </span><span class="default">$info</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">]) ? </span><span class="default">$thumbwidth </span><span class="keyword">: </span><span class="default">$info</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">]&nbsp; ;
+<br />
+
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$h1</span><span class="keyword">=</span><span class="default">floor</span><span class="keyword">(</span><span class="default">$h2</span><span class="keyword">*(</span><span class="default">$w1</span><span class="keyword">/</span><span class="default">$w2</span><span class="keyword">));
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$im2</span><span class="keyword">=</span><span class="default">imagecreatetruecolor</span><span class="keyword">(</span><span class="default">$w1</span><span class="keyword">,</span><span class="default">$h1</span><span class="keyword">);
+<br />
+
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">imagecopyresampled </span><span class="keyword">(</span><span class="default">$im2</span><span class="keyword">,</span><span class="default">$im1</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">,</span><span class="default">$w1</span><span class="keyword">,</span><span class="default">$h1</span><span class="keyword">,</span><span class="default">$w2</span><span class="keyword">,</span><span class="default">$h2</span><span class="keyword">); 
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$path</span><span class="keyword">=</span><span class="default">addslashes</span><span class="keyword">(</span><span class="default">$thumb</span><span class="keyword">);
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">ImageJPEG</span><span class="keyword">(</span><span class="default">$im2</span><span class="keyword">,</span><span class="default">$path</span><span class="keyword">,</span><span class="default">$quality</span><span class="keyword">);
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">ImageDestroy</span><span class="keyword">(</span><span class="default">$im1</span><span class="keyword">);
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">ImageDestroy</span><span class="keyword">(</span><span class="default">$im2</span><span class="keyword">);
+<br />
+}
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="112034""></a>
+  <div class="note">
+   <strong class="user">kurt at mandella dot biz</strong>
+   <a href="#112034" class="date">25-Apr-2013 03:34</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Photos processed in Picasa often contain garbage data in the "MAKERNOTE" section and under EXIF.MakerNote, (UTF8) like:<br />
+<br />
+[MakerNote] =&gt; r0~Ta"i2OOy&nbsp; &nbsp;  e §...b!&nbsp; &nbsp; )&nbsp; &nbsp; ) EI "DO<br />
+#s&amp;0{'U(a-D`yy@yyyiEe?Yyy  yyyyyyx "u≫Doy H ?.}BuIMG:DIGITAL IXUS 100 IS JPEGFirmware Version 1.00s?xCOyyy-l\yyy OIIx? yyII?ayyy??(?(?T?U'?d-~O"\yyy&nbsp; &nbsp; Ay?aajaApgaXfaWb[Te≪<br />
+8u5:Ad-3ayy5≫y ?;sE ? ?a?`&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; ，ddiyiyiyiyiyiy<br />
+yy?1&mdash;IaoEa×￢gaii<br />
+<br />
+This can't be written to Blob in MySql. The following code removes the garbage tags.<br />
+<br />
+$exif = exif_read_data($process_photo, 0, 'EXIF');<br />
+<br />
+if($exif['IFD0']['Software'] == "Picasa"){<br />
+<br />
+foreach ($exif as $key =&gt; $section){<br />
+<br />
+&nbsp;if($key != "MAKERNOTE"){<br />
+&nbsp; foreach ($section as $name =&gt; $val){<br />
+&nbsp;&nbsp; if($name != 'MakerNote'){<br />
+&nbsp;&nbsp;&nbsp; $exifA[$key][$name] = $val;<br />
+&nbsp;&nbsp; }<br />
+&nbsp; }<br />
+&nbsp; $exifB[$key] = $exifA[$key];<br />
+&nbsp;}<br />
+}<br />
+$serialized_exif = serialize ($exifB);<br />
+}else{<br />
+$serialized_exif = serialize ($exif);<br />
+}</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="110894""></a>
+  <div class="note">
+   <strong class="user">chadsmith729 at gmail dot com</strong>
+   <a href="#110894" class="date">20-Dec-2012 10:34</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+When the new update came out from Apple for iOS6 it provided the ability for iPad, iPod, and iPhones to be able to upload files from the device through Safari. Obviously this will open up an array of implementations where at one point it was just not possible.<br />
+<br />
+The issue comes when a photo is uploaded it will be dependent on the location of the "button" when the photo was taken. Imagine if you will that you have your iPhone turned with the button at the top and you take a photo. The photo when uploaded to your server might be "upside down".<br />
+<br />
+The following code will ensure that all uploaded photos will be oriented correctly upon upload:<br />
+<span class="default">&lt;?php<br />
+$image </span><span class="keyword">= </span><span class="default">imagecreatefromstring</span><span class="keyword">(</span><span class="default">file_get_contents</span><span class="keyword">(</span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">'image_upload'</span><span class="keyword">][</span><span class="string">'tmp_name'</span><span class="keyword">]));<br />
+</span><span class="default">$exif </span><span class="keyword">= </span><span class="default">exif_read_data</span><span class="keyword">(</span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">'image_upload'</span><span class="keyword">][</span><span class="string">'tmp_name'</span><span class="keyword">]);<br />
+if(!empty(</span><span class="default">$exif</span><span class="keyword">[</span><span class="string">'Orientation'</span><span class="keyword">])) {<br />
+&nbsp;&nbsp;&nbsp; switch(</span><span class="default">$exif</span><span class="keyword">[</span><span class="string">'Orientation'</span><span class="keyword">]) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; case </span><span class="default">8</span><span class="keyword">:<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$image </span><span class="keyword">= </span><span class="default">imagerotate</span><span class="keyword">(</span><span class="default">$image</span><span class="keyword">,</span><span class="default">90</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; break;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; case </span><span class="default">3</span><span class="keyword">:<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$image </span><span class="keyword">= </span><span class="default">imagerotate</span><span class="keyword">(</span><span class="default">$image</span><span class="keyword">,</span><span class="default">180</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; break;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; case </span><span class="default">6</span><span class="keyword">:<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$image </span><span class="keyword">= </span><span class="default">imagerotate</span><span class="keyword">(</span><span class="default">$image</span><span class="keyword">,-</span><span class="default">90</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; break;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+</span><span class="comment">// $image now contains a resource with the image oriented correctly<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+What you do with the image resource from there is entirely up to you.<br />
+<br />
+I hope that this helps you identify and orient any image that's uploaded from an iPad, iPhone, or iPod. Orientation for the photo is the key to knowing how to rotate it correctly.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="107888""></a>
+  <div class="note">
+   <strong class="user">drpain at webster dot org dot za</strong>
+   <a href="#107888" class="date">13-Mar-2012 08:40</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Please note that when resizing images with GD and most image processing scripts or applications you will loose the EXIF information. What I did as a workaround is book this information into MySQL before I re-size images. <br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="comment">// This function is used to determine the camera details for a specific image. It returns an array with the parameters.<br />
+</span><span class="keyword">function </span><span class="default">cameraUsed</span><span class="keyword">(</span><span class="default">$imagePath</span><span class="keyword">) {<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">// Check if the variable is set and if the file itself exists before continuing<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">if ((isset(</span><span class="default">$imagePath</span><span class="keyword">)) and (</span><span class="default">file_exists</span><span class="keyword">(</span><span class="default">$imagePath</span><span class="keyword">))) {<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="comment">// There are 2 arrays which contains the information we are after, so it's easier to state them both<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$exif_ifd0 </span><span class="keyword">= </span><span class="default">read_exif_data</span><span class="keyword">(</span><span class="default">$imagePath </span><span class="keyword">,</span><span class="string">'IFD0' </span><span class="keyword">,</span><span class="default">0</span><span class="keyword">);&nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$exif_exif </span><span class="keyword">= </span><span class="default">read_exif_data</span><span class="keyword">(</span><span class="default">$imagePath </span><span class="keyword">,</span><span class="string">'EXIF' </span><span class="keyword">,</span><span class="default">0</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="comment">//error control<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$notFound </span><span class="keyword">= </span><span class="string">"Unavailable"</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="comment">// Make <br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="keyword">if (@</span><span class="default">array_key_exists</span><span class="keyword">(</span><span class="string">'Make'</span><span class="keyword">, </span><span class="default">$exif_ifd0</span><span class="keyword">)) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$camMake </span><span class="keyword">= </span><span class="default">$exif_ifd0</span><span class="keyword">[</span><span class="string">'Make'</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp;&nbsp; } else { </span><span class="default">$camMake </span><span class="keyword">= </span><span class="default">$notFound</span><span class="keyword">; }<br />
+&nbsp;&nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="comment">// Model<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="keyword">if (@</span><span class="default">array_key_exists</span><span class="keyword">(</span><span class="string">'Model'</span><span class="keyword">, </span><span class="default">$exif_ifd0</span><span class="keyword">)) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$camModel </span><span class="keyword">= </span><span class="default">$exif_ifd0</span><span class="keyword">[</span><span class="string">'Model'</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp;&nbsp; } else { </span><span class="default">$camModel </span><span class="keyword">= </span><span class="default">$notFound</span><span class="keyword">; }<br />
+&nbsp;&nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="comment">// Exposure<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="keyword">if (@</span><span class="default">array_key_exists</span><span class="keyword">(</span><span class="string">'ExposureTime'</span><span class="keyword">, </span><span class="default">$exif_ifd0</span><span class="keyword">)) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$camExposure </span><span class="keyword">= </span><span class="default">$exif_ifd0</span><span class="keyword">[</span><span class="string">'ExposureTime'</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp;&nbsp; } else { </span><span class="default">$camExposure </span><span class="keyword">= </span><span class="default">$notFound</span><span class="keyword">; }<br />
+<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="comment">// Aperture<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="keyword">if (@</span><span class="default">array_key_exists</span><span class="keyword">(</span><span class="string">'ApertureFNumber'</span><span class="keyword">, </span><span class="default">$exif_ifd0</span><span class="keyword">[</span><span class="string">'COMPUTED'</span><span class="keyword">])) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$camAperture </span><span class="keyword">= </span><span class="default">$exif_ifd0</span><span class="keyword">[</span><span class="string">'COMPUTED'</span><span class="keyword">][</span><span class="string">'ApertureFNumber'</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp;&nbsp; } else { </span><span class="default">$camAperture </span><span class="keyword">= </span><span class="default">$notFound</span><span class="keyword">; }<br />
+&nbsp;&nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="comment">// Date<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="keyword">if (@</span><span class="default">array_key_exists</span><span class="keyword">(</span><span class="string">'DateTime'</span><span class="keyword">, </span><span class="default">$exif_ifd0</span><span class="keyword">)) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$camDate </span><span class="keyword">= </span><span class="default">$exif_ifd0</span><span class="keyword">[</span><span class="string">'DateTime'</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp;&nbsp; } else { </span><span class="default">$camDate </span><span class="keyword">= </span><span class="default">$notFound</span><span class="keyword">; }<br />
+&nbsp;&nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="comment">// ISO<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="keyword">if (@</span><span class="default">array_key_exists</span><span class="keyword">(</span><span class="string">'ISOSpeedRatings'</span><span class="keyword">,</span><span class="default">$exif_exif</span><span class="keyword">)) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$camIso </span><span class="keyword">= </span><span class="default">$exif_exif</span><span class="keyword">[</span><span class="string">'ISOSpeedRatings'</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp;&nbsp; } else { </span><span class="default">$camIso </span><span class="keyword">= </span><span class="default">$notFound</span><span class="keyword">; }<br />
+&nbsp;&nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$return </span><span class="keyword">= array();<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$return</span><span class="keyword">[</span><span class="string">'make'</span><span class="keyword">] = </span><span class="default">$camMake</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$return</span><span class="keyword">[</span><span class="string">'model'</span><span class="keyword">] = </span><span class="default">$camModel</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$return</span><span class="keyword">[</span><span class="string">'exposure'</span><span class="keyword">] = </span><span class="default">$camExposure</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$return</span><span class="keyword">[</span><span class="string">'aperture'</span><span class="keyword">] = </span><span class="default">$camAperture</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$return</span><span class="keyword">[</span><span class="string">'date'</span><span class="keyword">] = </span><span class="default">$camDate</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="default">$return</span><span class="keyword">[</span><span class="string">'iso'</span><span class="keyword">] = </span><span class="default">$camIso</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; return </span><span class="default">$return</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; } else {<br />
+&nbsp;&nbsp; &nbsp;&nbsp; return </span><span class="default">false</span><span class="keyword">; <br />
+&nbsp;&nbsp;&nbsp; } <br />
+}<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+An example of it's use follows:<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+$camera </span><span class="keyword">= </span><span class="default">cameraUsed</span><span class="keyword">(</span><span class="string">"/img/myphoto.jpg"</span><span class="keyword">);<br />
+echo </span><span class="string">"Camera Used: " </span><span class="keyword">. </span><span class="default">$camera</span><span class="keyword">[</span><span class="string">'make'</span><span class="keyword">] . </span><span class="string">" " </span><span class="keyword">. </span><span class="default">$camera</span><span class="keyword">[</span><span class="string">'model'</span><span class="keyword">] . </span><span class="string">"&lt;br /&gt;"</span><span class="keyword">;<br />
+echo </span><span class="string">"Exposure Time: " </span><span class="keyword">. </span><span class="default">$camera</span><span class="keyword">[</span><span class="string">'exposure'</span><span class="keyword">] . </span><span class="string">"&lt;br /&gt;"</span><span class="keyword">;<br />
+echo </span><span class="string">"Aperture: " </span><span class="keyword">. </span><span class="default">$camera</span><span class="keyword">[</span><span class="string">'aperture'</span><span class="keyword">] . </span><span class="string">"&lt;br /&gt;"</span><span class="keyword">;<br />
+echo </span><span class="string">"ISO: " </span><span class="keyword">. </span><span class="default">$camera</span><span class="keyword">[</span><span class="string">'iso'</span><span class="keyword">] . </span><span class="string">"&lt;br /&gt;"</span><span class="keyword">;<br />
+echo </span><span class="string">"Date Taken: " </span><span class="keyword">. </span><span class="default">$camera</span><span class="keyword">[</span><span class="string">'date'</span><span class="keyword">] . </span><span class="string">"&lt;br /&gt;"</span><span class="keyword">;<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Will display the following, depending on the data:<br />
+<br />
+Camera Used: SONY DSC-S930<br />
+Exposure Time: 1/400<br />
+Aperture: f/4.3<br />
+ISO: 100<br />
+Date Taken: 2010:12:10 18:18:45<br />
+<br />
+If the image has been re-sized and the information is no longer available then you should receive the following when echoing the same:<br />
+<br />
+Camera Used: Unavailable<br />
+Exposure Time: Unavailable<br />
+Aperture: Unavailable<br />
+ISO: Unavailable<br />
+Date Taken: Unavailable<br />
+<br />
+Some cameras do not capture all the information, for instance Blackberry phones do not record an aperture, or iso and you will get Unavailable for those fields.&nbsp; <br />
+<br />
+I hope you find this helpful.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="87143""></a>
+  <div class="note">
+   <strong class="user">michael [at[ thisiswilson [dot[ com</strong>
+   <a href="#87143" class="date">21-Nov-2008 06:01</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+From - darkain at darkain dot com 's example.<br />
+<br />
+If all the data is from the same image - simply<br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; $exif_data </span><span class="keyword">= </span><span class="default">exif_read_data </span><span class="keyword">( </span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">'photo'</span><span class="keyword">]<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$emake </span><span class="keyword">=</span><span class="default">$exif_data</span><span class="keyword">[</span><span class="string">'Make'</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$emodel </span><span class="keyword">= </span><span class="default">$exif_data</span><span class="keyword">[</span><span class="string">'Model'</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$eexposuretime </span><span class="keyword">= </span><span class="default">$exif_data</span><span class="keyword">[</span><span class="string">'ExposureTime'</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$efnumber </span><span class="keyword">= </span><span class="default">$exif_data</span><span class="keyword">[</span><span class="string">'FNumber'</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$eiso </span><span class="keyword">= </span><span class="default">$exif_data</span><span class="keyword">[</span><span class="string">'ISOSpeedRatings'</span><span class="keyword">];<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$edate </span><span class="keyword">= </span><span class="default">$exif_data</span><span class="keyword">[</span><span class="string">'DateTime'</span><span class="keyword">];<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+will work, I tried using the PEL library, and while pretty cool, I can't for the life understand how to call some things, this is simpler if your system is pretty basic or if you're in a rush.&nbsp; If you have time, try playing with PEL.&nbsp; It's not maintained at the moment though..<br />
+<br />
+<a href="http://pel.sourceforge.net/" rel="nofollow" target="_blank">http://pel.sourceforge.net/</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="85984""></a>
+  <div class="note">
+   <strong class="user">lincolnzsilva at gmail dot com</strong>
+   <a href="#85984" class="date">27-Sep-2008 01:57</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Get some EXIFs fields (easy way):
+<br />
+
+<br />
+<span class="default">&lt;?php
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; $exif_make </span><span class="keyword">= </span><span class="default">exif_read_data </span><span class="keyword">( </span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">'photo'</span><span class="keyword">][</span><span class="string">'tmp_name'</span><span class="keyword">] ,</span><span class="string">'IFD0' </span><span class="keyword">,</span><span class="default">0 </span><span class="keyword">);
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$emake </span><span class="keyword">= </span><span class="default">$exif_make</span><span class="keyword">[</span><span class="string">'Make'</span><span class="keyword">];
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; 
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$exif_model </span><span class="keyword">= </span><span class="default">exif_read_data </span><span class="keyword">( </span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">'photo'</span><span class="keyword">][</span><span class="string">'tmp_name'</span><span class="keyword">] ,</span><span class="string">'IFD0' </span><span class="keyword">,</span><span class="default">0 </span><span class="keyword">);
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$emodel </span><span class="keyword">= </span><span class="default">$exif_model</span><span class="keyword">[</span><span class="string">'Model'</span><span class="keyword">];
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; 
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$exif_exposuretime </span><span class="keyword">= </span><span class="default">exif_read_data </span><span class="keyword">( </span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">'photo'</span><span class="keyword">][</span><span class="string">'tmp_name'</span><span class="keyword">] ,</span><span class="string">'EXIF' </span><span class="keyword">,</span><span class="default">0 </span><span class="keyword">);
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$eexposuretime </span><span class="keyword">= </span><span class="default">$exif_exposuretime</span><span class="keyword">[</span><span class="string">'ExposureTime'</span><span class="keyword">];
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; 
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$exif_fnumber </span><span class="keyword">= </span><span class="default">exif_read_data </span><span class="keyword">( </span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">'photo'</span><span class="keyword">][</span><span class="string">'tmp_name'</span><span class="keyword">] ,</span><span class="string">'EXIF' </span><span class="keyword">,</span><span class="default">0 </span><span class="keyword">);
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$efnumber </span><span class="keyword">= </span><span class="default">$exif_fnumber</span><span class="keyword">[</span><span class="string">'FNumber'</span><span class="keyword">];
+<br />
+
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$exif_iso </span><span class="keyword">= </span><span class="default">exif_read_data </span><span class="keyword">( </span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">'photo'</span><span class="keyword">][</span><span class="string">'tmp_name'</span><span class="keyword">] ,</span><span class="string">'EXIF' </span><span class="keyword">,</span><span class="default">0 </span><span class="keyword">);
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$eiso </span><span class="keyword">= </span><span class="default">$exif_iso</span><span class="keyword">[</span><span class="string">'ISOSpeedRatings'</span><span class="keyword">];
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; 
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$exif_date </span><span class="keyword">= </span><span class="default">exif_read_data </span><span class="keyword">( </span><span class="default">$_FILES</span><span class="keyword">[</span><span class="string">'photo'</span><span class="keyword">][</span><span class="string">'tmp_name'</span><span class="keyword">] ,</span><span class="string">'IFD0' </span><span class="keyword">,</span><span class="default">0 </span><span class="keyword">);
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$edate </span><span class="keyword">= </span><span class="default">$exif_date</span><span class="keyword">[</span><span class="string">'DateTime'</span><span class="keyword">];
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="84762""></a>
+  <div class="note">
+   <strong class="user">darkain at darkain dot com</strong>
+   <a href="#84762" class="date">29-Jul-2008 08:33</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I wanted some quick and easy functions for computing the shutter speed and f-stop.&nbsp; I couldn't find any anywhere, so I made some.&nbsp; It took some research :
+<br />
+
+<br />
+<span class="default">&lt;?php
+<br />
+</span><span class="keyword">function </span><span class="default">exif_get_float</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">) {
+<br />
+&nbsp; </span><span class="default">$pos </span><span class="keyword">= </span><span class="default">strpos</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">, </span><span class="string">'/'</span><span class="keyword">);
+<br />
+&nbsp; if (</span><span class="default">$pos </span><span class="keyword">=== </span><span class="default">false</span><span class="keyword">) return (float) </span><span class="default">$value</span><span class="keyword">;
+<br />
+&nbsp; </span><span class="default">$a </span><span class="keyword">= (float) </span><span class="default">substr</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">, </span><span class="default">$pos</span><span class="keyword">);
+<br />
+&nbsp; </span><span class="default">$b </span><span class="keyword">= (float) </span><span class="default">substr</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">, </span><span class="default">$pos</span><span class="keyword">+</span><span class="default">1</span><span class="keyword">);
+<br />
+&nbsp; return (</span><span class="default">$b </span><span class="keyword">== </span><span class="default">0</span><span class="keyword">) ? (</span><span class="default">$a</span><span class="keyword">) : (</span><span class="default">$a </span><span class="keyword">/ </span><span class="default">$b</span><span class="keyword">);
+<br />
+}
+<br />
+
+<br />
+function </span><span class="default">exif_get_shutter</span><span class="keyword">(&amp;</span><span class="default">$exif</span><span class="keyword">) {
+<br />
+&nbsp; if (!isset(</span><span class="default">$exif</span><span class="keyword">[</span><span class="string">'ShutterSpeedValue'</span><span class="keyword">])) return </span><span class="default">false</span><span class="keyword">;
+<br />
+&nbsp; </span><span class="default">$apex&nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">exif_get_float</span><span class="keyword">(</span><span class="default">$exif</span><span class="keyword">[</span><span class="string">'ShutterSpeedValue'</span><span class="keyword">]);
+<br />
+&nbsp; </span><span class="default">$shutter </span><span class="keyword">= </span><span class="default">pow</span><span class="keyword">(</span><span class="default">2</span><span class="keyword">, -</span><span class="default">$apex</span><span class="keyword">);
+<br />
+&nbsp; if (</span><span class="default">$shutter </span><span class="keyword">== </span><span class="default">0</span><span class="keyword">) return </span><span class="default">false</span><span class="keyword">;
+<br />
+&nbsp; if (</span><span class="default">$shutter </span><span class="keyword">&gt;= </span><span class="default">1</span><span class="keyword">) return </span><span class="default">round</span><span class="keyword">(</span><span class="default">$shutter</span><span class="keyword">) . </span><span class="string">'s'</span><span class="keyword">;
+<br />
+&nbsp; return </span><span class="string">'1/' </span><span class="keyword">. </span><span class="default">round</span><span class="keyword">(</span><span class="default">1 </span><span class="keyword">/ </span><span class="default">$shutter</span><span class="keyword">) . </span><span class="string">'s'</span><span class="keyword">;
+<br />
+}
+<br />
+
+<br />
+function </span><span class="default">exif_get_fstop</span><span class="keyword">(&amp;</span><span class="default">$exif</span><span class="keyword">) {
+<br />
+&nbsp; if (!isset(</span><span class="default">$exif</span><span class="keyword">[</span><span class="string">'ApertureValue'</span><span class="keyword">])) return </span><span class="default">false</span><span class="keyword">;
+<br />
+&nbsp; </span><span class="default">$apex&nbsp; </span><span class="keyword">= </span><span class="default">exif_get_float</span><span class="keyword">(</span><span class="default">$exif</span><span class="keyword">[</span><span class="string">'ApertureValue'</span><span class="keyword">]);
+<br />
+&nbsp; </span><span class="default">$fstop </span><span class="keyword">= </span><span class="default">pow</span><span class="keyword">(</span><span class="default">2</span><span class="keyword">, </span><span class="default">$apex</span><span class="keyword">/</span><span class="default">2</span><span class="keyword">);
+<br />
+&nbsp; if (</span><span class="default">$fstop </span><span class="keyword">== </span><span class="default">0</span><span class="keyword">) return </span><span class="default">false</span><span class="keyword">;
+<br />
+&nbsp; return </span><span class="string">'f/' </span><span class="keyword">. </span><span class="default">round</span><span class="keyword">(</span><span class="default">$fstop</span><span class="keyword">,</span><span class="default">1</span><span class="keyword">);
+<br />
+}
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="77586""></a>
+  <div class="note">
+   <strong class="user">wdierkes at 5dollarwhitebox dot org</strong>
+   <a href="#77586" class="date">05-Sep-2007 03:20</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Using the exif methods to read WINXP data returns unexpected results unless both exif and mbstring are compiled statically.&nbsp; Please reference the following bug reports:<br />
+<br />
+Bug #31980<br />
+Bug #23105<br />
+<br />
+&nbsp;<br />
+Specifically, the last comment on #23105:<br />
+<br />
+"[8 Apr 2003 4:26pm UTC] edink@php.net<br />
+<br />
+This cannot be fixed due to the fact that mbstring has been removed from PHP core (it has been 'unbundled') and the rest of core files and other extensions cannot use mbstring functionality when it is compiled as a shared library (dll).<br />
+"<br />
+<br />
+If exif is compiled statically (--enable-exif) and mbstring compiled as a DSO module (--enable-mbstring=shared) then exif_read_data may only return a single character rather than the entire string.<br />
+<br />
+Compiling both exif and mbstring statically (--enable-exif --enable-mbstring) resolves the issue.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="76964""></a>
+  <div class="note">
+   <strong class="user">mafo at mafo removethis dot sk</strong>
+   <a href="#76964" class="date">08-Aug-2007 10:57</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+some cameras (most higher models) have position senzor (gyroskope?) and taking-position is wrote in EXIF, here is simple script for automatic rotating images<br />
+<br />
+<span class="default">&lt;?php<br />
+$exif </span><span class="keyword">= </span><span class="default">exif_read_data</span><span class="keyword">(</span><span class="default">$filename</span><span class="keyword">);<br />
+</span><span class="default">$ort </span><span class="keyword">= </span><span class="default">$exif</span><span class="keyword">[</span><span class="string">'IFD0'</span><span class="keyword">][</span><span class="string">'Orientation'</span><span class="keyword">];<br />
+&nbsp;&nbsp;&nbsp; switch(</span><span class="default">$ort</span><span class="keyword">)<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; case </span><span class="default">1</span><span class="keyword">: </span><span class="comment">// nothing<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">break;<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; case </span><span class="default">2</span><span class="keyword">: </span><span class="comment">// horizontal flip<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$image</span><span class="keyword">-&gt;</span><span class="default">flipImage</span><span class="keyword">(</span><span class="default">$public</span><span class="keyword">,</span><span class="default">1</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; break;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; case </span><span class="default">3</span><span class="keyword">: </span><span class="comment">// 180 rotate left<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$image</span><span class="keyword">-&gt;</span><span class="default">rotateImage</span><span class="keyword">(</span><span class="default">$public</span><span class="keyword">,</span><span class="default">180</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; break;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; case </span><span class="default">4</span><span class="keyword">: </span><span class="comment">// vertical flip<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$image</span><span class="keyword">-&gt;</span><span class="default">flipImage</span><span class="keyword">(</span><span class="default">$public</span><span class="keyword">,</span><span class="default">2</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; break;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; case </span><span class="default">5</span><span class="keyword">: </span><span class="comment">// vertical flip + 90 rotate right<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$image</span><span class="keyword">-&gt;</span><span class="default">flipImage</span><span class="keyword">(</span><span class="default">$public</span><span class="keyword">, </span><span class="default">2</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$image</span><span class="keyword">-&gt;</span><span class="default">rotateImage</span><span class="keyword">(</span><span class="default">$public</span><span class="keyword">, -</span><span class="default">90</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; break;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; case </span><span class="default">6</span><span class="keyword">: </span><span class="comment">// 90 rotate right<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$image</span><span class="keyword">-&gt;</span><span class="default">rotateImage</span><span class="keyword">(</span><span class="default">$public</span><span class="keyword">, -</span><span class="default">90</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; break;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; case </span><span class="default">7</span><span class="keyword">: </span><span class="comment">// horizontal flip + 90 rotate right<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$image</span><span class="keyword">-&gt;</span><span class="default">flipImage</span><span class="keyword">(</span><span class="default">$public</span><span class="keyword">,</span><span class="default">1</span><span class="keyword">);&nbsp; &nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$image</span><span class="keyword">-&gt;</span><span class="default">rotateImage</span><span class="keyword">(</span><span class="default">$public</span><span class="keyword">, -</span><span class="default">90</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; break;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; case </span><span class="default">8</span><span class="keyword">:&nbsp; &nbsp; </span><span class="comment">// 90 rotate left<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$image</span><span class="keyword">-&gt;</span><span class="default">rotateImage</span><span class="keyword">(</span><span class="default">$public</span><span class="keyword">, </span><span class="default">90</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; break;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+$image-&gt;rotateImage() is inspired by example of <a href="http://php.net/manual/en/function.imagerotate.php" rel="nofollow" target="_blank">http://php.net/manual/en/function.imagerotate.php</a><br />
+$image-&gt;flipImage() is inspired by <a href="http://php.net/manual/en/function.imagecopy.php#42803 (thank you" rel="nofollow" target="_blank">http://php.net/manual/en/function.imagecopy.php#42803 (thank you</a>)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="73645""></a>
+  <div class="note">
+   
+   <a href="#73645" class="date">05-Mar-2007 08:50</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+When reading EXIF information from the 'WINXP' group, you may need to change used encoding from the default "ISO-8859-15" to "UTF-8". This can be done in php.ini or in your code:<br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp;&nbsp;&nbsp; ini_set</span><span class="keyword">(</span><span class="string">'exif.encode_unicode'</span><span class="keyword">, </span><span class="string">'UTF-8'</span><span class="keyword">);<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$exif </span><span class="keyword">= </span><span class="default">exif_read_data</span><span class="keyword">(</span><span class="string">'TEST.JPG'</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">, </span><span class="default">true</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="default">$exif</span><span class="keyword">[</span><span class="string">'WINXP'</span><span class="keyword">][</span><span class="string">'Title'</span><span class="keyword">];<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Useful documentation about EXIF:<br />
+<a href="http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/EXIF.html" rel="nofollow" target="_blank">http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/EXIF.html</a><br />
+See also comments next to XPTitle and XPAuthor.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="42461""></a>
+  <div class="note">
+   <strong class="user">gimpster at gimpster dot com</strong>
+   <a href="#42461" class="date">18-May-2004 01:24</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I've written a library in pure PHP5 for editing EXIF tags. It deals with both reading and writing EXIF tags, and can be downloaded from <a href="http://pel.sourceforge.net/" rel="nofollow" target="_blank">http://pel.sourceforge.net/</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="40168""></a>
+  <div class="note">
+   <strong class="user">noway at nowaysoft dot com</strong>
+   <a href="#40168" class="date">24-Feb-2004 05:44</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Exif is very unstable under php4.1.2<br />
+<br />
+If you have some problem, (the function didnt return anything, like a blocking call) try this:<br />
+<br />
+$file = './image.jpg';<br />
+getimagesize ( $file , $info);<br />
+<br />
+$exif = array();<br />
+if (isset($info)) {<br />
+&nbsp;&nbsp;&nbsp; foreach($info as $key =&gt; $val) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if ($key != 'APP1') { $exif = read_exif_data($file); break; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+<br />
+-- Sharp</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="37568""></a>
+  <div class="note">
+   <strong class="user">pekka at photography-on-the dot net</strong>
+   <a href="#37568" class="date">20-Nov-2003 02:50</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+For reading EXIF from XMP data embedded by Adobe Photoshop CS, see&nbsp; <a href="http://www.photography-on-the.net/ee/beta/cs_xmp_to_exif.php" rel="nofollow" target="_blank">http://www.photography-on-the.net/ee/beta/cs_xmp_to_exif.php</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

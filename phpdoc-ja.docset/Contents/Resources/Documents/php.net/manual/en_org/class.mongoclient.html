@@ -1,0 +1,767 @@
+<html><!-- Mirrored from php.net/manual/en/class.mongoclient.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 16:59:28 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>MongoClient</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="class.mongoclient.html">
+ <link rel="shorturl" href="http://php.net/mongoclient">
+ <link rel="alternate" href="http://php.net/mongoclient" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="mongo.core.html">
+ <link rel="prev" href="mongo.core.html">
+ <link rel="next" href="mongoclient.close.html">
+
+ <link rel="alternate" href="class.mongoclient.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/class.mongoclient.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/class.mongoclient.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/class.mongoclient.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/class.mongoclient.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/class.mongoclient.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/class.mongoclient.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/class.mongoclient.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/class.mongoclient.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/class.mongoclient.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/class.mongoclient.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.database.html">Database Extensions</a></li>      <li><a href="refs.database.vendors.html">Vendor Specific Database Extensions</a></li>      <li><a href="book.mongo.html">Mongo</a></li>      <li><a href="mongo.core.html">Core Classes</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="class.mongoclient" class="reference">
+
+ <h1 class="title">The MongoClient class</h1>
+ 
+
+ <div class="partintro"><p class="verinfo">(PECL mongo &gt;=1.3.0)</p>
+  
+  <div class="section" id="mongoclient.intro">
+   <h2 class="title">Introduction</h2>
+   <p class="para">
+    A connection manager for PHP and MongoDB.
+   </p>
+   <p class="para">
+    This class is used to create and manage connections. A typical use is:
+    </p><div class="example" id="mongoclient.intro-example">
+     <p><strong>Example #1 <strong class="classname">MongoClient</strong> basic usage</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br><br>$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;connect<br></span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">foo</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;get&nbsp;the&nbsp;database&nbsp;named&nbsp;"foo"<br><br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   <p></p>
+   <p class="para">
+    See <span class="function"><a href="mongoclient.construct.html" class="function">MongoClient::__construct()</a></span> and the section on
+    <a href="mongo.connecting.html" class="link">connecting</a> for more information
+    about creating connections.
+   </p>
+  </div>
+  
+
+  <div class="section" id="mongoclient.synopsis">
+   <h2 class="title">Class synopsis</h2>
+
+   
+   <div class="classsynopsis">
+    <div class="ooclass"></div>
+
+    
+    <div class="classsynopsisinfo">
+     <span class="ooclass">
+      <strong class="classname">MongoClient</strong>
+     </span>
+     {</div>
+    
+
+    <div class="classsynopsisinfo classsynopsisinfo_comment">/* Constants */</div>
+    <div class="fieldsynopsis">
+     <span class="modifier">const</span>
+     <span class="type">string</span>
+      <var class="fieldsynopsis_varname"><a href="class.mongoclient.html#mongoclient.constants.version"><var class="varname">VERSION</var></a></var>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">const</span>
+     <span class="type">string</span>
+      <var class="fieldsynopsis_varname"><a href="class.mongoclient.html#mongoclient.constants.defaulthost"><var class="varname">DEFAULT_HOST</var></a></var>
+     <span class="initializer"> = "localhost"</span>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">const</span>
+     <span class="type">int</span>
+      <var class="fieldsynopsis_varname"><a href="class.mongoclient.html#mongoclient.constants.defaultport"><var class="varname">DEFAULT_PORT</var></a></var>
+     <span class="initializer"> = 27017</span>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">const</span>
+     <span class="type">string</span>
+      <var class="fieldsynopsis_varname"><a href="class.mongoclient.html#mongoclient.constants.rpprimary"><var class="varname">RP_PRIMARY</var></a></var>
+     <span class="initializer"> = "primary"</span>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">const</span>
+     <span class="type">string</span>
+      <var class="fieldsynopsis_varname"><a href="class.mongoclient.html#mongoclient.constants.rpprimarypreferred"><var class="varname">RP_PRIMARY_PREFERRED</var></a></var>
+     <span class="initializer"> = "primaryPreferred"</span>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">const</span>
+     <span class="type">string</span>
+      <var class="fieldsynopsis_varname"><a href="class.mongoclient.html#mongoclient.constants.rpsecondary"><var class="varname">RP_SECONDARY</var></a></var>
+     <span class="initializer"> = "secondary"</span>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">const</span>
+     <span class="type">string</span>
+      <var class="fieldsynopsis_varname"><a href="class.mongoclient.html#mongoclient.constants.rpsecondary"><var class="varname">RP_SECONDARY_PREFERRED</var></a></var>
+     <span class="initializer"> = "secondaryPreferred"</span>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">const</span>
+     <span class="type">string</span>
+      <var class="fieldsynopsis_varname"><a href="class.mongoclient.html#mongoclient.constants.rpsecondary"><var class="varname">RP_NEAREST</var></a></var>
+     <span class="initializer"> = "nearest"</span>
+    ;</div>
+
+
+    <div class="classsynopsisinfo classsynopsisinfo_comment">/* Properties */</div>
+    <div class="fieldsynopsis">
+     <span class="modifier">public</span>
+     <span class="type">boolean</span>
+      <var class="varname"><a href="class.mongoclient.html#mongoclient.props.connected">$<var class="varname">connected</var></a></var>
+     <span class="initializer"> = <strong><code>FALSE</code></strong></span>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">public</span>
+     <span class="type">string</span>
+      <var class="varname"><a href="class.mongoclient.html#mongoclient.props.status">$<var class="varname">status</var></a></var>
+     <span class="initializer"> = <strong><code>NULL</code></strong></span>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">protected</span>
+     <span class="type">string</span>
+      <var class="varname">$<var class="varname">server</var></var>
+     <span class="initializer"> = <strong><code>NULL</code></strong></span>
+    ;</div>
+
+    <div class="fieldsynopsis">
+     <span class="modifier">protected</span>
+     <span class="type">boolean</span>
+      <var class="varname">$<var class="varname">persistent</var></var>
+     <span class="initializer"> = <strong><code>NULL</code></strong></span>
+    ;</div>
+
+
+    <div class="classsynopsisinfo classsynopsisinfo_comment">/* Methods */</div>
+    <div class="constructorsynopsis dc-description">
+   <span class="modifier">public</span> <span class="methodname"><a href="mongoclient.construct.html" class="methodname">__construct</a></span>
+    ([ <span class="methodparam"><span class="type">string</span> <code class="parameter">$server</code><span class="initializer"> = "mongodb://localhost:27017"</span></span>
+   [, <span class="methodparam"><span class="type">array</span> <code class="parameter">$options</code><span class="initializer"> = array("connect" =&gt; <strong><code>TRUE</code></strong>)</span></span>
+   [, <span class="methodparam"><span class="type">array</span> <code class="parameter">$driver_options</code></span>
+  ]]] )</div>
+
+    <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><a href="mongoclient.close.html" class="methodname">close</a></span>
+    ([ <span class="methodparam"><span class="type"><span class="type boolean|string">boolean|string</span></span> <code class="parameter">$connection</code></span>
+  ] )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><a href="mongoclient.connect.html" class="methodname">connect</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">array</span> <span class="methodname"><a href="mongoclient.dropdb.html" class="methodname">dropDB</a></span>
+    ( <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter">$db</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">MongoDB</span> <span class="methodname"><a href="mongoclient.get.html" class="methodname">__get</a></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$dbname</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="modifier">static</span> <span class="type">array</span> <span class="methodname"><a href="mongoclient.getconnections.html" class="methodname">getConnections</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">array</span> <span class="methodname"><a href="mongoclient.gethosts.html" class="methodname">getHosts</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">array</span> <span class="methodname"><a href="mongoclient.getreadpreference.html" class="methodname">getReadPreference</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">array</span> <span class="methodname"><a href="mongoclient.getwriteconcern.html" class="methodname">getWriteConcern</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><a href="mongoclient.killcursor.html" class="methodname">killCursor</a></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$server_hash</code></span>
+   , <span class="methodparam"><span class="type"><span class="type int|MongoInt64">int|MongoInt64</span></span> <code class="parameter">$id</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">array</span> <span class="methodname"><a href="mongoclient.listdbs.html" class="methodname">listDBs</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">MongoCollection</span> <span class="methodname"><a href="mongoclient.selectcollection.html" class="methodname">selectCollection</a></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$db</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$collection</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">MongoDB</span> <span class="methodname"><a href="mongoclient.selectdb.html" class="methodname">selectDB</a></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$name</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><a href="mongoclient.setreadpreference.html" class="methodname">setReadPreference</a></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$read_preference</code></span>
+   [, <span class="methodparam"><span class="type">array</span> <code class="parameter">$tags</code></span>
+  ] )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><a href="mongoclient.setwriteconcern.html" class="methodname">setWriteConcern</a></span>
+    ( <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter">$w</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$wtimeout</code></span>
+  ] )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">string</span> <span class="methodname"><a href="mongoclient.tostring.html" class="methodname">__toString</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+   }</div>
+   
+
+  </div>
+
+
+  <div class="section" id="mongoclient.constants">
+   <h2 class="title">Predefined Constants</h2>
+   <div class="section" id="mongoclient.constants.types">
+    <h2 class="title">MongoClient Constants</h2>
+    <dl>
+
+     
+      <a class="dashAnchor" name="//apple_ref/Constant/VERSION"></a><dt id="mongoclient.constants.version"><strong><code>MongoClient::VERSION</code></strong></dt>
+
+      <dd>
+
+       <span class="simpara">
+        PHP driver version. May be suffixed with "dev", "+" or "-" if it is
+        in-between versions.
+       </span>
+      </dd>
+
+     
+     
+      <a class="dashAnchor" name="//apple_ref/Constant/DEFAULT%5FHOST"></a><dt id="mongoclient.constants.defaulthost"><strong><code>MongoClient::DEFAULT_HOST</code></strong></dt>
+
+      <dt>
+<strong><code>"localhost"</code></strong></dt>
+
+      <dd>
+
+       <span class="simpara">
+        Host to connect to if no host is given.
+       </span>
+      </dd>
+
+     
+     
+      <a class="dashAnchor" name="//apple_ref/Constant/DEFAULT%5FPORT"></a><dt id="mongoclient.constants.defaultport"><strong><code>MongoClient::DEFAULT_PORT</code></strong></dt>
+
+      <dt>
+<strong><code>27017</code></strong></dt>
+
+      <dd>
+
+       <span class="simpara">
+        Port to connect to if no port is given.
+       </span>
+      </dd>
+
+     
+     
+      <a class="dashAnchor" name="//apple_ref/Constant/RP%5FPRIMARY"></a><dt id="mongoclient.constants.rpprimary"><strong><code>MongoClient::RP_PRIMARY</code></strong></dt>
+
+      <dt>
+<strong><code>"primary"</code></strong></dt>
+
+      <dd>
+
+       <span class="simpara">
+        <a href="mongo.readpreferences.html" class="link">Read preference</a> for the
+        primary replica set member.
+       </span>
+      </dd>
+
+     
+     
+      <a class="dashAnchor" name="//apple_ref/Constant/RP%5FPRIMARY%5FPREFERRED"></a><dt id="mongoclient.constants.rpprimarypreferred"><strong><code>MongoClient::RP_PRIMARY_PREFERRED</code></strong></dt>
+
+      <dt>
+<strong><code>"primaryPreferred"</code></strong></dt>
+
+      <dd>
+
+       <span class="simpara">
+        <a href="mongo.readpreferences.html" class="link">Read preference</a> for
+        preferring the primary replica set member.
+       </span>
+      </dd>
+
+     
+     
+      <a class="dashAnchor" name="//apple_ref/Constant/RP%5FSECONDARY"></a><dt id="mongoclient.constants.rpsecondary"><strong><code>MongoClient::RP_SECONDARY</code></strong></dt>
+
+      <dt>
+<strong><code>"secondary"</code></strong></dt>
+
+      <dd>
+
+       <span class="simpara">
+        <a href="mongo.readpreferences.html" class="link">Read preference</a> for a
+        secondary replica set member.
+       </span>
+      </dd>
+
+     
+     
+      <a class="dashAnchor" name="//apple_ref/Constant/RP%5FSECONDARY%5FPREFERRED"></a><dt id="mongoclient.constants.rpsecondarypreferred"><strong><code>MongoClient::RP_SECONDARY_PREFERRED</code></strong></dt>
+
+      <dt>
+<strong><code>"secondaryPreferred"</code></strong></dt>
+
+      <dd>
+
+       <span class="simpara">
+        <a href="mongo.readpreferences.html" class="link">Read preference</a> for
+        preferring a secondary replica set member.
+       </span>
+      </dd>
+
+     
+     
+      <a class="dashAnchor" name="//apple_ref/Constant/RP%5FNEAREST"></a><dt id="mongoclient.constants.rpnearest"><strong><code>MongoClient::RP_NEAREST</code></strong></dt>
+
+      <dt>
+<strong><code>"nearest"</code></strong></dt>
+
+      <dd>
+
+       <span class="simpara">
+        <a href="mongo.readpreferences.html" class="link">Read preference</a> for the
+        nearest replica set member.
+       </span>
+      </dd>
+
+     
+    </dl>
+
+   </div>
+  </div>
+
+  <div class="section" id="mongoclient.fields">
+   <h2 class="title">Fields</h2>
+   <dl>
+
+    
+     <a class="dashAnchor" name="//apple_ref/Property/connected"></a><dt id="mongoclient.props.connected"><var class="varname"><var class="varname">connected</var></var></dt>
+
+     <dd>
+
+      <p class="para">
+       This property will be set to <strong><code>TRUE</code></strong> if we have a open connection to
+       the database, <strong><code>FALSE</code></strong> otherwise. If the connection is to a replica set,
+       this property will only be <strong><code>TRUE</code></strong> if the driver has a connection to a
+       node matching the current read preference. This property does not take
+       authentication into account.
+      </p>
+      <p class="para">
+       This property is <em class="emphasis">deprecated</em> since version 1.5.0.
+      </p>
+     </dd>
+
+    
+    
+     <a class="dashAnchor" name="//apple_ref/Property/status"></a><dt id="mongoclient.props.status"><var class="varname"><var class="varname">status</var></var></dt>
+
+     <dd>
+
+      <p class="para">
+       This property is no longer used and will be set to <strong><code>NULL</code></strong> In driver
+       versions 1.1.x and earlier, this may be set to a string value (e.g.
+       <em>"recycled"</em>, <em>"new"</em>) when persistent
+       connections are used.
+      </p>
+      <p class="para">
+       This property is <em class="emphasis">deprecated</em> since version 1.5.0.
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  </div>
+
+  <div class="section" id="mongoclient.seealso">
+   <h2 class="title">See Also</h2>
+   <ul class="simplelist">
+    <li class="member"><a href="mongo.readpreferences.html" class="xref">Read Preferences</a></li>
+    <li class="member"><a href="mongo.writeconcerns.html" class="xref">Write Concerns</a></li>
+    <li class="member"><a href="mongo.connecting.html" class="xref">Connecting</a></li>
+    <li class="member">MongoDB core docs on <a href="http://docs.mongodb.org/manual/reference/connection-string/" class="link external">»&nbsp;connecting</a></li>
+   </ul>
+  </div>
+
+
+ </div>
+
+ 
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+<h2>Table of Contents</h2><ul class="chunklist chunklist_reference"><li><a href="mongoclient.close.html">MongoClient::close</a> — Closes this connection</li><li><a href="mongoclient.connect.html">MongoClient::connect</a> — Connects to a database server</li><li><a href="mongoclient.construct.html">MongoClient::__construct</a> — Creates a new database connection object</li><li><a href="mongoclient.dropdb.html">MongoClient::dropDB</a> — Drops a database [deprecated]</li><li><a href="mongoclient.get.html">MongoClient::__get</a> — Gets a database</li><li><a href="mongoclient.getconnections.html">MongoClient::getConnections</a> — Return info about all open connections</li><li><a href="mongoclient.gethosts.html">MongoClient::getHosts</a> — Updates status for all associated hosts</li><li><a href="mongoclient.getreadpreference.html">MongoClient::getReadPreference</a> — Get the read preference for this connection</li><li><a href="mongoclient.getwriteconcern.html">MongoClient::getWriteConcern</a> — Get the write concern for this connection</li><li><a href="mongoclient.killcursor.html">MongoClient::killCursor</a> — Kills a specific cursor on the server</li><li><a href="mongoclient.listdbs.html">MongoClient::listDBs</a> — Lists all of the databases available.</li><li><a href="mongoclient.selectcollection.html">MongoClient::selectCollection</a> — Gets a database collection</li><li><a href="mongoclient.selectdb.html">MongoClient::selectDB</a> — Gets a database</li><li><a href="mongoclient.setreadpreference.html">MongoClient::setReadPreference</a> — Set the read preference for this connection</li><li><a href="mongoclient.setwriteconcern.html">MongoClient::setWriteConcern</a> — Set the write concern for this connection</li><li><a href="mongoclient.tostring.html">MongoClient::__toString</a> — String representation of this connection</li></ul>
+</div>
+
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="111599">  
+  <a class="name">
+  <strong class="user"><em>mike at eastghost dot com</em></strong></a><div class="date" title="2013-03-07 09:34"><strong>1 year ago</strong></div>
+  <div class="text" id="Hcom111599">
+<div class="phpcode"><code><span class="html">
+php monogo driver 1.3.4<br>feb 2013<br><br>After demoting old replicaset primary to secondary, and promoting old replicaset second into primary, we began seeing "No candidate servers found" MongoException at initial attempt to connect to (new) replicaset primary (via this hint in the /etc/mongo.conf: replSet = rs1/pri.eastghost.com)<br><br>Fix seems to be<br><br>1. NEVER list "localhost" in the bind= line of /etc/mongo.conf<br><br>2. ALWAYS list every replica set member in every member's /etc/hosts file -- there seems to be something wrong with DNS lookup timing.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="111600">  
+  <a class="name">
+  <strong class="user"><em>mike at eastghost dot com</em></strong></a><div class="date" title="2013-03-07 09:35"><strong>1 year ago</strong></div>
+  <div class="text" id="Hcom111600">
+<div class="phpcode"><code><span class="html">
+This will help maintain sanity while debugging replicaSet connectivity problems:<br><br>error_reporting( E_ALL )<br>// print every log message possible<br>\MongoLog::setLevel(\MongoLog::ALL); // all log levels<br>\MongoLog::setModule(\MongoLog::ALL); // all parts of the driver</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="115010">  
+  <a class="name">
+  <strong class="user"><em>bennettsst at NOSPAM dot gmail dot com</em></strong></a><div class="date" title="2014-05-12 11:20"><strong>3 months ago</strong></div>
+  <div class="text" id="Hcom115010">
+<div class="phpcode"><code><span class="html">
+Using the 1.2.5-5.5 vc11 driver the connected attribute is depracted.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="110718">  
+  <a class="name">
+  <strong class="user"><em>jazz at funkynerd dot com</em></strong></a><div class="date" title="2012-11-28 01:36"><strong>1 year ago</strong></div>
+  <div class="text" id="Hcom110718">
+<div class="phpcode"><code><span class="html">
+Seeing as the Mongo class has been deprecated, I'm using the following code to allow compatibility with the pre 1.3.0 driver successfully.
+<br>
+<br><span class="default">&lt;?php
+<br>$class </span><span class="keyword">= </span><span class="string">'MongoClient'</span><span class="keyword">;
+<br> 
+<br>if(!</span><span class="default">class_exists</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">)){
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+<br>&nbsp; &nbsp; </span><span class="default">$class </span><span class="keyword">= </span><span class="string">'Mongo'</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+<br>}
+<br>&nbsp; &nbsp; &nbsp; &nbsp; 
+<br></span><span class="default">$conn </span><span class="keyword">= new </span><span class="default">$class</span><span class="keyword">(</span><span class="default">$hosts</span><span class="keyword">, </span><span class="default">$args</span><span class="keyword">);
+<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/class.mongoclient.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 16:59:28 GMT -->
+
+
+</body></html>

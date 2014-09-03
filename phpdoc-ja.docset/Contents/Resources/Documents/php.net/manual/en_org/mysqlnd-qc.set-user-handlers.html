@@ -1,0 +1,305 @@
+<html><!-- Mirrored from php.net/manual/en/mysqlnd-qc.set-user-handlers.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 17:07:01 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Beyond TTL: user-defined storage</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="mysqlnd-qc.set-user-handlers.html">
+ <link rel="shorturl" href="mysqlnd-qc.set-user-handlers.html">
+ <link rel="alternate" href="mysqlnd-qc.set-user-handlers.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="mysqlnd-qc.quickstart.html">
+ <link rel="prev" href="mysqlnd-qc.cache-efficiency.html">
+ <link rel="next" href="mysqlnd-qc.setup.html">
+
+ <link rel="alternate" href="mysqlnd-qc.set-user-handlers.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/mysqlnd-qc.set-user-handlers.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/mysqlnd-qc.set-user-handlers.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/mysqlnd-qc.set-user-handlers.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/mysqlnd-qc.set-user-handlers.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/mysqlnd-qc.set-user-handlers.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/mysqlnd-qc.set-user-handlers.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/mysqlnd-qc.set-user-handlers.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/mysqlnd-qc.set-user-handlers.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/mysqlnd-qc.set-user-handlers.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/mysqlnd-qc.set-user-handlers.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.database.html">Database Extensions</a></li>      <li><a href="refs.database.vendors.html">Vendor Specific Database Extensions</a></li>      <li><a href="set.mysqlinfo.html">MySQL</a></li>      <li><a href="book.mysqlnd-qc.html">mysqlnd_qc</a></li>      <li><a href="mysqlnd-qc.quickstart.html">Quickstart and Examples</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="mysqlnd-qc.set-user-handlers" class="section">
+  <h2 class="title">Beyond TTL: user-defined storage</h2>
+  <p class="para">
+   The query cache plugin supports the use of user-defined storage handler.
+   User-defined storage handler can use arbitrarily complex invalidation
+   algorithms and support arbitrary storage media.
+  </p>
+  <p class="para">
+   All user-defined storage handlers have to provide a certain interface.
+   The functions of the user-defined storage handler will be called by the
+   core of the cache plugin. The necessary interface consists of seven
+   public functions. Both procedural and object oriented user-defined storage
+   handler must implement the same set of functions.
+  </p>
+  <p class="para">
+   </p><div class="example" id="example-1952">
+    <p><strong>Example #1 Using a user-defined storage handler</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #FF8000">/*&nbsp;Enable&nbsp;default&nbsp;caching&nbsp;of&nbsp;all&nbsp;statements&nbsp;*/<br></span><span style="color: #0000BB">ini_set</span><span style="color: #007700">(</span><span style="color: #DD0000">"mysqlnd_qc.cache_by_default"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br><br></span><span style="color: #FF8000">/*&nbsp;Procedural&nbsp;user&nbsp;defined&nbsp;storage&nbsp;handler&nbsp;functions&nbsp;*/<br><br></span><span style="color: #0000BB">$__cache&nbsp;</span><span style="color: #007700">=&nbsp;array();<br><br>function&nbsp;</span><span style="color: #0000BB">get_hash</span><span style="color: #007700">(</span><span style="color: #0000BB">$host_info</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$port</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$user</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$db</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$query</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;global&nbsp;</span><span style="color: #0000BB">$__cache</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"\t%s(%d)\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">__FUNCTION__</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">func_num_args</span><span style="color: #007700">());<br><br>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">md5</span><span style="color: #007700">(</span><span style="color: #0000BB">sprintf</span><span style="color: #007700">(</span><span style="color: #DD0000">"%s%s%s%s%s"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$host_info</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$port</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$user</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$db</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$query</span><span style="color: #007700">));<br>}<br><br>function&nbsp;</span><span style="color: #0000BB">find_query_in_cache</span><span style="color: #007700">(</span><span style="color: #0000BB">$key</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;global&nbsp;</span><span style="color: #0000BB">$__cache</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"\t%s(%d)\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">__FUNCTION__</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">func_num_args</span><span style="color: #007700">());<br><br>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(isset(</span><span style="color: #0000BB">$__cache</span><span style="color: #007700">[</span><span style="color: #0000BB">$key</span><span style="color: #007700">]))&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$tmp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$__cache</span><span style="color: #007700">[</span><span style="color: #0000BB">$key</span><span style="color: #007700">];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">$tmp</span><span style="color: #007700">[</span><span style="color: #DD0000">"valid_until"</span><span style="color: #007700">]&nbsp;&lt;&nbsp;</span><span style="color: #0000BB">time</span><span style="color: #007700">())&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unset(</span><span style="color: #0000BB">$__cache</span><span style="color: #007700">[</span><span style="color: #0000BB">$key</span><span style="color: #007700">]);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$ret&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$ret&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$__cache</span><span style="color: #007700">[</span><span style="color: #0000BB">$key</span><span style="color: #007700">][</span><span style="color: #DD0000">"data"</span><span style="color: #007700">];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$ret&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$ret</span><span style="color: #007700">;<br>}<br><br>function&nbsp;</span><span style="color: #0000BB">return_to_cache</span><span style="color: #007700">(</span><span style="color: #0000BB">$key</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Called&nbsp;on&nbsp;cache&nbsp;hit&nbsp;after&nbsp;cached&nbsp;data&nbsp;has&nbsp;been&nbsp;processed,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;may&nbsp;be&nbsp;used&nbsp;for&nbsp;reference&nbsp;counting<br>&nbsp;&nbsp;&nbsp;&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"\t%s(%d)\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">__FUNCTION__</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">func_num_args</span><span style="color: #007700">());<br>}<br><br>function&nbsp;</span><span style="color: #0000BB">add_query_to_cache_if_not_exists</span><span style="color: #007700">(</span><span style="color: #0000BB">$key</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$data</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$ttl</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$run_time</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$store_time</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$row_count</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;global&nbsp;</span><span style="color: #0000BB">$__cache</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"\t%s(%d)\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">__FUNCTION__</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">func_num_args</span><span style="color: #007700">());<br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$__cache</span><span style="color: #007700">[</span><span style="color: #0000BB">$key</span><span style="color: #007700">]&nbsp;=&nbsp;array(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"data"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$data</span><span style="color: #007700">,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"row_count"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$row_count</span><span style="color: #007700">,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"valid_until"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">time</span><span style="color: #007700">()&nbsp;+&nbsp;</span><span style="color: #0000BB">$ttl</span><span style="color: #007700">,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"hits"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"run_time"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$run_time</span><span style="color: #007700">,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"store_time"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$store_time</span><span style="color: #007700">,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"cached_run_times"&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"cached_store_times"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(),<br>&nbsp;&nbsp;&nbsp;&nbsp;);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">TRUE</span><span style="color: #007700">;<br>}<br><br>function&nbsp;</span><span style="color: #0000BB">query_is_select</span><span style="color: #007700">(</span><span style="color: #0000BB">$query</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"\t%s('%s'):&nbsp;"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">__FUNCTION__</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$query</span><span style="color: #007700">);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$ret&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">FALSE</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">stristr</span><span style="color: #007700">(</span><span style="color: #0000BB">$query</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"SELECT"</span><span style="color: #007700">)&nbsp;!==&nbsp;</span><span style="color: #0000BB">FALSE</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;cache&nbsp;for&nbsp;5&nbsp;seconds&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$ret&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"%s\n"</span><span style="color: #007700">,&nbsp;(</span><span style="color: #0000BB">FALSE&nbsp;</span><span style="color: #007700">===&nbsp;</span><span style="color: #0000BB">$ret</span><span style="color: #007700">)&nbsp;?&nbsp;</span><span style="color: #DD0000">"FALSE"&nbsp;</span><span style="color: #007700">:&nbsp;</span><span style="color: #0000BB">$ret</span><span style="color: #007700">);<br>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$ret</span><span style="color: #007700">;<br>}<br><br>function&nbsp;</span><span style="color: #0000BB">update_query_run_time_stats</span><span style="color: #007700">(</span><span style="color: #0000BB">$key</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$run_time</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$store_time</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;global&nbsp;</span><span style="color: #0000BB">$__cache</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"\t%s(%d)\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">__FUNCTION__</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">func_num_args</span><span style="color: #007700">());<br><br>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(isset(</span><span style="color: #0000BB">$__cache</span><span style="color: #007700">[</span><span style="color: #0000BB">$key</span><span style="color: #007700">]))&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$__cache</span><span style="color: #007700">[</span><span style="color: #0000BB">$key</span><span style="color: #007700">][</span><span style="color: #DD0000">'hits'</span><span style="color: #007700">]++;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$__cache</span><span style="color: #007700">[</span><span style="color: #0000BB">$key</span><span style="color: #007700">][</span><span style="color: #DD0000">"cached_run_times"</span><span style="color: #007700">][]&nbsp;=&nbsp;</span><span style="color: #0000BB">$run_time</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$__cache</span><span style="color: #007700">[</span><span style="color: #0000BB">$key</span><span style="color: #007700">][</span><span style="color: #DD0000">"cached_store_times"</span><span style="color: #007700">][]&nbsp;=&nbsp;</span><span style="color: #0000BB">$store_time</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br>function&nbsp;</span><span style="color: #0000BB">get_stats</span><span style="color: #007700">(</span><span style="color: #0000BB">$key&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;global&nbsp;</span><span style="color: #0000BB">$__cache</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"\t%s(%d)\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">__FUNCTION__</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">func_num_args</span><span style="color: #007700">());<br><br>&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">$key&nbsp;</span><span style="color: #007700">&amp;&amp;&nbsp;isset(</span><span style="color: #0000BB">$__cache</span><span style="color: #007700">[</span><span style="color: #0000BB">$key</span><span style="color: #007700">]))&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stats&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$__cache</span><span style="color: #007700">[</span><span style="color: #0000BB">$key</span><span style="color: #007700">];<br>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;else&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stats&nbsp;</span><span style="color: #007700">=&nbsp;array();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(</span><span style="color: #0000BB">$__cache&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$key&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$details</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stats</span><span style="color: #007700">[</span><span style="color: #0000BB">$key</span><span style="color: #007700">]&nbsp;=&nbsp;array(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'hits'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$details</span><span style="color: #007700">[</span><span style="color: #DD0000">'hits'</span><span style="color: #007700">],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'bytes'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">strlen</span><span style="color: #007700">(</span><span style="color: #0000BB">$details</span><span style="color: #007700">[</span><span style="color: #DD0000">'data'</span><span style="color: #007700">]),<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'uncached_run_time'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$details</span><span style="color: #007700">[</span><span style="color: #DD0000">'run_time'</span><span style="color: #007700">],<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'cached_run_time'&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&gt;&nbsp;(</span><span style="color: #0000BB">count</span><span style="color: #007700">(</span><span style="color: #0000BB">$details</span><span style="color: #007700">[</span><span style="color: #DD0000">'cached_run_times'</span><span style="color: #007700">]))<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?&nbsp;</span><span style="color: #0000BB">array_sum</span><span style="color: #007700">(</span><span style="color: #0000BB">$details</span><span style="color: #007700">[</span><span style="color: #DD0000">'cached_run_times'</span><span style="color: #007700">])&nbsp;/&nbsp;</span><span style="color: #0000BB">count</span><span style="color: #007700">(</span><span style="color: #0000BB">$details</span><span style="color: #007700">[</span><span style="color: #DD0000">'cached_run_times'</span><span style="color: #007700">])<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$stats</span><span style="color: #007700">;<br>}<br><br>function&nbsp;</span><span style="color: #0000BB">clear_cache</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;global&nbsp;</span><span style="color: #0000BB">$__cache</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"\t%s(%d)\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">__FUNCTION__</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">func_num_args</span><span style="color: #007700">());<br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$__cache&nbsp;</span><span style="color: #007700">=&nbsp;array();<br>&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">TRUE</span><span style="color: #007700">;<br>}<br><br></span><span style="color: #FF8000">/*&nbsp;Install&nbsp;procedural&nbsp;user-defined&nbsp;storage&nbsp;handler&nbsp;*/<br></span><span style="color: #007700">if&nbsp;(!</span><span style="color: #0000BB">mysqlnd_qc_set_user_handlers</span><span style="color: #007700">(</span><span style="color: #DD0000">"get_hash"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"find_query_in_cache"</span><span style="color: #007700">,<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"return_to_cache"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"add_query_to_cache_if_not_exists"</span><span style="color: #007700">,<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"query_is_select"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"update_query_run_time_stats"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"get_stats"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"clear_cache"</span><span style="color: #007700">))&nbsp;{<br>&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"Failed&nbsp;to&nbsp;install&nbsp;user-defined&nbsp;storage&nbsp;handler\n"</span><span style="color: #007700">);<br>}<br><br><br></span><span style="color: #FF8000">/*&nbsp;Connect,&nbsp;create&nbsp;and&nbsp;populate&nbsp;test&nbsp;table&nbsp;*/<br></span><span style="color: #0000BB">$mysqli&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">mysqli</span><span style="color: #007700">(</span><span style="color: #DD0000">"host"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"user"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"password"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"schema"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"port"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"socket"</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"DROP&nbsp;TABLE&nbsp;IF&nbsp;EXISTS&nbsp;test"</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"CREATE&nbsp;TABLE&nbsp;test(id&nbsp;INT)"</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"INSERT&nbsp;INTO&nbsp;test(id)&nbsp;VALUES&nbsp;(1),&nbsp;(2)"</span><span style="color: #007700">);<br><br></span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"\nCache&nbsp;put/cache&nbsp;miss\n"</span><span style="color: #007700">);<br><br></span><span style="color: #0000BB">$res&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"SELECT&nbsp;id&nbsp;FROM&nbsp;test&nbsp;WHERE&nbsp;id&nbsp;=&nbsp;1"</span><span style="color: #007700">);<br></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetch_assoc</span><span style="color: #007700">());<br></span><span style="color: #0000BB">$res</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">free</span><span style="color: #007700">();<br><br></span><span style="color: #FF8000">/*&nbsp;Delete&nbsp;record&nbsp;to&nbsp;verify&nbsp;we&nbsp;get&nbsp;our&nbsp;data&nbsp;from&nbsp;the&nbsp;cache&nbsp;*/<br></span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"DELETE&nbsp;FROM&nbsp;test&nbsp;WHERE&nbsp;id&nbsp;=&nbsp;1"</span><span style="color: #007700">);<br><br></span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"\nCache&nbsp;hit\n"</span><span style="color: #007700">);<br><br></span><span style="color: #0000BB">$res&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"SELECT&nbsp;id&nbsp;FROM&nbsp;test&nbsp;WHERE&nbsp;id&nbsp;=&nbsp;1"</span><span style="color: #007700">);<br></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetch_assoc</span><span style="color: #007700">());<br></span><span style="color: #0000BB">$res</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">free</span><span style="color: #007700">();<br><br></span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"\nDisplay&nbsp;cache&nbsp;statistics\n"</span><span style="color: #007700">);<br></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">mysqlnd_qc_get_cache_info</span><span style="color: #007700">());<br><br></span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"\nFlushing&nbsp;cache,&nbsp;cache&nbsp;put/cache&nbsp;miss"</span><span style="color: #007700">);<br></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">mysqlnd_qc_clear_cache</span><span style="color: #007700">());<br><br></span><span style="color: #0000BB">$res&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"SELECT&nbsp;id&nbsp;FROM&nbsp;test&nbsp;WHERE&nbsp;id&nbsp;=&nbsp;1"</span><span style="color: #007700">);<br></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetch_assoc</span><span style="color: #007700">());<br></span><span style="color: #0000BB">$res</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">free</span><span style="color: #007700">();<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>The above examples will output
+something similar to:</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>        query_is_select('DROP TABLE IF EXISTS test'): FALSE
+        query_is_select('CREATE TABLE test(id INT)'): FALSE
+        query_is_select('INSERT INTO test(id) VALUES (1), (2)'): FALSE
+
+Cache put/cache miss
+        query_is_select('SELECT id FROM test WHERE id = 1'): 5
+        get_hash(5)
+        find_query_in_cache(1)
+        add_query_to_cache_if_not_exists(6)
+array(1) {
+  ["id"]=&gt;
+  string(1) "1"
+}
+        query_is_select('DELETE FROM test WHERE id = 1'): FALSE
+
+Cache hit
+        query_is_select('SELECT id FROM test WHERE id = 1'): 5
+        get_hash(5)
+        find_query_in_cache(1)
+        return_to_cache(1)
+        update_query_run_time_stats(3)
+array(1) {
+  ["id"]=&gt;
+  string(1) "1"
+}
+
+Display cache statistics
+        get_stats(0)
+array(4) {
+  ["num_entries"]=&gt;
+  int(1)
+  ["handler"]=&gt;
+  string(4) "user"
+  ["handler_version"]=&gt;
+  string(5) "1.0.0"
+  ["data"]=&gt;
+  array(1) {
+    ["18683c177dc89bb352b29965d112fdaa"]=&gt;
+    array(4) {
+      ["hits"]=&gt;
+      int(1)
+      ["bytes"]=&gt;
+      int(71)
+      ["uncached_run_time"]=&gt;
+      int(398)
+      ["cached_run_time"]=&gt;
+      int(4)
+    }
+  }
+}
+
+Flushing cache, cache put/cache miss    clear_cache(0)
+bool(true)
+        query_is_select('SELECT id FROM test WHERE id = 1'): 5
+        get_hash(5)
+        find_query_in_cache(1)
+        add_query_to_cache_if_not_exists(6)
+NULL
+
+</pre></div>
+    </div>
+   </div>
+  <p></p>
+ </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div>
+ <div class="note">There are no user contributed notes for this page.</div></section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/mysqlnd-qc.set-user-handlers.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 17:07:01 GMT -->
+
+
+</body></html>

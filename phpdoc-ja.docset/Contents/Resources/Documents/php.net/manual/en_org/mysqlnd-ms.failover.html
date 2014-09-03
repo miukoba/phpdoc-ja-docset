@@ -1,0 +1,323 @@
+<html><!-- Mirrored from php.net/manual/en/mysqlnd-ms.failover.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 17:07:09 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Failover</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="mysqlnd-ms.failover.html">
+ <link rel="shorturl" href="mysqlnd-ms.failover.html">
+ <link rel="alternate" href="mysqlnd-ms.failover.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="mysqlnd-ms.concepts.html">
+ <link rel="prev" href="mysqlnd-ms.transient_errors.html">
+ <link rel="next" href="mysqlnd-ms.loadbalancing.html">
+
+ <link rel="alternate" href="mysqlnd-ms.failover.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/mysqlnd-ms.failover.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/mysqlnd-ms.failover.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/mysqlnd-ms.failover.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/mysqlnd-ms.failover.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/mysqlnd-ms.failover.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/mysqlnd-ms.failover.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/mysqlnd-ms.failover.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/mysqlnd-ms.failover.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/mysqlnd-ms.failover.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/mysqlnd-ms.failover.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.database.html">Database Extensions</a></li>      <li><a href="refs.database.vendors.html">Vendor Specific Database Extensions</a></li>      <li><a href="set.mysqlinfo.html">MySQL</a></li>      <li><a href="book.mysqlnd-ms.html">mysqlnd_ms</a></li>      <li><a href="mysqlnd-ms.concepts.html">Concepts</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="mysqlnd-ms.failover" class="section">
+  <h2 class="title">Failover</h2>
+  <p class="para">
+   By default, connection failover handling is left to the user.
+   The application is responsible
+   for checking return values of the database functions it calls and reacting
+   to possible errors. If, for example, the plugin recognizes a query as a read-only
+   query to be sent to the slave servers, and the slave server selected by the
+   plugin is not available, the plugin will raise an error after not executing
+   the statement.
+  </p>
+  <p class="para">
+   <em class="emphasis">Default: manual failover</em>
+  </p>
+  <p class="para">
+   It is up to
+   the application to handle the error and, if required, re-issue the query to
+   trigger the selection of another slave server for statement execution.
+   The plugin will make no attempts to failover automatically, because the plugin
+   cannot ensure that an automatic failover will not change the state of
+   the connection. For example, the application may have issued a query
+   which depends on SQL user variables which are bound to a specific connection.
+   Such a query might return incorrect results if the plugin would switch the
+   connection implicitly as part of automatic failover. To ensure correct
+   results, the application must take care of the failover, and rebuild
+   the required connection state. Therefore, by default, no automatic failover
+   is performed by the plugin.
+  </p>
+  <p class="para">
+   A user that does not change the connection state after opening a connection
+   may activate automatic failover. Please note, that automatic failover logic
+   is limited to connection attempts. Automatic failover is not used for already
+   established connections. There is no way to instruct the plugin to attempt
+   failover on a connection that has been connected to MySQL already in the past.
+  </p>
+  <p class="para">
+   <em class="emphasis">Automatic failover</em>
+  </p>
+  <p class="para">
+   The failover policy is configured in the plugins configuration file, by
+   using the <a href="mysqlnd-ms.plugin-ini-json.html#ini.mysqlnd-ms-plugin-config-v2.failover" class="link">failover</a>
+   configuration directive.
+  </p>
+  <p class="para">
+   Automatic and silent failover can be enabled through the
+   <a href="mysqlnd-ms.plugin-ini-json.html#ini.mysqlnd-ms-plugin-config-v2.failover" class="link">failover</a>
+   configuration directive. Automatic failover can either be configured to
+   try exactly one master after a slave failure or, alternatively, loop
+   over slaves and masters before returning an error to the user. The number
+   of connection attempts can be limited and failed hosts can be excluded
+   from future load balancing attempts. Limiting the number of retries and
+   remembering failed hosts are considered experimental features, albeit being
+   reasonable stable. Syntax and semantics may change in future versions.
+  </p>
+  <p class="para">
+    Please note, since version 1.5.0 automatic failover is disabled for the
+    duration of a transaction if transaction stickiness is enabled and
+    transaction boundaries have been detected.  The plugin will not switch
+    connections for the duration of a transaction. It will also not perform
+    automatic and silent failover. Instead an error  will be thrown. It is then left
+    to the user to handle the failure of the transaction. Please check, the
+    <a href="mysqlnd-ms.plugin-ini-json.html#ini.mysqlnd-ms-plugin-config-v2.trx-stickiness" class="link"><em>trx_stickiness</em></a>
+    documentation how to do this.
+  </p>
+  <p class="para">
+   A basic manual failover example is provided within the
+   <a href="mysqlnd-ms.errorhandling.html" class="link">error handling</a> section.
+  </p>
+  <p class="para">
+   <em class="emphasis">Standby servers</em>
+  </p>
+  <p class="para">
+   Using <a href="mysqlnd-ms.plugin-ini-json.html#ini.mysqlnd-ms-plugin-config-v2.filter-random" class="link">weighted load balancing</a>,
+   introduced in PECL/mysqlnd 1.4.0, it is possible
+   to configure standby servers that are sparsely used during normal operations.
+   A standby server that is primarily used as a worst-case standby failover target
+   can be assigned a very low weight/priority in relation to all other
+   servers. As long as all servers are up and running the majority of the workload
+   is assigned to the servers which have hight weight values. Few requests
+   will be directed to the standby system which has a very low weight value.
+  </p>
+  <p class="para">
+   Upon failure of the servers with a high priority, you can still failover to
+   the standby, which has been given a low load balancing priority by assigning a low
+   weight to it. Failover can be some manually or automatically. If done
+   automatically, you may want to combine it with the
+   <a href="mysqlnd-ms.plugin-ini-json.html#ini.mysqlnd-ms-plugin-config-v2.failover" class="link"><em>remember_failed</em></a>
+   option.
+  </p>
+  <p class="para">
+   At this point, it is not possible to instruct the load balancer to direct no
+   requests at all to a standby. This may not be much of a limitation given that
+   the highest weight you can assign to a server is 65535. Given two slaves,
+   of which one shall act as a standby and has been assigned a weight of 1,
+   the standby will have to handle far less than one percent of the overall workload.
+  </p>
+  <p class="para">
+   <em class="emphasis">Failover and primary copy</em>
+  </p>
+  <p class="para">
+   Please note, if using a primary copy cluster, such as MySQL Replication, it is
+   difficult to do connection failover in case of a master failure.
+   At any time there is only one master in the cluster for a given dataset.
+   The master is a single point of failure. If the master fails, clients have no
+   target to fail over write requests. In case of a master outage the database
+   administrator must take care of the situation and update the client
+   configurations, if need be.
+  </p>
+ </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div>
+ <div class="note">There are no user contributed notes for this page.</div></section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/mysqlnd-ms.failover.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 17:07:10 GMT -->
+
+
+</body></html>

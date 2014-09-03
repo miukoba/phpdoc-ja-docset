@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>プリペアドステートメントの振る舞いを変更する</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="mysqli-stmt.attr-get.html">≪ mysqli_stmt::attr_get</a></li>
+      <li style="float: right;"><a href="mysqli-stmt.bind-param.html">mysqli_stmt::bind_param ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="class.mysqli-stmt.html">mysqli_stmt</a></li>
+    <li>プリペアドステートメントの振る舞いを変更する</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="mysqli-stmt.attr-set" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mysqli_stmt::attr_set</h1>
+  <h1 class="refname">mysqli_stmt_attr_set</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose"><span class="refname">mysqli_stmt::attr_set</span> -- <span class="refname">mysqli_stmt_attr_set</span> &mdash; <span class="dc-title">プリペアドステートメントの振る舞いを変更する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-mysqli-stmt.attr-set-description">
+  <h3 class="title">説明</h3>
+  <p class="para">オブジェクト指向型</p>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>mysqli_stmt::attr_set</strong></span>
+    ( <span class="methodparam"><span class="type">int</span> <code class="parameter">$attr</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$mode</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">手続き型</p>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>mysqli_stmt_attr_set</strong></span>
+    ( <span class="methodparam"><span class="type"><a href="class.mysqli-stmt.html" class="type mysqli_stmt">mysqli_stmt</a></span> <code class="parameter">$stmt</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$attr</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$mode</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   プリペアドステートメントの振る舞いを変更します。
+   複数の属性を設定するには、この関数を複数回コールします。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-mysqli-stmt.attr-set-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+<dt>
+<code class="parameter">
+stmt</code></dt>
+<dd>
+<p class="para">手続き型のみ:
+<span class="function"><a href="mysqli.stmt-init.html" class="function">mysqli_stmt_init()</a></span> が返すステートメント ID。</p></dd>
+
+     <dt>
+<code class="parameter">attr</code></dt>
+
+     <dd>
+
+      <p class="para">
+       設定したい属性。次のいずれかの値となります。
+       <table class="doctable table">
+        <caption><strong>属性の値</strong></caption>
+        
+         <thead>
+          <tr>
+           <th>文字</th>
+           <th>説明</th>
+          </tr>
+
+         </thead>
+
+         <tbody class="tbody">
+          <tr>
+           <td>MYSQLI_STMT_ATTR_UPDATE_MAX_LENGTH</td>
+           <td>
+            <strong><code>TRUE</code></strong> に設定すると、<span class="function"><a href="mysqli-stmt.store-result.html" class="function">mysqli_stmt_store_result()</a></span> は
+            メタデータ <em>MYSQL_FIELD-&gt;max_length</em> の値を上書きします。
+           </td>
+          </tr>
+
+          <tr>
+           <td>MYSQLI_STMT_ATTR_CURSOR_TYPE</td>
+           <td>
+            <span class="function"><a href="mysqli-stmt.execute.html" class="function">mysqli_stmt_execute()</a></span>
+            が起動された際にステートメントをオープンするためのカーソル型。
+            <code class="parameter">mode</code> は、<em>MYSQLI_CURSOR_TYPE_NO_CURSOR</em>
+            (デフォルト) あるいは <em>MYSQLI_CURSOR_TYPE_READ_ONLY</em> となります。
+           </td>
+          </tr>
+
+          <tr>
+           <td>MYSQLI_STMT_ATTR_PREFETCH_ROWS</td>
+           <td>
+            カーソルの使用時にサーバーからいちどに取得する行数。
+            <code class="parameter">mode</code> に指定できる値の範囲は
+            1 から unsigned long の最大値までで、デフォルトは 1 です。
+           </td>
+          </tr>
+
+         </tbody>
+        
+       </table>
+
+      </p>
+      <p class="para">
+       <em>MYSQLI_STMT_ATTR_CURSOR_TYPE</em> オプションで
+       <em>MYSQLI_CURSOR_TYPE_READ_ONLY</em> を使用すると、
+       <span class="function"><a href="mysqli-stmt.execute.html" class="function">mysqli_stmt_execute()</a></span>
+       を起動した際にそのステートメント用のカーソルをオープンします。
+       以前に <span class="function"><a href="mysqli-stmt.execute.html" class="function">mysqli_stmt_execute()</a></span>
+       をコールした際にオープンしたカーソルが残っている場合は、
+       それを閉じてから新しいカーソルをオープンします。また
+       <span class="function"><a href="mysqli-stmt.reset.html" class="function">mysqli_stmt_reset()</a></span>
+       も、オープンしているカーソルをすべて閉じてからステートメント再実行の準備をします。
+       <span class="function"><a href="mysqli-stmt.free-result.html" class="function">mysqli_stmt_free_result()</a></span>
+       は、オープンしているカーソルをすべて閉じます。
+      </p>
+      <p class="para">
+       プリペアドステートメント用のカーソルをオープンするのなら
+       <span class="function"><a href="mysqli-stmt.store-result.html" class="function">mysqli_stmt_store_result()</a></span> は不要です。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">mode</code></dt>
+
+     <dd>
+
+      <p class="para">属性に割り当てるモード。</p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-mysqli-stmt.attr-set-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><a href="http://dev.mysql.com/doc/en/mysql-stmt-attr-set.html" class="link external" title="Link : http://dev.mysql.com/doc/en/mysql-stmt-attr-set.html">&raquo;&nbsp;Connector/MySQL mysql_stmt_attr_set()</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="82888""></a>
+  <div class="note">
+   <strong class="user">chad 0x40 digitellinc 0x2e com</strong>
+   <a href="#82888" class="date">30-Apr-2008 05:20</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This is basically a wrapper for mysql_stmt_attr_set in the MySQL C API: <a href="http://dev.mysql.com/doc/refman/5.0/en/mysql-stmt-attr-set.html" rel="nofollow" target="_blank">http://dev.mysql.com/doc/refman/5.0/en/mysql-stmt-attr-set.html</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

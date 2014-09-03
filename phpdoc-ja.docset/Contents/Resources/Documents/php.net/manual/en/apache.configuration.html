@@ -1,0 +1,202 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>実行時設定</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="apache.installation.html">≪ インストール手順</a></li>
+      <li style="float: right;"><a href="apache.resources.html">リソース型 ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="apache.setup.html">インストール/設定</a></li>
+    <li>実行時設定</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="apache.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="para">
+  Apache PHPモジュールの動作は、<var class="filename">php.ini</var>の設定により影響を受けます。
+  <var class="filename">php.ini</var>の設定は、サーバーの設定ファイル内の
+  <a href="configuration.changes.html#configuration.changes.apache" class="link">php_flag</a> の設定
+  またはローカルなファイル
+  <var class="filename">.htaccess</var>により上書きすることができます。
+ </p>
+ <div class="example" id="example-4859">
+  <p><strong>例1 
+   <var class="filename">.htaccess</var>によりあるディレクトリのPHPによるパー
+   スを無効にする
+  </strong></p>
+  <div class="example-contents"><div class="cdata"><pre>php_flag engine off</pre></div></div>
+
+ </div>
+ <p class="para">
+  <table class="doctable table">
+   <caption><strong>Apache設定オプション</strong></caption>
+   
+    <thead>
+     <tr>
+      <th>名前</th>
+      <th>デフォルト</th>
+      <th>変更可能</th>
+      <th>変更履歴</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+     <tr>
+      <td><a href="apache.configuration.html#ini.engine" class="link">engine</a></td>
+      <td>&quot;1&quot;</td>
+      <td>PHP_INI_ALL</td>
+      <td>PHP 4.0.5 から利用可能</td>
+     </tr>
+
+     <tr>
+      <td><a href="apache.configuration.html#ini.child-terminate" class="link">child_terminate</a></td>
+      <td>&quot;0&quot;</td>
+      <td>PHP_INI_ALL</td>
+      <td>PHP 4.0.5 から利用可能</td>
+     </tr>
+
+     <tr>
+      <td><a href="apache.configuration.html#ini.last-modified" class="link">last_modified</a></td>
+      <td>&quot;0&quot;</td>
+      <td>PHP_INI_ALL</td>
+      <td>PHP 4.0.5 から利用可能</td>
+     </tr>
+
+     <tr>
+      <td><a href="apache.configuration.html#ini.xbithack" class="link">xbithack</a></td>
+      <td>&quot;0&quot;</td>
+      <td>PHP_INI_ALL</td>
+      <td>PHP 4.0.5 から利用可能</td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  PHP_INI_* モードの詳細および定義については
+<a href="configuration.changes.modes.html" class="xref">どこで設定を行うのか</a> を参照してください。
+ </p>
+
+ <p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+ <p class="para">
+  設定ディレクティブの短い説明を以下に示します。
+  <dl>
+
+   
+    <dt id="ini.engine">
+     <code class="parameter">engine</code>
+     <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      PHP によるパースのオン/オフを切り替えます。
+      このディレクティブは、Apacheモジュール版のPHPでのみ有効です。
+      このディレクティブは、ディレクティブ毎または仮想サーバー毎にPHPに
+      よるパースを有効または無効にしたいサイトで使用されます。
+      <var class="filename">httpd.conf</var>ファイルの適当な場所に
+      <strong class="userinput"><code>engine off</code></strong>を置くことにより、PHPを有効また
+      は無効にすることができます。
+     </p>
+    </dd>
+
+   
+   
+    <dt id="ini.child-terminate">
+     <code class="parameter">child_terminate</code>
+     <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+       リクエストの終了時にPHPスクリプトが子プロセスの終了を指定するか
+       どうかを指定します。
+       <span class="function"><a href="function.apache-child-terminate.html" class="function">apache_child_terminate()</a></span>も参照してください。
+     </p>
+    </dd>
+
+   
+   
+    <dt id="ini.last-modified">
+     <code class="parameter">last_modified</code>
+     <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+       PHPスクリプトの修正日をこのリクエストのLast-Modified:ヘッダとし
+       て送信します。
+     </p>
+    </dd>
+
+   
+   
+    <dt id="ini.xbithack">
+     <code class="parameter">xbithack</code>
+     <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+       PHPがファイル終端を無視して実行ビットが設定されているファイルを
+       パースするようにします。
+     </p>
+    </dd>
+
+   
+  </dl>
+
+ </p>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="103087""></a>
+  <div class="note">
+   <strong class="user">Anonymous</strong>
+   <a href="#103087" class="date">24-Mar-2011 11:53</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+An important note:<br />
+<br />
+Even though you turn off the engine with:<br />
+<br />
+php_flag engine off<br />
+<br />
+Doing:<br />
+<br />
+php_flag engine on<br />
+<br />
+does NOT turn it on. You need to instead do:<br />
+<br />
+php_flag engine 1</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

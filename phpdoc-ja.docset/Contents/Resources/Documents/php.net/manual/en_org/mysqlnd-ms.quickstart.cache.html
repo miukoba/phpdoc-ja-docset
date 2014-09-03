@@ -1,0 +1,328 @@
+<html><!-- Mirrored from php.net/manual/en/mysqlnd-ms.quickstart.cache.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 17:06:55 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Cache integration</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="mysqlnd-ms.quickstart.cache.html">
+ <link rel="shorturl" href="mysqlnd-ms.quickstart.cache.html">
+ <link rel="alternate" href="mysqlnd-ms.quickstart.cache.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="mysqlnd-ms.quickstart.html">
+ <link rel="prev" href="mysqlnd-ms.quickstart.gtid.html">
+ <link rel="next" href="mysqlnd-ms.quickstart.failover.html">
+
+ <link rel="alternate" href="mysqlnd-ms.quickstart.cache.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/mysqlnd-ms.quickstart.cache.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/mysqlnd-ms.quickstart.cache.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/mysqlnd-ms.quickstart.cache.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/mysqlnd-ms.quickstart.cache.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/mysqlnd-ms.quickstart.cache.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/mysqlnd-ms.quickstart.cache.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/mysqlnd-ms.quickstart.cache.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/mysqlnd-ms.quickstart.cache.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/mysqlnd-ms.quickstart.cache.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/mysqlnd-ms.quickstart.cache.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.database.html">Database Extensions</a></li>      <li><a href="refs.database.vendors.html">Vendor Specific Database Extensions</a></li>      <li><a href="set.mysqlinfo.html">MySQL</a></li>      <li><a href="book.mysqlnd-ms.html">mysqlnd_ms</a></li>      <li><a href="mysqlnd-ms.quickstart.html">Quickstart and Examples</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="mysqlnd-ms.quickstart.cache" class="section">
+  <h2 class="title">Cache integration</h2>
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   <strong>Version requirement, dependencies and status</strong><br>
+   </p><p class="para">
+    Please, find more about version requirements, extension load order dependencies and the current status
+    in the <a href="mysqlnd-ms.concept_cache.html" class="link">concepts section</a>!
+   </p>
+  <p></p></blockquote>
+  <p class="para">
+   Databases clusters can deliver different levels of consistency. As of
+   <em>PECL/mysqlnd_ms</em> 1.2.0 it is possible to advice the plugin to consider only
+   cluster nodes that can deliver the consistency level requested. For example,
+   if using asynchronous MySQL Replication with its cluster-wide eventual
+   consistency, it is possible to request session consistency (read your writes)
+   at any time using <span class="function"><strong>mysqlnd_ms_set_quos()</strong></span>. Please, see also the
+   <a href="mysqlnd-ms.quickstart.qos-consistency.html" class="link">service level and consistency</a>
+   introduction.
+  </p>
+  <p class="para">
+   </p><div class="example" id="example-1867">
+    <p><strong>Example #1 Recap: quality of service to request read your writes</strong></p>
+    <div class="example-contents"><div class="phpcode"><code><span style="color: #000000">
+/*&nbsp;Request&nbsp;session&nbsp;consistency:&nbsp;read&nbsp;your&nbsp;writes&nbsp;*/<br>if&nbsp;(!mysqlnd_ms_set_qos($mysqli,&nbsp;MYSQLND_MS_QOS_CONSISTENCY_SESSION))<br>&nbsp;&nbsp;die(sprintf("[%d]&nbsp;%s\n",&nbsp;$mysqli-&gt;errno,&nbsp;$mysqli-&gt;error));</span>
+</code></div></div>
+
+   </div>
+  <p></p>
+  <p class="para">
+   Assuming PECL/mysqlnd has been explicitly told to deliver no consistency level
+   higher than eventual consistency, it is possible to replace a database node
+   read access with a client-side cache using time-to-live (TTL) as its invalidation
+   strategy. Both the database node and the cache may or may not serve
+   current data as this is what eventual consistency defines.
+  </p>
+  <p class="para">
+   Replacing a database node read access with a local cache access can improve
+   overall performance and lower the database load. If the cache entry is every
+   reused by other clients than the one creating the cache entry,
+   a database access is saved and thus database load is lowered. Furthermore,
+   system performance can become better if computation and delivery
+   of a database query is slower than a local cache access.
+  </p>
+  <p class="para">
+   </p><div class="example" id="example-1868">
+    <p><strong>Example #2 Plugin config: no special entries for caching</strong></p>
+    <div class="example-contents">
+<div class="inicode"><pre class="inicode">{
+    "myapp": {
+        "master": {
+            "master_0": {
+                "host": "localhost",
+                "socket": "\/tmp\/mysql.sock"
+            }
+        },
+        "slave": {
+            "slave_0": {
+                "host": "127.0.0.1",
+                "port": "3306"
+            }
+        },
+    }
+}</pre>
+</div>
+    </div>
+
+   </div>
+  <p></p>
+  <p class="para">
+   </p><div class="example" id="example-1869">
+    <p><strong>Example #3 Caching a slave request</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>$mysqli&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">mysqli</span><span style="color: #007700">(</span><span style="color: #DD0000">"myapp"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"username"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"password"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"database"</span><span style="color: #007700">);<br>if&nbsp;(!</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">)<br>&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;Of&nbsp;course,&nbsp;your&nbsp;error&nbsp;handling&nbsp;is&nbsp;nicer...&nbsp;*/<br>&nbsp;&nbsp;</span><span style="color: #007700">die(</span><span style="color: #0000BB">sprintf</span><span style="color: #007700">(</span><span style="color: #DD0000">"[%d]&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">mysqli_connect_errno</span><span style="color: #007700">(),&nbsp;</span><span style="color: #0000BB">mysqli_connect_error</span><span style="color: #007700">()));<br><br>if&nbsp;(!</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"DROP&nbsp;TABLE&nbsp;IF&nbsp;EXISTS&nbsp;test"</span><span style="color: #007700">)&nbsp;||<br>&nbsp;&nbsp;&nbsp;&nbsp;!</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"CREATE&nbsp;TABLE&nbsp;test(id&nbsp;INT)"</span><span style="color: #007700">)&nbsp;||<br>&nbsp;&nbsp;&nbsp;&nbsp;!</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"INSERT&nbsp;INTO&nbsp;test(id)&nbsp;VALUES&nbsp;(1)"</span><span style="color: #007700">))<br>&nbsp;&nbsp;die(</span><span style="color: #0000BB">sprintf</span><span style="color: #007700">(</span><span style="color: #DD0000">"[%d]&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">errno</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">error</span><span style="color: #007700">));<br><br></span><span style="color: #FF8000">/*&nbsp;Explicitly&nbsp;allow&nbsp;eventual&nbsp;consistency&nbsp;and&nbsp;caching&nbsp;(TTL&nbsp;&lt;=&nbsp;60&nbsp;seconds)&nbsp;*/<br></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">false&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">mysqlnd_ms_set_qos</span><span style="color: #007700">(</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">MYSQLND_MS_QOS_CONSISTENCY_EVENTUAL</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">MYSQLND_MS_QOS_OPTION_CACHE</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">60</span><span style="color: #007700">))&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;die(</span><span style="color: #0000BB">sprintf</span><span style="color: #007700">(</span><span style="color: #DD0000">"[%d]&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">errno</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">error</span><span style="color: #007700">));<br>}<br><br></span><span style="color: #FF8000">/*&nbsp;To&nbsp;make&nbsp;this&nbsp;example&nbsp;work,&nbsp;we&nbsp;must&nbsp;wait&nbsp;for&nbsp;a&nbsp;slave&nbsp;to&nbsp;catch&nbsp;up.&nbsp;Brute&nbsp;force&nbsp;style.&nbsp;*/<br></span><span style="color: #0000BB">$attempts&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;<br>do&nbsp;{<br>&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;check&nbsp;if&nbsp;slave&nbsp;has&nbsp;the&nbsp;table&nbsp;*/<br>&nbsp;&nbsp;</span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">$res&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"SELECT&nbsp;id&nbsp;FROM&nbsp;test"</span><span style="color: #007700">))&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;break;<br>&nbsp;&nbsp;}&nbsp;else&nbsp;if&nbsp;(</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">errno</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;die(</span><span style="color: #0000BB">sprintf</span><span style="color: #007700">(</span><span style="color: #DD0000">"[%d]&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">errno</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">error</span><span style="color: #007700">));<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;wait&nbsp;for&nbsp;slave&nbsp;to&nbsp;catch&nbsp;up&nbsp;*/<br>&nbsp;&nbsp;</span><span style="color: #0000BB">usleep</span><span style="color: #007700">(</span><span style="color: #0000BB">200000</span><span style="color: #007700">);<br>}&nbsp;while&nbsp;(</span><span style="color: #0000BB">$attempts</span><span style="color: #007700">++&nbsp;&lt;&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">);<br><br></span><span style="color: #FF8000">/*&nbsp;Query&nbsp;has&nbsp;been&nbsp;run&nbsp;on&nbsp;a&nbsp;slave,&nbsp;result&nbsp;is&nbsp;in&nbsp;the&nbsp;cache&nbsp;*/<br></span><span style="color: #0000BB">assert</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">);<br></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetch_assoc</span><span style="color: #007700">());<br><br></span><span style="color: #FF8000">/*&nbsp;Served&nbsp;from&nbsp;cache&nbsp;*/<br></span><span style="color: #0000BB">$res&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"SELECT&nbsp;id&nbsp;FROM&nbsp;test"</span><span style="color: #007700">);<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  <p></p>
+  <p class="para">
+   The example shows how to use the cache feature. First, you have to set
+   the quality of service to eventual consistency and explicitly allow for caching.
+   This is done by calling <span class="function"><a href="function.mysqlnd-ms-set-qos.html" class="function">mysqlnd_ms_set_qos()</a></span>.
+   Then, the result set of every read-only statement is cached for upto that
+   many seconds as allowed with <span class="function"><a href="function.mysqlnd-ms-set-qos.html" class="function">mysqlnd_ms_set_qos()</a></span>.
+  </p>
+  <p class="para">
+   The actual TTL is lower or equal to the value set
+   with <span class="function"><a href="function.mysqlnd-ms-set-qos.html" class="function">mysqlnd_ms_set_qos()</a></span>. The value passed to the
+   function sets the maximum age (seconds) of the data delivered. To calculate
+   the actual TTL value the replication lag on a slave is checked and subtracted
+   from the given value. If, for example, the maximum age is set to 60 seconds and
+   the slave reports a lag of 10 seconds the resulting TTL is 50 seconds.
+   The TTL is calculated individually for every cached query.
+  </p>
+  <p class="para">
+   </p><div class="example" id="example-1870">
+    <p><strong>Example #4 Read your writes and caching combined</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>$mysqli&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">mysqli</span><span style="color: #007700">(</span><span style="color: #DD0000">"myapp"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"username"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"password"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"database"</span><span style="color: #007700">);<br>if&nbsp;(!</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">)<br>&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;Of&nbsp;course,&nbsp;your&nbsp;error&nbsp;handling&nbsp;is&nbsp;nicer...&nbsp;*/<br>&nbsp;&nbsp;</span><span style="color: #007700">die(</span><span style="color: #0000BB">sprintf</span><span style="color: #007700">(</span><span style="color: #DD0000">"[%d]&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">mysqli_connect_errno</span><span style="color: #007700">(),&nbsp;</span><span style="color: #0000BB">mysqli_connect_error</span><span style="color: #007700">()));<br><br>if&nbsp;(!</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"DROP&nbsp;TABLE&nbsp;IF&nbsp;EXISTS&nbsp;test"</span><span style="color: #007700">)&nbsp;||<br>&nbsp;&nbsp;&nbsp;&nbsp;!</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"CREATE&nbsp;TABLE&nbsp;test(id&nbsp;INT)"</span><span style="color: #007700">)&nbsp;||<br>&nbsp;&nbsp;&nbsp;&nbsp;!</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"INSERT&nbsp;INTO&nbsp;test(id)&nbsp;VALUES&nbsp;(1)"</span><span style="color: #007700">))<br>&nbsp;&nbsp;die(</span><span style="color: #0000BB">sprintf</span><span style="color: #007700">(</span><span style="color: #DD0000">"[%d]&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">errno</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">error</span><span style="color: #007700">));<br><br></span><span style="color: #FF8000">/*&nbsp;Explicitly&nbsp;allow&nbsp;eventual&nbsp;consistency&nbsp;and&nbsp;caching&nbsp;(TTL&nbsp;&lt;=&nbsp;60&nbsp;seconds)&nbsp;*/<br></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">false&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">mysqlnd_ms_set_qos</span><span style="color: #007700">(</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">MYSQLND_MS_QOS_CONSISTENCY_EVENTUAL</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">MYSQLND_MS_QOS_OPTION_CACHE</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">60</span><span style="color: #007700">))&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;die(</span><span style="color: #0000BB">sprintf</span><span style="color: #007700">(</span><span style="color: #DD0000">"[%d]&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">errno</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">error</span><span style="color: #007700">));<br>}<br><br></span><span style="color: #FF8000">/*&nbsp;To&nbsp;make&nbsp;this&nbsp;example&nbsp;work,&nbsp;we&nbsp;must&nbsp;wait&nbsp;for&nbsp;a&nbsp;slave&nbsp;to&nbsp;catch&nbsp;up.&nbsp;Brute&nbsp;force&nbsp;style.&nbsp;*/<br></span><span style="color: #0000BB">$attempts&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;<br>do&nbsp;{<br>&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;check&nbsp;if&nbsp;slave&nbsp;has&nbsp;the&nbsp;table&nbsp;*/<br>&nbsp;&nbsp;</span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">$res&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"SELECT&nbsp;id&nbsp;FROM&nbsp;test"</span><span style="color: #007700">))&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;break;<br>&nbsp;&nbsp;}&nbsp;else&nbsp;if&nbsp;(</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">errno</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;die(</span><span style="color: #0000BB">sprintf</span><span style="color: #007700">(</span><span style="color: #DD0000">"[%d]&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">errno</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">error</span><span style="color: #007700">));<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;wait&nbsp;for&nbsp;slave&nbsp;to&nbsp;catch&nbsp;up&nbsp;*/<br>&nbsp;&nbsp;</span><span style="color: #0000BB">usleep</span><span style="color: #007700">(</span><span style="color: #0000BB">200000</span><span style="color: #007700">);<br>}&nbsp;while&nbsp;(</span><span style="color: #0000BB">$attempts</span><span style="color: #007700">++&nbsp;&lt;&nbsp;</span><span style="color: #0000BB">10</span><span style="color: #007700">);<br><br></span><span style="color: #0000BB">assert</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">);<br><br></span><span style="color: #FF8000">/*&nbsp;Query&nbsp;has&nbsp;been&nbsp;run&nbsp;on&nbsp;a&nbsp;slave,&nbsp;result&nbsp;is&nbsp;in&nbsp;the&nbsp;cache&nbsp;*/<br></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetch_assoc</span><span style="color: #007700">());<br><br></span><span style="color: #FF8000">/*&nbsp;Served&nbsp;from&nbsp;cache&nbsp;*/<br></span><span style="color: #007700">if&nbsp;(!(</span><span style="color: #0000BB">$res&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"SELECT&nbsp;id&nbsp;FROM&nbsp;test"</span><span style="color: #007700">)))<br>&nbsp;die(</span><span style="color: #0000BB">sprintf</span><span style="color: #007700">(</span><span style="color: #DD0000">"[%d]&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">errno</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">error</span><span style="color: #007700">));<br></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetch_assoc</span><span style="color: #007700">());<br><br></span><span style="color: #FF8000">/*&nbsp;Update&nbsp;on&nbsp;master&nbsp;*/<br></span><span style="color: #007700">if&nbsp;(!</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"UPDATE&nbsp;test&nbsp;SET&nbsp;id&nbsp;=&nbsp;2"</span><span style="color: #007700">))<br>&nbsp;die(</span><span style="color: #0000BB">sprintf</span><span style="color: #007700">(</span><span style="color: #DD0000">"[%d]&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">errno</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">error</span><span style="color: #007700">));<br><br></span><span style="color: #FF8000">/*&nbsp;Read&nbsp;your&nbsp;writes&nbsp;*/<br></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">false&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">mysqlnd_ms_set_qos</span><span style="color: #007700">(</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">MYSQLND_MS_QOS_CONSISTENCY_SESSION</span><span style="color: #007700">))&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;die(</span><span style="color: #0000BB">sprintf</span><span style="color: #007700">(</span><span style="color: #DD0000">"[%d]&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">errno</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">error</span><span style="color: #007700">));<br>}<br><br></span><span style="color: #FF8000">/*&nbsp;Fetch&nbsp;latest&nbsp;data&nbsp;*/<br></span><span style="color: #007700">if&nbsp;(!(</span><span style="color: #0000BB">$res&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"SELECT&nbsp;id&nbsp;FROM&nbsp;test"</span><span style="color: #007700">)))<br>&nbsp;die(</span><span style="color: #0000BB">sprintf</span><span style="color: #007700">(</span><span style="color: #DD0000">"[%d]&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">errno</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">error</span><span style="color: #007700">));<br></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetch_assoc</span><span style="color: #007700">());<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  <p></p>
+  <p class="para">
+   The quality of service can be changed at any time to avoid further cache usage.
+   If needed, you can switch to read your writes (session consistency). In that case,
+   the cache will not be used and fresh data is read.
+  </p>
+ </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div>
+ <div class="note">There are no user contributed notes for this page.</div></section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/mysqlnd-ms.quickstart.cache.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 17:06:55 GMT -->
+
+
+</body></html>

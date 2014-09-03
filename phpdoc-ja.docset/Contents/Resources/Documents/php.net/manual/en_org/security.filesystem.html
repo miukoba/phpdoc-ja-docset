@@ -1,0 +1,438 @@
+<html><!-- Mirrored from php.net/manual/en/security.filesystem.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:20:54 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Filesystem Security</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="security.filesystem.html">
+ <link rel="shorturl" href="security.filesystem.html">
+ <link rel="alternate" href="security.filesystem.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="security.html">
+ <link rel="prev" href="security.apache.html">
+ <link rel="next" href="security.filesystem.nullbytes.html">
+
+ <link rel="alternate" href="security.filesystem.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/security.filesystem.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/security.filesystem.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/security.filesystem.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/security.filesystem.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/security.filesystem.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/security.filesystem.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/security.filesystem.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/security.filesystem.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/security.filesystem.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/security.filesystem.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="security.html">Security</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="security.filesystem" class="chapter">
+   <h1>Filesystem Security</h1>
+<h2>Table of Contents</h2><ul class="chunklist chunklist_chapter"><li><a href="security.filesystem.nullbytes.html">Null bytes related issues</a></li></ul>
+
+   <p class="simpara">
+    <acronym title="PHP: Hypertext Preprocessor">PHP</acronym> is subject to the security built into most server systems with
+    respect to permissions on a file and directory basis. This allows
+    you to control which files in the filesystem may be read. Care
+    should be taken with any files which are world readable to ensure
+    that they are safe for reading by all users who have access to that
+    filesystem.
+   </p>
+   <p class="simpara">
+    Since <acronym title="PHP: Hypertext Preprocessor">PHP</acronym> was designed to allow user level access to the filesystem,
+    it's entirely possible to write a <acronym title="PHP: Hypertext Preprocessor">PHP</acronym> script that will allow you
+    to read system files such as /etc/passwd, modify your ethernet
+    connections, send massive printer jobs out, etc. This has some
+    obvious implications, in that you need to ensure that the files
+    that you read from and write to are the appropriate ones.
+   </p>
+   <p class="simpara">
+    Consider the following script, where a user indicates that they'd
+    like to delete a file in their home directory. This assumes a
+    situation where a <acronym title="PHP: Hypertext Preprocessor">PHP</acronym> web interface is regularly used for file
+    management, so the Apache user is allowed to delete files in
+    the user home directories.
+   </p>
+   <p class="para">
+    </p><div class="example" id="example-346">
+     <p><strong>Example #1 Poor variable checking leads to....</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #FF8000">//&nbsp;remove&nbsp;a&nbsp;file&nbsp;from&nbsp;the&nbsp;user's&nbsp;home&nbsp;directory<br></span><span style="color: #0000BB">$username&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">'user_submitted_name'</span><span style="color: #007700">];<br></span><span style="color: #0000BB">$userfile&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">'user_submitted_filename'</span><span style="color: #007700">];<br></span><span style="color: #0000BB">$homedir&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"/home/</span><span style="color: #0000BB">$username</span><span style="color: #DD0000">"</span><span style="color: #007700">;<br><br></span><span style="color: #0000BB">unlink</span><span style="color: #007700">(</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$homedir</span><span style="color: #DD0000">/</span><span style="color: #0000BB">$userfile</span><span style="color: #DD0000">"</span><span style="color: #007700">);<br><br>echo&nbsp;</span><span style="color: #DD0000">"The&nbsp;file&nbsp;has&nbsp;been&nbsp;deleted!"</span><span style="color: #007700">;<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   Since the username and the filename are postable from a user form, 
+   they can submit a username and a filename belonging to someone else, 
+   and delete it even if they're not supposed to be allowed to do so.
+   In this case, you'd want to use some other form of authentication.
+   Consider what could happen if the variables submitted were
+   "../etc/" and "passwd". The code would then effectively read:
+    <div class="example" id="example-347">
+     <p><strong>Example #2 ... A filesystem attack</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #FF8000">//&nbsp;removes&nbsp;a&nbsp;file&nbsp;from&nbsp;anywhere&nbsp;on&nbsp;the&nbsp;hard&nbsp;drive&nbsp;that<br>//&nbsp;the&nbsp;PHP&nbsp;user&nbsp;has&nbsp;access&nbsp;to.&nbsp;If&nbsp;PHP&nbsp;has&nbsp;root&nbsp;access:<br></span><span style="color: #0000BB">$username&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">'user_submitted_name'</span><span style="color: #007700">];&nbsp;</span><span style="color: #FF8000">//&nbsp;"../etc"<br></span><span style="color: #0000BB">$userfile&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">'user_submitted_filename'</span><span style="color: #007700">];&nbsp;</span><span style="color: #FF8000">//&nbsp;"passwd"<br></span><span style="color: #0000BB">$homedir&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"/home/</span><span style="color: #0000BB">$username</span><span style="color: #DD0000">"</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;"/home/../etc"<br><br></span><span style="color: #0000BB">unlink</span><span style="color: #007700">(</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$homedir</span><span style="color: #DD0000">/</span><span style="color: #0000BB">$userfile</span><span style="color: #DD0000">"</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;"/home/../etc/passwd"<br><br></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"The&nbsp;file&nbsp;has&nbsp;been&nbsp;deleted!"</span><span style="color: #007700">;<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+    There are two important measures you should take to prevent these
+    issues.
+    <ul class="itemizedlist">
+     <li class="listitem">
+      <span class="simpara">
+       Only allow limited permissions to the <acronym title="PHP: Hypertext Preprocessor">PHP</acronym> web user binary.
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       Check all variables which are submitted.
+      </span>
+     </li>
+    </ul>
+    Here is an improved script:
+    <div class="example" id="example-348">
+     <p><strong>Example #3 More secure file name checking</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #FF8000">//&nbsp;removes&nbsp;a&nbsp;file&nbsp;from&nbsp;the&nbsp;hard&nbsp;drive&nbsp;that<br>//&nbsp;the&nbsp;PHP&nbsp;user&nbsp;has&nbsp;access&nbsp;to.<br></span><span style="color: #0000BB">$username&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$_SERVER</span><span style="color: #007700">[</span><span style="color: #DD0000">'REMOTE_USER'</span><span style="color: #007700">];&nbsp;</span><span style="color: #FF8000">//&nbsp;using&nbsp;an&nbsp;authentication&nbsp;mechanisim<br></span><span style="color: #0000BB">$userfile&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">basename</span><span style="color: #007700">(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">'user_submitted_filename'</span><span style="color: #007700">]);<br></span><span style="color: #0000BB">$homedir&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"/home/</span><span style="color: #0000BB">$username</span><span style="color: #DD0000">"</span><span style="color: #007700">;<br><br></span><span style="color: #0000BB">$filepath&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$homedir</span><span style="color: #DD0000">/</span><span style="color: #0000BB">$userfile</span><span style="color: #DD0000">"</span><span style="color: #007700">;<br><br>if&nbsp;(</span><span style="color: #0000BB">file_exists</span><span style="color: #007700">(</span><span style="color: #0000BB">$filepath</span><span style="color: #007700">)&nbsp;&amp;&amp;&nbsp;</span><span style="color: #0000BB">unlink</span><span style="color: #007700">(</span><span style="color: #0000BB">$filepath</span><span style="color: #007700">))&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$logstring&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Deleted&nbsp;</span><span style="color: #0000BB">$filepath</span><span style="color: #DD0000">\n"</span><span style="color: #007700">;<br>}&nbsp;else&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$logstring&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Failed&nbsp;to&nbsp;delete&nbsp;</span><span style="color: #0000BB">$filepath</span><span style="color: #DD0000">\n"</span><span style="color: #007700">;<br>}<br></span><span style="color: #0000BB">$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">"/home/logging/filedelete.log"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"a"</span><span style="color: #007700">);<br></span><span style="color: #0000BB">fwrite</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$logstring</span><span style="color: #007700">);<br></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br><br>echo&nbsp;</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$logstring</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">ENT_QUOTES</span><span style="color: #007700">);<br><br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+    However, even this is not without its flaws. If your authentication
+    system allowed users to create their own user logins, and a user
+    chose the login "../etc/", the system is once again exposed. For
+    this reason, you may prefer to write a more customized check:
+    <div class="example" id="example-349">
+     <p><strong>Example #4 More secure file name checking</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>$username&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$_SERVER</span><span style="color: #007700">[</span><span style="color: #DD0000">'REMOTE_USER'</span><span style="color: #007700">];&nbsp;</span><span style="color: #FF8000">//&nbsp;using&nbsp;an&nbsp;authentication&nbsp;mechanisim<br></span><span style="color: #0000BB">$userfile&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">'user_submitted_filename'</span><span style="color: #007700">];<br></span><span style="color: #0000BB">$homedir&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"/home/</span><span style="color: #0000BB">$username</span><span style="color: #DD0000">"</span><span style="color: #007700">;<br><br></span><span style="color: #0000BB">$filepath&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$homedir</span><span style="color: #DD0000">/</span><span style="color: #0000BB">$userfile</span><span style="color: #DD0000">"</span><span style="color: #007700">;<br><br>if&nbsp;(!</span><span style="color: #0000BB">ctype_alnum</span><span style="color: #007700">(</span><span style="color: #0000BB">$username</span><span style="color: #007700">)&nbsp;||&nbsp;!</span><span style="color: #0000BB">preg_match</span><span style="color: #007700">(</span><span style="color: #DD0000">'/^(?:[a-z0-9_-]|\.(?!\.))+$/iD'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$userfile</span><span style="color: #007700">))&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;die(</span><span style="color: #DD0000">"Bad&nbsp;username/filename"</span><span style="color: #007700">);<br>}<br><br></span><span style="color: #FF8000">//etc...<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   <p></p>
+   <p class="para">
+    Depending on your operating system, there are a wide variety of files
+    which you should be concerned about, including device entries (/dev/
+    or COM1), configuration files (/etc/ files and the .ini files),
+    well known file storage areas (/home/, My Documents), etc. For this
+    reason, it's usually easier to create a policy where you forbid
+    everything except for what you explicitly allow.
+   </p>
+   
+
+  </div>
+
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="58832">  
+  <a class="name">
+  <strong class="user"><em>anonymous</em></strong></a><div class="date" title="2005-11-17 02:58"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom58832">
+<div class="phpcode"><code><span class="html">
+(A) Better not to create files or folders with user-supplied names. If you do not validate enough, you can have trouble. Instead create files and folders with randomly generated names like fg3754jk3h and store the username and this file or folder name in a table named, say, user_objects. This will ensure that whatever the user may type, the command going to the shell will contain values from a specific set only and no mischief can be done.<br><br>(B) The same applies to commands executed based on an operation that the user chooses. Better not to allow any part of the user's input to go to the command that you will execute. Instead, keep a fixed set of commands and based on what the user has input, and run those only. <br><br>For example,<br>(A) Keep a table named, say, user_objects with values like:<br>username|chosen_name&nbsp;&nbsp; |actual_name|file_or_dir<br>--------|--------------|-----------|-----------<br>jdoe&nbsp; &nbsp; |trekphotos&nbsp; &nbsp; |m5fg767h67 |D<br>jdoe&nbsp; &nbsp; |notes.txt&nbsp; &nbsp;&nbsp; |nm4b6jh756 |F<br>tim1997 |_imp_ folder&nbsp; |45jkh64j56 |D<br><br>and always use the actual_name in the filesystem operations rather than the user supplied names.<br><br>(B)<br><span class="default">&lt;?php<br>$op </span><span class="keyword">= </span><span class="default">$_POST</span><span class="keyword">[</span><span class="string">'op'</span><span class="keyword">];</span><span class="comment">//after a lot of validations <br></span><span class="default">$dir </span><span class="keyword">= </span><span class="default">$_POST</span><span class="keyword">[</span><span class="string">'dirname'</span><span class="keyword">];</span><span class="comment">//after a lot of validations or maybe you can use technique (A)<br></span><span class="keyword">switch(</span><span class="default">$op</span><span class="keyword">){<br>&nbsp; &nbsp; case </span><span class="string">"cd"</span><span class="keyword">:<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">chdir</span><span class="keyword">(</span><span class="default">$dir</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; break;<br>&nbsp; &nbsp; case </span><span class="string">"rd"</span><span class="keyword">:<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">rmdir</span><span class="keyword">(</span><span class="default">$dir</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; break;<br>&nbsp; &nbsp; .....<br>&nbsp; &nbsp; default:<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">mail</span><span class="keyword">(</span><span class="string">"webmaster@example.com"</span><span class="keyword">, </span><span class="string">"Mischief"</span><span class="keyword">, </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'REMOTE_ADDR'</span><span class="keyword">].</span><span class="string">" is probably attempting an attack."</span><span class="keyword">);<br>}</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="14915">  
+  <a class="name">
+  <strong class="user"><em>devik at cdi dot cz</em></strong></a><div class="date" title="2001-08-21 07:52"><strong>13 years ago</strong></div>
+  <div class="text" id="Hcom14915">
+<div class="phpcode"><code><span class="html">
+Well, the fact that all users run under the same UID is a big problem. Userspace&nbsp; security hacks (ala safe_mode) should not be substitution for proper kernel level security checks/accounting.
+<br>Good news: Apache 2 allows you to assign UIDs for different vhosts.
+<br>devik</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="57642">  
+  <a class="name">
+  <strong class="user"><em>fmrose at ncsu dot edu</em></strong></a><div class="date" title="2005-10-09 04:31"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom57642">
+<div class="phpcode"><code><span class="html">
+All of the fixes here assume that it is necessary to allow the user to enter system sensitive information to begin with. The proper way to handle this would be to provide something like a numbered list of files to perform an unlink action on and then the chooses the matching number. There is no way for the user to specify a clever attack circumventing whatever pattern matching filename exclusion syntax that you may have.<br><br>Anytime you have a security issue, the proper behaviour is to deny all then allow specific instances, not allow all and restrict. For the simple reason that you may not think of every possible restriction.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="89480">  
+  <a class="name">
+  <strong class="user"><em>Latchezar Tzvetkoff</em></strong></a><div class="date" title="2009-03-10 03:06"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom89480">
+<div class="phpcode"><code><span class="html">
+A basic filename/directory/symlink checking may be done (and I personally do) via realpath() ...
+<br>
+<br><span class="default">&lt;?php
+<br>
+<br></span><span class="keyword">if (isset(</span><span class="default">$_GET</span><span class="keyword">[</span><span class="string">'file'</span><span class="keyword">])) {
+<br>&nbsp; &nbsp; </span><span class="default">$base </span><span class="keyword">= </span><span class="string">'/home/polizei/public_html/'</span><span class="keyword">;&nbsp; </span><span class="comment">// it seems this one is good to be realpath too.. meaning not a symlinked path..
+<br>&nbsp; &nbsp; </span><span class="keyword">if (</span><span class="default">strpos</span><span class="keyword">(</span><span class="default">$file </span><span class="keyword">= </span><span class="default">realpath</span><span class="keyword">(</span><span class="default">$base</span><span class="keyword">.</span><span class="default">$_GET</span><span class="keyword">[</span><span class="string">'file'</span><span class="keyword">]), </span><span class="default">$base</span><span class="keyword">) === </span><span class="default">0 </span><span class="keyword">&amp;&amp; </span><span class="default">is_file</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">)) {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">unlink</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">);
+<br>&nbsp; &nbsp; } else {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; die(</span><span class="string">'blah!'</span><span class="keyword">);
+<br>&nbsp; &nbsp; }
+<br>}
+<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="9563">  
+  <a class="name">
+  <strong class="user"><em>eLuddite at not dot a dot real dot addressnsky dot ru</em></strong></a><div class="date" title="2000-11-11 09:44"><strong>13 years ago</strong></div>
+  <div class="text" id="Hcom9563">
+<div class="phpcode"><code><span class="html">
+I think the lesson is clear:
+<br>
+<br>(1) Forbit path separators in usernames.
+<br>(2) map username to a physical home directory - /home/username is fine
+<br>(3) read the home directory
+<br>(4) present only results of (3) as an option for deletion.
+<br>
+<br>I have discovered a marvelous method of doing the above in php but this submission box is too small to contain it.
+<br>
+<br>:-)</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="42178">  
+  <a class="name">
+  <strong class="user"><em>akul at inbox dot ru</em></strong></a><div class="date" title="2004-05-06 09:59"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom42178">
+<div class="phpcode"><code><span class="html">
+Common and simple way to avoid path attack is separating objectname and filesystem space when possible. For example if I have users on my site and directory per user solution is not "httpdocs/users/$login", but "httpdocs/users/".md5($login) or "httpdocs/users/".$userId</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="17978">  
+  <a class="name">
+  <strong class="user"><em>cronos586(AT)caramail(DOT)com</em></strong></a><div class="date" title="2002-01-05 03:48"><strong>12 years ago</strong></div>
+  <div class="text" id="Hcom17978">
+<div class="phpcode"><code><span class="html">
+when using Apache you might consider a apache_lookup_uri on the path, to discover the real path, regardless of any directory trickery.<br>then, look at the prefix, and compare with a list of allowed prefixes.<br>for example, my source.php for my website includes:<br>if(isset($doc)) {<br>&nbsp; &nbsp; $apacheres = apache_lookup_uri($doc);<br>&nbsp; &nbsp; $really = realpath($apacheres-&gt;filename);<br>&nbsp; &nbsp; if(substr($really, 0, strlen($DOCUMENT_ROOT)) == $DOCUMENT_ROOT) {<br>&nbsp; &nbsp; &nbsp; &nbsp; if(is_file($really)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; show_source($really);<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; }<br>}<br>hope this helps<br>regards,<br>KAT44</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="74568">  
+  <a class="name">
+  <strong class="user"><em>steelchords at yahoo dot com</em></strong></a><div class="date" title="2007-04-17 01:12"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom74568">
+<div class="phpcode"><code><span class="html">
+It seems to me in this particular instance that a simple check to make sure that name or partial pathname doesn't already exist would prevent this attack... if a 'passwd/etc/...' existed as the password directory, you couldn't create a username to exploit the hole in the first place.&nbsp; But that's only from a 'script user' perspective, it still doesn't protect your server from other sub-admin's badly written code.<br><br>Don For</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="54088">  
+  <a class="name">
+  <strong class="user"><em>1 at 234 dot cx</em></strong></a><div class="date" title="2005-06-23 05:24"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom54088">
+<div class="phpcode"><code><span class="html">
+I don't think the filename validation solution from Jones at partykel is complete.&nbsp; It certainly helps, but it doesn't address the case where the user is able to create a symlink pointing from his home directory to the root.&nbsp; He might then ask to unlink "foo/etc/passwd" which would be in his home directory, except that foo is a symlink pointing to /.<br><br>Personally I wouldn't feel confident that any solution to this problem would keep my system secure.&nbsp; Running PHP as root (or some equivalent which can unlink files in all users' home directories) is asking for trouble.<br><br>If you have a multi-user system and you are afraid that users may install scripts like this, try security-enhanced Linux.&nbsp; It won't give total protection, but it at least makes sure that an insecure user script can only affect files which the web server is meant to have access to.&nbsp; Whatever script someone installs, outsiders are not going to be able to read your password file---or remove it.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="56407">  
+  <a class="name">
+  <strong class="user"><em>joshudson';DROP TABLE EMAILS;' gmail.com</em></strong></a><div class="date" title="2005-09-01 09:50"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom56407">
+<div class="phpcode"><code><span class="html">
+I keep application configuration files in the document root. I found the most effective trick to prevent access to them is to<br>1. Give them no code that actually runs when included (except for variable assignments),<br>2. Don't use register globals so nobody can do anything weird,<br>3. Name them *.php so PHP runs them when asked for<br>4. Don't have anything before <span class="default">&lt;?php<br>5. Don</span><span class="string">'t have a ?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/security.filesystem.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:20:54 GMT -->
+
+
+</body></html>

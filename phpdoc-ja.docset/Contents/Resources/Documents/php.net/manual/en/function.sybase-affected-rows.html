@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>直近のクエリで変更された行の数を得る</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="ref.sybase.html">≪ Sybase 関数</a></li>
+      <li style="float: right;"><a href="function.sybase-close.html">sybase_close ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="ref.sybase.html">Sybase 関数</a></li>
+    <li>直近のクエリで変更された行の数を得る</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="function.sybase-affected-rows" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">sybase_affected_rows</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose"><span class="refname">sybase_affected_rows</span> &mdash; <span class="dc-title">直近のクエリで変更された行の数を得る</span></p>
+
+ </div>
+
+ 
+ <div class="refsect1 description" id="refsect1-function.sybase-affected-rows-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">int</span> <span class="methodname"><strong>sybase_affected_rows</strong></span>
+    ([ <span class="methodparam"><span class="type">resource</span> <code class="parameter">$link_identifier</code></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+   <span class="function"><strong>sybase_affected_rows()</strong></span> は、指定したリンク ID が
+   指すサーバーにおいて直近の INSERT、UPDATE、DELETE クエリで変更された
+   レコードの数を返します。
+  </p>
+  <p class="para">
+   このコマンドは、SELECT 文には使用できません。レコードを変更する
+   文のみに使用できます。SELECT から返された行の数を得たい場合は
+   <span class="function"><a href="function.sybase-num-rows.html" class="function">sybase_num_rows()</a></span> を使用してください。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.sybase-affected-rows-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+<code class="parameter">link_identifier</code></dt>
+
+     <dd>
+
+      <p class="para">
+       リンク ID を省略した場合は、最後にオープンしたリンクを使用します。
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.sybase-affected-rows-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   変更された行数を整数値で返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.sybase-affected-rows-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-2284">
+    <p><strong>例1 削除クエリ</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*&nbsp;データベースに接続します&nbsp;*/<br /></span><span style="color: #0000BB">sybase_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'SYBASE'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">)&nbsp;or<br />die(</span><span style="color: #DD0000">"接続できません"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">sybase_select_db</span><span style="color: #007700">(</span><span style="color: #DD0000">"db"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">sybase_query</span><span style="color: #007700">(</span><span style="color: #DD0000">"DELETE&nbsp;FROM&nbsp;sometable&nbsp;WHERE&nbsp;id&nbsp;&lt;&nbsp;10"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"削除したレコード数:&nbsp;%d\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">sybase_affected_rows</span><span style="color: #007700">());<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+削除したレコード数: 10
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.sybase-affected-rows-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><span class="function"><a href="function.sybase-num-rows.html" class="function" rel="rdfs-seeAlso">sybase_num_rows()</a> - 結果における行の数を取得する</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="21939""></a>
+  <div class="note">
+   <strong class="user">neugeypc at cox dot net</strong>
+   <a href="#21939" class="date">31-May-2002 08:24</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The sybase_affected_rows() function seems to work now with the Sybase DB Library.&nbsp; Not sure when this improvement was made, but I'm currently running PHP 4.1.2 on Solaris.<br />
+<br />
+Affected rows seems to return a -1 if the query syntax was incorrect on the last submitted query.<br />
+Affected rows returns 0 if no rows were affected or another error occured, such as a foreign key violation and also returns 0 if the query was successfully, but no records were affected by the query.<br />
+If the query was valid and did affect some rows, sybase_affected_rows() seems to be returning the correct number.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="4539""></a>
+  <div class="note">
+   <strong class="user">james at lasolas dot com</strong>
+   <a href="#4539" class="date">22-Mar-2000 03:25</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you get a segfault with sybase-ct, add a en_US entry to your $SYBASE/locales/locales.dat file:
+<br />
+
+<br />
+[linux]
+<br />
+&nbsp;&nbsp;&nbsp; locale = en_US, us_english, iso_1
+<br />
+&nbsp;&nbsp;&nbsp; ...</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

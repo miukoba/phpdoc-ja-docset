@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>PHP 5.6.x で推奨されなくなる機能</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="migration56.new-features.html">≪ 新機能</a></li>
+      <li style="float: right;"><a href="migration56.changed-functions.html">変更された関数 ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="migration56.html">PHP 5.5.x から PHP 5.6.x への移行</a></li>
+    <li>PHP 5.6.x で推奨されなくなる機能</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="migration56.deprecated" class="sect1">
+  <h2 class="title">PHP 5.6.x で推奨されなくなる機能</h2>
+
+ <div class="sect2" id="migration56.deprecated.incompatible-context">
+  <h3 class="title">非互換のコンテキストからの呼び出し</h3>
+
+  <p class="para">
+   非互換のコンテキストからのメソッド呼び出しが非推奨となり、
+   <strong><code>E_STRICT</code></strong> ではなく <strong><code>E_DEPRECATED</code></strong>
+   が発生するようになりました。
+   この機能は、将来のバージョンの PHP で削除される予定です。
+  </p>
+
+  <p class="para">
+   具体例を示します。
+  </p>
+
+  <div class="informalexample">
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">A&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">f</span><span style="color: #007700">()&nbsp;{&nbsp;echo&nbsp;</span><span style="color: #0000BB">get_class</span><span style="color: #007700">(</span><span style="color: #0000BB">$this</span><span style="color: #007700">);&nbsp;}<br />}<br /><br />class&nbsp;</span><span style="color: #0000BB">B&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">f</span><span style="color: #007700">()&nbsp;{&nbsp;</span><span style="color: #0000BB">A</span><span style="color: #007700">::</span><span style="color: #0000BB">f</span><span style="color: #007700">();&nbsp;}<br />}<br /><br />(new&nbsp;</span><span style="color: #0000BB">B</span><span style="color: #007700">)-&gt;</span><span style="color: #0000BB">f</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <p class="para">上の例の出力は以下となります。</p>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+Deprecated: Non-static method A::f() should not be called statically, assuming $this from incompatible context in - on line 7
+B
+</pre></div>
+   </div>
+  </div>
+ </div>
+
+ <div class="sect2" id="migration56.deprecated.raw-post-data">
+  <h3 class="title"><var class="varname"><var class="varname"><a href="reserved.variables.httprawpostdata.html" class="classname">$HTTP_RAW_POST_DATA</a></var></var> および <a href="ini.core.html#ini.always-populate-raw-post-data" class="link">always_populate_raw_post_data</a></h3>
+
+  <p class="para">
+   <a href="ini.core.html#ini.always-populate-raw-post-data" class="link">always_populate_raw_post_data</a>
+   を有効にすると、<strong><code>E_DEPRECATED</code></strong> が発生するようになりました。
+   新しいコードでは、<var class="varname"><var class="varname"><a href="reserved.variables.httprawpostdata.html" class="classname">$HTTP_RAW_POST_DATA</a></var></var> ではなく
+   <a href="wrappers.php.html#wrappers.php.input" class="link"><em>php://input</em></a>
+   を使うようにしましょう。<var class="varname"><var class="varname"><a href="reserved.variables.httprawpostdata.html" class="classname">$HTTP_RAW_POST_DATA</a></var></var>
+   は、将来のバージョンで削除される予定です。
+   この新しい振る舞い (<var class="varname"><var class="varname"><a href="reserved.variables.httprawpostdata.html" class="classname">$HTTP_RAW_POST_DATA</a></var></var> が定義されていない状態)
+   を試すには、
+   <a href="ini.core.html#ini.always-populate-raw-post-data" class="link">always_populate_raw_post_data</a>
+   に <em>-1</em> を設定します。
+  </p>
+ </div>
+
+ 
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

@@ -1,0 +1,361 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>グローバル変数の登録機能の使用法</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="security.errors.html">≪ エラーのレポート</a></li>
+      <li style="float: right;"><a href="security.variables.html">ユーザーが投稿したデータ ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="security.html">セキュリティ</a></li>
+    <li>グローバル変数の登録機能の使用法</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="security.globals" class="chapter">
+   <h1>グローバル変数の登録機能の使用法</h1>
+
+   <div class="warning"><strong class="warning">警告</strong><p class="simpara">この機能は PHP 5.3.0 で
+<em class="emphasis">非推奨</em>となり、
+PHP 5.4.0 で<em class="emphasis">削除</em>されました。</p></div>
+   <p class="para">
+    <acronym title="PHP: Hypertext Preprocessor">PHP</acronym>の変更点で最も議論の対象となったのは、おそらく、<acronym title="PHP: Hypertext Preprocessor">PHP</acronym>
+    <a href="http://www.php.net/releases/4_2_0.php" class="link external" title="Link : http://www.php.net/releases/4_2_0.php">&raquo;&nbsp;4.2.0</a>において
+    <acronym title="PHP: Hypertext Preprocessor">PHP</acronym>のディレクティブ
+    <a href="ini.core.html#ini.register-globals" class="link">register_globals</a>が
+    デフォルトでONからOFFに変更された時でしょう。
+    当時、このディレクティブに依存することが一般的であり、多くの人は、
+    このパラメータの存在すら知らず、<acronym title="PHP: Hypertext Preprocessor">PHP</acronym>の動作そのものであるというよう
+    に考えていました。このページは、このディレクティブにより安全でな
+    いコードを書く可能性があるということをこのページで説明しますが、
+    このディレクティブそのものが安全でないわけではなく、これを誤って使
+    用することが安全でないということを念頭においていてください。
+   </p>
+   <p class="para">
+    register_globalsをonとした場合、この機能により、<acronym title="Hyper Text Markup Language">HTML</acronym>フォームから投
+    稿される変数と同時に、あらゆる種類の変数がスクリプトに注入される
+    ことになります。これは、<acronym title="PHP: Hypertext Preprocessor">PHP</acronym>においては変数の初期化が不
+    要であるということにも関係し、安全でないコードを書くことが極めて容
+    易になるということを意味します。困難な変更でしたが、<acronym title="PHP: Hypertext Preprocessor">PHP</acronym>コミュニティ
+    は、このディレクティブをデフォルトで無効とすることを決定しました。
+    onとした場合、どこから来たのかが不明であり、出処を仮定するしかない
+    変数を使用することになります。スクリプト自体で定義される内部変数は、
+    ユーザーにより送信されたリクエストデータと混ざってしまいますが、
+    register_globals を無効とすることでこれを回避することができます。
+    以下にregister_globalsの誤った使用例を示しましょう。
+   </p>
+   <p class="para">
+    <div class="example" id="example-360">
+     <p><strong>例1 register_globals = on の誤った使用例</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;ユーザーが認証された場合のみ&nbsp;$authorized&nbsp;=&nbsp;true&nbsp;を定義する<br /></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">authenticated_user</span><span style="color: #007700">())&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$authorized&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;最初に$authorizedをfalseとして初期化していないため、<br />//&nbsp;以下のコードにより、GET&nbsp;auth.php?authorized=1&nbsp;のように<br />//&nbsp;register_globals機能により定義される可能性があります。<br />//&nbsp;このため、誰でも認証されたようにみせることができます!<br /></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">$authorized</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;include&nbsp;</span><span style="color: #DD0000">"/highly/sensitive/data.php"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="para">
+    register_globals = onとした場合、上記のロジックは破綻する可能性が
+    あります。offの場合、<var class="varname"><var class="varname">$authorized</var></var>はリクエストに
+    より設定することはできず、正しく動作します。しかし、一般に良いプロ
+    グラミング法は、変数を最初に初期化することです。例えば、上の例で
+    <em>$authorized = false</em>を先頭に置いておくことができ
+    ます。これにより、ユーザーはデフォルトで認証されない状態となるため、
+    register_globalsのon/offによらず上記のコードは動作します。
+   </p>
+   <p class="para">
+    別の例は、 <a href="ref.session.html" class="link">セッション</a>に関するも
+    のです。register_globals = onとした場合、以下の例で
+    <var class="varname"><var class="varname">$username</var></var>を使用することもできますが、
+    (<acronym title="Uniform Resource Locator">URL</acronym>により)GETのような他の手段によっても
+    <var class="varname"><var class="varname">$username</var></var> を設定することができることに留意する
+    必要があります。
+   </p>
+   <p class="para">
+    <div class="example" id="example-361">
+     <p><strong>例2 register_globals on またはoffの場合のセッションの使用例</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;$usernameの出処は不明だが、$_SESSIONがセッションデータであることは<br />//&nbsp;既知です。<br /></span><span style="color: #007700">if&nbsp;(isset(</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'username'</span><span style="color: #007700">]))&nbsp;{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Hello&nbsp;&lt;b&gt;</span><span style="color: #007700">{</span><span style="color: #0000BB">$_SESSION</span><span style="color: #007700">[</span><span style="color: #DD0000">'username'</span><span style="color: #007700">]}</span><span style="color: #DD0000">&lt;/b&gt;"</span><span style="color: #007700">;<br /><br />}&nbsp;else&nbsp;{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Hello&nbsp;&lt;b&gt;Guest&lt;/b&gt;&lt;br&nbsp;/&gt;"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Would&nbsp;you&nbsp;like&nbsp;to&nbsp;login?"</span><span style="color: #007700">;<br /><br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="para">
+    偽造が試みられた時に警告するために予防的な計測を行うことも可能です。
+    ある変数の出処を前もって正確に知っている場合、
+    投稿されたデータが適切な投稿元からのものであるかを調べることができ
+    ます。これは、データが偽造されたものでないことを保証するわけではあ
+    りませんが、攻撃者による偽造の成立を限定的なものにすることができま
+    す。リクエストデータの出処を気にかけない場合、
+    <var class="varname"><var class="varname"><a href="reserved.variables.request.html" class="classname">$_REQUEST</a></var></var> を使用することができます。
+    この変数には、GET、POST、COOKIEが合わさって含まれています。
+    本マニュアルの
+    <a href="language.variables.external.html" class="link">外部から来る変数</a>
+    のセクションを参照してください。
+   </p>
+   <p class="para">
+    <div class="example" id="example-362">
+     <p><strong>例3 簡単に変数汚染を検出する</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">if&nbsp;(isset(</span><span style="color: #0000BB">$_COOKIE</span><span style="color: #007700">[</span><span style="color: #DD0000">'MAGIC_COOKIE'</span><span style="color: #007700">]))&nbsp;{<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;MAGIC_COOKIE&nbsp;comes&nbsp;from&nbsp;a&nbsp;cookie.<br />&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Be&nbsp;sure&nbsp;to&nbsp;validate&nbsp;the&nbsp;cookie&nbsp;data!<br /><br /></span><span style="color: #007700">}&nbsp;elseif&nbsp;(isset(</span><span style="color: #0000BB">$_GET</span><span style="color: #007700">[</span><span style="color: #DD0000">'MAGIC_COOKIE'</span><span style="color: #007700">])&nbsp;||&nbsp;isset(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">'MAGIC_COOKIE'</span><span style="color: #007700">]))&nbsp;{<br /><br />&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">mail</span><span style="color: #007700">(</span><span style="color: #DD0000">"admin@example.com"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"Possible&nbsp;breakin&nbsp;attempt"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$_SERVER</span><span style="color: #007700">[</span><span style="color: #DD0000">'REMOTE_ADDR'</span><span style="color: #007700">]);<br />&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Security&nbsp;violation,&nbsp;admin&nbsp;has&nbsp;been&nbsp;alerted."</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;exit;<br /><br />}&nbsp;else&nbsp;{<br /><br />&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;MAGIC_COOKIE&nbsp;isn't&nbsp;set&nbsp;through&nbsp;this&nbsp;REQUEST<br /><br /></span><span style="color: #007700">}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   もちろん、register_globalsをoffにするだけでは、使用するコードが安
+   全であることを意味しません。投稿された全てのデータ毎に
+   他の手段で検証することも必要です。ユーザーデータを常に検証し、
+   使用する変数を初期化してください!
+   初期化されていない変数を調べるには、
+   <span class="function"><a href="function.error-reporting.html" class="function">error_reporting()</a></span>で
+   <strong><code>E_NOTICE</code></strong>レベルのエラーを有効にするように
+   してください。
+  </p>
+  <p class="para">
+   register_globalsをOnまたはOffのエミュレートに関数情報に
+   ついては、<a href="faq.misc.html#faq.misc.registerglobals" class="link">FAQ</a>を
+   参照してください。
+  </p>
+
+   <blockquote class="note"><p><strong class="note">注意</strong>: <strong>スーパーグローバル:
+使用可能なバージョンに関する注意</strong><br /><p class="para">PHP 4.1.0 以降、
+<var class="varname"><var class="varname"><a href="reserved.variables.get.html" class="classname">$_GET</a></var></var>, <var class="varname"><var class="varname"><a href="reserved.variables.post.html" class="classname">$_POST</a></var></var>,
+<var class="varname"><var class="varname"><a href="reserved.variables.server.html" class="classname">$_SERVER</a></var></var>
+等のスーパーグローバル配列が使用可能となっています。
+詳細な情報については、マニュアルの <a href="language.variables.predefined.html" class="link">superglobals</a>
+のセクションを参照してください。</p></p></blockquote>
+
+  </div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113106""></a>
+  <div class="note">
+   <strong class="user">elitescripts2000 at yahoo dot com</strong>
+   <a href="#113106" class="date">30-Aug-2013 01:23</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="comment">/* Forces all GET and POST globals to register and be magically quoted.<br />
+&nbsp;* This forced register_globals and magic_quotes_gpc both act as if<br />
+&nbsp;* they were turned ON even if turned off in your php.ini file.<br />
+&nbsp;*<br />
+&nbsp;* Reason behind forcing register_globals and magic_quotes is for legacy<br />
+&nbsp;* PHP scripts that need to run with PHP 5.4 and higher.&nbsp; PHP 5.4+ no longer<br />
+&nbsp;* support register_globals and magic_quotes, which breaks legacy PHP code.<br />
+&nbsp;*<br />
+&nbsp;* This is used as a workaround, while you upgrade your PHP code, yet still<br />
+&nbsp;* allows you to run in a PHP 5.4+ environment.<br />
+&nbsp;*<br />
+&nbsp;* Licenced under the GPLv2. Matt Kukowski Sept. 2013<br />
+&nbsp;*/<br />
+<br />
+</span><span class="keyword">if (! isset(</span><span class="default">$PXM_REG_GLOB</span><span class="keyword">)) {<br />
+<br />
+&nbsp; </span><span class="default">$PXM_REG_GLOB </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br />
+<br />
+&nbsp; if (! </span><span class="default">ini_get</span><span class="keyword">(</span><span class="string">'register_globals'</span><span class="keyword">)) {<br />
+&nbsp;&nbsp;&nbsp; foreach (</span><span class="default">array_merge</span><span class="keyword">(</span><span class="default">$_GET</span><span class="keyword">, </span><span class="default">$_POST</span><span class="keyword">) as </span><span class="default">$key </span><span class="keyword">=&gt; </span><span class="default">$val</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp;&nbsp; global $</span><span class="default">$key</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp;&nbsp; $</span><span class="default">$key </span><span class="keyword">= (</span><span class="default">get_magic_quotes_gpc</span><span class="keyword">()) ? </span><span class="default">$val </span><span class="keyword">: </span><span class="default">addslashes</span><span class="keyword">(</span><span class="default">$val</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp; }<br />
+&nbsp; if (! </span><span class="default">get_magic_quotes_gpc</span><span class="keyword">()) {<br />
+&nbsp;&nbsp;&nbsp; foreach (</span><span class="default">$_POST </span><span class="keyword">as </span><span class="default">$key </span><span class="keyword">=&gt; </span><span class="default">$val</span><span class="keyword">) </span><span class="default">$_POST</span><span class="keyword">[</span><span class="default">$key</span><span class="keyword">] = </span><span class="default">addslashes</span><span class="keyword">(</span><span class="default">$val</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; foreach (</span><span class="default">$_GET </span><span class="keyword">as </span><span class="default">$key </span><span class="keyword">=&gt; </span><span class="default">$val</span><span class="keyword">)&nbsp; </span><span class="default">$_GET</span><span class="keyword">[</span><span class="default">$key</span><span class="keyword">]&nbsp; = </span><span class="default">addslashes</span><span class="keyword">(</span><span class="default">$val</span><span class="keyword">);<br />
+&nbsp; }<br />
+}<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="89787""></a>
+  <div class="note">
+   <strong class="user">lester burlap</strong>
+   <a href="#89787" class="date">23-Mar-2009 06:00</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+It would make this whole issue a lot less confusing for less-experienced PHP programmers if you just explained:<br />
+<br />
+- $myVariable no longer works by default<br />
+- $_GET['myVariable'] works just fine<br />
+<br />
+I'm embarrassed to say it's taken me six months since my ISP upgraded to PHP5 figure this out.&nbsp; I've completely rewritten scripts to stop using GET variables altogether.<br />
+<br />
+I'm dumb.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="88209""></a>
+  <div class="note">
+   <strong class="user">claude dot pache at gmail dot com</strong>
+   <a href="#88209" class="date">15-Jan-2009 02:52</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Beware that all the solutions given in the comments below for emulating register_global being off are bogus, because they can destroy predefined variables you should not unset. For example, suppose that you have<br />
+<br />
+<span class="default">&lt;?php $_GET</span><span class="keyword">[</span><span class="string">'_COOKIE'</span><span class="keyword">] == </span><span class="string">'foo'</span><span class="keyword">; </span><span class="default">?&gt;<br />
+</span><br />
+Then the simplistic solutions of the previous comments let you lose all the cookies registered in the superglobal "$_COOKIE"! (Note that in this situation, even with register_global set to "on", PHP is smart enough to not mess predefined variables such as&nbsp; $_COOKIE.)<br />
+<br />
+A proper solution for emulating register_global being off is given in the FAQ, as stated in the documentation above.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="84444""></a>
+  <div class="note">
+   <strong class="user">moore at hs-furtwangen dot de</strong>
+   <a href="#84444" class="date">14-Jul-2008 10:19</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I had a look at the post from Dice, in which he suggested the function unregister_globals(). It didn't seem to work - only tested php 4.4.8 and 5.2.1 - so I made some tweaking to get it running. (I had to use $GLOBALS due to the fact that $$name won't work with superglobals).<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">//Undo register_globals<br />
+</span><span class="keyword">function </span><span class="default">unregister_globals</span><span class="keyword">() {<br />
+&nbsp;&nbsp;&nbsp; if (</span><span class="default">ini_get</span><span class="keyword">(</span><span class="string">'register_globals'</span><span class="keyword">)) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$array </span><span class="keyword">= array(</span><span class="string">'_REQUEST'</span><span class="keyword">, </span><span class="string">'_FILES'</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; foreach (</span><span class="default">$array </span><span class="keyword">as </span><span class="default">$value</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if(isset(</span><span class="default">$GLOBALS</span><span class="keyword">[</span><span class="default">$value</span><span class="keyword">])){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; foreach (</span><span class="default">$GLOBALS</span><span class="keyword">[</span><span class="default">$value</span><span class="keyword">] as </span><span class="default">$key </span><span class="keyword">=&gt; </span><span class="default">$var</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (isset(</span><span class="default">$GLOBALS</span><span class="keyword">[</span><span class="default">$key</span><span class="keyword">]) &amp;&amp; </span><span class="default">$var </span><span class="keyword">=== </span><span class="default">$GLOBALS</span><span class="keyword">[</span><span class="default">$key</span><span class="keyword">]) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">//echo 'found '.$key.' = '.$var.' in $'.$value."\n";&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">unset(</span><span class="default">$GLOBALS</span><span class="keyword">[</span><span class="default">$key</span><span class="keyword">]);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+The echo was for debuging, thought it might come in handy.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="82542""></a>
+  <div class="note">
+   <strong class="user">Dice</strong>
+   <a href="#82542" class="date">16-Apr-2008 06:46</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+To expand on the nice bit of code Mike Willbanks wrote and Alexander tidied up, I turned the whole thing in a function that removes all the globals added by register_globals so it can be implemented in an included functions.php and doesn't litter the main pages too much.<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">//Undo register_globals<br />
+</span><span class="keyword">function </span><span class="default">unregister_globals</span><span class="keyword">() {<br />
+&nbsp;&nbsp;&nbsp; if (</span><span class="default">ini_get</span><span class="keyword">(</span><span class="default">register_globals</span><span class="keyword">)) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$array </span><span class="keyword">= array(</span><span class="string">'_REQUEST'</span><span class="keyword">, </span><span class="string">'_SESSION'</span><span class="keyword">, </span><span class="string">'_SERVER'</span><span class="keyword">, </span><span class="string">'_ENV'</span><span class="keyword">, </span><span class="string">'_FILES'</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; foreach (</span><span class="default">$array </span><span class="keyword">as </span><span class="default">$value</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; foreach (</span><span class="default">$GLOBALS</span><span class="keyword">[</span><span class="default">$value</span><span class="keyword">] as </span><span class="default">$key </span><span class="keyword">=&gt; </span><span class="default">$var</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (</span><span class="default">$var </span><span class="keyword">=== </span><span class="default">$GLOBALS</span><span class="keyword">[</span><span class="default">$key</span><span class="keyword">]) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; unset(</span><span class="default">$GLOBALS</span><span class="keyword">[</span><span class="default">$key</span><span class="keyword">]);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="82213""></a>
+  <div class="note">
+   <strong class="user">Ruquay K Calloway</strong>
+   <a href="#82213" class="date">01-Apr-2008 02:59</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+While we all appreciate the many helpful posts to get rid of register_globals, maybe you're one of those who just loves it.&nbsp; More likely, your boss says you just have to live with it because he thinks it's a great feature.<br />
+<br />
+No problem, just call (below defined):<br />
+<br />
+<span class="default">&lt;?php register_globals</span><span class="keyword">(); </span><span class="default">?&gt;<br />
+</span><br />
+anywhere, as often as you want.&nbsp; Or update your scripts!<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">/**<br />
+&nbsp;* function to emulate the register_globals setting in PHP<br />
+&nbsp;* for all of those diehard fans of possibly harmful PHP settings :-)<br />
+&nbsp;* @author Ruquay K Calloway<br />
+&nbsp;* @param string $order order in which to register the globals, e.g. 'egpcs' for default<br />
+&nbsp;*/<br />
+</span><span class="keyword">function </span><span class="default">register_globals</span><span class="keyword">(</span><span class="default">$order </span><span class="keyword">= </span><span class="string">'egpcs'</span><span class="keyword">)<br />
+{<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">// define a subroutine<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">if(!</span><span class="default">function_exists</span><span class="keyword">(</span><span class="string">'register_global_array'</span><span class="keyword">))<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; function </span><span class="default">register_global_array</span><span class="keyword">(array </span><span class="default">$superglobal</span><span class="keyword">)<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; foreach(</span><span class="default">$superglobal </span><span class="keyword">as </span><span class="default">$varname </span><span class="keyword">=&gt; </span><span class="default">$value</span><span class="keyword">)<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; global $</span><span class="default">$varname</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; $</span><span class="default">$varname </span><span class="keyword">= </span><span class="default">$value</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$order </span><span class="keyword">= </span><span class="default">explode</span><span class="keyword">(</span><span class="string">"\r\n"</span><span class="keyword">, </span><span class="default">trim</span><span class="keyword">(</span><span class="default">chunk_split</span><span class="keyword">(</span><span class="default">$order</span><span class="keyword">, </span><span class="default">1</span><span class="keyword">)));<br />
+&nbsp;&nbsp;&nbsp; foreach(</span><span class="default">$order </span><span class="keyword">as </span><span class="default">$k</span><span class="keyword">)<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; switch(</span><span class="default">strtolower</span><span class="keyword">(</span><span class="default">$k</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; case </span><span class="string">'e'</span><span class="keyword">:&nbsp; &nbsp; </span><span class="default">register_global_array</span><span class="keyword">(</span><span class="default">$_ENV</span><span class="keyword">);&nbsp; &nbsp; &nbsp; &nbsp; break;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; case </span><span class="string">'g'</span><span class="keyword">:&nbsp; &nbsp; </span><span class="default">register_global_array</span><span class="keyword">(</span><span class="default">$_GET</span><span class="keyword">);&nbsp; &nbsp; &nbsp; &nbsp; break;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; case </span><span class="string">'p'</span><span class="keyword">:&nbsp; &nbsp; </span><span class="default">register_global_array</span><span class="keyword">(</span><span class="default">$_POST</span><span class="keyword">);&nbsp; &nbsp; &nbsp; &nbsp; break;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; case </span><span class="string">'c'</span><span class="keyword">:&nbsp; &nbsp; </span><span class="default">register_global_array</span><span class="keyword">(</span><span class="default">$_COOKIE</span><span class="keyword">);&nbsp; &nbsp; break;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; case </span><span class="string">'s'</span><span class="keyword">:&nbsp; &nbsp; </span><span class="default">register_global_array</span><span class="keyword">(</span><span class="default">$_SERVER</span><span class="keyword">);&nbsp; &nbsp; break;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

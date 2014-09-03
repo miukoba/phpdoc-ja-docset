@@ -1,0 +1,572 @@
+<html><!-- Mirrored from php.net/manual/en/ref.pdo-odbc.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 16:57:41 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>ODBC and DB2 (PDO)</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="ref.pdo-odbc.html">
+ <link rel="shorturl" href="http://php.net/pdo-odbc">
+ <link rel="alternate" href="http://php.net/pdo-odbc" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="pdo.drivers.html">
+ <link rel="prev" href="ref.pdo-oci.connection.html">
+ <link rel="next" href="ref.pdo-odbc.connection.html">
+
+ <link rel="alternate" href="ref.pdo-odbc.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/ref.pdo-odbc.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/ref.pdo-odbc.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/ref.pdo-odbc.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/ref.pdo-odbc.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/ref.pdo-odbc.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/ref.pdo-odbc.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/ref.pdo-odbc.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/ref.pdo-odbc.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/ref.pdo-odbc.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/ref.pdo-odbc.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.database.html">Database Extensions</a></li>      <li><a href="refs.database.abstract.html">Abstraction Layers</a></li>      <li><a href="book.pdo.html">PDO</a></li>      <li><a href="pdo.drivers.html">PDO Drivers</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="ref.pdo-odbc" class="reference">
+  
+  <h1 class="title">ODBC and DB2 Functions (PDO_ODBC)</h1>
+  
+  <div class="partintro">
+
+   <div class="section" id="pdo-odbc.intro">
+   <h2 class="title">Introduction</h2>
+    <p class="para">
+     PDO_ODBC is a driver that implements the <a href="intro.pdo.html" class="link">PHP Data
+     Objects (PDO) interface</a>
+     to enable access from PHP to databases through ODBC drivers or through the
+     IBM DB2 Call Level Interface (DB2 CLI) library. PDO_ODBC currently supports
+     three different "flavours" of database drivers:
+     </p><dl>
+
+      
+       <dt>
+ibm-db2</dt>
+
+       <dd>
+
+        <p class="para">
+         Supports access to IBM DB2 Universal Database, Cloudscape, and Apache
+         Derby servers through the free DB2 client.
+        </p>
+       </dd>
+
+      
+      
+       <dt>
+unixODBC</dt>
+
+       <dd>
+
+        <p class="para">
+         Supports access to database servers through the unixODBC driver
+         manager and the database's own ODBC drivers. 
+        </p>
+       </dd>
+
+      
+      
+       <dt>
+generic</dt>
+
+       <dd>
+
+        <p class="para">
+         Offers a compile option for ODBC driver managers that are not
+         explicitly supported by PDO_ODBC.
+        </p>
+       </dd>
+
+      
+     </dl>
+
+    <p></p>
+    <p class="para">
+     On Windows, PDO_ODBC is built into the PHP core by default. It is linked
+     against the Windows ODBC Driver Manager so that PHP can connect to any
+     database cataloged as a System DSN, and is the recommended driver for
+     connecting to Microsoft SQL Server databases.
+    </p>
+   </div>
+
+   
+   
+
+<div class="section" id="ref.pdo-odbc.installation">
+ <h2 class="title">Installation</h2>
+ <div class="procedure">
+  <strong class="title">PDO_ODBC on UNIX systems</strong>
+  <ol type="1"><li>
+   <p class="para">
+    As of PHP 5.1, PDO_ODBC is included in the PHP source. You can compile the
+    PDO_ODBC extension as either a static or shared module using the following
+    <strong class="command">configure</strong> commands.
+    </p><dl>
+
+     
+      <dt>
+ibm_db2</dt>
+
+      <dd>
+
+       <p class="para">
+        </p><div class="example-contents screen"><div class="cdata"><pre>./configure --with-pdo-odbc=ibm-db2,/opt/IBM/db2/V8.1/
+</pre></div></div>
+        To build PDO_ODBC with the ibm-db2 flavour, you have to have
+        previously installed the DB2 application development headers on the
+        same machine on which you are compiling PDO_ODBC. The DB2 application
+        development headers are an installable option in the DB2 servers, and
+        are also available as part of the DB2 Application Development Client
+        freely available for download from the IBM DB2 Universal Database
+        <a href="http://www-306.ibm.com/software/data/db2/udb/support/downloadv8.html" class="link external">»&nbsp;support site</a>.
+       <p></p>
+       <p class="para">
+        If you do not supply a location for the DB2 libraries and headers to
+        the <strong class="command">configure</strong> command, PDO_ODBC defaults to
+        <var class="filename">/home/db2inst1/sqllib</var>.
+       </p>
+      </dd>
+
+     
+     
+      <dt>
+unixODBC</dt>
+
+      <dd>
+
+       <p class="para">
+        </p><div class="example-contents screen"><div class="cdata"><pre>./configure --with-pdo-odbc=unixODBC,/usr/local
+</pre></div></div>
+        If you do not supply a location for the unixODBC libraries and
+        headers to the <strong class="command">configure</strong> command, PDO_ODBC
+        defaults to <var class="filename">/usr/local</var>.
+       <p></p>
+      </dd>
+
+     
+     
+      <dt>
+generic</dt>
+
+      <dd>
+
+       <div class="example-contents screen"><div class="cdata"><pre>./configure --with-pdo-odbc=generic,/usr/local,libname,ldflags,cflags
+</pre></div></div>
+      </dd>
+
+     
+    </dl>
+
+   <p></p>
+  </li>
+ </ol></div>
+</div>
+
+
+
+  
+   
+
+<div class="section" id="pdo-odbc.configuration">
+ <h2 class="title">Runtime Configuration</h2>
+ <p class="simpara">
+The behaviour of these functions is affected by settings in <var class="filename">php.ini</var>.
+</p>
+ <p class="para">
+  </p><table class="doctable table">
+   <caption><strong>PDO_ODBC Configuration Options</strong></caption>
+   
+    <thead>
+     <tr>
+      <th>Name</th>
+      <th>Default</th>
+      <th>Changeable</th>
+      <th>Changelog</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+     <tr>
+      <td><a href="ref.pdo-odbc.html#ini.pdo-odbc.connection-pooling" class="link">pdo_odbc.connection_pooling</a></td>
+      <td>"strict"</td>
+      <td>PHP_INI_ALL</td>
+      <td>Available since PHP 5.1.0.</td>
+     </tr>
+
+     <tr>
+      <td><a href="ref.pdo-odbc.html#ini.pdo-odbc.db2-instance-name" class="link">pdo_odbc.db2_instance_name</a></td>
+      <td>NULL</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since PHP 5.1.1. This deprecated feature <em class="emphasis">will</em>
+certainly be <em class="emphasis">removed</em> in the future.</td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  For further details and definitions of the
+PHP_INI_* modes, see the <a href="configuration.changes.modes.html" class="xref">Where a configuration setting may be set</a>.
+<p></p>
+
+<p class="para">Here's a short explanation of
+the configuration directives.</p>
+
+<p class="para">
+ </p><dl>
+
+   
+   <dt id="ini.pdo-odbc.connection-pooling">
+    <code class="parameter">pdo_odbc.connection_pooling</code>
+    <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+   </dt>
+
+   <dd>
+
+    <p class="para">
+     Whether to pool ODBC connections. Can be one of <em>"strict"</em>,
+     <em>"relaxed"</em> or <em>"off"</em> (equals to
+     <em>""</em>). The parameter describes how strict the connection
+     manager should be when matching connection parameters to existing pooled
+     connections.  <strong class="userinput"><code>strict</code></strong> is the recommend default, and
+     will result in the use of cached connections only when all the connection
+     parameters match exactly.  <strong class="userinput"><code>relaxed</code></strong> will result in
+     the use of cached connections when similar connection parameters are
+     used.  This can result in increased use of the cache, at the risk of
+     bleeding connection information between (for example) virtual hosts.
+    </p>
+    <p class="para">
+     This setting can only be changed from the <var class="filename">php.ini</var>
+     file, and affects the entire process; any other modules loaded into the
+     process that use the same ODBC libraries will be affected too, including
+     the <a href="ref.uodbc.html" class="link">Unified ODBC extension</a>.
+    </p>
+    <div class="warning"><strong class="warning">Warning</strong>
+     <p class="para">
+      <strong class="userinput"><code>relaxed</code></strong> matching should not be used on a shared
+      server, for security reasons.
+     </p>
+    </div>
+    <div class="tip"><strong class="tip">Tip</strong>
+     <p class="para">
+      Leave this setting at the default <strong class="userinput"><code>strict</code></strong> setting
+      unless you have good reason to change it.
+     </p>
+    </div>
+   </dd>
+
+  
+  
+   <dt id="ini.pdo-odbc.db2-instance-name">
+    <code class="parameter">pdo_odbc.db2_instance_name</code>
+    <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+   </dt>
+
+   <dd>
+
+    <p class="para">
+     If you compile PDO_ODBC using the <em>db2</em> flavour,
+     this setting sets the value of the DB2INSTANCE environment variable on
+     Linux and UNIX operating systems to the specified name of the DB2
+     instance. This enables PDO_ODBC to resolve the location of the DB2
+     libraries and make cataloged connections to DB2 databases.
+    </p>
+    <p class="para">
+     This setting can only be changed from the <var class="filename">php.ini</var>
+     file, and affects the entire process; any other modules loaded into the
+     process that use the same ODBC libraries will be affected too, including
+     the <a href="ref.uodbc.html" class="link">Unified ODBC extension</a>.
+    </p>
+    <p class="para">
+     This setting has no effect on Windows.
+    </p>
+   </dd>
+
+  
+  
+ </dl>
+
+ <p></p>
+</div>
+
+
+
+  </div>
+
+  
+
+ <h2>Table of Contents</h2><ul class="chunklist chunklist_reference"><li><a href="ref.pdo-odbc.connection.html">PDO_ODBC DSN</a> — Connecting to ODBC or DB2 databases</li></ul>
+</div>
+
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="107128">  
+  <a class="name">
+  <strong class="user"><em>Ariz Jacinto</em></strong></a><div class="date" title="2012-01-09 01:50"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom107128">
+<div class="phpcode"><code><span class="html">
+Using SQL Server Native Client 11.0 on Linux as a PDO_ODBC driver:
+<br>
+<br>Download the SQL Server Native Client 11.0 on Linux ODBC Driver:
+<br><a rel="nofollow" target="_blank">http://www.microsoft.com/download/en/details.aspx?id=28160</a>
+<br>
+<br>Configuration ODBC:
+<br>
+<br>/usr/local/etc/odbcsys.ini
+<br>--
+<br>[SQL Server Native Client 11.0]
+<br>Description = Microsoft SQL Server ODBC Driver V1.0 for Linux
+<br>Driver = /opt/microsoft/sqlncli/lib64/libsqlncli-11.0.so.1720.0
+<br>UsageCount = 1
+<br>
+<br>/usr/local/etc/odbc.ini
+<br>--
+<br>[MSSQLServer]
+<br>Driver = SQL Server Native Client 11.0
+<br>Description = Sample Database
+<br>Trace = Yes
+<br>Server = 
+<br>Port = 1433
+<br>Database = 
+<br>
+<br>Test the connection:
+<br>mssqltest.php
+<br>--
+<br><span class="default">&lt;?php
+<br>&nbsp; &nbsp; putenv</span><span class="keyword">(</span><span class="string">'ODBCSYSINI=/usr/local/etc'</span><span class="keyword">);
+<br>&nbsp; &nbsp; </span><span class="default">putenv</span><span class="keyword">(</span><span class="string">'ODBCINI=/usr/local/etc/odbc.ini'</span><span class="keyword">);
+<br>&nbsp; &nbsp; </span><span class="default">$username </span><span class="keyword">= </span><span class="string">""</span><span class="keyword">;
+<br>&nbsp; &nbsp; </span><span class="default">$password </span><span class="keyword">= </span><span class="string">""</span><span class="keyword">;
+<br>&nbsp; &nbsp; try {
+<br>&nbsp; &nbsp; &nbsp; </span><span class="default">$dbh </span><span class="keyword">= new </span><span class="default">PDO</span><span class="keyword">(</span><span class="string">"odbc:MSSQLServer"</span><span class="keyword">,
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">"</span><span class="default">$username</span><span class="string">"</span><span class="keyword">,
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">"</span><span class="default">$password</span><span class="string">"
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">);
+<br>&nbsp; &nbsp; } catch (</span><span class="default">PDOException $exception</span><span class="keyword">) {
+<br>&nbsp; &nbsp; &nbsp; echo </span><span class="default">$exception</span><span class="keyword">-&gt;</span><span class="default">getMessage</span><span class="keyword">();
+<br>&nbsp; &nbsp; &nbsp; exit;
+<br>&nbsp; &nbsp; }
+<br>&nbsp; &nbsp; echo </span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$dbh</span><span class="keyword">);
+<br>&nbsp; &nbsp; unset(</span><span class="default">$dbh</span><span class="keyword">);
+<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="81488">  
+  <a class="name">
+  <strong class="user"><em>ethan dot nelson at ltd dot org</em></strong></a><div class="date" title="2008-02-29 02:15"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom81488">
+<div class="phpcode"><code><span class="html">
+Using SQL 2005, PDO_ODBC and datetime fields is a royal pain.&nbsp; MSDN documentation on CAST CONVERT shows that there is supposed to be an implicit convert between character types and datetime types.&nbsp; That's true... until you put it in a stored procedure and use variable declarations.<br><br>For instance this fails:<br><br>declare @date varchar;<br>SET @date = '20080101';<br>SELECT cast(@date AS datetime) AS poo<br><br>While this succeeds:<br>declare @date varchar(19);<br>SET @date = '20080101';<br>SELECT cast(@date AS datetime) AS poo<br><br>The PDO Driver appears to attempt an implicit conversion and so it fails whenever you try to insert data into datetime column types.<br><br>So to workaround this nuance in SQL, declare a character column type with explicit width.&nbsp; Then your implicit type conversion will work.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="98716">  
+  <a class="name">
+  <strong class="user"><em>harry dot forum at p-boss dot com</em></strong></a><div class="date" title="2010-07-02 04:03"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom98716">
+<div class="phpcode"><code><span class="html">
+MSSQL - PHP on Apache - Linux Redhat<br><br>When using php 5.2.10 please beaware of this error:<br><br><a rel="nofollow" target="_blank">http://bugs.php.net/bug.php?id=42068</a><br><br>Standard odbc_connect will not work, you must use pdo_odbc<br><br>Connecting to MSSQL using pdo odbc - walkthrough.. <br><br>1. Download and configure FreeTDS with-unixodbc<br><br>./configure --prefix=/opt/SYSfreetds --with-unixodbc<br><br>make;make test; make install<br><br>2. install php-odbc and unixODBC<br><br>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; php-odbc-5.2.10-1.x86_64.rpm<br>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; unixODBC.x86_64.x86x64<br><br>3. Setup ODBC links<br><br>a)<br>Create a tds.driver file with the following contents<br><br>&nbsp; [FreeTDS]<br>&nbsp; Description&nbsp; &nbsp;&nbsp; = v0.63 with protocol v8.0<br>&nbsp; Driver&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; = /opt/SYSfreetds/lib/libtdsodbc.so<br><br>Register the ODBC driver - the tds.driver file<br><br>&nbsp; odbcinst -i -d -f tds.driver<br><br>b)<br>Creating a tds.datasource file - ODBC Data Source with contents:<br><br>&nbsp; [SOURCENAME]<br>&nbsp; Driver=FreeTDS<br>&nbsp; Description=Test MS SQL Database with FreeTDS<br>&nbsp; Trace=No<br>&nbsp; Server=BobTheServer<br>&nbsp; Port=1433<br>&nbsp; TDS Version=8.0<br>&nbsp; Database=youDBname<br><br>Register the ODBC data source<br><br>&nbsp; odbcinst -i -s -f tds.datasource<br><br>Beware that the odbc.ini file will be installed in the current users home directory. This may need to be used if you are using a webserver as the apache home directory could be different.<br><br>Ensure .odbc.ini is in apaches home directory, possibly "/var/www"<br><br>4. Test the ODBC link on the command line<br><br>&nbsp; isql -v SOURCENAME 'username' 'password'<br><br>&nbsp; +---------------------------------------+<br>&nbsp; | Connected!&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |<br>&nbsp; |&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; |<br>&nbsp; | sql-statement&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; |<br>&nbsp; | help [tablename]&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |<br>&nbsp; | quit&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |<br>&nbsp; |&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; |<br>&nbsp; +---------------------------------------+<br> SQL&gt;<br><br>5. Edit /etc/php.ini<br><br>&nbsp; Make sure the following is set:<br>&nbsp; &nbsp;&nbsp; mssql.secure_connection = On<br> <br><br>6. Restart apache gracefully<br><br>7. PHP to run:<br><br>&nbsp; &lt;?<br>&nbsp; $dbh= new PDO('odbc:SOURCENAME', 'username', 'password');<br>&nbsp; $stmt = $dbh-&gt;prepare("$query");<br>&nbsp; $stmt-&gt;execute();<br>&nbsp; while ($row = $stmt-&gt;fetch()) {<br>&nbsp; &nbsp; &nbsp; print_r($row);<br>&nbsp; }<br>&nbsp; unset($dbh); unset($stmt);<br>&nbsp; ?&gt;<br><br>Trouble-shooting:<br><br>Please try strace/ truss if you encounter issues. It could be you are referencing wrong libraries somewhere.<br><br>Ensure you have restarted apache once the odbc files are in place</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="93646">  
+  <a class="name">
+  <strong class="user"><em>tuomas</em></strong></a><div class="date" title="2009-09-21 12:11"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom93646">
+<div class="phpcode"><code><span class="html">
+If you want to avoid installing DB2 Connect and/or PECL modules ibm_db2 and PDO_IBM, you can also use IBM DB2 databases trough unixODBC.<br><br>If you have DB2 database on a i server you need to install IBM iAccess (<a rel="nofollow" target="_blank">http://www.ibm.com/systems/i/software/access/linux/index.html</a>) and unixODBC. Just install the libraries (rpm) and modify configurations in /etc/odbcinst.ini (sample configuration in /opt/ibm/iSeriesAccess/unixodbcregistration) and /etc/odbc.ini.<br><br>To my experience this is much easier way than installing DB2 Connect.</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/ref.pdo-odbc.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 16:57:42 GMT -->
+
+
+</body></html>

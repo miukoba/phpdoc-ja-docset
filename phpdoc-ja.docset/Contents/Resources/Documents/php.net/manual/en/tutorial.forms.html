@@ -1,0 +1,194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>フォームの処理</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="tutorial.useful.html">≪ 実用的な例</a></li>
+      <li style="float: right;"><a href="tutorial.oldcode.html">新しいバージョンの PHP で古いコードを使用する ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="tutorial.html">簡易チュートリアル</a></li>
+    <li>フォームの処理</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="tutorial.forms" class="sect1">
+   <h2 class="title">フォームの処理</h2>
+   <p class="para">
+    PHP の最も強力な機能の一つは、HTML フォームを処理する手段です。
+    理解するべき重要な基本概念は、あるフォームの中の全てのフォーム要素が、
+    自動的に PHP スクリプトで利用可能になるということです。
+    詳細は、マニュアルのセクション<a href="language.variables.external.html" class="link">
+    外部から来る変数</a> および PHP
+    でフォームを使用する例を参照してください。以下に HTML フォームの例を示します。
+   </p>
+   <p class="para">
+    <div class="example" id="example-7">
+     <p><strong>例1 簡単な HTML フォーム</strong></p>
+     <div class="example-contents">
+<div class="htmlcode"><pre class="htmlcode">&lt;form action=&quot;action.php&quot; method=&quot;post&quot;&gt;
+ 名前: &lt;input type=&quot;text&quot; name=&quot;name&quot; /&gt;
+ 年齢: &lt;input type=&quot;text&quot; name=&quot;age&quot; /&gt;
+ &lt;input type=&quot;submit&quot; /&gt;
+&lt;/form&gt;</pre>
+</div>
+     </div>
+
+    </div>
+   </p>
+   <p class="para">
+    このフォームに関して特別なところはありません。これは通常の HTML
+    フォームで特殊なタグは全く使用していません。
+    ユーザーがこのフォームを記入し、投稿ボタンを押した時、
+    <var class="filename">action.php</var> ページがコールされます。
+    このファイルには、以下のようなコードを記述します。
+   </p>
+   <p class="para">
+    <div class="example" id="example-8">
+     <p><strong>例2 フォームからのデータを出力する</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+こんにちは、<span style="color: #0000BB">&lt;?php&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">htmlspecialchars</span><span style="color: #007700">(</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">'name'</span><span style="color: #007700">]);&nbsp;</span><span style="color: #0000BB">?&gt;</span>さん。<br />あなたは、<span style="color: #0000BB">&lt;?php&nbsp;</span><span style="color: #007700">echo&nbsp;(int)</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #DD0000">'age'</span><span style="color: #007700">];&nbsp;</span><span style="color: #0000BB">?&gt;</span>&nbsp;歳です。</span>
+</code></div>
+     </div>
+
+     <div class="example-contents"><p>
+      このスクリプトの出力例は次のようになります。
+      <div class="example-contents screen">
+<div class="cdata"><pre>
+こんにちは、Joe さん。あなたは、22 歳です。
+</pre></div>
+      </div>
+     </p></div>
+    </div>
+   </p>
+   <p class="para">
+    <span class="function"><a href="function.htmlspecialchars.html" class="function">htmlspecialchars()</a></span> および
+    <em>(int)</em> の部分以外は、何を行っているかは明らかでしょう。
+    <span class="function"><a href="function.htmlspecialchars.html" class="function">htmlspecialchars()</a></span> は、html での特殊な文字を適切にエンコードし、
+    HTML タグや Javascript をページ内に仕込めないようにします。
+    また、age フィールドには数値が入ることがわかっているので、これを
+    <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span> 型に <a href="language.types.type-juggling.html#language.types.typecasting" class="link">変換</a> 
+    します。これにより、おかしな文字が入力されることを防ぎます。
+    これらの処理を PHP に自動的に行わせるためには、
+    <a href="ref.filter.html" class="link">filter</a> 拡張モジュールを使用します。
+    変数 <var class="varname"><var class="varname"><a href="reserved.variables.post.html" class="classname">$_POST['name']</a></var></var> と
+    <var class="varname"><var class="varname"><a href="reserved.variables.post.html" class="classname">$_POST['age']</a></var></var> は PHP により自動的に設定されます。
+    前の部分では、スーパーグローバル<var class="varname"><var class="varname"><a href="reserved.variables.server.html" class="classname">$_SERVER</a></var></var> を使用しましたが、
+    ここでは、全ての POST データを保持するスーパーグローバル
+    <var class="varname"><var class="varname"><a href="reserved.variables.post.html" class="classname">$_POST</a></var></var> を導入しています。
+    フォームの<em class="emphasis">メソッド</em>が POST であることに注意してください。
+    <em class="emphasis">GET</em> メソッドを使用している場合、
+    フォームの情報は代わりにスーパーグローバル <var class="varname"><var class="varname"><a href="reserved.variables.get.html" class="classname">$_GET</a></var></var>
+    に代入されます。リクエストデータの発信源に留意しない場合には、
+    スーパーグローバル変数
+    <var class="varname"><var class="varname"><a href="reserved.variables.request.html" class="classname">$_REQUEST</a></var></var>
+    を使用することもできます。この変数は、GET, POST, COOKIE, FILE
+    データの混ざったものが含まれます。
+   </p>
+   <p class="para">
+    XForms の入力を PHP で扱うことも可能ですが、たいていの場合は
+    HTML フォームのほうが快適に使用できるでしょう。
+    XForms は初心者向けのものではありませんが、気になる人もいるかもしれません。
+    機能概要の節にある <a href="features.xforms.html" class="link">
+    XForm から受信したデータの処理方法</a> を参照ください。
+   </p>
+  </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="115109""></a>
+  <div class="note">
+   <strong class="user">jerry4u at foxmail dot com</strong>
+   <a href="#115109" class="date">27-May-2014 01:23</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+the difference of method GET and POST is really important.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="112505""></a>
+  <div class="note">
+   <strong class="user">behnam jaza faza</strong>
+   <a href="#112505" class="date">24-Jun-2013 04:22</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The note above says:<br />
+<br />
+"Also see the import_request_variables() function. "<br />
+<br />
+But dont:<br />
+<br />
+This function has been DEPRECATED as of PHP 5.3.0 and REMOVED as of PHP 5.4.0.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="108284""></a>
+  <div class="note">
+   <strong class="user">Andy</strong>
+   <a href="#108284" class="date">14-Apr-2012 09:05</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Just a reminder about security: the chosen HTTP request verb (e.g. POST, GET) does not necessarily make the request "secure". Any information that is not transmitted over an encrypted channel (using SSL, i.e. HTTPS) is transmitted in plan text.
+<br />
+
+<br />
+For secure transport of sensitive/private information over HTTP consider using SSL as this prevents eve's dropping of the information transmitted over HTTP.
+<br />
+
+<br />
+[Edited by googleguy@php.net for clarity]</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="100370""></a>
+  <div class="note">
+   <strong class="user">Johann Gomes (johanngomes at gmail dot com)</strong>
+   <a href="#100370" class="date">12-Oct-2010 04:20</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Also, don't ever use GET method in a form that capture passwords and other things that are meant to be hidden.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="37899""></a>
+  <div class="note">
+   <strong class="user">sethg at ropine dot com</strong>
+   <a href="#37899" class="date">01-Dec-2003 09:55</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+According to the HTTP specification, you should use the POST method when you're using the form to change the state of something on the server end. For example, if a page has a form to allow users to add their own comments, like this page here, the form should use POST. If you click "Reload" or "Refresh" on a page that you reached through a POST, it's almost always an error -- you shouldn't be posting the same comment twice -- which is why these pages aren't bookmarked or cached.<br />
+<br />
+You should use the GET method when your form is, well, getting something off the server and not actually changing anything.&nbsp; For example, the form for a search engine should use GET, since searching a Web site should not be changing anything that the client might care about, and bookmarking or caching the results of a search-engine query is just as useful as bookmarking or caching a static HTML page.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

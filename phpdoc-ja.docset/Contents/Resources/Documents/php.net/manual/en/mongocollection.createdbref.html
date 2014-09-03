@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>データベースへの参照を作成する</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="mongocollection.count.html">≪ MongoCollection::count</a></li>
+      <li style="float: right;"><a href="mongocollection.createindex.html">MongoCollection::createIndex ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="class.mongocollection.html">MongoCollection</a></li>
+    <li>データベースへの参照を作成する</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="mongocollection.createdbref" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">MongoCollection::createDBRef</h1>
+  <p class="verinfo">(PECL mongo &gt;=0.9.0)</p><p class="refpurpose"><span class="refname">MongoCollection::createDBRef</span> &mdash; <span class="dc-title">データベースへの参照を作成する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-mongocollection.createdbref-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">array</span> <span class="methodname"><strong>MongoCollection::createDBRef</strong></span>
+    ( <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter">$document_or_id</code></span>
+   )</div>
+
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-mongocollection.createdbref-parameters">
+  <h3 class="title">パラメータ</h3>    
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+
+      <code class="parameter">document_or_id</code>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       配列あるいはオブジェクトを渡した場合は、その <em>_id</em>
+       フィールドを参照 ID として利用します。
+       <a href="class.mongoid.html" class="classname">MongoId</a> あるいはスカラーを渡した場合は、
+       それ自体を参照 ID として利用します。
+      </p>
+     </dd>
+
+       
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-mongocollection.createdbref-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   データベース参照配列を返します。
+  </p>
+  <p class="para">
+   <em>_id</em> フィールドがない配列を
+   <em>document_or_id</em> に渡した場合は、<strong><code>NULL</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-mongocollection.createdbref-examples">
+  <h3 class="title">例</h3>
+  <div class="example" id="example-1494">
+   <p><strong>例1 <span class="methodname"><strong>MongoCollection::createDBRef()</strong></span> の例</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$songs&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$db</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">songs</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$playlists&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$db</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">playlists</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;曲への参照を作成します<br /></span><span style="color: #0000BB">$manamana&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$songs</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">findOne</span><span style="color: #007700">(array(</span><span style="color: #DD0000">'title'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'Ma&nbsp;na&nbsp;ma&nbsp;na'</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">$refToSong&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$songs</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">createDBRef</span><span style="color: #007700">(</span><span style="color: #0000BB">$manamana</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;プレイリストへの参照を追加します<br /></span><span style="color: #0000BB">$playlists</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">update</span><span style="color: #007700">(array(</span><span style="color: #DD0000">'username'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'me'</span><span style="color: #007700">),&nbsp;array(</span><span style="color: #DD0000">'$push'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(</span><span style="color: #DD0000">'songlist'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$refToSong</span><span style="color: #007700">)));<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-mongocollection.createdbref-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><span class="methodname"><a href="mongocollection.getdbref.html" class="methodname" rel="rdfs-seeAlso">MongoCollection::getDBRef()</a> - データベース参照が指すドキュメントを取得する</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

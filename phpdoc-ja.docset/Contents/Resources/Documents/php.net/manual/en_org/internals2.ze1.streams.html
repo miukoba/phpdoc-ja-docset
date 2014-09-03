@@ -1,0 +1,705 @@
+<html><!-- Mirrored from php.net/manual/en/internals2.ze1.streams.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:53:32 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Streams API for PHP Extension Authors</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="internals2.ze1.streams.html">
+ <link rel="shorturl" href="internals2.ze1.streams.html">
+ <link rel="alternate" href="internals2.ze1.streams.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="internals2.ze1.html">
+ <link rel="prev" href="internals2.ze1.intro.html">
+ <link rel="next" href="internals2.ze1.zendapi.html">
+
+ <link rel="alternate" href="internals2.ze1.streams.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/internals2.ze1.streams.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/internals2.ze1.streams.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/internals2.ze1.streams.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/internals2.ze1.streams.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/internals2.ze1.streams.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/internals2.ze1.streams.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/internals2.ze1.streams.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/internals2.ze1.streams.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/internals2.ze1.streams.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/internals2.ze1.streams.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="internals2.html">PHP at the Core: A Hacker's Guide</a></li>      <li><a href="internals2.ze1.html">Zend Engine 1</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="internals2.ze1.streams" class="sect1">
+ <h2 class="title">Streams API for PHP Extension Authors</h2>
+ <p class="para">
+  </p><blockquote class="note"><p><strong class="note">Note</strong>: 
+   </p><p class="para">
+    The functions in this chapter are for use in the PHP source code and
+    are not PHP functions.  Information on userland stream functions can be found in the 
+    <a href="book.stream.html" class="link">Stream Reference</a>.
+   </p>
+  <p></p></blockquote>
+ <p></p>
+ <div class="sect2" id="internals2.ze1.streams.overview">
+  <h3 class="title">Overview</h3>
+  <p class="para">
+   The PHP Streams API introduces a unified approach to the handling of
+   files and sockets in PHP extension.  Using a single API with standard
+   functions for common operations, the streams API allows your extension
+   to access files, sockets, URLs, memory and script-defined objects.
+   Streams is a run-time extensible API that allows dynamically loaded
+   modules (and scripts!) to register new streams.
+  </p>
+  <p class="para">
+   The aim of the Streams API is to make it comfortable for developers to
+   open files, URLs and other streamable data sources with a unified API
+   that is easy to understand.  The API is more or less based on the ANSI
+   C stdio family of functions (with identical semantics for most of the main
+   functions), so C programmers will have a feeling of familiarity with streams.
+  </p>
+  <p class="para">
+    The streams API operates on a couple of different levels: at the base level,
+    the API defines php_stream objects to represent streamable data sources.
+    On a slightly higher level, the API defines php_stream_wrapper objects
+    which "wrap" around the lower level API to provide support for retrieving
+    data and meta-data from URLs.  An additional <em>context</em>
+    parameter, accepted by most stream creation functions, is passed to the
+    wrapper's <em>stream_opener</em> method to fine-tune the behavior
+    of the wrapper.
+  </p>
+  <p class="para">
+   Any stream, once opened, can also have any number of <em>filters</em>
+   applied to it, which process data as it is read from/written to the stream.
+  </p>
+  <p class="para">
+   Streams can be cast (converted) into other types of file-handles, so that they
+   can be used with third-party libraries without a great deal of trouble.  This
+   allows those libraries to access data directly from URL sources.  If your
+   system has the <span class="function"><strong>fopencookie()</strong></span> or
+   <span class="function"><strong>funopen()</strong></span> function, you can even
+   pass any PHP stream to any library that uses ANSI stdio!
+  </p>
+ </div>
+
+ <div class="sect2" id="internals2.ze1.streams.basics">
+  <h3 class="title">Streams Basics</h3>
+  <p class="para">
+   Using streams is very much like using ANSI stdio functions.  The main
+   difference is in how you obtain the stream handle to begin with.
+   In most cases, you will use <span class="function"><strong>php_stream_open_wrapper()</strong></span>
+   to obtain the stream handle.  This function works very much like fopen,
+   as can be seen from the example below:
+  </p>
+  <p class="para">
+     </p><div class="example" id="example-5671">
+      <p><strong>Example #1 simple stream example that displays the PHP home page</strong></p>
+      <div class="example-contents">
+<div class="ccode"><pre class="ccode">php_stream * stream = php_stream_open_wrapper("http://www.php.net", "rb", REPORT_ERRORS, NULL);
+if (stream) {
+    while(!php_stream_eof(stream)) {
+        char buf[1024];
+        
+        if (php_stream_gets(stream, buf, sizeof(buf))) {
+            printf(buf);
+        } else {
+            break;
+        }
+    }
+    php_stream_close(stream);
+}</pre>
+</div>
+      </div>
+
+     </div>
+  <p></p>
+  <p class="para">
+   The table below shows the Streams equivalents of the more common ANSI stdio functions.
+   Unless noted otherwise, the semantics of the functions are identical.
+     </p><table class="doctable table">
+      <caption><strong>ANSI stdio equivalent functions in the Streams API</strong></caption>
+      
+       <thead>
+        <tr>
+         <th>ANSI Stdio Function</th>
+         <th>PHP Streams Function</th>
+         <th>Notes</th>
+        </tr>
+
+       </thead>
+
+       <tbody class="tbody">
+
+        <tr>
+         <td>fopen</td>
+         <td>php_stream_open_wrapper</td>
+         <td>Streams includes additional parameters</td>
+        </tr>
+
+
+        <tr>
+         <td>fclose</td>
+         <td>php_stream_close</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+
+        <tr>
+         <td>fgets</td>
+         <td>php_stream_gets</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+
+        <tr>
+         <td>fread</td>
+         <td>php_stream_read</td>
+         <td>The nmemb parameter is assumed to have a value of 1, so the prototype looks more like read(2)</td>
+        </tr>
+
+
+        <tr>
+         <td>fwrite</td>
+         <td>php_stream_write</td>
+         <td>The nmemb parameter is assumed to have a value of 1, so the prototype looks more like write(2)</td>
+        </tr>
+
+
+        <tr>
+         <td>fseek</td>
+         <td>php_stream_seek</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+
+        <tr>
+         <td>ftell</td>
+         <td>php_stream_tell</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+
+        <tr>
+         <td>rewind</td>
+         <td>php_stream_rewind</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+
+        <tr>
+         <td>feof</td>
+         <td>php_stream_eof</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+
+        <tr>
+         <td>fgetc</td>
+         <td>php_stream_getc</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+
+        <tr>
+         <td>fputc</td>
+         <td>php_stream_putc</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+
+        <tr>
+         <td>fflush</td>
+         <td>php_stream_flush</td>
+         <td class="empty">&nbsp;</td>
+        </tr>
+
+
+        <tr>
+         <td>puts</td>
+         <td>php_stream_puts</td>
+         <td>Same semantics as puts, NOT fputs</td>
+        </tr>
+
+
+        <tr>
+         <td>fstat</td>
+         <td>php_stream_stat</td>
+         <td>Streams has a richer stat structure</td>
+        </tr>
+
+         
+       </tbody>
+      
+     </table>
+
+   
+  <p></p>
+ </div>
+
+ <div class="sect2" id="internals2.ze1.streams.resources">
+  <h3 class="title">Streams as Resources</h3>
+  <p class="para">
+   All streams are registered as resources when they are created.  This ensures
+   that they will be properly cleaned up even if there is some fatal error.
+   All of the filesystem functions in PHP operate on streams resources - that
+   means that your extensions can accept regular PHP file pointers as
+   parameters to, and return streams from their functions.
+   The streams API makes this process as painless as possible:
+  </p>
+  <p class="para">
+     </p><div class="example" id="example-5672">
+      <p><strong>Example #2 How to accept a stream as a parameter</strong></p>
+      <div class="example-contents">
+<div class="ccode"><pre class="ccode">PHP_FUNCTION(example_write_hello)
+{
+    zval *zstream;
+    php_stream *stream;
+    
+    if (FAILURE == zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &amp;zstream))
+        return;
+    
+    php_stream_from_zval(stream, &amp;zstream);
+
+    /* you can now use the stream.  However, you do not "own" the
+        stream, the script does.  That means you MUST NOT close the
+        stream, because it will cause PHP to crash! */
+
+    php_stream_write(stream, "hello\n");
+        
+    RETURN_TRUE();
+}</pre>
+</div>
+      </div>
+
+     </div>
+  <p></p>
+  <p class="para">
+     </p><div class="example" id="example-5673">
+      <p><strong>Example #3 How to return a stream from a function</strong></p>
+      <div class="example-contents">
+<div class="ccode"><pre class="ccode">PHP_FUNCTION(example_open_php_home_page)
+{
+    php_stream *stream;
+    
+    stream = php_stream_open_wrapper("http://www.php.net", "rb", REPORT_ERRORS, NULL);
+    
+    php_stream_to_zval(stream, return_value);
+
+    /* after this point, the stream is "owned" by the script.
+        If you close it now, you will crash PHP! */
+}</pre>
+</div>
+      </div>
+
+     </div>
+  <p></p>
+  <p class="para">
+   Since streams are automatically cleaned up, it's tempting to think that we can get
+   away with being sloppy programmers and not bother to close the streams when we
+   are done with them.  Although such an approach might work, it is not a good idea
+   for a number of reasons: streams hold locks on system resources while they are
+   open, so leaving a file open after you have finished with it could prevent other
+   processes from accessing it.  If a script deals with a large number of files,
+   the accumulation of the resources used, both in terms of memory and the
+   sheer number of open files, can cause web server requests to fail.  Sounds
+   bad, doesn't it?  The streams API includes some magic that helps you to
+   keep your code clean - if a stream is not closed by your code when it should
+   be, you will find some helpful debugging information in you web server error
+   log.
+  </p>
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   <span class="simpara">
+    Always use a debug build of PHP when developing an extension
+    (<strong class="option unknown">--enable-debug</strong>
+ when running configure), as a lot of
+    effort has been made to warn you about memory and stream leaks.
+   </span>
+  </p></blockquote>
+  <p class="para">
+   In some cases, it is useful to keep a stream open for the duration of a request,
+   to act as a log or trace file for example.  Writing the code to safely clean up
+   such a stream is not difficult, but it's several lines of code that are not
+   strictly needed.  To save yourself the trouble of writing the code, you
+   can mark a stream as being OK for auto cleanup.  What this means is
+   that the streams API will not emit a warning when it is time to auto-cleanup
+   a stream.  To do this, you can use <span class="function"><strong>php_stream_auto_cleanup()</strong></span>.
+  </p>
+ </div>
+
+ 
+
+
+
+ <div class="sect2" id="internals2.ze1.streams.constants">
+  <h3 class="title">Streams open options</h3>
+  
+  <p class="para">
+   These constants affect the operation of stream factory functions.
+   </p><dl>
+
+    
+     <dt>
+
+      <strong><code>IGNORE_PATH</code></strong> 
+     </dt>
+
+     <dd>
+
+      <span class="simpara">
+       This is the default option for streams; it requests that the include_path is
+       not to be searched for the requested file.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+
+      <strong><code>USE_PATH</code></strong> 
+     </dt>
+
+     <dd>
+
+      <span class="simpara">
+       Requests that the include_path is to be searched for the requested file.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+
+      <strong><code>IGNORE_URL</code></strong> 
+     </dt>
+
+     <dd>
+
+      <span class="simpara">
+       Requests that registered URL wrappers are to be ignored when opening the
+       stream.  Other non-URL wrappers will be taken into consideration when
+       decoding the path.  There is no opposite form for this flag; the streams
+       API will use all registered wrappers by default.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+
+      <strong><code>IGNORE_URL_WIN</code></strong> 
+     </dt>
+
+     <dd>
+
+      <span class="simpara">
+       On Windows systems, this is equivalent to IGNORE_URL.
+       On all other systems, this flag has no effect.
+      </span>
+     </dd>
+
+    
+    
+    
+     <dt>
+
+      <strong><code>ENFORCE_SAFE_MODE</code></strong> 
+     </dt>
+
+     <dd>
+
+      <span class="simpara">
+       Requests that the underlying stream implementation perform safe_mode
+       checks on the file before opening the file.  Omitting this flag will skip
+       safe_mode checks and allow opening of any file that the PHP process
+       has rights to access.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+
+      <strong><code>REPORT_ERRORS</code></strong> 
+     </dt>
+
+     <dd>
+
+      <span class="simpara">
+       If this flag is set, and there was an error during the opening of the file
+       or URL, the streams API will call the php_error function for you.  This
+       is useful because the path may contain username/password information
+       that should not be displayed in the browser output (it would be a
+       security risk to do so).  When the streams API raises the error, it first
+       strips username/password information from the path, making the error
+       message safe to display in the browser.
+      </span>
+     </dd>
+
+    
+
+    
+     <dt>
+
+      <strong><code>STREAM_MUST_SEEK</code></strong> 
+     </dt>
+
+     <dd>
+
+      <span class="simpara">
+       This flag is useful when your extension really must be able to randomly
+       seek around in a stream.  Some streams may not be seekable in their
+       native form, so this flag asks the streams API to check to see if the
+       stream does support seeking.  If it does not, it will copy the stream
+       into temporary storage (which may be a temporary file or a memory
+       stream) which does support seeking.
+       Please note that this flag is not useful when you want to seek the
+       stream and write to it, because the stream you are accessing might
+       not be bound to the actual resource you requested.
+      </span>
+      <blockquote class="note"><p><strong class="note">Note</strong>: 
+       <span class="simpara">
+        If the requested resource is network based, this flag will cause the
+        opener to block until the whole contents have been downloaded.
+        </span>
+      </p></blockquote>        
+     </dd>
+
+    
+
+    
+     <dt>
+
+      <strong><code>STREAM_WILL_CAST</code></strong> 
+     </dt>
+
+     <dd>
+
+      <span class="simpara">
+       If your extension is using a third-party library that expects a FILE* or
+       file descriptor, you can use this flag to request the streams API to
+       open the resource but avoid buffering.  You can then use
+       <span class="function"><strong>php_stream_cast()</strong></span> to retrieve the FILE* or
+       file descriptor that the library requires.
+      </span>
+      <span class="simpara">
+       The is particularly useful when accessing HTTP URLs where the start
+       of the actual stream data is found after an indeterminate offset into
+       the stream.
+      </span>
+      <span class="simpara">
+       Since this option disables buffering at the streams API level, you
+       may experience lower performance when using streams functions
+       on the stream; this is deemed acceptable because you have told
+       streams that you will be using the functions to match the underlying
+       stream implementation.
+       Only use this option when you are sure you need it.
+      </span>
+     </dd>
+
+    
+   </dl>
+    
+  <p></p>
+ </div>
+
+
+
+
+</div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="35709">  
+  <a class="name">
+  <strong class="user"><em>armand at nl dot envida dot net</em></strong></a><div class="date" title="2003-09-11 02:05"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom35709">
+<div class="phpcode"><code><span class="html">
+To have your extension ignore the open_basedir restrictions that may be set, use <br>&nbsp; STREAM_DISABLE_OPENBASEDIR<br><br>I'm not sure why this option is left out of the documentation, <br>there are valid and legit uses for this option.</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/internals2.ze1.streams.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:53:32 GMT -->
+
+
+</body></html>

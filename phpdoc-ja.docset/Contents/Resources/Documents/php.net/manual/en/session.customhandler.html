@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>カスタムセッションハンドラ</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="session.idpassing.html">≪ セッションIDの受渡し</a></li>
+      <li style="float: right;"><a href="session.upload-progress.html">セッションのアップロード状況 ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="session.examples.html">例</a></li>
+    <li>カスタムセッションハンドラ</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="session.customhandler" class="section">
+  <h2 class="title">カスタムセッションハンドラ</h2>
+  <p class="para">
+   セッション情報をデータベースに保存する機能か他の保存法を実装するには、
+   一連のユーザーレベルの保存関数を作成し、
+   <span class="function"><a href="function.session-set-save-handler.html" class="function">session_set_save_handler()</a></span>を使用する必要があります。
+   PHP 5.4.0 以降では、<a href="class.sessionhandlerinterface.html" class="classname">SessionHandlerInterface</a>
+   を使ったり、<a href="class.sessionhandler.html" class="classname">SessionHandler</a> を継承して
+   PHP の内部セッションハンドラを拡張したりしてセッションハンドラを作成できます。
+  </p>
+  <p class="para">
+   <span class="function"><a href="function.session-set-save-handler.html" class="function">session_set_save_handler()</a></span> で指定したコールバックメソッドが、
+   セッションのライフサイクル内で PHP からコールされます。
+   セッションの <code class="parameter">open</code>、<code class="parameter">read</code>、<code class="parameter">write</code>、
+   <code class="parameter">close</code>、そしてセッションの削除 (<code class="parameter">destroy</code>)
+   や定期的なガベージコレクション (<code class="parameter">gc</code>) などのときです。
+  </p>
+  <p class="para">
+   したがって、PHP では常にセッション保存ハンドラが必要となります。デフォルトは、通常はファイルベースの保存ハンドラです。
+   自作の保存ハンドラは <span class="function"><a href="function.session-set-save-handler.html" class="function">session_set_save_handler()</a></span> で設定できます。
+   内部的な保存ハンドラとして、デフォルト以外のものも PHP の拡張モジュールとして用意されています。
+   <code class="parameter">sqlite</code> や <code class="parameter">memcache</code> そして
+   <code class="parameter">memcached</code> などで、これらは <a href="session.configuration.html#ini.session.save-handler" class="link">session.save_handler</a>
+   で設定できます。
+  </p>
+  <p class="para">
+   セッションが開始するときに、PHP は内部的に <code class="parameter">open</code> ハンドラをコールします。
+   それに続けて <code class="parameter">read</code> コールバックを実行し、
+   このコールバックがエンコードされた文字列を返します。これは最初にセッションストレージに渡されたものと同じ形式になります。
+   <code class="parameter">read</code> コールバックがエンコードした文字列を返したら、
+   PHP がそれをデコードしてデコード後の配列をスーパーグローバル
+   <var class="varname"><var class="varname"><a href="reserved.variables.session.html" class="classname">$_SESSION</a></var></var> に格納します。
+  </p>
+  <p class="para">
+   PHP のスクリプトが終了するとき (あるいは <span class="function"><a href="function.session-write-close.html" class="function">session_write_close()</a></span> がコールされたとき) には、
+   PHP が内部的にスーパーグローバル <var class="varname"><var class="varname"><a href="reserved.variables.session.html" class="classname">$_SESSION</a></var></var> をエンコードします。
+   そして、それをセッション ID とともに <code class="parameter">write</code> コールバックに渡します。
+   <code class="parameter">write</code> コールバックが終了すると、PHP は内部的に
+   <code class="parameter">close</code> コールバックハンドラを実行します。
+  </p>
+  <p class="para">
+   セッションが明確に破棄されたときには、PHP は
+   <code class="parameter">destroy</code> ハンドラをセッション ID つきでコールします。
+  </p>
+ <p class="para">
+   PHP はときどき <code class="parameter">gc</code> コールバックを実行し、
+   設定されているセッション有効期限にもとづいて期限切れのセッションレコードを無効化します。
+   この処理では、最後にアクセスされてからの時間が <code class="parameter">$lifetime</code>
+   を超えているすべてのレコードを永続ストレージから削除しなければなりません。
+ </p>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

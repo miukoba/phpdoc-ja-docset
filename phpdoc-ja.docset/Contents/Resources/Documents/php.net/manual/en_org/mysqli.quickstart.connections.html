@@ -1,0 +1,388 @@
+<html><!-- Mirrored from php.net/manual/en/mysqli.quickstart.connections.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 17:01:37 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Connections</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="mysqli.quickstart.connections.html">
+ <link rel="shorturl" href="mysqli.quickstart.connections.html">
+ <link rel="alternate" href="mysqli.quickstart.connections.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="mysqli.quickstart.html">
+ <link rel="prev" href="mysqli.quickstart.dual-interface.html">
+ <link rel="next" href="mysqli.quickstart.statements.html">
+
+ <link rel="alternate" href="mysqli.quickstart.connections.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/mysqli.quickstart.connections.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/mysqli.quickstart.connections.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/mysqli.quickstart.connections.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/mysqli.quickstart.connections.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/mysqli.quickstart.connections.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/mysqli.quickstart.connections.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/mysqli.quickstart.connections.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/mysqli.quickstart.connections.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/mysqli.quickstart.connections.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/mysqli.quickstart.connections.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.database.html">Database Extensions</a></li>      <li><a href="refs.database.vendors.html">Vendor Specific Database Extensions</a></li>      <li><a href="set.mysqlinfo.html">MySQL</a></li>      <li><a href="book.mysqli.html">Mysqli</a></li>      <li><a href="mysqli.quickstart.html">Quick start guide</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="mysqli.quickstart.connections" class="section">
+  <h2 class="title">Connections</h2>
+  <p class="para">
+   The MySQL server supports the use of different transport
+   layers for connections. Connections use TCP/IP, Unix domain sockets or
+   Windows named pipes.
+  </p>
+  <p class="para">
+   The hostname <em>localhost</em> has a special meaning.
+   It is bound to the use of Unix domain sockets. It is not possible
+   to open a TCP/IP connection using the hostname <em>localhost</em>
+   you must use <em>127.0.0.1</em> instead.
+  </p>
+  <p class="para">
+   </p><div class="example" id="example-1701">
+    <p><strong>Example #1 Special meaning of localhost</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>$mysqli&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">mysqli</span><span style="color: #007700">(</span><span style="color: #DD0000">"localhost"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"user"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"password"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"database"</span><span style="color: #007700">);<br>if&nbsp;(</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">connect_errno</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Failed&nbsp;to&nbsp;connect&nbsp;to&nbsp;MySQL:&nbsp;("&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">connect_errno&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">")&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">connect_error</span><span style="color: #007700">;<br>}<br>echo&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">host_info&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br><br></span><span style="color: #0000BB">$mysqli&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">mysqli</span><span style="color: #007700">(</span><span style="color: #DD0000">"127.0.0.1"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"user"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"password"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"database"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3306</span><span style="color: #007700">);<br>if&nbsp;(</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">connect_errno</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Failed&nbsp;to&nbsp;connect&nbsp;to&nbsp;MySQL:&nbsp;("&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">connect_errno&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">")&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">connect_error</span><span style="color: #007700">;<br>}<br><br>echo&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">host_info&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>The above example will output:</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>Localhost via UNIX socket
+127.0.0.1 via TCP/IP
+</pre></div>
+    </div>
+   </div>
+  <p></p>
+  <p class="para">
+   <em class="emphasis">Connection parameter defaults</em>
+  </p>
+  <p class="para">
+   Depending on the connection function used, assorted parameters
+   can be omitted. If a parameter is not provided, then the extension attempts to
+   use the default values that are set in the PHP configuration file.
+  </p>
+  <p class="para">
+   </p><div class="example" id="example-1702">
+    <p><strong>Example #2 Setting defaults</strong></p>
+    <div class="example-contents">
+<div class="inicode"><pre class="inicode">mysqli.default_host=192.168.2.27
+mysqli.default_user=root
+mysqli.default_pw=""
+mysqli.default_port=3306
+mysqli.default_socket=/tmp/mysql.sock</pre>
+</div>
+    </div>
+
+   </div>
+  <p></p>
+  <p class="para">
+   The resulting parameter values are then passed to the client library
+   that is used by the extension. If the client library detects empty or unset
+   parameters, then it may default to the library built-in values.
+  </p>
+  <p class="para">
+   <em class="emphasis">Built-in connection library defaults</em>
+  </p>
+  <p class="para">
+   If the host value is unset or empty, then the client library will
+   default to a Unix socket connection on <em>localhost</em>.
+   If socket is unset or empty, and a Unix socket connection is requested,
+   then a connection to the default socket on <em>/tmp/mysql.sock</em>
+   is attempted.
+  </p>
+  <p class="para">
+   On Windows systems, the host name <em>.</em> is interpreted
+   by the client library as an attempt to open a Windows named pipe based
+   connection. In this case the socket parameter is interpreted as the pipe
+   name. If not given or empty, then the socket (pipe name) defaults to
+   <em>\\.\pipe\MySQL</em>.
+  </p>
+  <p class="para">
+   If neither a Unix domain socket based not a Windows named pipe based connection
+   is to be established and the port parameter value is unset, the library
+   will default to port <em>3306</em>.
+  </p>
+  <p class="para">
+   The <a href="mysqlnd.overview.html" class="link">mysqlnd</a> library and the
+   MySQL Client Library (libmysqlclient) implement the same logic for determining defaults.
+  </p>
+  <p class="para">
+   <em class="emphasis">Connection options</em>
+  </p>
+  <p class="para">
+   Connection options are available to, for example, set
+   init commands which are executed upon connect, or for requesting use of
+   a certain charset. Connection options must be set before a network
+   connection is established.
+  </p>
+  <p class="para">
+   For setting a connection option, the connect operation has to be
+   performed in three steps: creating a connection handle with
+   <span class="function"><a href="mysqli.init.html" class="function">mysqli_init()</a></span>, setting the requested options using
+   <span class="function"><a href="mysqli.options.html" class="function">mysqli_options()</a></span>, and establishing the network
+   connection with <span class="function"><a href="mysqli.real-connect.html" class="function">mysqli_real_connect()</a></span>.
+  </p>
+  <p class="para">
+   <em class="emphasis">Connection pooling</em>
+  </p>
+  <p class="para">
+   The mysqli extension supports persistent database connections, which
+   are a special kind of pooled connections. By default, every database
+   connection opened by a script is either explicitly closed by the user during
+   runtime or released automatically at the end of the script. A persistent
+   connection is not. Instead it is put into a pool for later reuse, if
+   a connection to the same server using the same username, password, socket, port
+   and default database is opened. Reuse saves connection overhead.
+  </p>
+  <p class="para">
+   Every PHP process is using its own mysqli connection pool.
+   Depending on the web server deployment model, a PHP process may serve
+   one or multiple requests. Therefore, a pooled connection may be used
+   by one or more scripts subsequently.
+  </p>
+  <p class="para">
+   <em class="emphasis">Persistent connection</em>
+  </p>
+  <p class="para">
+   If a unused persistent connection for a given combination of host, username,
+   password, socket, port and default database can not be found in the connection pool,
+   then mysqli opens a new connection. The use of persistent connections can be
+   enabled and disabled using the PHP directive <a href="mysqli.configuration.html#ini.mysqli.allow-persistent" class="link">mysqli.allow_persistent</a>.
+   The total number of connections opened by a script can be limited with
+   <a href="mysqli.configuration.html#ini.mysqli.max-links" class="link">mysqli.max_links</a>. The maximum number of persistent connections
+   per PHP process can be restricted with <a href="mysqli.configuration.html#ini.mysqli.max-persistent" class="link">mysqli.max_persistent</a>.
+   Please note, that the web server may spawn many PHP processes.
+  </p>
+  <p class="para">
+   A common complain about persistent connections is that their state is
+   not reset before reuse. For example, open and unfinished transactions are not
+   automatically rolled back. But also, authorization changes which happened
+   in the time between putting the connection into the pool and reusing it
+   are not reflected. This may be seen as an unwanted side-effect. On the contrary,
+   the name <em>persistent</em> may be understood as a promise
+   that the state is persisted.
+  </p>
+  <p class="para">
+   The mysqli extension supports both interpretations of a persistent connection:
+   state persisted, and state reset before reuse. The default is reset.
+   Before a persistent connection is reused, the mysqli extension implicitly
+   calls <span class="function"><a href="mysqli.change-user.html" class="function">mysqli_change_user()</a></span> to reset the state. The
+   persistent connection appears to the user as if it was just opened. No
+   artifacts from previous usages are visible.
+  </p>
+  <p class="para">
+   The <span class="function"><a href="mysqli.change-user.html" class="function">mysqli_change_user()</a></span> function is an expensive operation.
+   For best performance, users may want to recompile the extension with the
+   compile flag <strong><code>MYSQLI_NO_CHANGE_USER_ON_PCONNECT</code></strong> being set.
+  </p>
+  <p class="para">
+   It is left to the user to choose between safe behavior and best performance.
+   Both are valid optimization goals. For ease of use, the safe behavior has
+   been made the default at the expense of maximum performance.
+  </p>
+  <p class="para">
+   <em class="emphasis">See also</em>
+  </p>
+  <p class="para">
+   </p><ul class="simplelist">
+    <li class="member"><span class="methodname"><a href="mysqli.construct.html" class="methodname">mysqli::__construct()</a></span></li>
+    <li class="member"><span class="methodname"><a href="mysqli.init.html" class="methodname">mysqli::init()</a></span></li>
+    <li class="member"><span class="methodname"><a href="mysqli.options.html" class="methodname">mysqli::options()</a></span></li>
+    <li class="member"><span class="methodname"><a href="mysqli.real-connect.html" class="methodname">mysqli::real_connect()</a></span></li>
+    <li class="member"><span class="methodname"><a href="mysqli.change-user.html" class="methodname">mysqli::change_user()</a></span></li>
+    <li class="member"><a href="mysqli.get-host-info.html" class="link">$mysqli::host_info</a></li>
+    <li class="member"><a href="mysqli.configuration.html" class="link">MySQLi Configuration Options</a></li>
+    <li class="member"><a href="features.persistent-connections.html" class="link">Persistent Database Connections</a></li>
+   </ul>
+  <p></p>
+ </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div>
+ <div class="note">There are no user contributed notes for this page.</div></section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/mysqli.quickstart.connections.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 17:01:38 GMT -->
+
+
+</body></html>

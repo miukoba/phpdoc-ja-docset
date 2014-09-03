@@ -1,0 +1,1087 @@
+<html><!-- Mirrored from php.net/manual/en/ref.pgsql.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:58:19 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>PostgreSQL Functions</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="ref.pgsql.html">
+ <link rel="shorturl" href="http://php.net/pgsql">
+ <link rel="alternate" href="http://php.net/pgsql" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="book.pgsql.html">
+ <link rel="prev" href="pgsql.examples-basic.html">
+ <link rel="next" href="function.pg-affected-rows.html">
+
+ <link rel="alternate" href="ref.pgsql.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/ref.pgsql.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/ref.pgsql.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/ref.pgsql.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/ref.pgsql.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/ref.pgsql.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/ref.pgsql.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/ref.pgsql.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/ref.pgsql.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/ref.pgsql.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/ref.pgsql.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.database.html">Database Extensions</a></li>      <li><a href="refs.database.vendors.html">Vendor Specific Database Extensions</a></li>      <li><a href="book.pgsql.html">PostgreSQL</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="ref.pgsql" class="reference">
+ <h1 class="title">PostgreSQL Functions</h1>
+
+ <div class="partintro">
+  <div class="section" id="pgsql.notes">
+  <h2 class="title">Notes</h2>
+   <blockquote class="note"><p><strong class="note">Note</strong>: 
+    </p><p class="para">
+     Not all functions are supported by all builds. It depends on your
+     libpq (The PostgreSQL C client library) version and how libpq is
+     compiled. If PHP PostgreSQL extensions are missing, then it is because
+     your libpq version does not support them. 
+    </p>
+   <p></p></blockquote>  
+   <blockquote class="note"><p><strong class="note">Note</strong>: 
+    </p><p class="para">
+     Most PostgreSQL functions accept <code class="parameter">connection</code> as
+     the optional first parameter. If it is not provided, the last opened
+     connection is used. If it doesn't exist, functions return <strong><code>FALSE</code></strong>.
+    </p>
+   <p></p></blockquote>
+   <blockquote class="note"><p><strong class="note">Note</strong>: 
+    </p><p class="para">
+     PostgreSQL automatically folds all identifiers (e.g. table/column names)
+     to lower-case values at object creation time and at query time. 
+     To force the use of mixed or upper case identifiers, you must escape
+     the identifier using double quotes ("").
+    </p>
+   <p></p></blockquote>
+   <blockquote class="note"><p><strong class="note">Note</strong>: 
+    </p><p class="para">
+     PostgreSQL does not have special commands for fetching database schema
+     information (eg. all the tables in the current database).  Instead, there
+     is a standard schema named <em>information_schema</em> in
+     PostgreSQL 7.4 and above containing
+     system views with all the necessary information, in an easily
+     queryable form.  See the <a href="http://www.postgresql.org/docs/current/interactive/" class="link external">»&nbsp;PostgreSQL Documentation</a>
+     for full details.  
+    </p>
+   <p></p></blockquote>
+  </div>
+ </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Table of Contents</h2><ul class="chunklist chunklist_reference"><li><a href="function.pg-affected-rows.html">pg_affected_rows</a> — Returns number of affected records (tuples)</li><li><a href="function.pg-cancel-query.html">pg_cancel_query</a> — Cancel an asynchronous query</li><li><a href="function.pg-client-encoding.html">pg_client_encoding</a> — Gets the client encoding</li><li><a href="function.pg-close.html">pg_close</a> — Closes a PostgreSQL connection</li><li><a href="function.pg-connect-poll.html">pg_connect_poll</a> — Poll the status of an in-progress asynchronous PostgreSQL connection
+   attempt.</li><li><a href="function.pg-connect.html">pg_connect</a> — Open a PostgreSQL connection</li><li><a href="function.pg-connection-busy.html">pg_connection_busy</a> — Get connection is busy or not</li><li><a href="function.pg-connection-reset.html">pg_connection_reset</a> — Reset connection (reconnect)</li><li><a href="function.pg-connection-status.html">pg_connection_status</a> — Get connection status</li><li><a href="function.pg-consume-input.html">pg_consume_input</a> — Reads input on the connection</li><li><a href="function.pg-convert.html">pg_convert</a> — Convert associative array values into suitable for SQL statement</li><li><a href="function.pg-copy-from.html">pg_copy_from</a> — Insert records into a table from an array</li><li><a href="function.pg-copy-to.html">pg_copy_to</a> — Copy a table to an array</li><li><a href="function.pg-dbname.html">pg_dbname</a> — Get the database name</li><li><a href="function.pg-delete.html">pg_delete</a> — Deletes records</li><li><a href="function.pg-end-copy.html">pg_end_copy</a> — Sync with PostgreSQL backend</li><li><a href="function.pg-escape-bytea.html">pg_escape_bytea</a> — Escape a string for insertion into a bytea field</li><li><a href="function.pg-escape-identifier.html">pg_escape_identifier</a> — Escape a identifier for insertion into a text field</li><li><a href="function.pg-escape-literal.html">pg_escape_literal</a> — Escape a literal for insertion into a text field</li><li><a href="function.pg-escape-string.html">pg_escape_string</a> — Escape a string for query</li><li><a href="function.pg-execute.html">pg_execute</a> — Sends a request to execute a prepared statement with given parameters, and waits for the result.</li><li><a href="function.pg-fetch-all-columns.html">pg_fetch_all_columns</a> — Fetches all rows in a particular result column as an array</li><li><a href="function.pg-fetch-all.html">pg_fetch_all</a> — Fetches all rows from a result as an array</li><li><a href="function.pg-fetch-array.html">pg_fetch_array</a> — Fetch a row as an array</li><li><a href="function.pg-fetch-assoc.html">pg_fetch_assoc</a> — Fetch a row as an associative array</li><li><a href="function.pg-fetch-object.html">pg_fetch_object</a> — Fetch a row as an object</li><li><a href="function.pg-fetch-result.html">pg_fetch_result</a> — Returns values from a result resource</li><li><a href="function.pg-fetch-row.html">pg_fetch_row</a> — Get a row as an enumerated array</li><li><a href="function.pg-field-is-null.html">pg_field_is_null</a> — Test if a field is SQL NULL</li><li><a href="function.pg-field-name.html">pg_field_name</a> — Returns the name of a field</li><li><a href="function.pg-field-num.html">pg_field_num</a> — Returns the field number of the named field</li><li><a href="function.pg-field-prtlen.html">pg_field_prtlen</a> — Returns the printed length</li><li><a href="function.pg-field-size.html">pg_field_size</a> — Returns the internal storage size of the named field</li><li><a href="function.pg-field-table.html">pg_field_table</a> — Returns the name or oid of the tables field</li><li><a href="function.pg-field-type-oid.html">pg_field_type_oid</a> — Returns the type ID (OID) for the corresponding field number</li><li><a href="function.pg-field-type.html">pg_field_type</a> — Returns the type name for the corresponding field number</li><li><a href="function.pg-flush.html">pg_flush</a> — Flush outbound query data on the connection</li><li><a href="function.pg-free-result.html">pg_free_result</a> — Free result memory</li><li><a href="function.pg-get-notify.html">pg_get_notify</a> — Gets SQL NOTIFY message</li><li><a href="function.pg-get-pid.html">pg_get_pid</a> — Gets the backend's process ID</li><li><a href="function.pg-get-result.html">pg_get_result</a> — Get asynchronous query result</li><li><a href="function.pg-host.html">pg_host</a> — Returns the host name associated with the connection</li><li><a href="function.pg-insert.html">pg_insert</a> — Insert array into table</li><li><a href="function.pg-last-error.html">pg_last_error</a> — Get the last error message string of a connection</li><li><a href="function.pg-last-notice.html">pg_last_notice</a> — Returns the last notice message from PostgreSQL server</li><li><a href="function.pg-last-oid.html">pg_last_oid</a> — Returns the last row's OID</li><li><a href="function.pg-lo-close.html">pg_lo_close</a> — Close a large object</li><li><a href="function.pg-lo-create.html">pg_lo_create</a> — Create a large object</li><li><a href="function.pg-lo-export.html">pg_lo_export</a> — Export a large object to file</li><li><a href="function.pg-lo-import.html">pg_lo_import</a> — Import a large object from file</li><li><a href="function.pg-lo-open.html">pg_lo_open</a> — Open a large object</li><li><a href="function.pg-lo-read-all.html">pg_lo_read_all</a> — Reads an entire large object and send straight to browser</li><li><a href="function.pg-lo-read.html">pg_lo_read</a> — Read a large object</li><li><a href="function.pg-lo-seek.html">pg_lo_seek</a> — Seeks position within a large object</li><li><a href="function.pg-lo-tell.html">pg_lo_tell</a> — Returns current seek position a of large object</li><li><a href="function.pg-lo-truncate.html">pg_lo_truncate</a> — Truncates a large object</li><li><a href="function.pg-lo-unlink.html">pg_lo_unlink</a> — Delete a large object</li><li><a href="function.pg-lo-write.html">pg_lo_write</a> — Write to a large object</li><li><a href="function.pg-meta-data.html">pg_meta_data</a> — Get meta data for table</li><li><a href="function.pg-num-fields.html">pg_num_fields</a> — Returns the number of fields in a result</li><li><a href="function.pg-num-rows.html">pg_num_rows</a> — Returns the number of rows in a result</li><li><a href="function.pg-options.html">pg_options</a> — Get the options associated with the connection</li><li><a href="function.pg-parameter-status.html">pg_parameter_status</a> — Looks up a current parameter setting of the server.</li><li><a href="function.pg-pconnect.html">pg_pconnect</a> — Open a persistent PostgreSQL connection</li><li><a href="function.pg-ping.html">pg_ping</a> — Ping database connection</li><li><a href="function.pg-port.html">pg_port</a> — Return the port number associated with the connection</li><li><a href="function.pg-prepare.html">pg_prepare</a> — Submits a request to create a prepared statement with the 
+  given parameters, and waits for completion.</li><li><a href="function.pg-put-line.html">pg_put_line</a> — Send a NULL-terminated string to PostgreSQL backend</li><li><a href="function.pg-query-params.html">pg_query_params</a> — Submits a command to the server and waits for the result, with the ability to pass parameters separately from the SQL command text.</li><li><a href="function.pg-query.html">pg_query</a> — Execute a query</li><li><a href="function.pg-result-error-field.html">pg_result_error_field</a> — Returns an individual field of an error report.</li><li><a href="function.pg-result-error.html">pg_result_error</a> — Get error message associated with result</li><li><a href="function.pg-result-seek.html">pg_result_seek</a> — Set internal row offset in result resource</li><li><a href="function.pg-result-status.html">pg_result_status</a> — Get status of query result</li><li><a href="function.pg-select.html">pg_select</a> — Select records</li><li><a href="function.pg-send-execute.html">pg_send_execute</a> — Sends a request to execute a prepared statement with given parameters, without waiting for the result(s).</li><li><a href="function.pg-send-prepare.html">pg_send_prepare</a> — Sends a request to create a prepared statement with the given parameters, without waiting for completion.</li><li><a href="function.pg-send-query-params.html">pg_send_query_params</a> — Submits a command and separate parameters to the server without waiting for the result(s).</li><li><a href="function.pg-send-query.html">pg_send_query</a> — Sends asynchronous query</li><li><a href="function.pg-set-client-encoding.html">pg_set_client_encoding</a> — Set the client encoding</li><li><a href="function.pg-set-error-verbosity.html">pg_set_error_verbosity</a> — Determines the verbosity of messages returned by pg_last_error 
+   and pg_result_error.</li><li><a href="function.pg-socket.html">pg_socket</a> — Get a read only handle to the socket underlying a PostgreSQL connection</li><li><a href="function.pg-trace.html">pg_trace</a> — Enable tracing a PostgreSQL connection</li><li><a href="function.pg-transaction-status.html">pg_transaction_status</a> — Returns the current in-transaction status of the server.</li><li><a href="function.pg-tty.html">pg_tty</a> — Return the TTY name associated with the connection</li><li><a href="function.pg-unescape-bytea.html">pg_unescape_bytea</a> — Unescape binary for bytea type</li><li><a href="function.pg-untrace.html">pg_untrace</a> — Disable tracing of a PostgreSQL connection</li><li><a href="function.pg-update.html">pg_update</a> — Update table</li><li><a href="function.pg-version.html">pg_version</a> — Returns an array with client, protocol and server version (when available)</li></ul>
+</div>
+
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="108639">  
+  <a class="name">
+  <strong class="user"><em>Tony Murray</em></strong></a><div class="date" title="2012-05-13 09:52"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom108639">
+<div class="phpcode"><code><span class="html">
+A simple conversion for 1D PostgreSQL array data:<br><br>// =====<br>//Example #1 (An array of IP addresses):<br><span class="default">&lt;?php<br>&nbsp; $pgsqlArr </span><span class="keyword">= </span><span class="string">'{192.168.1.1,10.1.1.1}'</span><span class="keyword">;<br><br>&nbsp; </span><span class="default">preg_match</span><span class="keyword">(</span><span class="string">'/^{(.*)}$/'</span><span class="keyword">, </span><span class="default">$pgsqlArr</span><span class="keyword">, </span><span class="default">$matches</span><span class="keyword">);<br>&nbsp; </span><span class="default">$phpArr </span><span class="keyword">= </span><span class="default">str_getcsv</span><span class="keyword">(</span><span class="default">$matches</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">]);<br><br>&nbsp; </span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$phpArr</span><span class="keyword">);<br>}<br></span><span class="comment">// Output:<br>// Array<br>// (<br>//&nbsp; &nbsp; [0] =&gt; 192.168.1.1<br>//&nbsp; &nbsp; [1] =&gt; 10.1.1.1<br>// )<br>// =====<br><br>// =====<br>// Example #2 (An array of strings including spaces and commas):<br></span><span class="keyword">&lt;?</span><span class="default">php<br>&nbsp; $pgsqlArr </span><span class="keyword">= </span><span class="string">'{string1,string2,"string,3","string 4"}'</span><span class="keyword">;<br><br>&nbsp; </span><span class="default">preg_match</span><span class="keyword">(</span><span class="string">'/^{(.*)}$/'</span><span class="keyword">, </span><span class="default">$pgsqlArr</span><span class="keyword">, </span><span class="default">$matches</span><span class="keyword">);<br>&nbsp; </span><span class="default">$phpArr </span><span class="keyword">= </span><span class="default">str_getcsv</span><span class="keyword">(</span><span class="default">$matches</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">]);<br><br>&nbsp; </span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$phpArr</span><span class="keyword">);<br>}<br></span><span class="comment">// Output:<br>// Array<br>// (<br>//&nbsp; &nbsp; [0] =&gt; string1<br>//&nbsp; &nbsp; [1] =&gt; string2<br>//&nbsp; &nbsp; [2] =&gt; string,3<br>//&nbsp; &nbsp; [3] =&gt; string 4<br>// )<br>// =====</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="53036">  
+  <a class="name">
+  <strong class="user"><em>WillowCatkin at hotmail dot com</em></strong></a><div class="date" title="2005-05-21 06:43"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom53036">
+<div class="phpcode"><code><span class="html">
+There is an example:<br><span class="default">&lt;?php<br></span><span class="comment">/*<br> * Define PostgreSQL database server connect parameters.<br> */<br></span><span class="default">define</span><span class="keyword">(</span><span class="string">'PGHOST'</span><span class="keyword">,</span><span class="string">'10.0.0.218'</span><span class="keyword">);<br></span><span class="default">define</span><span class="keyword">(</span><span class="string">'PGPORT'</span><span class="keyword">,</span><span class="default">5432</span><span class="keyword">);<br></span><span class="default">define</span><span class="keyword">(</span><span class="string">'PGDATABASE'</span><span class="keyword">,</span><span class="string">'example'</span><span class="keyword">);<br></span><span class="default">define</span><span class="keyword">(</span><span class="string">'PGUSER'</span><span class="keyword">, </span><span class="string">'root'</span><span class="keyword">);<br></span><span class="default">define</span><span class="keyword">(</span><span class="string">'PGPASSWORD'</span><span class="keyword">, </span><span class="string">'nopass'</span><span class="keyword">);<br></span><span class="default">define</span><span class="keyword">(</span><span class="string">'PGCLIENTENCODING'</span><span class="keyword">,</span><span class="string">'UNICODE'</span><span class="keyword">);<br></span><span class="default">define</span><span class="keyword">(</span><span class="string">'ERROR_ON_CONNECT_FAILED'</span><span class="keyword">,</span><span class="string">'Sorry, can not connect the database server now!'</span><span class="keyword">);<br><br></span><span class="comment">/*<br> * Merge connect string and connect db server with default parameters.<br> */<br></span><span class="default">pg_pconnect</span><span class="keyword">(</span><span class="string">'host=' </span><span class="keyword">. </span><span class="default">PGHOST </span><span class="keyword">. </span><span class="string">' port=' </span><span class="keyword">. </span><span class="default">PGPORT </span><span class="keyword">. </span><span class="string">' dbname=' </span><span class="keyword">. </span><span class="default">PGDATABASE </span><span class="keyword">. </span><span class="string">' user=' </span><span class="keyword">. </span><span class="default">PGUSER </span><span class="keyword">. </span><span class="string">' password=' </span><span class="keyword">. </span><span class="default">PGPASSWORD</span><span class="keyword">);<br><br></span><span class="comment">/*<br> * generate sql statements to call db-server-side stored procedure(or function) <br> * @parameter&nbsp; &nbsp; string&nbsp; &nbsp; $proc&nbsp; &nbsp; &nbsp; &nbsp; stored procedure name.<br> * @parameter&nbsp; &nbsp; array&nbsp; &nbsp; $paras&nbsp; &nbsp; &nbsp; &nbsp; parameters, 2 dimensions array.<br> * @return&nbsp; &nbsp; &nbsp; &nbsp; string&nbsp; &nbsp; $sql = 'select "proc"(para1,para2,para3);'<br> * @example&nbsp; &nbsp; pg_prepare('userExists',<br> *&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; array(<br> *&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; array('userName','chin','string'),<br> *&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; array('userId','7777','numeric')<br> *&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; )<br> * )<br> */<br></span><span class="keyword">function </span><span class="default">pg_prepare</span><span class="keyword">(</span><span class="default">$proc</span><span class="keyword">, </span><span class="default">$paras</span><span class="keyword">)<br>{<br>&nbsp; &nbsp; </span><span class="default">$sql </span><span class="keyword">= </span><span class="string">'select "' </span><span class="keyword">. </span><span class="default">$proc </span><span class="keyword">. </span><span class="string">'"('</span><span class="keyword">;<br>&nbsp; &nbsp; </span><span class="default">$sql </span><span class="keyword">.= </span><span class="default">$paras</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">][</span><span class="default">2</span><span class="keyword">] == </span><span class="string">'numeric' </span><span class="keyword">? </span><span class="default">$paras</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">][</span><span class="default">1</span><span class="keyword">] : </span><span class="string">"'" </span><span class="keyword">. </span><span class="default">str_replace</span><span class="keyword">(</span><span class="string">"'"</span><span class="keyword">,</span><span class="string">"''"</span><span class="keyword">,</span><span class="default">$paras</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">][</span><span class="default">1</span><span class="keyword">]) . </span><span class="string">"'"</span><span class="keyword">;<br>&nbsp; &nbsp; </span><span class="default">$len </span><span class="keyword">= </span><span class="default">count</span><span class="keyword">(</span><span class="default">$paras</span><span class="keyword">);<br>&nbsp; &nbsp; for (</span><span class="default">$i </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">; </span><span class="default">$i </span><span class="keyword">&lt; </span><span class="default">$len</span><span class="keyword">; </span><span class="default">$i </span><span class="keyword">++)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$sql </span><span class="keyword">.= </span><span class="string">','</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$sql </span><span class="keyword">.= </span><span class="default">$paras</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="default">2</span><span class="keyword">] == </span><span class="string">'numeric' </span><span class="keyword">? </span><span class="default">$paras</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="default">1</span><span class="keyword">] : </span><span class="string">"'" </span><span class="keyword">. </span><span class="default">str_replace</span><span class="keyword">(</span><span class="string">"'"</span><span class="keyword">,</span><span class="string">"''"</span><span class="keyword">,</span><span class="default">$paras</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="default">1</span><span class="keyword">]) . </span><span class="string">"'"</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; </span><span class="default">$sql </span><span class="keyword">.= </span><span class="string">');'</span><span class="keyword">;<br>&nbsp; &nbsp; return </span><span class="default">$sql</span><span class="keyword">;<br>}<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="71221">  
+  <a class="name"><strong class="user"><em>Anonymous</em></strong></a><div class="date" title="2006-11-16 04:30"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom71221">
+<div class="phpcode"><code><span class="html">
+Chris KL: Will parse well {"\\"}? The second " will be treat as escaped while it shoudn't...</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="70596">  
+  <a class="name"><strong class="user"><em>Anonymous</em></strong></a><div class="date" title="2006-10-20 10:10"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom70596">
+<div class="phpcode"><code><span class="html">
+Lots of advice on stored procedures didn't work for me.&nbsp; This did:<br><br><span class="default">&lt;?php<br>$response </span><span class="keyword">= </span><span class="default">pg_query</span><span class="keyword">( </span><span class="default">$connection</span><span class="keyword">, </span><span class="string">"BEGIN; DECLARE s CURSOR FOR SELECT get_consumer('harry'); FETCH ALL IN s; END;" </span><span class="keyword">);<br></span><span class="default">?&gt;<br></span><br>..where harry looks like this:<br><br>CREATE OR REPLACE FUNCTION get_consumer( varchar )<br>RETURNS refcursor<br>AS '<br>DECLARE<br>&nbsp; _name&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ALIAS FOR $1;<br>&nbsp; r&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; refcursor;<br>BEGIN<br>&nbsp; OPEN r FOR SELECT name FROM consumer<br>&nbsp; WHERE<br>&nbsp; &nbsp; consumer.name = _name<br>&nbsp; ;<br>&nbsp; RETURN r;<br>END<br>' LANGUAGE 'plpgsql';</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="58660">  
+  <a class="name">
+  <strong class="user"><em>Chris KL</em></strong></a><div class="date" title="2005-11-10 05:17"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom58660">
+<div class="phpcode"><code><span class="html">
+Here is a better array parser for PHP.&nbsp; It will work with 1-d arrays only.&nbsp; Unlike the example below it will work in all cases.<br><br>&nbsp; &nbsp; /**<br>&nbsp; &nbsp;&nbsp; * Change a db array into a PHP array<br>&nbsp; &nbsp;&nbsp; * @param $arr String representing the DB array<br>&nbsp; &nbsp;&nbsp; * @return A PHP array<br>&nbsp; &nbsp;&nbsp; */<br>&nbsp; &nbsp; function phpArray($dbarr) {<br>&nbsp; &nbsp; &nbsp; &nbsp; // Take off the first and last characters (the braces)<br>&nbsp; &nbsp; &nbsp; &nbsp; $arr = substr($dbarr, 1, strlen($dbarr) - 2);<br><br>&nbsp; &nbsp; &nbsp; &nbsp; // Pick out array entries by carefully parsing.&nbsp; This is necessary in order<br>&nbsp; &nbsp; &nbsp; &nbsp; // to cope with double quotes and commas, etc.<br>&nbsp; &nbsp; &nbsp; &nbsp; $elements = array();<br>&nbsp; &nbsp; &nbsp; &nbsp; $i = $j = 0;&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; $in_quotes = false;<br>&nbsp; &nbsp; &nbsp; &nbsp; while ($i &lt; strlen($arr)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; // If current char is a double quote and it's not escaped, then<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; // enter quoted bit<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $char = substr($arr, $i, 1);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if ($char == '"' &amp;&amp; ($i == 0 || substr($arr, $i - 1, 1) != '\\')) <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $in_quotes = !$in_quotes;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; elseif ($char == ',' &amp;&amp; !$in_quotes) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; // Add text so far to the array<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $elements[] = substr($arr, $j, $i - $j);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $j = $i + 1;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $i++;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; // Add final text to the array<br>&nbsp; &nbsp; &nbsp; &nbsp; $elements[] = substr($arr, $j);<br><br>&nbsp; &nbsp; &nbsp; &nbsp; // Do one further loop over the elements array to remote double quoting<br>&nbsp; &nbsp; &nbsp; &nbsp; // and escaping of double quotes and backslashes<br>&nbsp; &nbsp; &nbsp; &nbsp; for ($i = 0; $i &lt; sizeof($elements); $i++) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $v = $elements[$i];<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (strpos($v, '"') === 0) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $v = substr($v, 1, strlen($v) - 2);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $v = str_replace('\\"', '"', $v);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $v = str_replace('\\\\', '\\', $v);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $elements[$i] = $v;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br><br>&nbsp; &nbsp; &nbsp; &nbsp; return $elements;<br>&nbsp; &nbsp; }</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="57709">  
+  <a class="name">
+  <strong class="user"><em>1413 at blargh dot com</em></strong></a><div class="date" title="2005-10-11 05:09"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom57709">
+<div class="phpcode"><code><span class="html">
+Here is some quick and dirty code to convert Postgres-returned arrays into PHP arrays.&nbsp; There's probably a billion bugs, but since I'm only dealing with variable-depth-and-length arrays of integers, it works for my needs.<br><br>Most notably, any data that might have commas in it won't work right...<br><br><span class="default">&lt;?php<br></span><span class="keyword">function </span><span class="default">PGArrayToPHPArray</span><span class="keyword">(</span><span class="default">$pgArray</span><span class="keyword">)<br>{<br>&nbsp; </span><span class="default">$ret </span><span class="keyword">= array();<br>&nbsp; </span><span class="default">$stack </span><span class="keyword">= array(&amp;</span><span class="default">$ret</span><span class="keyword">);<br>&nbsp; </span><span class="default">$pgArray </span><span class="keyword">= </span><span class="default">substr</span><span class="keyword">(</span><span class="default">$pgArray</span><span class="keyword">, </span><span class="default">1</span><span class="keyword">, -</span><span class="default">1</span><span class="keyword">);<br>&nbsp; </span><span class="default">$pgElements </span><span class="keyword">= </span><span class="default">explode</span><span class="keyword">(</span><span class="string">","</span><span class="keyword">, </span><span class="default">$pgArray</span><span class="keyword">);<br>&nbsp; <br>&nbsp; </span><span class="default">ArrayDump</span><span class="keyword">(</span><span class="default">$pgElements</span><span class="keyword">);<br><br>&nbsp; foreach(</span><span class="default">$pgElements </span><span class="keyword">as </span><span class="default">$elem</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; if(</span><span class="default">substr</span><span class="keyword">(</span><span class="default">$elem</span><span class="keyword">,-</span><span class="default">1</span><span class="keyword">) == </span><span class="string">"}"</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$elem </span><span class="keyword">= </span><span class="default">substr</span><span class="keyword">(</span><span class="default">$elem</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">,-</span><span class="default">1</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$newSub </span><span class="keyword">= array();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; while(</span><span class="default">substr</span><span class="keyword">(</span><span class="default">$elem</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">,</span><span class="default">1</span><span class="keyword">) != </span><span class="string">"{"</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$newSub</span><span class="keyword">[] = </span><span class="default">$elem</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$elem </span><span class="keyword">= </span><span class="default">array_pop</span><span class="keyword">(</span><span class="default">$ret</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$newSub</span><span class="keyword">[] = </span><span class="default">substr</span><span class="keyword">(</span><span class="default">$elem</span><span class="keyword">,</span><span class="default">1</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$ret</span><span class="keyword">[] = </span><span class="default">array_reverse</span><span class="keyword">(</span><span class="default">$newSub</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; else<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$ret</span><span class="keyword">[] = </span><span class="default">$elem</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>&nbsp; return </span><span class="default">$ret</span><span class="keyword">;<br>}<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="53559">  
+  <a class="name">
+  <strong class="user"><em>anis_wn at gawab dot com</em></strong></a><div class="date" title="2005-06-05 09:45"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom53559">
+<div class="phpcode"><code><span class="html">
+Setting up PostgreSQL for higher security PHP connection.<br><br>Case:<br>We want to connect to PostgreSQL database using username and password supplied by webuser at login time.<br><br>Fact (Linux):<br>Apache (perhaps other servers, too) running the server as (default to) apache user account. So if you connect to PostgreSQL using default user, apache will be assingned for it. If you hard code the user and password in your PHP script, you'll loose security restriction from PostgreSQL.<br><br>Solution:<br>(You are assumed to have enough privilege to do these things, though)<br>1. Edit pg_hba.conf to have the line like the one below<br>&nbsp; &nbsp; host&nbsp; &nbsp; db_Name&nbsp; &nbsp; [web_server_ip_address] [ip_address_mask] md5<br>2. Add to you script the login page that submits username and password.<br>3. Use those information to login to PostgreSQL like these...<br>&lt;?<br>&nbsp; &nbsp; $conn = "host=$DBHost port=$DBPort dbname=$DBName ".<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "user='{$_POST['dbUsername']}' password='{$_POST['dbPassword']}'";<br>&nbsp; &nbsp; $db = pg_connect ($conn);<br>[your other codes go here...]<br>?&gt;<br>4. You must add users in PostgreSQL properly.<br>5. For your convenience, you can store the username and password to $_SESSION variable.<br><br>Good luck.<br>Anis WN</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="46209">  
+  <a class="name">
+  <strong class="user"><em>adaml at mimuw edu pl</em></strong></a><div class="date" title="2004-10-02 06:07"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom46209">
+<div class="phpcode"><code><span class="html">
+Yes, PHP does support stored procedures<br>You have to add "select" before the name of the <br>procedure, just like that:<br><br>$result = pg_querry($conn, "SELECT procedure_x($aa)");<br><br>if a procedure returns a cursor you do something like that:<br><br>$result = pg_query($conn, "SELECT procedure_x('rcursor'); FETCH ALL IN rcursor");</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="43751">  
+  <a class="name">
+  <strong class="user"><em>74012 dot 2773 at compuserve dot com</em></strong></a><div class="date" title="2004-07-01 09:35"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom43751">
+<div class="phpcode"><code><span class="html">
+for just a list of tables, this works with postgresql-7.2.1:<br><br>function pg_list_tables($db) {<br>&nbsp; &nbsp; $sql = "select relname from pg_stat_user_tables order by relname;";<br>&nbsp; &nbsp; return pg_query($db, $sql);<br>}</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="42679">  
+  <a class="name">
+  <strong class="user"><em>abondi at ijk dot it</em></strong></a><div class="date" title="2004-05-26 05:11"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom42679">
+<div class="phpcode"><code><span class="html">
+I've found another function to mimic the following mysql list tables function (<a rel="nofollow" target="_blank">http://www.php.net/manual/en/function.mysql-list-tables.php</a>) that's more useful for my target:<br><br>function pg_list_tables() {<br>&nbsp; &nbsp; &nbsp; $sql = "SELECT a.relname AS Name<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; FROM pg_class a, pg_user b<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; WHERE ( relkind = 'r') and relname !~ '^pg_' AND relname !~ '^sql_'<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; AND relname !~ '^xin[vx][0-9]+' AND b.usesysid = a.relowner<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; AND NOT (EXISTS (SELECT viewname FROM pg_views WHERE viewname=a.relname));";<br>&nbsp; &nbsp; &nbsp; return(pg_query($conn, $sql));<br>}</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="28047">  
+  <a class="name">
+  <strong class="user"><em>daniel at bichara dot com dot br</em></strong></a><div class="date" title="2002-12-30 05:04"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom28047">
+<div class="phpcode"><code><span class="html">
+Running RedHat Linux and Apache with suexec enabled you must include pgsql.so on each .php file using dl("pgsql.so") and remove "extension=pgsql.so" from php.ini, otherwise Apache (httpd) will not start.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="27265">  
+  <a class="name">
+  <strong class="user"><em>anonymous at unknown dot com</em></strong></a><div class="date" title="2002-11-29 09:50"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom27265">
+<div class="phpcode"><code><span class="html">
+I just wanted to add to my previous post I've got the system up and running.<br>Environment: Windows XP, Apache 1.3.23, Php 4.3 RC2, PostGreSQL beta4 native windows build<br><br>Installation was fairly easy: <br>1. read the readme.txt<br>2. edit the setenv.bat as described in readme<br>3. run 'initdb'<br>&nbsp; &nbsp; all execs are in /bin<br>&nbsp; &nbsp; help is accessed like &lt;command&gt; --help<br>4. Start the psql deamon - you may want to create a batch file like<br>&nbsp; &nbsp; 'D:\postgres_beta4\bin\postmaster -h localhost -D D:/postgres_beta4/data'<br><br>&nbsp; &nbsp; --deamon should be up and running now--<br><br>You can login into a shell from a console like<br>&nbsp; &nbsp; 'psql -h localhost -d &lt;username&gt;'<br><br>You must load the postgresql extension by editing the php.ini and restarting apache in order to access psql with php.<br><br>And one final not: when running<br>&nbsp; &nbsp; $dbconn = pg_connect ("host=localhost port=5432 dbname=$dbname user=$user");<br>remember that $user and or $dbname is CASESENSITIVE.<br><br>Oh yeah, I created the data dir manually - don't know whether that was necessary<br><br>Grtz Vargo</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="18749">  
+  <a class="name">
+  <strong class="user"><em>mystran at wasteland dot pp dot htv dot fi</em></strong></a><div class="date" title="2002-02-03 07:46"><strong>12 years ago</strong></div>
+  <div class="text" id="Hcom18749">
+<div class="phpcode"><code><span class="html">
+Nice to know fact that I didn't find documented here.
+<br>
+<br>PHP will return values of PostgreSQL boolean datatype as single character strings "t" and "f", not PHP true and false.
+<br>
+<br>[Editor's Note]
+<br>'t' or 'f' is valid boolean expression for PostgreSQL.
+<br>
+<br>All values from PostgreSQL are strings, since PostgreSQL integer, float may be much larger than PHP's native int, double can handle. PostgreSQL array is not supported.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="15521">  
+  <a class="name">
+  <strong class="user"><em>saberit at home dot com</em></strong></a><div class="date" title="2001-09-15 02:11"><strong>12 years ago</strong></div>
+  <div class="text" id="Hcom15521">
+<div class="phpcode"><code><span class="html">
+I tried compiling PHP from source with PostgreSQL support (./configure --with-pgsql=/usr/local/pgsql) and ran into a bunch of problems when trying to 'make'. The problem was that some of the PostgreSQL headers were not installed by default when I installed PostgreSQL from source. When installing PostgreSQL make sure you 'make install-all-headers' after you 'make install'.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="13904">  
+  <a class="name">
+  <strong class="user"><em>hubert at hubertmuller dot com</em></strong></a><div class="date" title="2001-07-09 04:36"><strong>13 years ago</strong></div>
+  <div class="text" id="Hcom13904">
+<div class="phpcode"><code><span class="html">
+The best way to find the separated list of tables, sequences, keys etc is:
+<br>
+<br>SELECT relname FROM pg_class WHERE relkind='&lt;value&gt;' AND relname !~ '^pg_';
+<br>
+<br>&lt;value&gt; takes:
+<br>i for keys,
+<br>r for relations,
+<br>S for sequences
+<br>
+<br>Note that all tables names that begins with 'pg_' are PostgreSQL internal tables (this explain why I use AND relname !~ '^pg_' condition).</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="13660">  
+  <a class="name">
+  <strong class="user"><em>passion at monkey dot org</em></strong></a><div class="date" title="2001-06-27 06:53"><strong>13 years ago</strong></div>
+  <div class="text" id="Hcom13660">
+<div class="phpcode"><code><span class="html">
+I've tried to mimic the following mysql database connection functions for postgres. 
+<br><a rel="nofollow" target="_blank">http://www.php.net/manual/en/function.mysql-list-dbs.php</a>
+<br><a rel="nofollow" target="_blank">http://www.php.net/manual/en/function.mysql-list-tables.php</a>
+<br>
+<br>These are assuming that you're passing in $link as the result from pg_connect:
+<br>
+<br>function pg_list_dbs($link)
+<br>{&nbsp; 
+<br>&nbsp; &nbsp; $sql = 'SELECT datname FROM pg_database';
+<br>&nbsp; &nbsp; return (pg_query($link, $sql));
+<br>}&nbsp; 
+<br>
+<br>function pg_list_tables($link)
+<br>{&nbsp; 
+<br>&nbsp; &nbsp; $sql = "SELECT relname FROM pg_class WHERE relname !~ '^pg_'";
+<br>&nbsp; &nbsp; return (pg_query($link, $sql));
+<br>}</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="12467">  
+  <a class="name">
+  <strong class="user"><em>!spamcraig at ahdore dot com</em></strong></a><div class="date" title="2001-04-15 01:11"><strong>13 years ago</strong></div>
+  <div class="text" id="Hcom12467">
+<div class="phpcode"><code><span class="html">
+If you want to extract data from select statements, you need to store the result index, and then apply pg_result to that value. Basically, do this
+<br>
+<br>$resultIdx = pg_query ($database, "select * from tablename");
+<br>$mySelect = pg_fetch_result($resultIdx, 0, 0);&nbsp; // gets column 0 of tuple 0
+<br>echo("My select: [".$mySelect."]");
+<br>
+<br>I'm new to php and had to do some fiddling around to work this out. It's reasonably elementary, but not demonstrated by the examples on these pages. Hopefully it will come in useful to someone else.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="4113">  
+  <a class="name">
+  <strong class="user"><em>bleach at chek dot com</em></strong></a><div class="date" title="2000-03-02 12:36"><strong>14 years ago</strong></div>
+  <div class="text" id="Hcom4113">
+<div class="phpcode"><code><span class="html">
+If you want to see all the objects in a database, you can find that information in the pg_class table. &lt;BR&gt;
+<br>SELECT * FROM pg_class;&lt;BR&gt;
+<br>Now this is going to be kind of long and complex, to see how psql command handles the \d and other things. use the syntax.&nbsp; psql -E &lt;Database&gt;, ie psql -E mydatabase &lt;BR&gt;
+<br>What this will do is show the SQL command used for everything. So when you type a \d or something, it shows the SQL query used for the result.</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/ref.pgsql.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:58:20 GMT -->
+
+
+</body></html>

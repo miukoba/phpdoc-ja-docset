@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>テスト</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="internals2.pdo.building.html">≪ ビルド</a></li>
+      <li style="float: right;"><a href="internals2.pdo.packaging.html">パッケージングおよび配布 ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="internals2.pdo.html">PDO ドライバ How-To</a></li>
+    <li>テスト</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="internals2.pdo.testing" class="sect1">
+ <h2 class="title">テスト</h2>
+ <p class="para">
+  PDO のドライバをリリースする前には「コア」テストをパスする必要があります。
+  このテストは PHP のソース配布物から実行するように設計されており、
+  ドライバのテストを行うには多少の手続きが必要になります。最新の PHP 5.1
+  スナップショットを取得し、以下の手順で進めることを推奨します。
+ </p>
+
+ <div class="example-contents screen"><div class="cdata"><pre>
+$ cp -r pdo_SKEL /path/to/php-5.1/ext
+</pre></div></div>
+ <p class="para">
+  これにより、テストを実行するためのハーネスをセットします。
+  次にすべきことは、PDO の共通コアテストにリダイレクトするテストを
+  作成することです。このファイルの名前は
+  <var class="filename">common.phpt</var> とし、
+  <strong class="command">ext_skel</strong> で雛形を作成したときに同時に作成された
+  tests ディレクトリの中に置かなければなりません。
+  このファイルの中身は以下のようになります。
+ </p>
+ <div class="example-contents"><div class="phptestcode"><pre class="phptestcode">--TEST--
+SKEL
+--SKIPIF--
+&lt;?php # vim:ft=php
+if (!extension_loaded(&#039;pdo_SKEL&#039;)) print &#039;skip&#039;; ?&gt;
+--REDIRECTTEST--
+if (false !== getenv(&#039;PDO_SKEL_TEST_DSN&#039;)) {
+# user set them from their shell
+   $config[&#039;ENV&#039;][&#039;PDOTEST_DSN&#039;] = getenv(&#039;PDO_SKEL_TEST_DSN&#039;);
+   $config[&#039;ENV&#039;][&#039;PDOTEST_USER&#039;] = getenv(&#039;PDO_SKEL_TEST_USER&#039;);
+   $config[&#039;ENV&#039;][&#039;PDOTEST_PASS&#039;] = getenv(&#039;PDO_SKEL_TEST_PASS&#039;);
+   if (false !== getenv(&#039;PDO_SKEL_TEST_ATTR&#039;)) {
+      $config[&#039;ENV&#039;][&#039;PDOTEST_ATTR&#039;] = getenv(&#039;PDO_SKEL_TEST_ATTR&#039;);
+   }
+   return $config;
+}
+return array(
+   &#039;ENV&#039; =&gt; array(
+           &#039;PDOTEST_DSN&#039; =&gt; &#039;SKEL:dsn&#039;,
+           &#039;PDOTEST_USER&#039; =&gt; &#039;username&#039;,
+           &#039;PDOTEST_PASS&#039; =&gt; &#039;password&#039;
+       ),
+   &#039;TESTS&#039; =&gt; &#039;ext/pdo/tests&#039;
+   );</pre>
+</div></div>
+
+
+ <p class="para">
+  これは共通コアテストを実行し、
+  <em>PDOTEST_DSN</em>、<em>PDOTEST_USER</em> および
+  <em>PDOTEST_PASS</em> をそれぞれ PDO コンストラクタの
+  パラメータ <code class="parameter">dsn</code>、<code class="parameter">username</code>
+  および <code class="parameter">password</code> として渡します。
+  テストハーネスの実行時には、まずはじめに環境変数をチェックします。
+  もし存在すれば、テストファイル内にハードコーディングされた条件の
+  かわりにそれらの適切な値を渡すようにします。
+ </p>
+
+ <p class="para">
+  テストハーネスは以下のように起動します。
+ </p>
+
+ <div class="example-contents screen"><div class="cdata"><pre>
+$ cd /path/to/php-5.1
+$ make TESTS=ext/pdo_SKEL/tests PDO_SKEL_TEST_DSN=&quot;skel:dsn&quot; \
+ PDO_SKEL_TEST_USER=user PDO_SKEL_TEST_PASS=pass test
+ </pre></div></div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

@@ -1,0 +1,708 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>設定</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="install.fpm.install.html">≪ インストール</a></li>
+      <li style="float: right;"><a href="install.pecl.html">PECL 拡張モジュールのインストール ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="install.fpm.html">FastCGI Process Manager (FPM)</a></li>
+    <li>設定</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="install.fpm.configuration" class="sect1">
+   <h2 class="title">設定</h2>
+   <p class="para">
+    FPM では、<var class="filename">php.ini</var> 形式の構文の設定ファイル <var class="filename">php-fpm.conf</var> と、プール設定ファイルを使います。
+   </p>
+   <div class="sect2"> 
+    <h3 class="title"><var class="filename">php-fpm.conf</var> のグローバル設定項目</h3>
+    <dl>
+
+     
+      <dt id="pid">
+       <code class="parameter">pid</code>
+       <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        PID ファイルへのパス。デフォルト値: なし
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="error-log">
+       <code class="parameter">error_log</code>
+       <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        エラーログファイルへのパス。デフォルト値:
+        <em>#INSTALL_PREFIX#/log/php-fpm.log</em>
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="log-level">
+       <code class="parameter">log_level</code>
+       <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        エラーログのレベル。使用可能な値: alert, error, warning, notice,
+        debug、デフォルト値: notice
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="emergency-restart-threshold">
+       <code class="parameter">emergency_restart_threshold</code>
+       <span class="type"><a href="language.types.integer.html" class="type int">int</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        <em>emergency_restart_interval</em> で設定された間隔で
+        この数以上の子プロセスが SIGSEGV あるいは SIGBUS で終了した場合に
+        FPM は再起動します。0 は &#039;オフ&#039; を意味します。デフォルト値: 0 (オフ)
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="emergency-restart-interval">
+       <code class="parameter">emergency_restart_interval</code>
+       <span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        emergency_restart_interval が緩やかな再起動をいつ実行するかを決めるときに使う間隔。
+        これは、アクセラレータの共有メモリが壊れてしまったときの回避策として有用です。
+        使用可能な単位: s(秒), m(分), h(時間) あるいは d(日)、
+        デフォルトの単位: 秒、デフォルト値: 0 (オフ)
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="process-control-timeout">
+       <code class="parameter">process_control_timeout</code>
+       <span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        子プロセスが、マスタからのシグナルの反応を待つ最大時間。
+        使用可能な単位: s(秒), m(分), h(時間) あるいは d(日)、
+        デフォルトの単位: 秒、デフォルト値: 0
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="daemonize">
+       <code class="parameter">daemonize</code>
+       <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        FPM をバックグラウンドに送る。&#039;no&#039; にすると
+        デバッグ用に FPM をフォアグラウンドに置き続けます。
+        デフォルト値: yes
+       </p> 
+      </dd>
+
+     
+    </dl>
+
+   </div>
+
+   <div class="sect2"> 
+    <h3 class="title">プール一覧の項目</h3>
+    <p class="para">
+     FPM を使うと、複数のプロセスプールをそれぞれ別の設定で実行することができます。
+     プール単位での設定を行う項目を以下に示します。
+    </p>
+    <dl>
+
+     
+      <dt id="listen">
+       <code class="parameter">listen</code>
+       <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        FastCGI リクエストを受け入れるアドレス。
+        &#039;ip.add.re.ss:port&#039;, &#039;port&#039;, &#039;/path/to/unix/socket&#039; 形式の構文が使えます。
+        このオプションは、各プール単位で必須となります。
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="listen-backlog">
+       <code class="parameter">listen.backlog</code>
+       <span class="type"><a href="language.types.integer.html" class="type int">int</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        listen(2) のバックログを設定します。&#039;-1&#039; は無制限を意味します。
+        デフォルト値: -1
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="listen-allowed-clients">
+       <code class="parameter">listen.allowed_clients</code>
+       <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        接続を許可されている FastCGI クライアントの ipv4 アドレス一覧。オリジナル版 PHP FastCGI (5.2.2+)
+        における環境変数 FCGI_WEB_SERVER_ADDRS と同じです。
+        tcp でリスンするソケットに対してのみ意味をなします。
+        書くアドレスはカンマ区切りで指定します。この値を空にしておくと、任意の ip アドレスからの接続を許可します。
+        デフォルト値: 任意の ip アドレスを許可
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="listen-owner">
+       <code class="parameter">listen.owner</code>
+       <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        unix ソケットを使う場合に、そのパーミッションを設定します。Linux では、
+        読み書きアクセス権限を設定しないとウェブサーバーからの接続を受け付けることができません。
+        多くの BSD 由来のシステムでは、パーミッションにかかわらず接続を受け付けることができます。
+        デフォルト値: ユーザーとグループは実行しているユーザーと同じ、モードは 0660
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="listen-group">
+       <code class="parameter">listen.group</code>
+       <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        <em>listen.owner</em> を参照ください。
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="listen-mode">
+       <code class="parameter">listen.mode</code>
+       <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        <em>listen.owner</em> を参照ください。
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="user">
+       <code class="parameter">user</code>
+       <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        FPM プロセスの unix ユーザー。このオプションは必須です。
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="group">
+       <code class="parameter">group</code>
+       <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        FPM プロセスの unix グループ。未設定の場合は、デフォルトのユーザーのグループを使います。
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="pm">
+       <code class="parameter">pm</code>
+       <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        プロセスマネージャが子プロセスの数を制御する方法を選択します。
+        使用可能な値: <em>static</em>, <em>ondemand</em>, <em>dynamic</em>
+        このオプションは必須です。
+       </p>
+       <p class="para">
+        <em>static</em> - 子プロセスの数は固定 (<em>pm.max_children</em>) です。
+       </p>
+       <p class="para">
+        <em>ondemand</em> - プロセスを必要に応じて立ち上げます。
+        dynamic とは対照的に、リクエストされると
+        <em>pm.start_servers</em> で指定しただけサービスを開始します。
+       </p>
+       <p class="para">
+        <em>dynamic</em> - 子プロセスの数は、
+        <em>pm.max_children</em>、<em>pm.start_servers</em>、
+        <em>pm.min_spare_servers</em>、<em>pm.max_spare_servers</em>
+        の内容に基づいて動的に設定されます。
+       </p>
+      </dd>
+
+     
+     
+      <dt id="pm.max-chidlren">
+       <code class="parameter">pm.max_children</code>
+       <span class="type"><a href="language.types.integer.html" class="type int">int</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        <em>pm</em> が <em>static</em> の場合は作成される子プロセスの数、
+        <em>pm</em> が <em>dynamic</em> の場合は作成される子プロセスの最大数。
+        このオプションは必須です。
+       </p>
+       <p class="para">
+        このオプションは、同時に処理できるリクエストの最大数を設定します。 
+        mpm_prefork での ApacheMaxClients ディレクティブや、
+        オリジナル版の PHP FastCGI における環境変数 <var class="varname"><var class="varname">PHP_FCGI_CHILDREN</var></var>
+        と同じです。
+       </p>
+      </dd>
+
+     
+     
+      <dt id="pm.start-servers">
+       <code class="parameter">pm.start_servers</code>
+       <span class="type"><a href="language.types.integer.html" class="type int">int</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        起動時に作成される子プロセスの数。<em>pm</em> が <em>dynamic</em>
+        の場合にのみ使います。デフォルト値: min_spare_servers + (max_spare_servers -
+        min_spare_servers) / 2
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="pm.min-spare-servers">
+       <code class="parameter">pm.min_spare_servers</code>
+       <span class="type"><a href="language.types.integer.html" class="type int">int</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        アイドル状態のサーバープロセス数の最小値。
+        <em>pm</em> が <em>dynamic</em> の場合にのみ使います。
+        また、この場合には必須となります。
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="pm.max-spare-servers">
+       <code class="parameter">pm.max_spare_servers</code>
+       <span class="type"><a href="language.types.integer.html" class="type int">int</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        アイドル状態のサーバープロセス数の最大値。
+        <em>pm</em> が <em>dynamic</em> の場合にのみ使います。
+        また、この場合には必須となります。
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="pm.max-requests">
+       <code class="parameter">pm.max_requests</code>
+       <span class="type"><a href="language.types.integer.html" class="type int">int</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        各子プロセスが、再起動するまでに実行するリクエスト数。
+        サードパーティのライブラリにおけるメモリリークの回避策として便利です。
+        再起動せずにずっとリクエストを処理させる場合は &#039;0&#039; を指定します。
+        <var class="varname"><var class="varname">PHP_FCGI_MAX_REQUESTS</var></var> と同じです。デフォルト値: 0
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="pm.status-path">
+       <code class="parameter">pm.status_path</code>
+       <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        FPM の情報ページを見るための URI。この値を省略した場合は、どの URI
+        も情報ページとは見なされません。デフォルト値: なし
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="ping.path">
+       <code class="parameter">ping.path</code>
+       <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        FPM のモニタリングページをコールするための ping URI。この値を省略した場合は、どの URI
+        も ping ページとは見なされません。これを使うと、
+        FPM が生きていて応答するかどうかを外部から確かめることができます。
+        この値の最初はスラッシュ (/) で始めなければならないことに注意しましょう。
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="ping.response">
+       <code class="parameter">ping.response</code>
+       <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        このディレクティブを使うと、ping リクエストに対するレスポンスをカスタマイズすることができます。
+        このレスポンスは text/plain 形式となり、レスポンスコード 200 で返されます。
+        デフォルト値: pong
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="request-terminate-timeout">
+       <code class="parameter">request_terminate_timeout</code>
+       <span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        単一のリクエストを処理する際のタイムアウト。この時間を過ぎるとワーカープロセスが kill されます。
+        このオプションは、&#039;max_execution_time&#039; ini オプションが何らかの理由でスクリプトの実行を止められなかった場合に使われます。
+        値 &#039;0&#039; は &#039;Off&#039; を意味します。 
+        使用可能な単位: s(秒)(デフォルト), m(分), h(時間) あるいは d(日)、
+        デフォルト値: 0
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="request-slowlog-timeout">
+       <code class="parameter">request_slowlog_timeout</code>
+       <span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        単一のリクエストを処理する際のタイムアウト。この時間を過ぎると
+        PHP のバックトレースが &#039;slowlog&#039; ファイルに出力されます。 
+        値 &#039;0&#039; は &#039;Off&#039; を意味します。 
+        使用可能な単位: s(秒)(デフォルト), m(分), h(時間) あるいは d(日)、
+        デフォルト値: 0
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="slowlog">
+       <code class="parameter">slowlog</code>
+       <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        遅いリクエストを記録するログファイル。デフォルト値:
+        <em>#INSTALL_PREFIX#/log/php-fpm.log.slow</em>
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="rlimit-files">
+       <code class="parameter">rlimit_files</code>
+       <span class="type"><a href="language.types.integer.html" class="type int">int</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        オープン時のファイル記述子の rlimit。デフォルト値: システムで定義されている値
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="rlimit-core">
+       <code class="parameter">rlimit_core</code>
+       <span class="type"><a href="language.types.integer.html" class="type int">int</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        最大コアサイズの rlimit。
+        使用可能な値: &#039;unlimited&#039; あるいは 0 以上の整数値、
+        デフォルト値: システムで定義されている値
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="chroot">
+       <code class="parameter">chroot</code>
+       <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        このディレクトリに chroot して開始位置とします。この値は絶対パスで指定しなければなりません。
+        この値を省略した場合は、chroot を使いません。
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="chdir">
+       <code class="parameter">chdir</code>
+       <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        このディレクトリに chdir して開始位置とします。この値は絶対パスで指定しなければなりません。
+        デフォルト値: カレントディレクトリ、あるいは chroot した場合は /
+       </p> 
+      </dd>
+
+     
+     
+      <dt id="catch-workers-output">
+       <code class="parameter">catch_workers_output</code>
+       <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+      </dt>
+
+      <dd>
+
+       <p class="para">
+        ワーカーの標準出力および標準エラー出力を本体のエラーログにリダイレクトします。
+        省略した場合は、FastCGI の仕様にしたがって標準出力および標準エラー出力を
+        /dev/null にリダイレクトします。
+        デフォルト値: no
+       </p> 
+      </dd>
+
+     
+    </dl>
+
+    <p class="para">
+     追加の環境変数を渡して、特定のプールだけで PHP の設定を更新することができます。
+     そのためには、次のオプションをプール設定ファイルに追加しなければなりません。
+     <div class="example" id="example-73">
+      <p><strong>例1 環境変数や PHP の設定をプールに渡す</strong></p>
+      <div class="example-contents">
+<div class="inicode"><pre class="inicode">env[HOSTNAME] = $HOSTNAME
+env[PATH] = /usr/local/bin:/usr/bin:/bin
+env[TMP] = /tmp
+env[TMPDIR] = /tmp
+env[TEMP] = /tmp
+
+php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f www@my.domain.com
+php_flag[display_errors] = off
+php_admin_value[error_log] = /var/log/fpm-php.www.log
+php_admin_flag[log_errors] = on
+php_admin_value[memory_limit] = 32M</pre>
+</div>
+      </div>
+
+     </div>
+     <em>php_value</em> や
+     <em>php_flag</em> で渡した PHP の設定は、その前に設定されていた内容を上書きします。
+     ただし
+     <a href="ini.core.html#ini.disable-functions" class="link">disable_functions</a> や
+     <a href="ini.core.html#ini.disable-classes" class="link">disable_classes</a> は別で、
+     <var class="filename">php.ini</var> で定義された値を上書きするのではなく、
+     新たに指定した値を追記することになります。
+    </p>
+    <p class="para">
+     <em>php_admin_value</em> や <em>php_admin_flag</em>
+     で設定した値を <span class="function"><a href="function.ini-set.html" class="function">ini_set()</a></span> で上書きすることはできません。
+    </p>
+    <p class="para">
+     PHP 5.3.3 以降は、PHP の設定をウェブサーバーでも設定できるようになりました。
+     <div class="example" id="example-74">
+      <p><strong>例2 PHP の設定を nginx.conf で行う例</strong></p>
+      <div class="example-contents">
+       <div class="inicode"><pre class="inicode">set $php_value &quot;pcre.backtrack_limit=424242&quot;;
+set $php_value &quot;$php_value \n pcre.recursion_limit=99999&quot;;
+fastcgi_param  PHP_VALUE $php_value;
+
+fastcgi_param  PHP_ADMIN_VALUE &quot;open_basedir=/var/www/htdocs&quot;;</pre>
+</div>
+      </div>
+
+     </div>
+     <div class="caution"><strong class="caution">警告</strong>
+      <p class="para">
+       これらの設定は fastcgi ヘッダーとして php-fpm に渡されるので、
+       一般公開されているアドレスに php-fpm をバインドしてはいけません。
+       そんなことをすると、誰でもそのサーバーの PHP の設定を変更できることになります。
+       <a href="install.fpm.configuration.html#listen-allowed-clients" class="link">listen.allowed_clients</a> も参照ください。
+      </p>
+     </div>
+    </p>
+   </div>
+   
+  </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="114961""></a>
+  <div class="note">
+   <strong class="user">gadnet at aqueos dot com</strong>
+   <a href="#114961" class="date">06-May-2014 11:24</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+the doc is lacking a lot of things it seems.<br />
+<br />
+&nbsp; The php fpm exemple config file indicate different thing, more option etc... I wonder why the main documentation is less verbose that the configuration file that user can have .. or not have ?</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="114193""></a>
+  <div class="note">
+   <strong class="user">Yousef Ismaeil Cliprz</strong>
+   <a href="#114193" class="date">23-Jan-2014 11:03</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Check if fastCGI enabled<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">// You can use isset or is_null for $_SERVER['FCGI_SERVER_VERSION']<br />
+</span><span class="keyword">function </span><span class="default">isFastCGI </span><span class="keyword">() {<br />
+&nbsp;&nbsp;&nbsp; return !</span><span class="default">is_null</span><span class="keyword">(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'FCGI_SERVER_VERSION'</span><span class="keyword">]);<br />
+}<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="111414""></a>
+  <div class="note">
+   <strong class="user">sroussey at gmail dot com</strong>
+   <a href="#111414" class="date">18-Feb-2013 09:15</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Starting in 5.3.9 the security.limit_extensions configuration item has been added and it defaults to .php. If you need to execute other extensions, you have to change this setting.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="104172""></a>
+  <div class="note">
+   <strong class="user">Frank DENIS</strong>
+   <a href="#104172" class="date">29-May-2011 08:23</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The default value for listen.backlog isn't exactly "unlimited".<br />
+<br />
+It's 128 on some operating systems, and -1 (which doesn't mean "unlimited" as well, but is an alias to a hard limit) on other systems.<br />
+<br />
+Check for a sysctl value like kern.somaxconn (OpenBSD) or net.core.somaxconn (Linux).<br />
+<br />
+Crank it up if you need more PHP workers than the default value. Then adjust listen.backlog in your php-fpm configuration file to the same value.<br />
+<br />
+-Frank.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

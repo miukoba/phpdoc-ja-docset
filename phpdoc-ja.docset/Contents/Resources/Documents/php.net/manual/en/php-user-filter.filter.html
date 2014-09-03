@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>フィルタを適用するときにコールされる</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="class.php-user-filter.html">≪ php_user_filter</a></li>
+      <li style="float: right;"><a href="php-user-filter.onclose.html">php_user_filter::onClose ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="class.php-user-filter.html">php_user_filter</a></li>
+    <li>フィルタを適用するときにコールされる</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="php-user-filter.filter" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">php_user_filter::filter</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose"><span class="refname">php_user_filter::filter</span> &mdash; <span class="dc-title">フィルタを適用するときにコールされる</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-php-user-filter.filter-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">int</span> <span class="methodname"><strong>php_user_filter::filter</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$in</code></span>
+   , <span class="methodparam"><span class="type">resource</span> <code class="parameter">$out</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter reference">&$consumed</code></span>
+   , <span class="methodparam"><span class="type">bool</span> <code class="parameter">$closing</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   このメソッドがコールされるのは、アタッチしたストリームとの間で
+   (<span class="function"><a href="function.fread.html" class="function">fread()</a></span> や <span class="function"><a href="function.fwrite.html" class="function">fwrite()</a></span> による)
+   データの読み書きを行ったときです。
+  </p>
+
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-php-user-filter.filter-parameters">
+  <h3 class="title">パラメータ</h3>
+  <dl>
+
+   
+    <dt>
+<code class="parameter">in</code></dt>
+
+    <dd>
+
+     <p class="para">
+      <code class="parameter">in</code> は <em>バケット群</em> を指すリソースで、
+      この中には一つあるいは複数の <em>バケット</em> オブジェクトが含まれています。
+      このオブジェクトに、フィルタ対象のデータが含まれます。
+     </p>
+    </dd>
+
+   
+   
+    <dt>
+<code class="parameter">out</code></dt>
+
+    <dd>
+
+     <p class="para">
+      <code class="parameter">out</code> はもう一つの <em>バケット群</em> を指すリソースで、
+      変更した内容をここに保存します。
+     </p>
+    </dd>
+
+   
+   
+    <dt>
+<code class="parameter">consumed</code></dt>
+
+    <dd>
+
+     <p class="para">
+      <code class="parameter">consumed</code> は常に参照渡しとする必要があります。
+      フィルタで読み込んだり変更したりしたデータの長さをここで加算します。
+      大半の場合、各 <em>$bucket</em> 上で
+      <em>$bucket-&gt;datalen</em> をコールするたびに
+      <code class="parameter">consumed</code> を増やすことになります。
+     </p>
+    </dd>
+
+   
+   
+    <dt>
+<code class="parameter">closing</code></dt>
+
+    <dd>
+
+     <p class="para">
+      ストリームが終了処理の最中である場合
+      (つまり、フィルタチェインの最後の処理を行っている場合)
+      に、<code class="parameter">closing</code> パラメータが <strong><code>TRUE</code></strong> となります。
+     </p>
+    </dd>
+
+   
+  </dl>
+
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-php-user-filter.filter-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <span class="methodname"><strong>filter()</strong></span> メソッドは、処理を終えたときに次のいずれかの値を返す必要があります。
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>返り値</th>
+       <th>意味</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td><strong><code>PSFS_PASS_ON</code></strong></td>
+       <td>
+        フィルタの処理が成功し、データが
+        <code class="parameter">out</code> <em>バケット群</em>
+        に保存されました。
+       </td>
+      </tr>
+
+      <tr>
+       <td><strong><code>PSFS_FEED_ME</code></strong></td>
+       <td>
+        フィルタの処理は成功しましたが、返すデータはありません。
+        ストリームあるいは一つ前のフィルタから、さらにデータが必要です。
+       </td>
+      </tr>
+
+      <tr>
+       <td><strong><code>PSFS_ERR_FATAL</code></strong> (デフォルト)</td>
+       <td>
+        フィルタで対処不能なエラーが発生し、処理を続行できません。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

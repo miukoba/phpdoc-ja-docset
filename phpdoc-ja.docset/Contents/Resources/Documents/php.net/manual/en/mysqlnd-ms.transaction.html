@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>Local transaction handling</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="mysqlnd-ms.pooling.html">≪ Connection pooling and switching</a></li>
+      <li style="float: right;"><a href="mysqlnd-ms.errorhandling.html">Error handling ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="mysqlnd-ms.concepts.html">Concepts</a></li>
+    <li>Local transaction handling</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="mysqlnd-ms.transaction" class="section">
+  <h2 class="title">Local transaction handling</h2>
+  <p class="para">
+   Transaction handling is fundamentally changed.
+   An SQL transaction is a unit of work that is run on one database server. The
+   unit of work consists of one or more SQL statements.
+  </p>
+  <p class="para">
+   By default the plugin is not aware of SQL transactions. The plugin may
+   switch connections for load balancing at any point in time. Connection
+   switches may happen in the middle of a transaction. This is against the
+   nature of an SQL transaction. By default, the plugin is not transaction safe.
+  </p>
+  <p class="para">
+   Any kind of MySQL load balancer must be hinted about the begin and end of a
+   transaction. Hinting can either be done implicitly by monitoring API calls
+   or using SQL hints. Both options are supported by the plugin, depending on
+   your PHP version. API monitoring requires PHP 5.4.0 or newer. The plugin,
+   like any other MySQL load balancer, cannot detect transaction boundaries based
+   on the MySQL Client Server Protocol. Thus, entirely transparent transaction
+   aware load balancing is not possible. The least intrusive option is API
+   monitoring, which requires little to no application changes, depending
+   on your application.
+  </p>
+  <p class="para">
+   Please, find examples of using SQL hints or the API monitoring in the
+   <a href="mysqlnd-ms.quickstart.html" class="link">examples section</a>. The
+   details behind the API monitoring, which makes the plugin transaction
+   aware, are described below.
+  </p>
+  <p class="para">
+   Beginning with PHP 5.4.0, the <a href="book.mysqlnd.html" class="link">mysqlnd</a>
+   library allows this plugin to subclass the library C API call
+   <em>set_autocommit()</em>, to detect the status of
+   <em>autocommit</em> mode.
+  </p>
+  <p class="para">
+   The PHP MySQL extensions either issue a query (such as <em>SET AUTOCOMMIT=0|1</em>),
+   or use the mysqlnd library call <em>set_autocommit()</em> to control
+   the <em>autocommit</em> setting. If an extension makes use of
+   <em>set_autocommit()</em>, the plugin can be made transaction aware.
+   Transaction awareness cannot be achieved if using SQL to set the autocommit
+   mode.
+   The library function <em>set_autocommit()</em> is called by the
+   <span class="function"><a href="mysqli.autocommit.html" class="function">mysqli_autocommit()</a></span> and
+   <em>PDO::setAttribute(PDO::ATTR_AUTOCOMMIT)</em> user API calls.
+  </p>
+  <p class="para">
+   The plugin configuration option
+   <a href="mysqlnd-ms.plugin-ini-json.html#ini.mysqlnd-ms-plugin-config-v2.trx-stickiness" class="link">trx_stickiness=master</a>
+   can be used to make the plugin transactional aware. In this mode, the plugin stops load
+   balancing if autocommit becomes disabled, and directs all statements to the master until
+   autocommit gets enabled.
+  </p>
+  <p class="para">
+   An application that does not want to set SQL hints for transactions but wants
+   to use the transparent API monitoring to avoid application changes must make
+   sure that the autocommit settings is changed exclusively through the listed
+   API calls.
+  </p>
+  <p class="para">
+   API based transaction boundary detection has been improved with PHP 5.5.0 and
+   PECL/mysqlnd_ms 1.5.0 to cover not only calls to <span class="function"><a href="mysqli.autocommit.html" class="function">mysqli_autocommit()</a></span>
+   but also <span class="function"><strong>mysqli_begin()</strong></span>,
+   <span class="function"><a href="mysqli.commit.html" class="function">mysqli_commit()</a></span> and <span class="function"><a href="mysqli.rollback.html" class="function">mysqli_rollback()</a></span>.
+  </p>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

@@ -1,0 +1,243 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>FTP サーバーからファイルをダウンロードし、オープン中のファイルに保存する（非ブロッキング）</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="function.ftp-nb-continue.html">≪ ftp_nb_continue</a></li>
+      <li style="float: right;"><a href="function.ftp-nb-fput.html">ftp_nb_fput ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="ref.ftp.html">FTP 関数</a></li>
+    <li>FTP サーバーからファイルをダウンロードし、オープン中のファイルに保存する（非ブロッキング）</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="function.ftp-nb-fget" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ftp_nb_fget</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.3.0, PHP 5)</p><p class="refpurpose"><span class="refname">ftp_nb_fget</span> &mdash; <span class="dc-title">FTP サーバーからファイルをダウンロードし、オープン中のファイルに保存する（非ブロッキング）</span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-function.ftp-nb-fget-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">int</span> <span class="methodname"><strong>ftp_nb_fget</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$ftp_stream</code></span>
+   , <span class="methodparam"><span class="type">resource</span> <code class="parameter">$handle</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$remote_file</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$mode</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$resumepos</code><span class="initializer"> = 0</span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+   <span class="function"><strong>ftp_nb_fget()</strong></span> は、FTP サーバーからリモートファイルを取得します。
+  </p>
+  <p class="para">
+   <span class="function"><a href="function.ftp-fget.html" class="function">ftp_fget()</a></span> との違いは、この関数が
+   非同期処理でファイルを取得するということです。そのため、
+   ファイルをダウンロードしている最中に別の処理を行うことができます。
+  </p>
+ </div>
+
+ <div class="refsect1 parameters" id="refsect1-function.ftp-nb-fget-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+<code class="parameter">ftp_stream</code></dt>
+
+     <dd>
+
+      <p class="para">
+       FTP 接続のリンク ID 。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">handle</code></dt>
+
+     <dd>
+
+      <p class="para">
+       オープンされているファイルのポインタ。ここにデータが保存されます。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">remote_file</code></dt>
+
+     <dd>
+
+      <p class="para">
+       リモートファイルのパス。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">mode</code></dt>
+
+     <dd>
+
+      <p class="para">
+       転送モード。<strong><code>FTP_ASCII</code></strong> または
+       <strong><code>FTP_BINARY</code></strong> のどちらかを指定する必要があります。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">resumepos</code></dt>
+
+     <dd>
+
+      <p class="para">ダウンロードを開始する、リモートファイル内の位置。</p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues" id="refsect1-function.ftp-nb-fget-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <strong><code>FTP_FAILED</code></strong>、<strong><code>FTP_FINISHED</code></strong>
+   あるいは <strong><code>FTP_MOREDATA</code></strong> を返します。
+  </p>
+ </div>
+
+ <div class="refsect1 examples" id="refsect1-function.ftp-nb-fget-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-4403">
+    <p><strong>例1 <span class="function"><strong>ftp_nb_fget()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;ファイルをオープンする<br /></span><span style="color: #0000BB">$file&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'index.php'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #0000BB">$file</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'w'</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$conn_id&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ftp_connect</span><span style="color: #007700">(</span><span style="color: #0000BB">$ftp_server</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$login_result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ftp_login</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn_id</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$ftp_user_name</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$ftp_user_pass</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;ダウンロードを開始する<br /></span><span style="color: #0000BB">$ret&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ftp_nb_fget</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn_id</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$file</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">FTP_BINARY</span><span style="color: #007700">);<br />while&nbsp;(</span><span style="color: #0000BB">$ret&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">FTP_MOREDATA</span><span style="color: #007700">)&nbsp;{<br /><br />&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;何かお好みの動作を<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"."</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;ダウンロードを継続する...<br />&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$ret&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ftp_nb_continue</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn_id</span><span style="color: #007700">);<br />}<br />if&nbsp;(</span><span style="color: #0000BB">$ret&nbsp;</span><span style="color: #007700">!=&nbsp;</span><span style="color: #0000BB">FTP_FINISHED</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"There&nbsp;was&nbsp;an&nbsp;error&nbsp;downloading&nbsp;the&nbsp;file..."</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;exit(</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;ファイルポインタを閉じる<br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+ <div class="refsect1 seealso" id="refsect1-function.ftp-nb-fget-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><span class="function"><a href="function.ftp-nb-get.html" class="function" rel="rdfs-seeAlso">ftp_nb_get()</a> - FTP サーバーからファイルを取得し、ローカルファイルに書き込む（非ブロッキング）</span></li>
+    <li class="member"><span class="function"><a href="function.ftp-nb-continue.html" class="function" rel="rdfs-seeAlso">ftp_nb_continue()</a> - ファイルの取得/送信を継続する（非ブロッキング）</span></li>
+    <li class="member"><span class="function"><a href="function.ftp-fget.html" class="function" rel="rdfs-seeAlso">ftp_fget()</a> - FTP サーバーからファイルをダウンロードし、オープン中のファイルに保存する</span></li>
+    <li class="member"><span class="function"><a href="function.ftp-get.html" class="function" rel="rdfs-seeAlso">ftp_get()</a> - FTP サーバーからファイルをダウンロードする</span></li>
+   </ul>
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="47439""></a>
+  <div class="note">
+   <strong class="user">pilif at pilif dot ch</strong>
+   <a href="#47439" class="date">16-Nov-2004 02:53</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you want to monitor the progress of the download, you may use the filesize()-Function.
+<br />
+
+<br />
+But note: The results of said function are cached, so you'll always get 0 bytes. Call clearstatcache() before calling filesize() to determine the actual size of the downloaded file.
+<br />
+
+<br />
+This may have performance implications, but if you want to provide the information, there's no way around it.
+<br />
+
+<br />
+Above sample extended:
+<br />
+
+<br />
+<span class="default">&lt;?php
+<br />
+</span><span class="comment">// get the size of the remote file
+<br />
+</span><span class="default">$fs </span><span class="keyword">= </span><span class="default">ftp_size</span><span class="keyword">(</span><span class="default">$my_connection</span><span class="keyword">, </span><span class="string">"test"</span><span class="keyword">);
+<br />
+
+<br />
+</span><span class="comment">// Initate the download
+<br />
+</span><span class="default">$ret </span><span class="keyword">= </span><span class="default">ftp_nb_get</span><span class="keyword">(</span><span class="default">$my_connection</span><span class="keyword">, </span><span class="string">"test"</span><span class="keyword">, </span><span class="string">"README"</span><span class="keyword">, </span><span class="default">FTP_BINARY</span><span class="keyword">);
+<br />
+while (</span><span class="default">$ret </span><span class="keyword">== </span><span class="default">FTP_MOREDATA</span><span class="keyword">) {
+<br />
+&nbsp;&nbsp; 
+<br />
+&nbsp;&nbsp; </span><span class="default">clearstatcache</span><span class="keyword">(); </span><span class="comment">// &lt;- this is important
+<br />
+&nbsp;&nbsp; </span><span class="default">$dld </span><span class="keyword">= </span><span class="default">filesize</span><span class="keyword">(</span><span class="default">$locfile</span><span class="keyword">);
+<br />
+&nbsp;&nbsp; if ( </span><span class="default">$dld </span><span class="keyword">&gt; </span><span class="default">0 </span><span class="keyword">){
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; </span><span class="comment">// calculate percentage
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; </span><span class="default">$i </span><span class="keyword">= (</span><span class="default">$dld</span><span class="keyword">/</span><span class="default">$fs</span><span class="keyword">)*</span><span class="default">100</span><span class="keyword">;
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; </span><span class="default">printf</span><span class="keyword">(</span><span class="string">"\r\t%d%% downloaded"</span><span class="keyword">, </span><span class="default">$i</span><span class="keyword">);
+<br />
+&nbsp;&nbsp; }&nbsp;&nbsp; 
+<br />
+
+<br />
+&nbsp;&nbsp; </span><span class="comment">// Continue downloading...
+<br />
+&nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">= </span><span class="default">ftp_nb_continue </span><span class="keyword">(</span><span class="default">$my_connection</span><span class="keyword">);
+<br />
+}
+<br />
+if (</span><span class="default">$ret </span><span class="keyword">!= </span><span class="default">FTP_FINISHED</span><span class="keyword">) {
+<br />
+&nbsp;&nbsp; echo </span><span class="string">"There was an error downloading the file..."</span><span class="keyword">;
+<br />
+&nbsp;&nbsp; exit(</span><span class="default">1</span><span class="keyword">);
+<br />
+}
+<br />
+</span><span class="default">?&gt;
+<br />
+</span>
+<br />
+Philip</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

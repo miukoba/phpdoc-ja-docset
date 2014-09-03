@@ -1,0 +1,922 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>新しいデータベース接続オブジェクトを作成する</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="mongo.connect.html">≪ Mongo::connect</a></li>
+      <li style="float: right;"><a href="mongo.dropdb.html">Mongo::dropDB ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="class.mongoclient.html">MongoClient</a></li>
+    <li>新しいデータベース接続オブジェクトを作成する</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="mongoclient.construct" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">Mongo::__construct</h1>
+  <p class="verinfo">(PECL mongo &gt;=0.9.0)</p><p class="refpurpose"><span class="refname">Mongo::__construct</span> &mdash; <span class="dc-title">新しいデータベース接続オブジェクトを作成する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-mongoclient.construct-description">
+  <h3 class="title">説明</h3>
+  <div class="constructorsynopsis dc-description">
+   <span class="modifier">public</span> <span class="methodname"><strong>MongoClient::__construct</strong></span>
+    ([ <span class="methodparam"><span class="type">string</span> <code class="parameter">$server</code><span class="initializer"> = &quot;mongodb://localhost:27017&quot;</span></span>
+   [, <span class="methodparam"><span class="type">array</span> <code class="parameter">$options</code><span class="initializer"> = array(&quot;connect&quot; =&gt; <strong><code>TRUE</code></strong>)</span></span>
+   [, <span class="methodparam"><span class="type">array</span> <code class="parameter">$driver_options</code></span>
+  ]]] )</div>
+
+  <p class="para rdfs-comment">
+   パラメータを省略した場合は、&quot;localhost:27017&quot; (あるいは php.ini の
+   <a href="mongo.configuration.html#ini.mongo.default-host" class="link">mongo.default_host</a> と
+   <a href="mongo.configuration.html#ini.mongo.default-port" class="link">mongo.default_port</a> で設定した場所)
+   に接続します。
+  </p>
+  <p class="para">
+   <code class="parameter">server</code> は次のような形式にしなければなりません。
+   <div class="example-contents">
+<div class="cdata"><pre>
+mongodb://[username:password@]host1[:port1][,host2[:port2:],...]/db
+</pre></div>
+   </div>
+
+  </p>
+  <p class="para">
+   接続文字列は常に <em>mongodb://</em> で始まります。
+   この部分が、接続文字列であることを表しています。
+  </p>
+  <p class="para">
+   <em>username</em> と <em>password</em>
+   を指定すれば、コンストラクタが接続を確立する際にデータベースへの認証を試みます。
+   ユーザー名とパスワードはオプションで、もし指定するならその後に
+   <em>@</em> を続けなければなりません。
+  </p>
+  <p class="para">
+   少なくともひとつのホストを指定しなければなりません
+   (ポートはオプションで、デフォルトは常に 27017 となります)。
+   そのあとに、接続させたいホストをいくつでも続けることができます。
+   ホスト名はカンマ区切りで並べ、少なくともひとつのホストへの接続が成功すれば
+   コンストラクタは正常な結果を返します。
+   どのホストにも接続できなかった場合は
+   <a href="class.mongoconnectionexception.html" class="classname">MongoConnectionException</a> をスローします。
+   レプリカセットへの接続に関する情報は、
+   <a href="mongo.connecting.rs.html" class="link">レプリカセット</a>
+   を参照ください。
+  </p>
+  <p class="para">
+   ユーザー名とパスワードを指定したときには、認証先のデータベースも指定することになるでしょう。
+   <em>db</em> を省略した場合は &quot;admin&quot; を使います。
+  </p>
+  <p class="para">
+   オプションのクエリ文字列を使って、追加オプションを指定できます。
+   同じオプションを <code class="parameter">options</code> 配列でもサポートしているので、
+   そちらでももう一度説明します。
+   オプションの使いかたについては <a href="" class="link">下のサンプル</a>
+   を参照ください。
+  </p>
+  <p class="para">
+   オプションの設定によっては、レプリカセット環境でセカンダリノードから読み込むときの方法に影響するものもあります。
+   読み込みの優先順位に関する動きについての詳しい説明は
+   <a href="mongo.readpreferences.html" class="link">優先読み込み</a> のページを参照ください。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="mongo.mongoclient.construct.parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+
+      <code class="parameter">server</code>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       サーバー名。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+
+      <code class="parameter">options</code>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       接続オプションの配列。現在使用できるオプションは次のとおりです。
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;authMechanism&quot;</em>
+         </p>
+         <p class="para">
+          以下の機構が選べます。
+          <table class="doctable informaltable">
+           
+            <thead>
+             <tr>
+              <th>認証機構</th>
+              <th>説明</th>
+              <th>利用可能</th>
+             </tr>
+
+            </thead>
+
+            <tbody class="tbody">
+             <tr>
+              <td>MONGODB-CR</td>
+              <td>チャレンジレスポンス方式を使った認証。デフォルトです。</td>
+              <td>すべてのバージョンの MongoDB</td>
+             </tr>
+
+             <tr>
+              <td>X509</td>
+              <td>X509 証明書による認証。</td>
+              <td>MongoDB 2.6。<a href="book.openssl.html" class="xref">OpenSSL</a> が有効な場合のみ。</td>
+             </tr>
+
+             <tr>
+              <td>PLAIN</td>
+              <td>暗号化されていないユーザー名とパスワードによる認証。SSL 接続上でのみ使うこと。サードパーティの LDAP サーバー経由での MongoDB へのログインの際に利用する。</td>
+              <td>MongoDB Enterprise 2.4。CyrusSASL2 を使うようにドライバをコンパイルしておく必要がある。</td>
+             </tr>
+
+             <tr>
+              <td>GSSAPI</td>
+              <td>ケルベロス認証</td>
+              <td>MongoDB Enterprise 2.4。CyrusSASL2 を使うようにドライバをコンパイルしておく必要がある。</td>
+             </tr>
+
+            </tbody>
+           
+          </table>
+
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;authSource&quot;</em>
+         </p>
+         <p class="para">
+          ユーザーが定義されているデータベース名を設定します。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;connect&quot;</em>
+         </p>
+         <p class="para">
+          コンストラクタで接続を行うか。デフォルトは
+          <strong><code>TRUE</code></strong>。<strong><code>FALSE</code></strong> にすると、ドライバが
+          <em class="emphasis">自動的に</em> サーバーと接続するようになります。
+          クエリの実行に接続が必要かどうかは関係ありません。
+          それ以外に、手動で
+          <span class="function"><a href="mongo.connect.html" class="function">Mongo::connect()</a></span> を実行する方法もあります。
+         </p>
+         <div class="warning"><strong class="warning">警告</strong>
+          <p class="para">
+           このオプションは、接続文字列で使うことはできません。
+          </p>
+         </div>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;connectTimeoutMS&quot;</em>
+         </p>
+         <p class="para">
+          接続を開こうとしてタイムアウトになるまでの時間の長さ（ミリ秒単位）。
+          デフォルトは <em>60000</em> (60 秒) です。
+         </p>
+         <p class="para">
+          <em>-1</em> を指定すると、接続タイムアウトを適用せず、PHP は
+          <a href="filesystem.configuration.html#ini.default-socket-timeout" class="link">default_socket_timeout</a>
+          を利用します。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;db&quot;</em>
+         </p>
+         <p class="para">
+          ホスト名に含めるかわりに、認証対象のデータベースをここで指定することができます。
+          ホスト名で設定したデータベースを上書きします。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;fsync&quot;</em>
+         </p>
+         <p class="para">
+          <em>&quot;fsync&quot;</em> を設定すると、データベース上のすべての書き込み操作は、
+          その書き込みがディスクに同期されるまでは成功とみなさないようになります。
+          書き込み処理の速度は大幅に低下しますが、書き込みがきちんと成功してディスクに書き出されたことを保証できます。
+         </p>
+         <p class="para">
+          MongoDB のジャーナリングを有効にしている (デフォルト) 場合、このオプションは
+          <em class="emphasis">&quot;journal&quot;</em> と同じ意味になります。
+          ジャーナリングが無効になっている場合は、このオプションは、
+          書き込み操作がディスク上のデータベースファイルに同期されることを保証します。
+         </p>
+         <blockquote class="note"><p><strong class="note">注意</strong>: 
+          <span class="simpara">
+           ジャーナリングを有効にしている場合は、<em>&quot;fsync&quot;</em> ではなく
+           <em>&quot;journal&quot;</em> を使うことを強く推奨します。
+           <em>&quot;fsync&quot;</em> と
+           <em>&quot;journal&quot;</em> を同時に使わないようにしましょう。
+           同時に使うとエラーが発生します。
+          </span>
+         </p></blockquote>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;journal&quot;</em>
+         </p>
+         <p class="para">
+          <em>&quot;journal&quot;</em> を設定すると、データベース上のすべての書き込み操作が、
+          データベースがジャーナルへの変更をディスクにフラッシュするまでブロックされます。
+          書き込み処理の速度は多少低下しますが、書き込みがきちんと成功して、
+          万一システムに障害が発生したとしても復旧可能なことを保証できます。
+         </p>
+         <blockquote class="note"><p><strong class="note">注意</strong>: 
+          <span class="simpara">
+           ジャーナリングが無効になっている場合にこのオプションを使うと、
+           MongoDB 2.6+ ではエラーが発生して書き込みが失敗します。
+           それより前のバージョンでは、単純にこのオプションを無視します。
+          </span>
+         </p></blockquote>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;gssapiServiceName&quot;</em>
+         </p>
+         <p class="para">
+          <a href="http://docs.mongodb.org/manual/core/kerberos/#kerberos-service-principal" class="link external" title="Link : http://docs.mongodb.org/manual/core/kerberos/#kerberos-service-principal">&raquo;&nbsp;Kerberos サービスプリンシパル</a>
+          を設定します。authMechanism=GSSAPI の場合にのみ用いられるもので、デフォルトは &quot;mongodb&quot; です。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;password&quot;</em>
+         </p>
+         <p class="para">
+          ホスト名に含めるかわりに、パスワードをここで指定することができます。
+          パスワードに &quot;@&quot; を含む場合などに特に便利です。
+          ホスト名で設定したパスワードを上書きします。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;readPreference&quot;</em>
+         </p>
+         <p class="para">
+          優先読み込みの型を指定します。優先読み込みを使うと、
+          どのセカンダリからデータを読み込めるのかを制御できるようになります。
+         </p>
+         <p class="para">
+          指定できる値は <em>primary</em>、
+          <em>primaryPreferred</em>、
+          <em>secondary</em>、<em>secondaryPreferred</em>
+          および <em>nearest</em> です。
+         </p>
+         <p class="para">
+          詳細な情報は、<a href="mongo.readpreferences.html" class="link">優先読み込み</a>のドキュメントを参照ください。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;readPreferenceTags&quot;</em>
+         </p>
+         <p class="para">
+          優先読み込みのタグを指定します。タグを
+          <em>readPreference</em> と組み合わせて使うと、
+          どのセカンダリからデータを読み込めるのかをより細かく制御できるようになります。
+         </p>
+         <p class="para">
+          詳細な情報は、<a href="mongo.readpreferences.html" class="link">優先読み込み</a>のドキュメントを参照ください。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;replicaSet&quot;</em>
+         </p>
+         <p class="para">
+          接続先のレプリカセットの名前。指定した場合は、プライマリが自動的に決まります。
+          つまり、ドライバは、リストに上がっていないサーバーに接続することになるかもしれません。
+          詳細は、以下のレプリカセットの例を参照ください。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;secondaryAcceptableLatencyMS&quot;</em>
+         </p>
+         <p class="para">
+          セカンダリから (優先読み込みを使って) 読み込むときに、
+          <em>secondaryAcceptableLatencyMS</em> 以上はなれているセカンダリからは読み込みません。
+          デフォルトは <em>15</em> です。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;socketTimeoutMS&quot;</em>
+         </p>
+         <p class="para">
+          ソケットの操作 (読み書き) がタイムアウトになるまでの時間の長さ。
+          ミリ秒単位で、デフォルトは <em>30000</em> (30 秒) です。
+         </p>
+         <p class="para">
+          <em>-1</em> を設定すると、ソケットの操作を永遠にブロックします。
+          このオプションは、操作単位以外でも設定できます。
+          クエリごとに設定するには <span class="methodname"><a href="mongocursor.timeout.html" class="methodname">MongoCursor::timeout()</a></span>、
+          書き込みメソッドごとに設定するには <em>&quot;socketTimeoutMS&quot;</em> オプションを使います。
+         </p>
+         <blockquote class="note"><p><strong class="note">注意</strong>: 
+          <span class="simpara">
+           これはクライアント側のタイムアウトです。書き込み操作がタイムアウトに達してしまうと、
+           サーバーが実際に書き込みを受信したかどうかを知るすべがなくなります。そして、
+           書き込みの結果を返す代わりに
+           <a href="class.mongocursortimeoutexception.html" class="classname">MongoCursorTimeoutException</a> をスローします。
+          </span>
+         </p></blockquote>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;ssl&quot;</em>
+         </p>
+         <p class="para">
+          boolean です。MongoDB への接続で SSL を有効にするかどうかを指定します。
+          証明書のような追加オプションは <a href="context.ssl.html" class="xref">SSL コンテキストオプション</a> で設定します。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;username&quot;</em>
+         </p>
+         <p class="para">
+          ホスト名に含めるかわりに、ユーザー名をここで指定することができます。
+          ユーザー名に &quot;:&quot; を含む場合などに特に便利です。
+          ホスト名で設定したユーザー名を上書きします。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;w&quot;</em>
+         </p>
+         <p class="para">
+          <em>w</em> オプションは、ドライバの
+          <a href="mongo.writeconcerns.html" class="link">Write Concern</a>、
+          つまりドライバがレプリカセットへの書き込みをどれくらいブロックするかを制御します。
+         </p>
+         <p class="para">
+          正の整数は、レプリカセット内の<em class="emphasis">いくつの</em>
+          ノードが書き込み指示を受け取ったらドライバが処理を続行するのかを指定します。
+          値を <em>3</em> にすると、
+          書き込みがレプリカセット内であと 2 台に適用されてからプライマリにも適用します。
+         </p>
+         <p class="para">
+          文字列を指定すると、どのタグセットを書き込み時に考慮するのかを指定したことになります。
+          <em>&quot;majority&quot;</em> は特別な値で、
+          参加しているノードの過半数に書き込み操作が適用された時点でプライマリにも適用します。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;wTimeoutMS&quot;</em>
+         </p>
+         <p class="para">
+          このオプションは、
+          <a href="mongo.writeconcerns.html" class="link">書き込み確認</a>
+          を待つ制限時間をミリ秒単位で指定します。
+          これが書き込み操作に適用されるのは、
+          <em>&quot;w&quot;</em> が <em>1</em> より大きい場合のみです。
+          というのも、タイムアウトはレプリケーションに関する機能だからです。
+          この時間内に書き込み確認ができなかった場合は
+          <a href="class.mongocursorexception.html" class="classname">MongoCursorException</a> をスローします。
+          <em>0</em> を指定すると、永遠にブロックし続けます。
+          デフォルト値は <em>10000</em>
+          (10 秒) です。
+         </p>
+        </li>
+       </ul>
+      </p>
+      <p class="para">
+       以下のオプションは廃止予定です。使ってはいけません。
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;slaveOkay&quot;</em>
+         </p>
+         <p class="para">
+          非推奨です。<a href="mongo.readpreferences.html" class="link">優先読み込み</a> のオプションを使いましょう。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;timeout&quot;</em>
+         </p>
+         <p class="para">
+          <em>&quot;connectTimeoutMS&quot;</em> へのエイリアス。非推奨です。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;wTimeout&quot;</em>
+         </p>
+         <p class="para">
+          <em>&quot;wTimeoutMS&quot;</em> へのエイリアス。非推奨です。
+         </p>
+        </li>
+       </ul>
+      </p>
+     </dd>
+
+    
+
+    
+     <dt>
+
+      <code class="parameter">driver_options</code>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       MongoDB ドライバーへのオプションの配列。<a href="mongo.connecting.ssl.html#mongo.connecting.context.ssl" class="link">SSL 用の接続コンテキストのオプション</a>や、
+       <a href="context.mongodb.html" class="link">ログ出力用のコールバック</a>も含みます。
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;context&quot;</em>
+         </p>
+         <p class="para">
+          新しい接続をアタッチするストリームコンテキスト。このオプションで、SSL 証明書の設定などができます。
+          詳細は <a href="context.ssl.html" class="link">SSL コンテキストオプション</a> を参照ください。
+          詳しい使いかたは <a href="mongo.connecting.ssl.html#mongo.connecting.context.ssl" class="link">SSL 接続</a>のチュートリアルを参照ください。
+         </p>
+        </li>
+       </ul>
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-mongoclient.construct-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   新しいデータベース接続オブジェクトを返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 errors" id="refsect1-mongoclient.construct-errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">
+   指定したすべてのホスト名へのデータベースへの接続に失敗した場合に
+   <a href="class.mongoconnectionexception.html" class="classname">MongoConnectionException</a> をスローします。
+   指定したユーザー名やパスワードが間違っている場合にも
+   <strong class="classname">MongoConnnectionException</strong> をスローします。
+   一般的な例外とその原因については
+   <a href="class.mongoconnectionexception.html" class="classname">MongoConnectionException</a>
+   のドキュメントを参照ください。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="mongo.mongoclient.construct.examples">
+  <h3 class="title">例</h3>
+  <div class="example" id="example-1447">
+   <p><strong>例1 <span class="function"><strong>MongoClient::__construct()</strong></span> でのレプリカセットの例</strong></p>
+   <div class="example-contents"><p>
+    この例は、レプリカセットに接続する方法を示します。
+    このでは、次の三つのサーバー sf1.example.com、sf2.example.com および
+    ny1.example.com があるものと仮定します。
+    プライマリは、これらのうちのいずれかひとつとなります。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;カンマ区切りのサーバー名をコンストラクタに渡します<br />//&nbsp;レプリカセットの全メンバーを渡す必要はないことに注意しましょう。<br />//&nbsp;ドライバが完全なリストを取得します<br /></span><span style="color: #0000BB">$m1&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #DD0000">"mongodb://sf2.example.com,ny1.example.com"</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #DD0000">"replicaSet"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"myReplSet"</span><span style="color: #007700">));<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>
+    現在のプライマリで処理に失敗した場合、
+    セカンダリサーバーのうちのどれを新しいプライマリにするかをドライバが判断し、
+    自動的にその接続を開始させます。この自動フェイルオーバー機能は、
+    <em>replicaSet</em> を指定しなければ正しく動作しません。
+   </p></div>
+   <div class="example-contents"><p>
+    シードリストの中の少なくともひとつのシードに接続できなければ、
+    ドライバからレプリカセットに接続することはできません。
+   </p></div>
+   <div class="example-contents"><p>
+    二つの別のレプリカセットからのシードを指定した場合の挙動は未定義です。
+   </p></div>
+   <div class="example-contents"><p>
+    レプリカセットに関する詳細な情報は
+    <a href="http://docs.mongodb.org/manual/replication/" class="link external" title="Link : http://docs.mongodb.org/manual/replication/">&raquo;&nbsp;コアドキュメント</a>
+    を参照ください。
+   </p></div>
+  </div>
+  <div class="example" id="example-1448">
+   <p><strong>例2 ドメインソケットへの接続</strong></p>
+   <div class="example-contents"><p>
+    バージョン 1.0.9 以降では、ローカルで実行している MongoDB への接続に
+    UNIX ドメインソケットを使えるようになりました。これは、
+    ネットワーク経由で接続するよりもわずかに高速です。
+   </p></div>
+   <div class="example-contents"><p>
+    バージョン 1.5.0 では、MongoDB サーバーは自動的に
+    /tmp/mongodb-&lt;port&gt;.sock でソケットをオープンします。
+    ここに接続するには、接続文字列でこのパスを指定します。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;MongoDB&nbsp;サーバーが、ローカルのポート&nbsp;20000&nbsp;で起動しています<br /></span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #DD0000">"mongodb:///tmp/mongodb-20000.sock"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>
+    これは、その他の接続とも組み合わせることができます。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;まずドメインソケットに接続し、失敗したときにはローカルホストへの接続を使います<br /></span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #DD0000">"mongodb:///tmp/mongodb-27017.sock,localhost:27017"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+  <div class="example" id="example-1449">
+   <p><strong>例3 <span class="function"><strong>MongoClient::__construct()</strong></span> での認証の例</strong></p>
+   <div class="example-contents"><p>
+    認証を使うには、admin データベースにユーザーが存在しなければなりません。
+    Mongo シェルでユーザーを作るには、次のようにします。
+   </p></div>
+   <div class="example-contents">
+<div class="shellcode"><pre class="shellcode">&gt; use admin
+switched to db admin
+&gt; db.addUser(&quot;testUser&quot;, &quot;testPass&quot;);
+{
+        &quot;_id&quot; : ObjectId(&quot;4b21272fd9ab21611d19095c&quot;),
+        &quot;user&quot; : &quot;testUser&quot;,
+        &quot;pwd&quot; : &quot;03b9b27e0abf1865e2f6fcbd9845dd59&quot;
+}
+&gt;</pre>
+</div>
+   </div>
+
+   <div class="example-contents"><p>
+    ユーザーを作ったら、このユーザー名 &quot;testUser&quot; とパスワード
+    &quot;testPass&quot; で次のようにして認証させることができます。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #DD0000">"mongodb://testUser:testPass@localhost"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+  <div class="example" id="example-1450">
+   <p><strong>例4 <span class="function"><strong>MongoClient::__construct()</strong></span> での優先読み込みの例</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;"east"&nbsp;データセンターにある最も近いサーバーを優先します<br /></span><span style="color: #0000BB">$uri&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'mongodb://rs1.example.com,rs2.example.com/'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$uri&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">'?readPreference=nearest'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$uri&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">'&amp;readPreferenceTags=dc:east'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #0000BB">$uri</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #DD0000">'replicaSet'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'rs'</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>
+    詳細な情報は、このマニュアルの <a href="mongo.readpreferences.html" class="link">優先読み込み</a>
+    のページを参照ください。
+   </p></div>
+  </div>
+
+  <div class="example" id="example-1451">
+   <p><strong>例5 <span class="function"><strong>MongoClient::__construct()</strong></span> でのオプションの例</strong></p>
+   <div class="example-contents"><p>
+    オプションは、接続文字列のクエリ文字列で渡すだけでなく、
+    コンストラクタの二番目の引数で渡すこともできます。
+   </p></div>
+   <div class="example-contents"><p>
+    この例では、journal オプションを true、そして readPreference を secondary
+    にする設定を、すべての書き込み操作のデフォルトとします。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #DD0000">"mongodb://localhost/?journal=true&amp;readPreference=secondary"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>
+    同じ設定を、このようにすることもできます。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$options&nbsp;</span><span style="color: #007700">=&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'journal'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'readPreference'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'secondary'</span><span style="color: #007700">,<br />);<br /></span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #DD0000">"mongodb://localhost/"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$options</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+
+  <div class="example" id="example-1452">
+   <p><strong>例6 <span class="function"><strong>MongoClient::__construct()</strong></span> での優先読み込みの例</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;"east"&nbsp;データセンターにある最も近いサーバーを優先します<br /></span><span style="color: #0000BB">$uri&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'mongodb://rs1.example.com,rs2.example.com/'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$uri&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">'?readPreference=nearest'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$uri&nbsp;</span><span style="color: #007700">.=&nbsp;</span><span style="color: #DD0000">'&amp;readPreferenceTags=dc:east'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #0000BB">$uri</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #DD0000">'replicaSet'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'rs'</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>
+    詳細な情報は、このマニュアルの <a href="mongo.readpreferences.html" class="link">優先読み込み</a>
+    のページを参照ください。
+   </p></div>
+  </div>
+ </div>
+
+
+ <div class="refsect1 changelog" id="refsect1-mongoclient.construct-changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>1.5.0</td>
+       <td>
+        <p class="para">
+         <em>&quot;authMechanism&quot;</em>、<em>&quot;gssapiServiceName&quot;</em> および <em>&quot;secondaryAcceptableLatencyMS&quot;</em>
+         が追加されました。
+        </p>
+       </td>
+      </tr>
+
+      <tr>
+       <td>1.4.0</td>
+       <td>
+        <p class="para">
+         <em>&quot;ssl&quot;</em> オプションが追加されました。これは
+         <a href="mongo.connecting.ssl.html" class="link">SSL 接続</a> をサポートするものです。
+        </p>
+        <p class="para">
+         <em>&quot;wTimeoutMS&quot;</em> オプションが追加されました。これは
+         <em>&quot;wTimeout&quot;</em> の代替です。
+        </p>
+        <p class="para">
+         <em>&quot;slaveOkay&quot;</em> や <em>&quot;timeout&quot;</em> を使うと
+         <strong><code>E_DEPRECATED</code></strong> が発生します。
+        </p>
+       </td>
+      </tr>
+
+      <tr>
+       <td>1.5.0</td>
+       <td>
+        <p class="para">
+         <em>&quot;authSource&quot;</em> が追加されました。
+        </p>
+       </td>
+      </tr>
+
+      <tr>
+       <td>1.3.4</td>
+       <td>
+        <p class="para">
+         <em>&quot;connectTimeoutMS&quot;</em> および
+         <em>&quot;socketTimeoutMS&quot;</em> オプションが追加されました。
+        </p>
+       </td>
+      </tr>
+
+      <tr>
+       <td>1.3.0</td>
+       <td>
+        <p class="para">
+         <em>&quot;readPreference&quot;</em>、
+         <em>&quot;readPreferenceTags&quot;</em>、<em>&quot;w&quot;</em> および
+         <em>&quot;wTimeout&quot;</em> オプションが追加されました。
+        </p>
+       </td>
+      </tr>
+
+      <tr>
+       <td>1.2.0</td>
+       <td>
+        <p class="para">
+         <em>&quot;username&quot;</em> および <em>&quot;password&quot;</em>
+         オプションが追加されました。
+        </p>
+        <p class="para">
+         <em>&quot;persist&quot;</em> オプションが削除されました。すべての接続は持続的な接続となります。
+         今でも使うことはできますが、何の影響も及ぼしません。
+        </p>
+        <dl>
+
+         
+          <dt>
+
+           <code class="parameter">&quot;persist&quot;</code>
+          </dt>
+
+          <dd>
+
+           <p class="para">
+            持続的な接続を行うかどうか。これを設定すると、接続が持続的なものとなります。
+            文字列の値を接続 ID として使うので、
+            <em>array(&quot;persist&quot; =&gt; &quot;foobar&quot;)</em> で初期化した
+            <a href="class.mongo.html" class="classname">Mongo</a> のインスタンスがふたつあれば、
+            それは同じデータベース接続をあらわします。一方、
+            <em>array(&quot;persist&quot; =&gt; &quot;barbaz&quot;)</em>
+            で初期化したインスタンスは別のデータベース接続を使います。
+           </p>
+          </dd>
+
+         
+        </dl>
+
+        <p class="para">
+         <em>&quot;replicaSet&quot;</em> オプションは、boolean ではなく文字列を受け取るようになりました。
+        </p>
+       </td>
+      </tr>
+
+      <tr>
+       <td>1.0.9</td>
+       <td><em>&quot;replicaSet&quot;</em> オプションが追加されました。</td>
+      </tr>
+
+      <tr>
+       <td>1.0.2</td>
+       <td>
+        <p class="para">
+         コンストラクタがオプションの配列を受け取るようになりました。
+         以前のバージョンでは、コンストラクタは以下のパラメータを受け取っていました。
+        </p>
+        <dl>
+
+         
+          <dt>
+
+           <code class="parameter">server</code>
+          </dt>
+
+          <dd>
+
+           <p class="para">
+            サーバー名。
+           </p>
+          </dd>
+
+         
+         
+          <dt>
+
+           <code class="parameter">connect</code>
+          </dt>
+
+          <dd>
+
+           <p class="para">
+            オプションの boolean パラメータで、
+            コンストラクタがデータベースに接続するかどうかを示します。
+            デフォルトは <strong><code>TRUE</code></strong> です。
+           </p>
+          </dd>
+
+         
+         
+          <dt>
+
+           <code class="parameter">persistent</code>
+          </dt>
+
+          <dd>
+
+           <p class="para">
+            持続的な接続を行うかどうか。
+           </p>
+          </dd>
+
+         
+         
+          <dt>
+
+           <code class="parameter">paired</code>
+          </dt>
+
+          <dd>
+
+           <p class="para">
+            ペア接続を行うかどうか。
+           </p>
+          </dd>
+
+         
+        </dl>
+
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113430""></a>
+  <div class="note">
+   <strong class="user">mike at eastghost dot com</strong>
+   <a href="#113430" class="date">10-Oct-2013 01:56</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+HOLY MOLY, 100 to 200 times instant speed boost in one small change.<br />
+<br />
+"In version 1.0.9+, you can use a UNIX domain socket to connect to an instance of MongoDB running locally. This should be slightly faster than using a network connection."<br />
+<br />
+is an EXTREME understatement.&nbsp; Just trying out stuff, playing around, etc., we changed from<br />
+<br />
+MongoClient( 'mongodb://pri.eastghost.com:27017' etc)<br />
+<br />
+to<br />
+<br />
+MongoClient ( 'mongodb:///tmp/mongodb-27017.sock' etc)<br />
+<br />
+and saw instant 100x-200x speed boost, all else untouched.<br />
+page times went from 700 - 1400 (as in 1.4 seconds)<br />
+to 7 as in milliseconds.<br />
+<br />
+mongo driver 1.4.1<br />
+(for apache 2.6)</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="111580""></a>
+  <div class="note">
+   <strong class="user">mike at eastghost dot com</strong>
+   <a href="#111580" class="date">06-Mar-2013 01:44</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+read somewhere that
+<br />
+
+<br />
+$uri&nbsp; = 'mongodb://rs1.example.com/?w=0';
+<br />
+
+<br />
+(the w=0 parm) makes the MongoDB driver accept 'blind writes' without waiting for any confirmation of write success from server.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

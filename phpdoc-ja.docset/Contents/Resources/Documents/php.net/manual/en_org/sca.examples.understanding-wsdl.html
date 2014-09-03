@@ -1,0 +1,404 @@
+<html><!-- Mirrored from php.net/manual/en/sca.examples.understanding-wsdl.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 16:54:05 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Understanding how the WSDL is generated</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="sca.examples.understanding-wsdl.html">
+ <link rel="shorturl" href="sca.examples.understanding-wsdl.html">
+ <link rel="alternate" href="sca.examples.understanding-wsdl.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="sca.examples.html">
+ <link rel="prev" href="sca.examples.obtaining-wsdl.html">
+ <link rel="next" href="sca.examples.structures.html">
+
+ <link rel="alternate" href="sca.examples.understanding-wsdl.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/sca.examples.understanding-wsdl.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/sca.examples.understanding-wsdl.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/sca.examples.understanding-wsdl.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/sca.examples.understanding-wsdl.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/sca.examples.understanding-wsdl.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/sca.examples.understanding-wsdl.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/sca.examples.understanding-wsdl.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/sca.examples.understanding-wsdl.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/sca.examples.understanding-wsdl.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/sca.examples.understanding-wsdl.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.webservice.html">Web Services</a></li>      <li><a href="book.sca.html">SCA</a></li>      <li><a href="sca.examples.html">Examples</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="sca.examples.understanding-wsdl" class="section">
+  <h2 class="title"> Understanding how the WSDL is generated </h2>
+  <p class="para"> 
+   SCA for PHP generates WSDL for components which contain an
+   @binding.soap annotation after the @service annotation. To
+   generate WSDL, the SCA runtime reflects on the component and
+   examines the @param and @return annotations for each public
+   method, as well as any @types annotations within the component. The
+   information from the @param and @return annotations is used to
+   build the &lt;types&gt; section of the WSDL. Any @types
+   annotations which specify a separate schema file will result in an
+   &lt;import&gt; element for that schema within the WSDL.
+  </p>
+  
+  <div class="section" id="sca.examples.understanding-wsdl.location">
+   <h2 class="title"> Location attribute of the &lt;service&gt; element</h2>
+   <p class="para"> 
+    At the bottom of the WSDL is the &lt;service&gt; element
+    which uses the location attribute to identify the URL of the
+    service. For example this might look as follows: 
+   </p>
+   
+   <p class="para">
+    </p><div class="example" id="example-5418">
+     <p><strong>Example #1  location attribute </strong></p>
+     <div class="example-contents">
+<div class="xmlcode"><pre class="xmlcode">&lt;service name="ConvertedStockQuote"
+...
+location="http://localhost/ConvertedStockQuote/ConvertedStockQuote.php"/&gt;</pre>
+</div>
+     </div>
+
+    </div>
+   <p></p>
+   <p class="para">
+    Note that this location is relative to the document root of
+    the web server, and cannot be worked out in advance. It can only be
+    worked out once the component is in its proper place under a running
+    web server, when the hostname and port can be known and placed in the
+    WSDL. Detail from the URL that requests the WSDL is used, so for
+    example if the WSDL is generated in response to a request to
+    http://www.example.com:1111/ConvertedStockQuote/ConvertedStockQuote.php?wsdl,
+    a location of
+    http://www.example.com:1111/ConvertedStockQuote/ConvertedStockQuote.php
+    is what will be inserted into the location attribute in the WSDL.
+   </p>
+  </div>
+  
+    
+  <div class="section" id="sca.examples.understanding-wsdl.positional-parameters"> 
+   <h2 class="title">Document/literal wrapped WSDL and positional
+    parameters</h2>
+   <p class="para"> 
+    SCA for PHP generates WSDL in the document/literal wrapped
+    style. This style encloses the parameters and return types of a
+    method in 'wrappers' which are named after the corresponding
+    method. The &lt;types&gt; element at the top of the WSDL defines
+    each of these wrappers. If we consider the
+    <span class="function"><strong>getQuote()</strong></span> method of the
+    ConvertedStockQuote example: 
+   </p>
+   
+   <p class="para">
+    </p><div class="example" id="example-5419">
+     <p><strong>Example #2  method with two arguments </strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/**<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Get&nbsp;a&nbsp;stock&nbsp;quote&nbsp;for&nbsp;a&nbsp;given&nbsp;ticker&nbsp;symbol&nbsp;in&nbsp;a&nbsp;given&nbsp;currency.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;string&nbsp;$ticker&nbsp;The&nbsp;ticker&nbsp;symbol.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@param&nbsp;string&nbsp;$currency&nbsp;What&nbsp;currency&nbsp;to&nbsp;convert&nbsp;the&nbsp;value&nbsp;to.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;float&nbsp;The&nbsp;stock&nbsp;value&nbsp;is&nbsp;the&nbsp;target&nbsp;currency.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">getQuote</span><span style="color: #007700">(</span><span style="color: #0000BB">$ticker</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$currency</span><span style="color: #007700">)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$quote&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">stock_quote</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getQuote</span><span style="color: #007700">(</span><span style="color: #0000BB">$ticker</span><span style="color: #007700">);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$rate&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">exchange_rate</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getRate</span><span style="color: #007700">(</span><span style="color: #0000BB">$currency</span><span style="color: #007700">);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;&nbsp;</span><span style="color: #0000BB">$rate&nbsp;</span><span style="color: #007700">*&nbsp;</span><span style="color: #0000BB">$quote</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+        
+     </div>
+
+    </div>
+   <p></p>
+   
+   <p class="para">
+    The WSDL generated to define this method will name both the
+    method and the parameters, and give an XML schema type for the
+    parameters. The types section of the WSDL looks like this: 
+   </p>
+   
+   <p class="para">
+    </p><div class="example" id="example-5420">
+     <p><strong>Example #3  types section illustrating named parameters </strong></p>
+     <div class="example-contents">
+<div class="xmlcode"><pre class="xmlcode">&lt;types&gt;
+    &lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      targetNamespace="http://ConvertedStockQuote"&gt;
+      &lt;xs:element name="getQuote"&gt;
+        &lt;xs:complexType&gt;
+          &lt;xs:sequence&gt;
+            &lt;xs:element name="ticker" type="xs:string"/&gt;
+            &lt;xs:element name="currency" type="xs:string"/&gt;
+          &lt;/xs:sequence&gt;
+        &lt;/xs:complexType&gt;
+      &lt;/xs:element&gt;
+      &lt;xs:element name="getQuoteResponse"&gt;
+        &lt;xs:complexType&gt;
+          &lt;xs:sequence&gt;
+            &lt;xs:element name="getQuoteReturn" type="xs:float"/&gt;
+          &lt;/xs:sequence&gt;
+        &lt;/xs:complexType&gt;
+      &lt;/xs:element&gt;
+    &lt;/xs:schema&gt;
+  &lt;/types&gt;</pre>
+</div>
+     </div>
+
+    </div>
+   <p></p>
+   
+   <p class="para">
+    The SCA run-time has special processing to handle how
+    positional parameter lists in the interface are converted to XML
+    containing named parameters in the soap request, and then back to
+    positional parameter lists again. To see why this matters,
+    consider how a PHP script which used a different interface to make a
+    SOAP call would need to construct the parameter list. A PHP script
+    using the PHP SoapClient, for example, would need to pass the
+    SoapClient a single parameter giving the values for "ticker" and
+    "currency", perhaps as an associative array. To insist that SCA
+    components construct parameter lists to make Web service calls in
+    this way would be to make local and remote calls look different, so a
+    different approach is needed. 
+   </p>
+   
+   <p class="para">
+    When SCA generates WSDL for an SCA component it includes a
+    comment in the WSDL which marks that WSDL as being the interface for
+    an SCA component. In this case, when one SCA component calls
+    another through a Web service, the SCA runtime on the calling end
+    takes the positional parameter list from the call and assigns the
+    values one by one to the named elements in the soap message. For
+    example a call to the
+    <span class="function"><strong>getQuote()</strong></span> method defined above that
+    passes the values 'IBM' and 'USD' and looks like this: 
+   </p>
+   
+   <p class="para">
+    </p><div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>&nbsp;&nbsp;$quote&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$remote_service</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getQuote</span><span style="color: #007700">(</span><span style="color: #DD0000">'IBM'</span><span style="color: #007700">,</span><span style="color: #DD0000">'USD'</span><span style="color: #007700">);<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   <p></p>
+   
+   <p class="para">
+    will result in a soap message containing the
+    following:
+   </p>
+   
+   <p class="para">
+    </p><div class="example-contents">
+<div class="xmlcode"><pre class="xmlcode">&lt;getQuote&gt;
+  &lt;ticker&gt;IBM&lt;/ticker&gt;
+  &lt;currency&gt;USD&lt;/currency&gt;
+&lt;/getQuote&gt;</pre>
+</div>
+    </div>
+
+   <p></p>
+   
+   <p class="para">
+    On the service-providing end, the SCA run-time takes the
+    parameters one by one from the soap message and forms a positional
+    parameter list from them, re-forming the argument list
+    ('IBM','USD').
+   </p>
+   
+   <div class="caution"><strong class="caution">Caution</strong>
+    
+    <p class="para"> 
+     At both ends the SCA runtime relies on the order in which the
+     parameters appear in the soap message being the same as that in the
+     target method's parameter list. This is ultimately determined
+     by the order of the @param annotations: this determines the order
+     in which the parameters appear in the WSDL and thereby the order in
+     which they appear in the soap message. Therefore it is essential
+     that the order of the @param annotations matches that of the
+     parameters in the method's parameter list. 
+    </p>
+   </div>
+   
+  </div>
+  
+    
+ </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div>
+ <div class="note">There are no user contributed notes for this page.</div></section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/sca.examples.understanding-wsdl.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 16:54:05 GMT -->
+
+
+</body></html>

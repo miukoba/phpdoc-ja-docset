@@ -1,0 +1,284 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>Working with Arrays</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="internals2.variables.intro.html">≪ Introduction to Variables</a></li>
+      <li style="float: right;"><a href="internals2.variables.tables.html">Working with HashTable ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="internals2.variables.html">変数の作成</a></li>
+    <li>Working with Arrays</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="internals2.variables.arrays" class="section">
+  <h2 class="title">Working with Arrays</h2>
+  <p class="para">
+   Arrays are stored in HashTable strucures, and have the zval type IS_ARRAY. The API functions for creating, destroying and manipulating these structures as variables are documented here and can be found in <code class="code">Zend/zend_API.h</code>
+  </p>
+  
+  <table id="internals2.variables.arrays.api" class="doctable table">
+   <caption><strong>HashTable as Variable API</strong></caption>
+   
+    <thead>
+     <tr>
+      <th>Prototype</th>
+      <th>Description</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+     <tr>
+      <td><code class="code">void array_init(zval* pzval)</code></td>
+      <td>initializes the variable as a <code class="code">HashTable</code>, setting type and appropriate destructor function for the <code class="code">HashTable</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">void array_init_size(zval* pzval)</code></td>
+      <td>initializes the variable as array_init with a minimum of <code class="code">size</code> buckets</td>
+     </tr>
+
+     
+    </tbody>
+   
+  </table>
+
+  
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">Do not squint too hard looking for array_destroy: to destroy a variable array you should call <code class="code">zval_ptr_dtor</code> on the variable, if there are no other references to the variable it will result in the array being destroyed.</p>
+  </p></blockquote>
+  
+  <table id="internals2.variables.iarrays.api" class="doctable table">
+   <caption><strong>Indexed Arrays API</strong></caption>
+   
+    <thead>
+     <tr>
+      <th>Prototype</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+     <tr>
+      <td><code class="code">int add_index_long(zval* pzval, ulong index, long value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_index_null(zval* pzval, ulong index)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_index_bool(zval* pzval, ulong index, zend_bool value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_index_bool(zval* pzval, ulong index, zend_bool value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_index_resource(zval* pzval, ulong index, uint value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_index_double(zval* pzval, ulong index, double value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_index_string(zval* pzval, ulong index, char* string, zend_bool duplicate)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_index_stringl(zval* pzval, ulong index, char* string, uint length, zend_bool duplicate)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_index_zval(zval* pzval, ulong index, zval* value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_next_index_long(zval* pzval, long value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_next_index_null(zval* pzval)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_next_index_bool(zval* pzval, zend_bool value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_next_index_resource(zval* pzval, uint value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_next_index_double(zval* pzval, double value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_next_index_string(zval* pzval, const char* string, zend_bool dulpicate)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_next_index_stringl(zval* pzval, const char* string, uint length, zend_bool duplicate)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_next_index_zval(zval* pzval, zval* value)</code></td>
+     </tr>
+
+     
+    </tbody>
+   
+  </table>
+
+  
+  <table id="internals2.variables.aarrays.api" class="doctable table">
+   <caption><strong>Associative Arrays API</strong></caption>
+   
+    <thead>
+     <tr>
+      <th>Prototype</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+     <tr>
+      <td><code class="code">int add_assoc_long(zval* pzval, const char* key, long value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_assoc_long_ex(zval* pzval, const char* key, uint klen, long value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_assoc_null(zval* pzval, const char* key)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_assoc_null_ex(zval* pzval, const char* key, uint klen)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_assoc_bool(zval* pzval, const char* key, zend_bool value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_assoc_bool(zval* pzval, const char* key, zend_bool value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_assoc_bool_ex(zval* pzval, const char* key, uint klen, zend_bool value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_assoc_resource(zval* pzval, const char* key, uint value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_assoc_resource_ex(zval* pzval, const char* key, uint klen, uint value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_assoc_double(zval* pzval, const char* key, double value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_assoc_double_ex(zval* pzval, const char* key, uint klen, double value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_assoc_string(zval* pzval, const char* key, const char* value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_assoc_string_ex(zval* pzval, const char* key, uint klen, const char* value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_assoc_stringl(zval* pzval, const char* key, const char* value, uint vlen, zend_bool duplicate)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_assoc_stringl_ex(zval* pzval, const char* key, uint klen, const char* value, uint vlen, zend_bool duplicate)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_assoc_zval(zval* pzval, const char* key, zval* value)</code></td>
+     </tr>
+
+     
+     <tr>
+      <td><code class="code">int add_assoc_zval_ex(zval* pzval, const char* key, uint klen, zval* value)</code></td>
+     </tr>
+
+     
+    </tbody>
+   
+  </table>
+
+  
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">add_*_string functions that accept a parameter named duplicate, will duplicate the string with <code class="code">estrndup</code> when <code class="code">duplicate</code> is true</p>
+  </p></blockquote>
+  
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">add_*_zval functions do not adjust the refcount of the <code class="code">value</code> parameter</p>
+  </p></blockquote>
+  
+  <p class="para">
+   To perform more advanced operations on array variables we must use the HashTable API directly.
+  </p>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

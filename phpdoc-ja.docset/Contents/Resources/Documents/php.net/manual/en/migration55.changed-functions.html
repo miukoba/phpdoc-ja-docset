@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>変更された関数</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="migration55.deprecated.html">≪ PHP 5.5.x で推奨されなくなる機能</a></li>
+      <li style="float: right;"><a href="migration55.new-functions.html">新しい関数 ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="migration55.html">PHP 5.4.x から PHP 5.5.x への移行</a></li>
+    <li>変更された関数</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="migration55.changed-functions" class="sect1">
+  <h2 class="title">変更された関数</h2>
+
+  <div class="sect2" id="migration55.changed-functions.core">
+   <h3 class="title">PHP コア</h3>
+
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      <span class="function"><a href="function.set-error-handler.html" class="function">set_error_handler()</a></span> の引数に <strong><code>NULL</code></strong> を渡して呼ぶと、
+      エラーハンドラをリセットできるようになりました。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <strong><code>NULL</code></strong> を渡して呼んだ場合の <span class="function"><a href="function.set-error-handler.html" class="function">set_error_handler()</a></span> と
+      <span class="function"><a href="function.set-exception-handler.html" class="function">set_exception_handler()</a></span> の返り値は、
+      それぞれ以前のエラーハンドラと例外ハンドラになります。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <span class="function"><a href="function.json-encode.html" class="function">json_encode()</a></span> に <code class="parameter">depth</code>
+      パラメータを渡せるようになりました。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <span class="function"><a href="function.pack.html" class="function">pack()</a></span> と
+      <span class="function"><a href="function.unpack.html" class="function">unpack()</a></span> で &quot;a&quot; や &quot;A&quot; を使ったときの挙動が変わりました。
+      <a href="migration55.incompatible.html#migration55.incompatible.pack" class="link">詳細はこちらを参照ください</a>。
+     </span>
+    </li>
+   </ul>
+  </div>
+
+  <div class="sect2" id="migration55.changed-functions.intl">
+   <h3 class="title"><a href="book.intl.html" class="link">intl</a></h3>
+
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      <span class="methodname"><a href="messageformatter.format.html" class="methodname">MessageFormatter::format()</a></span> とその関連関数で、
+      名前付き引数に対応しました。数値引数との混在も可能です。
+      これは、PHP を ICU 4.8 以降とリンクした場合に有効になります。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <span class="methodname"><a href="messageformatter.format.html" class="methodname">MessageFormatter::format()</a></span> とその関連関数で、
+      引数の数を間違えた場合にエラーが発生しなくなりました。
+      ただし、プレースホルダの置換は行われません。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <span class="methodname"><a href="messageformatter.format.html" class="methodname">MessageFormatter::format()</a></span> と
+      <span class="methodname"><a href="messageformatter.parse.html" class="methodname">MessageFormatter::parse()</a></span> で時刻を扱うときに、
+      秒単位の精度に縛られなくなりました。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <span class="methodname"><a href="intldateformatter.create.html" class="methodname">IntlDateFormatter::__construct()</a></span> と
+      <span class="function"><a href="intldateformatter.create.html" class="function">datefmt_create()</a></span> の
+      <code class="parameter">timezone</code> 引数で
+      <a href="class.intltimezone.html" class="classname">IntlTimeZone</a> や
+      <a href="class.datetimezone.html" class="classname">DateTimeZone</a> のオブジェクトが使えるようになり、同じく
+      <code class="parameter">calendar</code> 引数で
+      <a href="class.intlcalendar.html" class="classname">IntlCalendar</a> オブジェクトが使えるようになりました。
+      さらに、タイムゾーンが省略されていて <code class="parameter">calendar</code>
+      でタイムゾーンが指定されていない場合は、ICU のデフォルトタイムゾーンではなく
+      PHP のデフォルトタイムゾーン
+      (<span class="function"><a href="function.date-default-timezone-get.html" class="function">date_default_timezone_get()</a></span> の返す値)
+      を使うようになりました。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <a href="class.intldateformatter.html" class="classname">IntlDateFormatter</a> オブジェクトを作るときに
+      <a href="class.intldateformatter.html" class="classname">IntlDateFormatter</a> の定数ではなく
+      <a href="class.intlcalendar.html" class="classname">IntlCalendar</a> のインスタンスを使った場合に、
+      <span class="methodname"><a href="intldateformatter.getcalendar.html" class="methodname">IntlDateFormatter::getCalendar()</a></span> と
+      <span class="function"><a href="intldateformatter.getcalendar.html" class="function">datefmt_get_calendar()</a></span> が false を返すようになりました。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <span class="methodname"><a href="intldateformatter.setcalendar.html" class="methodname">IntlDateFormatter::setCalendar()</a></span> と
+      <span class="function"><a href="intldateformatter.setcalendar.html" class="function">datefmt_set_calendar()</a></span> で、
+      <a href="class.intldateformatter.html" class="classname">IntlDateFormatter</a> の定数以外に
+      <a href="class.intlcalendar.html" class="classname">IntlCalendar</a> オブジェクトも受け付けるようになりました。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <span class="methodname"><a href="intldateformatter.format.html" class="methodname">IntlDateFormatter::format()</a></span> と
+      <span class="function"><a href="intldateformatter.format.html" class="function">datefmt_format()</a></span> で
+      <a href="class.intlcalendar.html" class="classname">IntlCalendar</a> オブジェクトが使えるようになりました。
+     </span>
+    </li>
+   </ul>
+  </div>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

@@ -1,0 +1,821 @@
+<html><!-- Mirrored from php.net/manual/en/internals2.structure.modstruct.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:53:26 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>The zend_module structure</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="internals2.structure.modstruct.html">
+ <link rel="shorturl" href="internals2.structure.modstruct.html">
+ <link rel="alternate" href="internals2.structure.modstruct.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="internals2.structure.html">
+ <link rel="prev" href="internals2.structure.basics.html">
+ <link rel="next" href="internals2.structure.globals.html">
+
+ <link rel="alternate" href="internals2.structure.modstruct.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/internals2.structure.modstruct.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/internals2.structure.modstruct.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/internals2.structure.modstruct.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/internals2.structure.modstruct.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/internals2.structure.modstruct.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/internals2.structure.modstruct.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/internals2.structure.modstruct.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/internals2.structure.modstruct.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/internals2.structure.modstruct.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/internals2.structure.modstruct.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="internals2.html">PHP at the Core: A Hacker's Guide</a></li>      <li><a href="internals2.structure.html">Extension structure</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="internals2.structure.modstruct" class="sect1">
+  <h2 class="title">The zend_module structure</h2>
+  <p class="para">
+   The main source file of a PHP extension contains several new constructs for
+   a C programmer. The most important of these, the one touched first when
+   starting a new extension, is the <em>zend_module</em> structure.
+   This structure contains a wealth of information that tells the Zend Engine
+   about the extension's dependencies, version, callbacks, and other critical
+   data. The structure has mutated considerably over time; this section will
+   focus on the structure as it has appeared since PHP 5.2, and will identify
+   the very few parts which have changed in PHP 5.3.
+  </p>
+  
+  <p class="para">
+   The <em>zend_module</em> declaration from
+   <var class="filename">counter.c</var> looks like this before any code has been
+   written. The example file was generated by
+   <strong class="command">ext_skel --extname=counter</strong>, with some obsolete constructs
+   removed:
+  </p>
+  
+  <div class="example" id="internals2.structure.modstruct.example-decl">
+   <p><strong>Example #1 zend_module declaration in the counter extension</strong></p>
+   <div class="example-contents">
+<div class="ccode"><pre class="ccode">/* {{{ counter_module_entry
+ */
+zend_module_entry counter_module_entry = {
+    STANDARD_MODULE_HEADER,
+    "counter",
+    counter_functions,
+    PHP_MINIT(counter),
+    PHP_MSHUTDOWN(counter),
+    PHP_RINIT(counter),        /* Replace with NULL if there's nothing to do at request start */
+    PHP_RSHUTDOWN(counter),    /* Replace with NULL if there's nothing to do at request end */
+    PHP_MINFO(counter),
+    "0.1", /* Replace with version number for your extension */
+    STANDARD_MODULE_PROPERTIES
+};
+/* }}} */</pre>
+</div>
+   </div>
+
+  </div>
+  
+  <p class="para">
+   This may look a bit daunting at first glance, but most of it is very simple
+   to understand. Here's the declaration of <em>zend_module</em> from
+   <var class="filename">zend_modules.h</var> in PHP 5.3:
+  </p>
+  
+  <div class="example" id="internals2.structure.modstruct.struct-defn">
+   <p><strong>Example #2 zend_module definition in PHP 5.3</strong></p>
+   <div class="example-contents">
+<div class="ccode"><pre class="ccode">struct _zend_module_entry {
+    unsigned short size;
+    unsigned int zend_api;
+    unsigned char zend_debug;
+    unsigned char zts;
+    const struct _zend_ini_entry *ini_entry;
+    const struct _zend_module_dep *deps;
+    const char *name;
+    const struct _zend_function_entry *functions;
+    int (*module_startup_func)(INIT_FUNC_ARGS);
+    int (*module_shutdown_func)(SHUTDOWN_FUNC_ARGS);
+    int (*request_startup_func)(INIT_FUNC_ARGS);
+    int (*request_shutdown_func)(SHUTDOWN_FUNC_ARGS);
+    void (*info_func)(ZEND_MODULE_INFO_FUNC_ARGS);
+    const char *version;
+    size_t globals_size;
+#ifdef ZTS
+    ts_rsrc_id* globals_id_ptr;
+#else
+    void* globals_ptr;
+#endif
+    void (*globals_ctor)(void *global TSRMLS_DC);
+    void (*globals_dtor)(void *global TSRMLS_DC);
+    int (*post_deactivate_func)(void);
+    int module_started;
+    unsigned char type;
+    void *handle;
+    int module_number;
+};</pre>
+</div>
+   </div>
+
+  </div>
+  
+  <p class="para">
+   Many of these fields will never be touched by an extension writer. There are
+   a number of standard macros that set them to their proper values
+   automatically. The macro <strong><code>STANDARD_MODULE_HEADER</code></strong> fills in
+   everything up to the <var class="varname"><var class="varname">deps</var></var> field. Alternatively, the
+   <strong><code>STANDARD_MODULE_HEADER_EX</code></strong> will leave the
+   <var class="varname"><var class="varname">deps</var></var> field empty for the developer's use. The developer is
+   always responsible for everything from <var class="varname"><var class="varname">name</var></var> to
+   <var class="varname"><var class="varname">version</var></var>. After that, the
+   <strong><code>STANDARD_MODULE_PROPERTIES</code></strong> macro will fill in the rest
+   of the structure, or the <strong><code>STANDARD_MODULE_PROPERTIES_EX</code></strong>
+   macro can be used to leave the extension globals and post-deactivation
+   function fields unfilled. Most modern extensions will make use of module
+   globals.
+  </p>
+  
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   </p><p class="para">
+    This table gives the values that each field would have if the developer
+    were to fill in the structure entirely by hand, without recourse to any of
+    the shortcut macros. <em class="emphasis">This is not recommended.</em> The
+    "correct" values for many fields may change. Use the macros
+    whenever possible.
+   </p>
+  <p></p></blockquote>
+
+  <table id="internals2.structure.modstruct.struct-values" class="doctable table">
+   <caption><strong>Module structure field values</strong></caption>
+   
+    <thead>
+     <tr>
+      <th>Field</th>
+      <th>Value</th>
+      <th>Description</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">size</var></var>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.not-for-dev" name="fninternals2.structure.modstruct.struct-values.not-for-dev"><sup>[1]</sup></a>
+        
+       
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smhe" name="fninternals2.structure.modstruct.struct-values.given-by-smhe"><sup>[2]</sup></a>
+        
+       
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smh" name="fninternals2.structure.modstruct.struct-values.given-by-smh"><sup>[3]</sup></a>
+        
+       
+      </td>
+      <td><code class="code">sizeof(zend_module_entry)</code></td>
+      <td>
+       The size in bytes of the structure.
+      </td>
+     </tr>
+
+     
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">zend_api</var></var>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.not-for-dev"><sup>[1]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smhe"><sup>[2]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smh"><sup>[3]</sup></a>
+      </td>
+      <td><strong><code>ZEND_MODULE_API_NO</code></strong></td>
+      <td>
+       The version of the Zend API this module was compiled against.
+      </td>
+     </tr>
+
+     
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">zend_debug</var></var>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.not-for-dev"><sup>[1]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smhe"><sup>[2]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smh"><sup>[3]</sup></a>
+      </td>
+      <td><strong><code>ZEND_DEBUG</code></strong></td>
+      <td>
+       A flag indicating whether the module was compiled with debugging turned
+       on.
+      </td>
+     </tr>
+
+     
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">zts</var></var>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.not-for-dev"><sup>[1]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smhe"><sup>[2]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smh"><sup>[3]</sup></a>
+      </td>
+      <td><strong><code>USING_ZTS</code></strong></td>
+      <td>
+       A flag indicating whether the module was compiled with ZTS (TSRM) enabled
+       (see <a href="internals2.memory.html" class="xref">Memory management</a>).
+      </td>
+     </tr>
+
+     
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">ini_entry</var></var>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.not-for-dev"><sup>[1]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smh"><sup>[3]</sup></a>
+      </td>
+      <td><strong><code>NULL</code></strong></td>
+      <td>
+       This pointer is used internally by Zend to keep a non-local reference to
+       any INI entries declared for the module.
+      </td>
+     </tr>
+
+     
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">deps</var></var>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smh"><sup>[3]</sup></a>
+      </td>
+      <td><strong><code>NULL</code></strong></td>
+      <td>
+       A pointer to a list of dependencies for the module.
+      </td>
+     </tr>
+
+
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">name</var></var>
+      </td>
+      <td>"mymodule"</td>
+      <td>
+       The name of the module. This is the short name, such as "spl"
+       or "standard".
+      </td>
+     </tr>
+
+     
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">functions</var></var>
+      </td>
+      <td>mymodule_functions</td>
+      <td>
+       A pointer to the module's function table, which Zend uses to expose
+       functions in the module to user space.
+      </td>
+     </tr>
+
+     
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">module_startup_func</var></var>
+      </td>
+      <td>PHP_MINIT(mymodule)</td>
+      <td>
+       A callback function that Zend will call the first time a module is loaded
+       into a particular instance of PHP.
+      </td>
+     </tr>
+
+
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">module_shutdown_func</var></var>
+      </td>
+      <td>PHP_MSHUTDOWN(mymodule)</td>
+      <td>
+       A callback function that Zend will call the when a module is unloaded
+       from a particular instance of PHP, typically during final shutdown.
+      </td>
+     </tr>
+
+
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">request_startup_func</var></var>
+      </td>
+      <td>PHP_RINIT(mymodule)</td>
+      <td>
+       A callback function that Zend will call at the beginning of each request.
+       This should be as short as possible or <em>NULL</em> as calling this has costs
+       on every request.
+      </td>
+     </tr>
+
+
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">request_shutdown_func</var></var>
+      </td>
+      <td>PHP_RSHUTDOWN(mymodule)</td>
+      <td>
+       A callback function that Zend will call at the end of each request.
+       This should be as short as possible or <em>NULL</em> as calling this has costs
+       on every request.
+      </td>
+     </tr>
+
+
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">info_func</var></var>
+      </td>
+      <td>PHP_MINFO(mymodule)</td>
+      <td>
+       A callback function that Zend will call when the <span class="function"><a href="function.phpinfo.html" class="function">phpinfo()</a></span>
+       function is called.
+      </td>
+     </tr>
+
+
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">version</var></var>
+      </td>
+      <td><strong><code>NO_VERSION_YET</code></strong></td>
+      <td>
+       A string giving the version of the module, as specified by the module
+       developer. It is recommended that the version number be either in the
+       format expected by version_compare() (e.g. "1.0.5-dev"), or a
+       CVS or SVN revision number (e.g. "$Rev: 322138 $").
+      </td>
+     </tr>
+
+
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">globals_size</var></var>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.not-for-dev"><sup>[1]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smp" name="fninternals2.structure.modstruct.struct-values.given-by-smp"><sup>[4]</sup></a>
+        
+       
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-nmg" name="fninternals2.structure.modstruct.struct-values.given-by-nmg"><sup>[5]</sup></a>
+        
+       
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-pmg" name="fninternals2.structure.modstruct.struct-values.given-by-pmg"><sup>[6]</sup></a>
+        
+       
+      </td>
+      <td>sizeof(zend_mymodule_globals)</td>
+      <td>
+       The size of the data structure containing the module's globals, if any.
+      </td>
+     </tr>
+
+     
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">globals_id_ptr</var></var>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.not-for-dev"><sup>[1]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smp"><sup>[4]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-nmg"><sup>[5]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-pmg"><sup>[6]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.only-with-zts" name="fninternals2.structure.modstruct.struct-values.only-with-zts"><sup>[7]</sup></a>
+        
+       
+      </td>
+      <td>&amp;mymodule_globals_id</td>
+      <td rowspan="2">
+       Only one of these two fields will exist, depending upon whether the
+       <strong><code>USING_ZTS</code></strong> constant is <strong><code>TRUE</code></strong>. The former is an index
+       into TSRM's allocation table for the module's globals, and the latter is
+       a pointer directly to the globals.
+      </td>
+     </tr>
+
+     
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">globals_ptr</var></var>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.not-for-dev"><sup>[1]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smp"><sup>[4]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-nmg"><sup>[5]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-pmg"><sup>[6]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.only-without-zts" name="fninternals2.structure.modstruct.struct-values.only-without-zts"><sup>[8]</sup></a>
+        
+       
+      </td>
+      <td>&amp;mymodule_globals</td>
+     </tr>
+
+     
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">globals_ctor</var></var>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smp"><sup>[4]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-nmg"><sup>[5]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-pmg"><sup>[6]</sup></a>
+      </td>
+      <td>PHP_GINIT(mymodule)</td>
+      <td>
+       This funtion is called to initialize a module's globals <em class="emphasis">before</em>
+       any <var class="varname"><var class="varname">module_startup_func</var></var>.
+      </td>
+     </tr>
+
+
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">globals_dtor</var></var>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smp"><sup>[4]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-nmg"><sup>[5]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-pmg"><sup>[6]</sup></a>
+      </td>
+      <td>PHP_GSHUTDOWN(mymodule)</td>
+      <td>
+       This funtion is called to deallocate a module's globals <em class="emphasis">after</em>
+       any <var class="varname"><var class="varname">module_shutdown_func</var></var>.
+      </td>
+     </tr>
+
+     
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">post_deactivate_func</var></var>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smp"><sup>[4]</sup></a>
+      </td>
+      <td>ZEND_MODULE_POST_ZEND_DEACTIVATE_N(mymodule)</td>
+      <td>
+       This function is called by Zend after request shutdown. It is rarely used.
+      </td>
+     </tr>
+
+     
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">module_started</var></var>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.not-for-dev"><sup>[1]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smpe" name="fninternals2.structure.modstruct.struct-values.given-by-smpe"><sup>[9]</sup></a>
+        
+       
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smp"><sup>[4]</sup></a>
+      </td>
+      <td>0</td>
+      <td rowspan="4">
+       These fields are used for Zend's internal tracking information.
+      </td>
+     </tr>
+
+     
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">type</var></var>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.not-for-dev"><sup>[1]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smpe"><sup>[9]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smp"><sup>[4]</sup></a>
+      </td>
+      <td>0</td>
+     </tr>
+
+     
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">handle</var></var>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.not-for-dev"><sup>[1]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smpe"><sup>[9]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smp"><sup>[4]</sup></a>
+      </td>
+      <td><strong><code>NULL</code></strong></td>
+     </tr>
+
+    
+     <tr>
+      <td>
+       <var class="varname"><var class="varname">module_number</var></var>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.not-for-dev"><sup>[1]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smpe"><sup>[9]</sup></a>
+       <a href="#fnidinternals2.structure.modstruct.struct-values.given-by-smp"><sup>[4]</sup></a>
+      </td>
+      <td>0</td>
+     </tr>
+
+
+    </tbody>
+   
+  <tbody class="footnote"><tr><td colspan="3"><div class="footnote"><a name="fnidinternals2.structure.modstruct.struct-values.not-for-dev" href="#fninternals2.structure.modstruct.struct-values.not-for-dev"><sup>[1]</sup></a><span class="para footnote">
+         This field is not intended for use by module developers.
+        </span></div>
+<div class="footnote"><a name="fnidinternals2.structure.modstruct.struct-values.given-by-smhe" href="#fninternals2.structure.modstruct.struct-values.given-by-smhe"><sup>[2]</sup></a><span class="para footnote">
+         This field is filled in by <strong><code>STANDARD_MODULE_HEADER_EX</code></strong>.
+        </span></div>
+<div class="footnote"><a name="fnidinternals2.structure.modstruct.struct-values.given-by-smh" href="#fninternals2.structure.modstruct.struct-values.given-by-smh"><sup>[3]</sup></a><span class="para footnote">
+         This field is filled in by <strong><code>STANDARD_MODULE_HEADER</code></strong>.
+        </span></div>
+<div class="footnote"><a name="fnidinternals2.structure.modstruct.struct-values.given-by-smp" href="#fninternals2.structure.modstruct.struct-values.given-by-smp"><sup>[4]</sup></a><span class="para footnote">
+         This field is filled in by <strong><code>STANDARD_MODULE_PROPERTIES</code></strong>.
+        </span></div>
+<div class="footnote"><a name="fnidinternals2.structure.modstruct.struct-values.given-by-nmg" href="#fninternals2.structure.modstruct.struct-values.given-by-nmg"><sup>[5]</sup></a><span class="para footnote">
+         This field is filled in by <strong><code>NO_MODULE_GLOBALS</code></strong>.
+        </span></div>
+<div class="footnote"><a name="fnidinternals2.structure.modstruct.struct-values.given-by-pmg" href="#fninternals2.structure.modstruct.struct-values.given-by-pmg"><sup>[6]</sup></a><span class="para footnote">
+         This field is filled in by <strong><code>PHP_MODULE_GLOBALS</code></strong>.
+        </span></div>
+<div class="footnote"><a name="fnidinternals2.structure.modstruct.struct-values.only-with-zts" href="#fninternals2.structure.modstruct.struct-values.only-with-zts"><sup>[7]</sup></a><span class="para footnote">
+         This field only exists when <strong><code>USING_ZTS</code></strong> is <strong><code>TRUE</code></strong>.
+        </span></div>
+<div class="footnote"><a name="fnidinternals2.structure.modstruct.struct-values.only-without-zts" href="#fninternals2.structure.modstruct.struct-values.only-without-zts"><sup>[8]</sup></a><span class="para footnote">
+         This field only exists when <strong><code>USING_ZTS</code></strong> is <strong><code>FALSE</code></strong>.
+        </span></div>
+<div class="footnote"><a name="fnidinternals2.structure.modstruct.struct-values.given-by-smpe" href="#fninternals2.structure.modstruct.struct-values.given-by-smpe"><sup>[9]</sup></a><span class="para footnote">
+         This field is filled in by <strong><code>STANDARD_MODULE_PROPERTIES_EX</code></strong>.
+        </span></div>
+</td></tr>
+</tbody></table>
+
+
+  <div class="sect2" id="internals2.structure.modstruct.filling-it-in">
+   <h3 class="title">Filling in the structure in a practical situation</h3>
+
+   <p class="para">
+    With all these fields to play with, it can be confusing to know which to use
+    for what purpose. Here is the <em>zend_module</em> definition from
+    the "counter" example extension after updating it to its final form.
+   </p>
+   
+   <div class="example" id="internals2.structure.modstruct.filling-it-in.counter-mod-ex">
+    <p><strong>Example #3 Counter extension module definition</strong></p>
+    <div class="example-contents">
+<div class="ccode"><pre class="ccode">/* {{{ counter_module_entry
+ */
+zend_module_entry counter_module_entry = {
+    STANDARD_MODULE_HEADER,
+    "counter",
+    counter_functions,
+    PHP_MINIT(counter),
+    PHP_MSHUTDOWN(counter),
+    PHP_RINIT(counter),
+    PHP_RSHUTDOWN(counter),
+    PHP_MINFO(counter),
+    NO_VERSION_YET,
+    PHP_MODULE_GLOBALS(counter),
+    PHP_GINIT(counter),
+    PHP_GSHUTDOWN(counter),
+    NULL,
+    STANDARD_MODULE_PROPERTIES_EX
+};
+/* }}} */</pre>
+</div>
+    </div>
+
+   </div>
+   
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      <strong><code>STANDARD_MODULE_HEADER</code></strong> is used since this module
+      doesn't define any dependencies.
+     </span>
+    </li>
+    
+    <li class="listitem">
+     <span class="simpara">
+      "counter" is the extension's name, and is used to define the
+      various callback functions the module passes to Zend. "counter" uses
+      module, globals, and request functions at startup and shutdown times, and
+      provides information to <span class="function"><a href="function.phpinfo.html" class="function">phpinfo()</a></span>, so all seven
+      callbacks are defined.
+     </span>
+    </li>
+    
+    <li class="listitem">
+     <span class="simpara">
+      It is assumed that there is a variable of type
+      <span class="type"><span class="type zend_function_entry *">zend_function_entry *</span></span> named
+      <var class="varname"><var class="varname">counter_functions</var></var> earlier in the file that contains
+      the module definition, listing the functions the module exports to
+      userspace.
+     </span>
+    </li>
+    
+    <li class="listitem">
+     <span class="simpara">
+      <strong><code>NO_VERSION_YET</code></strong> is a particularly nice way of telling
+      Zend the module doesn't have a version. It might have been more correct to
+      place <em>"1.0"</em> here instead in a real module.
+     </span>
+    </li>
+    
+    <li class="listitem">
+     <span class="simpara">
+      "counter" uses per-module globals, so
+      <strong><code>PHP_MODULE_GLOBALS</code></strong> is used
+     </span>
+    </li>
+    
+    <li class="listitem">
+     <span class="simpara">
+      This module has no post-deactivate function, so <strong><code>NULL</code></strong> is used.
+     </span>
+    </li>
+    
+    <li class="listitem">
+     <span class="simpara">
+      Since this module <em class="emphasis">does</em> use globals,
+      <strong><code>STANDARD_MODULE_PROPERTIES_EX</code></strong> is used to finish the
+      structure.
+     </span>
+    </li>
+   
+   </ul>
+
+  </div>
+
+  <div class="sect2" id="internals2.structure.modstruct.php53">
+   <h3 class="title">What's changed between 5.2 and 5.3?</h3>
+   
+   <p class="simpara">
+    Nothing. The only differences in the <em>zend_module</em>
+    structure between PHP 5.2 and PHP 5.3 are a few <span class="modifier">const</span>
+    keywords.
+   </p>
+
+  </div>
+
+ </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div>
+ <div class="note">There are no user contributed notes for this page.</div></section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/internals2.structure.modstruct.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:53:27 GMT -->
+
+
+</body></html>

@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>セッションのデータを書き込む</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="sessionhandler.read.html">≪ SessionHandler::read</a></li>
+      <li style="float: right;"><a href="class.sessionhandlerinterface.html">SessionHandlerInterface ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="class.sessionhandler.html">SessionHandler</a></li>
+    <li>セッションのデータを書き込む</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="sessionhandler.write" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">SessionHandler::write</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.4.0)</p><p class="refpurpose"><span class="refname">SessionHandler::write</span> &mdash; <span class="dc-title">セッションのデータを書き込む</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-sessionhandler.write-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><strong>SessionHandler::write</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$session_id</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$session_data</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   セッションのデータをセッションストレージに書き込みます。
+   リクエストの終了時や <span class="function"><a href="function.session-write-close.html" class="function">session_write_close()</a></span> を実行したとき、そして
+   <span class="function"><a href="function.session-register-shutdown.html" class="function">session_register_shutdown()</a></span> が失敗したときにコールされます。
+   PHP は、このメソッドの返り値を受け取るとすぐに <span class="function"><a href="sessionhandler.close.html" class="function">SessionHandler::close()</a></span> をコールします。
+  </p>
+  <p class="para">
+   このメソッドは、このハンドラが <span class="function"><a href="function.session-set-save-handler.html" class="function">session_set_save_handler()</a></span>
+   で設定される前に ini 設定
+   <a href="session.configuration.html#ini.session.save-handler" class="link">session.save_handler</a>
+   で定義されていた PHP の保存ハンドラをラップします。
+  </p>
+  <p class="para">
+   このクラスを継承して拡張する場合は、親の <code class="parameter">write</code>
+   メソッドをコールすればこのメソッドのラッパーを実行でき、それに付随する内部コールバックも実行されます。
+   こうすれば、メソッドをオーバーライドしたり処理を横取りしてフィルタを追加したり
+   (親の <code class="parameter">write</code> メソッドに送る前に <code class="parameter">$data</code> を暗号化したりなど)
+   できます。
+  </p>
+  <p class="para">
+   このメソッドに関する詳細は、
+   <span class="function"><a href="sessionhandlerinterface.write.html" class="function">SessionHandlerInterface::write()</a></span>
+   のドキュメントを参照ください。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-sessionhandler.write-parameters">
+  <h3 class="title">パラメータ</h3>
+  <dl>
+
+   
+    <dt>
+<code class="parameter">session_id</code></dt>
+
+    <dd>
+
+     <p class="para">
+      セッション id。
+     </p>
+    </dd>
+
+   
+   
+    <dt>
+<code class="parameter">session_data</code></dt>
+
+    <dd>
+
+     <p class="para">
+      エンコードされたセッションのデータ。
+      これは、PHP が内部的にスーパーグローバル <var class="varname"><var class="varname"><a href="reserved.variables.session.html" class="classname">$_SESSION</a></var></var>
+      をエンコードしてシリアライズし、それを渡したものです。
+      セッションが使うシリアライズ方式は、通常のシリアライズとは別のものであることに注意しましょう。
+     </p>
+    </dd>
+
+   
+  </dl>
+
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-sessionhandler.write-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   返り値 (通常は、<strong><code>TRUE</code></strong> が成功そして <strong><code>FALSE</code></strong> が失敗を表します)。この値は PHP で内部的に処理されるものであることに注意しましょう。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-sessionhandler.write-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member">
+     <a href="session.configuration.html#ini.session.serialize-handler" class="link">session.serialize_handler</a>
+    </li>
+   </ul>
+  </p>
+ </div>
+
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

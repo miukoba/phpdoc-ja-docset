@@ -1,0 +1,465 @@
+<html><!-- Mirrored from php.net/manual/en/ref.regex.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:51:41 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>POSIX Regex Functions</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="ref.regex.html">
+ <link rel="shorturl" href="http://php.net/regex">
+ <link rel="alternate" href="http://php.net/regex" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="book.regex.html">
+ <link rel="prev" href="regex.examples.html">
+ <link rel="next" href="function.ereg-replace.html">
+
+ <link rel="alternate" href="ref.regex.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/ref.regex.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/ref.regex.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/ref.regex.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/ref.regex.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/ref.regex.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/ref.regex.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/ref.regex.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/ref.regex.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/ref.regex.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/ref.regex.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.basic.text.html">Text Processing</a></li>      <li><a href="book.regex.html">POSIX Regex</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="ref.regex" class="reference">
+ <h1 class="title">POSIX Regex Functions</h1>
+ <div class="partintro">
+  <h1 class="title">See Also</h1>
+  <p class="para">
+   For regular expressions in Perl-compatible syntax have a look at the
+   <a href="book.pcre.html" class="link">PCRE functions</a>. The simpler shell style
+   wildcard pattern matching is provided by <span class="function"><a href="function.fnmatch.html" class="function">fnmatch()</a></span>.
+  </p>
+ </div>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Table of Contents</h2><ul class="chunklist chunklist_reference"><li><a href="function.ereg-replace.html">ereg_replace</a> — Replace regular expression</li><li><a href="function.ereg.html">ereg</a> — Regular expression match</li><li><a href="function.eregi-replace.html">eregi_replace</a> — Replace regular expression case insensitive</li><li><a href="function.eregi.html">eregi</a> — Case insensitive regular expression match</li><li><a href="function.split.html">split</a> — Split string into array by regular expression</li><li><a href="function.spliti.html">spliti</a> — Split string into array by regular expression case insensitive</li><li><a href="function.sql-regcase.html">sql_regcase</a> — Make regular expression for case insensitive match</li></ul>
+</div>
+
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="74258">  
+  <a class="name">
+  <strong class="user"><em>Edward Z. Yang</em></strong></a><div class="date" title="2007-04-01 10:16"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom74258">
+<div class="phpcode"><code><span class="html">
+The fact that 'regex' functions are not binary safe have some very important security implications for people who are using ereg to validate their input data.<br><br>Suppose I have an expression:<br><br><span class="default">&lt;?php<br>$pattern </span><span class="keyword">= </span><span class="string">'^[[:alnum:]]*$'</span><span class="keyword">;<br></span><span class="default">?&gt;<br></span><br>This should match any number of alphanumeric characters, right? Well, if the string you're matching is not binary, sure. However, say we have a null-byte tossed in the string:<br><br><span class="default">&lt;?php<br>$string </span><span class="keyword">= </span><span class="default">chr</span><span class="keyword">(</span><span class="default">0</span><span class="keyword">) . </span><span class="string">"&lt;script&gt;alert('xss')&lt;/script&gt;"</span><span class="keyword">;<br>echo </span><span class="default">ereg</span><span class="keyword">(</span><span class="default">$pattern</span><span class="keyword">, </span><span class="default">$string</span><span class="keyword">);<br></span><span class="default">?&gt;<br></span><br>Will return true. Note that it is trivially easy to inject null bytes into PHP parameters:<br><br>index.php?content=%00ASCII<br><br>Scary. So unless you really know what you're doing, just use the PCRE preg_* functions.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="19702">  
+  <a class="name">
+  <strong class="user"><em>regex at dan42 dot cjb dot net</em></strong></a><div class="date" title="2002-03-07 10:33"><strong>12 years ago</strong></div>
+  <div class="text" id="Hcom19702">
+<div class="phpcode"><code><span class="html">
+Follow-up to my previous post:<br>Some simple optimization allowed me to realize that excluding a word at the beginning of a string has a degree of complexity O(n) rather than O(n^2). I only had to follow the logic:<br><br>if str[0] != badword[0] then OK<br>else<br>&nbsp; if str[1] != badword[1] then OK<br>&nbsp; else<br>&nbsp; &nbsp; if str[2] != badword[2] then OK<br>&nbsp; &nbsp; else ...<br><br>So excluding the word 'abc' at the beginning of a string is much more simple than I had made it out to be:<br>&nbsp; ^([^a]|a[^b]|ab[^c])</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="19744">  
+  <a class="name">
+  <strong class="user"><em>david at NOgreenhammerSPAM dot com</em></strong></a><div class="date" title="2002-03-09 10:40"><strong>12 years ago</strong></div>
+  <div class="text" id="Hcom19744">
+<div class="phpcode"><code><span class="html">
+Sadly, the Posix regexp evaluator (PHP 4.1.2) does not seem to support multi-character coallating sequences, even though such sequences are included in the man-page documentation.<br><br>Specifically, the man-page discusses the expression "[[.ch.]]*c" which matches the first five characters of "chchcc".&nbsp; Running this expression in ereg_replace generates the error "Warning: REG_ECOLLATE".&nbsp; (Running an equivalent expression with only one character between the periods does work, however.)<br><br>Multi-character coallating sequences are not supported!<br><br>This is really, really too bad, because it would have provided a simple way to exlude words from the target.<br><br>I'm going to go learn PCRE, now.&nbsp; :-(</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="19660">  
+  <a class="name">
+  <strong class="user"><em>spiceee at potentialvalleys dot com</em></strong></a><div class="date" title="2002-03-06 10:26"><strong>12 years ago</strong></div>
+  <div class="text" id="Hcom19660">
+<div class="phpcode"><code><span class="html">
+sorry to be picky here but saying ^ is beginning of a line or $ is end of line is rather misleading, if you're working on a daily basis with regexes.<br><br>it might be that it is most of the time correct BUT in some occasions you'd be better off to think of ^ as "start of string" and $ as "end of string".<br><br>there are ways to make your regex engine forget about your system's notion of a newline, it's what is commonly refered to as multiline regexes...</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="55310">  
+  <a class="name">
+  <strong class="user"><em>nothing at nothing dot com</em></strong></a><div class="date" title="2005-07-29 03:35"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom55310">
+<div class="phpcode"><code><span class="html">
+His regular expression is correct, the ^ is to check for the beginning of the string. It is just looking for delimiter characters, try putting slashes around it.<br>"/&lt;regex&gt;/"</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="55275">  
+  <a class="name">
+  <strong class="user"><em>stringer at stringerstudios dot com</em></strong></a><div class="date" title="2005-07-28 05:07"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom55275">
+<div class="phpcode"><code><span class="html">
+Hey trucex. Cool phone number function but your $regex produces the following error. Warning: No ending delimiter '^' found<br><br>Instead of:<br>$regex = '^[(]?[2-9]{1}[0-9]{2}[) -]{0,2}' . '[0-9]{3}[- ]?' . '[0-9]{4}[ ]?' . '((x|ext)[.]?[ ]?[0-9]{1,5})?$';<br><br>It think should be:<br>$regex = '^[(]?[2-9]{1}[0-9]{2}[) -]{0,2}' . '[0-9]{3}[- ]?' . '[0-9]{4}[ ]?' . '((x|ext)[.]?[ ]?[0-9]{1,5})?$^';</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="55208">  
+  <a class="name">
+  <strong class="user"><em>trucex[at] gmail</em></strong></a><div class="date" title="2005-07-27 11:00"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom55208">
+<div class="phpcode"><code><span class="html">
+I was having a ton of issues with other people's phone number validation expressions, so I made my own. It works with most US phone numbers, including those with extentions. Format matches any of the following formats:<br><br>5551234567<br>555 1234567<br>555 123 4567<br>555 123-4567<br>555-1234567<br>555-123-4567<br>555123-4567<br>(555)1234567<br>(555)123 4567<br>(555)123-4567<br>(555) 1234567<br>(555) 123-4567<br>(555) 123 4567<br><br>And any of the following extentions can be added with or without a space between them and the number:<br>x123<br>x.123<br>x. 123<br>x 123<br>ext.123<br>ext. 123<br>ext 123<br>ext123<br><br>Extentions support between 1 and 5 digits. <br><br>Here is the expression:<br><br>$regex = '^[(]?[2-9]{1}[0-9]{2}[) -]{0,2}' . '[0-9]{3}[- ]?' . '[0-9]{4}[ ]?' . '((x|ext)[.]?[ ]?[0-9]{1,5})?$';<br><br>Enjoy!</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="45462">  
+  <a class="name">
+  <strong class="user"><em>tgt at tip dot nl</em></strong></a><div class="date" title="2004-09-08 02:17"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom45462">
+<div class="phpcode"><code><span class="html">
+Tip !<br>Metacharacters in regular expresions are usefull and easy to use.<br><br>The following is a set of special values that denote certain common ranges. They have the advantage that also take in account the 'locale' i.e. any variant of the local language/coding system.<br><br>[:digit:]&nbsp; &nbsp; &nbsp; Only the digits 0 to 9 <br>[:alnum:]&nbsp; &nbsp; &nbsp; Any alphanumeric character 0 to 9 OR A to Z or a to z. <br>[:alpha:]&nbsp; &nbsp; &nbsp;&nbsp; Any alpha character A to Z or a to z. <br>[:blank:]&nbsp; &nbsp; &nbsp;&nbsp; Space and TAB characters only. <br>[:xdigit:]&nbsp; &nbsp;&nbsp; . <br>[:punct:]&nbsp; &nbsp; &nbsp;&nbsp; Punctuation symbols . , " ' ? ! ; : <br>[:print:]&nbsp; &nbsp; &nbsp; Any printable character. <br>[:space:]&nbsp; &nbsp; &nbsp; Any space characters. <br>[:graph:]&nbsp; &nbsp; &nbsp;&nbsp; . <br>[:upper:]&nbsp; &nbsp; &nbsp;&nbsp; Any alpha character A to Z. <br>[:lower:]&nbsp; &nbsp; &nbsp;&nbsp; Any alpha character a to z. <br>[:cntrl:]&nbsp; &nbsp; &nbsp; &nbsp; .</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="28517">  
+  <a class="name">
+  <strong class="user"><em>Robin</em></strong></a><div class="date" title="2003-01-15 10:53"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom28517">
+<div class="phpcode"><code><span class="html">
+Ever wondered how to exclude "[" and "]"?<br>Here it goes: "[^][]". Extra characters to exclude can beadded right in the middle like this: "[^]fobar[]".</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="25043">  
+  <a class="name">
+  <strong class="user"><em>paper</em></strong></a><div class="date" title="2002-09-08 11:57"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom25043">
+<div class="phpcode"><code><span class="html">
+I have also experienced the same problem as bps7j@yahoo.com had been experiencing, except I did not recognize the problem until after many hours of debugging.<br><br>"\s" does not seem to represent spaces, however "[[:space:]]" does.<br><br>Another problem I was having was matching dashes/hyphens '-'. You must escape them "\-" and place them at the end of a bracket expression.<br><br>Example: To match a blank string or a string containing only uppercase letters, underscores, spaces, and hyphens:<br><br>^([A-Z_\-]|[[:space:]])*$<br><br>Hope this saves someone some time from debugging like I was. :)</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="24578">  
+  <a class="name">
+  <strong class="user"><em>bps7j at yahoo dot com</em></strong></a><div class="date" title="2002-08-21 07:40"><strong>12 years ago</strong></div>
+  <div class="text" id="Hcom24578">
+<div class="phpcode"><code><span class="html">
+Something that really got me: I'm used to using Perl's regexps, and so I used \s to check for a whitespace character in a password on a website. My PHP book (Wrox Press, Professional PHP Programming) agreed with me that this is exactly the same as [ \r\n\t\f\v], but it's NOT. In fact, what it did was keep anyone from joining the site if they put an 's' in their password! So beware, check for subtle differences between what you're used to and PHP.<br><br>[[:space:]] works fine, by the way.<br><br>I'm going to use the pcre functions from now on... I like Perl :o)</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="19555">  
+  <a class="name">
+  <strong class="user"><em>luciano_at_braziliantranslation.net</em></strong></a><div class="date" title="2002-03-03 12:15"><strong>12 years ago</strong></div>
+  <div class="text" id="Hcom19555">
+<div class="phpcode"><code><span class="html">
+mholdgate wrote a very nice quick reference guide in the next page (<a rel="nofollow" target="_blank">http://www.php.net/manual/en/function.ereg.php</a>), but I felt it could be improved a little:<br>________________<br><br>^&nbsp; &nbsp; &nbsp; &nbsp; Start of line<br>$&nbsp; &nbsp; &nbsp; &nbsp; End of line<br>n?&nbsp; &nbsp; &nbsp; &nbsp; Zero or only one single occurrence of character 'n'<br>n*&nbsp; &nbsp; &nbsp; &nbsp; Zero or more occurrences of character 'n'<br>n+&nbsp; &nbsp; &nbsp; &nbsp; At least one or more occurrences of character 'n'<br>n{2}&nbsp; &nbsp; &nbsp; &nbsp; Exactly two occurrences of 'n'<br>n{2,}&nbsp; &nbsp; &nbsp; &nbsp; At least 2 or more occurrences of 'n'<br>n{2,4}&nbsp; &nbsp; &nbsp; &nbsp; From 2 to 4 occurrences of 'n'<br>.&nbsp; &nbsp; &nbsp; &nbsp; Any single character<br>()&nbsp; &nbsp; &nbsp; &nbsp; Parenthesis to group expressions<br>(.*)&nbsp; &nbsp; &nbsp; &nbsp; Zero or more occurrences of any single character, ie, anything!<br>(n|a)&nbsp; &nbsp; &nbsp; &nbsp; Either 'n' or 'a'<br>[1-6]&nbsp; &nbsp; &nbsp; &nbsp; Any single digit in the range between 1 and 6<br>[c-h]&nbsp; &nbsp; &nbsp; &nbsp; Any single lower case letter in the range between c and h<br>[D-M]&nbsp; &nbsp; &nbsp; &nbsp; Any single upper case letter in the range between D and M<br>[^a-z]&nbsp; &nbsp; &nbsp; &nbsp; Any single character EXCEPT any lower case letter between a and z.<br><br>&nbsp; &nbsp; &nbsp; &nbsp; Pitfall: the ^ symbol only acts as an EXCEPT rule if it is the <br>&nbsp; &nbsp; &nbsp; &nbsp; very first character inside a range, and it denies the <br>&nbsp; &nbsp; &nbsp; &nbsp; entire range including the ^ symbol itself if it appears again <br>&nbsp; &nbsp; &nbsp; &nbsp; later in the range. Also remember that if it is the first <br>&nbsp; &nbsp; &nbsp; &nbsp; character in the entire expression, it means "start of line". <br>&nbsp; &nbsp; &nbsp; &nbsp; In any other place, it is always treated as a regular ^ symbol.<br>&nbsp; &nbsp; &nbsp; &nbsp; In other words, you cannot deny a word with ^undesired_word <br>&nbsp; &nbsp; &nbsp; &nbsp; or a group with ^(undesired_phrase).<br>&nbsp; &nbsp; &nbsp; &nbsp; Read more detailed regex documentation to find out what is <br>&nbsp; &nbsp; &nbsp; &nbsp; necessary to achieve this.<br><br>[_4^a-zA-Z]&nbsp; &nbsp; Any single character which can be the underscore or the <br>&nbsp; &nbsp; &nbsp; &nbsp; number 4 or the ^ symbol or any letter, lower or upper case<br><br>?, +, * and the {} count parameters can be appended not only to a single character, but also to a group() or a range[].<br><br>therefore,<br>^.{2}[a-z]{1,2}_?[0-9]*([1-6]|[a-f])[^1-9]{2}a+$<br>would mean:<br><br>^.{2}&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; = A line beginning with any two characters, <br>[a-z]{1,2}&nbsp; &nbsp;&nbsp; = followed by either 1 or 2 lower case letters, <br>_?&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; = followed by an optional underscore, <br>[0-9]*&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; = followed by zero or more digits, <br>([1-6]|[a-f])&nbsp; &nbsp;&nbsp; = followed by either a digit between 1 and 6 OR a <br>&nbsp; &nbsp; &nbsp; &nbsp; lower case letter between a and f, <br>[^1-9]{2}&nbsp; &nbsp;&nbsp; = followed by any two characters except digits <br>&nbsp; &nbsp; &nbsp; &nbsp; between 1 and 9 (0 is possible), <br>a+$&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; = followed by at least one or more <br>&nbsp; &nbsp; &nbsp; &nbsp; occurrences of 'a' at the end of a line.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="56101">  
+  <a class="name">
+  <strong class="user"><em>ajd at cloudiness dot com</em></strong></a><div class="date" title="2005-08-23 09:05"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom56101">
+<div class="phpcode"><code><span class="html">
+A minor tweak to trucex' phone validator, because some people use a dot separator between the area code, exchange and four-digit block.<br>Posted here for your copy-and-paste convenience.<br><br>$regex = '^[(]?[2-9]{1}[0-9]{2}[) -.]{0,2}' . '[0-9]{3}[- .]?' . '[0-9]{4}[ ]?' . '((x|ext)[.]?[ ]?[0-9]{1,5})?$';</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="45485">  
+  <a class="name">
+  <strong class="user"><em>annie</em></strong></a><div class="date" title="2004-09-08 05:17"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom45485">
+<div class="phpcode"><code><span class="html">
+Another nice tutorial about regular expressions: <a rel="nofollow" target="_blank">http://www.mkssoftware.com/docs/man5/regexp.5.asp</a></span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="36704">  
+  <a class="name">
+  <strong class="user"><em>mina86 at tlen dot pl</em></strong></a><div class="date" title="2003-10-19 10:14"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom36704">
+<div class="phpcode"><code><span class="html">
+I tested how fast POSIX and Perl regular expresions are, and here are the results:<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; | POSIX Extended&nbsp; | Perl-Compatible |&nbsp;&nbsp; POSIX - Perl<br>-----------+-----------------+-----------------+-----------------<br>&nbsp; &nbsp;&nbsp; match |&nbsp; &nbsp; 0.1296420097 |&nbsp; &nbsp; 0.1006720066 |&nbsp; 0.0289700031<br>&nbsp;&nbsp; match i |&nbsp; &nbsp; 0.1204010248 |&nbsp; &nbsp; 0.1101620197 |&nbsp; 0.0102390051<br>&nbsp;&nbsp; replace |&nbsp; &nbsp; 0.1896649599 |&nbsp; &nbsp; 0.1298999786 |&nbsp; 0.0597649813<br> replace i |&nbsp;&nbsp; 10.6998120546 |&nbsp; &nbsp; 0.1453789473 | 10.5544331074<br><br>So, as you can see, preg_* functions are faster then ereg* functions. You can find source code of my test script here: <a rel="nofollow" target="_blank">http://mina86.home.staszic.waw.pl/temp/regexp-speed-test.txt</a></span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="18732">  
+  <a class="name"><strong class="user"><em>Anonymous</em></strong></a><div class="date" title="2002-02-02 07:02"><strong>12 years ago</strong></div>
+  <div class="text" id="Hcom18732">
+<div class="phpcode"><code><span class="html">
+if you are looking for the abbreviations like tab, carriage return, regex-class definitions&nbsp; <br><br>you should look here: <br><a rel="nofollow" target="_blank">http://elvin.dstc.edu.au/doc/regex.html</a><br><br>some excerpts:<br><br>&nbsp; &nbsp; \a&nbsp; &nbsp; control characters bell<br>&nbsp; &nbsp; \b&nbsp; &nbsp; backspace<br>&nbsp; &nbsp; \f&nbsp; &nbsp; form feed<br>&nbsp; &nbsp; \n&nbsp; &nbsp; line feed<br>&nbsp; &nbsp; \r&nbsp; &nbsp; carriage return<br>&nbsp; &nbsp; \t&nbsp; &nbsp; horizontal tab<br>&nbsp; &nbsp; \v&nbsp; &nbsp; vertical tab<br><br>class example<br>&nbsp; &nbsp; \cLu&nbsp; &nbsp; all uppercase letters</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="61606">  
+  <a class="name">
+  <strong class="user"><em>nate[-at-]theklaibers[-dot-]com</em></strong></a><div class="date" title="2006-02-07 12:19"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom61606">
+<div class="phpcode"><code><span class="html">
+I am using a regex with the same thought process in mind as the earlier phone number. However, I have also implemented it to allow the '1' so a number like.<br><br>1 222 222 2222 would still be valid as well (along with all of the other combinations.<br><br>In my regex, I pull out the matches - not the exact string. So if someone were to forget a bracket, it wouldnt matter to the actual output as it is stripped from that match.<br><br>So, if you put in 222) 233 3454, the matches would only pull out 1=&gt;222, 2=&gt;233, 3=&gt;3454<br><br>This has been very helpful in tweaking my regex.<br><br>Thanks,<br>Nate</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="109536">  
+  <a class="name">
+  <strong class="user"><em>swordsteel</em></strong></a><div class="date" title="2012-07-27 02:17"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom109536">
+<div class="phpcode"><code><span class="html">
+So i did like to get Ü Å Ä Ö and some more in to my check for things.
+<br>
+<br><span class="default">&lt;?php
+<br>$chars </span><span class="keyword">= array(</span><span class="string">'À'</span><span class="keyword">, </span><span class="string">'Á'</span><span class="keyword">, </span><span class="string">'Â'</span><span class="keyword">, </span><span class="string">'Ã'</span><span class="keyword">, </span><span class="string">'Ä'</span><span class="keyword">, </span><span class="string">'Å'</span><span class="keyword">, </span><span class="string">'Æ'</span><span class="keyword">, </span><span class="string">'Ç'</span><span class="keyword">, </span><span class="string">'È'</span><span class="keyword">, </span><span class="string">'É'</span><span class="keyword">, </span><span class="string">'Ê'</span><span class="keyword">, </span><span class="string">'Ë'</span><span class="keyword">, </span><span class="string">'Ì'</span><span class="keyword">, </span><span class="string">'Í'</span><span class="keyword">, </span><span class="string">'Î'</span><span class="keyword">, </span><span class="string">'Ï'</span><span class="keyword">, </span><span class="string">'Ñ'</span><span class="keyword">, </span><span class="string">'Ò'</span><span class="keyword">, </span><span class="string">'Ó'</span><span class="keyword">, </span><span class="string">'Ô'</span><span class="keyword">, </span><span class="string">'Õ'</span><span class="keyword">, </span><span class="string">'Ö'</span><span class="keyword">, </span><span class="string">'Ø'</span><span class="keyword">, </span><span class="string">'Ù'</span><span class="keyword">, </span><span class="string">'Ú'</span><span class="keyword">, </span><span class="string">'Û'</span><span class="keyword">, </span><span class="string">'Ü'</span><span class="keyword">, </span><span class="string">'Ý'</span><span class="keyword">, </span><span class="string">'Þ'</span><span class="keyword">, </span><span class="string">'ß'</span><span class="keyword">, </span><span class="string">'à'</span><span class="keyword">, </span><span class="string">'á'</span><span class="keyword">, </span><span class="string">'â'</span><span class="keyword">, </span><span class="string">'ã'</span><span class="keyword">, </span><span class="string">'ä'</span><span class="keyword">, </span><span class="string">'å'</span><span class="keyword">, </span><span class="string">'æ'</span><span class="keyword">, </span><span class="string">'ç'</span><span class="keyword">, </span><span class="string">'è'</span><span class="keyword">, </span><span class="string">'é'</span><span class="keyword">, </span><span class="string">'ê'</span><span class="keyword">, </span><span class="string">'ë'</span><span class="keyword">, </span><span class="string">'ì'</span><span class="keyword">, </span><span class="string">'í'</span><span class="keyword">, </span><span class="string">'î'</span><span class="keyword">, </span><span class="string">'ï'</span><span class="keyword">, </span><span class="string">'ð'</span><span class="keyword">, </span><span class="string">'ñ'</span><span class="keyword">, </span><span class="string">'ò'</span><span class="keyword">, </span><span class="string">'ó'</span><span class="keyword">, </span><span class="string">'ô'</span><span class="keyword">, </span><span class="string">'õ'</span><span class="keyword">, </span><span class="string">'ö'</span><span class="keyword">, </span><span class="string">'ø'</span><span class="keyword">, </span><span class="string">'ù'</span><span class="keyword">, </span><span class="string">'ú'</span><span class="keyword">, </span><span class="string">'û'</span><span class="keyword">, </span><span class="string">'ý'</span><span class="keyword">, </span><span class="string">'ý'</span><span class="keyword">, </span><span class="string">'þ'</span><span class="keyword">, </span><span class="string">'ÿ'</span><span class="keyword">);
+<br>
+<br></span><span class="default">$list </span><span class="keyword">= array();
+<br>foreach(</span><span class="default">$chars </span><span class="keyword">AS </span><span class="default">$char </span><span class="keyword">) {
+<br>&nbsp; &nbsp; </span><span class="default">$list</span><span class="keyword">[</span><span class="default">dechex</span><span class="keyword">(</span><span class="default">ord</span><span class="keyword">(</span><span class="default">$char</span><span class="keyword">))] = </span><span class="default">$char</span><span class="keyword">;
+<br>}
+<br></span><span class="default">ksort</span><span class="keyword">(</span><span class="default">$list</span><span class="keyword">);
+<br>foreach (</span><span class="default">$list </span><span class="keyword">as </span><span class="default">$key </span><span class="keyword">=&gt; </span><span class="default">$val</span><span class="keyword">) {
+<br>&nbsp; &nbsp; echo </span><span class="string">"</span><span class="default">$key</span><span class="string"> = </span><span class="default">$val</span><span class="string">, "</span><span class="keyword">;
+<br>}
+<br></span><span class="default">?&gt;
+<br></span>
+<br>that gave me this
+<br>
+<br>c0 = À, c1 = Á, c2 = Â, c3 = Ã, c4 = Ä, c5 = Å, c6 = Æ, c7 = Ç, c8 = È, c9 = É, ca = Ê, cb = Ë, cc = Ì, cd = Í, ce = Î, cf = Ï, d1 = Ñ, d2 = Ò, d3 = Ó, d4 = Ô, d5 = Õ, d6 = Ö, d8 = Ø, d9 = Ù, da = Ú, db = Û, dc = Ü, dd = Ý, de = Þ, df = ß, e0 = à, e1 = á, e2 = â, e3 = ã, e4 = ä, e5 = å, e6 = æ, e7 = ç, e8 = è, e9 = é, ea = ê, eb = ë, ec = ì, ed = í, ee = î, ef = ï, f0 = ð, f1 = ñ, f2 = ò, f3 = ó, f4 = ô, f5 = õ, f6 = ö, f8 = ø, f9 = ù, fa = ú, fb = û, fd = ý, fe = þ, ff = ÿ
+<br>
+<br>and that is if you make it smaller...
+<br>
+<br>\\xC0-\\xD6 \\xD8-\\xF6 \\xF8-\\xFB \\xFD-\\xFF
+<br>
+<br>Hope this help some one with Ü Å Ä Ö</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="19254">  
+  <a class="name">
+  <strong class="user"><em>regex at dan42 dot cjb dot net</em></strong></a><div class="date" title="2002-02-20 09:12"><strong>12 years ago</strong></div>
+  <div class="text" id="Hcom19254">
+<div class="phpcode"><code><span class="html">
+It's easy to exclude characters but excluding words with a regular expression is a bit more tricky. For parentheses there is no equivalent to the ^ for brackets. The only way I've found to exclude a string is to proceed by inverse logic: accept all the words that do NOT correspond to the string. So if you want to accept all strings except those _begining_ with "abc", you'd have to accept any string that matches one of the following:<br>&nbsp; ^(ab[^c])<br>&nbsp; ^(a[^b]c)<br>&nbsp; ^(a[^b][^c])<br>&nbsp; ^([^a]bc)<br>&nbsp; ^([^a]b[^c])<br>&nbsp; ^([^a][^b]c)<br>&nbsp; ^([^a][^b][^c])<br><br>which, put together, gives the regex<br>&nbsp; ^(ab[^c]|a[^b]c|a[^b][^c]|[^a]bc|[^a]b[^c]|[^a][^b]c|[^a][^b][^c])<br><br>Note that this won't work to detect the word "abc" anywhere in a string. You need to have some way of anchoring the inverse word match<br>like: ^(a[^b]|[^a]b|[^a][^b])&nbsp;&nbsp; ;"ab" not at begining of line<br>&nbsp; or: (a[^b]|[^a]b|[^a][^b])&amp;&nbsp;&nbsp; ;"ab" not at end of line<br>&nbsp; or: 123(a[^b]|[^a]b|[^a][^b]) ;"ab" not after "123"<br><br>I don't know why "(abc){0,0}" is an invalid synthax. It would've made all this much simpler.<br> <br> <br>Slightly off-topic, here's a regex date validator (format yyyy-mm-dd, remove all spaces and linefeeds):<br>&nbsp; ^(19|20)([0-9]{2}-((0[13-9]|1[0-2])-(0[1-9]|[12][0-9]|30)|<br>&nbsp; (0[13578]|1[02])-31|02-(0[1-9]|1[0-9]|2[0-8]))|([2468]0|<br>&nbsp; [02468][48]|[13579][26])-02-29)$</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/ref.regex.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:51:42 GMT -->
+
+
+</body></html>

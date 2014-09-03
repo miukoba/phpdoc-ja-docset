@@ -1,0 +1,818 @@
+<html><!-- Mirrored from php.net/manual/en/language.oop5.typehinting.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:28:00 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Type Hinting</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="language.oop5.typehinting.html">
+ <link rel="shorturl" href="http://php.net/oop5.typehinting">
+ <link rel="alternate" href="http://php.net/oop5.typehinting" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="language.oop5.html">
+ <link rel="prev" href="language.oop5.object-comparison.html">
+ <link rel="next" href="language.oop5.late-static-bindings.html">
+
+ <link rel="alternate" href="language.oop5.typehinting.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/language.oop5.typehinting.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/language.oop5.typehinting.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/language.oop5.typehinting.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/language.oop5.typehinting.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/language.oop5.typehinting.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/language.oop5.typehinting.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/language.oop5.typehinting.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/language.oop5.typehinting.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/language.oop5.typehinting.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/language.oop5.typehinting.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="langref.html">Language Reference</a></li>      <li><a href="language.oop5.html">Classes and Objects</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="language.oop5.typehinting" class="sect1">
+  <h2 class="title">Type Hinting</h2>
+  <p class="para">
+   PHP 5 introduces type hinting. Functions are now able to force parameters
+   to be objects (by specifying the name of the class in the function
+   prototype), interfaces, arrays (since PHP 5.1) or <span class="type"><a href="language.types.callable.html" class="type callable">callable</a></span>
+   (since PHP 5.4). However, if <span class="type"><a href="language.types.null.html" class="type NULL">NULL</a></span> is used
+   as the default parameter value, it will be allowed as an argument for any 
+   later call.
+  </p>
+  
+  <p class="para">
+   If class or interface is specified as type hint then all its children or
+   implementations are allowed too.
+  </p>
+  
+  <p class="para">
+   Type hints can not be used with scalar types such as <span class="type"><a href="language.types.integer.html" class="type int">int</a></span> or
+   <span class="type"><a href="language.types.string.html" class="type string">string</a></span>.
+   <a href="language.types.resource.html" class="link">Resources</a> and <a href="language.oop5.traits.html" class="link">Traits</a> are not allowed either.
+  </p>
+  
+  <div class="example" id="example-246">
+   <p><strong>Example #1 Type Hinting examples</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #FF8000">//&nbsp;An&nbsp;example&nbsp;class<br></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">MyClass<br></span><span style="color: #007700">{<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/**<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;A&nbsp;test&nbsp;function<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;First&nbsp;parameter&nbsp;must&nbsp;be&nbsp;an&nbsp;object&nbsp;of&nbsp;type&nbsp;OtherClass<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">public&nbsp;function&nbsp;</span><span style="color: #0000BB">test</span><span style="color: #007700">(</span><span style="color: #0000BB">OtherClass&nbsp;$otherclass</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$otherclass</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">var</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/**<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Another&nbsp;test&nbsp;function<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;First&nbsp;parameter&nbsp;must&nbsp;be&nbsp;an&nbsp;array<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">public&nbsp;function&nbsp;</span><span style="color: #0000BB">test_array</span><span style="color: #007700">(array&nbsp;</span><span style="color: #0000BB">$input_array</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$input_array</span><span style="color: #007700">);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/**<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;First&nbsp;parameter&nbsp;must&nbsp;be&nbsp;iterator<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">public&nbsp;function&nbsp;</span><span style="color: #0000BB">test_interface</span><span style="color: #007700">(</span><span style="color: #0000BB">Traversable&nbsp;$iterator</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">get_class</span><span style="color: #007700">(</span><span style="color: #0000BB">$iterator</span><span style="color: #007700">);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/**<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;First&nbsp;parameter&nbsp;must&nbsp;be&nbsp;callable<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">public&nbsp;function&nbsp;</span><span style="color: #0000BB">test_callable</span><span style="color: #007700">(callable&nbsp;</span><span style="color: #0000BB">$callback</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$data</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">call_user_func</span><span style="color: #007700">(</span><span style="color: #0000BB">$callback</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$data</span><span style="color: #007700">);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br></span><span style="color: #FF8000">//&nbsp;Another&nbsp;example&nbsp;class<br></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">OtherClass&nbsp;</span><span style="color: #007700">{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;</span><span style="color: #0000BB">$var&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'Hello&nbsp;World'</span><span style="color: #007700">;<br>}<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>
+    Failing to satisfy the type hint results in a catchable fatal error.
+   </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #FF8000">//&nbsp;An&nbsp;instance&nbsp;of&nbsp;each&nbsp;class<br></span><span style="color: #0000BB">$myclass&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MyClass</span><span style="color: #007700">;<br></span><span style="color: #0000BB">$otherclass&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">OtherClass</span><span style="color: #007700">;<br><br></span><span style="color: #FF8000">//&nbsp;Fatal&nbsp;Error:&nbsp;Argument&nbsp;1&nbsp;must&nbsp;be&nbsp;an&nbsp;object&nbsp;of&nbsp;class&nbsp;OtherClass<br></span><span style="color: #0000BB">$myclass</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">test</span><span style="color: #007700">(</span><span style="color: #DD0000">'hello'</span><span style="color: #007700">);<br><br></span><span style="color: #FF8000">//&nbsp;Fatal&nbsp;Error:&nbsp;Argument&nbsp;1&nbsp;must&nbsp;be&nbsp;an&nbsp;instance&nbsp;of&nbsp;OtherClass<br></span><span style="color: #0000BB">$foo&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">stdClass</span><span style="color: #007700">;<br></span><span style="color: #0000BB">$myclass</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">test</span><span style="color: #007700">(</span><span style="color: #0000BB">$foo</span><span style="color: #007700">);<br><br></span><span style="color: #FF8000">//&nbsp;Fatal&nbsp;Error:&nbsp;Argument&nbsp;1&nbsp;must&nbsp;not&nbsp;be&nbsp;null<br></span><span style="color: #0000BB">$myclass</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">test</span><span style="color: #007700">(</span><span style="color: #0000BB">null</span><span style="color: #007700">);<br><br></span><span style="color: #FF8000">//&nbsp;Works:&nbsp;Prints&nbsp;Hello&nbsp;World<br></span><span style="color: #0000BB">$myclass</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">test</span><span style="color: #007700">(</span><span style="color: #0000BB">$otherclass</span><span style="color: #007700">);<br><br></span><span style="color: #FF8000">//&nbsp;Fatal&nbsp;Error:&nbsp;Argument&nbsp;1&nbsp;must&nbsp;be&nbsp;an&nbsp;array<br></span><span style="color: #0000BB">$myclass</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">test_array</span><span style="color: #007700">(</span><span style="color: #DD0000">'a&nbsp;string'</span><span style="color: #007700">);<br><br></span><span style="color: #FF8000">//&nbsp;Works:&nbsp;Prints&nbsp;the&nbsp;array<br></span><span style="color: #0000BB">$myclass</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">test_array</span><span style="color: #007700">(array(</span><span style="color: #DD0000">'a'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'b'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'c'</span><span style="color: #007700">));<br><br></span><span style="color: #FF8000">//&nbsp;Works:&nbsp;Prints&nbsp;ArrayObject<br></span><span style="color: #0000BB">$myclass</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">test_interface</span><span style="color: #007700">(new&nbsp;</span><span style="color: #0000BB">ArrayObject</span><span style="color: #007700">(array()));<br><br></span><span style="color: #FF8000">//&nbsp;Works:&nbsp;Prints&nbsp;int(1)<br></span><span style="color: #0000BB">$myclass</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">test_callable</span><span style="color: #007700">(</span><span style="color: #DD0000">'var_dump'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>
+    Type hinting also works with functions:
+   </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #FF8000">//&nbsp;An&nbsp;example&nbsp;class<br></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">MyClass&nbsp;</span><span style="color: #007700">{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;</span><span style="color: #0000BB">$var&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'Hello&nbsp;World'</span><span style="color: #007700">;<br>}<br><br></span><span style="color: #FF8000">/**<br>&nbsp;*&nbsp;A&nbsp;test&nbsp;function<br>&nbsp;*<br>&nbsp;*&nbsp;First&nbsp;parameter&nbsp;must&nbsp;be&nbsp;an&nbsp;object&nbsp;of&nbsp;type&nbsp;MyClass<br>&nbsp;*/<br></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">myFunction</span><span style="color: #007700">(</span><span style="color: #0000BB">MyClass&nbsp;$foo</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$foo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">var</span><span style="color: #007700">;<br>}<br><br></span><span style="color: #FF8000">//&nbsp;Works<br></span><span style="color: #0000BB">$myclass&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MyClass</span><span style="color: #007700">;<br></span><span style="color: #0000BB">myFunction</span><span style="color: #007700">(</span><span style="color: #0000BB">$myclass</span><span style="color: #007700">);<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>
+    Type hinting allowing NULL value:
+   </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br><br></span><span style="color: #FF8000">/*&nbsp;Accepting&nbsp;NULL&nbsp;value&nbsp;*/<br></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">test</span><span style="color: #007700">(</span><span style="color: #0000BB">stdClass&nbsp;$obj&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">)&nbsp;{<br><br>}<br><br></span><span style="color: #0000BB">test</span><span style="color: #007700">(</span><span style="color: #0000BB">NULL</span><span style="color: #007700">);<br></span><span style="color: #0000BB">test</span><span style="color: #007700">(new&nbsp;</span><span style="color: #0000BB">stdClass</span><span style="color: #007700">);<br><br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="83442">  
+  <a class="name">
+  <strong class="user"><em>Daniel dot L dot Wood at Gmail dot Com</em></strong></a><div class="date" title="2008-05-26 11:00"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom83442">
+<div class="phpcode"><code><span class="html">
+People often ask about scalar/basic typehints.&nbsp; Here is a drop in class that I use in my MVC framework that will enable typehints through the use of a custom error handler.<br><br>Note: You should include this code above all other code in your include headers and if you are the using set_error_handler() function you should be aware that this uses it as well.&nbsp; You may need to chain your set_error_handlers()<br><br>Why?<br>1) Because people are sick of using the is_* functions to validate parameters.<br>2) Reduction of redundant coding for defensive coders.<br>3) Functions/Methods are self defining/documenting as to required input.<br><br>Also..<br>Follow the discussion for typehints in PHP 6.0 on the PHP Internals boards.<br><br><span class="default">&lt;?php<br><br>define</span><span class="keyword">(</span><span class="string">'TYPEHINT_PCRE'&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">,</span><span class="string">'/^Argument (\d)+ passed to (?:(\w+)::)?(\w+)\(\) must be an instance of (\w+), (\w+) given/'</span><span class="keyword">);<br><br>class </span><span class="default">Typehint<br></span><span class="keyword">{<br><br>&nbsp; &nbsp; private static </span><span class="default">$Typehints </span><span class="keyword">= array(<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'boolean'&nbsp;&nbsp; </span><span class="keyword">=&gt; </span><span class="string">'is_bool'</span><span class="keyword">,<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'integer'&nbsp;&nbsp; </span><span class="keyword">=&gt; </span><span class="string">'is_int'</span><span class="keyword">,<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'float'&nbsp; &nbsp;&nbsp; </span><span class="keyword">=&gt; </span><span class="string">'is_float'</span><span class="keyword">,<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'string'&nbsp; &nbsp; </span><span class="keyword">=&gt; </span><span class="string">'is_string'</span><span class="keyword">,<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'resrouce'&nbsp; </span><span class="keyword">=&gt; </span><span class="string">'is_resource'<br>&nbsp; &nbsp; </span><span class="keyword">);<br><br>&nbsp; &nbsp; private function </span><span class="default">__Constrct</span><span class="keyword">() {}<br><br>&nbsp; &nbsp; public static function </span><span class="default">initializeHandler</span><span class="keyword">()<br>&nbsp; &nbsp; {<br><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">set_error_handler</span><span class="keyword">(</span><span class="string">'Typehint::handleTypehint'</span><span class="keyword">);<br><br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">TRUE</span><span class="keyword">;<br>&nbsp; &nbsp; }<br><br>&nbsp; &nbsp; private static function </span><span class="default">getTypehintedArgument</span><span class="keyword">(</span><span class="default">$ThBackTrace</span><span class="keyword">, </span><span class="default">$ThFunction</span><span class="keyword">, </span><span class="default">$ThArgIndex</span><span class="keyword">, &amp;</span><span class="default">$ThArgValue</span><span class="keyword">)<br>&nbsp; &nbsp; {<br><br>&nbsp; &nbsp; &nbsp; &nbsp; foreach (</span><span class="default">$ThBackTrace </span><span class="keyword">as </span><span class="default">$ThTrace</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; {<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// Match the function; Note we could do more defensive error checking.<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">if (isset(</span><span class="default">$ThTrace</span><span class="keyword">[</span><span class="string">'function'</span><span class="keyword">]) &amp;&amp; </span><span class="default">$ThTrace</span><span class="keyword">[</span><span class="string">'function'</span><span class="keyword">] == </span><span class="default">$ThFunction</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$ThArgValue </span><span class="keyword">= </span><span class="default">$ThTrace</span><span class="keyword">[</span><span class="string">'args'</span><span class="keyword">][</span><span class="default">$ThArgIndex </span><span class="keyword">- </span><span class="default">1</span><span class="keyword">];<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">TRUE</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br><br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">FALSE</span><span class="keyword">;<br>&nbsp; &nbsp; }<br><br>&nbsp; &nbsp; public static function </span><span class="default">handleTypehint</span><span class="keyword">(</span><span class="default">$ErrLevel</span><span class="keyword">, </span><span class="default">$ErrMessage</span><span class="keyword">)<br>&nbsp; &nbsp; {<br><br>&nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">$ErrLevel </span><span class="keyword">== </span><span class="default">E_RECOVERABLE_ERROR</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; {<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">preg_match</span><span class="keyword">(</span><span class="default">TYPEHINT_PCRE</span><span class="keyword">, </span><span class="default">$ErrMessage</span><span class="keyword">, </span><span class="default">$ErrMatches</span><span class="keyword">))<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; list(</span><span class="default">$ErrMatch</span><span class="keyword">, </span><span class="default">$ThArgIndex</span><span class="keyword">, </span><span class="default">$ThClass</span><span class="keyword">, </span><span class="default">$ThFunction</span><span class="keyword">, </span><span class="default">$ThHint</span><span class="keyword">, </span><span class="default">$ThType</span><span class="keyword">) = </span><span class="default">$ErrMatches</span><span class="keyword">;<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (isset(</span><span class="default">self</span><span class="keyword">::</span><span class="default">$Typehints</span><span class="keyword">[</span><span class="default">$ThHint</span><span class="keyword">]))<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$ThBacktrace </span><span class="keyword">= </span><span class="default">debug_backtrace</span><span class="keyword">();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$ThArgValue&nbsp; </span><span class="keyword">= </span><span class="default">NULL</span><span class="keyword">;<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">self</span><span class="keyword">::</span><span class="default">getTypehintedArgument</span><span class="keyword">(</span><span class="default">$ThBacktrace</span><span class="keyword">, </span><span class="default">$ThFunction</span><span class="keyword">, </span><span class="default">$ThArgIndex</span><span class="keyword">, </span><span class="default">$ThArgValue</span><span class="keyword">))<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">call_user_func</span><span class="keyword">(</span><span class="default">self</span><span class="keyword">::</span><span class="default">$Typehints</span><span class="keyword">[</span><span class="default">$ThHint</span><span class="keyword">], </span><span class="default">$ThArgValue</span><span class="keyword">))<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">TRUE</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br><br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">FALSE</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>}<br><br></span><span class="default">Typehint</span><span class="keyword">::</span><span class="default">initializeHandler</span><span class="keyword">();<br><br></span><span class="default">?&gt;<br></span><br>An are some examples of the class in use:<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">function </span><span class="default">teststring</span><span class="keyword">(</span><span class="default">string $string</span><span class="keyword">) { echo </span><span class="default">$string</span><span class="keyword">; }<br>function </span><span class="default">testinteger</span><span class="keyword">(</span><span class="default">integer $integer</span><span class="keyword">) { echo </span><span class="default">$integer</span><span class="keyword">; }<br>function </span><span class="default">testfloat</span><span class="keyword">(</span><span class="default">float $float</span><span class="keyword">) { echo </span><span class="default">$float</span><span class="keyword">; }<br><br></span><span class="comment">// This will work for class methods as well.<br><br></span><span class="default">?&gt;<br></span><br>You get the picture..</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="111411">  
+  <a class="name">
+  <strong class="user"><em>michaelrfairhurst at gmail dot com</em></strong></a><div class="date" title="2013-02-17 09:46"><strong>1 year ago</strong></div>
+  <div class="text" id="Hcom111411">
+<div class="phpcode"><code><span class="html">
+The scalar type hinting solutions are all overthinking it. I provided the optimized regex version, as well as the fastest implementation I've come up with, which just uses strpos. Then I benchmark both against the TypeHint class.<br><br><span class="default">&lt;?php<br></span><span class="keyword">function </span><span class="default">optimized_strpos</span><span class="keyword">(</span><span class="default">$ErrLevel</span><span class="keyword">, </span><span class="default">$ErrMessage</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">$ErrLevel </span><span class="keyword">== </span><span class="default">E_RECOVERABLE_ERROR<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// order this according to what your app uses most<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">return </span><span class="default">strpos</span><span class="keyword">(</span><span class="default">$ErrMessage</span><span class="keyword">, </span><span class="string">'must be an instance of string, string'</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; || </span><span class="default">strpos</span><span class="keyword">(</span><span class="default">$ErrMessage</span><span class="keyword">, </span><span class="string">'must be an instance of integer, integer'</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; || </span><span class="default">strpos</span><span class="keyword">(</span><span class="default">$ErrMessage</span><span class="keyword">, </span><span class="string">'must be an instance of float, double'</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; || </span><span class="default">strpos</span><span class="keyword">(</span><span class="default">$ErrMessage</span><span class="keyword">, </span><span class="string">'must be an instance of boolean, boolean'</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; || </span><span class="default">strpos</span><span class="keyword">(</span><span class="default">$ErrMessage</span><span class="keyword">, </span><span class="string">'must be an instance of resource, resource'</span><span class="keyword">);<br>}<br><br>function </span><span class="default">optimized_regex</span><span class="keyword">(</span><span class="default">$ErrLevel</span><span class="keyword">, </span><span class="default">$ErrMessage</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">$ErrLevel </span><span class="keyword">== </span><span class="default">E_RECOVERABLE_ERROR</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">preg_match</span><span class="keyword">(</span><span class="string">'/^Argument \d+ passed to (?:\w+::)?\w+\(\) must be an instance of (\w+), (\w+) given/'</span><span class="keyword">, </span><span class="default">$ErrMessage</span><span class="keyword">, </span><span class="default">$matches</span><span class="keyword">))<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$matches</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">] == (</span><span class="default">$matches</span><span class="keyword">[</span><span class="default">2</span><span class="keyword">] == </span><span class="string">'double' </span><span class="keyword">? </span><span class="string">'float' </span><span class="keyword">: </span><span class="default">$matches</span><span class="keyword">[</span><span class="default">2</span><span class="keyword">]);<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>}<br></span><span class="default">?&gt;<br></span><br>BENCHMARKING Typehint::handleTypehint()<br>string type hint.....[function it(string $var) {}]............2.1588530540466 seconds<br>float type hint......[function it(float $var) {}].............2.1563150882721 seconds<br>integer type hint....[function it(integer $var) {}]...........2.1579530239105 seconds<br>boolean type hint....[function it(boolean $var) {}]...........2.1590459346771 seconds<br><br>BENCHMARKING optimized_regex()<br>string type hint.....[function it(string $var) {}]............0.88872504234314 seconds<br>float type hint......[function it(float $var) {}].............0.88528990745544 seconds<br>integer type hint....[function it(integer $var) {}]...........0.89038777351379 seconds<br>boolean type hint....[function it(boolean $var) {}]...........0.89061188697815 seconds<br><br>BENCHMARKING optimized_strpos()<br>string type hint.....[function it(string $var) {}]............0.52635812759399 seconds<br>float type hint......[function it(float $var) {}].............0.74228310585022 seconds<br>integer type hint....[function it(integer $var) {}]...........0.63721108436584 seconds<br>boolean type hint....[function it(boolean $var) {}]...........0.8429491519928 seconds</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="88015">  
+  <a class="name">
+  <strong class="user"><em>bantam at banime dot com</em></strong></a><div class="date" title="2009-01-06 02:53"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom88015">
+<div class="phpcode"><code><span class="html">
+Daniel's typehint implementation was just what I was looking for but performance in production wasn't going to cut it. Calling a backtrace every time hurts performance. For my implementation I didn't use it, after all, PHP tells us what the data type is in the error message, I don't feel I need to evaluate the argument where I am using typehinting. Here is the cut down version I use in my error handling class:
+<br>
+<br><span class="default">&lt;?php
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">public static function </span><span class="default">typehint</span><span class="keyword">(</span><span class="default">$level</span><span class="keyword">, </span><span class="default">$message</span><span class="keyword">)
+<br>&nbsp; &nbsp; &nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">$level </span><span class="keyword">== </span><span class="default">E_RECOVERABLE_ERROR</span><span class="keyword">)
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">preg_match</span><span class="keyword">(</span><span class="string">'/^Argument (\d)+ passed to (?:(\w+)::)?(\w+)\(\) must be an instance of (\w+), (\w+) given/'</span><span class="keyword">, </span><span class="default">$message</span><span class="keyword">, </span><span class="default">$match</span><span class="keyword">))
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">$match</span><span class="keyword">[</span><span class="default">4</span><span class="keyword">] == </span><span class="default">$match</span><span class="keyword">[</span><span class="default">5</span><span class="keyword">])
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">true</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">false</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; }
+<br></span><span class="default">?&gt;
+<br></span>
+<br>Hope this can be of use to somebody.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="103729">  
+  <a class="name">
+  <strong class="user"><em>john at cast dot com</em></strong></a><div class="date" title="2011-04-29 06:33"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom103729">
+<div class="phpcode"><code><span class="html">
+i use eclipse ganymede as an IDE and it offers "intellisense" where it can, i.e. when variables are "declared" via type hinting or a "new"-statement . i found using the following pattern helps eclipse along as well:
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">class </span><span class="default">MyClass</span><span class="keyword">{
+<br>
+<br>&nbsp; public static function </span><span class="default">Cast</span><span class="keyword">(</span><span class="default">MyClass </span><span class="keyword">&amp;</span><span class="default">$object</span><span class="keyword">=</span><span class="default">NULL</span><span class="keyword">){
+<br>&nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">$object</span><span class="keyword">;
+<br>&nbsp; }
+<br>
+<br>&nbsp; public </span><span class="default">method CallMe</span><span class="keyword">(){
+<br>&nbsp; }
+<br>}
+<br>
+<br></span><span class="default">$x</span><span class="keyword">=</span><span class="default">unserialize</span><span class="keyword">(</span><span class="default">$someContent</span><span class="keyword">);
+<br></span><span class="default">$x</span><span class="keyword">=</span><span class="default">MyObject</span><span class="keyword">::</span><span class="default">Cast</span><span class="keyword">(</span><span class="default">$x</span><span class="keyword">);
+<br></span><span class="default">$x</span><span class="keyword">-&gt;</span><span class="default">CallMe</span><span class="keyword">();
+<br></span><span class="default">?&gt;
+<br></span>
+<br>after calling Cast(), due to the type hinting, eclipse offers me the "CallMe" function in a dropdown when i type "$x-&gt;" in the code afterwards.
+<br>
+<br>i found this very practical und included the Cast() function in my code template for new classes. i've been wondering, if there is a drawback i oversaw, but i haven't noticed any negative effects so far... maybe some of you will find this just as handy as i do ;o)
+<br>
+<br>p.s. do note: when used in inherited classes a STRICT-notice comes up, because the function definition of the inherited class doesn't match the parent's definition (different type hinting) - but it works great!</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="103463">  
+  <a class="name">
+  <strong class="user"><em>Anonymous</em></strong></a><div class="date" title="2011-04-14 07:43"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom103463">
+<div class="phpcode"><code><span class="html">
+Please note, there is a strong typing in PHP.
+<br>
+<br>You have to import one PHP library to your existing projects, and create some classes, in which the scalar values will be automatically wrapped by an autoboxing mechanism known from Java, like so:
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">class </span><span class="default">String </span><span class="keyword">extends </span><span class="default">AutoBoxedObject
+<br></span><span class="keyword">{
+<br>&nbsp; &nbsp; public </span><span class="default">$value</span><span class="keyword">;
+<br> 
+<br>&nbsp; &nbsp; public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">) {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">value </span><span class="keyword">= </span><span class="default">$value</span><span class="keyword">;
+<br>&nbsp; &nbsp; }
+<br> 
+<br>&nbsp; &nbsp; public function </span><span class="default">__toString</span><span class="keyword">() {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="string">"</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">value</span><span class="string">"</span><span class="keyword">;
+<br>&nbsp; &nbsp; }
+<br> 
+<br>&nbsp; &nbsp; public function </span><span class="default">toUpperCase</span><span class="keyword">() {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">strtoupper</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">value</span><span class="keyword">);
+<br>&nbsp; &nbsp; }
+<br>}
+<br> 
+<br>function &amp; </span><span class="default">string</span><span class="keyword">(</span><span class="default">$value </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">) {
+<br>&nbsp; &nbsp; </span><span class="default">$x </span><span class="keyword">= &amp; </span><span class="default">VariablesManager</span><span class="keyword">::</span><span class="default">getNewPointer</span><span class="keyword">(new </span><span class="default">String</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">));
+<br>&nbsp; &nbsp; return </span><span class="default">$x</span><span class="keyword">;
+<br>}
+<br></span><span class="default">?&gt;
+<br></span>
+<br>From now on you can declare the type of data in your variables, and validate their values in a class constructor.
+<br>
+<br>See this example:
+<br>
+<br><span class="default">&lt;?php
+<br>$y </span><span class="keyword">= &amp; </span><span class="default">string</span><span class="keyword">(</span><span class="string">"aaa"</span><span class="keyword">);
+<br></span><span class="comment">// lets check, that $y is an object
+<br></span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$y</span><span class="keyword">);
+<br> 
+<br></span><span class="comment">// now we are overwritting $y variable with a scalar value of "zzz"
+<br></span><span class="default">$y </span><span class="keyword">= </span><span class="string">"zzz"</span><span class="keyword">;
+<br></span><span class="comment">// var_dump() shows us, that "zzz" is still an object, not the scalar type as in regular PHP
+<br></span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$y</span><span class="keyword">);
+<br></span><span class="comment">// the line below should raise a fatal error, because "zzz" was a scalar type (string), but it will be ok, because $y is still an object (thanks to autoboxing)
+<br></span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$y</span><span class="keyword">-&gt;</span><span class="default">toUpperCase</span><span class="keyword">());
+<br></span><span class="default">?&gt;
+<br></span>Now, the output is:
+<br>
+<br>object(String)#1 (2) {
+<br>&nbsp; ["value"]=&gt;
+<br>&nbsp; string(3) "aaa"
+<br>&nbsp; ["ref":protected]=&gt;
+<br>&nbsp; int(1)
+<br>}
+<br>object(String)#2 (2) {
+<br>&nbsp; ["value"]=&gt;
+<br>&nbsp; string(3) "zzz"
+<br>&nbsp; ["ref":protected]=&gt;
+<br>&nbsp; int(1)
+<br>}
+<br>string(3) "ZZZ"
+<br>
+<br>As you can see, PHP can be as good as Java or C#:)
+<br>
+<br>To enforce strong data types you just have to do it in the wrapper class, like so:
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">class </span><span class="default">Integer </span><span class="keyword">extends </span><span class="default">AutoBoxedObject
+<br></span><span class="keyword">{
+<br>&nbsp; &nbsp; public </span><span class="default">$value</span><span class="keyword">;
+<br> 
+<br>&nbsp; &nbsp; public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">) {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; if(!</span><span class="default">is_int</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">)) { throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="string">"Invalid data type"</span><span class="keyword">); }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">value </span><span class="keyword">= </span><span class="default">$value</span><span class="keyword">;
+<br>&nbsp; &nbsp; }
+<br> 
+<br>&nbsp; &nbsp; public function </span><span class="default">getValue</span><span class="keyword">() {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">value</span><span class="keyword">;
+<br>&nbsp; &nbsp; }
+<br>
+<br>&nbsp; &nbsp; public function </span><span class="default">__toString</span><span class="keyword">() {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; return (string)</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">value</span><span class="keyword">;
+<br>&nbsp; &nbsp; }
+<br>}
+<br></span><span class="default">?&gt;
+<br></span>
+<br>To download the library, just google for 'strong data typing autoboxing' . There is an article describing how to use it, and a download link to the appropriate PHP library.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="112033">  
+  <a class="name">
+  <strong class="user"><em>sorin dot badea91 at gmail dot com</em></strong></a><div class="date" title="2013-04-25 03:05"><strong>1 year ago</strong></div>
+  <div class="text" id="Hcom112033">
+<div class="phpcode"><code><span class="html">
+I've implemented a basic function to ensure argument's type.<br><br><span class="default">&lt;?php<br></span><span class="comment">/**<br> * Primary types<br> */<br></span><span class="keyword">class </span><span class="default">Type<br></span><span class="keyword">{<br>&nbsp; &nbsp; const </span><span class="default">SKIP&nbsp; &nbsp;&nbsp; </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br>&nbsp; &nbsp; const </span><span class="default">INT&nbsp; &nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br>&nbsp; &nbsp; const </span><span class="default">STRING&nbsp;&nbsp; </span><span class="keyword">= </span><span class="default">2</span><span class="keyword">;<br>&nbsp; &nbsp; const </span><span class="default">BOOLEAN&nbsp; </span><span class="keyword">= </span><span class="default">3</span><span class="keyword">;<br>&nbsp; &nbsp; const </span><span class="default">CALLBACK </span><span class="keyword">= </span><span class="default">4</span><span class="keyword">;<br>&nbsp; &nbsp; const </span><span class="default">FLOAT&nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">5</span><span class="keyword">;<br>&nbsp; &nbsp; const </span><span class="default">RESOURCE </span><span class="keyword">= </span><span class="default">6</span><span class="keyword">;<br>}<br><br></span><span class="comment">/**<br> * @throws InvalidArgumentException<br> */<br></span><span class="keyword">function </span><span class="default">ensureType</span><span class="keyword">()<br>{<br>&nbsp; &nbsp; </span><span class="default">$debugStack </span><span class="keyword">= </span><span class="default">debug_backtrace</span><span class="keyword">();<br>&nbsp; &nbsp; </span><span class="default">$argv&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">= </span><span class="default">$debugStack</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">][</span><span class="string">'args'</span><span class="keyword">];<br>&nbsp; &nbsp; </span><span class="default">$types&nbsp; &nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">func_get_args</span><span class="keyword">();<br>&nbsp; &nbsp; foreach (</span><span class="default">$argv </span><span class="keyword">as </span><span class="default">$key </span><span class="keyword">=&gt; </span><span class="default">$value</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$message </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">is_null</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; continue;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; switch (</span><span class="default">$types</span><span class="keyword">[</span><span class="default">$key</span><span class="keyword">]) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; case </span><span class="default">Type</span><span class="keyword">::</span><span class="default">INT</span><span class="keyword">:<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (!</span><span class="default">is_int</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$message </span><span class="keyword">= </span><span class="string">'Argument ' </span><span class="keyword">. </span><span class="default">$key </span><span class="keyword">. </span><span class="string">' passed to ' </span><span class="keyword">. </span><span class="default">$debugStack</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">][</span><span class="string">'function'</span><span class="keyword">] . </span><span class="string">'() must be of type int'</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; break;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; case </span><span class="default">Type</span><span class="keyword">::</span><span class="default">STRING</span><span class="keyword">:<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (!</span><span class="default">is_string</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$message </span><span class="keyword">= </span><span class="string">'Argument ' </span><span class="keyword">. </span><span class="default">$key </span><span class="keyword">. </span><span class="string">' passed to ' </span><span class="keyword">. </span><span class="default">$debugStack</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">][</span><span class="string">'function'</span><span class="keyword">] . </span><span class="string">'() must be of type string'</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; break;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; case </span><span class="default">Type</span><span class="keyword">::</span><span class="default">BOOLEAN</span><span class="keyword">:<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (!</span><span class="default">is_bool</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$message </span><span class="keyword">= </span><span class="string">'Argument ' </span><span class="keyword">. </span><span class="default">$key </span><span class="keyword">. </span><span class="string">' passed to ' </span><span class="keyword">. </span><span class="default">$debugStack</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">][</span><span class="string">'function'</span><span class="keyword">] . </span><span class="string">'() must be of type boolean'</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; break;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; case </span><span class="default">Type</span><span class="keyword">::</span><span class="default">CALLBACK</span><span class="keyword">:<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (!</span><span class="default">is_callable</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$message </span><span class="keyword">= </span><span class="string">'Argument ' </span><span class="keyword">. </span><span class="default">$key </span><span class="keyword">. </span><span class="string">' passed to ' </span><span class="keyword">. </span><span class="default">$debugStack</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">][</span><span class="string">'function'</span><span class="keyword">] . </span><span class="string">'() must be a valid callback'</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; break;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; case </span><span class="default">Type</span><span class="keyword">::</span><span class="default">FLOAT</span><span class="keyword">:<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (!</span><span class="default">is_float</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$message </span><span class="keyword">= </span><span class="string">'Argument ' </span><span class="keyword">. </span><span class="default">$key </span><span class="keyword">. </span><span class="string">' passed to ' </span><span class="keyword">. </span><span class="default">$debugStack</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">][</span><span class="string">'function'</span><span class="keyword">] . </span><span class="string">'() must be of type float'</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; break;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; case </span><span class="default">Type</span><span class="keyword">::</span><span class="default">RESOURCE</span><span class="keyword">:<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (!</span><span class="default">is_resource</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$message </span><span class="keyword">= </span><span class="string">'Argument ' </span><span class="keyword">. </span><span class="default">$key </span><span class="keyword">. </span><span class="string">' passed to ' </span><span class="keyword">. </span><span class="default">$debugStack</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">][</span><span class="string">'function'</span><span class="keyword">] . </span><span class="string">'() must be of type resource'</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; break;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; if (!</span><span class="default">is_null</span><span class="keyword">(</span><span class="default">$message</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">is_object</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$message </span><span class="keyword">.= </span><span class="string">', instance of ' </span><span class="keyword">. </span><span class="default">get_class</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">) . </span><span class="string">' given'</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } else {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$message </span><span class="keyword">.= </span><span class="string">', ' </span><span class="keyword">. </span><span class="default">gettype</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">) . </span><span class="string">' given'</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; throw new </span><span class="default">InvalidArgumentException</span><span class="keyword">(</span><span class="default">$message</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; }<br>}<br><br>function </span><span class="default">dummyFunction</span><span class="keyword">(</span><span class="default">$var1</span><span class="keyword">, </span><span class="default">$var2</span><span class="keyword">, </span><span class="default">$var3</span><span class="keyword">)<br>{<br>&nbsp; &nbsp; </span><span class="default">ensureType</span><span class="keyword">(</span><span class="default">Type</span><span class="keyword">::</span><span class="default">BOOLEAN</span><span class="keyword">, </span><span class="default">Type</span><span class="keyword">::</span><span class="default">INT</span><span class="keyword">, </span><span class="default">Type</span><span class="keyword">::</span><span class="default">STRING</span><span class="keyword">);<br>}<br><br></span><span class="default">$object </span><span class="keyword">= new </span><span class="default">ReflectionClass</span><span class="keyword">(</span><span class="string">'ReflectionClass'</span><span class="keyword">);<br><br></span><span class="default">dummyFunction</span><span class="keyword">(</span><span class="default">1</span><span class="keyword">, </span><span class="default">$object</span><span class="keyword">, </span><span class="string">'Hello there'</span><span class="keyword">);</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="114559">  
+  <a class="name">
+  <strong class="user"><em>doom at doom dot pl</em></strong></a><div class="date" title="2014-03-06 09:16"><strong>5 months ago</strong></div>
+  <div class="text" id="Hcom114559">
+<div class="phpcode"><code><span class="html">
+I've done some tests of the overhead that class Typehint&nbsp; gives us.<br>At my PC it goes as follows:<br>teststringNormal took: 0.041965961456299<br>teststringOverhead took: 0.48374915122986<br>It's like 10x longer time (not mention about memory usage), it's just because exception is thrown EVERY SINGLE TIME, along with expensive preg_match() and debug_backtrace() calls.<br>I think that using class in bigger applications will increase overhead like 100% or more.<br><span class="default">&lt;?php<br><br></span><span class="keyword">function </span><span class="default">teststringOverhead</span><span class="keyword">(</span><span class="default">string $string</span><span class="keyword">) { <br>&nbsp; &nbsp; return </span><span class="default">$string</span><span class="keyword">;<br>}<br>function </span><span class="default">teststringNormal</span><span class="keyword">(</span><span class="default">$string</span><span class="keyword">){<br>&nbsp; &nbsp; if(!</span><span class="default">is_string</span><span class="keyword">(</span><span class="default">$string</span><span class="keyword">)){<br>&nbsp; &nbsp; &nbsp; &nbsp; return;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; return </span><span class="default">$string</span><span class="keyword">; <br>}<br></span><span class="default">$loopTimes </span><span class="keyword">= </span><span class="default">20000</span><span class="keyword">;<br><br></span><span class="comment">/////////// test of overhead implementation vs normal<br></span><span class="default">$t1 </span><span class="keyword">= </span><span class="default">microtime</span><span class="keyword">(</span><span class="default">true</span><span class="keyword">);<br>for(</span><span class="default">$i </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">; </span><span class="default">$i </span><span class="keyword">&lt;= </span><span class="default">$loopTimes</span><span class="keyword">; </span><span class="default">$i</span><span class="keyword">++)&nbsp; </span><span class="default">teststringNormal</span><span class="keyword">(</span><span class="string">"xxx"</span><span class="keyword">);<br>echo </span><span class="string">"&lt;br&gt;teststringNormal took: " </span><span class="keyword">. (</span><span class="default">microtime</span><span class="keyword">(</span><span class="default">true</span><span class="keyword">) - </span><span class="default">$t1</span><span class="keyword">);<br><br></span><span class="default">$t2 </span><span class="keyword">= </span><span class="default">microtime</span><span class="keyword">(</span><span class="default">true</span><span class="keyword">);<br>for(</span><span class="default">$i </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">; </span><span class="default">$i </span><span class="keyword">&lt;= </span><span class="default">$loopTimes</span><span class="keyword">; </span><span class="default">$i</span><span class="keyword">++)&nbsp; </span><span class="default">teststringOverhead</span><span class="keyword">(</span><span class="string">"xxx"</span><span class="keyword">);<br>echo </span><span class="string">"&lt;br&gt;teststringOverhead took: " </span><span class="keyword">. (</span><span class="default">microtime</span><span class="keyword">(</span><span class="default">true</span><span class="keyword">) - </span><span class="default">$t2</span><span class="keyword">);<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="93405">  
+  <a class="name">
+  <strong class="user"><em>dpariyskiy at netatwork dot com</em></strong></a><div class="date" title="2009-09-08 08:36"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom93405">
+<div class="phpcode"><code><span class="html">
+Daniel, thank you for the type hinting class. Very useful.<br>For anyone having a problem where php isn't setting Daniel's error handler, as was the case for me, try changing initializeHandler function to the following:<br><br><span class="default">&lt;?php<br></span><span class="keyword">public static function </span><span class="default">initializeHandler</span><span class="keyword">() <br>{<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="default">set_error_handler</span><span class="keyword">(array(</span><span class="string">'Typehint'</span><span class="keyword">,</span><span class="string">'handleTypehint'</span><span class="keyword">)); <br>&nbsp; &nbsp; <br>&nbsp; &nbsp; return </span><span class="default">TRUE</span><span class="keyword">; <br>}<br></span><span class="default">?&gt;<br></span><br>Hope this helps,<br>--Dmitriy</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="85527">  
+  <a class="name">
+  <strong class="user"><em>kalkamar at web dot de</em></strong></a><div class="date" title="2008-09-04 02:24"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom85527">
+<div class="phpcode"><code><span class="html">
+I really like the Daniel`s Typehinting-Class, but you please not that it may be relevant for the performance if you use Typehinting for scalar values very often.<br><br>Here is my performance-test:<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">function </span><span class="default">notypehinting</span><span class="keyword">(</span><span class="default">$x</span><span class="keyword">)<br>{<br>&nbsp; &nbsp; </span><span class="default">is_string</span><span class="keyword">(</span><span class="default">$x</span><span class="keyword">);&nbsp;&nbsp; </span><span class="comment">//checking the type manually instead<br></span><span class="keyword">}<br><br>function </span><span class="default">typehinting</span><span class="keyword">(</span><span class="default">string $x</span><span class="keyword">)<br>{<br>}<br><br></span><span class="default">$test</span><span class="keyword">=new </span><span class="default">timer</span><span class="keyword">;<br>for(</span><span class="default">$i</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">;</span><span class="default">$i</span><span class="keyword">&lt;</span><span class="default">10000</span><span class="keyword">;</span><span class="default">$i</span><span class="keyword">++)<br>{<br>try{<br>&nbsp; &nbsp; </span><span class="default">notypehinting</span><span class="keyword">(</span><span class="string">'test'</span><span class="keyword">);<br>}<br>catch(</span><span class="default">Exception $e</span><span class="keyword">){}<br>}<br>echo </span><span class="default">$test</span><span class="keyword">.</span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br><br></span><span class="default">$test2</span><span class="keyword">=new </span><span class="default">timer</span><span class="keyword">;<br>for(</span><span class="default">$i</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">;</span><span class="default">$i</span><span class="keyword">&lt;</span><span class="default">10000</span><span class="keyword">;</span><span class="default">$i</span><span class="keyword">++)<br>{<br>try{<br>&nbsp; &nbsp; </span><span class="default">typehinting</span><span class="keyword">(</span><span class="string">'test'</span><span class="keyword">);<br>}<br>catch(</span><span class="default">Exception $e</span><span class="keyword">){}<br>}<br>echo </span><span class="default">$test2</span><span class="keyword">.</span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br></span><span class="default">?&gt;<br></span><br>Output:<br><br>0.0088460445404053<br>0.21634602546692<br><br>Result:<br>typehinting() ist more than 20 times slower than notypehinting()<br><br>You see: typehinting for scalar types (like suggested by Daniel) is not the best thing for the performance if you use it very often.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="86592">  
+  <a class="name">
+  <strong class="user"><em>wickedmuso at gmail dot com</em></strong></a><div class="date" title="2008-10-24 08:26"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom86592">
+<div class="phpcode"><code><span class="html">
+One useful thing with Type Hinting that I could not find in the documentation (but tested) is that you can also use an Interface in the hint (versus a Class).&nbsp; This is a very useful tool if you are trying to code to Interfaces rather than Classes (which is common in Test Driven Development and Dependency Injection paradigms).&nbsp; It means your external class can present itself into the method as long as it implements the nominated Interface (obviously).</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="79014">  
+  <a class="name">
+  <strong class="user"><em>jesdisciple @t gmail -dot- com</em></strong></a><div class="date" title="2007-11-06 07:50"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom79014">
+<div class="phpcode"><code><span class="html">
+The manual's sample code says:<br><span class="default">&lt;?php<br></span><span class="comment">//...<br>// Fatal Error: Argument 1 must not be null<br></span><span class="default">$myclass</span><span class="keyword">-&gt;</span><span class="default">test</span><span class="keyword">(</span><span class="default">null</span><span class="keyword">);<br></span><span class="comment">//...<br></span><span class="default">?&gt;<br></span><br>And this is true, unless a default value of NULL is given; in fact, this is the only way to give a default value for object arguments (as a default value must be a constant expression):<br><span class="default">&lt;?php<br>$mine </span><span class="keyword">= new </span><span class="default">MyClass</span><span class="keyword">();<br></span><span class="default">$mine</span><span class="keyword">-&gt;</span><span class="default">test</span><span class="keyword">(</span><span class="default">NULL</span><span class="keyword">);<br>class </span><span class="default">MyClass</span><span class="keyword">{<br>&nbsp; &nbsp; public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">OtherClass $arg </span><span class="keyword">= </span><span class="default">NULL</span><span class="keyword">){<br>&nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">is_null</span><span class="keyword">(</span><span class="default">$arg</span><span class="keyword">)){<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">//Apply default value here.<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">}<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; public function </span><span class="default">test</span><span class="keyword">(array </span><span class="default">$arr </span><span class="keyword">= </span><span class="default">NULL</span><span class="keyword">){<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$arr</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>}<br>class </span><span class="default">OtherClass</span><span class="keyword">{<br>&nbsp; &nbsp; <br>}<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="102378">  
+  <a class="name">
+  <strong class="user"><em>macobex dot exe at gmail dot com</em></strong></a><div class="date" title="2011-02-10 06:48"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom102378">
+<div class="phpcode"><code><span class="html">
+I agree [that] using object/wrapper is faster than using the is_* functions.
+<br>
+<br>But I think we must also consider the fact that when we pass an argument to a function, most likely we will use it's value. So I've done a little test to see which approach is faster.
+<br>
+<br>Primitive Approach:
+<br><span class="default">&lt;?php
+<br>
+<br></span><span class="keyword">function </span><span class="default">testPrimitive</span><span class="keyword">(</span><span class="default">$str</span><span class="keyword">) {
+<br>&nbsp;&nbsp; if ( </span><span class="default">is_string</span><span class="keyword">(</span><span class="default">$str</span><span class="keyword">) )
+<br>&nbsp; &nbsp; &nbsp; </span><span class="default">$x </span><span class="keyword">= </span><span class="default">$str </span><span class="keyword">. </span><span class="string">' world'</span><span class="keyword">;&nbsp;&nbsp; </span><span class="comment">// using the argument's value
+<br>&nbsp;&nbsp; </span><span class="keyword">else
+<br>&nbsp; &nbsp; &nbsp; </span><span class="default">trigger_error</span><span class="keyword">(</span><span class="string">'Argument passed must be of type string.'</span><span class="keyword">);
+<br>&nbsp;&nbsp; }
+<br>
+<br></span><span class="default">?&gt;
+<br></span>
+<br>Wrapper Approach:
+<br>
+<br><span class="default">&lt;?php
+<br>
+<br>&nbsp;&nbsp; </span><span class="keyword">function </span><span class="default">testWrapper</span><span class="keyword">(</span><span class="default">StringWrapper $str</span><span class="keyword">) {
+<br>&nbsp; &nbsp; &nbsp; </span><span class="default">$x </span><span class="keyword">= </span><span class="default">$str</span><span class="keyword">-&gt;</span><span class="default">getValue</span><span class="keyword">() . </span><span class="string">' world'</span><span class="keyword">;&nbsp; </span><span class="comment">// using the argument's value
+<br>&nbsp;&nbsp; </span><span class="keyword">}
+<br>
+<br></span><span class="default">?&gt;
+<br></span>
+<br>Test: 10,000 iterations
+<br>Results:
+<br>&nbsp;&nbsp; primitive average: 0.026113033294678
+<br>&nbsp;&nbsp; wrapper average: 0.063039064407349
+<br>
+<br>&nbsp;&nbsp; primitive is faster than wrapper approach by 41.42357368431%
+<br>
+<br>Using the is_* function is faster than using wrapper class, given the fact that we just not want to check the type of the argument, but we also want to use the value of the argument.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="100550">  
+  <a class="name">
+  <strong class="user"><em>alejosimon at gmail dot com</em></strong></a><div class="date" title="2010-10-22 11:55"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom100550">
+<div class="phpcode"><code><span class="html">
+For PHP 5.3 version and namespaces support.<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">function </span><span class="default">phpErrorHandler</span><span class="keyword">( </span><span class="default">$code</span><span class="keyword">, </span><span class="default">$message</span><span class="keyword">, </span><span class="default">$file</span><span class="keyword">, </span><span class="default">$line </span><span class="keyword">) {<br><br>&nbsp; &nbsp; if ( </span><span class="default">error_reporting</span><span class="keyword">() &amp; </span><span class="default">$code </span><span class="keyword">) {<br><br>&nbsp; &nbsp; &nbsp; &nbsp; if ( </span><span class="default">$code </span><span class="keyword">== </span><span class="default">E_RECOVERABLE_ERROR </span><span class="keyword">) { </span><span class="comment">// Scalar Type-Hinting patch.<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$regexp </span><span class="keyword">= </span><span class="string">'/^Argument (\d)+ passed to (.+) must be an instance of (?&lt;hint&gt;.+), (?&lt;given&gt;.+) given/i' </span><span class="keyword">;<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if ( </span><span class="default">preg_match</span><span class="keyword">( </span><span class="default">$regexp</span><span class="keyword">, </span><span class="default">$message</span><span class="keyword">, </span><span class="default">$match </span><span class="keyword">) ) {<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$given </span><span class="keyword">= </span><span class="default">$match</span><span class="keyword">[ </span><span class="string">'given' </span><span class="keyword">] ;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$hint&nbsp; </span><span class="keyword">= </span><span class="default">end</span><span class="keyword">( </span><span class="default">explode</span><span class="keyword">( </span><span class="string">'\\'</span><span class="keyword">, </span><span class="default">$match</span><span class="keyword">[ </span><span class="string">'hint' </span><span class="keyword">] ) ) ; </span><span class="comment">// namespaces support.<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">if ( </span><span class="default">$hint </span><span class="keyword">== </span><span class="default">$given </span><span class="keyword">) return </span><span class="default">true </span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br><br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">false </span><span class="keyword">;<br>&nbsp; &nbsp; }<br>}<br><br></span><span class="default">set_error_handler</span><span class="keyword">( </span><span class="string">'phpErrorHandler' </span><span class="keyword">) ;<br><br></span><span class="comment">/************************************/<br><br></span><span class="keyword">function </span><span class="default">typeHintTest</span><span class="keyword">( </span><span class="default">integer $arg1 </span><span class="keyword">) {<br><br>&nbsp; &nbsp; </span><span class="default">print_r</span><span class="keyword">( </span><span class="default">$arg1 </span><span class="keyword">) ;<br>}<br><br></span><span class="default">typeHintTest</span><span class="keyword">( </span><span class="default">true </span><span class="keyword">) ; </span><span class="comment">// Error throw because not integer type.<br><br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="100543">  
+  <a class="name">
+  <strong class="user"><em>gdecad at NOSPAM dot example dot com</em></strong></a><div class="date" title="2010-10-22 06:02"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom100543">
+<div class="phpcode"><code><span class="html">
+I have made a little bench between three method of type hinting for native type (string, integer, ...).<br><br>First method : by test type in function like :<br><span class="default">&lt;?php<br></span><span class="keyword">function </span><span class="default">testTest</span><span class="keyword">(</span><span class="default">$arg</span><span class="keyword">) {<br>&nbsp; &nbsp; if (!</span><span class="default">is_string</span><span class="keyword">(</span><span class="default">$arg</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">trigger_error</span><span class="keyword">(</span><span class="string">'Argument $arg passed to test must be an instance of string, other given'</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; return </span><span class="default">$arg</span><span class="keyword">;<br>}<br></span><span class="default">?&gt;<br></span><br>Second method : by object representing native type :<br><span class="default">&lt;?php<br></span><span class="keyword">function </span><span class="default">testObject</span><span class="keyword">(</span><span class="default">StringObj $arg</span><span class="keyword">) {<br>&nbsp; &nbsp; return </span><span class="default">$arg</span><span class="keyword">;<br>}<br></span><span class="default">?&gt;<br></span><br>Third method : by class TypeHint proposed by Daniel :<br><span class="default">&lt;?php<br></span><span class="keyword">function </span><span class="default">testHint</span><span class="keyword">(</span><span class="default">string $arg</span><span class="keyword">) {<br>&nbsp; &nbsp; return </span><span class="default">$arg</span><span class="keyword">;<br>}<br></span><span class="default">?&gt;<br></span><br>the results are here :<br>bench for 100000 iterations,&nbsp; in seconds<br>&nbsp; &nbsp; &nbsp; &nbsp; avg&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; min&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; max&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; total<br>test&nbsp; &nbsp; 5.3275489807129E-6&nbsp; &nbsp; 2.8610229492188E-6&nbsp; &nbsp; 0.0033020973205566&nbsp; &nbsp; 0.53275895118713<br>object&nbsp; &nbsp; 4.9089097976685E-6&nbsp; &nbsp; 3.814697265625E-6&nbsp; &nbsp; 0.0025870800018311&nbsp; &nbsp; 0.49089503288269<br>hint&nbsp; &nbsp; 3.2338891029358E-5&nbsp; &nbsp; 2.9802322387695E-5&nbsp; &nbsp; 0.0025920867919922&nbsp; &nbsp; 3.2338931560516<br><br>As you can see, the method by object is the best<br>now you know...</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="69369">  
+  <a class="name"><strong class="user"><em>Anonymous</em></strong></a><div class="date" title="2006-09-02 08:59"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom69369">
+<div class="phpcode"><code><span class="html">
+The type hinting system can also be used for interfaces.&nbsp; Example:<br><br><span class="default">&lt;?php<br></span><span class="keyword">interface </span><span class="default">fooface<br></span><span class="keyword">{<br>&nbsp; &nbsp; public function </span><span class="default">foo </span><span class="keyword">();<br>}<br><br>class </span><span class="default">fooclass </span><span class="keyword">implements </span><span class="default">fooface<br></span><span class="keyword">{<br>&nbsp; &nbsp; public function </span><span class="default">foo </span><span class="keyword">()<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; echo (</span><span class="string">'foo&lt;br&gt;'</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>}<br>class </span><span class="default">barclass </span><span class="keyword">implements </span><span class="default">fooface<br></span><span class="keyword">{<br>&nbsp; &nbsp; public function </span><span class="default">foo </span><span class="keyword">()<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; echo (</span><span class="string">'bar&lt;br&gt;'</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>}<br>class </span><span class="default">bazclass </span><span class="keyword">implements </span><span class="default">fooface<br></span><span class="keyword">{<br>&nbsp; &nbsp; public function </span><span class="default">foo </span><span class="keyword">()<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; echo (</span><span class="string">'baz&lt;br&gt;'</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>}<br><br>class </span><span class="default">quuxclass<br></span><span class="keyword">{<br>&nbsp; &nbsp; public function </span><span class="default">foo </span><span class="keyword">()<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; echo (</span><span class="string">'quux&lt;br&gt;'</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>}<br><br>function </span><span class="default">callfoo </span><span class="keyword">(</span><span class="default">fooface $myClass</span><span class="keyword">)<br>{<br>&nbsp; &nbsp; </span><span class="default">$myClass </span><span class="keyword">-&gt; </span><span class="default">foo </span><span class="keyword">();<br>}<br><br></span><span class="default">$myfoo </span><span class="keyword">= new </span><span class="default">fooclass</span><span class="keyword">;<br></span><span class="default">$mybar </span><span class="keyword">= new </span><span class="default">barclass</span><span class="keyword">;<br></span><span class="default">$mybaz </span><span class="keyword">= new </span><span class="default">bazclass</span><span class="keyword">;<br></span><span class="default">$myquux </span><span class="keyword">= new </span><span class="default">quuxclass</span><span class="keyword">;<br><br></span><span class="default">callfoo </span><span class="keyword">(</span><span class="default">$myfoo</span><span class="keyword">);<br></span><span class="default">callfoo </span><span class="keyword">(</span><span class="default">$mybar</span><span class="keyword">);<br></span><span class="default">callfoo </span><span class="keyword">(</span><span class="default">$mybaz</span><span class="keyword">);<br></span><span class="default">callfoo </span><span class="keyword">(</span><span class="default">$myquux</span><span class="keyword">); </span><span class="comment">// Fails because the quuxclass doesn't implement the fooface interface<br></span><span class="default">?&gt;<br></span><br>Using this syntax you can allow a function to work with different classes as long as they all implement the same interfaces.&nbsp; An example might be an online shop that implements a plugin system for payment.&nbsp; If the creator of the script provides a payment module interface then functions can check if it has been implemented in a given payment class.&nbsp; This means that the details of the class are unimportant, so it doesn't matter if it interfaces with PayPal, HSBC, ProTX or any other payment system you care to name, but if it doesn't properly provide all the functionality a payment module requires a fatal error is generated.&nbsp; <br><br>Unfortunately, it doesn't seem possible to use type hinting with new.&nbsp; In java you could do a "fooface myfoo = new fooclass" which would fail if you tried it with quuxclass instead, but as far as I can tell you can't do a similar test on create with PHP.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="86216">  
+  <a class="name">
+  <strong class="user"><em>info at thewebsiteguy dot com dot au</em></strong></a><div class="date" title="2008-10-08 06:30"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom86216">
+<div class="phpcode"><code><span class="html">
+I find it rather frustrating that PHP has internal data types but doesn't allow optional hinting for it.&nbsp; I REALLY needed it for something, so I found a way around it.
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">abstract class </span><span class="default">DataType
+<br></span><span class="keyword">{
+<br>&nbsp; &nbsp; protected </span><span class="default">$length</span><span class="keyword">;
+<br>&nbsp; &nbsp; protected </span><span class="default">$precision</span><span class="keyword">;
+<br>&nbsp; &nbsp; protected </span><span class="default">$number</span><span class="keyword">;
+<br>&nbsp; &nbsp; 
+<br>&nbsp; public function </span><span class="default">__construct</span><span class="keyword">()
+<br>&nbsp; {
+<br>&nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">number </span><span class="keyword">= </span><span class="default">false</span><span class="keyword">;
+<br>&nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">precision </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">;
+<br>&nbsp; }
+<br>&nbsp; &nbsp; 
+<br>&nbsp; &nbsp; public function </span><span class="default">GetLength</span><span class="keyword">()
+<br>&nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">length</span><span class="keyword">;
+<br>&nbsp; &nbsp; }
+<br>&nbsp; &nbsp; 
+<br>&nbsp; &nbsp; public function </span><span class="default">IsNumber</span><span class="keyword">()
+<br>&nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">number</span><span class="keyword">;
+<br>&nbsp; &nbsp; }
+<br>
+<br>&nbsp; &nbsp; public function </span><span class="default">GetPrecision</span><span class="keyword">()
+<br>&nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">precision</span><span class="keyword">;
+<br>&nbsp; &nbsp; }
+<br>}
+<br>
+<br>class </span><span class="default">Integer </span><span class="keyword">extends </span><span class="default">DataType
+<br></span><span class="keyword">{
+<br>&nbsp; &nbsp; public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$length </span><span class="keyword">= </span><span class="default">12</span><span class="keyword">)
+<br>&nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">parent</span><span class="keyword">::</span><span class="default">__construct</span><span class="keyword">();
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">number </span><span class="keyword">= </span><span class="default">true</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">length </span><span class="keyword">= </span><span class="default">$length</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">precision </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;
+<br>&nbsp; &nbsp; }
+<br>}
+<br>
+<br>class </span><span class="default">Float </span><span class="keyword">extends </span><span class="default">DataType
+<br></span><span class="keyword">{
+<br>&nbsp; public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$length </span><span class="keyword">= </span><span class="default">12</span><span class="keyword">, </span><span class="default">$precision </span><span class="keyword">= </span><span class="default">2</span><span class="keyword">)
+<br>&nbsp; {
+<br>&nbsp; &nbsp; </span><span class="default">parent</span><span class="keyword">::</span><span class="default">__construct</span><span class="keyword">();
+<br>&nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">number </span><span class="keyword">= </span><span class="default">true</span><span class="keyword">;
+<br>&nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">length </span><span class="keyword">= </span><span class="default">$length</span><span class="keyword">;
+<br>&nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">precision </span><span class="keyword">= </span><span class="default">$precision</span><span class="keyword">;
+<br>&nbsp; }
+<br>}
+<br>
+<br>class </span><span class="default">String </span><span class="keyword">extends </span><span class="default">DataType
+<br></span><span class="keyword">{
+<br>&nbsp; &nbsp; public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$length </span><span class="keyword">= </span><span class="default">255</span><span class="keyword">)
+<br>&nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">parent</span><span class="keyword">::</span><span class="default">__constructor</span><span class="keyword">();
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">length </span><span class="keyword">= </span><span class="default">$length</span><span class="keyword">;
+<br>&nbsp; &nbsp; }
+<br>}
+<br></span><span class="comment">//etc etc through the types...
+<br></span><span class="default">?&gt;
+<br></span>
+<br>then later I can do this...
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">final class </span><span class="default">Field
+<br></span><span class="keyword">{
+<br>&nbsp; &nbsp; public </span><span class="default">$Name</span><span class="keyword">;
+<br>&nbsp; &nbsp; public </span><span class="default">$Mandatory</span><span class="keyword">;
+<br>&nbsp; &nbsp; public </span><span class="default">$Hidden</span><span class="keyword">;
+<br>&nbsp; &nbsp; public </span><span class="default">$ListField</span><span class="keyword">;
+<br>&nbsp; &nbsp; public </span><span class="default">$Value</span><span class="keyword">;
+<br>&nbsp; &nbsp; public </span><span class="default">$ForeignClass</span><span class="keyword">;
+<br>&nbsp; &nbsp; public </span><span class="default">$ReadOnly</span><span class="keyword">;
+<br>&nbsp; &nbsp; public </span><span class="default">$DataType</span><span class="keyword">;
+<br>&nbsp; &nbsp; 
+<br>&nbsp; &nbsp; public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$name</span><span class="keyword">, </span><span class="default">DataType $dataType</span><span class="keyword">, </span><span class="default">$mandatory </span><span class="keyword">= </span><span class="default">false</span><span class="keyword">, </span><span class="default">$listField </span><span class="keyword">= </span><span class="default">true</span><span class="keyword">, </span><span class="default">$value </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">, </span><span class="default">$readOnly </span><span class="keyword">= </span><span class="default">false</span><span class="keyword">, </span><span class="default">BaseCBO $foreignClass </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">)
+<br>&nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">Name </span><span class="keyword">= </span><span class="default">$name</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">DataType </span><span class="keyword">= </span><span class="default">$dataType</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">Mandatory </span><span class="keyword">= </span><span class="default">$mandatory</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">ListField </span><span class="keyword">= </span><span class="default">$listField</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">Value </span><span class="keyword">= </span><span class="default">$value</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">ReadOnly </span><span class="keyword">= </span><span class="default">$readOnly</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">ForeignClass </span><span class="keyword">= </span><span class="default">$foreignClass</span><span class="keyword">;
+<br>&nbsp; &nbsp; }
+<br>}
+<br>
+<br></span><span class="comment">// ....
+<br>
+<br></span><span class="keyword">class </span><span class="default">DoSomeStuff
+<br></span><span class="keyword">{
+<br>&nbsp; &nbsp; public function </span><span class="default">DoGenericThings</span><span class="keyword">(</span><span class="default">Field $field</span><span class="keyword">)
+<br>&nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">$field</span><span class="keyword">-&gt;</span><span class="default">DataType </span><span class="keyword">instanceof </span><span class="default">Integer</span><span class="keyword">)
+<br>&nbsp; &nbsp; &nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// do things for an integer field...
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">}
+<br>&nbsp; &nbsp; }
+<br>}
+<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="86074">  
+  <a class="name">
+  <strong class="user"><em>wbcarts at juno dot com</em></strong></a><div class="date" title="2008-10-01 06:20"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom86074">
+<div class="phpcode"><code><span class="html">
+TYPE-HINTING and VISIBILITY<br><br>Type-hinting is just one more small piece of PHP that protects our objects when visibility cannot.<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">class </span><span class="default">Point </span><span class="keyword">{<br>&nbsp; public </span><span class="default">$x</span><span class="keyword">, </span><span class="default">$y</span><span class="keyword">;<br><br>&nbsp; public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$xVal </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">, </span><span class="default">$yVal </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">) {<br>&nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">x </span><span class="keyword">= </span><span class="default">$xVal</span><span class="keyword">;<br>&nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">y </span><span class="keyword">= </span><span class="default">$yVal</span><span class="keyword">;<br>&nbsp; }<br>}<br><br>class </span><span class="default">Polyline </span><span class="keyword">{<br>&nbsp; protected </span><span class="default">$points </span><span class="keyword">= array();<br><br>&nbsp; public function </span><span class="default">addPoint</span><span class="keyword">(</span><span class="default">Point $p</span><span class="keyword">) {&nbsp; </span><span class="comment">// the line we're interested in...<br>&nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">points</span><span class="keyword">[] = </span><span class="default">$p</span><span class="keyword">;<br>&nbsp; }<br>}<br><br></span><span class="default">$point1 </span><span class="keyword">= new </span><span class="default">Point</span><span class="keyword">(</span><span class="default">15</span><span class="keyword">, </span><span class="default">12</span><span class="keyword">);<br></span><span class="default">$polyline </span><span class="keyword">= new </span><span class="default">Polyline</span><span class="keyword">();<br></span><span class="default">$polyline</span><span class="keyword">-&gt;</span><span class="default">addPoint</span><span class="keyword">(</span><span class="default">$point1</span><span class="keyword">);<br></span><span class="default">$polyline</span><span class="keyword">-&gt;</span><span class="default">addPoint</span><span class="keyword">(new </span><span class="default">Point</span><span class="keyword">(</span><span class="default">55</span><span class="keyword">, </span><span class="default">22</span><span class="keyword">));<br></span><span class="default">$polyline</span><span class="keyword">-&gt;</span><span class="default">addPoint</span><span class="keyword">(new </span><span class="default">Point</span><span class="keyword">(</span><span class="default">33</span><span class="keyword">, </span><span class="default">31</span><span class="keyword">));<br><br></span><span class="default">$polyline</span><span class="keyword">-&gt;</span><span class="default">addPoint</span><span class="keyword">(new </span><span class="default">stdClass</span><span class="keyword">());&nbsp; &nbsp; </span><span class="comment">// PHP will throw an error for us!&nbsp; <br><br></span><span class="default">?&gt;<br></span><br>Since our Polyline::addPoint() function has to be public, any outside code can try to pass anything. But, when type-hinting is declared, PHP throws an error when phoney data tries to sneak by.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="85613">  
+  <a class="name">
+  <strong class="user"><em>DanielLWood [at] Gmail [dot] Com</em></strong></a><div class="date" title="2008-09-08 05:59"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom85613">
+<div class="phpcode"><code><span class="html">
+To follow up on my original post dealing with the type hinting class I provided:<br><br>Kalkamar is absolutely correct, it is slow and is a hack.&nbsp; Everyone who uses it and wants to see this type of syntax native needs to post on the 'php internals' development thread in support.<br><br>Thanks,<br><br>Dan</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="84526">  
+  <a class="name">
+  <strong class="user"><em>comments at ignorethis netweblogic com</em></strong></a><div class="date" title="2008-07-17 07:39"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom84526">
+<div class="phpcode"><code><span class="html">
+Note that you cannot add a type hint and give a default value, apart from arrays. You will get an internal server error, or fatal error.<br><br>e.g. <br><br><span class="default">&lt;?php<br><br></span><span class="comment">//Wont work<br></span><span class="keyword">function </span><span class="default">test</span><span class="keyword">(</span><span class="default">ObjName $obj </span><span class="keyword">= </span><span class="string">''</span><span class="keyword">){<br>&nbsp;&nbsp; </span><span class="comment">//.....<br></span><span class="keyword">}<br><br></span><span class="comment">//Will work<br></span><span class="keyword">function </span><span class="default">test</span><span class="keyword">(Array </span><span class="default">$obj </span><span class="keyword">= array()){<br>&nbsp;&nbsp; </span><span class="comment">//.....<br></span><span class="keyword">}<br><br></span><span class="default">?&gt;<br></span><br>Even if you have Daniel's implementation of type hinting, a string typehint will still not work if you give it an empty string default too.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="84436">  
+  <a class="name">
+  <strong class="user"><em>marcus at ignorethis netweblogic dot com</em></strong></a><div class="date" title="2008-07-14 06:18"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom84436">
+<div class="phpcode"><code><span class="html">
+Love the typehint object Daniel. Great effort!
+<br>
+<br>However, it still throws catchable fatal errors, which is not what I want, so I added one line to handleTypehint() so it throws an Exception.
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">public static function </span><span class="default">handleTypehint</span><span class="keyword">(</span><span class="default">$ErrLevel</span><span class="keyword">, </span><span class="default">$ErrMessage</span><span class="keyword">) {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">$ErrLevel </span><span class="keyword">== </span><span class="default">E_RECOVERABLE_ERROR</span><span class="keyword">) {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">preg_match </span><span class="keyword">( </span><span class="default">TYPEHINT_PCRE</span><span class="keyword">, </span><span class="default">$ErrMessage</span><span class="keyword">, </span><span class="default">$ErrMatches </span><span class="keyword">)) {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; list ( </span><span class="default">$ErrMatch</span><span class="keyword">, </span><span class="default">$ThArgIndex</span><span class="keyword">, </span><span class="default">$ThClass</span><span class="keyword">, </span><span class="default">$ThFunction</span><span class="keyword">, </span><span class="default">$ThHint</span><span class="keyword">, </span><span class="default">$ThType </span><span class="keyword">) = </span><span class="default">$ErrMatches</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (isset ( </span><span class="default">self</span><span class="keyword">::</span><span class="default">$Typehints </span><span class="keyword">[</span><span class="default">$ThHint</span><span class="keyword">] )) {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$ThBacktrace </span><span class="keyword">= </span><span class="default">debug_backtrace </span><span class="keyword">();
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$ThArgValue </span><span class="keyword">= </span><span class="default">NULL</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">self</span><span class="keyword">::</span><span class="default">getTypehintedArgument </span><span class="keyword">( </span><span class="default">$ThBacktrace</span><span class="keyword">, </span><span class="default">$ThFunction</span><span class="keyword">, </span><span class="default">$ThArgIndex</span><span class="keyword">, </span><span class="default">$ThArgValue </span><span class="keyword">)) {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">call_user_func </span><span class="keyword">( </span><span class="default">self</span><span class="keyword">::</span><span class="default">$Typehints </span><span class="keyword">[</span><span class="default">$ThHint</span><span class="keyword">], </span><span class="default">$ThArgValue </span><span class="keyword">)) {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">TRUE</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="default">$ErrMessage</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">FALSE</span><span class="keyword">;
+<br>&nbsp; &nbsp; }
+<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="84384">  
+  <a class="name">
+  <strong class="user"><em>madness</em></strong></a><div class="date" title="2008-07-11 03:09"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom84384">
+<div class="phpcode"><code><span class="html">
+I must admit that Daniel's implementation is quite awesome (after all we'd be omonyms if I was english, omen nomen ;-) ), for everyone that already has a function/class to handle errors, this is a quick method to integrate the TypeHint class:<br><br><span class="default">&lt;?php<br>&nbsp; &nbsp; </span><span class="keyword">public static function </span><span class="default">handleError</span><span class="keyword">(</span><span class="default">$errno</span><span class="keyword">, </span><span class="default">$errstr</span><span class="keyword">, </span><span class="default">$errfile</span><span class="keyword">, </span><span class="default">$errline</span><span class="keyword">){<br><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// Implements just-in-time classes for broad type hinting<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">if (</span><span class="default">TypeHint</span><span class="keyword">::</span><span class="default">handleTypehint</span><span class="keyword">(</span><span class="default">$errno</span><span class="keyword">, </span><span class="default">$errstr</span><span class="keyword">)){<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">true</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// do your usual stuff here<br>&nbsp; &nbsp; &nbsp; &nbsp; /*<br>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; * ...<br>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; */<br>&nbsp; &nbsp; </span><span class="keyword">}<br></span><span class="default">?&gt;<br></span><br>The initializeHandler method and the Typehint::initializeHandler(); call are rendered useless in this case. Enjoy.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="78533">  
+  <a class="name">
+  <strong class="user"><em>Jazz</em></strong></a><div class="date" title="2007-10-16 09:20"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom78533">
+<div class="phpcode"><code><span class="html">
+To Nikivich and Edorian:<br><br>There are many times when you would use an equals() method other than to find out if the two objects are the same object. Think of all the primitive wrapper classes in Java, for example -- if you create two new Integer()'s with identical values, equals() returns true, even though they are two different objects. There would be no reason to allow someone to perform an equals() between an Integer and, say, a GregorianCalendar -- it just doesn't make sense. In Java you would attempt this and probably get a ClassCastException, but in PHP no such facility exists, so the best way to prevent this would be through type hinting.<br><br>The point Nicholas was making is that you can't specify a stricter type hint on an inherited method, and despite your arguments, that would be a truly useful thing to be able to do.<br><br>(True overloading would be a better way, IMHO, but *shrug*)</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="73538">  
+  <a class="name">
+  <strong class="user"><em>ldebuyst-&gt;brutele.be</em></strong></a><div class="date" title="2007-02-28 06:52"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom73538">
+<div class="phpcode"><code><span class="html">
+In reply to Nikivich and Edorian:<br><br>Although it isn't quite clear from his post, I believe that the point nicholas is trying to make is that, if you typehint an abstract function, you MUST use that same typehint for all classes extending the abstract class.<br><br>As his example shows, if you typehint (Object $object), then&nbsp; you must use the exact same typehint in the extending class. Using the typehint (Table $table) or (Chair $chair) will give fatal errors, even if Table and Chair are subclasses of Object.<br><br>In other words, type hinting allows for descendants, as caliban at darklock dot com has shown, except when you're subclassing.<br><br>See <a rel="nofollow" target="_blank">http://bugs.php.net/bug.php?id=36601</a> for a bit more info. Flagged as wontfix, though, so something to keep in mind.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="73447">  
+  <a class="name">
+  <strong class="user"><em>Nikivich</em></strong></a><div class="date" title="2007-02-23 07:28"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom73447">
+<div class="phpcode"><code><span class="html">
+In reply to Nicolas<br><br>I don't think you exactly understand the inheritance principles<br>If you want to do the equals thing in a decent OO way, you would do something like this:<br><br>class Object {<br>&nbsp; &nbsp; &nbsp; public equals(Object &amp;o) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return this == &amp;o; //perform default equals check, one could arguably say that === is the correct default, but doesnt matter for the example<br>&nbsp; &nbsp; &nbsp; }<br>}<br><br>class Chair extends Object {<br>}<br>class Table extends Object {<br>}<br><br>$chair = new Chair();<br>$table = new Table();<br>$chair-&gt;equals($table); //will print false (zero)<br><br>This is actually a correct implementation of an equals method. Since you want to take a chair for example and just call equals() on it WITH ANY OBJECT, you should only hint Object, not an implementation, since the whole point of the equals method is to find out whether it is actually the same object :-) I want to be able to pass a table (which implements Object too, so is perfectly allowed as a parameter to equals).<br><br>Hope this clears it up a bit for you... :-)</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="73058">  
+  <a class="name">
+  <strong class="user"><em>Edorian</em></strong></a><div class="date" title="2007-02-07 10:12"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom73058">
+<div class="phpcode"><code><span class="html">
+In response to nicholas at nicholaswilliams dot info:<br><br>Of course this doesn't work. Not in Php nor in Java.<br><br>You can't put a Chair into Table just because there both implementing "Object"<br><br>It wouldn't make any sense to say "i'm expecting an argument that implements the same object that i'm implementing" with type hinting.<br><br>You say: "I'm expection an Object of that Class or a Object of a Subclass of that Class " like you do in every OO languange.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="71141">  
+  <a class="name">
+  <strong class="user"><em>nicholas at nicholaswilliams dot info</em></strong></a><div class="date" title="2006-11-13 12:53"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom71141">
+<div class="phpcode"><code><span class="html">
+Please note that the following will not work:<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">abstract class </span><span class="default">Object<br></span><span class="keyword">{<br>&nbsp; &nbsp; public abstract function </span><span class="default">toString</span><span class="keyword">( );<br>&nbsp; &nbsp; public abstract function </span><span class="default">equals</span><span class="keyword">( </span><span class="default">Object </span><span class="keyword">&amp;</span><span class="default">$o </span><span class="keyword">);<br>}<br><br>class </span><span class="default">Chair </span><span class="keyword">extends </span><span class="default">Object<br></span><span class="keyword">{<br>&nbsp; &nbsp; public function </span><span class="default">toString</span><span class="keyword">( )<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="string">'This is a chair.'</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; public function </span><span class="default">equals</span><span class="keyword">( </span><span class="default">Chair </span><span class="keyword">&amp;</span><span class="default">$o </span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">TRUE</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>}<br><br>class </span><span class="default">Table </span><span class="keyword">extends </span><span class="default">Object<br></span><span class="keyword">{<br>&nbsp; &nbsp; public function </span><span class="default">toString</span><span class="keyword">( )<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="string">'This is a table.'</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; public function </span><span class="default">equals</span><span class="keyword">( </span><span class="default">Table </span><span class="keyword">&amp;</span><span class="default">$o </span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">TRUE</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>}<br><br></span><span class="default">$chair </span><span class="keyword">= new </span><span class="default">Chair</span><span class="keyword">();<br></span><span class="default">$table </span><span class="keyword">= new </span><span class="default">Table</span><span class="keyword">();<br><br>echo </span><span class="default">$chair</span><span class="keyword">-&gt;</span><span class="default">equals</span><span class="keyword">( </span><span class="default">$table </span><span class="keyword">);<br><br></span><span class="default">?&gt;<br></span><br>The expected output is "Fatal error: Argument 1 passed to Chair::equals() must be an instance of Chair, called in [filename] on line 38 and defined in [filename] on line 16" but instead you get "Fatal error: Declaration of Chair::equals() must be compatible with that of Object::equals() in [filename] on line 20".<br><br>This is unlike other OO languages (secifically Java) which not only allow but expect this type of code. It is in the nature of abstraction. However, you can get similar results using the following code instead:<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">abstract class </span><span class="default">Object<br></span><span class="keyword">{<br>&nbsp; &nbsp; public abstract function </span><span class="default">toString</span><span class="keyword">( );<br>&nbsp; &nbsp; public abstract function </span><span class="default">equals</span><span class="keyword">( </span><span class="default">self </span><span class="keyword">&amp;</span><span class="default">$o </span><span class="keyword">);<br>}<br><br>class </span><span class="default">Chair </span><span class="keyword">extends </span><span class="default">Object<br></span><span class="keyword">{<br>&nbsp; &nbsp; public function </span><span class="default">toString</span><span class="keyword">( )<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="string">'This is a chair.'</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; public function </span><span class="default">equals</span><span class="keyword">( </span><span class="default">self </span><span class="keyword">&amp;</span><span class="default">$o </span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">TRUE</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>}<br><br>class </span><span class="default">Table </span><span class="keyword">extends </span><span class="default">Object<br></span><span class="keyword">{<br>&nbsp; &nbsp; public function </span><span class="default">toString</span><span class="keyword">( )<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="string">'This is a table.'</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; public function </span><span class="default">equals</span><span class="keyword">( </span><span class="default">self </span><span class="keyword">&amp;</span><span class="default">$o </span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">TRUE</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>}<br><br></span><span class="default">$chair </span><span class="keyword">= new </span><span class="default">Chair</span><span class="keyword">();<br></span><span class="default">$table </span><span class="keyword">= new </span><span class="default">Table</span><span class="keyword">();<br><br>echo </span><span class="default">$chair</span><span class="keyword">-&gt;</span><span class="default">equals</span><span class="keyword">( </span><span class="default">$table </span><span class="keyword">);<br><br></span><span class="default">?&gt;<br></span><br>This code gives the expected result "Fatal error: Argument 1 passed to Chair::equals() must be an instance of Chair, called in [filename] on line 38 and defined in [filename] on line 16". This is the proper behavior but isn't the most intuitive approach for those of us used to OO programming.<br><br>Hope this helps someone :-).<br><br>Nicholas</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="54501">  
+  <a class="name">
+  <strong class="user"><em>mlovett at morpace dot com</em></strong></a><div class="date" title="2005-07-06 03:54"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom54501">
+<div class="phpcode"><code><span class="html">
+Type hinting works with interfaces too. In other words, you can specify the name of an interface for a function parameter, and the object passed in must implement that interface, or else type hinting throws an exception.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="93534">  
+  <a class="name">
+  <strong class="user"><em>reinier dot kip at gmail dot com</em></strong></a><div class="date" title="2009-09-15 01:22"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom93534">
+<div class="phpcode"><code><span class="html">
+Please note that when using the type hinting class together with namespaces, you're asking for trouble:<br><br><span class="default">&lt;?php<br></span><span class="keyword">namespace </span><span class="default">a </span><span class="keyword">{<br>&nbsp; &nbsp; interface </span><span class="default">A </span><span class="keyword">{<br>&nbsp; &nbsp; &nbsp; &nbsp; public function </span><span class="default">execute</span><span class="keyword">(</span><span class="default">string $sth</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>}<br><br>namespace </span><span class="default">a</span><span class="keyword">\</span><span class="default">b </span><span class="keyword">{<br>&nbsp; &nbsp; class </span><span class="default">B </span><span class="keyword">implements </span><span class="default">a</span><span class="keyword">\</span><span class="default">A </span><span class="keyword">{<br>&nbsp; &nbsp; &nbsp; &nbsp; public function </span><span class="default">execute</span><span class="keyword">(</span><span class="default">string $sth</span><span class="keyword">){} </span><span class="comment">// Wrong<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">public function </span><span class="default">execute</span><span class="keyword">(</span><span class="default">a</span><span class="keyword">\</span><span class="default">string $sth</span><span class="keyword">){} </span><span class="comment">// Correct<br>&nbsp; &nbsp; </span><span class="keyword">}<br>} </span><span class="comment">// Causes a fatal error on this line. 'string' is considered an object from the namespace 'a'<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/language.oop5.typehinting.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:28:01 GMT -->
+
+
+</body></html>

@@ -1,0 +1,546 @@
+<html><!-- Mirrored from php.net/manual/en/mongo.queries.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 16:59:26 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Querying</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="mongo.queries.html">
+ <link rel="shorturl" href="mongo.queries.html">
+ <link rel="alternate" href="mongo.queries.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="mongo.manual.html">
+ <link rel="prev" href="mongo.writes.html">
+ <link rel="next" href="mongo.updates.html">
+
+ <link rel="alternate" href="mongo.queries.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/mongo.queries.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/mongo.queries.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/mongo.queries.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/mongo.queries.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/mongo.queries.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/mongo.queries.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/mongo.queries.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/mongo.queries.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/mongo.queries.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/mongo.queries.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.database.html">Database Extensions</a></li>      <li><a href="refs.database.vendors.html">Vendor Specific Database Extensions</a></li>      <li><a href="book.mongo.html">Mongo</a></li>      <li><a href="mongo.manual.html">Manual</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="mongo.queries" class="chapter">
+ <h1>Querying</h1>
+
+
+ <div class="simplesect">
+  <h3 class="title">Distributing queries to secondaries</h3>
+
+  <p class="para">
+   All queries (reads and writes) are only sent to the primary member of a
+   replica set by default. This is however easily configurable by using the
+   <a href="mongo.readpreferences.html" class="link">Read Preferences</a> which allow
+   you to set some generic read preferences (such as allowing secondary reads
+   of the nearest server), and also provide ways to specifically target a
+   server in a specific country, datacenter, or even hardware, by the use of
+   <a href="mongo.readpreferences.html#mongo.readpreferences.tagsets" class="link">replica set tag sets</a>.
+  </p>
+  <p class="para">
+   Read Preferences can be configured at "every level"
+   </p><ul class="simplelist">
+    <li class="member">As a query parameter, or option, to <span class="methodname"><a href="mongoclient.construct.html" class="methodname">MongoClient::__construct()</a></span></li>
+    <li class="member">Specifically by calling <span class="methodname"><a href="mongoclient.setreadpreference.html" class="methodname">MongoClient::setReadPreference()</a></span></li>
+    <li class="member">At the Database level with <span class="methodname"><a href="mongodb.setreadpreference.html" class="methodname">MongoDB::setReadPreference()</a></span></li>
+    <li class="member">At the Collection level with <span class="methodname"><a href="mongocollection.setreadpreference.html" class="methodname">MongoCollection::setReadPreference()</a></span></li>
+
+   </ul>
+   Each class inherits the Read Preference setting from the class above it, so if you do:
+  <p></p>
+  <div class="example" id="mongo.queries.secondaries.inheritence-example">
+   <p><strong>Example #1 Inheriting ReadPreferences from the Database level down to the Cursor</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>$db</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setReadPreference</span><span style="color: #007700">(</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">::</span><span style="color: #0000BB">RP_SECONDARY_PREFERRED</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$c&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$db</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">myCollection</span><span style="color: #007700">;<br><br></span><span style="color: #0000BB">$cursor&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">find</span><span style="color: #007700">();<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+  <p class="para">
+   then the query will be executed against a secondary (the collection
+   inherited <strong><code>MongoClient::RP_SECONDARY_PREFERRED</code></strong> from the
+   database and the cursor inherited it from the collection).
+  </p>
+ </div>
+
+  <div class="simplesect">
+   <h3 class="title">How secondaries are chosen</h3>
+
+   <p class="para">
+    Each instance of <a href="class.mongoclient.html" class="classname">MongoClient</a> chooses its own
+    secondary using the available secondary with the lowest ping time. So, if we
+    had a PHP client in Europe and one in Australia and we had one secondary in
+    each of these data centers, we could do:
+   </p>
+   <div class="example" id="mongo.queries.choosing.secondary-example">
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>$options&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">"replicaSet"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"setName"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"readPreference"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">::</span><span style="color: #0000BB">RP_SECONDARY_PREFERRED</span><span style="color: #007700">);<br><br></span><span style="color: #FF8000">//&nbsp;on&nbsp;the&nbsp;Australian&nbsp;client<br></span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #DD0000">"mongodb://primary,australianhost.secondary,europeanhost.secondary"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$options</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$cursor&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">foo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">bar</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">find</span><span style="color: #007700">();<br></span><span style="color: #0000BB">$cursor</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getNext</span><span style="color: #007700">();<br>echo&nbsp;</span><span style="color: #DD0000">"Reading&nbsp;from:&nbsp;"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$cursor</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">info</span><span style="color: #007700">()[</span><span style="color: #DD0000">"server"</span><span style="color: #007700">],&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br><br></span><span style="color: #FF8000">//&nbsp;on&nbsp;the&nbsp;European&nbsp;client<br></span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #DD0000">"mongodb://primary,australianhost.secondary,europeanhost.secondary"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$options</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$cursor&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">foo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">bar</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">find</span><span style="color: #007700">();<br></span><span style="color: #0000BB">$cursor</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getNext</span><span style="color: #007700">();<br>echo&nbsp;</span><span style="color: #DD0000">"Reading&nbsp;from:&nbsp;"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$cursor</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">info</span><span style="color: #007700">()[</span><span style="color: #DD0000">"server"</span><span style="color: #007700">],&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>The above example will output
+something similar to:</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>Reading from: australianHost
+Reading from: europeanHost
+</pre></div>
+    </div>
+    <div class="example-contents"><p>
+     Note that we have to do a query before a secondary is chosen: secondaries
+     are chosen lazily by the driver, and for each query separately.
+    </p></div>
+   </div>
+
+   <p class="para">
+    You can see what the driver thinks is the current status of the set
+    members by running <span class="methodname"><a href="mongoclient.gethosts.html" class="methodname">MongoClient::getHosts()</a></span> or
+    <span class="methodname"><a href="mongoclient.getconnections.html" class="methodname">MongoClient::getConnections()</a></span>.
+   </p>
+
+   <p class="para">
+    If no secondary is readable, the driver will send reads to the
+    primary as we specified
+    <strong><code>MongoClient::RP_SECONDARY_PREFERRED</code></strong> which will
+    fallback to execute a query on a primary if no secondaries are available.
+    A server is considered readable if its state is 2 (SECONDARY) and its
+    health is 1.  You can check this with
+    <span class="methodname"><a href="mongoclient.gethosts.html" class="methodname">MongoClient::getHosts()</a></span> and
+    <span class="methodname"><a href="mongoclient.getconnections.html" class="methodname">MongoClient::getConnections()</a></span>.
+   </p>
+
+  </div>
+  <div class="simplesect">
+   <h3 class="title">Random notes</h3>
+
+   <p class="para">
+    Writes are always sent to the primary—and by default all reads are sent
+    to the primary too.
+   </p>
+
+  </div>
+
+ <div class="simplesect">
+  <h3 class="title">Querying by _id</h3>
+  <p class="para">
+   Every object inserted is automatically assigned a unique
+   <em>_id</em> field, which is often a useful field to use in
+   queries. This works similarly to "get last insert ID" functionality, except
+   that the <em>_id</em> is chosen by the <em class="emphasis">client</em>.
+  </p>
+  <p class="para">
+   Suppose that we wish to find the document we just inserted.  Inserting adds
+   an <em>_id</em> field to the document, so we can query by that:
+
+   </p><div class="example" id="mongo.queries.querying-example">
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>$person&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">"name"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"joe"</span><span style="color: #007700">);<br><br></span><span style="color: #0000BB">$people</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(</span><span style="color: #0000BB">$person</span><span style="color: #007700">);<br><br></span><span style="color: #FF8000">//&nbsp;now&nbsp;$joe&nbsp;has&nbsp;an&nbsp;_id&nbsp;field<br></span><span style="color: #0000BB">$joe&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$people</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">findOne</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"_id"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$person</span><span style="color: #007700">[</span><span style="color: #DD0000">'_id'</span><span style="color: #007700">]));<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  <p></p>
+  <p class="para">
+   Unless the user has specified otherwise, the <em>_id</em> field is a
+   <a href="class.mongoid.html" class="classname">MongoId</a>.  The most common mistake is attempting to use
+   a string to match a <a href="class.mongoid.html" class="classname">MongoId</a>.  Keep in mind that these
+   are two different datatypes, and will not match each other in the same way
+   that the string "array()" is not the same as an empty array.  For example:
+
+   </p><div class="example" id="mongo.queries.querying.wrong">
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>$person&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">"name"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"joe"</span><span style="color: #007700">);<br><br></span><span style="color: #0000BB">$people</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(</span><span style="color: #0000BB">$person</span><span style="color: #007700">);<br><br></span><span style="color: #FF8000">//&nbsp;convert&nbsp;the&nbsp;_id&nbsp;to&nbsp;a&nbsp;string<br></span><span style="color: #0000BB">$pid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$person</span><span style="color: #007700">[</span><span style="color: #DD0000">'_id'</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">""</span><span style="color: #007700">;<br><br></span><span style="color: #FF8000">//&nbsp;FAILS&nbsp;-&nbsp;$pid&nbsp;is&nbsp;a&nbsp;string,&nbsp;not&nbsp;a&nbsp;MongoId<br></span><span style="color: #0000BB">$joe&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$people</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">findOne</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"_id"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$pid</span><span style="color: #007700">));<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  <p></p>
+ </div>
+
+ <div class="simplesect">
+  <h3 class="title">Arrays</h3>
+
+  <p class="para">
+   Arrays are special in a couple ways.  First, there are two types that
+   MongoDB uses: "normal" arrays and associative arrays.  Associative arrays can
+   have any mix of key types and values.  "Normal" arrays are defined as arrays
+   with ascending numeric indexes starting at 0 and increasing by one for each
+   element.  These are, typically, just your usual PHP array.
+  </p>
+
+  <p class="para">
+   For instance, if you want to save a list of awards in a document, you could
+   say:
+  </p>
+
+  <div class="example" id="mongo.queries.arrays-example">
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br><br>$collection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">save</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"awards"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(</span><span style="color: #DD0000">"gold"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"silver"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"bronze"</span><span style="color: #007700">)));<br><br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+
+  <p class="para">
+   Queries can reach into arrays to search for elements.  Suppose that we wish
+   to find all documents with an array element of a given value. For example,
+   documents with a "gold" award, such as:
+  </p>
+
+  <div class="example-contents screen">
+<div class="cdata"><pre>{ "_id" : ObjectId("4b06c282edb87a281e09dad9"), "awards" : ["gold", "silver", "bronze"]}
+</pre></div>
+  </div>
+
+  <p class="para">
+   This can be done with a simple query, ignoring the fact that "awards" is an
+   array:
+  </p>
+
+   <div class="example" id="mongo.queries.arrays-example-2">
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br><br>&nbsp;&nbsp;$cursor&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$collection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">find</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"awards"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"gold"</span><span style="color: #007700">));<br><br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+
+  <p class="para">
+   Suppose we are querying for a more complex object, if each element of the
+   array were an object itself, such as:
+  </p>
+
+  <div class="example-contents screen">
+<div class="cdata"><pre>{
+     "_id" : ObjectId("4b06c282edb87a281e09dad9"),
+     "awards" :
+     [
+        {
+            "first place" : "gold"
+        },
+        {
+            "second place" : "silver"
+        },
+        {
+            "third place" :  "bronze"
+        }
+     ]
+}
+</pre></div>
+  </div>
+
+  <p class="para">
+   Still ignoring that this is an array, we can use dot notation to query the
+   subobject:
+  </p>
+
+   <div class="example" id="mongo.queries.querying-arrays-nested">
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br><br>$cursor&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$collection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">find</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"awards.first&nbsp;place"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"gold"</span><span style="color: #007700">));<br><br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+
+  <p class="para">
+   Notice that it doesn't matter that there is a space in the field name
+   (although it may be best not to use spaces, just to make things more
+   readable).
+  </p>
+
+  <p class="para">
+   You can also use an array to query for a number of possible values.  For
+   instance, if we were looking for documents "gold" or "copper", we could do:
+  </p>
+
+  <div class="example" id="mongo.queries.querying-arrays-in">
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br><br>$cursor&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$collection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">find</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"awards"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(</span><span style="color: #DD0000">'$in'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(</span><span style="color: #DD0000">"gold"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"copper"</span><span style="color: #007700">))));<br><br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </div>
+
+ <div class="simplesect">
+  <h3 class="title">Changelog</h3>
+  <table class="doctable informaltable">
+   
+    <thead>
+     <tr>
+      <th>Version</th>
+      <th>Description</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+
+     <tr>
+      <td>1.3.0</td>
+      <td>
+       Introduced the <a href="mongo.readpreferences.html" class="link">Read
+       Preferences</a> framework to allow more fine grained control over
+       secondary reads.
+      </td>
+     </tr>
+
+     <tr>
+      <td>1.3.0</td>
+      <td>
+       Deprecated <em>slaveOkay</em> usage, the alternative is <a href="mongo.readpreferences.html" class="link">Read Preferences</a>.
+      </td>
+     </tr>
+
+     <tr>
+      <td>1.1.0</td>
+      <td>
+       Introduced the possiblity of routing reads to secondaries of replica set
+       members using <span class="methodname"><a href="mongo.setslaveokay.html" class="methodname">Mongo::setSlaveOkay()</a></span>
+      </td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+ </div>
+
+</div>
+
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="97881">  
+  <a class="name">
+  <strong class="user"><em>Charle Demers</em></strong></a><div class="date" title="2010-05-13 09:14"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom97881">
+<div class="phpcode"><code><span class="html">
+Watch for types casting in your queries, make sure ints are typed as ints and strings as strings. <br><br>Ex:<br><span class="default">&lt;?php<br><br>$friendId </span><span class="keyword">= </span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="string">'friendId'</span><span class="keyword">];<br></span><span class="default">$request </span><span class="keyword">= array( </span><span class="string">'friends.friendId' </span><span class="keyword">=&gt; (int)</span><span class="default">$friendId </span><span class="keyword">);<br></span><span class="default">$friend </span><span class="keyword">= </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">_mongo</span><span class="keyword">-&gt;</span><span class="default">friends</span><span class="keyword">-&gt;</span><span class="default">findOne</span><span class="keyword">( </span><span class="default">$request </span><span class="keyword">);<br><br></span><span class="default">?&gt;<br></span><br>This example would not work without casting the $friendId to int in the request array (unless the friendId column in Mongo is actually really a string).</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="106522">  
+  <a class="name">
+  <strong class="user"><em>patrick at hexane dot org</em></strong></a><div class="date" title="2011-11-15 07:08"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom106522">
+<div class="phpcode"><code><span class="html">
+Note that $db-&gt;collection-&gt;find()-&gt;count() will always run on the PRIMARY, since underneath the hood -&gt;count() is a dbcommand.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="96268">  
+  <a class="name">
+  <strong class="user"><em>jhuntwork at lightcubesolutions dot com</em></strong></a><div class="date" title="2010-02-17 02:25"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom96268">
+<div class="phpcode"><code><span class="html">
+If you have already converted the MongoID into a string elsewhere and need to query for an _id based on the string, you can do so by creating a new MongoID object:<br><br><span class="default">&lt;?php<br><br>$m </span><span class="keyword">= new </span><span class="default">Mongo</span><span class="keyword">();<br></span><span class="default">$collection </span><span class="keyword">= </span><span class="default">$collection </span><span class="keyword">= </span><span class="default">$m</span><span class="keyword">-&gt;</span><span class="default">selectDB</span><span class="keyword">(</span><span class="string">'foo'</span><span class="keyword">)-&gt;</span><span class="default">selectCollection</span><span class="keyword">(</span><span class="string">'bar'</span><span class="keyword">);<br><br></span><span class="default">$id_string </span><span class="keyword">= </span><span class="string">'4b7c29908ead0e2e1d000000'</span><span class="keyword">;<br><br></span><span class="comment">// The string is converted to a MongoID object<br></span><span class="default">$mongo_id </span><span class="keyword">= new </span><span class="default">MongoID</span><span class="keyword">(</span><span class="default">$id_string</span><span class="keyword">);<br><br></span><span class="comment">// $obj will be an array of data if the _id exists in the collection<br></span><span class="default">$obj </span><span class="keyword">= </span><span class="default">$collection</span><span class="keyword">-&gt;</span><span class="default">findOne</span><span class="keyword">(array(</span><span class="string">'_id'</span><span class="keyword">=&gt;</span><span class="default">$mongo_id</span><span class="keyword">));<br><br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/mongo.queries.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 16:59:26 GMT -->
+
+
+</body></html>

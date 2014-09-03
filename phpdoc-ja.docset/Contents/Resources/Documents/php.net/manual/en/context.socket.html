@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>ソケットコンテキストオプション一覧</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="context.html">≪ コンテキストオプションとパラメータ</a></li>
+      <li style="float: right;"><a href="context.http.html">HTTP コンテキストオプション ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="context.html">コンテキストオプションとパラメータ</a></li>
+    <li>ソケットコンテキストオプション一覧</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="context.socket" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ソケットコンテキストオプション</h1>
+  <p class="refpurpose"><span class="refname">ソケットコンテキストオプション</span> &mdash; <span class="dc-title">ソケットコンテキストオプション一覧</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-context.socket-description">
+  <h3 class="title">説明</h3>
+  <p class="para">
+   ここでは、ソケット越しに動作するラッパー
+   すなわち <em>tcp</em>、<em>http</em>
+   あるいは <em>ftp</em> でサポートされるオプションを扱います。
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 options" id="refsect1-context.socket-options">
+  <h3 class="title">オプション</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt id="context.socket.bindto"><code class="parameter">bindto</code></dt>
+
+     <dd>
+
+      <p class="para">
+       PHP がネットワークにアクセスする際の IP アドレス
+       (IPv4 あるいは IPv6 のどちらか）やポート番号を指定する際に使用されます。
+       書式は、IPv4 アドレスの場合は <em>ip:port</em>、
+       IPv6 アドレスの場合は <em>[ip]:port</em> です。
+       IP やポート番号に
+       <em>0</em> を指定すると、それをシステムに自動的に設定させる
+       ことができます。
+      </p>
+      <blockquote class="note"><p><strong class="note">注意</strong>: 
+       <p class="para">
+        FTP の通常の操作では 2 つのソケット接続を使用するので、
+        このオプションでポート番号を指定することができません。
+       </p>
+      </p></blockquote>
+     </dd>
+
+    
+    
+     <dt id="context.socket.backlog"><code class="parameter">backlog</code></dt>
+
+     <dd>
+
+      <p class="para">
+       ソケットのリスンキューから出て行く接続の数を制限します。
+      </p>
+      <blockquote class="note"><p><strong class="note">注意</strong>: 
+       <p class="para">
+        <span class="function"><a href="function.stream-socket-server.html" class="function">stream_socket_server()</a></span> でのみ有効です。
+       </p>
+      </p></blockquote>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 changelog" id="refsect1-context.socket-changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>5.3.3</td>
+       <td>
+        <em>backlog</em> が追加されました。
+       </td>
+      </tr>
+
+      <tr>
+       <td>5.1.0</td>
+       <td>
+        <em>bindto</em> が追加されました。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 examples" id="refsect1-context.socket-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="context.socket.example-bindto">
+    <p><strong>例1 基本的な <code class="parameter">bindto</code> の使用例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;IP&nbsp;アドレス&nbsp;'192.168.0.100'&nbsp;でインターネットに接続する<br /></span><span style="color: #0000BB">$opts&nbsp;</span><span style="color: #007700">=&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'socket'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'bindto'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'192.168.0.100:0'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;),<br />);<br /><br /><br /></span><span style="color: #FF8000">//&nbsp;IP&nbsp;アドレス&nbsp;'192.168.0.100'&nbsp;とポート番号&nbsp;'7000'&nbsp;でインターネットに接続する<br /></span><span style="color: #0000BB">$opts&nbsp;</span><span style="color: #007700">=&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'socket'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'bindto'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'192.168.0.100:7000'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;),<br />);<br /><br /><br /></span><span style="color: #FF8000">//&nbsp;IPv6&nbsp;アドレス&nbsp;'2001:db8::1'&nbsp;とポート番号&nbsp;'7000'&nbsp;でインターネットに接続する<br /></span><span style="color: #0000BB">$opts&nbsp;</span><span style="color: #007700">=&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'socket'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'bindto'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'[2001:db8::1]:7000'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;),<br />);<br /><br /><br /></span><span style="color: #FF8000">//&nbsp;ポート番号&nbsp;'7000'&nbsp;でインターネットに接続する<br /></span><span style="color: #0000BB">$opts&nbsp;</span><span style="color: #007700">=&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'socket'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">'bindto'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'0:7000'</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;),<br />);<br /><br /><br /></span><span style="color: #FF8000">//&nbsp;コンテキストを作成し...<br /></span><span style="color: #0000BB">$context&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">stream_context_create</span><span style="color: #007700">(</span><span style="color: #0000BB">$opts</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;...そしてデータを取得するためにそれを使用する<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">file_get_contents</span><span style="color: #007700">(</span><span style="color: #DD0000">'http://www.example.com'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$context</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+ 
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>Traversable インターフェイス</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="reserved.interfaces.html">≪ 定義済みのインターフェイスとクラス</a></li>
+      <li style="float: right;"><a href="class.iterator.html">Iterator ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="reserved.interfaces.html">定義済みのインターフェイスとクラス</a></li>
+    <li>Traversable インターフェイス</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="class.traversable" class="reference">
+
+ <h1 class="title">Traversable インターフェイス</h1>
+ 
+
+ <div class="partintro"><p class="verinfo">(PHP 5 &gt;= 5.0.0)</p>
+
+
+  <div class="section" id="traversable.intro">
+   <h2 class="title">導入</h2>
+   <p class="para">
+    そのクラスの中身が <a href="control-structures.foreach.html" class="link">foreach</a> を使用してたどれるかどうかを検出するインターフェイスです。
+   </p>
+   <p class="para">
+    これは抽象インターフェイスであり、単体で実装することはできません。
+    <a href="class.iteratoraggregate.html" class="classname">IteratorAggregate</a> あるいは
+    <a href="class.iterator.html" class="classname">Iterator</a> を実装しなければなりません。
+   </p>
+   <blockquote class="note"><p><strong class="note">注意</strong>: 
+    <p class="para">
+     このインターフェイスを実装した内部クラス (組み込みクラス) は
+     <a href="control-structures.foreach.html" class="link">foreach</a> で使用することができます。
+     <a href="class.iteratoraggregate.html" class="classname">IteratorAggregate</a> や
+     <a href="class.iterator.html" class="classname">Iterator</a> を実装する必要はありません。
+    </p>
+   </p></blockquote>
+   <blockquote class="note"><p><strong class="note">注意</strong>: 
+    <p class="para">
+     これは内部エンジンのインターフェイスであり、PHP スクリプトないで実装することはできません。
+     そのかわりに <a href="class.iteratoraggregate.html" class="classname">IteratorAggregate</a> あるいは
+     <a href="class.iterator.html" class="classname">Iterator</a> を使用しなければなりません。
+     Traversable を継承したインターフェイスを実装するときは、
+     implements 句の中でそのインターフェイスより前に
+     <a href="class.iteratoraggregate.html" class="classname">IteratorAggregate</a> か
+     <a href="class.iterator.html" class="classname">Iterator</a> を指定しておきましょう。
+    </p>
+   </p></blockquote>
+  </div>
+
+
+  <div class="section" id="traversable.synopsis">
+   <h2 class="title">インターフェイス概要</h2>
+
+
+   <div class="classsynopsis">
+    <div class="ooclass"></div>
+
+
+    <div class="classsynopsisinfo">
+     <span class="ooclass">
+      <strong class="classname">Traversable</strong>
+     </span>
+     {</div>
+
+
+   }</div>
+
+
+   <p class="para">
+    このインターフェイスにはメソッドがありません。
+    traverse 可能なすべてのクラス用の基底インターフェイスとしてのみ存在しています。
+   </p>
+
+  </div>
+
+ </div>
+
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="114519""></a>
+  <div class="note">
+   <strong class="user">mathdegiovani at gmail dot com</strong>
+   <a href="#114519" class="date">03-Mar-2014 10:41</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note that instanceof Traversable does not work for stdclass objects, so if you are this check (as @kevinpeno) to decide whether you can iterate, it will fail for direct instances.<br />
+<br />
+In particular:<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+$obj </span><span class="keyword">= new </span><span class="default">stdclass</span><span class="keyword">();<br />
+</span><span class="default">$obj</span><span class="keyword">-&gt;</span><span class="default">prop </span><span class="keyword">= </span><span class="string">'hello'</span><span class="keyword">;<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$obj </span><span class="keyword">instanceof </span><span class="default">Traversable</span><span class="keyword">);<br />
+</span><span class="comment">//outputs bool(false)<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+My own solution is to check whether the object also descends from stdclass, but that also fails to catch some objects that are iterable.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="99195""></a>
+  <div class="note">
+   <strong class="user">kevinpeno at gmail dot com</strong>
+   <a href="#99195" class="date">02-Aug-2010 07:06</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+While you cannot implement this interface, you can use it in your checks to determine if something is usable in for each. Here is what I use if I'm expecting something that must be iterable via foreach.<br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">if( !</span><span class="default">is_array</span><span class="keyword">( </span><span class="default">$items </span><span class="keyword">) &amp;&amp; !</span><span class="default">$items </span><span class="keyword">instanceof </span><span class="default">Traversable </span><span class="keyword">)<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">//Throw exception here<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

@@ -1,0 +1,239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>gopher フォーマットのディレクトリエントリを連想配列に変換する</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="ref.net-gopher.html">≪ Gopher 関数</a></li>
+      <li style="float: right;"><a href="book.gupnp.html">Gupnp ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="ref.net-gopher.html">Gopher 関数</a></li>
+    <li>gopher フォーマットのディレクトリエントリを連想配列に変換する</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="function.gopher-parsedir" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">gopher_parsedir</h1>
+  <p class="verinfo">(PECL net_gopher &gt;= 0.1)</p><p class="refpurpose"><span class="refname">gopher_parsedir</span> &mdash; <span class="dc-title">gopher フォーマットのディレクトリエントリを連想配列に変換する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-function.gopher-parsedir-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">array</span> <span class="methodname"><strong>gopher_parsedir</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$dirent</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   <span class="function"><strong>gopher_parsedir()</strong></span> は、gopher
+   フォーマットされたディレクトリエントリを連想配列に変換します。
+  </p>
+  <p class="para">
+   gopher は、リクエストに対して <em>text/plain</em> 形式の
+   ドキュメントを返します。ディレクトリ（例えば / など）へのリクエストには
+   特別にエンコードされた一連の行を返し、その個々の行が 1 つのディレクトリ
+   エントリあるいは情報行を表します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.gopher-parsedir-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+<code class="parameter">dirent</code></dt>
+
+     <dd>
+
+      <p class="para">
+       ディレクトリエントリ。
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.gopher-parsedir-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   以下の要素からなる連想配列を返します。
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      <em>type</em> -
+      <em>GOPHER_XXX</em> 定数のいずれか。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <em>title</em> - リソースの名前。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <em>path</em> - リソースのパス。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <em>host</em> -
+      このドキュメント (あるいはディレクトリ) を保持するホストのドメイン名。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <em>port</em> -
+      <em>host</em> に接続するポート。
+     </span>
+    </li>
+   </ul>
+  </p>
+  <p class="para">
+   失敗した場合には、さらに <em>data</em>
+   というエントリがこの配列に追加され、そこにパースした行が含まれます。
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 examples" id="refsect1-function.gopher-parsedir-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-4448"> 
+    <p><strong>例1 <em>gopher://gopher.example.com/</em> からの出力を以下のように仮定する</strong></p>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+0All about my gopher site.               /allabout.txt               gopher.example.com    70
+9A picture of my cat.                    /pics/cat.png               gopher.example.com    70
+1A collection of my writings.            /stories                    gopher.example.com    70
+hThe HTTP version of this site.          URL:http://www.example.com  gopher.example.com    70
+1Mirror of this site in Spain.           /                           gopher.ejemplo.co.es  70
+iWelcome to my gopher site.                                          error.host            1
+iPlease select one of the options above                              error.host            1
+iSend complaints to /dev/null                                        error.host            1
+iLong live gopher!                                                   error.host            1
+</pre></div>
+    </div>
+   </div>
+  </p>
+  <p class="para">
+   上の例で、gopher.example.com のルートディレクトリには ID <em>0</em>
+   の<em>ドキュメント</em> が
+   <em>gopher://gopher.example.com:70/allabout.txt</em> にあります。
+   また、2 つのディレクトリ（それぞれ独自のファイル一覧を保持します）が
+   <em>gopher://gopher.exmaple.com:70/stories</em> および
+   <em>gopher://gopher.ejemplo.co.es:70/</em> にあります。
+   その他にバイナリファイル・HTTP URL へのリンク・そして情報の行があります。
+  </p>
+  <p class="para">
+   ディレクトリ一覧の各行を <span class="function"><strong>gopher_parsedir()</strong></span> に渡すと、
+   そのデータを連想配列形式にフォーマットします。
+  </p>
+  <p class="para">
+   <div class="example" id="example-4449">
+    <p><strong>例2 <span class="function"><strong>gopher_parsedir()</strong></span> の使用例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$directory&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">file</span><span style="color: #007700">(</span><span style="color: #DD0000">"gopher://gopher.example.com"</span><span style="color: #007700">);<br /><br />foreach(</span><span style="color: #0000BB">$directory&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$dirent</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">gopher_parsedir</span><span style="color: #007700">(</span><span style="color: #0000BB">$dirent</span><span style="color: #007700">));<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+Array (
+  [type] =&gt; 0
+  [title] =&gt; All about my gopher site.
+  [path] =&gt; /allabout.txt
+  [host] =&gt; gopher.example.com
+  [port] =&gt; 70
+)
+Array (
+  [type] =&gt; 9
+  [title] =&gt; A picture of my cat.
+  [path] =&gt; /pics/cat.png
+  [host] =&gt; gopher.example.com
+  [port] =&gt; 70
+)
+Array (
+  [type] =&gt; 1
+  [title] =&gt; A collection of my writings.
+  [path] =&gt; /stories
+  [host] =&gt; gopher.example.com
+  [port] =&gt; 70
+)
+Array (
+  [type] =&gt; 254
+  [title] =&gt; The HTTP version of this site.
+  [path] =&gt; URL:http://www.example.com
+  [host] =&gt; gopher.example.com
+  [port] =&gt; 70
+)
+Array (
+  [type] =&gt; 1
+  [title] =&gt; Mirror of this site in Spain.
+  [path] =&gt; /
+  [host] =&gt; gopher.ejemplo.co.es
+  [port] =&gt; 70
+)
+Array (
+  [type] =&gt; 255
+  [title] =&gt; Welcome to my gopher site.
+  [path] =&gt;
+  [host] =&gt; error.host
+  [port] =&gt; 1
+)
+Array (
+  [type] =&gt; 255
+  [title] =&gt; Please select one of the options above.
+  [path] =&gt;
+  [host] =&gt; error.host
+  [port] =&gt; 1
+)
+Array (
+  [type] =&gt; 255
+  [title] =&gt; Send complaints to /dev/null
+  [path] =&gt;
+  [host] =&gt; error.host
+  [port] =&gt; 1
+)
+Array (
+  [type] =&gt; 255
+  [title] =&gt; Long live gopher!
+  [path] =&gt;
+  [host] =&gt; error.host
+  [port] =&gt; 1
+)
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

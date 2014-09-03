@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>The MongoCommandCursor class</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="mongocursor.valid.html">≪ MongoCursor::valid</a></li>
+      <li style="float: right;"><a href="mongocommandcursor.batchsize.html">MongoCommandCursor::batchSize ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="mongo.core.html">コアクラス群</a></li>
+    <li>The MongoCommandCursor class</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="class.mongocommandcursor" class="reference">
+
+ <h1 class="title">The MongoCommandCursor class</h1>
+ 
+
+ <div class="partintro"><p class="verinfo">(PECL mongo &gt;=1.5.0)</p>
+
+  
+  <div class="section" id="mongocommandcursor.intro">
+   <h2 class="title">導入</h2>
+   <p class="para">
+    A command cursor is used to iterate through the results of a database
+    command. A command cursor is similar to a normal
+    <a href="class.mongocursor.html" class="classname">MongoCursor</a> except that you use it for iterating
+    through the result of a server command instead of a the result of a query.
+   </p>
+   <p class="para">
+    You don&#039;t generally create cursors using the 
+    <strong class="classname">MongoCommandCursor</strong> constructor, you get a new cursor by
+    calling <span class="function"><strong>MongoCollection::commandCursor()</strong></span>.
+   </p>
+   <p class="para">
+    Using a command cursor instead of
+    <span class="methodname"><a href="mongodb.command.html" class="methodname">MongoDB::command()</a></span> means that you can iterate over
+    a much larger resultset as the return of
+    <span class="methodname"><a href="mongodb.command.html" class="methodname">MongoDB::command()</a></span> is limited to the maximum
+    document size (currently 16MB).
+   </p>
+   <p class="para">
+    Note that the cursor does not &quot;contain&quot; the database command results, it
+    just manages them.  Thus, if you print a cursor (with, say,
+    <span class="function"><a href="function.var-dump.html" class="function">var_dump()</a></span> or <span class="function"><a href="function.print-r.html" class="function">print_r()</a></span>), you&#039;ll
+    just get the cursor object, not your documents.
+   </p>
+  </div>
+
+  <div class="section">
+   <h2 class="title">Cursor Stages</h2>
+   <p class="para">
+    A <strong class="classname">MongoCommandCursor</strong> has two &quot;life stages&quot;: pre-
+    and post- query. When a cursor is created, it has not yet contacted the
+    database, so it is in its pre-query state.  In this state, the client can
+    further specify what they want the query to do, including configuring the
+    batch size.
+   </p>
+   <p class="para">
+    When the client attempts to get a result (by calling
+    <span class="function"><a href="mongocommandcursor.next.html" class="function">MongoCommandCursor::next()</a></span>, directly or indirectly),
+    the cursor moves into the post-command stage.  At this point, the command
+    has been executed by the database and only its batch size can be
+    configured.
+   </p>
+   <p class="para">
+    <div class="example" id="mongocommandcursor.stages.adding-options">
+     <p><strong>例1 Adding options to <strong class="classname">MongoCommandCursor</strong></strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$cursor&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoCommandCursor</span><span style="color: #007700">(...);<br /><br /></span><span style="color: #FF8000">//&nbsp;database&nbsp;has&nbsp;not&nbsp;yet&nbsp;been&nbsp;queried,&nbsp;so&nbsp;more&nbsp;options&nbsp;can&nbsp;be&nbsp;added<br /></span><span style="color: #0000BB">$cursor&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$cursor</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">batchSize</span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">4&nbsp;</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$cursor</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getNext</span><span style="color: #007700">());<br /></span><span style="color: #FF8000">//&nbsp;now&nbsp;database&nbsp;has&nbsp;been&nbsp;queried&nbsp;and&nbsp;more&nbsp;options&nbsp;cannot&nbsp;be&nbsp;added<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+  </div>
+  
+
+  <div class="section" id="mongocommandcursor.synopsis">
+   <h2 class="title">クラス概要</h2>
+
+   
+   <div class="classsynopsis">
+    <div class="ooclass"></div>
+
+    
+    <div class="classsynopsisinfo">
+     <span class="ooclass">
+      <strong class="classname">MongoCommandCursor</strong>
+     </span>
+     <span class="oointerface">implements 
+      <span class="interfacename"><a href="class.iterator.html" class="interfacename">Iterator</a></span>
+     </span>
+     <span class="oointerface">, 
+      <span class="interfacename"><strong class="interfacename">MongoCursorInterface</strong></span>
+     </span>
+     {</div>
+    
+    
+    <div class="classsynopsisinfo classsynopsisinfo_comment">/* メソッド */</div>
+    <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">MongoCommandCursor</span> <span class="methodname"><a href="mongocommandcursor.batchsize.html" class="methodname">batchSize</a></span>
+    ( <span class="methodparam"><span class="type">int</span> <code class="parameter">$batchSize</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="methodname"><a href="mongocommandcursor.construct.html" class="methodname">__construct</a></span>
+    ( <span class="methodparam"><span class="type"><a href="class.mongoclient.html" class="type MongoClient">MongoClient</a></span> <code class="parameter">$connection</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$ns</code></span>
+   [, <span class="methodparam"><span class="type">array</span> <code class="parameter">$command</code><span class="initializer"> = array()</span></span>
+  ] )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="methodname"><a href="mongocommandcursor.createfromdocument.html" class="methodname">createFromDocument</a></span>
+    ( <span class="methodparam"><span class="type"><a href="class.mongoclient.html" class="type MongoClient">MongoClient</a></span> <code class="parameter">$connection</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$hash</code></span>
+   , <span class="methodparam"><span class="type">array</span> <code class="parameter">$document</code></span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">array</span> <span class="methodname"><a href="mongocommandcursor.current.html" class="methodname">current</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><a href="mongocommandcursor.dead.html" class="methodname">dead</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">array</span> <span class="methodname"><a href="mongocommandcursor.info.html" class="methodname">info</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">string</span> <span class="methodname"><a href="mongocommandcursor.key.html" class="methodname">key</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">void</span> <span class="methodname"><a href="mongocommandcursor.next.html" class="methodname">next</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">array</span> <span class="methodname"><a href="mongocommandcursor.rewind.html" class="methodname">rewind</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+<div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><a href="mongocommandcursor.valid.html" class="methodname">valid</a></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+   }</div>
+   
+
+  </div>
+
+  <div class="section">
+   <h2 class="title">参考</h2>
+   <ul class="simplelist">
+    <li class="member"><span class="methodname"><a href="mongodb.command.html" class="methodname">MongoDb::command()</a></span></li>
+    <li class="member"><span class="methodname"><strong>MongoCollection::commandCursor()</strong></span></li>
+   </ul>
+  </div>
+
+ </div>
+
+ 
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+<h2>目次</h2><ul class="chunklist chunklist_reference"><li><a href="mongocommandcursor.batchsize.html">MongoCommandCursor::batchSize</a> &mdash; Limits the number of elements returned in one batch.</li><li><a href="mongocommandcursor.construct.html">MongoCommandCursor::__construct</a> &mdash; Create a new command cursor</li><li><a href="mongocommandcursor.createfromdocument.html">MongoCommandCursor::createFromDocument</a> &mdash; Create a new command cursor from an existing cursor document</li><li><a href="mongocommandcursor.current.html">MongoCommandCursor::current</a> &mdash; Returns the current element</li><li><a href="mongocommandcursor.dead.html">MongoCommandCursor::dead</a> &mdash; Checks if there are documents that have not been sent yet from the database for this cursor</li><li><a href="mongocommandcursor.info.html">MongoCommandCursor::info</a> &mdash; Gets the query, fields, limit, and skip for this cursor</li><li><a href="mongocommandcursor.key.html">MongoCommandCursor::key</a> &mdash; Returns the current result's _id</li><li><a href="mongocommandcursor.next.html">MongoCommandCursor::next</a> &mdash; Advances the cursor to the next result</li><li><a href="mongocommandcursor.rewind.html">MongoCommandCursor::rewind</a> &mdash; Executes the command and resets the cursor to the start of the result set</li><li><a href="mongocommandcursor.valid.html">MongoCommandCursor::valid</a> &mdash; Fetches a new result item, and returns whether it could</li></ul>
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

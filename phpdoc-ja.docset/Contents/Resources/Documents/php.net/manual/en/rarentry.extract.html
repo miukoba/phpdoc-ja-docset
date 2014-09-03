@@ -1,0 +1,234 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>アーカイブのエントリを展開する</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="class.rarentry.html">≪ RarEntry</a></li>
+      <li style="float: right;"><a href="rarentry.getattr.html">RarEntry::getAttr ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="class.rarentry.html">RarEntry</a></li>
+    <li>アーカイブのエントリを展開する</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="rarentry.extract" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">RarEntry::extract</h1>
+  <p class="verinfo">(PECL rar &gt;= 0.1)</p><p class="refpurpose"><span class="refname">RarEntry::extract</span> &mdash; <span class="dc-title">アーカイブのエントリを展開する</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-rarentry.extract-description">
+  <h3 class="title">説明</h3>
+   <div class="methodsynopsis dc-description">
+    <span class="modifier">public</span> <span class="type">bool</span> <span class="methodname"><strong>RarEntry::extract</strong></span>
+     ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$dir</code></span>
+    [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$filepath</code><span class="initializer"> = &quot;&quot;</span></span>
+    [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$password</code><span class="initializer"> = NULL</span></span>
+    [, <span class="methodparam"><span class="type">bool</span> <code class="parameter">$extended_data</code><span class="initializer"> = false</span></span>
+   ]]] )</div>
+
+  <p class="para rdfs-comment">
+   <span class="methodname"><strong>RarEntry::extract()</strong></span> は、エントリのデータを展開します。
+   二番目の引数が指定されていなければ、
+   指定した <code class="parameter">dir</code> にエントリの名前と同名の新しいファイルを作成します。
+   詳細は以下を参照ください。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-rarentry.extract-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+<code class="parameter">dir</code></dt>
+
+     <dd>
+
+      <p class="para">
+       ファイルを展開するディレクトリへのパス。
+       このパラメータが考慮されるのは <code class="parameter">filepath</code>
+       が指定されていないときだけです。両方のパラメータが空の場合は、
+       カレントディレクトリへの展開を試みます。
+      </p>
+     </dd>
+
+    
+    
+    
+     <dt>
+<code class="parameter">filepath</code></dt>
+
+     <dd>
+
+      <p class="para">
+       取り出すファイルのディレクトリとファイル名を含むパス (相対パスあるいは絶対パス)。
+       このパラメータは、<code class="parameter">dir</code>
+       の内容と元のファイル名を両方とも上書きします。
+      </p>
+     </dd>
+
+    
+    
+    
+     <dt>
+<code class="parameter">password</code></dt>
+
+     <dd>
+
+      <p class="para">
+       このエントリの暗号化に使うパスワード。
+       エントリが暗号化されていない場合は、この値は使われずに無視されます。
+       このパラメータが省略されていてエントリが暗号化されていた場合は、もし
+       <span class="function"><a href="rararchive.open.html" class="function">rar_open()</a></span> でパスワードを指定していればそれを使います。
+       このパラメータや <span class="function"><a href="rararchive.open.html" class="function">rar_open()</a></span> で指定したパスワードが間違っていたときは、
+       CRC チェックが失敗してこのメソッドが失敗し、<strong><code>FALSE</code></strong> を返します。
+       パスワードが要求されているときにパスワードを指定していなければ、
+       このメソッドは失敗して <strong><code>FALSE</code></strong> を返します。
+       エントリが暗号化されているかどうかを知るには <span class="methodname"><a href="rarentry.isencrypted.html" class="methodname">RarEntry::isEncrypted()</a></span>
+       を使います。
+      </p>
+     </dd>
+
+    
+
+   
+    <dt>
+<code class="parameter">extended_data</code></dt>
+
+    <dd>
+
+     <p class="para">
+       <strong><code>TRUE</code></strong> にすると、NTFS の ACL や Unix のオーナー情報といった拡張情報が
+       アーカイブに設定されていれば、取り出したファイルにもそれを設定します。
+     </p>
+    </dd>
+
+   
+   </dl>
+
+  </p>
+  <div class="warning"><strong class="warning">警告</strong>
+      <p class="para">バージョン 2.0.0 より前は、この関数では相対パスを正しく扱えません。
+      回避策として <span class="function"><a href="function.realpath.html" class="function">realpath()</a></span> を使いましょう。</p>
+  </div>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-rarentry.extract-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 changelog" id="refsect1-rarentry.extract-changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>3.0.0</td>
+       <td>
+        <code class="parameter">extended_data</code> が追加されました。
+       </td>
+      </tr>
+
+      <tr>
+       <td>3.0.0</td>
+       <td>
+        エントリ名が繰り返される RAR アーカイブも対応するようになりました。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-rarentry.extract-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-797">
+    <p><strong>例1 <span class="methodname"><strong>RarEntry::extract()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$rar_file&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">rar_open</span><span style="color: #007700">(</span><span style="color: #DD0000">'example.rar'</span><span style="color: #007700">)&nbsp;or&nbsp;die(</span><span style="color: #DD0000">"Rar&nbsp;アーカイブのオープンに失敗しました"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$entry&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">rar_entry_get</span><span style="color: #007700">(</span><span style="color: #0000BB">$rar_file</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'Dir/file.txt'</span><span style="color: #007700">)&nbsp;or&nbsp;die(</span><span style="color: #DD0000">"そのようなエントリは見つかりません"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$entry</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">extract</span><span style="color: #007700">(</span><span style="color: #DD0000">'/dir/to'</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;/dir/to/Dir/file.txt&nbsp;を作成します<br /></span><span style="color: #0000BB">$entry</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">extract</span><span style="color: #007700">(</span><span style="color: #0000BB">false</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'/dir/to/new_name.txt'</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;/dir/to/new_name.txt&nbsp;を作成します<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   <div class="example" id="example-798">
+    <p><strong>例2 アーカイブ内のすべてのファイルを展開する方法</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">/*&nbsp;erix&nbsp;こと&nbsp;Erik&nbsp;Jenssen&nbsp;によるサンプルです&nbsp;*/<br /><br /></span><span style="color: #0000BB">$filename&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"foobar.rar"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$filepath&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"/home/foo/bar/"</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$rar_file&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">rar_open</span><span style="color: #007700">(</span><span style="color: #0000BB">$filepath</span><span style="color: #007700">.</span><span style="color: #0000BB">$filename</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$list&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">rar_list</span><span style="color: #007700">(</span><span style="color: #0000BB">$rar_file</span><span style="color: #007700">);<br />foreach(</span><span style="color: #0000BB">$list&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$file</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$entry&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">rar_entry_get</span><span style="color: #007700">(</span><span style="color: #0000BB">$rar_file</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$file</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$entry</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">extract</span><span style="color: #007700">(</span><span style="color: #DD0000">"."</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;カレントディレクトリに展開します<br /></span><span style="color: #007700">}<br /></span><span style="color: #0000BB">rar_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$rar_file</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 seealso" id="refsect1-rarentry.extract-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><span class="methodname"><a href="rarentry.getstream.html" class="methodname" rel="rdfs-seeAlso">RarEntry::getStream()</a> - このエントリのファイルハンドラを取得する</span></li>
+    <li class="member"><a href="wrappers.rar.html" class="link"><em>rar://</em> wrapper</a></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="112232""></a>
+  <div class="note">
+   <strong class="user">Anonymous</strong>
+   <a href="#112232" class="date">21-May-2013 02:29</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If the entry to extract is a directory as per RarEntry::isDirectory(), this method does not seem to extract the entries below that directory as one might expect from using the command-line RAR or WinRAR.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

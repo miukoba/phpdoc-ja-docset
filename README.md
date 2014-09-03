@@ -9,6 +9,13 @@ PHP マニュアル (http://www.php.net/manual/ja/) を Dash (http://kapeli.com/
 
 このリポジトリをcloneするか、「Download ZIP」からダウンロードしたファイルを解凍した後、phpdoc-ja.docset を Dash で開いて下さい。
 
+新しいバージョンへ更新する場合は、一度Dashから取り除いて再度追加して下さい。
+
+
+古いバージョンのドキュメントはtagからダウンロードできます。
+
+例: https://github.com/miukoba/phpdoc-ja-docset/tree/PHP-5.5
+
 
 # この Docsets の作り方
 

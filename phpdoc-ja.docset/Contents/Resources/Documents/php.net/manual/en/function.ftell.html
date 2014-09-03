@@ -1,0 +1,247 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>ファイルの読み書き用ポインタの現在位置を返す</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="function.fstat.html">≪ fstat</a></li>
+      <li style="float: right;"><a href="function.ftruncate.html">ftruncate ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="ref.filesystem.html">ファイルシステム 関数</a></li>
+    <li>ファイルの読み書き用ポインタの現在位置を返す</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="function.ftell" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ftell</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose"><span class="refname">ftell</span> &mdash; <span class="dc-title">ファイルの読み書き用ポインタの現在位置を返す</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.ftell-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">int</span> <span class="methodname"><strong>ftell</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$handle</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   <code class="parameter">handle</code> ファイルの読み書き用ポインタの現在位置を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.ftell-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+<code class="parameter">handle</code></dt>
+
+     <dd>
+
+      <p class="para">
+       ファイルポインタは有効なものでなければならず、また
+       <span class="function"><a href="function.fopen.html" class="function">fopen()</a></span>、<span class="function"><a href="function.popen.html" class="function">popen()</a></span>
+       で正常にオープンされたファイルを指している必要があります。
+       <span class="function"><strong>ftell()</strong></span> は、(&quot;a&quot; フラグ付きでオープンされた)
+       追加のみ可能なストリームに対する結果も未定義です。
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.ftell-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <code class="parameter">handle</code> が示すファイルポインタの位置、
+   すなわちファイル・ストリーム上のオフセットを整数値で返します。
+  </p>
+  <p class="para">
+   エラーが起こった場合 <strong><code>FALSE</code></strong> を返します。
+  </p>
+  <blockquote class="note"><p><strong class="note">注意</strong>: <span class="simpara">
+    PHP の数値型は符号付整数であり、
+    多くのプラットフォームでは 32 ビットの整数を取るため、
+    ファイルシステム関数の中には
+    2GB より大きなファイルについては期待とは違う値を返すものがあります。
+   </span></p></blockquote>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.ftell-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-2487">
+    <p><strong>例1 <span class="function"><strong>ftell()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">//&nbsp;ファイルをオープンし、データを読み込む<br /></span><span style="color: #0000BB">$fp&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fopen</span><span style="color: #007700">(</span><span style="color: #DD0000">"/etc/passwd"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"r"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">fgets</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">12</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;どこにいるんだ&nbsp;?<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">ftell</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;11<br /><br /></span><span style="color: #0000BB">fclose</span><span style="color: #007700">(</span><span style="color: #0000BB">$fp</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.ftell-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><span class="function"><a href="function.fopen.html" class="function" rel="rdfs-seeAlso">fopen()</a> - ファイルまたは URL をオープンする</span></li>
+    <li class="member"><span class="function"><a href="function.popen.html" class="function" rel="rdfs-seeAlso">popen()</a> - プロセスへのファイルポインタをオープンする</span></li>
+    <li class="member"><span class="function"><a href="function.fseek.html" class="function" rel="rdfs-seeAlso">fseek()</a> - ファイルポインタを移動する</span></li>
+    <li class="member"><span class="function"><a href="function.rewind.html" class="function" rel="rdfs-seeAlso">rewind()</a> - ファイルポインタの位置を先頭に戻す</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="93391""></a>
+  <div class="note">
+   <strong class="user">burninleo at gmx dot net</strong>
+   <a href="#93391" class="date">07-Sep-2009 10:38</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+When opening a file to append via fopen('file','ab') the file pointer should be at the end of the file. However ftell() returns int(0) even if the file is not empty and even after writing some text into the file.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="73526""></a>
+  <div class="note">
+   <strong class="user">missilesilo at gmail dot com</strong>
+   <a href="#73526" class="date">28-Feb-2007 12:02</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+In response to php at michielvleugel dot com:<br />
+<br />
+This does not seem to be the case with PHP 5.2.0 and FreeBSD 5.4.<br />
+<br />
+#!/usr/local/bin/php<br />
+<span class="default">&lt;?php<br />
+$tell </span><span class="keyword">= </span><span class="default">ftell</span><span class="keyword">(</span><span class="default">STDIN</span><span class="keyword">);<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$tell</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+root@localhost:/home/david# echo Hello World | ./test.php<br />
+int(0)<br />
+root@localhost:/home/david# ./test.php<br />
+int(6629927)<br />
+<br />
+When something is piped to the script, it returns an integer value of 0, however, it also returns an integer when nothing is piped to the script.<br />
+<br />
+The code should&nbsp; be modified to this:<br />
+<br />
+#!/usr/local/bin/php<br />
+<span class="default">&lt;?php<br />
+$tell </span><span class="keyword">= </span><span class="default">ftell</span><span class="keyword">(</span><span class="default">STDIN</span><span class="keyword">);<br />
+<br />
+if (</span><span class="default">$tell </span><span class="keyword">=== </span><span class="default">0</span><span class="keyword">)<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="string">"Something was piped: " </span><span class="keyword">. </span><span class="default">fread</span><span class="keyword">(</span><span class="default">STDIN</span><span class="keyword">,</span><span class="default">256</span><span class="keyword">) . </span><span class="string">"\n"</span><span class="keyword">;<br />
+else<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="string">"Nothing was piped\n"</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+And the result is:<br />
+<br />
+root@localhost:/home/david# echo Hello World | ./test.php<br />
+Something was piped: Hello World<br />
+root@localhost:/home/david# ./test.php<br />
+Nothing was piped</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="58026""></a>
+  <div class="note">
+   <strong class="user">mbirth at webwriters dot de</strong>
+   <a href="#58026" class="date">21-Oct-2005 08:09</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Attention! If you open a file with the "text"-modifier (e.g. 'rt') and the file contains \r\n as line-endings, ftell() returns the position as if there were only \n as line-endings.<br />
+<br />
+Example:<br />
+If the first line only contains 1 char followed by \r\n, the start of the second line should be position 3. (1char + \r + \n = 3 bytes) But ftell() will return 2 - ignoring one byte. If you call ftell() in line 3, the value will differ from the real value by 2 bytes. The error gets greater with every line.<br />
+<br />
+(Watched this behavior in PHP 5.0.4 for Windows.)<br />
+<br />
+BUT: fseek() works as expected - using the true byte values.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="54033""></a>
+  <div class="note">
+   <strong class="user">mweierophinney at gmail dot com</strong>
+   <a href="#54033" class="date">21-Jun-2005 07:00</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Actually, ftell() gives more than an undefined result for append only streams; it gives the offset from the end of the file as defined before any data was appended. So if you open a file that had 3017 characters, and append 41 characters, and then execute ftell(), the value returned will be 41.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="53427""></a>
+  <div class="note">
+   <strong class="user">php at michielvleugel dot com</strong>
+   <a href="#53427" class="date">01-Jun-2005 12:19</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+When trying to determine whether or not something was piped into a command line script, it is not smart to do a fgets(STDIN), because it will wait indefenitely if nothing is piped. Instead, I found ftell on STDIN to be very handy: it will return an integer of zero when something was piped, and nothing if nothing was piped to the script.<br />
+<br />
+#!/usr/bin/php4 -q<br />
+&lt;?<br />
+#following will hang if nothing is piped:<br />
+#$sometext = fgets(STDIN, 256)<br />
+<br />
+$tell = ftell(STDIN);<br />
+<br />
+if (is_integer($tell)==true) <br />
+&nbsp; {echo "Something was piped: ".fread(STDIN,256)."\n";}<br />
+else <br />
+&nbsp; {echo "Nothing was piped\n";}<br />
+<br />
+?&gt;</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>結果エントリから全ての値を得る</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="function.ldap-get-values-len.html">≪ ldap_get_values_len</a></li>
+      <li style="float: right;"><a href="function.ldap-list.html">ldap_list ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="ref.ldap.html">LDAP 関数</a></li>
+    <li>結果エントリから全ての値を得る</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="function.ldap-get-values" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ldap_get_values</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose"><span class="refname">ldap_get_values</span> &mdash; <span class="dc-title">結果エントリから全ての値を得る</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.ldap-get-values-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">array</span> <span class="methodname"><strong>ldap_get_values</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$link_identifier</code></span>
+   , <span class="methodparam"><span class="type">resource</span> <code class="parameter">$result_entry_identifier</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$attribute</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   結果内のエントリ属性の、すべての値を読み込みます。
+  </p>
+  <p class="para">
+   この関数のコールは、<code class="parameter">result_entry_identifier</code>
+   を必要とします。このため、事前に LDAP の検索用関数のコールと個々の
+   エントリ取得用関数のコールを行っておく必要があります。
+  </p>
+  <p class="para">
+   アプリケーションでは、(&quot;surname&quot; または &quot;mail&quot; のような)特定の属性
+   を探すためにその属性をコードに埋め込んで置くか、さもなくば、指定した
+   エントリに関して存在する属性を調べるために
+   <span class="function"><a href="function.ldap-get-attributes.html" class="function">ldap_get_attributes()</a></span> をコールする必要があります。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.ldap-get-values-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+<code class="parameter">link_identifier</code></dt>
+
+     <dd>
+
+      <p class="para">
+       <span class="function"><a href="function.ldap-connect.html" class="function">ldap_connect()</a></span> が返す LDAP リンク ID。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">result_entry_identifier</code></dt>
+
+     <dd>
+
+      <p class="para">
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">attribute</code></dt>
+
+     <dd>
+
+      <p class="para">
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.ldap-get-values-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合、指定した属性に関する値を配列を返します。エラーの場合は
+   <strong><code>FALSE</code></strong> を返します。値の数を調べるには、結果の配列の
+   &quot;count&quot; という要素を確認します。個々の値にアクセスするには、
+   整数値のインデックスを指定して配列にアクセスします。
+   最初のインデックスは 0 となります。
+  </p>
+  <p class="para">
+   LDAP では、ある属性に関して複数のエントリを持つことが可能です。
+   このため、たとえば一人の人間のディレクトリエントリに多数の
+   電子メールアドレスがあったとしても、それらをすべて
+   &quot;mail&quot; という属性で管理することができます。
+   <div class="informalexample">
+    <pre class="literallayout">
+    return_value[&quot;count&quot;] = 属性の値の数
+    return_value[0] = 属性の最初の値
+    return_value[i] = 属性の i 番目の値
+    </pre>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.ldap-get-values-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-4505">
+    <p><strong>例1 
+     あるディレクトリエントリの全ての &quot;mail&quot; 属性の一覧を表示する
+    </strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;$ds&nbsp;はディレクトリサーバーの有効なリンク&nbsp;ID<br /><br />//&nbsp;$sr&nbsp;は事前の&nbsp;LDAP&nbsp;検索コールのどれかから返された有効な検索結果<br /><br />//&nbsp;$entry&nbsp;はディレクトリエントリを返すコールのどれかから返された有効な<br />//&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;エントリ&nbsp;ID<br /><br /></span><span style="color: #0000BB">$values&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ldap_get_values</span><span style="color: #007700">(</span><span style="color: #0000BB">$ds</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$entry</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"mail"</span><span style="color: #007700">);<br /><br />echo&nbsp;</span><span style="color: #0000BB">$values</span><span style="color: #007700">[</span><span style="color: #DD0000">"count"</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"&nbsp;email&nbsp;addresses&nbsp;for&nbsp;this&nbsp;entry.&lt;br&nbsp;/&gt;"</span><span style="color: #007700">;<br /><br />for&nbsp;(</span><span style="color: #0000BB">$i</span><span style="color: #007700">=</span><span style="color: #0000BB">0</span><span style="color: #007700">;&nbsp;</span><span style="color: #0000BB">$i&nbsp;</span><span style="color: #007700">&lt;&nbsp;</span><span style="color: #0000BB">$values</span><span style="color: #007700">[</span><span style="color: #DD0000">"count"</span><span style="color: #007700">];&nbsp;</span><span style="color: #0000BB">$i</span><span style="color: #007700">++)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$values</span><span style="color: #007700">[</span><span style="color: #0000BB">$i</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"&lt;br&nbsp;/&gt;"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.ldap-get-values-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><span class="function"><a href="function.ldap-get-values-len.html" class="function" rel="rdfs-seeAlso">ldap_get_values_len()</a> - 結果エントリから全てのバイナリ値を得る</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="30667""></a>
+  <div class="note">
+   <strong class="user">viper_sb at IGETTOMUCHSPAMhotmail dot com</strong>
+   <a href="#30667" class="date">25-Mar-2003 03:24</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Well this took me a while to find the problem, so I'm posting in case someone else runs in to this.<br />
+<br />
+$sr = ldap_search($ds, "cn=me", "(objectclass=*)");<br />
+$entry = ldap_first_entry($ds, $sr);<br />
+do {<br />
+&nbsp; // do other stuff<br />
+&nbsp; $sr = "something else now";<br />
+&nbsp; $values = ldap_get_values($ds, $entry, "attirib1");<br />
+&nbsp; // do other stuff<br />
+} while ($entry = ldap_next_entry($ds, $entry));<br />
+<br />
+If you change the search resource $sr to something else even though it's not used again it will kill the page it'll be a blank page and if you view the code you'll get different things depending on something no idea what.<br />
+<br />
+This kepted happening I had forgotten I had used $sr so I was using it again and it would just not show the page whenever I used ldap_get_values, if this is a feature it would be nice to know. I haven't seen it happen with other functions.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="13553""></a>
+  <div class="note">
+   <strong class="user">software at inebria dot com</strong>
+   <a href="#13553" class="date">21-Jun-2001 07:34</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+It wasn't immediately obvious to me that the ldap_get_values function does not work with binary data - only strings.&nbsp; If you fetch binary data with ldap_get_values you don't get a warning - just some trash.&nbsp; For binary data you have to use ldap_get_values_len.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>レプリカセット</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="mongo.connecting.auth.html">≪ 認証</a></li>
+      <li style="float: right;"><a href="mongo.connecting.mongos.html">シャーディング ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="mongo.connecting.html">接続</a></li>
+    <li>レプリカセット</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="mongo.connecting.rs" class="section">
+  <h2 class="title">レプリカセット</h2>
+  <p class="para">
+   レプリカセットに接続するには、セットに属するサーバーをひとつ以上指定して、
+   さらに <em>replicaSet</em> オプションを使います。
+   複数のサーバーを指定するときには、カンマで区切ります。
+  </p>
+  <div class="example" id="mongo.connecting.rs-example">
+   <p><strong>例1 レプリカセットのシードリスト</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;複数のサーバーをシードリストとして使います&nbsp;(推奨)<br /></span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #DD0000">"mongodb://rs1.example.com:27017,rs2.example.com:27017/?replicaSet=myReplSetName"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;単一のサーバーをシードリストとして使います<br /></span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #DD0000">"mongodb://rs1.example.com:27017"</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #DD0000">"replicaSet"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"myReplSetName"</span><span style="color: #007700">));<br /><br /></span><span style="color: #FF8000">//&nbsp;複数のサーバーをシードリストとして使います<br /></span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #DD0000">"mongodb://rs1.example.com:27017,rs2.example.com:27017"</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #DD0000">"replicaSet"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"myReplSetName"</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+  <p class="para">
+   PHP ドライバは、指定したサーバー群に問い合わせてどれがプライマリなのかを調べます。
+   リストにあげたサーバーのうち少なくともひとつに接続でき、
+   プライマリが見つかってさえいれば接続が成功したとみなされます。
+   どのサーバーにも接続できない、あるいはプライマリが見つからないといった場合は
+   <a href="class.mongoconnectionexception.html" class="classname">MongoConnectionException</a> がスローされます。
+  </p>
+  <div class="tip"><strong class="tip">ヒント</strong>
+   <p class="para">
+    レプリカセットのシードリストは、常に複数のメンバーに適用しなければいけません。
+    高可用性を確保するには、データセンターごとに少なくとも一つシードを用意すべきです。
+   </p>
+  </div>
+  <div class="warning"><strong class="warning">警告</strong>
+   <p class="para">
+    ここで指定したホスト名は、レプリカセットの設定で指定した名前と
+    <em class="emphasis">必ず</em> 一致しなければいけません。
+    ドライバは、レプリカセットの設定で指定した名前を使って内部マッピングをするからです。
+    設定したホスト名ではなく IP アドレスなどを指定すると、
+    ドライバはホスト名に対する接続とその IP アドレスに対する接続を両方維持し続けます。
+   </p>
+  </div>
+  <div class="warning"><strong class="warning">警告</strong>
+   <p class="para">
+    異なるレプリカセットに同じ名前で接続することは<em class="emphasis">できません</em>。
+    これは単一のスクリプト内だけの話ではないので、個々のレプリカセットにはそれぞれ別の名前をつけておくようにしましょう。
+    これはつまり、次のようなことは<em class="emphasis">できない</em>ということです。
+   </p>
+   <div class="example" id="mongo.connecting.rs-example-wrong-replset">
+    <p><strong>例2 レプリカセット名の重複</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #DD0000">"mongodb://devserver1,devserver2,devserver3/?replicaSet=repset"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #DD0000">"mongodb://prodserver1,prodserver2,prodserver3/?replicaSet=repset"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   <p class="para">
+    それぞれ、別の名前をつかる必要があります。
+   </p>
+   <div class="example" id="mongo.connecting.rs-example-correct-replset">
+    <p><strong>例3 異なるレプリカセットの正しい使いかた</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #DD0000">"mongodb://devserver1,devserver2,devserver3/?replicaSet=devset"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">(</span><span style="color: #DD0000">"mongodb://prodserver1,prodserver2,prodserver3/?replicaSet=prodset"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </div>
+  <p class="para">
+   プライマリが使えなくなったときに、セカンダリがプライマリになるには数秒かかります。
+   その間は、この接続では一切のデータベース操作ができなくなります
+   (セカンダリに接続して読み込みを行うことは可能です)。
+   したがって、この間
+   (<a href="http://docs.mongodb.org/manual/faq/replica-sets/#how-long-does-replica-set-failover-take" class="link external" title="Link : http://docs.mongodb.org/manual/faq/replica-sets/#how-long-does-replica-set-failover-take">&raquo;&nbsp;20-60 秒</a>)
+   に何らかの読み書き操作をすると例外が発生します。
+   セカンダリへの接続は可能で、読み込みはできます。
+  </p>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    デフォルトの <a href="mongo.readpreferences.html" class="link">優先読み込み</a>
+    では、プライマリからだけ読み込みます。サーバーを選択するときにプライマリが見つからなければ、
+    その読み込みは失敗します。
+   </p>
+   <p class="para">
+    読み込みについて高可用性が要求されるアプリケーションでは、優先読み込み設定を
+    <strong><code>MongoClient::RP_PRIMARY_PREFERRED</code></strong> にしておくことをおすすめします。
+    これは、プライマリが使えない場合にだけセカンダリからの読み込みを実行する設定です。
+   </p>
+  </p></blockquote>
+  <p class="para">
+   新しいプライマリが選ばれると、読み込みや書き込みの操作時にドライバが新しいプライマリを検出できるようになります。
+   そして、ドライバがデータベース接続を切り替えて通常の操作を続行できるようになります。
+  </p>
+  <p class="para">
+   セカンダリの health や state のチェックは 5 秒おきに行うか
+   (<a href="mongo.configuration.html#ini.mongo.ping-interval" class="link">mongo.ping_interval</a>
+   で変更可能)、あるいは 5 秒以上経過した後の次の操作のときに行います。
+   ドライバからサーバーに到達できない問題が発生したときにも設定を再チェックします。
+  </p>
+  <p class="para">
+   レプリカセットのフェイルオーバーは 60 秒おきにチェックします
+   (<a href="mongo.configuration.html#ini.mongo.is-master-interval" class="link">mongo.is_master_interval</a>
+   で変更可能)。また、確認付き書き込みを利用している際に書き込みに失敗したときにもフェイルオーバーします。
+  </p>
+
+  <div class="caution"><strong class="caution">警告</strong>
+   <p class="para">
+    セカンダリのデータはプライマリに比べて古くなっている可能性があります。
+    <strong><code>MongoClient::RP_PRIMARY</code></strong> 以外の優先読み込みを選ぶ場合は、
+    最新ではないデータでもアプリケーション側で対応できるようにしておかないといけません。
+   </p>
+  </div>
+
+  <p class="para">
+   レプリカセットについての詳細は、
+   <a href="http://docs.mongodb.org/manual/replication/" class="link external" title="Link : http://docs.mongodb.org/manual/replication/">&raquo;&nbsp;コアドキュメント</a>
+   を参照ください。
+  </p>
+
+  <div class="simplesect">
+   <h3 class="title">参考</h3>
+   <ul class="simplelist">
+    <li class="member"><a href="mongo.readpreferences.html" class="xref">優先読み込み</a></li>
+    <li class="member"><a href="mongo.writeconcerns.html" class="xref">書き込み確認</a></li>
+   </ul>
+  </div>
+
+  <div class="simplesect">
+   <h3 class="title">変更履歴</h3>
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>1.0.9</td>
+       <td>
+        レプリカセットへの接続と自動フェイルオーバーに対応しました。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </div>
+
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="110873""></a>
+  <div class="note">
+   <strong class="user">wpigott at nospam dot example dot com</strong>
+   <a href="#110873" class="date">18-Dec-2012 08:46</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+When using the mongodb connection string on a replica set, make sure you DO NOT PUT A SPACE between the servers.<br />
+<br />
+IE. mongodb://db1.example.com:27017, db2.example.com:27017 will throw an error, but mongodb://db1.example.com:27017,db2.example.com:27017 will work correctly.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

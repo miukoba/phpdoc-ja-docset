@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>EvEmbed オブジェクトを作る</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="class.evembed.html">≪ EvEmbed</a></li>
+      <li style="float: right;"><a href="evembed.createstopped.html">EvEmbed::createStopped ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="class.evembed.html">EvEmbed</a></li>
+    <li>EvEmbed オブジェクトを作る</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="evembed.construct" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">EvEmbed::__construct</h1>
+  <p class="verinfo">(PECL ev &gt;= 0.2.0)</p><p class="refpurpose"><span class="refname">EvEmbed::__construct</span> &mdash; <span class="dc-title">EvEmbed オブジェクトを作る</span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-evembed.construct-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span>
+   <span class="methodname"><strong>EvEmbed::__construct</strong></span>
+    ( <span class="methodparam">
+    <span class="type">object</span>
+     <code class="parameter">$other</code>
+   </span>
+   [, <span class="methodparam">
+    <span class="type"><a href="language.types.callable.html" class="type callable">callable</a></span>
+     <code class="parameter">$callback</code>
+   </span>
+   [, <span class="methodparam">
+    <span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span>
+     <code class="parameter">$data</code>
+   </span>
+   [, <span class="methodparam">
+    <span class="type">int</span>
+     <code class="parameter">$priority</code>
+   </span>
+  ]]] )</div>
+
+  <p class="para rdfs-comment">
+   これは高度なウォッチャー型で、あるイベントループを別のイベントループに埋め込むことができます。
+   現在は、埋め込みループに対応しているのは IO イベントだけです。
+   他の型のウォッチャーを使うと、処理が遅延したり不正確な動きになったりする可能性があるので、
+   使ってはいけません。
+  </p>
+  <p class="para">
+   詳細は、
+   <a href="http://pod.tst.eu/http://cvs.schmorp.de/libev/ev.pod#code_ev_embed_code_when_one_backend_" class="link external" title="Link : http://pod.tst.eu/http://cvs.schmorp.de/libev/ev.pod#code_ev_embed_code_when_one_backend_">&raquo;&nbsp;
+  libev のドキュメント</a>
+   を参照ください。
+  </p>
+  <p class="para">
+   このウォッチャーは、<em class="emphasis">BSD</em> システムで
+   <em>kqueue</em> が使えないときにも大量のソケットを処理できるようにするのに便利です。
+   以下の例を参照ください。
+  </p>
+ </div>
+
+ <div class="refsect1 parameters" id="refsect1-evembed.construct-parameters">
+  <h3 class="title">パラメータ</h3>
+  <dl>
+
+   
+    <dt>
+
+     <code class="parameter">other</code>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      <a href="class.evloop.html" class="classname">EvLoop</a> のインスタンス。
+      埋め込むループです。これは埋め込み可能なものでなければいけません
+      (<span class="methodname"><a href="ev.embeddablebackends.html" class="methodname">Ev::embeddableBackends()</a></span> を参照ください)。
+     </p>
+    </dd>
+
+   
+   
+    <dt>
+
+     <code class="parameter">callback</code>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      <a href="ev.watcher-callbacks.html" class="link">ウォッチャーのコールバック</a>
+      を参照ください。
+     </p>
+    </dd>
+
+   
+   
+    <dt>
+
+     <code class="parameter">data</code>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      このウォッチャーに関連づけるカスタムデータ。
+     </p>
+    </dd>
+
+   
+   
+    <dt>
+
+     <code class="parameter">priority</code>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      <a href="class.ev.html#ev.constants.watcher-pri" class="link">ウォッチャーの優先度</a>。
+     </p>
+    </dd>
+
+   
+  </dl>
+
+ </div>
+
+ <div class="refsect1 returnvalues" id="refsect1-evembed.construct-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に EvEmbed オブジェクトを返します。
+  </p>
+ </div>
+
+ <div class="refsect1 examples" id="refsect1-evembed.construct-examples">
+  <h3 class="title">例</h3>
+ <div class="example" id="example-3722">
+   <p><strong>例1 kqueue バックエンドで作ったループをデフォルトのループに埋め込む例</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/*<br />&nbsp;*&nbsp;kqueue&nbsp;が使えるかどうかを調べ、ソケットで使う&nbsp;kqueue&nbsp;バックエンドを作ります<br />&nbsp;*&nbsp;(通常は、どんな&nbsp;kqueue&nbsp;実装でも動きます)。<br />&nbsp;*&nbsp;kqueue/socket-only&nbsp;イベントループを&nbsp;loop_socket&nbsp;に格納します<br />&nbsp;*&nbsp;(EVFLAG_NOENV&nbsp;も使えます)。<br />&nbsp;*<br />&nbsp;*&nbsp;この例を流用しました<br />&nbsp;*&nbsp;http://pod.tst.eu/http://cvs.schmorp.de/libev/ev.pod#Examples_CONTENT-9<br />&nbsp;*/<br /></span><span style="color: #0000BB">$loop&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">EvLoop</span><span style="color: #007700">::</span><span style="color: #0000BB">defaultLoop</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$socket_loop&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$embed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">NULL</span><span style="color: #007700">;<br /><br />if&nbsp;(</span><span style="color: #0000BB">Ev</span><span style="color: #007700">::</span><span style="color: #0000BB">supportedBackends</span><span style="color: #007700">()&nbsp;&amp;&nbsp;~</span><span style="color: #0000BB">Ev</span><span style="color: #007700">::</span><span style="color: #0000BB">recommendedBackends</span><span style="color: #007700">()&nbsp;&amp;&nbsp;</span><span style="color: #0000BB">Ev</span><span style="color: #007700">::</span><span style="color: #0000BB">BACKEND_KQUEUE</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;((</span><span style="color: #0000BB">$socket_loop&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">EvLoop</span><span style="color: #007700">(</span><span style="color: #0000BB">Ev</span><span style="color: #007700">::</span><span style="color: #0000BB">BACKEND_KQUEUE</span><span style="color: #007700">)))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$embed&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">EvEmbed</span><span style="color: #007700">(</span><span style="color: #0000BB">$loop</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br />if&nbsp;(!</span><span style="color: #0000BB">$socket_loop</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$socket_loop&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$loop</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;これで、すべてのソケットに対して&nbsp;$socket_loop&nbsp;を使い、それ以外については&nbsp;$loop&nbsp;を使うようになりました<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </div>
+
+ <div class="refsect1 seealso" id="refsect1-evembed.construct-seealso">
+  <h3 class="title">参考</h3>
+  <ul class="simplelist">
+   <li class="member">
+    <span class="methodname"><a href="ev.embeddablebackends.html" class="methodname" rel="rdfs-seeAlso">Ev::embeddableBackends()</a> - 他のイベントループに埋め込めるバックエンド群を返す</span>
+   </li>
+  </ul>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

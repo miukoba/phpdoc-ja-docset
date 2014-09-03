@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>WinCache セッションハンドラ</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="wincache.stats.html">≪ WinCache 統計スクリプト</a></li>
+      <li style="float: right;"><a href="wincache.reroutes.html">WinCache 関数への切り替え ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="wincache.setup.html">インストール/設定</a></li>
+    <li>WinCache セッションハンドラ</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="wincache.sessionhandler" class="section">
+  <h2 class="title">WinCache セッションハンドラ</h2>
+  <p class="para">
+   WinCache セッションハンドラ (WinCache 1.1.0 以降で使用可能) を使うと、
+   PHP のセッションデータを共有メモリ上のセッションキャッシュに格納できるようになります。
+   デフォルトのファイル保存方式のかわりに共有メモリを使うことで、
+   大量のデータをセッションで扱う PHP アプリケーションのパフォーマンスを向上させることができます。
+   Wincache のセッションキャッシュはファイルをバックに置いた共有メモリなので、
+   IIS アプリケーションプールをリサイクルするときにもセッションのデータが失われません。
+  </p>
+  <p class="para">
+   PHP で WinCache セッションハンドラを使うには、<var class="filename">php.ini</var> の
+   <a href="session.configuration.html#ini.session.save-handler" class="link">session.save_handler</a> を <em class="emphasis">wincache</em>
+   にします。デフォルトでは、Windows のテンポラリファイルと同じ場所にセッションデータを保存します。
+   セッションファイルの場所を変えるには
+   <a href="session.configuration.html#ini.session.save-path" class="link">session.save_path</a> ディレクティブを設定します。
+   <div class="example" id="example-590">
+    <p><strong>例1 WinCache セッションハンドラの有効化</strong></p>
+    <div class="example-contents">
+<div class="php.inicode"><pre class="php.inicode">session.save_handler = wincache
+session.save_path = C:\inetpub\temp\session\</pre>
+</div>
+    </div>
+
+   </div>
+  </p>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="106531""></a>
+  <div class="note">
+   <strong class="user">some at email dot com</strong>
+   <a href="#106531" class="date">16-Nov-2011 10:23</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+IF you use Apache and Session not work add to FCGID<br />
+<br />
+DefaultInitEnv APP_POOL_ID "DefaultAppPool"</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="100301""></a>
+  <div class="note">
+   <strong class="user">sethm at uoregon dot edu</strong>
+   <a href="#100301" class="date">06-Oct-2010 07:04</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Just as an fyi to anyone who has similar issues. WinCache v1.1.x would not write sessions to files under certain conditions. This means that all sessions are lost whenever an app-pool recycle occur. Here is the work around:<br />
+<br />
+If your app-pool name has periods (.) in it, change them to underscores (_). So an app-pool named www.somesite.com should be renamed to www_somesite_com.<br />
+<br />
+You can see the discussion here:<br />
+<a href="http://forums.iis.net/p/1171996/1957839.aspx#1957839" rel="nofollow" target="_blank">http://forums.iis.net/p/1171996/1957839.aspx#1957839</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

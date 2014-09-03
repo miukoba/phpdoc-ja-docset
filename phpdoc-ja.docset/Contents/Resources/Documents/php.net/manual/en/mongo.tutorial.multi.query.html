@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>クエリによる複数ドキュメントの取得</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="mongo.tutorial.criteria.html">≪ 問い合わせの条件の設定</a></li>
+      <li style="float: right;"><a href="mongo.tutorial.indexes.html">インデックスの作成 ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="mongo.tutorial.html">チュートリアル</a></li>
+    <li>クエリによる複数ドキュメントの取得</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="mongo.tutorial.multi.query" class="section">
+   <h2 class="title">クエリによる複数ドキュメントの取得</h2>
+   <p class="para">
+    クエリを使って、コレクションからドキュメントのセットを取得することができます。
+    たとえば、<em>&quot;i&quot;</em> &gt; <em>50</em>
+    であるすべてのドキュメントを取得したい場合は次のようにします。
+   </p>
+   <div class="example" id="mongo.tutorial.multi.query-example">
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$connection&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$collection&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$connection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">database</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">collectionName</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;array(&nbsp;</span><span style="color: #DD0000">"i"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(&nbsp;</span><span style="color: #DD0000">'$gt'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">50&nbsp;</span><span style="color: #007700">)&nbsp;);&nbsp;</span><span style="color: #FF8000">//&nbsp;'$gt'&nbsp;と、シングルクォートで囲んでいることに注意しましょう<br /></span><span style="color: #0000BB">$cursor&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$collection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">find</span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">);<br /><br />while&nbsp;(&nbsp;</span><span style="color: #0000BB">$cursor</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">hasNext</span><span style="color: #007700">()&nbsp;)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$cursor</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getNext</span><span style="color: #007700">()&nbsp;);<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>
+     これは、<em>&quot;i&quot;</em> &gt; <em>50</em>
+     であるドキュメントをすべて表示します。また、
+     <em>20 &lt; i &lt;= 30</em> のような範囲を指定することもできます。
+    </p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+&lt;?php
+$connection = new MongoClient();
+$collection = $connection-&gt;database-&gt;collectionName;
+
+$query = array( &#039;i&#039; =&gt; array( &#039;$gt&#039; =&gt; 20, &quot;\$lte&quot; =&gt; 30 ) );
+$cursor = $collection-&gt;find( $query );
+
+while ( $cursor-&gt;hasNext() )
+{
+    var_dump( $cursor-&gt;getNext() );
+}
+?&gt;
+</pre></div>
+    </div>
+   </div>
+   <p class="para">
+    常に $ 記号をエスケープするか、あるいはシングルクォートを使うことを覚えておきましょう。
+    そうしないと、PHP はこれを変数 <var class="varname"><var class="varname">$gt</var></var> と解釈してしまいます。
+   </p>
+  </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

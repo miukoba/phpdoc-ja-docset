@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>直近のクエリについての情報を得る</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="function.mysql-get-server-info.html">≪ mysql_get_server_info</a></li>
+      <li style="float: right;"><a href="function.mysql-insert-id.html">mysql_insert_id ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="ref.mysql.html">MySQL 関数</a></li>
+    <li>直近のクエリについての情報を得る</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="function.mysql-info" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mysql_info</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.3.0, PHP 5)</p><p class="refpurpose"><span class="refname">mysql_info</span> &mdash; <span class="dc-title">直近のクエリについての情報を得る</span></p>
+
+ </div>
+
+ <div id="function.mysql-info-refsynopsisdiv">
+  <div class="warning"><strong class="warning">警告</strong>
+   <p class="para">
+この拡張モジュールは PHP 5.5.0 で非推奨になりました。将来のバージョンで削除される予定です。
+<a href="book.mysqli.html" class="link">MySQLi</a> あるいは
+<a href="ref.pdo-mysql.html" class="link">PDO_MySQL</a> を使うべきです。詳細な情報は
+<a href="mysqlinfo.api.choosing.html" class="link">MySQL: API の選択</a> や
+<a href="faq.databases.html#faq.databases.mysql.deprecated" class="link">それに関連する FAQ</a> を参照ください。
+この関数の代替として、これらが使えます。</p>
+   <ul class="simplelist">
+    <li class="member"><span class="function"><a href="mysqli.info.html" class="function">mysqli_info()</a></span></li>
+   </ul>
+  </div>
+ </div>
+
+ <div class="refsect1 description" id="refsect1-function.mysql-info-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">string</span> <span class="methodname"><strong>mysql_info</strong></span>
+    ([ <span class="methodparam"><span class="type">resource</span> <code class="parameter">$link_identifier</code><span class="initializer"> = NULL</span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+   直近のクエリについての詳細な情報を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.mysql-info-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+<code class="parameter">
+link_identifier</code></dt>
+<dd>
+<p class="para">MySQL 接続。
+指定されない場合、<span class="function"><a href="function.mysql-connect.html" class="function">mysql_connect()</a></span> により直近にオープンされたリンクが
+指定されたと仮定されます。そのようなリンクがない場合、引数を指定せずに
+<span class="function"><a href="function.mysql-connect.html" class="function">mysql_connect()</a></span> がコールした時と同様にリンクを確立します。
+リンクが見付からない、または、確立できない場合、
+<strong><code>E_WARNING</code></strong> レベルのエラーが生成されます。</p></dd>
+
+
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.mysql-info-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に文についての情報、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+   どんな文が情報を返し、またそれがどのように見えるのかについては、以下の
+   例を参照ください。ここに挙げられていない文では <strong><code>FALSE</code></strong> が返されます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.mysql-info-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-1677">
+    <p><strong>例1 該当する MySQL 文</strong></p>
+    <div class="example-contents"><p>
+     情報を返す文の例です。数値はあくまで説明用の例で、実際の値は
+     クエリの内容によって変わります。
+    </p></div>
+    <div class="example-contents">
+<div class="mysqlcode"><pre class="mysqlcode">INSERT INTO ... SELECT ...
+String format: Records: 23 Duplicates: 0 Warnings: 0 
+INSERT INTO ... VALUES (...),(...),(...)...
+String format: Records: 37 Duplicates: 0 Warnings: 0 
+LOAD DATA INFILE ...
+String format: Records: 42 Deleted: 0 Skipped: 0 Warnings: 0 
+ALTER TABLE
+String format: Records: 60 Duplicates: 0 Warnings: 0 
+UPDATE
+String format: Rows matched: 65 Changed: 65 Warnings: 0</pre>
+</div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 notes" id="refsect1-function.mysql-info-notes">
+  <h3 class="title">注意</h3>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    INSERT ... VALUES 文で <span class="function"><strong>mysql_info()</strong></span> が非 <strong><code>FALSE</code></strong> 値を
+    返すのは、文中で複数の値のリストが指定された場合に限ります。
+   </p>
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.mysql-info-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><span class="function"><a href="function.mysql-affected-rows.html" class="function" rel="rdfs-seeAlso">mysql_affected_rows()</a> - 一番最近の操作で変更された行の数を得る</span></li>
+    <li class="member"><span class="function"><a href="function.mysql-insert-id.html" class="function" rel="rdfs-seeAlso">mysql_insert_id()</a> - 直近のクエリで生成された ID を得る</span></li>
+    <li class="member"><span class="function"><a href="function.mysql-stat.html" class="function" rel="rdfs-seeAlso">mysql_stat()</a> - 現在のシステムの状態を取得する</span></li>
+   </ul>
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="87486""></a>
+  <div class="note">
+   <strong class="user">tomas at matfyz dot cz</strong>
+   <a href="#87486" class="date">07-Dec-2008 12:57</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Please note that the information on warning count cannot be taken from the mysql_info() due to mysql bugs #41283 and #41285:<br />
+<br />
+<a href="http://bugs.mysql.com/?id=41283" rel="nofollow" target="_blank">http://bugs.mysql.com/?id=41283</a><br />
+<a href="http://bugs.mysql.com/?id=41285" rel="nofollow" target="_blank">http://bugs.mysql.com/?id=41285</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="65118""></a>
+  <div class="note">
+   <strong class="user">bdobrica at gmail dot com</strong>
+   <a href="#65118" class="date">24-Apr-2006 09:18</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+As a solution to the problem pointed in the post reffering to mysql_affected_rows() returning 0 when you are making an update query and the fields are not modified although the query is valid, i'm posting the following function. It is very simple and based on a previous post.<br />
+<br />
+function mysql_modified_rows () {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; $info_str = mysql_info();<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; $a_rows = mysql_affected_rows();<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ereg("Rows matched: ([0-9]*)", $info_str, $r_matched);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; return ($a_rows &lt; 1)?($r_matched[1]?$r_matched[1]:0):$a_rows;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+<br />
+Hope you'll find it usefull.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="58601""></a>
+  <div class="note">
+   <strong class="user">info at granville dot nl</strong>
+   <a href="#58601" class="date">09-Nov-2005 12:25</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Imade a quick conversion of eric's function just to count matched or affected rows from a query.<br />
+<br />
+/**GD gdf_db_count_query_v1: returns the amount of rows matched or affected by the last query. Must be used immediately after the concerned query.<br />
+*/<br />
+<br />
+function gdf_db_count_query($link = 'dbh') {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; <br />
+&nbsp;&nbsp;&nbsp; $info_str = mysql_info($$link);<br />
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; if (ereg("Records: ([0-9]*)", $info_str, $count) == false) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ereg("Rows matched: ([0-9]*)", $info_str, $count);<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; return $count;<br />
+<br />
+}</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="36008""></a>
+  <div class="note">
+   <strong class="user">eric at projectsatellite dot com</strong>
+   <a href="#36008" class="date">22-Sep-2003 11:54</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I agree that this is a useful function to use when trying to check on whether an update query matched a particular row. I created a simple function that returns an associative array with the values delineated in the returned string.<br />
+<br />
+function get_mysql_info($linkid = null){<br />
+&nbsp;&nbsp;&nbsp; $linkid? $strInfo = mysql_info($linkid) : $strInfo = mysql_info();<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; $return = array();<br />
+&nbsp;&nbsp;&nbsp; ereg("Records: ([0-9]*)", $strInfo, $records);<br />
+&nbsp;&nbsp;&nbsp; ereg("Duplicates: ([0-9]*)", $strInfo, $dupes);<br />
+&nbsp;&nbsp;&nbsp; ereg("Warnings: ([0-9]*)", $strInfo, $warnings);<br />
+&nbsp;&nbsp;&nbsp; ereg("Deleted: ([0-9]*)", $strInfo, $deleted);<br />
+&nbsp;&nbsp;&nbsp; ereg("Skipped: ([0-9]*)", $strInfo, $skipped);<br />
+&nbsp;&nbsp;&nbsp; ereg("Rows matched: ([0-9]*)", $strInfo, $rows_matched);<br />
+&nbsp;&nbsp;&nbsp; ereg("Changed: ([0-9]*)", $strInfo, $changed);<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; $return['records'] = $records[1];<br />
+&nbsp;&nbsp;&nbsp; $return['duplicates'] = $dupes[1];<br />
+&nbsp;&nbsp;&nbsp; $return['warnings'] = $warnings[1];<br />
+&nbsp;&nbsp;&nbsp; $return['deleted'] = $deleted[1];<br />
+&nbsp;&nbsp;&nbsp; $return['skipped'] = $skipped[1];<br />
+&nbsp;&nbsp;&nbsp; $return['rows_matched'] = $rows_matched[1];<br />
+&nbsp;&nbsp;&nbsp; $return['changed'] = $changed[1];<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; return $return;<br />
+}<br />
+<br />
+After trying to update a row that may or may not exist, you can use the above function like so:<br />
+<br />
+$vals = get_mysql_info($linkid);<br />
+if($vals['rows_matched'] == 0){<br />
+&nbsp;&nbsp; &nbsp; mysql_query("INSERT INTO table values('val1','val2', 'valetc')", $linkid);<br />
+}</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="24990""></a>
+  <div class="note">
+   <strong class="user">carl at NOSPAMthep dot lu dot se</strong>
+   <a href="#24990" class="date">07-Sep-2002 01:44</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This function can be used as a workaround for a misfeature of MySQL: on an UPDATE, rows that aren't updated _solely because they looked the same before_ will not be seen in mysql_affected_rows(). This causes problems when you want to use the result of the update to determine if there's need to do an INSERT. With MySQL you can do an INSERT IGNORE if there's no risk of if failing because of a duplicate key other than the one used in the UPDATE. However, if this isn't the case or you want a bit of RDBMS independence, there's no easy/pretty workaround. I think I'll resort to doing a SELECT to determine the primary key before doing the update/insert, as using the CVS version of PHP isn't an option for me.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

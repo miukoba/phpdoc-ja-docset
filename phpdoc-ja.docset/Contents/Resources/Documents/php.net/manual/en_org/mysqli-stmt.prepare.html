@@ -1,0 +1,538 @@
+<html><!-- Mirrored from php.net/manual/en/mysqli-stmt.prepare.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 17:02:15 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>mysqli_stmt::prepare</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="mysqli-stmt.prepare.html">
+ <link rel="shorturl" href="mysqli-stmt.prepare.html">
+ <link rel="alternate" href="mysqli-stmt.prepare.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="class.mysqli-stmt.html">
+ <link rel="prev" href="mysqli-stmt.param-count.html">
+ <link rel="next" href="mysqli-stmt.reset.html">
+
+ <link rel="alternate" href="mysqli-stmt.prepare.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/mysqli-stmt.prepare.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/mysqli-stmt.prepare.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/mysqli-stmt.prepare.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/mysqli-stmt.prepare.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/mysqli-stmt.prepare.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/mysqli-stmt.prepare.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/mysqli-stmt.prepare.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/mysqli-stmt.prepare.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/mysqli-stmt.prepare.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/mysqli-stmt.prepare.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.database.html">Database Extensions</a></li>      <li><a href="refs.database.vendors.html">Vendor Specific Database Extensions</a></li>      <li><a href="set.mysqlinfo.html">MySQL</a></li>      <li><a href="book.mysqli.html">Mysqli</a></li>      <li><a href="class.mysqli-stmt.html">mysqli_stmt</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="mysqli-stmt.prepare" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mysqli_stmt::prepare</h1>
+  <h1 class="refname">mysqli_stmt_prepare</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose"><span class="refname">mysqli_stmt::prepare</span> -- <span class="refname">mysqli_stmt_prepare</span> — <span class="dc-title">Prepare an SQL statement for execution</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-mysqli-stmt.prepare-description">
+  <h3 class="title">Description</h3>
+  <p class="para">Object oriented style</p>
+  <div class="methodsynopsis dc-description">
+   <span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <span class="methodname"><strong>mysqli_stmt::prepare</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$query</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">Procedural style</p>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>mysqli_stmt_prepare</strong></span>
+    ( <span class="methodparam"><span class="type"><a href="class.mysqli-stmt.html" class="type mysqli_stmt">mysqli_stmt</a></span> <code class="parameter">$stmt</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$query</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   Prepares the SQL query pointed to by the null-terminated string query. 
+  </p>
+  <p class="para">
+   The parameter markers must be bound to application variables using
+   <span class="function"><a href="mysqli-stmt.bind-param.html" class="function">mysqli_stmt_bind_param()</a></span> and/or 
+   <span class="function"><a href="mysqli-stmt.bind-result.html" class="function">mysqli_stmt_bind_result()</a></span> before executing the
+   statement or fetching rows.
+  </p>
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   </p><p class="para">
+    In the case where you pass a statement to
+    <span class="function"><strong>mysqli_stmt_prepare()</strong></span> that is longer than
+    <em>max_allowed_packet</em> of the server, the returned
+    error codes are different depending on whether you are using MySQL
+    Native Driver (<em>mysqlnd</em>) or MySQL Client Library
+    (<em>libmysqlclient</em>). The behavior is as follows:
+   </p>
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <p class="para">
+      <em>mysqlnd</em> on Linux returns an error code of 1153.
+      The error message means "<span class="quote">got a packet bigger than
+      <em>max_allowed_packet</em> bytes</span>".
+     </p>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      <em>mysqlnd</em> on Windows returns an error code 2006.
+      This error message means "<span class="quote">server has gone away</span>".
+     </p>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      <em>libmysqlclient</em> on all platforms returns an error code
+      2006. This error message means "<span class="quote">server has gone
+      away</span>".
+     </p>
+    </li>
+   </ul>
+  <p></p></blockquote>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-mysqli-stmt.prepare-parameters">
+  <h3 class="title">Parameters</h3>
+  <p class="para">
+   </p><dl>
+
+    <dt>
+<code class="parameter">
+stmt</code></dt>
+<dd>
+<p class="para">Procedural style only: A statement identifier
+returned by <span class="function"><a href="mysqli.stmt-init.html" class="function">mysqli_stmt_init()</a></span>.</p></dd>
+
+    
+     <dt>
+<code class="parameter">query</code></dt>
+
+     <dd>
+
+      <p class="para">
+       The query, as a string. It must consist of a single SQL statement.
+      </p>
+      <p class="para">
+       You can include one or more parameter markers in the SQL statement by
+       embedding question mark (<em>?</em>) characters at the
+       appropriate positions.
+      </p>
+      <blockquote class="note"><p><strong class="note">Note</strong>: 
+       </p><p class="para">
+        You should not add a terminating semicolon or <em>\g</em>
+        to the statement.
+       </p>
+      <p></p></blockquote>
+      <blockquote class="note"><p><strong class="note">Note</strong>: 
+       </p><p class="para">
+        The markers are legal only in certain places in SQL statements.
+        For example, they are allowed in the VALUES() list of an INSERT statement
+        (to specify column values for a row), or in a comparison with a column in
+        a WHERE clause to specify a comparison value.
+       </p>
+       <p class="para">
+        However, they are not allowed for identifiers (such as table or column names),
+        in the select list that names the columns to be returned by a SELECT statement),
+        or to specify both operands of a binary operator such as the <em>=</em>
+        equal sign. The latter restriction is necessary because it would be impossible
+        to determine the parameter type. In general, parameters are legal only in Data
+        Manipulation Language (DML) statements, and not in Data Definition Language
+        (DDL) statements.
+       </p>
+      <p></p></blockquote>
+     </dd>
+
+    
+   </dl>
+
+  <p></p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-mysqli-stmt.prepare-returnvalues">
+  <h3 class="title">Return Values</h3>
+  <p class="para">
+   Returns <strong><code>TRUE</code></strong> on success or <strong><code>FALSE</code></strong> on failure.
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-mysqli-stmt.prepare-examples">
+  <h3 class="title">Examples</h3>
+  <div class="example" id="example-1794">
+   <p><strong>Example #1 Object oriented style</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>$mysqli&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">mysqli</span><span style="color: #007700">(</span><span style="color: #DD0000">"localhost"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"my_user"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"my_password"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"world"</span><span style="color: #007700">);<br><br></span><span style="color: #FF8000">/*&nbsp;check&nbsp;connection&nbsp;*/<br></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">mysqli_connect_errno</span><span style="color: #007700">())&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"Connect&nbsp;failed:&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">mysqli_connect_error</span><span style="color: #007700">());<br>&nbsp;&nbsp;&nbsp;&nbsp;exit();<br>}<br><br></span><span style="color: #0000BB">$city&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Amersfoort"</span><span style="color: #007700">;<br><br></span><span style="color: #FF8000">/*&nbsp;create&nbsp;a&nbsp;prepared&nbsp;statement&nbsp;*/<br></span><span style="color: #0000BB">$stmt&nbsp;</span><span style="color: #007700">=&nbsp;&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">stmt_init</span><span style="color: #007700">();<br>if&nbsp;(</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">prepare</span><span style="color: #007700">(</span><span style="color: #DD0000">"SELECT&nbsp;District&nbsp;FROM&nbsp;City&nbsp;WHERE&nbsp;Name=?"</span><span style="color: #007700">))&nbsp;{<br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;bind&nbsp;parameters&nbsp;for&nbsp;markers&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">bind_param</span><span style="color: #007700">(</span><span style="color: #DD0000">"s"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$city</span><span style="color: #007700">);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;execute&nbsp;query&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">execute</span><span style="color: #007700">();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;bind&nbsp;result&nbsp;variables&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">bind_result</span><span style="color: #007700">(</span><span style="color: #0000BB">$district</span><span style="color: #007700">);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;fetch&nbsp;value&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetch</span><span style="color: #007700">();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"%s&nbsp;is&nbsp;in&nbsp;district&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$city</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$district</span><span style="color: #007700">);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;close&nbsp;statement&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">close</span><span style="color: #007700">();<br>}<br><br></span><span style="color: #FF8000">/*&nbsp;close&nbsp;connection&nbsp;*/<br></span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">close</span><span style="color: #007700">();<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+  <div class="example" id="example-1795">
+   <p><strong>Example #2 Procedural style</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>$link&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysqli_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">"localhost"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"my_user"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"my_password"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"world"</span><span style="color: #007700">);<br><br></span><span style="color: #FF8000">/*&nbsp;check&nbsp;connection&nbsp;*/<br></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">mysqli_connect_errno</span><span style="color: #007700">())&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"Connect&nbsp;failed:&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">mysqli_connect_error</span><span style="color: #007700">());<br>&nbsp;&nbsp;&nbsp;&nbsp;exit();<br>}<br><br></span><span style="color: #0000BB">$city&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Amersfoort"</span><span style="color: #007700">;<br><br></span><span style="color: #FF8000">/*&nbsp;create&nbsp;a&nbsp;prepared&nbsp;statement&nbsp;*/<br></span><span style="color: #0000BB">$stmt&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysqli_stmt_init</span><span style="color: #007700">(</span><span style="color: #0000BB">$link</span><span style="color: #007700">);<br>if&nbsp;(</span><span style="color: #0000BB">mysqli_stmt_prepare</span><span style="color: #007700">(</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'SELECT&nbsp;District&nbsp;FROM&nbsp;City&nbsp;WHERE&nbsp;Name=?'</span><span style="color: #007700">))&nbsp;{<br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;bind&nbsp;parameters&nbsp;for&nbsp;markers&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">mysqli_stmt_bind_param</span><span style="color: #007700">(</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"s"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$city</span><span style="color: #007700">);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;execute&nbsp;query&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">mysqli_stmt_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;bind&nbsp;result&nbsp;variables&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">mysqli_stmt_bind_result</span><span style="color: #007700">(</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$district</span><span style="color: #007700">);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;fetch&nbsp;value&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">mysqli_stmt_fetch</span><span style="color: #007700">(</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"%s&nbsp;is&nbsp;in&nbsp;district&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$city</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$district</span><span style="color: #007700">);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;close&nbsp;statement&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">mysqli_stmt_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">);<br>}<br><br></span><span style="color: #FF8000">/*&nbsp;close&nbsp;connection&nbsp;*/<br></span><span style="color: #0000BB">mysqli_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$link</span><span style="color: #007700">);<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>The above examples will output:</p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>Amersfoort is in district Utrecht
+</pre></div>
+   </div>
+  </div>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-mysqli-stmt.prepare-seealso">
+  <h3 class="title">See Also</h3>
+  <p class="para">
+   </p><ul class="simplelist">
+    <li class="member"><span class="function"><a href="mysqli.stmt-init.html" class="function" rel="rdfs-seeAlso">mysqli_stmt_init()</a> - Initializes a statement and returns an object for use with mysqli_stmt_prepare</span></li>
+    <li class="member"><span class="function"><a href="mysqli-stmt.execute.html" class="function" rel="rdfs-seeAlso">mysqli_stmt_execute()</a> - Executes a prepared Query</span></li>
+    <li class="member"><span class="function"><a href="mysqli-stmt.fetch.html" class="function" rel="rdfs-seeAlso">mysqli_stmt_fetch()</a> - Fetch results from a prepared statement into the bound variables</span></li>
+    <li class="member"><span class="function"><a href="mysqli-stmt.bind-param.html" class="function" rel="rdfs-seeAlso">mysqli_stmt_bind_param()</a> - Binds variables to a prepared statement as parameters</span></li>
+    <li class="member"><span class="function"><a href="mysqli-stmt.bind-result.html" class="function" rel="rdfs-seeAlso">mysqli_stmt_bind_result()</a> - Binds variables to a prepared statement for result storage</span></li>
+    <li class="member"><span class="function"><a href="mysqli-stmt.get-result.html" class="function" rel="rdfs-seeAlso">mysqli_stmt_get_result()</a> - Gets a result set from a prepared statement</span></li>
+    <li class="member"><span class="function"><a href="mysqli-stmt.close.html" class="function" rel="rdfs-seeAlso">mysqli_stmt_close()</a> - Closes a prepared statement</span></li>
+   </ul>
+  <p></p>
+ </div>
+
+
+</div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="108023">  
+  <a class="name">
+  <strong class="user"><em>logos-php at kith dot org</em></strong></a><div class="date" title="2012-03-23 07:06"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom108023">
+<div class="phpcode"><code><span class="html">
+Note that if you're using a question mark as a placeholder for a string value, you don't surround it with quotation marks in the MySQL query.<br><br>For example, do this:<br><br>mysqli_stmt_prepare($stmt, "SELECT * FROM foo WHERE foo.Date &gt; ?");<br><br>Do not do this:<br><br>mysqli_stmt_prepare($stmt, "SELECT * FROM foo WHERE foo.Date &gt; '?'");<br><br>If you put quotation marks around a question mark in the query, then PHP doesn't recognize the question mark as a placeholder, and then when you try to use mysqli_stmt_bind_param(), it gives an error to the effect that you have the wrong number of parameters.<br><br>The lack of quotation marks around a string placeholder is implicit in the official example on this page, but it's not explicitly stated in the docs, and I had trouble figuring it out, so figured it was worth posting.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="83873">  
+  <a class="name">
+  <strong class="user"><em>kontakt at arthur minus schiwon dot de</em></strong></a><div class="date" title="2008-06-16 07:22"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom83873">
+<div class="phpcode"><code><span class="html">
+If you wrap the placeholders with quotation marks you will experience warnings like "Number of variables doesn't match number of parameters in prepared statement" (at least with INSERT Statements).</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="108038">  
+  <a class="name">
+  <strong class="user"><em>logos-php at kith dot orgpp</em></strong></a><div class="date" title="2012-03-23 05:34"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom108038">
+<div class="phpcode"><code><span class="html">
+Turns out you can't directly use a prepared statement for a query that has a placeholder in an IN() clause.<br><br>There are ways around that (such as constructing a string that consists of n question marks separated by commas, then using that set of placeholders in the IN() clause), but you can't just say IN (?).<br><br>This is a MySQL restriction rather than a PHP restriction, but it's not really documented in the MySQL docs either, so I figured it was worth mentioning here.<br><br>(Btw, turns out someone else had previously posted the info that I put in my previous comment, about not using quotation marks. Sorry for the repeat; not sure how I missed the earlier comment.)</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="90436">  
+  <a class="name">
+  <strong class="user"><em>ndungi at gmail dot com</em></strong></a><div class="date" title="2009-04-22 02:25"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom90436">
+<div class="phpcode"><code><span class="html">
+The `prepare` , `bind_param`, `bind_result`, `fetch` result, `close` stmt cycle can be tedious at times. Here is an object that does all the mysqli mumbo jumbo for you when all you want is a select leaving you to the bare essential `preparedSelect` on a prepared stmt. The method returns the result set as a 2D associative array with the `select`ed columns as keys. I havent done sufficient error-checking and it also may have some bugs. Help debug and improve on it. <br><br>I used the bible.sql db from <a rel="nofollow" target="_blank">http://www.biblesql.net/sites/biblesql.net/files/bible.mysql.gz.</a><br><br>Baraka tele!<br><br>============================<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">class </span><span class="default">DB<br></span><span class="keyword">{<br>&nbsp; &nbsp; public </span><span class="default">$connection</span><span class="keyword">;<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="comment">#establish db connection<br>&nbsp; &nbsp; </span><span class="keyword">public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$host</span><span class="keyword">=</span><span class="string">"localhost"</span><span class="keyword">, </span><span class="default">$user</span><span class="keyword">=</span><span class="string">"user"</span><span class="keyword">, </span><span class="default">$pass</span><span class="keyword">=</span><span class="string">""</span><span class="keyword">, </span><span class="default">$db</span><span class="keyword">=</span><span class="string">"bible"</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">connection </span><span class="keyword">= new </span><span class="default">mysqli</span><span class="keyword">(</span><span class="default">$host</span><span class="keyword">, </span><span class="default">$user</span><span class="keyword">, </span><span class="default">$pass</span><span class="keyword">, </span><span class="default">$db</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">mysqli_connect_errno</span><span class="keyword">())<br>&nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo(</span><span class="string">"Database connect Error : " <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">. </span><span class="default">mysqli_connect_error</span><span class="keyword">(</span><span class="default">$mysqli</span><span class="keyword">));<br>&nbsp; &nbsp; &nbsp; &nbsp; }&nbsp; &nbsp; <br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="comment">#store mysqli object<br>&nbsp; &nbsp; </span><span class="keyword">public function </span><span class="default">connect</span><span class="keyword">()<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">connection</span><span class="keyword">;<br>&nbsp; &nbsp; }<br><br>&nbsp; &nbsp; </span><span class="comment">#run a prepared query<br>&nbsp; &nbsp; </span><span class="keyword">public function </span><span class="default">runPreparedQuery</span><span class="keyword">(</span><span class="default">$query</span><span class="keyword">, </span><span class="default">$params_r</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$stmt </span><span class="keyword">= </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">connection</span><span class="keyword">-&gt;</span><span class="default">prepare</span><span class="keyword">(</span><span class="default">$query</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">bindParameters</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">, </span><span class="default">$params_r</span><span class="keyword">);<br><br>&nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">$stmt</span><span class="keyword">-&gt;</span><span class="default">execute</span><span class="keyword">()) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$stmt</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; } else {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo(</span><span class="string">"Error in </span><span class="default">$statement</span><span class="string">: " <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">. </span><span class="default">mysqli_error</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">connection</span><span class="keyword">));<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">0</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; }<br><br> </span><span class="comment"># To run a select statement with bound parameters and bound results. <br> # Returns an associative array two dimensional array which u can easily&nbsp; <br> # manipulate with array functions.<br> <br>&nbsp; &nbsp; </span><span class="keyword">public function </span><span class="default">preparedSelect</span><span class="keyword">(</span><span class="default">$query</span><span class="keyword">, </span><span class="default">$bind_params_r</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$select </span><span class="keyword">= </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">runPreparedQuery</span><span class="keyword">(</span><span class="default">$query</span><span class="keyword">, </span><span class="default">$bind_params_r</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$fields_r </span><span class="keyword">= </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">fetchFields</span><span class="keyword">(</span><span class="default">$select</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; foreach (</span><span class="default">$fields_r </span><span class="keyword">as </span><span class="default">$field</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$bind_result_r</span><span class="keyword">[] = &amp;${</span><span class="default">$field</span><span class="keyword">};<br>&nbsp; &nbsp; &nbsp; &nbsp; } <br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">bindResult</span><span class="keyword">(</span><span class="default">$select</span><span class="keyword">, </span><span class="default">$bind_result_r</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$result_r </span><span class="keyword">= array();<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$i </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; while (</span><span class="default">$select</span><span class="keyword">-&gt;</span><span class="default">fetch</span><span class="keyword">()) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; foreach (</span><span class="default">$fields_r </span><span class="keyword">as </span><span class="default">$field</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$result_r</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="default">$field</span><span class="keyword">] = $</span><span class="default">$field</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$i</span><span class="keyword">++;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$select</span><span class="keyword">-&gt;</span><span class="default">close</span><span class="keyword">();<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$result_r</span><span class="keyword">;&nbsp; &nbsp; <br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="comment">#takes in array of bind parameters and binds them to result of <br>&nbsp; &nbsp; #executed prepared stmt<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="keyword">private function </span><span class="default">bindParameters</span><span class="keyword">(&amp;</span><span class="default">$obj</span><span class="keyword">, &amp;</span><span class="default">$bind_params_r</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">call_user_func_array</span><span class="keyword">(array(</span><span class="default">$obj</span><span class="keyword">, </span><span class="string">"bind_param"</span><span class="keyword">), </span><span class="default">$bind_params_r</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; private function </span><span class="default">bindResult</span><span class="keyword">(&amp;</span><span class="default">$obj</span><span class="keyword">, &amp;</span><span class="default">$bind_result_r</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">call_user_func_array</span><span class="keyword">(array(</span><span class="default">$obj</span><span class="keyword">, </span><span class="string">"bind_result"</span><span class="keyword">), </span><span class="default">$bind_result_r</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="comment">#returns a list of the selected field names<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="keyword">private function </span><span class="default">fetchFields</span><span class="keyword">(</span><span class="default">$selectStmt</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$metadata </span><span class="keyword">= </span><span class="default">$selectStmt</span><span class="keyword">-&gt;</span><span class="default">result_metadata</span><span class="keyword">();<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$fields_r </span><span class="keyword">= array();<br>&nbsp; &nbsp; &nbsp; &nbsp; while (</span><span class="default">$field </span><span class="keyword">= </span><span class="default">$metadata</span><span class="keyword">-&gt;</span><span class="default">fetch_field</span><span class="keyword">()) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$fields_r</span><span class="keyword">[] = </span><span class="default">$field</span><span class="keyword">-&gt;</span><span class="default">name</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br><br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$fields_r</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>}<br></span><span class="comment">#end of class<br> <br>#An example of the DB class in use<br><br></span><span class="default">$DB </span><span class="keyword">= new </span><span class="default">DB</span><span class="keyword">(</span><span class="string">"localhost"</span><span class="keyword">, </span><span class="string">"root"</span><span class="keyword">, </span><span class="string">""</span><span class="keyword">, </span><span class="string">"bible"</span><span class="keyword">);<br></span><span class="default">$var </span><span class="keyword">= </span><span class="default">5</span><span class="keyword">; <br></span><span class="default">$query </span><span class="keyword">= </span><span class="string">"SELECT abbr, name from books where id &gt; ?" </span><span class="keyword">;<br></span><span class="default">$bound_params_r </span><span class="keyword">= array(</span><span class="string">"i"</span><span class="keyword">, </span><span class="default">$var</span><span class="keyword">);<br><br></span><span class="default">$result_r </span><span class="keyword">= </span><span class="default">$DB</span><span class="keyword">-&gt;</span><span class="default">preparedSelect</span><span class="keyword">(</span><span class="default">$query</span><span class="keyword">, </span><span class="default">$bound_params_r</span><span class="keyword">);<br><br></span><span class="comment">#loop thru result array and display result<br><br></span><span class="keyword">foreach (</span><span class="default">$result_r </span><span class="keyword">as </span><span class="default">$result</span><span class="keyword">) {<br>&nbsp; &nbsp; echo </span><span class="default">$result</span><span class="keyword">[</span><span class="string">'abbr'</span><span class="keyword">] . </span><span class="string">" : " </span><span class="keyword">. </span><span class="default">$result</span><span class="keyword">[</span><span class="string">'name'</span><span class="keyword">] . </span><span class="string">"&lt;br/&gt;" </span><span class="keyword">;<br>}<br><br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="83224">  
+  <a class="name">
+  <strong class="user"><em>mhradek AT gmail.com</em></strong></a><div class="date" title="2008-05-15 04:06"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom83224">
+<div class="phpcode"><code><span class="html">
+A particularly helpful adaptation of this function and the call_user_func_array function:<br><br>// $params is sent as array($val=&gt;'i', $val=&gt;'d', etc...)<br><br>function db_stmt_bind_params($stmt, $params)<br>{ <br>&nbsp; &nbsp; $funcArg[] = $stmt; <br>&nbsp; &nbsp; foreach($params as $val=&gt;$type)<br>&nbsp; &nbsp; { <br>&nbsp; &nbsp; &nbsp; &nbsp; $funcArg['type'] .= $type; <br>&nbsp; &nbsp; &nbsp; &nbsp; $funcArg[] = $val; <br>&nbsp; &nbsp; } <br>&nbsp; &nbsp; return call_user_func_array('mysqli_stmt_bind_param', $funcArgs); <br>} <br><br>Thanks to 'sned' for the code.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="80426">  
+  <a class="name">
+  <strong class="user"><em>lukaszNOSPAMPLEASE at epas dot pl</em></strong></a><div class="date" title="2008-01-15 07:15"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom80426">
+<div class="phpcode"><code><span class="html">
+i've got some bad news for you guys if you haven't found out already.
+<br>the trick with mysqli_next_result() only prevents having the connection dropped after a stored procedure call.
+<br>apparently you can bind parameters for a prepared stored procedure call, but you'll get messed up records from mysqli_stmt_fetch() after mysqli_stmt_bind_result(), at least when the stored procedure itself contains a prepared statement.
+<br>a way to avoid data corruption could be specifying the CLIENT_MULTI_STATEMENTS flag in mysqli_real_connect(), if it wasn't disabled entirely (for security reasons, as they say). another option is to use mysqli_multi_query(), but then you can't bind at all.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="75534">  
+  <a class="name">
+  <strong class="user"><em>st dot john dot johnson at gmail dot com</em></strong></a><div class="date" title="2007-06-04 08:59"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom75534">
+<div class="phpcode"><code><span class="html">
+In reference to what lachlan76 said before, stored procedures CAN be executed through prepared statements as long as you tell the DB to move to the next result before executing again.
+<br>
+<br>Example (Five calls to a stored procedure):
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">for (</span><span class="default">$i</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">;</span><span class="default">$i</span><span class="keyword">&lt;</span><span class="default">5</span><span class="keyword">;</span><span class="default">$i</span><span class="keyword">++) {
+<br>&nbsp; </span><span class="default">$statement </span><span class="keyword">= </span><span class="default">$mysqli</span><span class="keyword">-&gt;</span><span class="default">stmt_init</span><span class="keyword">();
+<br>&nbsp; </span><span class="default">$statement</span><span class="keyword">-&gt;</span><span class="default">prepare</span><span class="keyword">(</span><span class="string">"CALL some_procedure( ? )"</span><span class="keyword">);
+<br>
+<br>&nbsp; </span><span class="comment">// Bind, execute, and bind.
+<br>&nbsp; </span><span class="default">$statement</span><span class="keyword">-&gt;</span><span class="default">bind_param</span><span class="keyword">(</span><span class="string">"i"</span><span class="keyword">, </span><span class="default">1</span><span class="keyword">);
+<br>&nbsp; </span><span class="default">$statement</span><span class="keyword">-&gt;</span><span class="default">execute</span><span class="keyword">();
+<br>&nbsp; </span><span class="default">$statement</span><span class="keyword">-&gt;</span><span class="default">bind_result</span><span class="keyword">(</span><span class="default">$results</span><span class="keyword">);
+<br>
+<br>&nbsp; while(</span><span class="default">$statement</span><span class="keyword">-&gt;</span><span class="default">fetch</span><span class="keyword">()) {
+<br>&nbsp; &nbsp; </span><span class="comment">// Do what you want with your results.
+<br>&nbsp; </span><span class="keyword">}
+<br>
+<br>&nbsp; </span><span class="default">$statement</span><span class="keyword">-&gt;</span><span class="default">close</span><span class="keyword">();
+<br>
+<br>&nbsp; </span><span class="comment">// Now move the mysqli connection to a new result.
+<br>&nbsp; </span><span class="keyword">while(</span><span class="default">$mysqli</span><span class="keyword">-&gt;</span><span class="default">next_result</span><span class="keyword">()) { }
+<br>}
+<br></span><span class="default">?&gt;
+<br></span>
+<br>If you include the last statement, this code should execute without the nasty "Commands out of sync" error.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="71439">  
+  <a class="name">
+  <strong class="user"><em>lachlan76 at gmail dot com</em></strong></a><div class="date" title="2006-11-28 08:59"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom71439">
+<div class="phpcode"><code><span class="html">
+Do not try to use a stored procedure through a prepared statement.
+<br>
+<br>Example:
+<br>
+<br><span class="default">&lt;?php
+<br>$statement </span><span class="keyword">= </span><span class="default">$mysqli</span><span class="keyword">-&gt;</span><span class="default">stmt_init</span><span class="keyword">();
+<br></span><span class="default">$statement</span><span class="keyword">-&gt;</span><span class="default">prepare</span><span class="keyword">(</span><span class="string">"CALL some_procedure()"</span><span class="keyword">);
+<br></span><span class="default">?&gt;
+<br></span>
+<br>If you attempt to do this, it will fail by dropping the connection during the next query.&nbsp; Use mysqli_multi_query instead.
+<br>
+<br>Example:
+<br>
+<br><span class="default">&lt;?php
+<br>$mysqli</span><span class="keyword">-&gt;</span><span class="default">multi_query</span><span class="keyword">(</span><span class="string">"CALL some_procedure()"</span><span class="keyword">);
+<br>do
+<br>{
+<br>&nbsp; </span><span class="default">$result </span><span class="keyword">= </span><span class="default">$mysqli</span><span class="keyword">-&gt;</span><span class="default">store_result</span><span class="keyword">();
+<br>
+<br>&nbsp;&nbsp; </span><span class="comment">// Do your processing work here&nbsp; 
+<br>&nbsp; 
+<br>&nbsp; </span><span class="default">$result</span><span class="keyword">-&gt;</span><span class="default">free</span><span class="keyword">();
+<br>} while(</span><span class="default">$mysqli</span><span class="keyword">-&gt;</span><span class="default">next_result</span><span class="keyword">());
+<br></span><span class="default">?&gt;
+<br></span>
+<br>This means that you cannot bind parameters or results, however.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="57563">  
+  <a class="name">
+  <strong class="user"><em>andrey at php dot net</em></strong></a><div class="date" title="2005-10-07 05:35"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom57563">
+<div class="phpcode"><code><span class="html">
+If you select LOBs use the following order of execution or you risk mysqli allocating more memory that actually used
+<br>
+<br>1)prepare()
+<br>2)execute()
+<br>3)store_result()
+<br>4)bind_result()
+<br>
+<br>If you skip 3) or exchange 3) and 4) then mysqli will allocate memory for the maximal length of the column which is 255 for tinyblob, 64k for blob(still ok), 16MByte for MEDIUMBLOB - quite a lot and 4G for LONGBLOB (good if you have so much memory). Queries which use this order a bit slower when there is a LOB but this is the price of not having memory exhaustion in seconds.</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/mysqli-stmt.prepare.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 17:02:16 GMT -->
+
+
+</body></html>

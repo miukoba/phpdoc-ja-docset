@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>Partitioning and Sharding</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="mysqlnd-ms.quickstart.failover.html">≪ Failover</a></li>
+      <li style="float: right;"><a href="mysqlnd-ms.quickstart.mysql_fabric.html">MySQL Fabric ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="mysqlnd-ms.quickstart.html">Quickstart and Examples</a></li>
+    <li>Partitioning and Sharding</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="mysqlnd-ms.quickstart.partitioning" class="section">
+  <h2 class="title">Partitioning and Sharding</h2>
+  <p class="para">
+   Database clustering is done for various reasons. Clusters can improve availability,
+   fault tolerance, and increase performance by applying a divide and conquer approach
+   as work is distributed over many machines. Clustering is sometimes combined with
+   partitioning and sharding to further break up a large complex task into
+   smaller, more manageable units.
+  </p>
+  <p class="para">
+   The mysqlnd_ms plugin aims to support a wide variety of MySQL database clusters. Some flavors of
+   MySQL database clusters have built-in methods for partitioning and sharding,
+   which could be transparent to use. The plugin supports the two most
+   common approaches: MySQL Replication table filtering, and Sharding
+   (application based partitioning).
+  </p>
+  <p class="para">
+   MySQL Replication supports partitioning as filters that allow you to
+   create slaves that replicate all or specific databases of the master, or tables.
+   It is then in the responsibility of the application
+   to choose a slave according to the filter rules. You can either use the
+   mysqlnd_ms <em><a href="mysqlnd-ms.plugin-ini-json.html#ini.mysqlnd-ms-plugin-config-v2.filter-node-groups" class="link">node_groups</a></em>
+   filter to manually support this, or use the experimental table filter.
+ </p>
+ <p class="para">
+   Manual partitioning or sharding is supported through the
+   node grouping filter, and SQL hints as of 1.5.0. The node_groups filter
+   lets you assign a symbolic name to a group of master and slave servers.
+   In the example, the master <em>master_0</em> and <em>slave_0</em>
+   form a group with the name <em>Partition_A</em>. It is entirely
+   up to you to decide what makes up a group. For example, you may use node
+   groups for sharding, and use the group names to address shards
+   like <em>Shard_A_Range_0_100</em>.
+ </p>
+ <p class="para">
+   <div class="example" id="example-1871">
+    <p><strong>例1 Cluster node groups</strong></p>
+    <div class="example-contents">
+<div class="inicode"><pre class="inicode">{
+  &quot;myapp&quot;: {
+       &quot;master&quot;: {
+            &quot;master_0&quot;: {
+                &quot;host&quot;: &quot;localhost&quot;,
+                &quot;socket&quot;: &quot;\/tmp\/mysql.sock&quot;
+            }
+        },
+        &quot;slave&quot;: {
+            &quot;slave_0&quot;: {
+                &quot;host&quot;: &quot;simulate_slave_failure&quot;,
+                &quot;port&quot;: &quot;0&quot;
+            },
+            &quot;slave_1&quot;: {
+                &quot;host&quot;: &quot;127.0.0.1&quot;,
+                &quot;port&quot;: 3311
+            }
+        },
+        &quot;filters&quot;: {
+            &quot;node_groups&quot;: {
+                &quot;Partition_A&quot; : {
+                    &quot;master&quot;: [&quot;master_0&quot;],
+                    &quot;slave&quot;: [&quot;slave_0&quot;]
+                }
+            },
+           &quot;roundrobin&quot;: []
+        }
+    }
+}</pre>
+</div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   <div class="example" id="example-1872">
+    <p><strong>例2 Manual partitioning using SQL hints</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">select</span><span style="color: #007700">(</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$msg</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$hint&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;Note:&nbsp;weak&nbsp;test,&nbsp;two&nbsp;connections&nbsp;to&nbsp;two&nbsp;servers&nbsp;may&nbsp;have&nbsp;the&nbsp;same&nbsp;thread&nbsp;id&nbsp;*/<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$sql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sprintf</span><span style="color: #007700">(</span><span style="color: #DD0000">"SELECT&nbsp;CONNECTION_ID()&nbsp;AS&nbsp;_thread,&nbsp;'%s'&nbsp;AS&nbsp;_hint&nbsp;FROM&nbsp;DUAL"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$msg</span><span style="color: #007700">);<br />&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">$hint</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$sql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$hint&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$sql</span><span style="color: #007700">;<br />&nbsp;&nbsp;}<br />&nbsp;&nbsp;if&nbsp;(!(</span><span style="color: #0000BB">$res&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #0000BB">$sql</span><span style="color: #007700">)))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"[%d]&nbsp;%s"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">errno</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">error</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">;<br />&nbsp;&nbsp;}<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;&nbsp;</span><span style="color: #0000BB">$res</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetch_assoc</span><span style="color: #007700">();<br />&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"%d&nbsp;-&nbsp;%s&nbsp;-&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">'_thread'</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">'_hint'</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">$sql</span><span style="color: #007700">);<br />&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #0000BB">$mysqli&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">mysqli</span><span style="color: #007700">(</span><span style="color: #DD0000">"myapp"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"user"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"password"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"database"</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">)<br />&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;Of&nbsp;course,&nbsp;your&nbsp;error&nbsp;handling&nbsp;is&nbsp;nicer...&nbsp;*/<br />&nbsp;&nbsp;</span><span style="color: #007700">die(</span><span style="color: #0000BB">sprintf</span><span style="color: #007700">(</span><span style="color: #DD0000">"[%d]&nbsp;%s\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">mysqli_connect_errno</span><span style="color: #007700">(),&nbsp;</span><span style="color: #0000BB">mysqli_connect_error</span><span style="color: #007700">()));<br /><br /></span><span style="color: #FF8000">/*&nbsp;All&nbsp;slaves&nbsp;allowed&nbsp;*/<br /></span><span style="color: #0000BB">select</span><span style="color: #007700">(</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"slave_0"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">select</span><span style="color: #007700">(</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"slave_1"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;only&nbsp;servers&nbsp;of&nbsp;node&nbsp;group&nbsp;"Partition_A"&nbsp;allowed&nbsp;*/<br /></span><span style="color: #0000BB">select</span><span style="color: #007700">(</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"slave_1"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"/*Partition_A*/"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">select</span><span style="color: #007700">(</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"slave_1"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"/*Partition_A*/"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+6804 - slave_0 - SELECT CONNECTION_ID() AS _thread, &#039;slave1&#039; AS _hint FROM DUAL
+2442 - slave_1 - SELECT CONNECTION_ID() AS _thread, &#039;slave2&#039; AS _hint FROM DUAL
+6804 - slave_0 - /*Partition_A*/SELECT CONNECTION_ID() AS _thread, &#039;slave1&#039; AS _hint FROM DUAL
+6804 - slave_0 - /*Partition_A*/SELECT CONNECTION_ID() AS _thread, &#039;slave1&#039; AS _hint FROM DUAL
+</pre></div>
+    </div>
+   </div>
+  </p>
+ <p class="para">
+   By default, the plugin will use all configured master and slave servers for
+   query execution. But if a query begins with a SQL hint like
+   <em>/*node_group*/</em>, the plugin will only consider the servers
+   listed in the <em>node_group</em> for query execution. Thus,
+   <em>SELECT</em> queries prefixed with <em>/*Partition_A*/</em>
+   will only be executed on <em>slave_0</em>.
+  </p>
+
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="115296""></a>
+  <div class="note">
+   <strong class="user">social at dotmanila dot com</strong>
+   <a href="#115296" class="date">01-Jul-2014 11:11</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+In the example #2, you can use the @@server_id variable combined with connection_id() for a more distinct combination i.e.:<br />
+<br />
+"SELECT CONNECTION_ID(), @@server_id AS _thread, '%s' AS _hint FROM DUAL"</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

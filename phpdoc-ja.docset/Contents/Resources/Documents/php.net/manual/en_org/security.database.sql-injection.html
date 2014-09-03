@@ -1,0 +1,574 @@
+<html><!-- Mirrored from php.net/manual/en/security.database.sql-injection.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:29:02 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>SQL Injection</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="security.database.sql-injection.html">
+ <link rel="shorturl" href="security.database.sql-injection.html">
+ <link rel="alternate" href="security.database.sql-injection.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="security.database.html">
+ <link rel="prev" href="security.database.storage.html">
+ <link rel="next" href="security.errors.html">
+
+ <link rel="alternate" href="security.database.sql-injection.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/security.database.sql-injection.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/security.database.sql-injection.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/security.database.sql-injection.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/security.database.sql-injection.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/security.database.sql-injection.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/security.database.sql-injection.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/security.database.sql-injection.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/security.database.sql-injection.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/security.database.sql-injection.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/security.database.sql-injection.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="security.html">Security</a></li>      <li><a href="security.database.html">Database Security</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="security.database.sql-injection" class="sect1">
+    <h2 class="title">SQL Injection</h2>
+    <p class="simpara">
+     Many web developers are unaware of how SQL queries can be tampered with,
+     and assume that an SQL query is a trusted command. It means that SQL
+     queries are able to circumvent access controls, thereby bypassing standard
+     authentication and authorization checks, and sometimes SQL queries even
+     may allow access to host operating system level commands.
+    </p>
+    <p class="simpara">
+     Direct SQL Command Injection is a technique where an attacker creates or
+     alters existing SQL commands to expose hidden data, or to override valuable
+     ones, or even to execute dangerous system level commands on the database
+     host. This is accomplished by the application taking user input and
+     combining it with static parameters to build an SQL query. The following
+     examples are based on true stories, unfortunately.
+    </p>
+    <p class="para">
+     Owing to the lack of input validation and connecting to the database on
+     behalf of a superuser or the one who can create users, the attacker
+     may create a superuser in your database.
+     </p><div class="example" id="example-353">
+      <p><strong>Example #1 
+       Splitting the result set into pages ... and making superusers
+       (PostgreSQL)
+      </strong></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br><br>$offset&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$argv</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">];&nbsp;</span><span style="color: #FF8000">//&nbsp;beware,&nbsp;no&nbsp;input&nbsp;validation!<br></span><span style="color: #0000BB">$query&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;id,&nbsp;name&nbsp;FROM&nbsp;products&nbsp;ORDER&nbsp;BY&nbsp;name&nbsp;LIMIT&nbsp;20&nbsp;OFFSET&nbsp;</span><span style="color: #0000BB">$offset</span><span style="color: #DD0000">;"</span><span style="color: #007700">;<br></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">pg_query</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$query</span><span style="color: #007700">);<br><br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+      Normal users click on the 'next', 'prev' links where the <var class="varname"><var class="varname">$offset</var></var>
+      is encoded into the <acronym title="Uniform Resource Locator">URL</acronym>. The script expects that the incoming
+      <var class="varname"><var class="varname">$offset</var></var> is a decimal number. However, what if someone tries to
+      break in by appending a <span class="function"><a href="function.urlencode.html" class="function">urlencode()</a></span>'d form of the
+      following to the <acronym title="Uniform Resource Locator">URL</acronym>
+      <div class="informalexample">
+       <div class="example-contents">
+<div class="sqlcode"><pre class="sqlcode">0;
+insert into pg_shadow(usename,usesysid,usesuper,usecatupd,passwd)
+    select 'crack', usesysid, 't','t','crack'
+    from pg_shadow where usename='postgres';
+--</pre>
+</div>
+       </div>
+
+      </div>
+      If it happened, then the script would present a superuser access to him.
+      Note that <em>0;</em> is to supply a valid offset to the
+      original query and to terminate it.
+    <p></p>
+    <blockquote class="note"><p><strong class="note">Note</strong>: 
+     </p><p class="para">
+      It is common technique to force the SQL parser to ignore the rest of the
+      query written by the developer with <em>--</em> which is the
+      comment sign in SQL.
+     </p>
+    <p></p></blockquote>
+    <p class="para">
+     A feasible way to gain passwords is to circumvent your search result pages.
+     The only thing the attacker needs to do is to see if there are any submitted variables
+     used in SQL statements which are not handled properly. These filters can be set
+     commonly in a preceding form to customize <em>WHERE, ORDER BY,
+     LIMIT</em> and <em>OFFSET</em> clauses in <em>SELECT</em>
+     statements. If your database supports the <em>UNION</em> construct,
+     the attacker may try to append an entire query to the original one to list
+     passwords from an arbitrary table. Using encrypted password fields is 
+     strongly encouraged.
+     </p><div class="example" id="example-354">
+      <p><strong>Example #2 
+       Listing out articles ... and some passwords (any database server)
+      </strong></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br><br>$query&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;id,&nbsp;name,&nbsp;inserted,&nbsp;size&nbsp;FROM&nbsp;products<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;size&nbsp;=&nbsp;'</span><span style="color: #0000BB">$size</span><span style="color: #DD0000">'"</span><span style="color: #007700">;<br></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">odbc_exec</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$query</span><span style="color: #007700">);<br><br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+     The static part of the query can be combined with another
+     <em>SELECT</em> statement which reveals all passwords:
+     <div class="informalexample">
+      <div class="example-contents">
+<div class="sqlcode"><pre class="sqlcode">'
+union select '1', concat(uname||'-'||passwd) as name, '1971-01-01', '0' from usertable;
+--</pre>
+</div>
+      </div>
+
+     </div>
+     If this query (playing with the <em>'</em> and
+     <em>--</em>) were assigned to one of the variables used in
+     <var class="varname"><var class="varname">$query</var></var>, the query beast awakened.
+    <p></p>
+    <p class="para">
+     SQL UPDATE's are also susceptible to attack. These queries are
+     also threatened by chopping and appending an entirely new query to it. But
+     the attacker might fiddle with the <em>SET</em> clause. In this
+     case some schema information must be possessed to manipulate the query
+     successfully. This can be acquired by examining the form variable names, or
+     just simply brute forcing. There are not so many naming conventions for
+     fields storing passwords or usernames.
+     </p><div class="example" id="example-355">
+     <p><strong>Example #3 
+      From resetting a password ... to gaining more privileges (any database server)
+     </strong></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>$query&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"UPDATE&nbsp;usertable&nbsp;SET&nbsp;pwd='</span><span style="color: #0000BB">$pwd</span><span style="color: #DD0000">'&nbsp;WHERE&nbsp;uid='</span><span style="color: #0000BB">$uid</span><span style="color: #DD0000">';"</span><span style="color: #007700">;<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+     But a malicious user sumbits the value
+     <em>' or uid like'%admin%</em> to <var class="varname"><var class="varname">$uid</var></var> to
+     change the admin's password, or simply sets <var class="varname"><var class="varname">$pwd</var></var> to
+     <em>hehehe', trusted=100, admin='yes</em> to gain more 
+     privileges. Then, the query will be twisted:
+     <div class="informalexample">
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br><br></span><span style="color: #FF8000">//&nbsp;$uid:&nbsp;'&nbsp;or&nbsp;uid&nbsp;like&nbsp;'%admin%<br></span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"UPDATE&nbsp;usertable&nbsp;SET&nbsp;pwd='...'&nbsp;WHERE&nbsp;uid=''&nbsp;or&nbsp;uid&nbsp;like&nbsp;'%admin%';"</span><span style="color: #007700">;<br><br></span><span style="color: #FF8000">//&nbsp;$pwd:&nbsp;hehehe',&nbsp;trusted=100,&nbsp;admin='yes<br></span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"UPDATE&nbsp;usertable&nbsp;SET&nbsp;pwd='hehehe',&nbsp;trusted=100,&nbsp;admin='yes'&nbsp;WHERE<br>...;"</span><span style="color: #007700">;<br><br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+    <p></p>
+    <p class="para">
+     A frightening example how operating system level commands can be accessed
+     on some database hosts.
+     </p><div class="example" id="example-356">
+     <p><strong>Example #4 Attacking the database hosts operating system (MSSQL Server)</strong></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br><br>$query&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;*&nbsp;FROM&nbsp;products&nbsp;WHERE&nbsp;id&nbsp;LIKE&nbsp;'%</span><span style="color: #0000BB">$prod</span><span style="color: #DD0000">%'"</span><span style="color: #007700">;<br></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mssql_query</span><span style="color: #007700">(</span><span style="color: #0000BB">$query</span><span style="color: #007700">);<br><br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+     If attacker submits the value
+     <em>a%' exec master..xp_cmdshell 'net user test testpass /ADD' --</em>
+     to <var class="varname"><var class="varname">$prod</var></var>, then the <var class="varname"><var class="varname">$query</var></var> will be:
+     <div class="informalexample">
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br><br>$query&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;*&nbsp;FROM&nbsp;products<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;id&nbsp;LIKE&nbsp;'%a%'<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exec&nbsp;master..xp_cmdshell&nbsp;'net&nbsp;user&nbsp;test&nbsp;testpass&nbsp;/ADD'&nbsp;--%'"</span><span style="color: #007700">;<br></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mssql_query</span><span style="color: #007700">(</span><span style="color: #0000BB">$query</span><span style="color: #007700">);<br><br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+     </div>
+     MSSQL Server executes the SQL statements in the batch including a command
+     to add a new user to the local accounts database. If this application
+     were running as <em>sa</em> and the MSSQLSERVER service is
+     running with sufficient privileges, the attacker would now have an
+     account with which to access this machine.
+    <p></p>
+    <blockquote class="note"><p><strong class="note">Note</strong>: 
+     </p><p class="para">
+      Some of the examples above is tied to a specific database server. This
+      does not mean that a similar attack is impossible against other products.
+      Your database server may be similarly vulnerable in another manner.
+     </p>
+    <p></p></blockquote>
+    <p class="para">
+     </p><div class="mediaobject">
+      
+      <div class="imageobject">
+       <img src="images/fa7c5b5f326e3c4a6cc9db19e7edbaf0-xkcd-bobby-tables.png" alt="A worked example of the issues regarding SQL Injection" width="666" height="205">
+      </div>
+     </div>
+     Image courtesy of <a href="http://xkcd.com/327" class="link external">»&nbsp;xkcd</a>
+    <p></p>
+
+    <div class="sect2" id="security.database.avoiding">
+     <h3 class="title">Avoidance Techniques</h3>
+     <p class="simpara">
+      While it remains obvious that an attacker must possess at least some
+      knowledge of the database architecture in order to conduct a successful
+      attack, obtaining this information is often very simple.  For example,
+      if the database is part of an open source or other publicly-available
+      software package with a default installation, this information is
+      completely open and available.  This information may also be divulged
+      by closed-source code - even if it's encoded, obfuscated, or compiled -
+      and even by your very own code through the display of error messages.
+      Other methods include the user of common table and column names.  For
+      example, a login form that uses a 'users' table with column names
+      'id', 'username', and 'password'.
+     </p>
+     <p class="simpara">
+      These attacks are mainly based on exploiting the code not being written
+      with security in mind. Never trust any kind of input, especially that
+      which comes from the client side, even though it comes from a select box,
+      a hidden input field or a cookie. The first example shows that such a
+      blameless query can cause disasters.
+     </p>
+
+     <ul class="itemizedlist">
+      <li class="listitem">
+       <span class="simpara">
+        Never connect to the database as a superuser or as the database owner.
+        Use always customized users with very limited privileges.
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        Use prepared statements with bound variables. They are provided 
+        <a href="pdo.prepared-statements.html" class="link">by PDO</a>,
+        <a href="mysqli.quickstart.prepared-statements.html" class="link">by MySQLi</a>
+        and by other libraries.
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        Check if the given input has the expected data type. <acronym title="PHP: Hypertext Preprocessor">PHP</acronym> has
+        a wide range of input validating functions, from the simplest ones
+        found in <a href="ref.var.html" class="link">Variable Functions</a> and
+        in <a href="ref.ctype.html" class="link">Character Type Functions</a>
+        (e.g. <span class="function"><a href="function.is-numeric.html" class="function">is_numeric()</a></span>, <span class="function"><a href="function.ctype-digit.html" class="function">ctype_digit()</a></span>
+        respectively) and onwards to the
+        <a href="ref.pcre.html" class="link">Perl compatible Regular Expressions</a>
+        support.
+       </span>
+      </li>
+      <li class="listitem">
+       <p class="para">
+        If the application waits for numerical input, consider verifying data
+        with <span class="function"><a href="function.ctype-digit.html" class="function">ctype_digit()</a></span>, or silently change its type
+        using <span class="function"><a href="function.settype.html" class="function">settype()</a></span>, or use its numeric representation
+        by <span class="function"><a href="function.sprintf.html" class="function">sprintf()</a></span>.
+        </p><div class="example" id="example-357">
+         <p><strong>Example #5 A more secure way to compose a query for paging</strong></p>
+         <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br><br>settype</span><span style="color: #007700">(</span><span style="color: #0000BB">$offset</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'integer'</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;id,&nbsp;name&nbsp;FROM&nbsp;products&nbsp;ORDER&nbsp;BY&nbsp;name&nbsp;LIMIT&nbsp;20&nbsp;OFFSET&nbsp;</span><span style="color: #0000BB">$offset</span><span style="color: #DD0000">;"</span><span style="color: #007700">;<br><br></span><span style="color: #FF8000">//&nbsp;please&nbsp;note&nbsp;%d&nbsp;in&nbsp;the&nbsp;format&nbsp;string,&nbsp;using&nbsp;%s&nbsp;would&nbsp;be&nbsp;meaningless<br></span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sprintf</span><span style="color: #007700">(</span><span style="color: #DD0000">"SELECT&nbsp;id,&nbsp;name&nbsp;FROM&nbsp;products&nbsp;ORDER&nbsp;BY&nbsp;name&nbsp;LIMIT&nbsp;20&nbsp;OFFSET&nbsp;%d;"</span><span style="color: #007700">,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$offset</span><span style="color: #007700">);<br><br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+         </div>
+
+        </div>
+       <p></p>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        If the database layer doesn't support binding variables then
+        quote each non numeric user supplied value that is passed to the
+        database with the database-specific string escape function (e.g.
+        <span class="function"><a href="function.mysql-real-escape-string.html" class="function">mysql_real_escape_string()</a></span>,
+        <span class="function"><a href="function.sqlite-escape-string.html" class="function">sqlite_escape_string()</a></span>, etc.).
+        Generic functions like <span class="function"><a href="function.addslashes.html" class="function">addslashes()</a></span> are useful only
+        in a very specific environment (e.g. MySQL in a single-byte character
+        set with disabled <var class="varname"><var class="varname">NO_BACKSLASH_ESCAPES</var></var>) so it is
+        better to avoid them.
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        Do not print out any database specific information, especially
+        about the schema, by fair means or foul. See also <a href="security.errors.html" class="link">Error Reporting</a> and <a href="ref.errorfunc.html" class="link">Error Handling and Logging Functions</a>.
+       </span>
+      </li>
+      <li class="listitem">
+       <span class="simpara">
+        You may use stored procedures and previously defined cursors to abstract
+        data access so that users do not directly access tables or views, but
+        this solution has another impacts.
+       </span>
+      </li>
+     </ul>
+
+     <p class="simpara">
+      Besides these, you benefit from logging queries either within your script
+      or by the database itself, if it supports logging. Obviously, the logging is unable
+      to prevent any harmful attempt, but it can be helpful to trace back which
+      application has been circumvented. The log is not useful by itself, but
+      through the information it contains. More detail is generally better than less.
+     </p>
+    </div>
+   </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="106564">  
+  <a class="name">
+  <strong class="user"><em>Richard dot Corfield at gmail dot com</em></strong></a><div class="date" title="2011-11-18 02:01"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom106564">
+<div class="phpcode"><code><span class="html">
+The best way has got to be parameterised queries. Then it doesn't matter what the user types in the data goes to the database as a value. <br><br>A quick search online shows some possibilities in PHP which is great! Even on this site - <a rel="nofollow" target="_blank">http://php.net/manual/en/pdo.prepared-statements.php</a><br>which also gives the reasons this is good both for security and performance.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="82525">  
+  <a class="name">
+  <strong class="user"><em>valerylourie at gmail dot com</em></strong></a><div class="date" title="2008-04-15 12:23"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom82525">
+<div class="phpcode"><code><span class="html">
+Note that PHP 5 introduced filters that you can use for untrusted user input:<br><a rel="nofollow" target="_blank">http://us.php.net/manual/en/intro.filter.php</a></span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="114899">  
+  <a class="name">
+  <strong class="user"><em>Nikolay Mihaylov</em></strong></a><div class="date" title="2014-04-22 09:29"><strong>4 months ago</strong></div>
+  <div class="text" id="Hcom114899">
+<div class="phpcode"><code><span class="html">
+Because we host several websites, written by different clients, I prepend this file on every php file on my server:<br><br>function armor_1234567890_abc(){<br>&nbsp; &nbsp; foreach($_REQUEST as $key =&gt; $data){<br>&nbsp; &nbsp; &nbsp; &nbsp; $data = strtolower($data);<br><br>&nbsp; &nbsp; &nbsp; &nbsp; if (strpos($data, "base64_") !== false)<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; exit;<br><br>&nbsp; &nbsp; &nbsp; &nbsp; if (strpos($data, "union") !== false &amp;&amp; strpos($data, "select") !== false)<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; exit;<br>&nbsp; &nbsp; }<br>}<br><br>armor_1234567890_abc();</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="68547">  
+  <a class="name">
+  <strong class="user"><em>ctm at etheon dot net</em></strong></a><div class="date" title="2006-08-01 08:39"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom68547">
+<div class="phpcode"><code><span class="html">
+This is a very helpful document from the MySQL site (in .pdf format) :<br><br><a rel="nofollow" target="_blank">http://dev.mysql.com/tech-resources/articles/</a><br>guide-to-php-security-ch3.pdf</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="96695">  
+  <a class="name">
+  <strong class="user"><em>wang dot liang dot com at gmail dot com</em></strong></a><div class="date" title="2010-03-11 03:11"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom96695">
+<div class="phpcode"><code><span class="html">
+another way to stop sql injection when you odbc_*: create two users, <br>one has only select permission, <br>the other has only delete, update, and insert permission, <br><br>so you can use select-only user to call odbc_exec while you don't have to check the sql injection; and you use d/u/i only user to update database by calling odbc_prepare and odbc_execute.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="86324">  
+  <a class="name">
+  <strong class="user"><em>jaimthorn at yahoo dot com</em></strong></a><div class="date" title="2008-10-13 02:32"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom86324">
+<div class="phpcode"><code><span class="html">
+dark dot avenger at email dot cz wrote:<br><br>"I think that easy way to protect against SQL injection is to convert inputted data into binary format, so that whatever input is, in sql query it will consist only of 1s and 0s."<br><br>Unless there is a 1-to-1 correspondence between your inputted data and the characters in your 'binary' format, a SELECT query wouldn't work anymore.&nbsp; Not a binary format, but it makes my point: MIME encoding the text 'Dark Avenger' results in 'RGFyayBBdmVuZ2Vy'.&nbsp; If I wanted to look up anyone with 'Avenger' in his/her name, then 'Avenger' would be encoded as 'QXZlbmdlcg==' which clearly wouldn't result in a hit on 'RGFyayBBdmVuZ2Vy'.<br><br>If there IS a 1-to-1 correspondence, then EITHER your solution only makes it a bit harder to perform a SQL injection (a hacker would have to figure out what mapping was used between the text and the 'binary' format), OR you've come up with simply another way to escaping your data.&nbsp; Either isn't a terribly good solution to the SQL injection problem.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="92744">  
+  <a class="name">
+  <strong class="user"><em>fyrye</em></strong></a><div class="date" title="2009-08-06 03:59"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom92744">
+<div class="phpcode"><code><span class="html">
+Another way to prevent SQL injections as opposed to binary, is to use URL Encoding or Hex Encoding.<br>I haven't seen a complete example of stopping SQL Injections, most refer to use the mysql_real_escape_string function or param statements.<br><br>Several examples at <a rel="nofollow" target="_blank">http://en.wikipedia.org/wiki/SQL_injection</a><br><br>Which will stop \x00, \n, \r, \, ', " and \x1a based attacks.<br>Alot depends on your SQL query structure, though vector level attacks are still viable.<br><br>Other than that build your own regex replacement to protect specific queries that could alter or compromise your database/results for specific sections of your processing pages.<br>Also use unique table and field names. Not just putting _ infront of them...<br>Example, don't store User/s or Customer/s information in a table named the same. <br>And NEVER use the same form field names for database field names.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="114108">  
+  <a class="name">
+  <strong class="user"><em>nemeth dot zsolt dot dr at gmail dot com</em></strong></a><div class="date" title="2014-01-11 05:58"><strong>7 months ago</strong></div>
+  <div class="text" id="Hcom114108">
+<div class="phpcode"><code><span class="html">
+You can avoid the sql injection using views and stored procedures. Never give direct access to tables! Stored procedures can be protected by special parameters (e.g user id + password)</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/security.database.sql-injection.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:29:03 GMT -->
+
+
+</body></html>

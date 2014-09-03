@@ -1,0 +1,323 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>レコードをコレクションから削除する</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="mongocollection.parallelcollectionscan.html">≪ MongoCollection::parallelCollectionScan</a></li>
+      <li style="float: right;"><a href="mongocollection.save.html">MongoCollection::save ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="class.mongocollection.html">MongoCollection</a></li>
+    <li>レコードをコレクションから削除する</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="mongocollection.remove" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">MongoCollection::remove</h1>
+  <p class="verinfo">(PECL mongo &gt;=0.9.0)</p><p class="refpurpose"><span class="refname">MongoCollection::remove</span> &mdash; <span class="dc-title">レコードをコレクションから削除する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-mongocollection.remove-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type"><span class="type bool|array">bool|array</span></span> <span class="methodname"><strong>MongoCollection::remove</strong></span>
+    ([ <span class="methodparam"><span class="type">array</span> <code class="parameter">$criteria</code><span class="initializer"> = array()</span></span>
+   [, <span class="methodparam"><span class="type">array</span> <code class="parameter">$options</code><span class="initializer"> = array()</span></span>
+  ]] )</div>
+
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-mongocollection.remove-parameters">
+  <h3 class="title">パラメータ</h3>    
+  <p class="para">
+   <dl>
+
+    
+     <dt id="mongocollection.delete.criteria">
+      <code class="parameter">criteria</code>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       削除したいレコードの条件。
+      </p>
+     </dd>
+
+       
+    
+     <dt>
+
+      <code class="parameter">options</code>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       削除時のオプションの配列。
+       現在利用可能なオプションは、以下のとおりです。
+       <ul class="itemizedlist">
+        <li class="listitem">
+<p class="para"><em>&quot;w&quot;</em></p>
+<p class="para"><a href="mongo.writeconcerns.html" class="link">WriteConcerns</a> を参照ください。<a href="class.mongoclient.html" class="classname">MongoClient</a> でのデフォルト値は <em>1</em> です。
+</p></li>
+        <li class="listitem">
+         <p class="para">
+          <em>&quot;justOne&quot;</em>
+         </p>
+         <p class="para">
+          <strong><code>TRUE</code></strong> を指定すると、条件にマッチするレコードを 1 件だけ削除します。
+          <strong><code>FALSE</code></strong> を指定したり省略したりした場合は、条件にマッチするすべてのレコードを削除します。
+         </p>
+        </li>
+        <li class="listitem"><p class="para"><em>&quot;fsync&quot;</em></p>
+<p class="para">Boolean 型で、デフォルトは <strong><code>FALSE</code></strong> です。
+ジャーナリングが有効な場合、これは <em>&quot;j&quot;</em> とまったく同じ動きをします。
+ジャーナリングが有効でない場合は、追加をディスク上のデータベースファイルに同期させるまで成功したと見なさないようになります。
+<strong><code>TRUE</code></strong> にすると確認つき書き込みが暗黙のうちに設定され、<em>&quot;w&quot;</em> の値を <em>0</em> にします。
+</p>
+<blockquote class="note"><p><strong class="note">注意</strong>: <span class="simpara">ジャーナリングが有効な場合は、<em>&quot;fsync&quot;</em> のかわりに <em>&quot;j&quot;</em> を使いましょう。
+<em>&quot;fsync&quot;</em> と <em>&quot;j&quot;</em> を同時に指定すると、エラーになります。
+</span></p></blockquote></li>
+        <li class="listitem"><p class="para"><em>&quot;j&quot;</em></p><p class="para">デフォルトは <strong><code>FALSE</code></strong> です。これを指定すると、追加をジャーナルに同期させるまで成功したと見なさないようになります。<strong><code>TRUE</code></strong> にすると確認付き書き込みと見なされ、<em>&quot;w&quot;</em> の設定を <em>0</em> に上書きします。</p><blockquote class="note"><p><strong class="note">注意</strong>: <span class="simpara">このオプションを使っているときにジャーナリングを無効にすると、MongoDB 2.6 以降ではエラーが発生して書き込みに失敗します。古いバージョンのサーバーでは、単純にオプションの指定を無視します。</span></p></blockquote></li>
+        <li class="listitem"><p class="para"><em>&quot;socketTimeoutMS&quot;</em></p><p class="para">このオプションは、ソケット通信の制限時間を、ミリ秒単位で指定します。この時間内にサーバーからの反応がなければ、<a href="class.mongocursortimeoutexception.html" class="classname">MongoCursorTimeoutException</a> をスローします。この場合、サーバー側で書き込み処理が行われたのかどうかを判断できなくなります。<em>-1</em> を指定すると、永遠にブロックします。<a href="class.mongoclient.html" class="classname">MongoClient</a> のデフォルト値は <em>30000</em> (30 秒) です。</p></li>
+        <li class="listitem">
+<p class="para"><em>&quot;w&quot;</em></p>
+<p class="para"><a href="mongo.writeconcerns.html" class="link">WriteConcerns</a> を参照ください。<a href="class.mongoclient.html" class="classname">MongoClient</a> でのデフォルト値は <em>1</em> です。
+</p></li>
+        <li class="listitem"><p class="para"><em>&quot;wTimeoutMS&quot;</em></p><p class="para">このオプションは、<a href="mongo.writeconcerns.html" class="link">書き込み確認</a>を待つ制限時間をミリ秒単位で指定します。これが書き込み操作に適用されるのは、<em>&quot;w&quot;</em> が <em>1</em> より大きい場合のみです。というのも、タイムアウトはレプリケーションに関する機能だからです。この時間内に書き込み確認ができなかった場合は <a href="class.mongocursorexception.html" class="classname">MongoCursorException</a> をスローします。<em>0</em> を指定すると、永遠にブロックし続けます。<a href="class.mongoclient.html" class="classname">MongoClient</a> でのデフォルトは <em>10000</em> ミリ秒 (10 秒) です。</p></li>
+       </ul>
+      </p>
+      <p class="para">
+       以下のオプションは廃止予定です。使ってはいけません。
+       <ul class="itemizedlist">
+        <li class="listitem"><p class="para"><em>&quot;safe&quot;</em></p><p class="para">非推奨。<a href="mongo.writeconcerns.html" class="link">write concern</a> の <em>w</em> オプションを使いましょう。</p></li>
+        <li class="listitem"><p class="para"><em>&quot;timeout&quot;</em></p><p class="para">非推奨。<em>&quot;socketTimeoutMS&quot;</em> のエイリアス。</p></li>
+        <li class="listitem"><p class="para"><em>&quot;wtimeout&quot;</em></p><p class="para">廃止予定。<em>&quot;wTimeoutMS&quot;</em> のエイリアスです。</p></li>
+       </ul>
+      </p>
+     </dd>
+
+       
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-mongocollection.remove-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <em>&quot;w&quot;</em> が設定されていれば、削除の状態を表す配列を返します。
+   それ以外の場合は <strong><code>TRUE</code></strong> を返します。
+  </p>
+  <p class="para">
+   状態を表す配列のフィールドについては <span class="function"><a href="mongocollection.insert.html" class="function">MongoCollection::insert()</a></span> のドキュメントを参照ください。
+  </p>
+ </div>
+
+
+ <div class="refsect1 errors" id="refsect1-mongocollection.remove-errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para"><em>&quot;w&quot;</em> オプションが設定されていて書き込みが失敗した場合に <a href="class.mongocursorexception.html" class="classname">MongoCursorException</a> をスローします。</p><p class="para"><em>&quot;w&quot;</em> オプションの値が 1 より大きく設定されていて、操作の完了までの時間が <var class="varname"><var class="varname">MongoCursor::$timeout</var></var> ミリ秒をこえた場合に <a href="class.mongocursortimeoutexception.html" class="classname">MongoCursorTimeoutException</a> をスローします。サーバー上での操作は止めません。これはクライアント側でのタイムアウトです。<var class="varname"><var class="varname">MongoCollection::$wtimeout</var></var> はミリ秒です。</p>
+ </div>
+
+
+ <div class="refsect1 changelog" id="refsect1-mongocollection.remove-changelog">
+  <h3 class="title">変更履歴</h3>
+  <p class="para">
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th>バージョン</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>1.5.0</td>
+       <td>
+        <p class="para">
+         <em>&quot;wTimeoutMS&quot;</em> オプションが追加されました。これは
+         <em>&quot;wtimeout&quot;</em> を置き換えるものです。
+         <em>&quot;wtimeout&quot;</em> を使うと
+         <strong><code>E_DEPRECATED</code></strong> が発生します。
+        </p>
+        <p class="para">
+         <em>&quot;socketTimeoutMS&quot;</em> オプションが追加されました。これは
+         <em>&quot;timeout&quot;</em> を置き換えるものです。
+         <em>&quot;timeout&quot;</em> を使うと
+         <strong><code>E_DEPRECATED</code></strong> が発生します。
+        </p>
+        <p class="para">
+         <em>&quot;safe&quot;</em> を使うと
+         <strong><code>E_DEPRECATED</code></strong> が発生します。
+        </p>
+       </td>
+      </tr>
+
+      <tr>
+       <td>1.3.4</td>
+       <td><em>&quot;wtimeout&quot;</em> オプションが追加されました。</td>
+      </tr>
+
+      <tr>
+       <td>1.3.0</td>
+       <td>
+        <p class="para"><em>&quot;w&quot;</em> オプションが追加されました。</p>
+        <p class="para">
+         <code class="parameter">options</code> パラメータで、boolean
+         だけを渡して <em>&quot;justOne&quot;</em> を指定することができなくなりました。
+         同じことをするには <em>array(&#039;justOne&#039; =&gt; true)</em>
+         としなければなりません。
+        </p>
+       </td>
+      </tr>
+
+      <tr>
+       <td>1.2.11</td>
+       <td>
+        <code class="parameter">options</code> が <span class="type"><span class="type scalar">scalar</span></span> のときに <strong><code>E_DEPRECATED</code></strong> を発行するようになりました。
+       </td>
+      </tr>
+
+      <tr>
+       <td>1.2.0</td>
+       <td><em>&quot;timeout&quot;</em> オプションが追加されました。</td>
+      </tr>
+
+      <tr>
+       <td>1.0.11</td>
+       <td>
+        <em>&quot;safe&quot;</em> が設定されている場合は、&quot;not master&quot; エラーで接続を切断するようになりました。
+       </td>
+      </tr>
+
+      <tr>
+       <td>1.0.9</td>
+       <td>
+        <p class="para">
+         <em>&quot;safe&quot;</em> オプションに整数値がわたせるようになりました (以前は boolean のみでした)。
+        </p>
+        <p class="para">
+         <em>&quot;fsync&quot;</em> オプションが追加されました。
+        </p>
+        <p class="para">
+         <em>&quot;safe&quot;</em> オプションを使っている場合の返り値の型が配列に変わりました。
+         配列にはエラー情報が含まれています。<em>&quot;safe&quot;</em> オプションを使わない場合は、今までどおり
+         boolean のままです。
+        </p>
+       </td>
+      </tr>
+
+      <tr>
+       <td>1.0.5</td>
+       <td>
+        二番目のパラメータがオプションの配列に変わりました。1.0.5
+        より前のバージョンでは、二番目のパラメータは <em>&quot;safe&quot;</em>
+        オプションを表す boolean 値でした。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-mongocollection.remove-examples">
+  <h3 class="title">例</h3>
+  <div class="example" id="example-1526">
+   <p><strong>例1 <span class="function"><strong>MongoCollection::remove()</strong></span> で justOne を使う例</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$radioactive&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$db</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">radioactive</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;プルトニウムがあとどれだけ残っているかを数えます<br /></span><span style="color: #0000BB">$remaining&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$radioactive</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">count</span><span style="color: #007700">(array(</span><span style="color: #DD0000">'type'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">94</span><span style="color: #007700">));<br /><br /></span><span style="color: #0000BB">$halflife&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$remaining</span><span style="color: #007700">/</span><span style="color: #0000BB">2</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;それを半減させます<br /></span><span style="color: #007700">while&nbsp;(</span><span style="color: #0000BB">$halflife&nbsp;</span><span style="color: #007700">&gt;&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$radioactive</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">remove</span><span style="color: #007700">(array(</span><span style="color: #DD0000">'type'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">94</span><span style="color: #007700">),&nbsp;array(</span><span style="color: #DD0000">"justOne"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">));<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$halflife</span><span style="color: #007700">--;<br />}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-mongocollection.remove-seealso">
+  <h3 class="title">参考</h3>
+  <ul class="simplelist">
+   <li class="member"><span class="function"><a href="mongocollection.insert.html" class="function" rel="rdfs-seeAlso">MongoCollection::insert()</a> - ドキュメントをコレクションに追加する</span></li>
+   <li class="member"><span class="function"><a href="mongocollection.update.html" class="function" rel="rdfs-seeAlso">MongoCollection::update()</a> - 指定した条件にもとづいてレコードを更新する</span></li>
+   <li class="member">MongoDB コアドキュメントの <a href="http://docs.mongodb.org/manual/tutorial/remove-documents/" class="link external" title="Link : http://docs.mongodb.org/manual/tutorial/remove-documents/">&raquo;&nbsp;remove</a></li>
+  </ul>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="111152""></a>
+  <div class="note">
+   <strong class="user">konstantin718 at gmail dot com</strong>
+   <a href="#111152" class="date">21-Jan-2013 12:17</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you try to remove a document that doesn't exist, remove() won't throw an exception.<br />
+<br />
+Even if 'w' is set to 1, remove() will return an array similar to this:<br />
+<br />
+Array ( [n] =&gt; 0 [connectionId] =&gt; 10726 [err] =&gt; [ok] =&gt; 1 ) <br />
+<br />
+So, in order to see if a remove() was really successful, you need to look at [n] key.&nbsp; If it's 0, that means the remove() did not remove any documents.<br />
+<br />
+If remove() is successful, [n] will be &gt; 0.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="95418""></a>
+  <div class="note">
+   <strong class="user">David Winter</strong>
+   <a href="#95418" class="date">02-Jan-2010 02:55</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+To remove a document based on its ID, you need to ensure that you pass the ID as a MongoID object rather than just a string:<br />
+<br />
+<span class="default">&lt;?php<br />
+$id </span><span class="keyword">= </span><span class="string">'4b3f272c8ead0eb19d000000'</span><span class="keyword">;<br />
+<br />
+</span><span class="comment">// will not work:<br />
+</span><span class="default">$collection</span><span class="keyword">-&gt;</span><span class="default">remove</span><span class="keyword">(array(</span><span class="string">'_id' </span><span class="keyword">=&gt; </span><span class="default">$id</span><span class="keyword">), </span><span class="default">true</span><span class="keyword">);<br />
+<br />
+</span><span class="comment">// will work:<br />
+</span><span class="default">$collection</span><span class="keyword">-&gt;</span><span class="default">remove</span><span class="keyword">(array(</span><span class="string">'_id' </span><span class="keyword">=&gt; new </span><span class="default">MongoId</span><span class="keyword">(</span><span class="default">$id</span><span class="keyword">)), </span><span class="default">true</span><span class="keyword">);<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

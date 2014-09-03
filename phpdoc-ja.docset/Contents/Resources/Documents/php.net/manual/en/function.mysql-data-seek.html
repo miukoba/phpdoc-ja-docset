@@ -1,0 +1,433 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>内部的な結果ポインタを移動する</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="function.mysql-create-db.html">≪ mysql_create_db</a></li>
+      <li style="float: right;"><a href="function.mysql-db-name.html">mysql_db_name ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="ref.mysql.html">MySQL 関数</a></li>
+    <li>内部的な結果ポインタを移動する</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="function.mysql-data-seek" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mysql_data_seek</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose"><span class="refname">mysql_data_seek</span> &mdash; <span class="dc-title">内部的な結果ポインタを移動する</span></p>
+
+ </div>
+
+ <div id="function.mysql-data-seek-refsynopsisdiv">
+  <div class="warning"><strong class="warning">警告</strong>
+   <p class="para">
+この拡張モジュールは PHP 5.5.0 で非推奨になりました。将来のバージョンで削除される予定です。
+<a href="book.mysqli.html" class="link">MySQLi</a> あるいは
+<a href="ref.pdo-mysql.html" class="link">PDO_MySQL</a> を使うべきです。詳細な情報は
+<a href="mysqlinfo.api.choosing.html" class="link">MySQL: API の選択</a> や
+<a href="faq.databases.html#faq.databases.mysql.deprecated" class="link">それに関連する FAQ</a> を参照ください。
+この関数の代替として、これらが使えます。</p>
+   <ul class="simplelist">
+    <li class="member"><span class="function"><a href="mysqli-result.data-seek.html" class="function">mysqli_data_seek()</a></span></li>
+    <li class="member"><strong><code>PDO::FETCH_ORI_ABS</code></strong></li>
+   </ul>
+  </div>
+ </div>
+
+ <div class="refsect1 description" id="refsect1-function.mysql-data-seek-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>mysql_data_seek</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$result</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$row_number</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   <span class="function"><strong>mysql_data_seek()</strong></span> は、指定した結果 ID
+   （result_identifier）が指す MySQL 結果の内部ポインタが指定した行番号
+   （row_number）を指すように移動します。
+   この後、たとえば <span class="function"><a href="function.mysql-fetch-assoc.html" class="function">mysql_fetch_assoc()</a></span> のような
+   MySQL のフェッチ関数をコールした場合には、
+   ここで指定した行の内容が返されます。
+  </p>
+  <p class="para">
+   <code class="parameter">row_number</code> は 0 から始まります。
+   <code class="parameter">row_number</code> は 0 から
+   <span class="function"><a href="function.mysql-num-rows.html" class="function">mysql_num_rows()</a></span> - 1 までの範囲にあるべきです。
+   しかし、もし結果セットが空（<span class="function"><a href="function.mysql-num-rows.html" class="function">mysql_num_rows()</a></span> == 0）
+   の場合、0 へのシークは
+   <a href="" class="link">E_WARNING</a>
+   を発生して失敗し、<span class="function"><strong>mysql_data_seek()</strong></span> は <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 parameters" id="refsect1-function.mysql-data-seek-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    <dt>
+<code class="parameter">
+result</code></dt>
+<dd>
+<p class="para">評価された結果 <span class="type"><span class="type リソース">リソース</span></span>。
+この結果は、<span class="function"><a href="function.mysql-query.html" class="function">mysql_query()</a></span> のコールにより得られたものです。</p>
+</dd>
+
+    
+     <dt>
+<code class="parameter">row_number</code></dt>
+
+     <dd>
+
+      <p class="para">
+       新しく結果ポインタを設定したい行番号です。
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.mysql-data-seek-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に <strong><code>TRUE</code></strong> を、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.mysql-data-seek-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-1650">
+    <p><strong>例1 <span class="function"><strong>mysql_data_seek()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$link&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysql_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'localhost'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'mysql_user'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'mysql_password'</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$link</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;die(</span><span style="color: #DD0000">'接続できませんでした:&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">mysql_error</span><span style="color: #007700">());<br />}<br /></span><span style="color: #0000BB">$db_selected&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysql_select_db</span><span style="color: #007700">(</span><span style="color: #DD0000">'sample_db'</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$db_selected</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;die(</span><span style="color: #DD0000">'データベースを選択できませんでした:&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">mysql_error</span><span style="color: #007700">());<br />}<br /></span><span style="color: #0000BB">$query&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'SELECT&nbsp;last_name,&nbsp;first_name&nbsp;FROM&nbsp;friends'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysql_query</span><span style="color: #007700">(</span><span style="color: #0000BB">$query</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$result</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;die(</span><span style="color: #DD0000">'クエリは失敗しました:&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">mysql_error</span><span style="color: #007700">());<br />}<br /></span><span style="color: #FF8000">/*&nbsp;行を逆順で取得する&nbsp;*/<br /></span><span style="color: #007700">for&nbsp;(</span><span style="color: #0000BB">$i&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysql_num_rows</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">)&nbsp;-&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;&nbsp;</span><span style="color: #0000BB">$i&nbsp;</span><span style="color: #007700">&gt;=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;&nbsp;</span><span style="color: #0000BB">$i</span><span style="color: #007700">--)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!</span><span style="color: #0000BB">mysql_data_seek</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$i</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"行&nbsp;</span><span style="color: #0000BB">$i</span><span style="color: #DD0000">&nbsp;をシークできません:&nbsp;"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">mysql_error</span><span style="color: #007700">()&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(!(</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">mysql_fetch_assoc</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">)))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">'last_name'</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">'&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #DD0000">'first_name'</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"&lt;br&nbsp;/&gt;\n"</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #0000BB">mysql_free_result</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes" id="refsect1-function.mysql-data-seek-notes">
+  <h3 class="title">注意</h3>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    <span class="function"><strong>mysql_data_seek()</strong></span> は、
+    <span class="function"><a href="function.mysql-query.html" class="function">mysql_query()</a></span> との組み合わせでのみ利用可能です。
+    <span class="function"><a href="function.mysql-unbuffered-query.html" class="function">mysql_unbuffered_query()</a></span> と組み合わせることはできません。
+   </p>
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.mysql-data-seek-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><span class="function"><a href="function.mysql-query.html" class="function" rel="rdfs-seeAlso">mysql_query()</a> - MySQL クエリを送信する</span></li>
+    <li class="member"><span class="function"><a href="function.mysql-num-rows.html" class="function" rel="rdfs-seeAlso">mysql_num_rows()</a> - 結果における行の数を得る</span></li>
+    <li class="member"><span class="function"><a href="function.mysql-fetch-row.html" class="function" rel="rdfs-seeAlso">mysql_fetch_row()</a> - 結果を添字配列として取得する</span></li>
+    <li class="member"><span class="function"><a href="function.mysql-fetch-assoc.html" class="function" rel="rdfs-seeAlso">mysql_fetch_assoc()</a> - 連想配列として結果の行を取得する</span></li>
+    <li class="member"><span class="function"><a href="function.mysql-fetch-array.html" class="function" rel="rdfs-seeAlso">mysql_fetch_array()</a> - 連想配列、添字配列、またはその両方として結果の行を取得する</span></li>
+    <li class="member"><span class="function"><a href="function.mysql-fetch-object.html" class="function" rel="rdfs-seeAlso">mysql_fetch_object()</a> - 結果の行をオブジェクトとして取得する</span></li>
+   </ul>
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="106668""></a>
+  <div class="note">
+   <strong class="user">saeed at photobookworldwide dot com</strong>
+   <a href="#106668" class="date">26-Nov-2011 03:30</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Here, you can find the current pointer of selected row easily:
+<br />
+
+<br />
+<span class="default">&lt;?php
+<br />
+</span><span class="comment">//selected row with id=4
+<br />
+</span><span class="default">$id&nbsp; &nbsp; </span><span class="keyword">=&nbsp; &nbsp; </span><span class="string">"4"</span><span class="keyword">;
+<br />
+
+<br />
+</span><span class="default">$result&nbsp; &nbsp; </span><span class="keyword">=&nbsp; &nbsp; </span><span class="default">mysql_query</span><span class="keyword">(</span><span class="string">"select * from jos_components"</span><span class="keyword">);
+<br />
+
+<br />
+</span><span class="default">$num&nbsp; &nbsp; </span><span class="keyword">=&nbsp; &nbsp; </span><span class="default">mysql_num_rows</span><span class="keyword">(</span><span class="default">$result</span><span class="keyword">);
+<br />
+
+<br />
+for(</span><span class="default">$i</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">;</span><span class="default">$i</span><span class="keyword">&lt;</span><span class="default">$num</span><span class="keyword">;</span><span class="default">$i</span><span class="keyword">++){
+<br />
+&nbsp;&nbsp;&nbsp; 
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">mysql_data_seek</span><span class="keyword">(</span><span class="default">$result</span><span class="keyword">,</span><span class="default">$i</span><span class="keyword">);
+<br />
+&nbsp;
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$row&nbsp; &nbsp; </span><span class="keyword">=&nbsp; &nbsp; </span><span class="default">mysql_fetch_assoc</span><span class="keyword">(</span><span class="default">$result</span><span class="keyword">);
+<br />
+&nbsp;&nbsp;&nbsp; 
+<br />
+&nbsp;&nbsp;&nbsp; if(</span><span class="default">$row</span><span class="keyword">[</span><span class="string">'id'</span><span class="keyword">]&nbsp; &nbsp; ==&nbsp; &nbsp; </span><span class="default">$id</span><span class="keyword">){
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; 
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$pointer&nbsp; &nbsp; </span><span class="keyword">=&nbsp; &nbsp; </span><span class="default">$i</span><span class="keyword">;
+<br />
+&nbsp;&nbsp;&nbsp; }
+<br />
+
+<br />
+&nbsp;
+<br />
+}
+<br />
+
+<br />
+</span><span class="comment">// current pointer for selected row
+<br />
+</span><span class="keyword">echo </span><span class="default">$pointer</span><span class="keyword">;
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="85412""></a>
+  <div class="note">
+   <strong class="user">Daniel</strong>
+   <a href="#85412" class="date">28-Aug-2008 11:59</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Here is a simple function to "peek" at the position of the internal pointer in a query result:
+<br />
+
+<br />
+<span class="default">&lt;?php
+<br />
+</span><span class="keyword">function </span><span class="default">mysql_pointer_position</span><span class="keyword">(</span><span class="default">$result_set</span><span class="keyword">) {
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$num_rows </span><span class="keyword">= </span><span class="default">mysql_num_rows</span><span class="keyword">(</span><span class="default">$result_set</span><span class="keyword">);
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$i </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; while(</span><span class="default">$result </span><span class="keyword">= </span><span class="default">mysql_fetch_array</span><span class="keyword">(</span><span class="default">$result_set</span><span class="keyword">)) {
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$i</span><span class="keyword">++;
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$pointer_position </span><span class="keyword">= </span><span class="default">$num_rows </span><span class="keyword">- </span><span class="default">$i</span><span class="keyword">;
+<br />
+
+<br />
+</span><span class="comment">//Return pointer to original position
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if(</span><span class="default">$pointer_position </span><span class="keyword">&lt;= </span><span class="default">$num_rows </span><span class="keyword">- </span><span class="default">1</span><span class="keyword">) {
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">mysql_data_seek</span><span class="keyword">(</span><span class="default">$result_set</span><span class="keyword">, </span><span class="default">$pointer_position</span><span class="keyword">);
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">$pointer_position</span><span class="keyword">;
+<br />
+&nbsp;&nbsp;&nbsp; }
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="66814""></a>
+  <div class="note">
+   
+   <a href="#66814" class="date">30-May-2006 10:52</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+A helpful note about the 'resource' data type.<br />
+<br />
+Since the 'resource' variable is pointing to a row in a result set at any given time, you can think of it as being passed to this function by reference every time you pass it or assign it to a variable.<br />
+<br />
+&lt;?<br />
+<br />
+$sql = "SELECT * from &lt;table&gt;";<br />
+$result = mysql_query($sql);<br />
+$temp_result = $result;<br />
+<br />
+while ($row = mysql_fetch_assoc($temp_result)) {<br />
+&nbsp;&nbsp;&nbsp; // do stuff with $row<br />
+}<br />
+<br />
+while ($row = mysql_fetch_assoc($result)) {<br />
+&nbsp;&nbsp;&nbsp; // This code will never run because the 'resource' variable is pointing past the end of the result set,<br />
+&nbsp;&nbsp;&nbsp; // even though it was *not* assigned by reference to $result2.<br />
+}<br />
+<br />
+?&gt;<br />
+<br />
+Therefore, the following snipits are functionally identical:<br />
+<br />
+&lt;?<br />
+<br />
+// Start snipit 1<br />
+<br />
+$sql = "SELECT * from &lt;table&gt;";<br />
+$result = mysql_query($sql);<br />
+<br />
+while ($row = mysql_fetch_assoc($result)) {<br />
+&nbsp;&nbsp;&nbsp; // do stuff with $row<br />
+}<br />
+<br />
+mysql_data_seek($result, 0);<br />
+<br />
+while ($row = mysql_fetch_assoc($result)) {<br />
+&nbsp;&nbsp;&nbsp; // do other stuff with $row<br />
+}<br />
+<br />
+// Start snipit 2<br />
+<br />
+$sql = "SELECT * from &lt;table&gt;";<br />
+$result = mysql_query($sql);<br />
+$temp_result = $result;<br />
+<br />
+while ($row = mysql_fetch_assoc($temp_result)) {<br />
+&nbsp;&nbsp;&nbsp; // do stuff with $row<br />
+}<br />
+<br />
+mysql_data_seek($result, 0);<br />
+<br />
+while ($row = mysql_fetch_assoc($temp_result)) {<br />
+&nbsp;&nbsp;&nbsp; // do other stuff with $row<br />
+}<br />
+<br />
+?&gt;</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="52095""></a>
+  <div class="note">
+   <strong class="user">arturo_b at hotmail dot com</strong>
+   <a href="#52095" class="date">21-Apr-2005 05:53</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+hello, this script would be easy to understand for those that are novice in php whose want to understand about this function:<br />
+<br />
+the table "user" have 2 columns "id" and "name".<br />
+"user" content:<br />
+position 0: "id"=195342481 "name"='Arthur'<br />
+position 1: "id"=179154675 "name"='John'<br />
+&gt;&gt;position 2&lt;&lt;: "id"=157761949 "name"='April' &gt;&gt;third row&lt;&lt;<br />
+position 3: "id"=124492684 "name"='Tammy'<br />
+position 4: "id"=191346457 "name"='Mike'<br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp; mysql_connect</span><span class="keyword">(</span><span class="string">"localhost"</span><span class="keyword">, </span><span class="string">"root"</span><span class="keyword">)<br />
+&nbsp; </span><span class="default">mysql_select_db</span><span class="keyword">(</span><span class="string">"test"</span><span class="keyword">);<br />
+&nbsp; </span><span class="default">$sql </span><span class="keyword">= </span><span class="default">mysql_query</span><span class="keyword">(</span><span class="string">"select * from user"</span><span class="keyword">);<br />
+&nbsp; </span><span class="default">mysql_data_seek</span><span class="keyword">(</span><span class="default">$sql</span><span class="keyword">, </span><span class="default">2</span><span class="keyword">);<br />
+&nbsp; echo </span><span class="string">"&lt;table border=1&gt;"</span><span class="keyword">;<br />
+&nbsp; while (</span><span class="default">$row </span><span class="keyword">= </span><span class="default">mysql_fetch_row</span><span class="keyword">(</span><span class="default">$sql</span><span class="keyword">)){<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="string">"&lt;tr&gt;&lt;td&gt;</span><span class="default">$row</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">]</span><span class="string">&lt;/td&gt;&lt;td&gt;</span><span class="default">$row</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">]</span><span class="string">&lt;/td&gt;&lt;/tr&gt;"</span><span class="keyword">;<br />
+&nbsp; }<br />
+&nbsp; echo </span><span class="string">"&lt;/tabla&gt;"</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+explanation:<br />
+mysql_data_seek move internal result pointer to the third row of table user. Thus mysql_fetch_row will begin by april?s row.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="48017""></a>
+  <div class="note">
+   <strong class="user">b.steinbrink at g m x dot de</strong>
+   <a href="#48017" class="date">09-Dec-2004 08:09</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+to kennethnash1134 at yahoo dot com<br />
+<br />
+your loop can be done like this as well and i guess this is faster:<br />
+<br />
+$r=mysql_query("select user,id,ip from accounts limit 10");<br />
+<br />
+unset($users); // Just to be sure<br />
+while($users[] = mysql_fetch_row);<br />
+array_pop($users); // Drop the last entry which is FALSE</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="41002""></a>
+  <div class="note">
+   <strong class="user">kennethnash1134 at yahoo dot com</strong>
+   <a href="#41002" class="date">26-Mar-2004 09:12</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+/*here is a nice function for converting a mysql result row set into a 2d array, a time saver if need small data from several rows, saves you from having to do Alot of queries... would be nice to have this built into PHP future versions :) */<br />
+<br />
+// simple example query<br />
+$r=mysql_query("select user,id,ip from accounts limit 10");<br />
+<br />
+//starts the for loop, using mysql_num_rows() to count total<br />
+//amount of rows returned by $r<br />
+for($i=0; $i&lt;mysql_num_rows($r); $i++){<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; //advances the row in the mysql resource $r<br />
+&nbsp;&nbsp;&nbsp; mysql_data_seek($r,$i);<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; //assigns the array keys, $users[row][field]<br />
+&nbsp;&nbsp;&nbsp; $users[$i]=mysql_fetch_row($r);<br />
+}<br />
+<br />
+//simple, hope someone can use it :)<br />
+// -Kenneth Nash</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

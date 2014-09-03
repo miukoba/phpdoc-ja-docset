@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>項目の値を増やす</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="memcache.getversion.html">≪ Memcache::getVersion</a></li>
+      <li style="float: right;"><a href="memcache.pconnect.html">Memcache::pconnect ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="class.memcache.html">Memcache</a></li>
+    <li>項目の値を増やす</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="memcache.increment" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">Memcache::increment</h1>
+  <p class="verinfo">(PECL memcache &gt;= 0.2.0)</p><p class="refpurpose"><span class="refname">Memcache::increment</span> &mdash; <span class="dc-title">項目の値を増やす</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-memcache.increment-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">int</span> <span class="methodname"><strong>Memcache::increment</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$key</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$value</code><span class="initializer"> = 1</span></span>
+  ] )</div>
+
+
+  <p class="para rdfs-comment">
+   <span class="function"><strong>Memcache::increment()</strong></span> は、項目の値を
+   <code class="parameter">value</code> だけ増やします。
+   もし <code class="parameter">key</code> に対応する値が数値ではなく、かつ
+   数値に変換できなかった場合は、その新しい値は
+   <code class="parameter">value</code> となります。
+   <span class="function"><strong>Memcache::increment()</strong></span> は、指定した項目が
+   存在しない場合に項目を作成することは
+   <em class="emphasis">ありません</em>。
+   <blockquote class="note"><p><strong class="note">注意</strong>: 
+    <p class="para">
+     圧縮して格納されている項目に対して
+     <span class="function"><strong>Memcache::increment()</strong></span> を使用しないでください。
+     なぜなら、それ以降の <span class="function"><a href="memcache.get.html" class="function">Memcache::get()</a></span> のコールが
+     失敗してしまうからです。
+    </p>
+   </p></blockquote>
+   <span class="function"><strong>memcache_increment()</strong></span> 関数を使用することも可能です。
+  </p>
+
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-memcache.increment-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+<code class="parameter">key</code></dt>
+
+     <dd>
+
+      <p class="para">
+       値を増やす項目のキー。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">value</code></dt>
+
+     <dd>
+
+      <p class="para">
+       項目の値を <code class="parameter">value</code> だけ増やします。
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-memcache.increment-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   項目の新しい値か、失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-memcache.increment-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-4525">
+    <p><strong>例1 <span class="function"><strong>Memcache::increment()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">/*&nbsp;手続き型の&nbsp;API&nbsp;*/<br /></span><span style="color: #0000BB">$memcache_obj&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">memcache_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'memcache_host'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">11211</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">/*&nbsp;カウンタを&nbsp;2&nbsp;増やします&nbsp;*/<br /></span><span style="color: #0000BB">$current_value&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">memcache_increment</span><span style="color: #007700">(</span><span style="color: #0000BB">$memcache_obj</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'counter'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">/*&nbsp;オブジェクト指向の&nbsp;API&nbsp;*/<br /></span><span style="color: #0000BB">$memcache_obj&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Memcache</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$memcache_obj</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'memcache_host'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">11211</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">/*&nbsp;カウンタを&nbsp;3&nbsp;増やします&nbsp;*/<br /></span><span style="color: #0000BB">$current_value&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$memcache_obj</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">increment</span><span style="color: #007700">(</span><span style="color: #DD0000">'counter'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-memcache.increment-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><span class="function"><a href="memcache.decrement.html" class="function" rel="rdfs-seeAlso">Memcache::decrement()</a> - 項目の値を減らす</span></li>
+    <li class="member"><span class="function"><a href="memcache.replace.html" class="function" rel="rdfs-seeAlso">Memcache::replace()</a> - 既存項目の値を置換する</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="104303""></a>
+  <div class="note">
+   <strong class="user">perroazul64 at gmail dot com</strong>
+   <a href="#104303" class="date">07-Jun-2011 07:46</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+When the key doesn't exist it may return either bool(false) or int(0) (I get different return values on different servers), so be careful if you check for something like ($memcache-&gt;increment($key) === false).</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="91892""></a>
+  <div class="note">
+   <strong class="user">ian at blip dot fm</strong>
+   <a href="#91892" class="date">01-Jul-2009 01:28</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Be careful to use Memcache::decrement() and never Memcache::increment() with a negative value.
+<br />
+
+<br />
+The check that prevents Memcache::decrement() from going negative is not in place with Memcache::increment(), so you can end up with a garbage integer on the order of 18 quintillion stored in place of the expected value.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="90864""></a>
+  <div class="note">
+   <strong class="user">jay dot paroline at escapemg dot com</strong>
+   <a href="#90864" class="date">13-May-2009 03:34</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Instead of checking the value before incrementing, you can simply ADD it instead before incrementing each time. If it's already there, your ADD is ignored, and if it's not there, it's set.
+<br />
+
+<br />
+If you add($memcacheKey, 0) and then increment($memcacheKey, 1) in that order, you avoid all possible race conditions. If two threads are running this code concurrently, you will always end up with your value being 2 no matter which order the threads execute in.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="90863""></a>
+  <div class="note">
+   <strong class="user">Anonymous</strong>
+   <a href="#90863" class="date">13-May-2009 03:16</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Please note:
+<br />
+If the key does not exist, memcache does NOT return false (as you might expect) but 0.
+<br />
+You won't get any hint that the key did not exist and still does not exist and that nothing was incremented.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="53877""></a>
+  <div class="note">
+   
+   <a href="#53877" class="date">15-Jun-2005 09:54</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+if no variable exists, even if you specify an increment value, the result will be null.
+<br />
+
+<br />
+if you're using this for a mutex, chk if its null, and if so, then ADD the variable.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

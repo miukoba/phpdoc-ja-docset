@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>このカーソルをタイムアウトさせるかどうかを設定する</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="mongocursor.hint.html">≪ MongoCursor::hint</a></li>
+      <li style="float: right;"><a href="mongocursor.info.html">MongoCursor::info ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="class.mongocursor.html">MongoCursor</a></li>
+    <li>このカーソルをタイムアウトさせるかどうかを設定する</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="mongocursor.immortal" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">MongoCursor::immortal</h1>
+  <p class="verinfo">(PECL mongo &gt;=1.0.1)</p><p class="refpurpose"><span class="refname">MongoCursor::immortal</span> &mdash; <span class="dc-title">このカーソルをタイムアウトさせるかどうかを設定する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-mongocursor.immortal-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type"><a href="class.mongocursor.html" class="type MongoCursor">MongoCursor</a></span> <span class="methodname"><strong>MongoCursor::immortal</strong></span>
+    ([ <span class="methodparam"><span class="type">bool</span> <code class="parameter">$liveForever</code><span class="initializer"> = true</span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+   サーバー上で一定の時間何もしない状態が続けば、デフォルトではカーソルは &quot;死にます&quot;。
+   一般的に、これは期待通りの挙動です。
+   すべての結果をクライアントに送信し終えると、データベースはカーソルの後始末をします。
+   しかし、もしクライアントが結果をすべて要求しなければ、
+   カーソルはそこに残り続けてリソースを消費します。
+   したがって、数秒経過するとカーソルは &quot;タイムアウト&quot;
+   し、クライアントは必要な情報をすべて取得し終えたと見なしてリソースの後始末を始めます。
+  </p>
+  <p class="para">
+   何らかの理由でカーソルを長時間そのままで置いておきたい場合は、
+   このメソッドを使ってタイムアウトしないように設定します。
+   しかし、もしカーソルを死なないようにするのなら、結果をすべて
+   (あるいは、少なくとも <span class="methodname"><a href="mongocursor.dead.html" class="methodname">MongoCursor::dead()</a></span> が <strong><code>TRUE</code></strong> を返すようになるまで)
+   反復処理しなければなりません。
+   そうしないとカーソルが<em class="emphasis">いつまでも</em>データベース上に残り続け、リソースを浪費してしまいます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-mongocursor.immortal-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+
+      <code class="parameter">liveForever</code>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       カーソルを不死にするかどうか。
+      </p>
+     </dd>
+
+       
+   </dl>
+
+  </p>
+ </div>
+ 
+
+ <div class="refsect1 returnvalues" id="refsect1-mongocursor.immortal-returnvalues">
+  <h3 class="title">返り値</h3>  
+  <p class="para">
+   このカーソルを返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 errors" id="refsect1-mongocursor.immortal-errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">
+   このカーソルの反復処理が始まっている場合に <a href="class.mongocursorexception.html" class="classname">MongoCursorException</a>
+   をスローします。
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="112645""></a>
+  <div class="note">
+   <strong class="user">fastest963 at gmail dot com</strong>
+   <a href="#112645" class="date">09-Jul-2013 09:36</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Calling immortal(false), in order to remove the NO_TIMEOUT flag from the cursor, seems to crash with "Fatal error: Exception thrown without a stack frame in Unknown on line 0". I'm running PHP 5.2.17 and MongoDB driver 1.1.4.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="107521""></a>
+  <div class="note">
+   <strong class="user">iknox {at} info.com</strong>
+   <a href="#107521" class="date">15-Feb-2012 07:48</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note:: There there is an important distinction between timeout and immortal!<br />
+Timeout indicates the time to wait on the _client_ side while immortal sets the cursor on the server side.<br />
+<br />
+It is especially useful for large result sets in sharded environments.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>その他の変更</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="migration54.ini.html">≪ INI ファイルの扱いに関する変更</a></li>
+      <li style="float: right;"><a href="migration53.html">PHP 5.2.x から PHP 5.3.x への移行 ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="migration54.html">PHP 5.3.x から PHP 5.4.x への移行</a></li>
+    <li>その他の変更</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="migration54.other" class="section">
+  <h2 class="title">その他の変更</h2>
+  <ul class="itemizedlist">
+   <li class="listitem">
+    <span class="simpara">
+     <span class="function"><a href="function.htmlspecialchars.html" class="function">htmlspecialchars()</a></span> および <span class="function"><a href="function.htmlentities.html" class="function">htmlentities()</a></span>
+     のデフォルトの文字セットが <em>ISO-8859-1</em>
+     から <em>UTF-8</em> に変わりました。出力文字セットを
+     <a href="ini.core.html#ini.default-charset" class="link">default_charset</a>
+     で変更しても、htmlspecialchars/htmlentities のデフォルトには影響が及ばないことに注意しましょう。
+     この変更を反映させるには、
+     <span class="function"><a href="function.htmlspecialchars.html" class="function">htmlspecialchars()</a></span>/<span class="function"><a href="function.htmlentities.html" class="function">htmlentities()</a></span>
+     をコールするときに、エンコーディングとして &quot;&quot; (空文字列) を指定しなければなりません。
+     ただ、一般にこの方法はおすすめできません。
+     この方法を使うと、出力文字セットが実行時の設定に依存してしまうからです。
+     安全策として、<span class="function"><a href="function.htmlspecialchars.html" class="function">htmlspecialchars()</a></span> や
+     <span class="function"><a href="function.htmlentities.html" class="function">htmlentities()</a></span> をコールするときには文字セットを毎回明示するようにしましょう。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <a href="errorfunc.configuration.html#ini.error-reporting" class="link">error_reporting</a> において、
+     <strong><code>E_ALL</code></strong> に <strong><code>E_STRICT</code></strong> を含むようになりました。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <a href="book.snmp.html" class="link">SNMP</a> が OOP API に対応しました。
+    </span>
+    <span class="simpara">
+      関数は、SNMP 関連のもの
+      (インスタンスが存在しない、MIB の終端に到達したなど) も含めてすべてのエラーで FALSE を返すようになりました。
+      特に get/walk 関数で、以前の挙動とは変わります。
+      以前は SNMP 関連のエラーでは空文字列を返していました。
+    </span>
+    <span class="simpara">
+      複数 OID の get/getnext/set クエリをサポートするようになりました。
+    </span>
+    <span class="simpara">
+     UCD-SNMP 互換のコードを削除しました。net-snmp v5.3 以降へのアップグレードを検討しましょう。
+     Windows 版では Net-SNMP v5.4 以降が必要です。
+    </span>
+    <span class="simpara">
+     IPv6 のサポートのため、リモート SNMP エージェント (ピア)
+     の DNS 名前解決は拡張モジュール自身が行うようになりました。
+     Net-SNMP ライブラリには頼りません。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <a href="book.openssl.html" class="link">OpenSSL</a> が AES に対応しました。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <a href="features.commandline.html" class="link">CLI SAPI</a>
+     を readline サポートつきで対話的に使っているときに、
+     fatal エラーが発生しても強制終了されなくなりました。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <a href="language.variables.superglobals.html" class="link">$_SERVER[&#039;REQUEST_TIME_FLOAT&#039;]</a>
+     が追加され、マイクロ秒単位の精度も取得できるようになりました。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     新しいハッシュアルゴリズム fnv132, fnv164, joaat が追加されました。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     文字列のオフセットの連鎖 (たとえば $a が文字列の場合の $a[0][0]) が動作するようになりました。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     <span class="type"><a href="class.simplexmlelement.html" class="type SimpleXMLElement">SimpleXMLElement</a></span> を配列にキャストすると、
+     最初にマッチしたノードだけでなくすべてのノードが含まれるようになりました。
+     <span class="function"><a href="function.var-dump.html" class="function">var_dump()</a></span> や <span class="function"><a href="function.var-export.html" class="function">var_export()</a></span> そして
+     <span class="function"><a href="function.print-r.html" class="function">print_r()</a></span> を使った場合に、
+     <span class="type"><a href="class.simplexmlelement.html" class="type SimpleXMLElement">SimpleXMLElement</a></span> のすべての子が常に表示されるようになります。
+    </span>
+   </li>
+   <li class="listitem">
+    <span class="simpara">
+     クラスのコンストラクタ <a href="language.oop5.decon.html" class="link">__construct</a> の引数を、
+     基底クラスの abstract コンストラクタで強制できるようになりました。
+    </span>
+   </li>
+  </ul>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

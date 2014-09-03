@@ -1,0 +1,829 @@
+<html><!-- Mirrored from php.net/manual/en/function.ldap-search.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 16:02:03 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>ldap_search</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="function.ldap-search.html">
+ <link rel="shorturl" href="http://php.net/ldap-search">
+ <link rel="alternate" href="http://php.net/ldap-search" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="ref.ldap.html">
+ <link rel="prev" href="function.ldap-sasl-bind.html">
+ <link rel="next" href="function.ldap-set-option.html">
+
+ <link rel="alternate" href="function.ldap-search.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/function.ldap-search.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/function.ldap-search.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/function.ldap-search.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/function.ldap-search.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/function.ldap-search.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/function.ldap-search.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/function.ldap-search.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/function.ldap-search.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/function.ldap-search.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/function.ldap-search.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.remote.other.html">Other Services</a></li>      <li><a href="book.ldap.html">LDAP</a></li>      <li><a href="ref.ldap.html">LDAP Functions</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="function.ldap-search" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ldap_search</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose"><span class="refname">ldap_search</span> — <span class="dc-title">Search LDAP tree</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-function.ldap-search-description">
+  <h3 class="title">Description</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">resource</span> <span class="methodname"><strong>ldap_search</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$link_identifier</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$base_dn</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$filter</code></span>
+   [, <span class="methodparam"><span class="type">array</span> <code class="parameter">$attributes</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$attrsonly</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$sizelimit</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$timelimit</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$deref</code></span>
+  ]]]]] )</div>
+
+  <p class="para rdfs-comment">
+   Performs the search for a specified filter on the directory with the scope
+   of <strong><code>LDAP_SCOPE_SUBTREE</code></strong>. This is equivalent to searching
+   the entire directory.
+  </p>
+  <p class="para">
+   From 4.0.5 on it's also possible to do parallel searches. To do this
+   you use an array of link identifiers, rather than a single identifier,
+   as the first argument. If you don't want the same base DN and the
+   same filter for all the searches, you can also use an array of base DNs
+   and/or an array of filters. Those arrays must be of the same size as
+   the link identifier array since the first entries of the arrays are
+   used for one search, the second entries are used for another, and so
+   on. When doing parallel searches an array of search result
+   identifiers is returned, except in case of error, then the entry
+   corresponding to the search will be <strong><code>FALSE</code></strong>. This is very much like
+   the value normally returned, except that a result identifier is always
+   returned when a search was made. There are some rare cases where the
+   normal search returns <strong><code>FALSE</code></strong> while the parallel search returns an
+   identifier.
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.ldap-search-parameters">
+  <h3 class="title">Parameters</h3>
+  <p class="para">
+   </p><dl>
+
+    
+     <dt>
+<code class="parameter">link_identifier</code></dt>
+
+     <dd>
+
+      <p class="para">
+       An LDAP link identifier, returned by <span class="function"><a href="function.ldap-connect.html" class="function">ldap_connect()</a></span>.
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">base_dn</code></dt>
+
+     <dd>
+
+      <p class="para">
+       The base DN for the directory.
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">filter</code></dt>
+
+     <dd>
+
+      <p class="para">
+       The search filter can be simple or advanced, using boolean operators in
+       the format described in the LDAP documentation (see the <a href="http://www.mozilla.org/directory/csdk-docs/filter.htm" class="link external">»&nbsp;Netscape Directory SDK</a> for full
+       information on filters).
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">attributes</code></dt>
+
+     <dd>
+
+      <p class="para">
+       An array of the required attributes, e.g. <em>array("mail", "sn", "cn")</em>.
+       Note that the "dn" is always returned irrespective of which attributes
+       types are requested.
+      </p>
+      <p class="para">
+       Using this parameter is much more efficient than the default action
+       (which is to return all attributes and their associated values). 
+       The use of this parameter should therefore be considered good
+       practice.
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">attrsonly</code></dt>
+
+     <dd>
+
+      <p class="para">
+       Should be set to 1 if only attribute types are wanted. If set to 0
+       both attributes types and attribute values are fetched which is the
+       default behaviour.
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">sizelimit</code></dt>
+
+     <dd>
+
+      <p class="para">
+       Enables you to limit the count of entries fetched. Setting this to 0
+       means no limit.
+      </p>
+      <blockquote class="note"><p><strong class="note">Note</strong>: 
+       </p><p class="para">
+        This parameter can NOT override server-side preset sizelimit. You can
+        set it lower though.
+       </p>
+       <p class="para">
+        Some directory server hosts will be configured to return no more than
+        a preset number of entries. If this occurs, the server will indicate
+        that it has only returned a partial results set. This also occurs if
+        you use this parameter to limit the count of fetched entries.
+       </p>
+      <p></p></blockquote>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">timelimit</code></dt>
+
+     <dd>
+
+      <p class="para">
+       Sets the number of seconds how long is spend on the search. Setting
+       this to 0 means no limit.
+      </p>
+      <blockquote class="note"><p><strong class="note">Note</strong>: 
+       </p><p class="para">
+        This parameter can NOT override server-side preset timelimit. You can
+        set it lower though.
+       </p>
+      <p></p></blockquote>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">deref</code></dt>
+
+     <dd>
+
+      <p class="para">
+       Specifies how aliases should be handled during the search. It can be
+       one of the following:
+       </p><ul class="itemizedlist">
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>LDAP_DEREF_NEVER</code></strong> - (default) aliases are never
+          dereferenced.
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>LDAP_DEREF_SEARCHING</code></strong> - aliases should be
+          dereferenced during the search but not when locating the base object
+          of the search.
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>LDAP_DEREF_FINDING</code></strong> - aliases should be
+          dereferenced when locating the base object but not during the search.
+         </span>
+        </li>
+        <li class="listitem">
+         <span class="simpara">
+          <strong><code>LDAP_DEREF_ALWAYS</code></strong> - aliases should be dereferenced
+          always.
+         </span>
+        </li>
+       </ul>
+      <p></p>
+     </dd>
+
+    
+   </dl>
+
+  <p></p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.ldap-search-returnvalues">
+  <h3 class="title">Return Values</h3>
+  <p class="para">
+   Returns a search result identifier or <strong><code>FALSE</code></strong> on error.
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.ldap-search-examples">
+  <h3 class="title">Examples</h3>
+  <p class="para">
+   The example below retrieves the organizational unit, surname,
+   given name and email address for all people in "My Company" where
+   the surname or given name contains the substring <var class="varname"><var class="varname">$person</var></var>. This
+   example uses a boolean filter to tell the server to look for
+   information in more than one attribute.
+   </p><div class="example" id="example-4515">
+    <p><strong>Example #1 LDAP search</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #FF8000">//&nbsp;$ds&nbsp;is&nbsp;a&nbsp;valid&nbsp;link&nbsp;identifier&nbsp;for&nbsp;a&nbsp;directory&nbsp;server<br><br>//&nbsp;$person&nbsp;is&nbsp;all&nbsp;or&nbsp;part&nbsp;of&nbsp;a&nbsp;person's&nbsp;name,&nbsp;eg&nbsp;"Jo"<br><br></span><span style="color: #0000BB">$dn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"o=My&nbsp;Company,&nbsp;c=US"</span><span style="color: #007700">;<br></span><span style="color: #0000BB">$filter</span><span style="color: #007700">=</span><span style="color: #DD0000">"(|(sn=</span><span style="color: #0000BB">$person</span><span style="color: #DD0000">*)(givenname=</span><span style="color: #0000BB">$person</span><span style="color: #DD0000">*))"</span><span style="color: #007700">;<br></span><span style="color: #0000BB">$justthese&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #DD0000">"ou"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"sn"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"givenname"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"mail"</span><span style="color: #007700">);<br><br></span><span style="color: #0000BB">$sr</span><span style="color: #007700">=</span><span style="color: #0000BB">ldap_search</span><span style="color: #007700">(</span><span style="color: #0000BB">$ds</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$dn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$filter</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$justthese</span><span style="color: #007700">);<br><br></span><span style="color: #0000BB">$info&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ldap_get_entries</span><span style="color: #007700">(</span><span style="color: #0000BB">$ds</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$sr</span><span style="color: #007700">);<br><br>echo&nbsp;</span><span style="color: #0000BB">$info</span><span style="color: #007700">[</span><span style="color: #DD0000">"count"</span><span style="color: #007700">].</span><span style="color: #DD0000">"&nbsp;entries&nbsp;returned\n"</span><span style="color: #007700">;<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  <p></p>
+ </div>
+
+
+</div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="76982">  
+  <a class="name">
+  <strong class="user"><em>chrisbloom7 at gmail dot com</em></strong></a><div class="date" title="2007-08-08 01:18"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom76982">
+<div class="phpcode"><code><span class="html">
+Here are a couple of resources for proper construction of filters. <br><br><a rel="nofollow" target="_blank">http://msdn2.microsoft.com/En-US/library/aa746475.aspx</a><br><br><a rel="nofollow" target="_blank">http://technet.microsoft.com/en-us/library/aa996205.aspx</a><br><br>Before finding these I had been stumped for hours on how to do something like "all users starting with "a" except those from OU 'foo'"</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="107340">  
+  <a class="name">
+  <strong class="user"><em>Jean-Loup</em></strong></a><div class="date" title="2012-02-01 06:27"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom107340">
+<div class="phpcode"><code><span class="html">
+Example of parallel search :<br><br><span class="default">&lt;?php<br>$basedn</span><span class="keyword">=array(</span><span class="string">'dmdName=users,dc=foo,dc=fr'</span><span class="keyword">,</span><span class="string">'dmdName=users,dc=bar,dc=com'</span><span class="keyword">);&nbsp; </span><span class="comment">// two basedn<br></span><span class="default">$filter</span><span class="keyword">=</span><span class="string">'(&amp;(objectClass=inetOrgPerson)(uid=*))'</span><span class="keyword">;&nbsp; </span><span class="comment">// single filter<br></span><span class="default">$attributes</span><span class="keyword">=array(</span><span class="string">'dn'</span><span class="keyword">,</span><span class="string">'uid'</span><span class="keyword">,</span><span class="string">'sn'</span><span class="keyword">);<br><br></span><span class="default">$cnx </span><span class="keyword">= </span><span class="default">ldap_connect</span><span class="keyword">(</span><span class="string">'localhost'</span><span class="keyword">,</span><span class="default">389</span><span class="keyword">); </span><span class="comment">// single connection<br></span><span class="default">ldap_set_option</span><span class="keyword">(</span><span class="default">$cnx</span><span class="keyword">, </span><span class="default">LDAP_OPT_PROTOCOL_VERSION</span><span class="keyword">, </span><span class="default">3</span><span class="keyword">);<br><br></span><span class="default">ldap_bind</span><span class="keyword">(</span><span class="default">$cnx</span><span class="keyword">,</span><span class="string">'uid=root,dc=foo,dc=fr'</span><span class="keyword">,</span><span class="string">'password'</span><span class="keyword">);&nbsp; </span><span class="comment">// authentication on two BDB<br></span><span class="default">ldap_bind</span><span class="keyword">(</span><span class="default">$cnx</span><span class="keyword">,</span><span class="string">'uid=root,dc=bar,dc=com'</span><span class="keyword">,</span><span class="string">'password'</span><span class="keyword">);<br><br></span><span class="default">$search </span><span class="keyword">= </span><span class="default">ldap_search</span><span class="keyword">(array(</span><span class="default">$cnx</span><span class="keyword">,</span><span class="default">$cnx</span><span class="keyword">),</span><span class="default">$basedn</span><span class="keyword">,</span><span class="default">$filter</span><span class="keyword">,</span><span class="default">$attributes</span><span class="keyword">);&nbsp; </span><span class="comment">// search<br><br>// result<br></span><span class="keyword">for(</span><span class="default">$i</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">;</span><span class="default">$i</span><span class="keyword">&lt;</span><span class="default">count</span><span class="keyword">(</span><span class="default">$search</span><span class="keyword">);</span><span class="default">$i</span><span class="keyword">++){<br>&nbsp; &nbsp; </span><span class="default">print_r</span><span class="keyword">(</span><span class="default">ldap_get_entries</span><span class="keyword">(</span><span class="default">$cnx</span><span class="keyword">,</span><span class="default">$search</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">]));<br>&nbsp; &nbsp; print </span><span class="string">"\n"</span><span class="keyword">;<br>}<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="31171">  
+  <a class="name">
+  <strong class="user"><em>php @ fccfurn dot com</em></strong></a><div class="date" title="2003-04-11 03:35"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom31171">
+<div class="phpcode"><code><span class="html">
+To do subtree search from top DN in Active Directory, Make sure you do your ldap_set_option().<br><br><span class="default">&lt;?php<br>$ldap_host </span><span class="keyword">= </span><span class="string">"pdc.php.net"</span><span class="keyword">;<br></span><span class="default">$base_dn </span><span class="keyword">= </span><span class="string">"DC=php,DC=net"</span><span class="keyword">;<br></span><span class="default">$filter </span><span class="keyword">= </span><span class="string">"(cn=Joe User)"</span><span class="keyword">;<br></span><span class="default">$ldap_user&nbsp; </span><span class="keyword">= </span><span class="string">"CN=Joe User,OU=Sales,DC=php,DC=net"</span><span class="keyword">;<br></span><span class="default">$ldap_pass </span><span class="keyword">= </span><span class="string">"pass"</span><span class="keyword">;<br></span><span class="default">$connect </span><span class="keyword">= </span><span class="default">ldap_connect</span><span class="keyword">( </span><span class="default">$ldap_host</span><span class="keyword">, </span><span class="default">$ldap_port</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; or exit(</span><span class="string">"&gt;&gt;Could not connect to LDAP server&lt;&lt;"</span><span class="keyword">);<br></span><span class="default">ldap_set_option</span><span class="keyword">(</span><span class="default">$connect</span><span class="keyword">, </span><span class="default">LDAP_OPT_PROTOCOL_VERSION</span><span class="keyword">, </span><span class="default">3</span><span class="keyword">);<br></span><span class="default">ldap_set_option</span><span class="keyword">(</span><span class="default">$connect</span><span class="keyword">, </span><span class="default">LDAP_OPT_REFERRALS</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">);<br></span><span class="default">$bind </span><span class="keyword">= </span><span class="default">ldap_bind</span><span class="keyword">(</span><span class="default">$connect</span><span class="keyword">, </span><span class="default">$ldap_user</span><span class="keyword">, </span><span class="default">$ldap_pass</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; or exit(</span><span class="string">"&gt;&gt;Could not bind to </span><span class="default">$ldap_host</span><span class="string">&lt;&lt;"</span><span class="keyword">);<br></span><span class="default">$read </span><span class="keyword">= </span><span class="default">ldap_search</span><span class="keyword">(</span><span class="default">$connect</span><span class="keyword">, </span><span class="default">$base_dn</span><span class="keyword">, </span><span class="default">$filter</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; or exit(</span><span class="string">"&gt;&gt;Unable to search ldap server&lt;&lt;"</span><span class="keyword">);<br></span><span class="default">$info </span><span class="keyword">= </span><span class="default">ldap_get_entries</span><span class="keyword">(</span><span class="default">$connect</span><span class="keyword">, </span><span class="default">$read</span><span class="keyword">);<br>echo </span><span class="default">$info</span><span class="keyword">[</span><span class="string">"count"</span><span class="keyword">].</span><span class="string">" entries returned&lt;p&gt;"</span><span class="keyword">;<br></span><span class="default">$ii</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">;<br>for (</span><span class="default">$i</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">; </span><span class="default">$ii</span><span class="keyword">&lt;</span><span class="default">$info</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="string">"count"</span><span class="keyword">]; </span><span class="default">$ii</span><span class="keyword">++){<br>&nbsp; &nbsp; </span><span class="default">$data </span><span class="keyword">= </span><span class="default">$info</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="default">$ii</span><span class="keyword">];<br>&nbsp; &nbsp; echo </span><span class="default">$data</span><span class="keyword">.</span><span class="string">":&amp;nbsp;&amp;nbsp;"</span><span class="keyword">.</span><span class="default">$info</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="default">$data</span><span class="keyword">][</span><span class="default">0</span><span class="keyword">].</span><span class="string">"&lt;br&gt;"</span><span class="keyword">;<br>}<br></span><span class="default">ldap_close</span><span class="keyword">(</span><span class="default">$connect</span><span class="keyword">);<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="112191">  
+  <a class="name">
+  <strong class="user"><em>jayleno at yahoo dot com</em></strong></a><div class="date" title="2013-05-15 06:28"><strong>1 year ago</strong></div>
+  <div class="text" id="Hcom112191">
+<div class="phpcode"><code><span class="html">
+<span class="default">&lt;?php<br>set_time_limit</span><span class="keyword">(</span><span class="default">30</span><span class="keyword">);<br></span><span class="default">error_reporting</span><span class="keyword">(</span><span class="default">E_ALL</span><span class="keyword">);<br></span><span class="default">ini_set</span><span class="keyword">(</span><span class="string">'error_reporting'</span><span class="keyword">, </span><span class="default">E_ALL</span><span class="keyword">);<br></span><span class="default">ini_set</span><span class="keyword">(</span><span class="string">'display_errors'</span><span class="keyword">,</span><span class="default">1</span><span class="keyword">);<br><br></span><span class="comment">// config<br></span><span class="default">$ldapserver </span><span class="keyword">= </span><span class="string">'svr.domain.com'</span><span class="keyword">;<br></span><span class="default">$ldapuser&nbsp; &nbsp; &nbsp; </span><span class="keyword">= </span><span class="string">'administrator'</span><span class="keyword">;&nbsp; <br></span><span class="default">$ldappass&nbsp; &nbsp;&nbsp; </span><span class="keyword">= </span><span class="string">'PASSWORD_HERE'</span><span class="keyword">;<br></span><span class="default">$ldaptree&nbsp; &nbsp; </span><span class="keyword">= </span><span class="string">"OU=SBSUsers,OU=Users,OU=MyBusiness,DC=myDomain,DC=local"</span><span class="keyword">;<br><br></span><span class="comment">// connect <br></span><span class="default">$ldapconn </span><span class="keyword">= </span><span class="default">ldap_connect</span><span class="keyword">(</span><span class="default">$ldapserver</span><span class="keyword">) or die(</span><span class="string">"Could not connect to LDAP server."</span><span class="keyword">);<br><br>if(</span><span class="default">$ldapconn</span><span class="keyword">) {<br>&nbsp; &nbsp; </span><span class="comment">// binding to ldap server<br>&nbsp; &nbsp; </span><span class="default">$ldapbind </span><span class="keyword">= </span><span class="default">ldap_bind</span><span class="keyword">(</span><span class="default">$ldapconn</span><span class="keyword">, </span><span class="default">$ldapuser</span><span class="keyword">, </span><span class="default">$ldappass</span><span class="keyword">) or die (</span><span class="string">"Error trying to bind: "</span><span class="keyword">.</span><span class="default">ldap_error</span><span class="keyword">(</span><span class="default">$ldapconn</span><span class="keyword">));<br>&nbsp; &nbsp; </span><span class="comment">// verify binding<br>&nbsp; &nbsp; </span><span class="keyword">if (</span><span class="default">$ldapbind</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; echo </span><span class="string">"LDAP bind successful...&lt;br /&gt;&lt;br /&gt;"</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$result </span><span class="keyword">= </span><span class="default">ldap_search</span><span class="keyword">(</span><span class="default">$ldapconn</span><span class="keyword">,</span><span class="default">$ldaptree</span><span class="keyword">, </span><span class="string">"(cn=*)"</span><span class="keyword">) or die (</span><span class="string">"Error in search query: "</span><span class="keyword">.</span><span class="default">ldap_error</span><span class="keyword">(</span><span class="default">$ldapconn</span><span class="keyword">));<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$data </span><span class="keyword">= </span><span class="default">ldap_get_entries</span><span class="keyword">(</span><span class="default">$ldapconn</span><span class="keyword">, </span><span class="default">$result</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// SHOW ALL DATA<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">echo </span><span class="string">'&lt;h1&gt;Dump all data&lt;/h1&gt;&lt;pre&gt;'</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$data</span><span class="keyword">);&nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; echo </span><span class="string">'&lt;/pre&gt;'</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// iterate over array and print data for each entry<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">echo </span><span class="string">'&lt;h1&gt;Show me the users&lt;/h1&gt;'</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; for (</span><span class="default">$i</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">; </span><span class="default">$i</span><span class="keyword">&lt;</span><span class="default">$data</span><span class="keyword">[</span><span class="string">"count"</span><span class="keyword">]; </span><span class="default">$i</span><span class="keyword">++) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">//echo "dn is: ". $data[$i]["dn"] ."&lt;br /&gt;";<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">echo </span><span class="string">"User: "</span><span class="keyword">. </span><span class="default">$data</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="string">"cn"</span><span class="keyword">][</span><span class="default">0</span><span class="keyword">] .</span><span class="string">"&lt;br /&gt;"</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(isset(</span><span class="default">$data</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="string">"mail"</span><span class="keyword">][</span><span class="default">0</span><span class="keyword">])) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo </span><span class="string">"Email: "</span><span class="keyword">. </span><span class="default">$data</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="string">"mail"</span><span class="keyword">][</span><span class="default">0</span><span class="keyword">] .</span><span class="string">"&lt;br /&gt;&lt;br /&gt;"</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } else {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo </span><span class="string">"Email: None&lt;br /&gt;&lt;br /&gt;"</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// print number of entries found<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">echo </span><span class="string">"Number of entries found: " </span><span class="keyword">. </span><span class="default">ldap_count_entries</span><span class="keyword">(</span><span class="default">$ldapconn</span><span class="keyword">, </span><span class="default">$result</span><span class="keyword">);<br>&nbsp; &nbsp; } else {<br>&nbsp; &nbsp; &nbsp; &nbsp; echo </span><span class="string">"LDAP bind failed..."</span><span class="keyword">;<br>&nbsp; &nbsp; }<br><br>}<br><br></span><span class="comment">// all done? clean up<br></span><span class="default">ldap_close</span><span class="keyword">(</span><span class="default">$ldapconn</span><span class="keyword">);<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="45388">  
+  <a class="name">
+  <strong class="user"><em>sema at technion dot ac dot il</em></strong></a><div class="date" title="2004-09-04 10:54"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom45388">
+<div class="phpcode"><code><span class="html">
+In order to perform the searches on Windows 2003 Server Active Directory you have to set the LDAP_OPT_REFERRALS option to 0:<br><br>ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);<br><br>Without this, you will get "Operations error" if you try to search the whole AD schema (using root of the domain as a $base_dn).<br><br>As opposed to Windows 2000 Server, where this option was optional and only increased the performance.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="105836">  
+  <a class="name">
+  <strong class="user"><em>info at acpower dot biz</em></strong></a><div class="date" title="2011-09-19 03:07"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom105836">
+<div class="phpcode"><code><span class="html">
+I'm a newbie, so I hope this helps some other newbie with a head scratcher...<br><br>This code returned an error of 'No Such Object':<br><br><span class="default">&lt;?php<br><br>&nbsp; &nbsp; $search </span><span class="keyword">= </span><span class="default">ldap_search </span><span class="keyword">(</span><span class="default">$ldapcon</span><span class="keyword">, </span><span class="string">"cn=admin,dc=acpower,dc=biz"</span><span class="keyword">, </span><span class="string">"(filters)"</span><span class="keyword">);<br><br></span><span class="default">?&gt;<br></span><br>I took out the cn, and magic! it works:<br><br><span class="default">&lt;?php<br><br>&nbsp; &nbsp; $search </span><span class="keyword">= </span><span class="default">ldap_search </span><span class="keyword">(</span><span class="default">$ldapcon</span><span class="keyword">, </span><span class="string">"dc=acpower,dc=biz"</span><span class="keyword">, </span><span class="string">"(filters)"</span><span class="keyword">);<br><br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="103918">  
+  <a class="name">
+  <strong class="user"><em>Arnold</em></strong></a><div class="date" title="2011-05-11 01:35"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom103918">
+<div class="phpcode"><code><span class="html">
+I have been working on a script where I needed to get all the users who were member of a specific MS AD group. Because of PHP bug #42060 ( <a rel="nofollow" target="_blank">http://bugs.php.net/bug.php?id=42060</a> ) I could not get all the users back who were member of the group.
+<br>After googling for a day I found an article and a patch but it required that I downloaded the source code for php 5.1.6 or 5.2.10 run the patch and than recompile the code to fix the problem. 
+<br>Problem was 
+<br>1) I am not a Linux goeroe so I was not very comfortable doing this....
+<br>2) I am running the script on a production machine with other code using PHP and did not know what the consequence would bee for that code.
+<br>3) I could not update PHP anymore because in newer versions this patch would probably not work any more.
+<br>
+<br>But yesterday I saw the light and wrote some code to get around this problem, maybe other people can use it that have the same problem.
+<br>
+<br><span class="default">&lt;?PHP
+<br>$startFilter&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">= </span><span class="string">"(&amp;(memberOf=" </span><span class="keyword">.</span><span class="default">$ADGroup</span><span class="keyword">. </span><span class="string">"))"</span><span class="keyword">;
+<br></span><span class="default">$startResults&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">ldap_search</span><span class="keyword">(</span><span class="default">$ldapconnect</span><span class="keyword">, </span><span class="default">$userBase</span><span class="keyword">, </span><span class="default">$startFilter</span><span class="keyword">, </span><span class="default">$attr</span><span class="keyword">);
+<br></span><span class="default">$countResult&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">ldap_count_entries</span><span class="keyword">(</span><span class="default">$ldapconnect</span><span class="keyword">,</span><span class="default">$startResults</span><span class="keyword">);
+<br>
+<br>IF(</span><span class="default">$countResult </span><span class="keyword">== </span><span class="default">1000 </span><span class="keyword">OR </span><span class="default">$countResult </span><span class="keyword">== </span><span class="default">1500</span><span class="keyword">)
+<br>{
+<br>&nbsp; &nbsp; </span><span class="comment">// loop trough the number 97-122 (ASCII number for the characters a-z)
+<br>&nbsp; &nbsp; </span><span class="keyword">For(</span><span class="default">$a</span><span class="keyword">=</span><span class="default">97</span><span class="keyword">;</span><span class="default">$a</span><span class="keyword">&lt;=</span><span class="default">122</span><span class="keyword">;</span><span class="default">$a</span><span class="keyword">++)
+<br>&nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// translate the number to a character
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$character&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">chr</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">); 
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// the new search filter withs returns all users with a last name starting with $character
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$filter&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">= </span><span class="string">"(&amp;(sn=</span><span class="default">$character</span><span class="string">*)(memberOf=</span><span class="default">$ADGroup</span><span class="string">))"</span><span class="keyword">; 
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$results&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">ldap_search</span><span class="keyword">(</span><span class="default">$ldapconnect</span><span class="keyword">, </span><span class="default">$userBase</span><span class="keyword">, </span><span class="default">$filter</span><span class="keyword">, </span><span class="default">$attr</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$countResult2&nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">ldap_count_entries</span><span class="keyword">(</span><span class="default">$ldapconnect</span><span class="keyword">,</span><span class="default">$results</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// See if the search for all users starting with a specific character still hits the search limit
+<br>&nbsp; &nbsp; &nbsp; &nbsp; // if so than do a new search to find all the users where the last name starts with "aa" and 
+<br>&nbsp; &nbsp; &nbsp; &nbsp; // than with "ab", "ac" etc. etc
+<br>&nbsp; &nbsp; &nbsp; &nbsp; // In the best case we can now find 675.324 users per group when the search limit is 1000
+<br>&nbsp; &nbsp; &nbsp; &nbsp; // ((26 * 999&nbsp; for the fist character) * 26 for the second character)
+<br>&nbsp; &nbsp; &nbsp; &nbsp; // and 1.013.324 when the search limit is 1500
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">If(</span><span class="default">$countResult2 </span><span class="keyword">== </span><span class="default">1000 </span><span class="keyword">or </span><span class="default">$countResult2 </span><span class="keyword">== </span><span class="default">1500</span><span class="keyword">)
+<br>&nbsp; &nbsp; &nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; For(</span><span class="default">$b</span><span class="keyword">=</span><span class="default">97</span><span class="keyword">;</span><span class="default">$b</span><span class="keyword">&lt;=</span><span class="default">122</span><span class="keyword">;</span><span class="default">$b</span><span class="keyword">++)
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$character2&nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">chr</span><span class="keyword">(</span><span class="default">$b</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$filter2&nbsp; &nbsp; </span><span class="keyword">= </span><span class="string">"(&amp;(sn=</span><span class="default">$character$character2</span><span class="string">*)(memberOf=</span><span class="default">$ADGroup</span><span class="string">))"</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$results2&nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">ldap_search</span><span class="keyword">(</span><span class="default">$ldapconnect</span><span class="keyword">, </span><span class="default">$userBase</span><span class="keyword">, </span><span class="default">$filter2</span><span class="keyword">, </span><span class="default">$attr</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$count2&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">ldap_count_entries</span><span class="keyword">(</span><span class="default">$ldapconnect</span><span class="keyword">,</span><span class="default">$results2</span><span class="keyword">);&nbsp; &nbsp; 
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$entries2&nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">ldap_get_entries</span><span class="keyword">(</span><span class="default">$ldapconnect</span><span class="keyword">,</span><span class="default">$results2</span><span class="keyword">);&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// do your thing
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">}
+<br>&nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; Else
+<br>&nbsp; &nbsp; &nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$entries&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">ldap_get_entries</span><span class="keyword">(</span><span class="default">$ldapconnect</span><span class="keyword">,</span><span class="default">$results</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// do your thing
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">}
+<br>&nbsp; &nbsp; }
+<br>}
+<br>else
+<br>{
+<br>&nbsp; &nbsp; </span><span class="default">$entries&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">ldap_get_entries</span><span class="keyword">(</span><span class="default">$ldapconnect</span><span class="keyword">,</span><span class="default">$startResults</span><span class="keyword">);
+<br>&nbsp; &nbsp; </span><span class="comment">// do your thing
+<br></span><span class="keyword">}
+<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="95746">  
+  <a class="name">
+  <strong class="user"><em>ben _at_ onshop.co.uk</em></strong></a><div class="date" title="2010-01-19 02:11"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom95746">
+<div class="phpcode"><code><span class="html">
+Following from my note of 11-Nov-2009 06:56 regarding DN issues when using LDAP instead of the Global Catalog when querying AD, further investigation was showing that although the results were in the packet, I was getting an error instead:<br><br>'Search: Can't contact LDAP server' AKA Error 81.<br><br>Using more detailed analysis:<br><br>ldap_get_option($ds,LDAP_OPT_ERROR_STRING,$error);<br><br>echo $error<br><br>Displayed:<br><br>Referral: ldap://DomainDnsZones.defg.de.bc.ac.uk/ DC=DomainDnsZonesDC=defg,DC=de,DC=abc,DC=ac,DC=uk<br><br>By using trial and error, the error went away and results returned when using:<br><br>ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="94554">  
+  <a class="name">
+  <strong class="user"><em>ben _at_ onshop_co_uk</em></strong></a><div class="date" title="2009-11-11 10:24"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom94554">
+<div class="phpcode"><code><span class="html">
+Example to illustrate searching more than one DN (multiple DNs):
+<br>
+<br><span class="default">&lt;?php
+<br>$ds</span><span class="keyword">=</span><span class="default">ldap_connect</span><span class="keyword">(</span><span class="default">$ldapserver</span><span class="keyword">);
+<br>
+<br></span><span class="default">$dn</span><span class="keyword">[]=</span><span class="string">'OU=ABC,DC=xyz,DC=ac,DC=uk'</span><span class="keyword">;
+<br></span><span class="default">$dn</span><span class="keyword">[]=</span><span class="string">'OU=DEF,DC=xyz,DC=ac,DC=uk'</span><span class="keyword">;
+<br>
+<br></span><span class="default">$id</span><span class="keyword">[] = </span><span class="default">$ds</span><span class="keyword">;
+<br></span><span class="default">$id</span><span class="keyword">[] = </span><span class="default">$ds</span><span class="keyword">;
+<br>
+<br></span><span class="default">$filter </span><span class="keyword">= </span><span class="string">'samaccountname='</span><span class="keyword">.</span><span class="default">$_POST</span><span class="keyword">[</span><span class="string">'username'</span><span class="keyword">];
+<br> 
+<br></span><span class="default">$result </span><span class="keyword">= </span><span class="default">ldap_search</span><span class="keyword">(</span><span class="default">$id</span><span class="keyword">,</span><span class="default">$dn</span><span class="keyword">,</span><span class="default">$filter</span><span class="keyword">);
+<br>
+<br></span><span class="default">$search </span><span class="keyword">= </span><span class="default">false</span><span class="keyword">;
+<br>
+<br>foreach (</span><span class="default">$result </span><span class="keyword">as </span><span class="default">$value</span><span class="keyword">) {
+<br>&nbsp; &nbsp; if(</span><span class="default">ldap_count_entries</span><span class="keyword">(</span><span class="default">$ds</span><span class="keyword">,</span><span class="default">$value</span><span class="keyword">)&gt;</span><span class="default">0</span><span class="keyword">){
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$search </span><span class="keyword">= </span><span class="default">$value</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; break;
+<br>&nbsp; &nbsp; }
+<br>}
+<br>
+<br>if(</span><span class="default">$search</span><span class="keyword">){
+<br>&nbsp; &nbsp; </span><span class="default">$info </span><span class="keyword">= </span><span class="default">ldap_get_entries</span><span class="keyword">(</span><span class="default">$ds</span><span class="keyword">, </span><span class="default">$search</span><span class="keyword">);
+<br>}else{
+<br>&nbsp; &nbsp; </span><span class="default">$info </span><span class="keyword">= </span><span class="string">'No results found'</span><span class="keyword">;
+<br>}
+<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="61173">  
+  <a class="name"><strong class="user"><em>Anonymous</em></strong></a><div class="date" title="2006-01-27 03:53"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom61173">
+<div class="phpcode"><code><span class="html">
+HOWTO list LDAP users.<br><br>This CODE list one user from LDAP tree, but I' like list all user from LDAP one ou=Organization<br><br><span class="default">&lt;?php<br><br>$ldaprdn </span><span class="keyword">= </span><span class="string">'cn=user,dc=domain,dc=org'</span><span class="keyword">; <br></span><span class="default">$ldappass </span><span class="keyword">= </span><span class="string">'password'</span><span class="keyword">;<br></span><span class="default">$sdn </span><span class="keyword">= </span><span class="string">'cn=user,ou=group,dc=domain,dc=org'</span><span class="keyword">;<br><br></span><span class="default">$ldapconn </span><span class="keyword">= </span><span class="default">ldap_connect</span><span class="keyword">(</span><span class="string">"ldap://localhost"</span><span class="keyword">, </span><span class="default">389</span><span class="keyword">) <br>or die(</span><span class="string">"Not connect: </span><span class="default">$ldaphost</span><span class="string"> "</span><span class="keyword">);<br><br>if (</span><span class="default">$ldapconn</span><span class="keyword">) {<br><br></span><span class="comment">// binding to ldap server<br></span><span class="default">$ldapbind </span><span class="keyword">= </span><span class="default">ldap_bind</span><span class="keyword">(</span><span class="default">$ldapconn</span><span class="keyword">, </span><span class="default">$ldaprdn</span><span class="keyword">, </span><span class="default">$ldappass</span><span class="keyword">);<br><br></span><span class="comment">// verify binding<br></span><span class="keyword">if (</span><span class="default">$ldapbind</span><span class="keyword">) {<br></span><span class="default">$filter</span><span class="keyword">=</span><span class="string">"uid=*"</span><span class="keyword">; <br></span><span class="default">$justthese </span><span class="keyword">= array(</span><span class="string">"uid"</span><span class="keyword">); <br><br></span><span class="default">$sr</span><span class="keyword">=</span><span class="default">ldap_read</span><span class="keyword">(</span><span class="default">$ldapconn</span><span class="keyword">, </span><span class="default">$srdn</span><span class="keyword">, </span><span class="default">$filter</span><span class="keyword">, </span><span class="default">$justthese</span><span class="keyword">);<br></span><span class="default">$entry </span><span class="keyword">= </span><span class="default">ldap_get_entries</span><span class="keyword">(</span><span class="default">$ldapconn</span><span class="keyword">, </span><span class="default">$sr</span><span class="keyword">);<br><br>} else {<br>echo </span><span class="string">"LDAP conn ok..."</span><span class="keyword">;<br>}<br><br>}<br><br></span><span class="default">ldap_close</span><span class="keyword">(</span><span class="default">$ldapconn</span><span class="keyword">);<br><br></span><span class="default">?&gt;</span> <br><span class="default">&lt;?php<br></span><span class="keyword">echo </span><span class="default">$entry</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">][</span><span class="string">"mail"</span><span class="keyword">][</span><span class="default">0</span><span class="keyword">] . </span><span class="string">" mail adress "</span><span class="keyword">;<br>echo </span><span class="default">$entry</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">][</span><span class="string">"sn"</span><span class="keyword">][</span><span class="default">0</span><span class="keyword">] . </span><span class="string">" Name "</span><span class="keyword">;<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="56320">  
+  <a class="name">
+  <strong class="user"><em>cruzfern at chuchuwa dot com dot ar</em></strong></a><div class="date" title="2005-08-30 09:14"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom56320">
+<div class="phpcode"><code><span class="html">
+The internal attributes (like createTimestamp, modifyTimestamp, etc), don't come by default (when the optional parameter attributes is not set). You have to specify it:<br><br>&lt;?<br>$r=ldap_search($ds,$base,$filter,array("createTimestamp"));<br>?&gt;</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="50483">  
+  <a class="name">
+  <strong class="user"><em>fmouse at fmp dot com</em></strong></a><div class="date" title="2005-03-01 10:53"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom50483">
+<div class="phpcode"><code><span class="html">
+It appears that the Netscape Directory SDK (developer.netscape.com) referenced for LDAP filter information is no longer accepting connections.&nbsp;&nbsp; The A copy of RFC 2254 which defines the standard for string representations of LDAP filters can be found&nbsp; at <a rel="nofollow" target="_blank">http://www.ietf.org/rfc/rfc2254.txt</a></span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="49905">  
+  <a class="name">
+  <strong class="user"><em>openldap at mail dot doris dot cc</em></strong></a><div class="date" title="2005-02-11 07:54"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom49905">
+<div class="phpcode"><code><span class="html">
+PHP 4.3.10<br><br>I was trying to do an ldapsearch without a basedn.&nbsp; First, I tried with ' ', as suggested above, but it gave me invalid dn syntax error. <br><br>ie: <br>$sr=ldap_search($ds, ' ', $filter);<br>Warning: ldap_search(): Search: Invalid DN syntax in ...<br><br>Then I changed it to<br>$sr=ldap_search($ds, "", $filter);<br><br>Which gave me the following error:<br>Warning: ldap_search(): Search: No such object in ...<br><br>With that I then modified my ldap.conf file and commented out the BASE field<br>#BASE&nbsp;&nbsp; dc=example, dc=com<br><br>Then it worked!<br><br>So it looks like if you supply a blank basedn, then it will use your default basedn in ldap.conf.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="37582">  
+  <a class="name">
+  <strong class="user"><em>chester at the dot underground dot com dot au</em></strong></a><div class="date" title="2003-11-20 01:45"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom37582">
+<div class="phpcode"><code><span class="html">
+If you are searching active directory and are experiencing lag or time outs, it may be that you are being given ldap referrals from the ldap server. The following code will disable this.<br><br>&lt;?<br>ldap_set_option($connect, LDAP_OPT_REFERRALS, 0);<br>?&gt;</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="37475">  
+  <a class="name">
+  <strong class="user"><em>sembiance at cosmicrealms dot com</em></strong></a><div class="date" title="2003-11-16 06:15"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom37475">
+<div class="phpcode"><code><span class="html">
+When searching for BINARY data (such as an Active Directory objectGUID) you need to escape each hexadecimal character with a backslash.<br><br>The following command line run of ldapsearch shows:<br>ldapsearch -b "dc=blahblah,dc=com" "(objectGUID=\AE\C3\23\35\F7)"<br><br>In PHP, you need to escape the escape for the backslash:<br>ldap_search($ds,"dc=blahblah,dc=com", "(objectGUID=\\AE\\C3\\23\\35\\F7)");</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="37317">  
+  <a class="name">
+  <strong class="user"><em>francis dot tyers at hp dot com</em></strong></a><div class="date" title="2003-11-10 07:53"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom37317">
+<div class="phpcode"><code><span class="html">
+it seems that all fields must be used in lower case even if they are mixed case in the ldapsearch output.<br><br>example:<br><br>gidNumber: 1010<br>homeDirectory: /home/dnt<br><br>must be:<br><br>echo "gid: " . $info[$i]["gidnumber"][0] . "&lt;br&gt;";<br>echo "home directory: ". $info[$i]["homedirectory"][0] ."&lt;br&gt;";<br><br>not ( $info[$i]["homeDirectory"][0] ) etc.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="35095">  
+  <a class="name">
+  <strong class="user"><em>nicolas at atanis dot net</em></strong></a><div class="date" title="2003-08-19 11:17"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom35095">
+<div class="phpcode"><code><span class="html">
+Here is a little script that make a complete subtree search ( i know a script above seems do that but it doesnt work fine)<br>This is my version:<br><br>Voila ce que j'ai fait aujourd'hui ...<br><br>&nbsp; &nbsp; &nbsp; $ldap_host = "192.168.0.50";<br>&nbsp; &nbsp; $ldap_port = "389";<br>&nbsp; &nbsp; $base_dn = "dc=fr";<br>&nbsp; &nbsp; $filter = "(cn=*)";<br>&nbsp; &nbsp; $ldap_user ="cn=admin,dc=fr";<br>&nbsp; &nbsp; $ldap_pass = "hellodelu";<br>&nbsp; &nbsp; $connect = ldap_connect( $ldap_host, $ldap_port);<br>&nbsp; &nbsp; ldap_set_option($connect, LDAP_OPT_PROTOCOL_VERSION, 3);<br><br>&nbsp; &nbsp; $bind = ldap_bind($connect, $ldap_user, $ldap_pass);<br>&nbsp; &nbsp; $read = ldap_search($connect, $base_dn, $filter);<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; $info = ldap_get_entries($connect, $read); <br>&nbsp; &nbsp; echo $info["count"]." entrees retournees&lt;BR&gt;&lt;BR&gt;"; <br>&nbsp; &nbsp; for($ligne = 0; $ligne&lt;$info["count"]; $ligne++)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; for($colonne = 0; $colonne&lt;$info[$ligne]["count"]; $colonne++)<br>&nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $data = $info[$ligne][$colonne];<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; echo $data.":".$info[$ligne][$data][0]."&lt;BR&gt;";<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; echo "&lt;BR&gt;";<br>&nbsp; &nbsp; }<br>ldap_close($connect);<br><br>--------<br>nicolas</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="35019">  
+  <a class="name">
+  <strong class="user"><em>me at gavinadams dot org</em></strong></a><div class="date" title="2003-08-15 01:38"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom35019">
+<div class="phpcode"><code><span class="html">
+Minor clarification on AD LDAP searchs. Small typo in previous example, and does not display multiple values per attribute. Here's the for loop to enumerate all entries, attributes, and values:<br><br>$bind = ldap_bind($connect) // asume anon connect or add user/pass<br>&nbsp; &nbsp;&nbsp; or exit("&gt;&gt;Could not bind to $ldap_host&lt;&lt;");<br>$read = ldap_search($connect, $base_dn, $filter)<br>&nbsp; &nbsp;&nbsp; or exit("&gt;&gt;Unable to search ldap server&lt;&lt;");<br>$info = ldap_get_entries($connect, $read);<br>echo $info["count"]." entries returned&lt;br&gt;";<br>// $i = entries<br>// $ii = attributes for entry<br>// $iii = values per attribute<br>for ($i = 0; $i&lt;$info["count"]; $i++) {<br>&nbsp; for ($ii=0; $ii&lt;$info[$i]["count"]; $ii++){<br>&nbsp; &nbsp;&nbsp; $data = $info[$i][$ii];<br>&nbsp; &nbsp;&nbsp; for ($iii=0; $iii&lt;$info[$i][$data]["count"]; $iii++) {<br>&nbsp; &nbsp; &nbsp;&nbsp; echo $data.":&amp;nbsp;&amp;nbsp;".$info[$i][$data][$iii]."&lt;br&gt;";<br>&nbsp; &nbsp;&nbsp; }<br>&nbsp; }<br>echo "&lt;p&gt;"; // separate entries</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="29838">  
+  <a class="name">
+  <strong class="user"><em>Kamil Kukura &lt;kamk at nexen dot cz&gt;</em></strong></a><div class="date" title="2003-02-26 09:20"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom29838">
+<div class="phpcode"><code><span class="html">
+When I tried to search with empty base DN on OpenLDAP server which had "" namingContext I got result "no such object". In the log file there was query for dn: dc=example,dc=com (!).<br>As a workaround, it seems it's enough to feed it with space (' ') as base DN - ldap_search($ds, ' ', '(...filter...)', ...</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="28991">  
+  <a class="name">
+  <strong class="user"><em>neumeyed at city dot bloomington dot in dot us</em></strong></a><div class="date" title="2003-01-29 04:50"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom28991">
+<div class="phpcode"><code><span class="html">
+A previous comment noted: "I've also noticed that the departmentNumber, employeeNumber (and maybe others in inetorgperson.schema) are not returned from a search."<br><br>This is incorrect. These attributes are returned, but you must reference them with lowercase names. That is, instead of doing this:<br><br>$entries[0]["departmentNumber"][0]<br><br>Do this:<br><br>$entries[0]["departmentnumber"][0]<br><br>This doesn't seem like "correct" behavior to me, but I don't know enough about LDAP to say for sure.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="28593">  
+  <a class="name">
+  <strong class="user"><em>nick dot veitch at futurenet dot co dot</em></strong></a><div class="date" title="2003-01-17 08:59"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom28593">
+<div class="phpcode"><code><span class="html">
+It might be useful to list here the operators that work:<br><br>=&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; - matches exact value<br>=*xxx&nbsp; - matches values ending xxx<br>=xxx*&nbsp; - matches values beginning xxx<br>=*xxx* - matches values containing xxx<br>=*&nbsp; &nbsp; &nbsp;&nbsp; - matches all values (if set - NULLS are not returned)<br><br>&gt;=xxx&nbsp; - matches everthing from xxx to end of directory<br>&lt;=xxx&nbsp; - matches everything up to xxx in directory<br><br>~=xxx&nbsp; &nbsp; &nbsp; - matches similar entries (not all systems)<br><br>Boolean operators for constructing complex search<br><br>&amp;(term1)(term2)&nbsp; - matches term1 AND term2<br>| (term1)(term2)&nbsp; - matches term1 OR term2<br>!(term1)&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; - matches NOT term1<br>&amp;(|(term1)(term2))(!(&amp;(term1)(term2)) - matches XOR term1 term2<br><br>some of the more compelx constructions seem to work with varying&nbsp; degrees of efficiency - sometimes it can be better to filter some of the results with the search and do further filtering in PHP.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="25629">  
+  <a class="name">
+  <strong class="user"><em>emrecio at netscape dot net</em></strong></a><div class="date" title="2002-09-30 08:42"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom25629">
+<div class="phpcode"><code><span class="html">
+implode(", ",$uentry[0]["rfc822mailalias"]);<br><br>doesn't work as expected because "count" is in there... one /must/ use the 'for' loop to cycle through results (discarding "count" element).</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="25050">  
+  <a class="name">
+  <strong class="user"><em>jpdalbec at ysu dot edu</em></strong></a><div class="date" title="2002-09-09 07:33"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom25050">
+<div class="phpcode"><code><span class="html">
+I've found that spaces need to be escaped in search filters ("\20"), at least using the Red Hat PHP 4.1.2 package.&nbsp; Otherwise no results are returned.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="22728">  
+  <a class="name">
+  <strong class="user"><em>john_taylor_1973 at yahoo dot com</em></strong></a><div class="date" title="2002-06-27 02:26"><strong>12 years ago</strong></div>
+  <div class="text" id="Hcom22728">
+<div class="phpcode"><code><span class="html">
+Try to use ldap_list(), if possible.&nbsp; It is much faster.&nbsp; ldap_search searches a scope of LDAP_SCOPE_SUBTREE, but ldap_list searches a scope of just LDAP_SCOPE_ONELEVEL.&nbsp; This made a big difference on Novell eDirectory 8.6.1, even for a query that only returned 130 objects.&nbsp; Using an attribute list, the 4th function parameter (of either function), also made queries faster.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="15215">  
+  <a class="name"><strong class="user"><em>Anonymous</em></strong></a><div class="date" title="2001-08-31 07:13"><strong>12 years ago</strong></div>
+  <div class="text" id="Hcom15215">
+<div class="phpcode"><code><span class="html">
+I used the following to retrieve all entries from an ILS (Netmeeting) Server:&lt;p&gt;&nbsp; &nbsp; $sr=ldap_search($ds, "objectclass=rtperson","(&amp;(cn=%)(objectclass=rtperson))");
+<br>&lt;p&gt;Have fun!
+<br>&lt;p&gt;Kees</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="10421">  
+  <a class="name">
+  <strong class="user"><em>cdaveb at csua dot berkeley dot edu</em></strong></a><div class="date" title="2001-01-02 05:23"><strong>13 years ago</strong></div>
+  <div class="text" id="Hcom10421">
+<div class="phpcode"><code><span class="html">
+FYI, for those doing LDAP searches on Exchange servers, there seems to be some preference in Exchange to disallow searches that aren't initial searches (i.e. only x* will work, not * or *x). I'd been going nuts trying to figure out why I kept getting errors doing * searches.
+<br>
+<br>More info at:
+<br><a rel="nofollow" target="_blank">http://www.microsoft.com/Exchange/en/55/help/documents/server/XOG16007.HTM</a></span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="2376">  
+  <a class="name">
+  <strong class="user"><em>aa529 at nospamchebucto dot ns dot ca</em></strong></a><div class="date" title="1999-11-22 01:27"><strong>14 years ago</strong></div>
+  <div class="text" id="Hcom2376">
+<div class="phpcode"><code><span class="html">
+Be careful of special characters when generating filters from user input.
+<br>
+<br>*, (, ), \ and NUL should be backslash-escaped. See section 4 of RFC 2254 (I found it here:
+<br><a rel="nofollow" target="_blank">http://www.cis.ohio-state.edu/htbin/rfc/rfc2254.html</a>)</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="49889">  
+  <a class="name">
+  <strong class="user"><em>rsu_friend at yahoo dot com</em></strong></a><div class="date" title="2005-02-11 01:03"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom49889">
+<div class="phpcode"><code><span class="html">
+I was doing a ldap_search with<br>$searchbasedn = "miDomainName=" . $_SESSION['selectDomain'] ."," . LDAP_DOMAINBASE;<br>$filter = "(&amp;(mpsAccountNumber=". $acctNumber .")(objectclass=mpsAccountDetails))";&nbsp; &nbsp; <br>$attributes = array("mpsparentchild");<br><br> $sr = ldap_search($ldapconn, $searchbasedn, $filter,$attributes);&nbsp; <br><br>For some reasone this search was failing<br>but I was able to do successful search only when I gave the search filter as<br>$filter = "(&amp;(mpsAccountNumber= $acctNumber )(objectclass=mpsAccountDetails))";&nbsp; &nbsp; <br><br>I did not get why the ldap_search was not able to search in the first case.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="105631">  
+  <a class="name">
+  <strong class="user"><em>nick</em></strong></a><div class="date" title="2011-09-01 11:09"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom105631">
+<div class="phpcode"><code><span class="html">
+Results from ActiveDirectory may be ordered by objectSid.<br>We can get all users for each page size by modify filter.<br><br><span class="default">&lt;?php<br></span><span class="comment">// ... connect to ldap<br></span><span class="default">$lastsid</span><span class="keyword">=</span><span class="string">''</span><span class="keyword">;<br>while (</span><span class="default">1</span><span class="keyword">) {<br>&nbsp; &nbsp; </span><span class="default">$filter </span><span class="keyword">= </span><span class="string">'(objectClass=user)'</span><span class="keyword">;<br>&nbsp; &nbsp; if (</span><span class="default">strlen</span><span class="keyword">(</span><span class="default">$lastsid</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; list(</span><span class="default">$v</span><span class="keyword">)=</span><span class="default">array_values</span><span class="keyword">(</span><span class="default">unpack</span><span class="keyword">(</span><span class="string">'V'</span><span class="keyword">,</span><span class="default">substr</span><span class="keyword">(</span><span class="default">$lastsid</span><span class="keyword">,</span><span class="default">24</span><span class="keyword">))); </span><span class="comment">// id for user.<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$s </span><span class="keyword">= </span><span class="default">substr</span><span class="keyword">(</span><span class="default">$lastsid</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">,</span><span class="default">24</span><span class="keyword">).</span><span class="default">pack</span><span class="keyword">(</span><span class="string">'V'</span><span class="keyword">,</span><span class="default">1</span><span class="keyword">+</span><span class="default">$v</span><span class="keyword">); </span><span class="comment">// next sid.<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$s </span><span class="keyword">= </span><span class="default">preg_replace</span><span class="keyword">(</span><span class="string">'/../'</span><span class="keyword">,</span><span class="string">'\\\\$0'</span><span class="keyword">,</span><span class="default">bin2hex</span><span class="keyword">(</span><span class="default">$s</span><span class="keyword">)); </span><span class="comment">// escape for fiter<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$filter </span><span class="keyword">= </span><span class="string">'(&amp;'</span><span class="keyword">.</span><span class="default">$filter</span><span class="keyword">.</span><span class="string">'(objectSid&gt;='</span><span class="keyword">.</span><span class="default">$s</span><span class="keyword">.</span><span class="string">'))'</span><span class="keyword">; </span><span class="comment">// fiter for next entries.<br>&nbsp; &nbsp; </span><span class="keyword">}<br>&nbsp; &nbsp; </span><span class="default">$res </span><span class="keyword">= </span><span class="default">ldap_search</span><span class="keyword">(</span><span class="default">$ldap</span><span class="keyword">,</span><span class="default">$basedn</span><span class="keyword">,</span><span class="default">$filter</span><span class="keyword">,array(</span><span class="string">'objectSid'</span><span class="keyword">,</span><span class="string">'cn'</span><span class="keyword">));<br>&nbsp; &nbsp; if (!</span><span class="default">ldap_count_entries</span><span class="keyword">(</span><span class="default">$ldap</span><span class="keyword">,</span><span class="default">$res</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; break;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; for (</span><span class="default">$ent</span><span class="keyword">=</span><span class="default">ldap_first_entry</span><span class="keyword">(</span><span class="default">$ldap</span><span class="keyword">,</span><span class="default">$res</span><span class="keyword">); </span><span class="default">$ent</span><span class="keyword">; </span><span class="default">$ent</span><span class="keyword">=</span><span class="default">ldap_next_entry</span><span class="keyword">(</span><span class="default">$ldap</span><span class="keyword">,</span><span class="default">$ent</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; list(</span><span class="default">$lastsid</span><span class="keyword">) = </span><span class="default">ldap_get_values_len</span><span class="keyword">(</span><span class="default">$ldap</span><span class="keyword">,</span><span class="default">$ent</span><span class="keyword">,</span><span class="string">'objectSid'</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>}<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="73693">  
+  <a class="name">
+  <strong class="user"><em>Allie</em></strong></a><div class="date" title="2007-03-06 02:38"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom73693">
+<div class="phpcode"><code><span class="html">
+I just posted on the ldap_bind, but I figured it couldn't hurt here since this was the first place I stopped when trying to figure out my problem.&nbsp; My error pointed to ldap_search, but specifying the ldap_connect port was the fix.<br><br>When you want to search the entire directory for MS AD, you must specify port 3268 in your bind.&nbsp; This is also true for apache auth_ldap.<br><br> $ldapserver = ldap_connect($server,3268);</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/function.ldap-search.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 16:02:04 GMT -->
+
+
+</body></html>

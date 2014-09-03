@@ -1,152 +1,0 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
- <head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <title>新規 cURL マルチハンドルを返す</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
- </head>
- <body class="docs"><div class="manualnavbar" style="text-align: center;">
- <div class="prev" style="text-align: left; float: left;"><a href="function.curl-multi-info-read.html">curl_multi_info_read</a></div>
- <div class="next" style="text-align: right; float: right;"><a href="function.curl-multi-remove-handle.html">curl_multi_remove_handle</a></div>
- <div class="up"><a href="ref.curl.html">cURL 関数</a></div>
- <div class="home"><a href="index.html">PHP Manual</a></div>
-</div><hr /><div id="function.curl-multi-init" class="refentry">
- <div class="refnamediv">
-  <h1 class="refname">curl_multi_init</h1>
-  <p class="verinfo">(PHP 5)</p><p class="refpurpose"><span class="refname">curl_multi_init</span> &mdash; <span class="dc-title">新規 cURL マルチハンドルを返す</span></p>
-
- </div>
- 
- <div class="refsect1 description" id="refsect1-function.curl-multi-init-description">
-  <h3 class="title">説明</h3>
-  <div class="methodsynopsis dc-description">
-   <span class="type">resource</span> <span class="methodname"><strong>curl_multi_init</strong></span>
-    ( <span class="methodparam">void</span>
-   )</div>
-
-  <p class="para rdfs-comment">
-   複数の cURL ハンドルを並列で実行できるようにします。
-  </p>
- </div>
-
-
- <div class="refsect1 parameters" id="refsect1-function.curl-multi-init-parameters">
-  <h3 class="title">パラメータ</h3>
-  <p class="para">この関数にはパラメータはありません。</p>
- </div>
-
-
- <div class="refsect1 returnvalues" id="refsect1-function.curl-multi-init-returnvalues">
-  <h3 class="title">返り値</h3>
-  <p class="para">
-   成功した場合に cURL マルチハンドルリソース、失敗した場合に <strong><code>FALSE</code></strong> を返します。
-  </p>
- </div>
-
- 
- <div class="refsect1 examples" id="refsect1-function.curl-multi-init-examples">
-  <h3 class="title">例</h3>
-  <p class="para">
-   <div class="example" id="example-4199">
-    <p><strong>例1  <span class="function"><strong>curl_multi_init()</strong></span> の例</strong></p>
-    <div class="example-contents"><p>
-     この例は、ふたつの cURL ハンドルを作成し、それをマルチハンドルに追加して並列実行します。
-    </p></div>
-    <div class="example-contents">
-<div class="phpcode"><code><span style="color: #000000">
-<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;cURL&nbsp;リソースを作成します<br /></span><span style="color: #0000BB">$ch1&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">curl_init</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$ch2&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">curl_init</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;URL&nbsp;およびその他適切なオプションを設定します。<br /></span><span style="color: #0000BB">curl_setopt</span><span style="color: #007700">(</span><span style="color: #0000BB">$ch1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">CURLOPT_URL</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"http://lxr.php.net/"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">curl_setopt</span><span style="color: #007700">(</span><span style="color: #0000BB">$ch1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">CURLOPT_HEADER</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">curl_setopt</span><span style="color: #007700">(</span><span style="color: #0000BB">$ch2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">CURLOPT_URL</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"http://www.php.net/"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">curl_setopt</span><span style="color: #007700">(</span><span style="color: #0000BB">$ch2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">CURLOPT_HEADER</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;マルチ&nbsp;cURL&nbsp;ハンドルを作成します<br /></span><span style="color: #0000BB">$mh&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">curl_multi_init</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;ふたつのハンドルを追加します<br /></span><span style="color: #0000BB">curl_multi_add_handle</span><span style="color: #007700">(</span><span style="color: #0000BB">$mh</span><span style="color: #007700">,</span><span style="color: #0000BB">$ch1</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">curl_multi_add_handle</span><span style="color: #007700">(</span><span style="color: #0000BB">$mh</span><span style="color: #007700">,</span><span style="color: #0000BB">$ch2</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$running</span><span style="color: #007700">=</span><span style="color: #0000BB">null</span><span style="color: #007700">;<br /></span><span style="color: #FF8000">//&nbsp;ハンドルを実行します<br /></span><span style="color: #007700">do&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$mrc&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">curl_multi_exec</span><span style="color: #007700">(</span><span style="color: #0000BB">$mh</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$active</span><span style="color: #007700">);<br />}&nbsp;while&nbsp;(</span><span style="color: #0000BB">$mrc&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">CURLM_CALL_MULTI_PERFORM</span><span style="color: #007700">);<br /><br />while&nbsp;(</span><span style="color: #0000BB">$active&nbsp;</span><span style="color: #007700">&amp;&amp;&nbsp;</span><span style="color: #0000BB">$mrc&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">CURLM_OK</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">curl_multi_select</span><span style="color: #007700">(</span><span style="color: #0000BB">$mh</span><span style="color: #007700">)&nbsp;!=&nbsp;-</span><span style="color: #0000BB">1</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;do&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$mrc&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">curl_multi_exec</span><span style="color: #007700">(</span><span style="color: #0000BB">$mh</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$active</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;while&nbsp;(</span><span style="color: #0000BB">$mrc&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">CURLM_CALL_MULTI_PERFORM</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;ハンドルを閉じます<br /></span><span style="color: #0000BB">curl_multi_remove_handle</span><span style="color: #007700">(</span><span style="color: #0000BB">$mh</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$ch1</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">curl_multi_remove_handle</span><span style="color: #007700">(</span><span style="color: #0000BB">$mh</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$ch2</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">curl_multi_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$mh</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
-</span>
-</code></div>
-    </div>
-
-   </div>
-  </p>
- </div>
-
- 
- <div class="refsect1 seealso" id="refsect1-function.curl-multi-init-seealso">
-  <h3 class="title">参考</h3>
-  <p class="para">
-   <ul class="simplelist">
-    <li class="member"> <span class="function"><a href="function.curl-init.html" class="function" rel="rdfs-seeAlso">curl_init()</a> - cURL セッションを初期化する</span></li>
-    <li class="member"> <span class="function"><a href="function.curl-multi-close.html" class="function" rel="rdfs-seeAlso">curl_multi_close()</a> - cURL ハンドルのセットを閉じる</span></li>
-   </ul>
-  </p>
- </div>
-
-
-</div><div id="usernotes">
- <div class="head">
-  <h3 class="title">User Contributed Notes</h3>
- </div>
-<div id="allnotes">  <a name="105252""></a>
-  <div class="note">
-   <strong class="user">hushuilong at gmail dot com</strong>
-   <a href="#105252" class="date">05-Aug-2011 09:21</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Simulate multiple threads request:<br />
-<span class="default">&lt;?php<br />
-</span><span class="keyword">function </span><span class="default">multiple_threads_request</span><span class="keyword">(</span><span class="default">$nodes</span><span class="keyword">){<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$mh </span><span class="keyword">= </span><span class="default">curl_multi_init</span><span class="keyword">();<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$curl_array </span><span class="keyword">= array();<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; foreach(</span><span class="default">$nodes </span><span class="keyword">as </span><span class="default">$i </span><span class="keyword">=&gt; </span><span class="default">$url</span><span class="keyword">)<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; {<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$curl_array</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">] = </span><span class="default">curl_init</span><span class="keyword">(</span><span class="default">$url</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">curl_setopt</span><span class="keyword">(</span><span class="default">$curl_array</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">], </span><span class="default">CURLOPT_RETURNTRANSFER</span><span class="keyword">, </span><span class="default">true</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">curl_multi_add_handle</span><span class="keyword">(</span><span class="default">$mh</span><span class="keyword">, </span><span class="default">$curl_array</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">]);<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$running </span><span class="keyword">= </span><span class="default">NULL</span><span class="keyword">;<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; do {<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">usleep</span><span class="keyword">(</span><span class="default">10000</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">curl_multi_exec</span><span class="keyword">(</span><span class="default">$mh</span><span class="keyword">,</span><span class="default">$running</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; } while(</span><span class="default">$running </span><span class="keyword">&gt; </span><span class="default">0</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$res </span><span class="keyword">= array();<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; foreach(</span><span class="default">$nodes </span><span class="keyword">as </span><span class="default">$i </span><span class="keyword">=&gt; </span><span class="default">$url</span><span class="keyword">)<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; {<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$res</span><span class="keyword">[</span><span class="default">$url</span><span class="keyword">] = </span><span class="default">curl_multi_getcontent</span><span class="keyword">(</span><span class="default">$curl_array</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">]);<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; foreach(</span><span class="default">$nodes </span><span class="keyword">as </span><span class="default">$i </span><span class="keyword">=&gt; </span><span class="default">$url</span><span class="keyword">){<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">curl_multi_remove_handle</span><span class="keyword">(</span><span class="default">$mh</span><span class="keyword">, </span><span class="default">$curl_array</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">]);<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">curl_multi_close</span><span class="keyword">(</span><span class="default">$mh</span><span class="keyword">);&nbsp; &nbsp; &nbsp; &nbsp; <br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">$res</span><span class="keyword">;<br />
-}<br />
-</span><span class="default">print_r</span><span class="keyword">(</span><span class="default">muti_thread_request</span><span class="keyword">(array(<br />
-&nbsp;&nbsp;&nbsp; </span><span class="string">'<a href="http://www.example.com" rel="nofollow" target="_blank">http://www.example.com</a>'</span><span class="keyword">,<br />
-&nbsp;&nbsp;&nbsp; </span><span class="string">'<a href="http://www.example.net" rel="nofollow" target="_blank">http://www.example.net</a>'</span><span class="keyword">,<br />
-)));<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="83523""></a>
-  <div class="note">
-   <strong class="user">jaisen at jmathai dot com</strong>
-   <a href="#83523" class="date">30-May-2008 09:09</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-<a href="http://github.com/jmathai/epicode/tree/master/php/EpiCurl.php" rel="nofollow" target="_blank">http://github.com/jmathai/epicode/tree/master/php/EpiCurl.php</a><br />
-<br />
-If you fire off 10 curl requests in parallel you don't have to wait for all of them to be finished before accessing one which is already finished.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-</div>
-</div>
-<hr /><div class="manualnavbar" style="text-align: center;">
- <div class="prev" style="text-align: left; float: left;"><a href="function.curl-multi-info-read.html">curl_multi_info_read</a></div>
- <div class="next" style="text-align: right; float: right;"><a href="function.curl-multi-remove-handle.html">curl_multi_remove_handle</a></div>
- <div class="up"><a href="ref.curl.html">cURL 関数</a></div>
- <div class="home"><a href="index.html">PHP Manual</a></div>
-</div></body></html>

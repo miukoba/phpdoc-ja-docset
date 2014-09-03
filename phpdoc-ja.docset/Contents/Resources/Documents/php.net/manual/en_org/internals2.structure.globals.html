@@ -1,0 +1,430 @@
+<html><!-- Mirrored from php.net/manual/en/internals2.structure.globals.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:53:27 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Extension globals</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="internals2.structure.globals.html">
+ <link rel="shorturl" href="internals2.structure.globals.html">
+ <link rel="alternate" href="internals2.structure.globals.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="internals2.structure.html">
+ <link rel="prev" href="internals2.structure.modstruct.html">
+ <link rel="next" href="internals2.structure.lifecycle.html">
+
+ <link rel="alternate" href="internals2.structure.globals.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/internals2.structure.globals.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/internals2.structure.globals.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/internals2.structure.globals.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/internals2.structure.globals.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/internals2.structure.globals.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/internals2.structure.globals.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/internals2.structure.globals.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/internals2.structure.globals.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/internals2.structure.globals.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/internals2.structure.globals.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="internals2.html">PHP at the Core: A Hacker's Guide</a></li>      <li><a href="internals2.structure.html">Extension structure</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="internals2.structure.globals" class="sect1">
+  <h2 class="title">Extension globals</h2>
+
+  <div class="sect2" id="internals2.structure.globals.intro">
+   <h3 class="title">Introduction to globals in a PHP extension</h3>
+
+   <p class="simpara">
+    In a language such as C, a "global" variable is a variable that can be
+    accessed from any function without any extra declaration. These traditional
+    globals have a few drawbacks:
+   </p>
+
+   <ul class="itemizedlist">
+
+    <li class="listitem">
+     <span class="simpara">
+      Barring any special options passed to the compiler, a global variable can
+      be accessed and changed by any piece of code anywhere in the program,
+      whether or not that code should be doing so.
+     </span>
+    </li>
+
+    <li class="listitem">
+     <span class="simpara">
+      A typical global variable is not thread safe.
+     </span>
+    </li>
+
+    <li class="listitem">
+     <span class="simpara">
+      The names of global variables are as global as the variables themselves.
+     </span>
+    </li>
+
+   </ul>
+
+   <p class="simpara">
+    A PHP extension's globals are more properly called the "extension state",
+    since most modules must remember what they're doing between function calls.
+    The "counter" extension is a perfect example of this need: The basic
+    interface calls for a counter with a persistent value. A programmer new to
+    Zend and PHP might do something like this in <var class="filename">counter.c</var>
+    to store that value:
+   </p>
+
+   <div class="example" id="internals2.structure.globals.intro.wrong-way">
+    <p><strong>Example #1 The wrong way to store the basic counter interface's value</strong></p>
+    <div class="example-contents">
+<div class="ccode"><pre class="ccode">/* ... */
+static long basic_counter_value;
+
+/* ... */
+
+PHP_FUNCTION(counter_get)
+{
+    RETURN_LONG(basic_counter_value);
+}</pre>
+</div>
+    </div>
+
+   </div>
+
+   <p class="simpara">
+    On the surface this appears a viable solution, and indeed in a simple test
+    it would function correctly. However, there are a number of situations in
+    which more than one copy of PHP is running in the same thread, which means
+    more than one instance of the counter module. Suddenly these multiple
+    threads are sharing the same counter value, which is clearly undesirable.
+    Another problem shows itself when considering that another extension might
+    someday happen to have a global with the same name, and due to the rules of
+    C scoping, this has the potential to cause a compile failure, or worse, a
+    runtime error. Something more elaborate is needed, and so exists Zend's
+    support for thread-safe per-module globals.
+   </p>
+
+  </div>
+
+  <div class="sect2" id="internals2.structure.globals.declaring">
+   <h3 class="title">Declaring module globals</h3>
+   
+   <p class="simpara">
+    Whether a module uses only a single global or dozens, they must be defined
+    in a structure, and that structure must be declared. There are some macros
+    that assist with doing so in a way that avoids name conflicts between
+    modules: <span class="function"><strong>ZEND_BEGIN_MODULE_GLOBALS()</strong></span>,
+    <span class="function"><strong>ZEND_END_MODULE_GLOBALS()</strong></span>, and
+    <span class="function"><strong>ZEND_DECLARE_MODULE_GLOBALS()</strong></span>. All three take as a
+    parameter the short name of the module, which in the case of the counter
+    module is simply <em>"counter"</em>. Here is the global structure
+    declaration from <var class="filename">php_counter.h</var>:
+   </p>
+
+   <div class="example" id="internals2.structure.globals.declaring.doth">
+    <p><strong>Example #2 The counter module's globals</strong></p>
+    <div class="example-contents">
+<div class="ccode"><pre class="ccode">ZEND_BEGIN_MODULE_GLOBALS(counter)
+    long        basic_counter_value;
+ZEND_END_MODULE_GLOBALS(counter)</pre>
+</div>
+    </div>
+
+   </div>
+
+   <p class="simpara">
+    And this is the declaration from <var class="filename">counter.c</var>:
+   </p>
+
+   <div class="example" id="internals2.structure.globals.declaring.dotc">
+    <p><strong>Example #3 The counter module's global structure declaration</strong></p>
+    <div class="example-contents">
+<div class="ccode"><pre class="ccode">ZEND_DECLARE_MODULE_GLOBALS(counter)</pre>
+</div>
+    </div>
+
+   </div>
+  
+  </div>
+  
+  <div class="sect2" id="internals2.structure.globals.using">
+   <h3 class="title">Accessing module globals</h3>
+   
+   <p class="simpara">
+    As discussed above, per-module globals are declared inside a C structure
+    whose name is obscured by Zend macros. As a result, the ideal way to access
+    members of this structure is by the use of further macros. Accordingly, most
+    if not all extensions which have globals have a declaration like this
+    somewhere in their header file:
+   </p>
+
+   <div class="example" id="internals2.structure.globals.using.accessor">
+    <p><strong>Example #4 Accessor macros for per-module globals</strong></p>
+    <div class="example-contents">
+<div class="ccode"><pre class="ccode">#ifdef ZTS
+#define COUNTER_G(v) TSRMG(counter_globals_id, zend_counter_globals *, v)
+#else
+#define COUNTER_G(v) (counter_globals.v)
+#endif</pre>
+</div>
+    </div>
+
+   </div>
+
+   <blockquote class="note"><p><strong class="note">Note</strong>: 
+    <span class="simpara">
+     This could have been generalized into a macro of its own by the Zend API,
+     but as of PHP 5.3 (and PHP 6 at the time of this writing), that hasn't
+     happened. The global accessor construct is written into the header by
+     <strong class="command">ext_skel</strong> and thus is generally left alone by extension
+     writers, unless they wish to change the name of the accessor macro.
+    </span>
+   </p></blockquote>
+
+   <blockquote class="note"><p><strong class="note">Note</strong>: 
+    <span class="simpara">
+     <strong><code>COUNTER_G</code></strong> was the name given to the macro by
+     <strong class="command">ext_skel</strong>, but it's not necessary for it to have that
+     name and could just as easily be called <em>FOO</em> instead.
+    </span>
+   </p></blockquote>
+
+   <p class="simpara">
+    Any code in the counter extension that accesses a global must thus wrap it
+    in the macro <strong><code>COUNTER_G</code></strong>.
+   </p>
+
+   <div class="warning"><strong class="warning">Warning</strong>
+    <p class="simpara">
+     Any function which accesses globals must either be declared by Zend macros,
+     have <strong><code>TSRMLS_DC</code></strong> as its last argument, or call the macro
+     <strong><code>TSRMLS_FETCH</code></strong> before accessing the globals. See
+     the TSRM documentation for
+     more information.
+    </p>
+   </div>
+
+   <p class="simpara">
+    So with all of that in mind, here is our new version of the
+    <span class="function"><a href="internals2.counter.function.counter-get.html" class="function">counter_get()</a></span>:
+   </p>
+  
+   <div class="example" id="internals2.structure.globals.intro.right-way">
+    <p><strong>Example #5 The right way to store the basic counter interface's value</strong></p>
+    <div class="example-contents">
+<div class="ccode"><pre class="ccode">/* php_counter.h */
+ZEND_BEGIN_MODULE_GLOBALS(counter)
+    long        basic_counter_value;
+ZEND_END_MODULE_GLOBALS(counter)
+
+#ifdef ZTS
+#define COUNTER_G(v) TSRMG(counter_globals_id, zend_counter_globals *, v)
+#else
+#define COUNTER_G(v) (counter_globals.v)
+#endif
+
+/* counter.c */
+ZEND_DECLARE_MODULE_GLOBALS(counter)
+
+/* ... */
+
+PHP_FUNCTION(counter_get)
+{
+    RETURN_LONG(COUNTER_G(basic_counter_value));
+}</pre>
+</div>
+    </div>
+
+   </div>
+
+   <p class="simpara">
+    This is a correct implementation. It is not, however, a complete one. The
+    section <a href="internals2.structure.lifecycle.html" class="xref">Life cycle of an extension</a> explains why.
+   </p>
+  
+  </div>
+
+ </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div>
+ <div class="note">There are no user contributed notes for this page.</div></section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/internals2.structure.globals.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:53:27 GMT -->
+
+
+</body></html>

@@ -1,0 +1,435 @@
+<html><!-- Mirrored from php.net/manual/en/internals2.structure.lifecycle.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:53:27 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Life cycle of an extension</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="internals2.structure.lifecycle.html">
+ <link rel="shorturl" href="internals2.structure.lifecycle.html">
+ <link rel="alternate" href="internals2.structure.lifecycle.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="internals2.structure.html">
+ <link rel="prev" href="internals2.structure.globals.html">
+ <link rel="next" href="internals2.structure.tests.html">
+
+ <link rel="alternate" href="internals2.structure.lifecycle.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/internals2.structure.lifecycle.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/internals2.structure.lifecycle.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/internals2.structure.lifecycle.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/internals2.structure.lifecycle.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/internals2.structure.lifecycle.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/internals2.structure.lifecycle.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/internals2.structure.lifecycle.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/internals2.structure.lifecycle.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/internals2.structure.lifecycle.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/internals2.structure.lifecycle.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="internals2.html">PHP at the Core: A Hacker's Guide</a></li>      <li><a href="internals2.structure.html">Extension structure</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="internals2.structure.lifecycle" class="sect1">
+  <h2 class="title">Life cycle of an extension</h2>
+
+  <p class="simpara">
+   A PHP extension goes through several phases during its lifetime. All of
+   these phases are opportunities for the developer to perform various
+   initialization, termination, or informational functions. The Zend API allows
+   for hooks into five separate phases of an extension's existence, apart from
+   calls by PHP functions.
+  </p>
+  
+  <div class="sect2" id="internals2.structure.lifecycle.mod-vs-req">
+   <h3 class="title">Loading, unloading, and requests</h3>
+   
+   <p class="simpara">
+    As the Zend engine runs, it processes one or more "requests" from its
+    client. In the traditional CGI implementation, this corresponds to one
+    execution of a process. However, many other implementations, most notably
+    the Apache module, can map many requests onto a single PHP process. A PHP
+    extension may thus see many requests in its lifetime.
+   </p>
+  </div>
+
+  <div class="sect2" id="internals2.structure.lifecycle.overview">
+   <h3 class="title">Overview</h3>
+   
+   <ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      In the Zend API, a module is loaded into memory only once when the
+      associated PHP process starts up. Each module receives a call to the
+      "module initialization" function specified in its
+      <strong><code>zend_module</code></strong> structure as it is loaded.
+     </span>
+    </li>
+    
+    <li class="listitem">
+     <span class="simpara">
+      Whenever the associated PHP process starts to handle a request from its
+      client - i.e. whenever the PHP interpreter is told to start working - each
+      module receives a call to the "request initialization" function specified
+      in its <strong><code>zend_module</code></strong> structure.
+     </span>
+    </li>
+
+    <li class="listitem">
+     <span class="simpara">
+      Whenever the associated PHP process is done handling a request, each
+      module receives a call to the "request termination" function specified in
+      its <strong><code>zend_module</code></strong> structure.
+     </span>
+    </li>
+    
+    <li class="listitem">
+     <span class="simpara">
+      A given module is unloaded from memory when its associated PHP process is
+      shut down in an orderly manner. The module receives a call to the "module
+      termination" function specified in its
+      <strong><code>zend_module</code></strong> structure at this time.
+     </span>
+    </li>
+   </ul>
+
+  </div>
+
+  <div class="sect2" id="internals2.structure.lifecycle.what-when">
+   <h3 class="title">What to do, and when to do it</h3>
+
+   <p class="simpara">
+    There are many tasks that might be performed at any of these four points.
+    This table details where many common initialization and termination tasks
+    belong.
+   </p>
+   
+   <table class="doctable table">
+    <caption><strong>What to do, and when to do it</strong></caption>
+    
+     <thead>
+      <tr>
+       <th>Module initialization/termination</th>
+       <th>Request initialization/termination</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>Allocate/deallocate and initialize module global variables</td>
+       <td>
+        Allocate/deallocate and initialize request-specific variables
+       </td>
+      </tr>
+
+      <tr>
+       <td>Register/unregister class entries</td>
+       <td class="empty">&nbsp;</td>
+      </tr>
+
+      <tr>
+       <td>Register/unregister INI entries</td>
+       <td class="empty">&nbsp;</td>
+      </tr>
+
+      <tr>
+       <td>Register constants</td>
+       <td class="empty">&nbsp;</td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+
+  </div>
+
+  <div class="sect2" id="internals2.structure.lifecycle.info">
+   <h3 class="title">The <span class="function"><a href="function.phpinfo.html" class="function">phpinfo()</a></span> callback</h3>
+   
+   <p class="simpara">
+    Aside from globals initialization and certain rarely-used callbacks, there
+    is one more part of a module's lifecycle to examine: A call to
+    <span class="function"><a href="function.phpinfo.html" class="function">phpinfo()</a></span>. The output a user sees from this call, whether
+    text or HTML or anything else, is generated by each individual extension
+    that is loaded into the PHP interpreter at the time the call is made.
+   </p>
+   
+   <p class="simpara">
+    To provide for format-neutral output, the header
+    "ext/standard/info.h" provides an array of functions to produce
+    standardized display elements. Specifically, several functions which create
+    the familiar tables exist:
+   </p>
+   
+   <dl>
+
+    
+     <dt>
+<span class="function"><strong>php_info_print_table_start()</strong></span></dt>
+
+     <dd>
+
+      <span class="simpara">
+       Open a table in <span class="function"><a href="function.phpinfo.html" class="function">phpinfo()</a></span> output. Takes no parameters.
+      </span>
+     </dd>
+
+    
+    
+     <dt>
+<span class="function"><strong>php_info_print_table_header()</strong></span></dt>
+
+     <dd>
+
+      <span class="simpara">
+       Print a table header in <span class="function"><a href="function.phpinfo.html" class="function">phpinfo()</a></span> output. Takes one
+       parameter, the number of columns, plus the same number of
+       <span class="type"><span class="type char *">char *</span></span> parameters which are the texts for each column
+       heading.
+      </span>
+     </dd>
+
+    
+    
+     <dt>
+<span class="function"><strong>php_info_print_table_row()</strong></span></dt>
+
+     <dd>
+
+      <span class="simpara">
+       Print a table row in <span class="function"><a href="function.phpinfo.html" class="function">phpinfo()</a></span> output. Takes one
+       parameter, the number of columns, plus the same number of
+       <span class="type"><span class="type char *">char *</span></span> parameters which are the texts for each column
+       content.
+      </span>
+     </dd>
+
+    
+    
+     <dt>
+<span class="function"><strong>php_info_print_table_end()</strong></span></dt>
+
+     <dd>
+
+      <span class="simpara">
+       Close a table formerly opened by
+       <span class="function"><strong>php_info_print_table_start()</strong></span>. Takes no parameters.
+      </span>
+     </dd>
+
+    
+   </dl>
+
+   
+   <p class="simpara">
+    Using these four functions, it is possible to produce status information for
+    nearly any combination of features in an extension. Here is the information
+    callback from the counter extension:
+   </p>
+
+   <div class="example" id="internals2.structure.lifecycle.info.counter">
+    <p><strong>Example #1 counter's PHP_MINFO function</strong></p>
+    <div class="example-contents">
+<div class="ccode"><pre class="ccode">/* {{{ PHP_MINFO(counter) */
+PHP_MINFO_FUNCTION(counter)
+{
+    char        buf[10];
+
+    php_info_print_table_start();
+    php_info_print_table_row(2, "counter support", "enabled");
+    snprintf(buf, sizeof(buf), "%ld", COUNTER_G(basic_counter_value));
+    php_info_print_table_row(2, "Basic counter value", buf);
+    php_info_print_table_end();
+}
+/* }}} */</pre>
+</div>
+    </div>
+
+   </div>
+  </div>
+
+ </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div>
+ <div class="note">There are no user contributed notes for this page.</div></section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/internals2.structure.lifecycle.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:53:28 GMT -->
+
+
+</body></html>

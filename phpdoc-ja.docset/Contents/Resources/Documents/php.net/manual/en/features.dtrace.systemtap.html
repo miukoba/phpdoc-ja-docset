@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>Using SystemTap with PHP DTrace Static Probes</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="features.dtrace.dtrace.html">≪ Using PHP and DTrace</a></li>
+      <li style="float: right;"><a href="funcref.html">関数リファレンス ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="features.dtrace.html">DTrace Dynamic Tracing</a></li>
+    <li>Using SystemTap with PHP DTrace Static Probes</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="features.dtrace.systemtap" class="sect1">
+  <h2 class="title">Using SystemTap with PHP DTrace Static Probes</h2>
+  <p class="para">
+   On some Linux distributions, the SystemTap tracing utility can be
+   used to trace PHP&#039;s static DTrace probes.  This is available with
+   PHP 5.4.20 and PHP 5.5.
+  </p>
+
+  <div class="sect2" id="features.dtrace.systemtap-install">
+   <h3 class="title">Installing PHP with SystemTap</h3>
+
+   <p class="para">
+    Install the SystemTap SDT development package:
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="shellcode"><pre class="shellcode"># yum install systemtap-sdt-devel</pre>
+</div>
+     </div>
+
+    </div>
+   </p>
+
+   <p class="para">
+    Install PHP with the DTrace probes enabled:
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="shellcode"><pre class="shellcode"># ./configure --enable-dtrace ...
+# make</pre>
+</div>
+     </div>
+
+    </div>
+   </p>
+  </div>
+
+  <div class="sect2" id="features.dtrace.systemtap-list-probes">
+   <h3 class="title">Listing Static Probes with SystemTap</h3>
+
+   <p class="para">
+    The static probes in PHP can be listed using <var class="filename">stap</var>:
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="cdata"><pre>
+# stap -l &#039;process.provider(&quot;php&quot;).mark(&quot;*&quot;)&#039; -c &#039;sapi/cli/php -i&#039;
+</pre></div>
+     </div>
+
+    </div>
+   </p>
+
+   <p class="para">
+    This outputs:
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="cdata"><pre>
+process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;compile__file__entry&quot;)
+process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;compile__file__return&quot;)
+process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;error&quot;)
+process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;exception__caught&quot;)
+process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;exception__thrown&quot;)
+process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;execute__entry&quot;)
+process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;execute__return&quot;)
+process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;function__entry&quot;)
+process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;function__return&quot;)
+process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;request__shutdown&quot;)
+process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;request__startup&quot;)
+</pre></div>
+     </div>
+
+    </div>
+   </p>
+  </div>
+
+  <div class="sect2" id="features.dtrace.systemtap-examples">
+   <h3 class="title">SystemTap with PHP Example</h3>
+
+   <p class="para">
+    <div class="example" id="example-420">
+     <p><strong>例1 <var class="filename">all_probes.stp</var> for tracing all PHP Static Probes with SystemTap</strong></p>
+     <div class="example-contents">
+<div class="shellcode"><pre class="shellcode">probe process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;compile__file__entry&quot;) {
+    printf(&quot;Probe compile__file__entry\n&quot;);
+    printf(&quot;  compile_file %s\n&quot;, user_string($arg1));
+    printf(&quot;  compile_file_translated %s\n&quot;, user_string($arg2));
+}
+probe process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;compile__file__return&quot;) {
+    printf(&quot;Probe compile__file__return\n&quot;);
+    printf(&quot;  compile_file %s\n&quot;, user_string($arg1));
+    printf(&quot;  compile_file_translated %s\n&quot;, user_string($arg2));
+}
+probe process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;error&quot;) {
+    printf(&quot;Probe error\n&quot;);
+    printf(&quot;  errormsg %s\n&quot;, user_string($arg1));
+    printf(&quot;  request_file %s\n&quot;, user_string($arg2));
+    printf(&quot;  lineno %d\n&quot;, $arg3);
+}
+probe process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;exception__caught&quot;) {
+    printf(&quot;Probe exception__caught\n&quot;);
+    printf(&quot;  classname %s\n&quot;, user_string($arg1));
+}
+probe process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;exception__thrown&quot;) {
+    printf(&quot;Probe exception__thrown\n&quot;);
+    printf(&quot;  classname %s\n&quot;, user_string($arg1));
+}
+probe process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;execute__entry&quot;) {
+    printf(&quot;Probe execute__entry\n&quot;);
+    printf(&quot;  request_file %s\n&quot;, user_string($arg1));
+    printf(&quot;  lineno %d\n&quot;, $arg2);
+}
+probe process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;execute__return&quot;) {
+    printf(&quot;Probe execute__return\n&quot;);
+    printf(&quot;  request_file %s\n&quot;, user_string($arg1));
+    printf(&quot;  lineno %d\n&quot;, $arg2);
+}
+probe process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;function__entry&quot;) {
+    printf(&quot;Probe function__entry\n&quot;);
+    printf(&quot;  function_name %s\n&quot;, user_string($arg1));
+    printf(&quot;  request_file %s\n&quot;, user_string($arg2));
+    printf(&quot;  lineno %d\n&quot;, $arg3);
+    printf(&quot;  classname %s\n&quot;, user_string($arg4));
+    printf(&quot;  scope %s\n&quot;, user_string($arg5));
+}
+probe process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;function__return&quot;) {
+    printf(&quot;Probe function__return: %s\n&quot;, user_string($arg1));
+    printf(&quot; function_name %s\n&quot;, user_string($arg1));
+    printf(&quot;  request_file %s\n&quot;, user_string($arg2));
+    printf(&quot;  lineno %d\n&quot;, $arg3);
+    printf(&quot;  classname %s\n&quot;, user_string($arg4));
+    printf(&quot;  scope %s\n&quot;, user_string($arg5));
+}
+probe process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;request__shutdown&quot;) {
+    printf(&quot;Probe request__shutdown\n&quot;);
+    printf(&quot;  file %s\n&quot;, user_string($arg1));
+    printf(&quot;  request_uri %s\n&quot;, user_string($arg2));
+    printf(&quot;  request_method %s\n&quot;, user_string($arg3));
+}
+probe process(&quot;sapi/cli/php&quot;).provider(&quot;php&quot;).mark(&quot;request__startup&quot;) {
+    printf(&quot;Probe request__startup\n&quot;);
+    printf(&quot;  file %s\n&quot;, user_string($arg1));
+    printf(&quot;  request_uri %s\n&quot;, user_string($arg2));
+    printf(&quot;  request_method %s\n&quot;, user_string($arg3));
+}</pre>
+</div>
+     </div>
+
+    </div>
+   </p>
+   <p class="para">
+    The above script will trace all core PHP static probe points
+    throughout the duration of a running PHP script:
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="cdata"><pre>
+# stap -c &#039;sapi/cli/php test.php&#039; all_probes.stp
+</pre></div>
+     </div>
+
+    </div>
+   </p>
+  </div>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

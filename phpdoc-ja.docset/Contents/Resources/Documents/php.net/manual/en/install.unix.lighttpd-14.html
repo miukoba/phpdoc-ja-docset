@@ -1,0 +1,266 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>Lighttpd 1.4 (Unix システム用)</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="install.unix.nginx.html">≪ Nginx 1.4.x on Unix systems</a></li>
+      <li style="float: right;"><a href="install.unix.sun.html">Sun, iPlanet, Netscape サーバー（Sun Solaris 用） ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="install.unix.html">Unix システムへのインストール</a></li>
+    <li>Lighttpd 1.4 (Unix システム用)</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="install.unix.lighttpd-14" class="sect1">
+ <h2 class="title">Lighttpd 1.4 (Unix システム用)</h2>
+
+ <p class="para">
+  ここでは、Unix システム上の Lighttpd 1.4
+  で PHP を使用する際の注意点とヒントをまとめます。
+ </p>
+
+ <p class="para">
+  まず <a href="http://trac.lighttpd.net/trac/" class="link external" title="Link : http://trac.lighttpd.net/trac/">&raquo;&nbsp;Lighttpd trac</a>
+  で Lighttpd のインストール方法をよく読んでからこれ以降に進みましょう。
+ </p>
+ 
+ <p class="para">
+  PHP と Lighttpd を組み合わせる際におすすめの SAPI は fastcgi です。
+  fastcgi は PHP 5.3 以降の php-cgi では自動的に有効になりますが、
+  それより前のバージョンの場合は php の configure 時に
+  --enable-fastcgi を指定しなければなりません。
+  PHP で fastcgi が有効になっているかどうかを調べるには、
+  <em>php -v</em> の結果が <em>PHP 5.2.5 (cgi-fcgi)</em>
+  のようになっているかどうかを確認します。
+  PHP 5.2.3 以前の場合は、(php-cgi ではなく) php バイナリで
+  fastcgi が使えるようになります。
+ </p>
+ 
+ <div class="sect2" id="install.unix.lighttpd-14.lighttpd-spawn">
+  <h3 class="title">Lighttpd に php プロセスを起動させる</h3>
+
+  <p class="para">
+   Lighttpd から php に接続して fastcgi プロセスを立ち上げさせるよう設定するには、
+   lighttpd.conf を編集します。ローカルシステムの fastcgi
+   プロセスに接続するにはソケットの使用をおすすめします。
+  </p>
+
+  <div class="example" id="example-40">
+   <p><strong>例1 lighttpd.conf の抜粋</strong></p>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+server.modules += ( &quot;mod_fastcgi&quot; )
+
+fastcgi.server = ( &quot;.php&quot; =&gt;
+  ((
+    &quot;socket&quot; =&gt; &quot;/tmp/php.socket&quot;,
+    &quot;bin-path&quot; =&gt; &quot;/usr/local/bin/php-cgi&quot;,
+    &quot;bin-environment&quot; =&gt; (
+      &quot;PHP_FCGI_CHILDREN&quot; =&gt; &quot;16&quot;,
+      &quot;PHP_FCGI_MAX_REQUESTS&quot; =&gt; &quot;10000&quot;
+    ),
+    &quot;min-procs&quot; =&gt; 1,
+    &quot;max-procs&quot; =&gt; 1,
+    &quot;idle-timeout&quot; =&gt; 20
+  ))
+)
+</pre></div>
+
+   </div>
+  </div>
+
+  <p class="para">
+   bin-path ディレクティブにより、lighttpd
+   が fastcgi プロセスを動的に起動できるようになります。
+   PHP は、環境変数 PHP_FCGI_CHILDREN の内容に応じて子プロセスを起動します。
+   &quot;bin-environment&quot; ディレクティブは、起動するプロセスの環境を設定します。
+   リクエストの数が PHP_FCGI_MAX_REQUESTS の値に達すると、
+   PHP は子プロセスを kill します。ディレクティブ
+   &quot;min-procs&quot; および &quot;max-procs&quot; は、PHP での使用は避けるべきです。
+   PHP は自身の子プロセスを自前で管理しますし、
+   APC のような opcode キャッシュは PHP が管理する子プロセスしか共有しません。
+   &quot;min-procs&quot; を 1 より大きい値に設定すると、
+   PHP レスポンダの数が PHP_FCGI_CHILDREN にその値をかけたものとなります
+   (2 min-procs * 16 子プロセスで 32 のレスポンダとなります)。
+  </p>
+ </div>
+
+ <div class="sect2" id="install.unix.lighttpd-14.spawn-fcgi">
+  <h3 class="title">spawn-fcgi での起動</h3>  
+
+  <p class="para">
+   Lighttpd には spawn-fcgi というプログラムが含まれており、
+   fastcgi プロセスの起動を簡単に行えるようになっています。
+  </p>
+ </div>
+
+ <div class="sect2" id="install.unix.lighttpd-14.spawn-php">
+  <h3 class="title">php-cgi の起動</h3>
+
+  <p class="para">
+   spawn-fcgi なしでプロセスを起動することもできますが、多少難易度が上がります。
+   環境変数 PHP_FCGI_CHILDREN で、PHP がリクエストの処理用に起動する子の数を設定します。
+   PHP_FCGI_MAX_REQUESTS は、各子プロセスの生存期間 (リクエスト数)
+   を設定します。php レスポンダを起動するシンプルな bash スクリプトの例を以下に示します。
+  </p>
+     
+  <div class="example" id="example-41">
+   <p><strong>例2 FastCGI レスポンダの起動</strong></p>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+#!/bin/sh
+
+# php-cgi バイナリの場所
+PHP=/usr/local/bin/php-cgi
+
+# PID ファイルの場所
+PHP_PID=/tmp/php.pid
+
+# アドレスへのバインド
+#FCGI_BIND_ADDRESS=10.0.1.1:10000
+# ドメインソケットへのバインド
+FCGI_BIND_ADDRESS=/tmp/php.sock
+
+PHP_FCGI_CHILDREN=16
+PHP_FCGI_MAX_REQUESTS=10000
+
+env -i PHP_FCGI_CHILDREN=$PHP_FCGI_CHILDREN \
+       PHP_FCGI_MAX_REQUESTS=$PHP_FCGI_MAX_REQUESTS \
+       $PHP -b $FCGI_BIND_ADDRESS &amp;
+
+echo $! &gt; &quot;$PHP_PID&quot;
+
+</pre></div>
+   </div>
+  </div>
+ </div>
+
+ <div class="sect2" id="install.unix.lighttpd-14.remote-fcgi">
+  <h3 class="title">リモートの FCGI インスタンスへの接続</h3>
+
+  <p class="para">
+   fastcgi インスタンスを複数のリモートマシンで起動して、
+   アプリケーションの規模を拡大することができます。
+  </p>
+   
+  <div class="example" id="example-42">
+   <p><strong>例3 リモートの php-fastcgi インスタンスへの接続</strong></p>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+fastcgi.server = ( &quot;.php&quot; =&gt;
+   (( &quot;host&quot; =&gt; &quot;10.0.0.2&quot;, &quot;port&quot; =&gt; 1030 ),
+    ( &quot;host&quot; =&gt; &quot;10.0.0.3&quot;, &quot;port&quot; =&gt; 1030 ))
+)
+</pre></div>
+   </div>
+  </div>
+ </div>
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="105337""></a>
+  <div class="note">
+   <strong class="user">pittss at gmail dot com</strong>
+   <a href="#105337" class="date">10-Aug-2011 01:53</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+You can custom php.ini just&nbsp; add environment PHPRC in your virtualhost. <br />
+<br />
+&nbsp;&nbsp;&nbsp; fastcgi.server&nbsp; &nbsp; = ( ".php" =&gt; ((<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; "bin-path" =&gt; "/usr/bin/php-cgi",<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; "socket" =&gt; "/tmp/php.socket",<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; "bin-environment" =&gt; ( <br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; "PHP_FCGI_CHILDREN" =&gt; "3",<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; "PHP_FCGI_MAX_REQUESTS" =&gt; "1000",<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; "PHPRC" =&gt; "/usr/www/vhost1/php.ini"<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ),<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; "bin-copy-environment" =&gt; (<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; "PATH", "SHELL", "USER"<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; ),<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; "broken-scriptfilename" =&gt; "enable"<br />
+&nbsp;&nbsp;&nbsp; )))</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="98356""></a>
+  <div class="note">
+   <strong class="user">Ant P.</strong>
+   <a href="#98356" class="date">10-Jun-2010 04:09</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If PHP_FCGI_MAX_REQUESTS isn't given, the default value is 500.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="90114""></a>
+  <div class="note">
+   <strong class="user">askroot at gmail dot com</strong>
+   <a href="#90114" class="date">07-Apr-2009 11:32</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+&lt;-- Start --&gt;<br />
+#!/bin/bash<br />
+<br />
+/usr/bin/spawn-fcgi \<br />
+&nbsp;&nbsp;&nbsp; -s /var/run/lighttpd/php-fastcgi-kr.php.net.socket \<br />
+&nbsp;&nbsp;&nbsp; -f "/usr/bin/php-cgi -c /etc/php-kr.php.net.ini" \<br />
+&nbsp;&nbsp;&nbsp; -u lighttpd \<br />
+&nbsp;&nbsp;&nbsp; -g lighttpd \<br />
+&nbsp;&nbsp;&nbsp; -C 4 \<br />
+&nbsp;&nbsp;&nbsp; -P /var/run/spawn-fcgi-kr.php.net.pid \<br />
+&nbsp;&nbsp;&nbsp; -F 12<br />
+&lt;--&nbsp; End --&gt;<br />
+<br />
+lighttpd 1.5 - Config<br />
+&lt;-- Start --&gt;<br />
+$HTTP["host"] =~ "^(www.)?kr.php.net" {<br />
+&nbsp;&nbsp;&nbsp; server.document-root = "/home/kr.php.net"<br />
+&nbsp;&nbsp;&nbsp; accesslog.filename = "/var/log/lighttpd/kr.php.net-access_log"<br />
+&nbsp;&nbsp;&nbsp; index-file.names = ( "index.php", "index.html", "index.htm" )<br />
+&nbsp;&nbsp;&nbsp; url.access-deny = ( "~", ".inc", ".htaccess" )<br />
+&nbsp;&nbsp;&nbsp; server.error-handler-404 = "/error.php"<br />
+&nbsp;&nbsp;&nbsp; alias.url = (<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; "/FAQ.php" =&gt; "/home/kr.php.net/manual/kr/faq.php",<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; "/stats" =&gt; "/home/kr.php.net-stats"<br />
+&nbsp;&nbsp;&nbsp; )<br />
+&nbsp;&nbsp;&nbsp; setenv.add-environment = (<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; "MIRROR_LANGUAGE" =&gt; "kr",<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; "MIRROR_STATS" =&gt; "1"<br />
+&nbsp;&nbsp;&nbsp; )<br />
+&nbsp;&nbsp;&nbsp; $HTTP["url"] =~ "\.php$" {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; proxy-core.balancer = "round-robin"<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; proxy-core.allow-x-sendfile = "enable"<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; proxy-core.protocol = "fastcgi"<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; proxy-core.backends = ( "unix:/var/run/lighttpd/php-fastcgi-kr.php.net.socket" )<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; proxy-core.max-pool-size = 16<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+&lt;-- End --&gt;</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

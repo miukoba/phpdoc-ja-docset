@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>Phar アーカイブの使用法: phar ストリームラッパー</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="phar.using.intro.html">≪ Phar アーカイブの使用法: 導入</a></li>
+      <li style="float: right;"><a href="phar.using.object.html">Phar アーカイブの使用法: Phar クラスおよび PharData クラス ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="phar.using.html">Phar アーカイブの使用法</a></li>
+    <li>Phar アーカイブの使用法: phar ストリームラッパー</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="phar.using.stream" class="section">
+ <h2 class="title">Phar アーカイブの使用法: phar ストリームラッパー</h2>
+ <p class="para">
+  Phar ストリームラッパーは、<span class="function"><a href="function.fopen.html" class="function">fopen()</a></span> による読み込みや
+  書き込み (追記は除く)、<span class="function"><a href="function.unlink.html" class="function">unlink()</a></span>、<span class="function"><a href="function.stat.html" class="function">stat()</a></span>、
+  <span class="function"><a href="function.fstat.html" class="function">fstat()</a></span>、<span class="function"><a href="function.fseek.html" class="function">fseek()</a></span>、<span class="function"><a href="function.rename.html" class="function">rename()</a></span>
+  そしてディレクトリに対する <span class="function"><a href="function.opendir.html" class="function">opendir()</a></span>
+  といった機能に完全に対応しています。
+  バージョン 2.0.0 以降では <span class="function"><a href="function.rmdir.html" class="function">rmdir()</a></span>
+  や <span class="function"><a href="function.mkdir.html" class="function">mkdir()</a></span> にも対応します。
+ </p>
+ <p class="para">
+  Phar アーカイブ内の各ファイルの圧縮やファイル単位のメタデータの操作も、
+  ストリーム上で可能です。
+ </p>
+ <p class="para">
+  <div class="informalexample">
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$context&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">stream_context_create</span><span style="color: #007700">(array(</span><span style="color: #DD0000">'phar'&nbsp;</span><span style="color: #007700">=&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">'compress'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">Phar</span><span style="color: #007700">::</span><span style="color: #0000BB">GZ</span><span style="color: #007700">)),<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: #DD0000">'metadata'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;array(</span><span style="color: #DD0000">'user'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'cellog'</span><span style="color: #007700">)));<br /></span><span style="color: #0000BB">file_put_contents</span><span style="color: #007700">(</span><span style="color: #DD0000">'phar://my.phar/somefile.php'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$context</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </p>
+ <p class="para">
+  <em>phar</em> ストリームラッパーは、
+  リモートファイルを操作することはできません。つまり、INI 設定
+  <a href="filesystem.configuration.html#ini.allow-url-fopen" class="link">allow_url_fopen</a> および
+  <a href="filesystem.configuration.html#ini.allow-url-include" class="link">allow_url_include</a>
+  が無効になっている場合でも使用できます。
+ </p>
+ <p class="para">
+  ストリーム操作だけで新しい phar アーカイブをゼロから作成することも可能ですが、
+  そんな場合は Phar クラスの組み込み機能を使用するほうが便利です。
+  ストリームラッパーが有用なのは、読み込み専用の操作を行う場合です。
+ </p>
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="104320""></a>
+  <div class="note">
+   <strong class="user">staff at pro-unreal dot de</strong>
+   <a href="#104320" class="date">09-Jun-2011 07:52</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Please note that the phar stream wrapper does not work with any glob.<br />
+When you decide to move your project to phar archives you need to consider this.<br />
+<br />
+The following won't work:<br />
+<span class="default">&lt;?php<br />
+glob</span><span class="keyword">(</span><span class="string">'phar://some.phar/*'</span><span class="keyword">);<br />
+new </span><span class="default">DirectoryIterator</span><span class="keyword">(</span><span class="string">'glob://phar://some.phar/*'</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+While the following will work:<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">new </span><span class="default">DirectoryIterator</span><span class="keyword">(</span><span class="string">'phar://some.phar/'</span><span class="keyword">);<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="103893""></a>
+  <div class="note">
+   <strong class="user">carl at dot dot com</strong>
+   <a href="#103893" class="date">09-May-2011 09:12</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Some Examples of how to use the stream wrapper would be really helpful.&nbsp; 
+<br />
+My floundering attempts reveal only the following:
+<br />
+
+<br />
+<span class="default">&lt;?php
+<br />
+$p </span><span class="keyword">= new </span><span class="default">PharData</span><span class="keyword">(</span><span class="default">dirname</span><span class="keyword">(</span><span class="default">__FILE__</span><span class="keyword">).</span><span class="string">'/phartest.zip'</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">,</span><span class="string">'phartest'</span><span class="keyword">,</span><span class="default">Phar</span><span class="keyword">::</span><span class="default">ZIP</span><span class="keyword">) ;
+<br />
+
+<br />
+</span><span class="default">$p</span><span class="keyword">-&gt;</span><span class="default">addFromString</span><span class="keyword">(</span><span class="string">'testfile.txt'</span><span class="keyword">, 
+<br />
+</span><span class="string">'this is just some test text'</span><span class="keyword">);
+<br />
+
+<br />
+</span><span class="comment">// This works
+<br />
+</span><span class="keyword">echo </span><span class="default">file_get_contents</span><span class="keyword">(</span><span class="string">'phar://phartest.zip/testfile.txt'</span><span class="keyword">);
+<br />
+
+<br />
+</span><span class="comment">//This Fails
+<br />
+</span><span class="default">file_put_contents</span><span class="keyword">(</span><span class="string">'phar://phartest.zip/testfile.txt'</span><span class="keyword">,
+<br />
+</span><span class="string">'Thist is text for testfile.txt'</span><span class="keyword">);
+<br />
+
+<br />
+</span><span class="default">$context </span><span class="keyword">= </span><span class="default">stream_context_create</span><span class="keyword">(
+<br />
+array(</span><span class="string">'phar' </span><span class="keyword">=&gt;array(</span><span class="string">'compress' </span><span class="keyword">=&gt;</span><span class="default">Phar</span><span class="keyword">::</span><span class="default">ZIP</span><span class="keyword">))
+<br />
+) ;
+<br />
+
+<br />
+</span><span class="comment">//This Fails
+<br />
+</span><span class="default">file_put_contents</span><span class="keyword">(
+<br />
+</span><span class="string">'phar://phartest.zip/testfile.txt'</span><span class="keyword">,
+<br />
+</span><span class="string">'Thist is text for testfile.txt'</span><span class="keyword">,</span><span class="default">0</span><span class="keyword">,</span><span class="default">$context</span><span class="keyword">);
+<br />
+
+<br />
+</span><span class="comment">// This works but only with 'r' readonly mode.
+<br />
+</span><span class="default">$f </span><span class="keyword">= </span><span class="default">fopen</span><span class="keyword">(
+<br />
+</span><span class="string">'phar://C:\\Inetpub\\wwwroot\\PACT\\test\\phartest.zip\\testfile.txt'</span><span class="keyword">,
+<br />
+</span><span class="string">'r'</span><span class="keyword">) ;
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

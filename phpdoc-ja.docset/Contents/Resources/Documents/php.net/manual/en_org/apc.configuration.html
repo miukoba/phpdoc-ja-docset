@@ -1,0 +1,1427 @@
+<html><!-- Mirrored from php.net/manual/en/apc.configuration.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 16:10:29 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Runtime Configuration</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="apc.configuration.html">
+ <link rel="shorturl" href="apc.configuration.html">
+ <link rel="alternate" href="apc.configuration.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="apc.setup.html">
+ <link rel="prev" href="apc.installation.html">
+ <link rel="next" href="apc.resources.html">
+
+ <link rel="alternate" href="apc.configuration.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/apc.configuration.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/apc.configuration.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/apc.configuration.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/apc.configuration.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/apc.configuration.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/apc.configuration.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/apc.configuration.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/apc.configuration.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/apc.configuration.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/apc.configuration.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></li>      <li><a href="book.apc.html">APC</a></li>      <li><a href="apc.setup.html">Installing/Configuring</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="apc.configuration" class="section">
+ <h2 class="title">Runtime Configuration</h2>
+ <p class="simpara">
+The behaviour of these functions is affected by settings in <var class="filename">php.ini</var>.
+</p>
+ <p class="para">
+  Although the default APC settings are fine for many installations, serious
+  users should consider tuning the following parameters.
+ </p>
+ <p class="para">
+  There are two primary decisions to be made configuring APC.  First,
+  how much memory is going to be allocated to APC; and second, whether APC
+  will check if a file has been modified on every request.  The two ini 
+  directives that control these settings are <em>apc.shm_size</em>
+  and <em>apc.stat</em>, respectively.  Read the sections on these
+  two directive carefully below.
+ </p>
+ <p class="para">
+  Once the server is running, the <em>apc.php</em> script that
+  is bundled with the extension should be copied somewhere into the docroot and
+  viewed with a browser as it provides a detailed analysis of the internal 
+  workings of APC.  If GD is enabled in PHP, it will even display some
+  interesting graphs.  The first thing to ensure, of course, is that it is
+  actually caching files.  If APC is working, the <em>Cache full count
+  </em> number (on the left) will display the number of times the cache
+  has reached maximum capacity and has had to forcefully clean any entries that
+  haven't been accessed in the last <em>apc.ttl</em> seconds. This
+  number is minimized in a well-configured cache.  If the cache is constantly
+  being filled, and thusly forcefully freed, the resulting churning will have
+  disparaging effects on script performance.  The easiest way to minimize this 
+  number is to allocate more memory for APC.  Barring that, the <em>apc.filters
+  </em> ought to be used to cache fewer scripts.
+ </p>
+ <p class="para">
+  When APC is compiled with mmap support (Memory Mapping), it will use only one 
+  memory segment, unlike when APC is built with SHM (SysV Shared Memory) support 
+  that uses multiple memory segments. MMAP does not have a maximum limit like SHM 
+  does in <em>/proc/sys/kernel/shmmax</em>. In general MMAP support is 
+  recommeded because it will reclaim the memory faster when the webserver is 
+  restarted and all in all reduces memory allocation impact at startup.
+ </p>
+ <p class="para">
+  </p><table class="doctable table">
+   <caption><strong>APC configuration options</strong></caption>
+   
+    <thead>
+     <tr>
+      <th>Name</th>
+      <th>Default</th>
+      <th>Changeable</th>
+      <th>Changelog</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.enabled" class="link">apc.enabled</a></td>
+      <td>"1"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>PHP_INI_SYSTEM in APC 2. PHP_INI_ALL in APC &lt;= 3.0.12.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.shm-segments" class="link">apc.shm_segments</a></td>
+      <td>"1"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.shm-size" class="link">apc.shm_size</a></td>
+      <td>"32M"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.shm-strings-buffer" class="link">apc.shm_strings_buffer</a></td>
+      <td>"4M"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.1.4.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.optimization" class="link">apc.optimization</a></td>
+      <td>"0"</td>
+      <td>PHP_INI_ALL</td>
+      <td>PHP_INI_SYSTEM in APC 2. Removed in APC 3.0.13.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.num-files-hint" class="link">apc.num_files_hint</a></td>
+      <td>"1000"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.user-entries-hint" class="link">apc.user_entries_hint</a></td>
+      <td>"4096"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.0.0.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.ttl" class="link">apc.ttl</a></td>
+      <td>"0"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.0.0.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.user-ttl" class="link">apc.user_ttl</a></td>
+      <td>"0"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.0.0.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.gc-ttl" class="link">apc.gc_ttl</a></td>
+      <td>"3600"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.cache-by-default" class="link">apc.cache_by_default</a></td>
+      <td>"1"</td>
+      <td>PHP_INI_ALL</td>
+      <td>PHP_INI_SYSTEM in APC &lt;= 3.0.12. Available since APC 3.0.0.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.filters" class="link">apc.filters</a></td>
+      <td>NULL</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.mmap-file-mask" class="link">apc.mmap_file_mask</a></td>
+      <td>NULL</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.slam-defense" class="link">apc.slam_defense</a></td>
+      <td>"1"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.0.0. Prior to APC 3.1.4, the default value was <em>"0"</em> (disabled).</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.file-update-protection" class="link">apc.file_update_protection</a></td>
+      <td>"2"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.0.6.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.enable-cli" class="link">apc.enable_cli</a></td>
+      <td>"0"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.0.7.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.max-file-size" class="link">apc.max_file_size</a></td>
+      <td>"1M"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.0.7.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.use-request-time" class="link">apc.use_request_time</a></td>
+      <td>"1"</td>
+      <td>PHP_INI_ALL</td>
+      <td>Available since APC 3.1.3.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.stat" class="link">apc.stat</a></td>
+      <td>"1"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.0.10.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.write-lock" class="link">apc.write_lock</a></td>
+      <td>"1"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.0.11.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.report-autofilter" class="link">apc.report_autofilter</a></td>
+      <td>"0"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.0.11.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.serializer" class="link">apc.serializer</a></td>
+      <td>"default"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.1.0.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.include-once-override" class="link">apc.include_once_override</a></td>
+      <td>"0"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.0.12.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.rfc1867" class="link">apc.rfc1867</a></td>
+      <td>"0"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.0.13.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.rfc1867-prefix" class="link">apc.rfc1867_prefix</a></td>
+      <td>"upload_"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.rfc1867-name" class="link">apc.rfc1867_name</a></td>
+      <td>"APC_UPLOAD_PROGRESS"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.rfc1867-freq" class="link">apc.rfc1867_freq</a></td>
+      <td>"0"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.rfc1867-ttl" class="link">apc.rfc1867_ttl</a></td>
+      <td>"3600"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.1.1.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.localcache" class="link">apc.localcache</a></td>
+      <td>"0"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available in APC 3.0.14 - 3.1.11.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.localcache.size" class="link">apc.localcache.size</a></td>
+      <td>"512"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>vailable in APC 3.0.14 - 3.1.11.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.coredump-unmap" class="link">apc.coredump_unmap</a></td>
+      <td>"0"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.0.16.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.stat-ctime" class="link">apc.stat_ctime</a></td>
+      <td>"0"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.0.13.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.preload-path" class="link">apc.preload_path</a></td>
+      <td>NULL</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.1.1.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.file-md5" class="link">apc.file_md5</a></td>
+      <td>"0"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.1.1.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.canonicalize" class="link">apc.canonicalize</a></td>
+      <td>"1"</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.1.1.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.lazy-functions" class="link">apc.lazy_functions</a></td>
+      <td>0</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.1.3.</td>
+     </tr>
+
+     <tr>
+      <td><a href="apc.configuration.html#ini.apc.lazy-classes" class="link">apc.lazy_classes</a></td>
+      <td>0</td>
+      <td>PHP_INI_SYSTEM</td>
+      <td>Available since APC 3.1.3.</td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  For further details and definitions of the
+PHP_INI_* modes, see the <a href="configuration.changes.modes.html" class="xref">Where a configuration setting may be set</a>.
+ <p></p>
+ 
+ <p class="para">Here's a short explanation of
+the configuration directives.</p>
+ 
+ <p class="para">
+  </p><dl>
+
+   
+    <dt id="ini.apc.enabled">
+     <code class="parameter">apc.enabled</code>
+     <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      <em>apc.enabled</em> can be set to 0 to disable APC. This is
+      primarily useful when APC is statically compiled
+      into PHP, since there is no other way to disable
+      it (when compiled as a DSO, the <em>extension</em>
+      line in <em>php.ini</em> can just be commented-out).
+     </p>
+    </dd>
+
+   
+   
+    <dt id="ini.apc.shm-segments">
+     <code class="parameter">apc.shm_segments</code>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      The number of shared memory segments to allocate
+      for the compiler cache. If APC is running out of
+      shared memory but <em>apc.shm_size</em> 
+      is set as high as the system allows, raising
+      this value might prevent APC from exhausting its memory.
+     </p>
+    </dd>
+
+   
+   
+    <dt id="ini.apc.shm-size">
+     <code class="parameter">apc.shm_size</code>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      The size of each shared memory segment in MB.
+      By default, some systems (including most BSD
+      variants) have very low limits on the size of a
+      shared memory segment.
+     </p>
+    </dd>
+
+   
+   
+    <dt id="ini.apc.shm-strings-buffer">
+     <code class="parameter">apc.shm_strings_buffer</code>
+     <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      The size of memory to use as a shared buffer for strings used internally
+      by APC. Size Should be suffixed by M for megabytes, G for gigabytes.
+      Enabling this option will reduce the amount of memory used per PHP-FPM
+      worker as strings will be stored once rather than for each worker.
+     </p>
+    </dd>
+
+   
+   
+    <dt id="ini.apc.optimization">
+     <code class="parameter">apc.optimization</code>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      The optimization level. Zero disables the
+      optimizer, and higher values use more aggressive
+      optimizations. Expect very modest speed
+      improvements. This is experimental.
+     </p>
+    </dd>
+
+   
+   
+    <dt id="ini.apc.num-files-hint">
+     <code class="parameter">apc.num_files_hint</code>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      A "hint" about the number of distinct source files
+      that will be included or requested on your web
+      server. Set to zero or omit if unsure;
+      this setting is mainly useful for sites that have
+      many thousands of source files.
+     </p>
+    </dd>
+
+   
+   
+    <dt id="ini.apc.user-entries-hint">
+     <code class="parameter">apc.user_entries_hint</code>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      Just like <a href="apc.configuration.html#ini.apc.num-files-hint" class="link">apc.num_files_hint</a>,
+      a "hint" about the number of distinct user cache variables to store.
+      Set to zero or omit if not sure.
+     </p>
+    </dd>
+
+   
+   
+    <dt id="ini.apc.ttl">
+     <code class="parameter">apc.ttl</code>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      The number of seconds a cache entry is allowed to
+      idle in a slot in case this cache entry slot is
+      needed by another entry.  Leaving this at zero
+      means that APC's cache could potentially fill up
+      with stale entries while newer entries won't be
+      cached.  In the event of a cache running out of
+      available memory, the cache will be completely
+      expunged if ttl is equal to 0.  Otherwise, if the
+      ttl is greater than 0, APC will attempt to remove
+      expired entries.
+     </p>
+    </dd>
+
+   
+   
+    <dt id="ini.apc.user-ttl">
+     <code class="parameter">apc.user_ttl</code>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      The number of seconds a cache entry is allowed to
+      idle in a slot in case this cache entry slot is
+      needed by another entry.  Leaving this at zero
+      means that APC's cache could potentially fill up
+      with stale entries while newer entries won't be
+      cached.  In the event of a cache running out of
+      available memory, the cache will be completely
+      expunged if ttl is equal to 0.  Otherwise, if the
+      ttl is greater than 0, APC will attempt to remove
+      expired entries.
+     </p>
+    </dd>
+
+   
+   
+    <dt id="ini.apc.gc-ttl">
+     <code class="parameter">apc.gc_ttl</code>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      The number of seconds that a cache entry may
+      remain on the garbage-collection list. This value
+      provides a fail-safe in the event that a server
+      process dies while executing a cached source file;
+      if that source file is modified, the memory
+      allocated for the old version will not be
+      reclaimed until this TTL reached. Set to zero to
+      disable this feature.
+     </p>
+    </dd>
+
+   
+   
+    <dt id="ini.apc.cache-by-default">
+     <code class="parameter">apc.cache_by_default</code>
+     <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      On by default, but can be set to off and used in
+      conjunction with positive <em>apc.filters</em> so that files
+      are only cached if matched by a positive filter.
+     </p>
+    </dd>
+
+   
+   
+    <dt id="ini.apc.filters">
+     <code class="parameter">apc.filters</code>
+     <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      A comma-separated list of POSIX extended regular
+      expressions. If any pattern matches the source
+      filename, the file will not be cached. Note that
+      the filename used for matching is the one passed
+      to include/require, not the absolute path.  If the
+      first character of the expression is a <em>+</em> then the
+      expression will be additive in the sense that any
+      files matched by the expression will be cached, and
+      if the first character is a <em>-</em> then anything matched
+      will not be cached.  The <em>-</em> case is the default, so
+      it can be left off.
+     </p>
+    </dd>
+
+   
+   
+    <dt id="ini.apc.mmap-file-mask">
+     <code class="parameter">apc.mmap_file_mask</code>
+     <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      If compiled with MMAP support by using <em>--enable-mmap</em>
+      this is the mktemp-style file_mask to pass to the
+      mmap module for determining whether your mmap'ed memory
+      region is going to be file-backed or shared memory
+      backed.  For straight file-backed mmap, set it to
+      something like <em>/tmp/apc.XXXXXX</em>
+      (exactly 6 <em>X</em>s).
+      To use POSIX-style shm_open/mmap put a <em>.shm</em>
+      somewhere in your mask.  e.g. <em>/apc.shm.XXXXXX</em>
+      You can also set it to <em>/dev/zero</em> to use your
+      kernel's <em>/dev/zero</em> interface to anonymous mmap'ed
+      memory. Leaving it undefined will force an anonymous mmap.
+     </p>
+    </dd>
+
+   
+   
+    <dt id="ini.apc.slam-defense">
+     <code class="parameter">apc.slam_defense</code>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      On very busy servers whenever you start the server or
+      modify files you can create a race of many processes
+      all trying to cache the same file at the same time.
+      This option sets the percentage of processes that will
+      skip trying to cache an uncached file.  Or think of it
+      as the probability of a single process to skip caching.
+      For example, setting <em>apc.slam_defense</em>
+      to <em>75</em> would mean that there is
+      a 75% chance that the process will not cache an uncached
+      file. So, the higher the setting the greater the defense
+      against cache slams.  Setting this to <em>0</em>
+      disables this feature.
+     </p>
+     <p class="para">
+      Deprecated by <a href="apc.configuration.html#ini.apc.write-lock" class="link">apc.write_lock</a>.
+     </p>
+    </dd>
+
+   
+   
+    <dt id="ini.apc.file-update-protection">
+     <code class="parameter">apc.file_update_protection</code>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      When a file is modified on a live web server it really
+      ought to be done in an atomic manner.  That is, written to a
+      temporary file and renamed (<em>mv</em>) the file into its
+      permanent position when it is ready.  Many text editors,
+      <strong class="command">cp</strong>, <strong class="command">tar</strong> and
+      other such programs don't do this.  This means that there
+      is a chance that a file is accessed (and cached) while it
+      is still being written to.  This <em>apc.file_update_protection</em>
+      setting puts a delay on caching brand new files.  The
+      default is 2 seconds, which means that if the modification
+      timestamp (<em>mtime</em>) on a file shows that it is less than 2
+      seconds old when it is accessed, it will not be cached.
+      The unfortunate person who accessed this half-written file
+      will still see weirdness, but at least it won't persist.
+      If all of the webserver's files are atomically updated, via
+      some method like <strong class="command">rsync</strong> (which updates correctly),
+      this protection can be disabled by setting this directive to 0.
+      If the system is flooded with i/o and some update procedures
+      are taking longer than 2 seconds, this setting should be increased
+      to enable the protection on those slower update operations.
+     </p>
+    </dd>
+
+   
+   
+    <dt id="ini.apc.enable-cli">
+     <code class="parameter">apc.enable_cli</code>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      Mostly for testing and debugging.  Setting this enables APC
+      for the CLI version of PHP.  Under normal circumstances, it is
+      not ideal to create, populate and destroy the APC cache on every
+      CLI request, but for various test scenarios it is useful to be
+      able to enable APC for the CLI version of PHP easily.
+     </p>
+    </dd>
+
+   
+   
+    <dt id="ini.apc.max-file-size">
+     <code class="parameter">apc.max_file_size</code>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      Prevent files larger than this value from getting cached.  Defaults to
+      1M. 
+     </p>
+    </dd>
+
+   
+   
+    <dt id="ini.apc.stat">
+     <code class="parameter">apc.stat</code>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      Be careful changing this setting.  This defaults to on, forcing APC to
+      stat (check) the script on each request to determine if it has been modified.
+      If it has been modified it will recompile and cache the new version.  
+      If this setting is off, APC will not check, which usually means that to 
+      force APC to recheck files, the web server will have to be restarted or the 
+      cache will have to be manually cleared.  Note that FastCGI web server configurations
+      may not clear the cache on restart.  On a production server where the 
+      script files rarely change, a significant performance boost can be 
+      achieved by disabled stats.
+     </p>
+     <p class="para">
+      For included/required files this option applies as well, but note that
+      for relative path includes (any path that doesn't start
+      with / on Unix) APC has to check in order to uniquely identify the file.
+      If you use absolute path includes APC can skip the stat and use that
+      absolute path as the unique identifier for the file.
+     </p>
+    </dd>
+
+   
+   
+   
+    <dt id="ini.apc.write-lock">
+     <code class="parameter">apc.write_lock</code>
+     <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      On busy servers, when the web server is first started, or when many files
+      have been modified at the same time, APC may try to compile and cache the 
+      same file multiple times.  Write_lock guarantees that only one process
+      will attempt to compile and cache an uncached script.  The other processes 
+      attempting to use the script will run without using the opcode cache, rather
+      than locking and waiting for the cache to prime.
+     </p>
+    </dd>
+
+   
+   
+   
+    <dt id="ini.apc.report-autofilter">
+     <code class="parameter">apc.report_autofilter</code>
+     <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      Logs any scripts that were automatically excluded from being cached due
+      to early/late binding issues.
+     </p>
+    </dd>
+
+   
+   
+   
+    <dt id="ini.apc.serializer">
+     <code class="parameter">apc.serializer</code>
+     <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      Used to configure APC to use a third party serializer.
+     </p>
+    </dd>
+
+   
+   
+   
+    <dt id="ini.apc.include-once-override">
+     <code class="parameter">apc.include_once_override</code>
+     <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      Optimize <span class="function"><a href="function.include-once.html" class="function">include_once</a></span> and <span class="function"><a href="function.require-once.html" class="function">require_once</a></span>
+      calls and avoid the expensive system calls used.
+     </p>
+     <div class="warning"><strong class="warning">Warning</strong>
+      <p class="simpara">
+       This feature is <em class="emphasis">EXPERIMENTAL</em>. The behaviour of this
+       directive, its name, and surrounding documentation may change without
+       notice in a future release of APC. This feature should be used at your
+       own risk.
+      </p>
+     </div>
+    </dd>
+
+   
+   
+   
+    <dt id="ini.apc.rfc1867">
+     <code class="parameter">apc.rfc1867</code>
+     <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      RFC1867 File Upload Progress hook handler is only available if APC 
+      was compiled against PHP 5.2.0 or later. When enabled, any file uploads
+      which includes a field called <em>APC_UPLOAD_PROGRESS</em>
+      before the file field in an upload form will cause APC to automatically
+      create an upload_<em class="emphasis">key</em> user cache entry where
+      <em class="emphasis">key</em> is the value of the
+      <em>APC_UPLOAD_PROGRESS</em> form entry.
+     </p>
+     <p class="para">
+      Note that the hidden field specified by
+      <em>APC_UPLOAD_PROGRESS</em> must come before the file field,
+      otherwise the upload progress will not work correctly.
+     </p>
+     <p class="para">
+      Note that the file upload tracking is not threadsafe at this point, so
+      new uploads that happen while a previous one is still going will disable
+      the tracking for the previous.
+     </p>
+     <p class="para">
+      Note that the <em>rate</em> is only available once all file
+      transfers are completed.
+     </p>
+     <p class="para">
+      </p><div class="example" id="example-422">
+       <p><strong>Example #1 An apc.rfc1867 example</strong></p>
+       <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">apc_fetch</span><span style="color: #007700">(</span><span style="color: #DD0000">"upload_</span><span style="color: #0000BB">$_POST</span><span style="color: #007700">[</span><span style="color: #0000BB">APC_UPLOAD_PROGRESS</span><span style="color: #007700">]</span><span style="color: #DD0000">"</span><span style="color: #007700">));<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       </div>
+
+       <div class="example-contents"><p>The above example will output
+something similar to:</p></div>
+       <div class="example-contents screen">
+<div class="cdata"><pre>Array
+(
+    [total] =&gt; 1142543
+    [current] =&gt; 1142543
+    [rate] =&gt; 1828068.8
+    [filename] =&gt; test
+    [name] =&gt; file
+    [temp_filename] =&gt; /tmp/php8F
+    [cancel_upload] =&gt; 0
+    [done] =&gt; 1
+)
+</pre></div>
+       </div>
+      </div>
+     <p></p>
+    </dd>
+
+   
+   
+   
+    <dt id="ini.apc.rfc1867-prefix">
+     <code class="parameter">apc.rfc1867_prefix</code>
+     <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      Key prefix to use for the user cache entry generated by rfc1867 upload
+      progress functionality.
+     </p>
+    </dd>
+
+   
+
+   
+    <dt id="ini.apc.rfc1867-name">
+     <code class="parameter">apc.rfc1867_name</code>
+     <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      Specify the hidden form entry name that activates APC upload progress
+      and specifies the user cache key suffix.
+     </p>
+    </dd>
+
+   
+
+   
+    <dt id="ini.apc.rfc1867-freq">
+     <code class="parameter">apc.rfc1867_freq</code>
+     <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      The frequency that updates should be made to the user cache entry for
+      upload progress.  This can take the form of a percentage of the total
+      file size or a size in bytes optionally suffixed with
+      <em>"k"</em>, <em>"m"</em>, or <em>"g"</em>
+      for kilobytes, megabytes, or gigabytes respectively (case insensitive).
+      A setting of 0 updates as often as possible, which may cause slower
+      uploads.
+     </p>
+    </dd>
+
+   
+
+   
+    <dt id="ini.apc.rfc1867-ttl">
+     <code class="parameter">apc.rfc1867_ttl</code>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      <acronym>TTL</acronym> for rfc1867 entries.
+     </p>
+    </dd>
+
+   
+
+   
+    <dt id="ini.apc.localcache">
+     <code class="parameter">apc.localcache</code>
+     <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      This enables a lock-free local process shadow-cache which reduces lock
+      contention when the cache is being written to.
+     </p>
+    </dd>
+
+   
+
+   
+    <dt id="ini.apc.localcache.size">
+     <code class="parameter">apc.localcache.size</code>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      The size of the local process shadow-cache, should be set to a
+      sufficiently large value, approximately half of
+      <a href="apc.configuration.html#ini.apc.num-files-hint" class="link">apc.num_files_hint</a>.
+     </p>
+    </dd>
+
+   
+
+   
+    <dt id="ini.apc.coredump-unmap">
+     <code class="parameter">apc.coredump_unmap</code>
+     <span class="type"><a href="language.types.boolean.html" class="type boolean">boolean</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      Enables APC handling of signals, such as SIGSEGV, that write
+      core files when signaled. When these signals are received,
+      APC will attempt to unmap the shared memory segment in order
+      to exclude it from the core file. This setting may improve
+      system stability when fatal signals are received and a large 
+      APC shared memory segment is configured.
+     </p>
+     <div class="warning"><strong class="warning">Warning</strong>
+      <p class="para">
+       This feature is potentially dangerous. Unmapping the shared
+       memory segment in a fatal signal handler may cause undefined
+       behaviour if a fatal error occurs.
+      </p>
+     </div>
+     <blockquote class="note"><p><strong class="note">Note</strong>: 
+      </p><p class="para">
+       Although some kernels may provide a facility to ignore various
+       types of shared memory when generating a core dump file, these 
+       implementations may also ignore important shared memory segments
+       such as the Apache scoreboard.
+      </p>
+     <p></p></blockquote>
+    </dd>
+
+   
+
+   
+    <dt id="ini.apc.stat-ctime">
+     <code class="parameter">apc.stat_ctime</code>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      Verification with ctime will avoid problems caused by programs such 
+      as svn or rsync by making sure inodes haven't changed since the last 
+      stat. APC will normally only check mtime.
+     </p>
+    </dd>
+
+   
+
+   
+    <dt id="ini.apc.canonicalize">
+     <code class="parameter">apc.canonicalize</code>
+     <span class="type"><a href="language.types.boolean.html" class="type bool">bool</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      If on, then relative paths are canonicalized in no-stat mode. If set,
+      then files included via stream wrappers can not be cached as
+      <span class="function"><a href="function.realpath.html" class="function">realpath()</a></span> does not support stream wrappers.
+     </p>
+    </dd>
+
+   
+
+   
+    <dt id="ini.apc.preload-path">
+     <code class="parameter">apc.preload_path</code>
+     <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      Optionally, set a path to the directory that APC will load 
+      cache data at startup.
+     </p>
+    </dd>
+
+   
+
+   
+    <dt id="ini.apc.use-request-time">
+     <code class="parameter">apc.use_request_time</code>
+     <span class="type"><a href="language.types.boolean.html" class="type bool">bool</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      Use the <acronym title="Server Application Programming Interface">SAPI</acronym> request start time for
+      <acronym>TTL</acronym>.
+     </p>
+    </dd>
+
+   
+
+   
+    <dt id="ini.apc.file-md5">
+     <code class="parameter">apc.file_md5</code>
+     <span class="type"><a href="language.types.boolean.html" class="type bool">bool</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      Records a md5 hash of files.
+     </p>
+    </dd>
+
+   
+
+   
+    <dt id="ini.apc.lazy-functions">
+     <code class="parameter">apc.lazy_functions</code>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      Enables lazy loading for functions.
+     </p>
+    </dd>
+
+   
+
+   
+    <dt id="ini.apc.lazy-classes">
+     <code class="parameter">apc.lazy_classes</code>
+     <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+    </dt>
+
+    <dd>
+
+     <p class="para">
+      Enables lazy loading for classes.
+     </p>
+    </dd>
+
+   
+  </dl>
+
+ <p></p>
+</div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="86711">  
+  <a class="name">
+  <strong class="user"><em>lamperz at gmail dot com</em></strong></a><div class="date" title="2008-10-30 09:52"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom86711">
+<div class="phpcode"><code><span class="html">
+I'm trying to get upload progress with apc_fetch.<br>I founded apc_fetch always return false till the upload completed.After fews hours debug, I finally notice that my APC_UPLOAD_PROGRESS was set after the file form.<br><br>SO, You should write your form like this<br>&lt;input type="hidden" id="file_id" name="APC_UPLOAD_PROGRESS" value="blablabla"/&gt;<br>&lt;input type="file" id="select_file" name="file" value="upload" onchange="parent.test();"/&gt;<br><br>the hidden field with name="APC_UPLOAD_PROGRESS" SHOULD be ALWAYS BEFORE input type="file"</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="109755">  
+  <a class="name">
+  <strong class="user"><em>bas_vijfiwinkel</em></strong></a><div class="date" title="2012-08-17 05:36"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom109755">
+<div class="phpcode"><code><span class="html">
+I took some time to look at the preload_path option.<br><br>At the moment of writing the preload_path option is broken because of a bug in the APC source code <br>which will not allow you to properly preload the cache.<br><br>The way to fix it :<br>Inside 'main_apc.c' in the method called 'static int apc_load_data(const char *data_file TSRMLS_DC)', the length of the key of the value that needs to be stored is determined with the following line :<br>key_len = strlen(key);<br>If I am correct this is only the length of the string itself without the null-terminator<br>However, "_apc_store" seems to want the length of the key string including the terminator.<br>If I change the line above to :<br>key_len = strlen(key)+1;<br>then the preload function works as expected.<br>You can also notice that 1 character is missing when looking at the user cache entries apc.php. But if you try to use that as a key then APC will not return the contents so that didn't work as a workaround.<br><br>If one is able to compile the apc library from source, then one can of course easily fix this option by changing the source code.<br><br>Files in the specified path should have the extension '.data'.<br>The filename itself will become the key for the data that is in that specific file.<br>The data in the file is a serialized string representing what you want to assign to the specific key. For example s:2:"123" will generate the string "123".<br>One can only specify 1 value for each key and it should be null-terminated.<br><br>It is not possible to preload PHP scripts.<br>Only values that one retrieved with apc_fetch can be preloaded.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="86293">  
+  <a class="name">
+  <strong class="user"><em>danbettles at yahoo dot co dot uk</em></strong></a><div class="date" title="2008-10-11 04:26"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom86293">
+<div class="phpcode"><code><span class="html">
+To automatically cache only PHP class files named "&lt;class name&gt;.class.php", add the following lines to php.ini.<br><br>apc.cache_by_default = "Off"<br>apc.filters = "+\.class\.php$"<br><br>Notes:<br>- The regexp is case /sensitive/, so if, say, your project contains filenames with mixed case, you'll need something like "+\.(class|CLASS)\.(php|PHP)$".&nbsp; I've tried delimiting patterns and using the "i" modifier, but that doesn't seem to work.<br>- Setting cache_by_default to "On" and applying the positive filter will /not/ work.<br><br>If you have more complicated requirements and, like me, you're not familiar with POSIX Extended Regular Expressions (ERE) inparticular, you may find the following link useful.&nbsp; <a rel="nofollow" target="_blank">http://www.regular-expressions.info/refflavors.html</a></span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="95980">  
+  <a class="name">
+  <strong class="user"><em>amir w of colnect dot com TIPS</em></strong></a><div class="date" title="2010-02-01 05:03"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom95980">
+<div class="phpcode"><code><span class="html">
+Want to avoid segmentation with apc.shm_segments?If your linux server limits the shared memory block size and you're forced to use apc.shm_segments instead, change the setting by using (here is 512M but change it as you like):
+<br># sysctl -w kernel.shmmax=536870912
+<br>
+<br>(but if you want the change to be permanent after a restart you would have to add the following line in /etc/sysctl.conf
+<br>
+<br>kernel.shmmax=536870912)
+<br>
+<br>and updating apc.ini
+<br>
+<br>apc.shm_segments="1"
+<br>apc.shm_size="512"
+<br>
+<br>
+<br>apc.stat is an extremely important setting for a production server, especially if many files are accessed on every request, which is quite normal on complicated web applications.
+<br>
+<br>Always aspire to use:
+<br>apc.stat="0"
+<br>so that APC does not try to check that each and every file exists on every request you make. It also means you can update files on your server without crashing incoming requests on that time fragment. Whenever you wish to force APC to re-read all the files, simply clear the cache or restart your server.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="94529">  
+  <a class="name">
+  <strong class="user"><em>Will</em></strong></a><div class="date" title="2009-11-10 04:27"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom94529">
+<div class="phpcode"><code><span class="html">
+For anyone wondering why shm_segments is being ignored on their setup, it could be because of the following:<br><br>If you've configured APC to use memory mapped files (with the --enable-mmap option), the shm_segments setting is ignored unless you specify a file mask via the mmap_file_mask setting.<br><br>This is because APC won't attempt to create multiple anonymous files to map into memory without a mask (since it has no way of naming them sensibly). To set up multiple segments you have to give a file mask so they can be named separately.<br><br>apc.mmap_file_mask=/tmp/apc.XXXXXX<br><br>Make sure to use exactly 6 "X"s (this is the part that is changed by APC). You can place these files anywhere, they don't have to go in /tmp.<br><br>With that said, I'm not sure what the performance impact of having multiple MMAP segments would be. I'm guessing it would probably be negative so you probably don't want to do this.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="93169">  
+  <a class="name">
+  <strong class="user"><em>neorush at gmail dot com</em></strong></a><div class="date" title="2009-08-26 03:16"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom93169">
+<div class="phpcode"><code><span class="html">
+apc_fetch always returned false.&nbsp; Turns out that "apc.rfc1867" was set to "0".&nbsp; I added this line to my php.ini:<br>apc.rfc1867 = 1<br>but it could have certainly been changed with ini_set().&nbsp; That took me way to long to figure out.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="89211">  
+  <a class="name">
+  <strong class="user"><em>bishop</em></strong></a><div class="date" title="2009-02-26 07:22"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom89211">
+<div class="phpcode"><code><span class="html">
+The apc.rfc1867 example code above is a little fast and loose for those running in environments where APC RFC1867 may or may not be available.&nbsp; This is a little more expressive:<br><br><span class="default">&lt;?php<br><br></span><span class="comment">// if we have PHP and APC<br></span><span class="default">$havePHP </span><span class="keyword">= (</span><span class="default">1 </span><span class="keyword">=== </span><span class="default">version_compare</span><span class="keyword">(</span><span class="default">PHP_VERSION</span><span class="keyword">, </span><span class="string">'5.2.0'</span><span class="keyword">) ? </span><span class="default">true </span><span class="keyword">: </span><span class="default">false</span><span class="keyword">);<br></span><span class="default">$haveAPC </span><span class="keyword">= (</span><span class="default">extension_loaded</span><span class="keyword">(</span><span class="string">'apc'</span><span class="keyword">) &amp;&amp; </span><span class="default">1 </span><span class="keyword">=== </span><span class="default">version_compare</span><span class="keyword">(</span><span class="default">phpversion</span><span class="keyword">(</span><span class="string">'apc'</span><span class="keyword">), </span><span class="string">'3.0.13'</span><span class="keyword">) ? </span><span class="default">true </span><span class="keyword">: </span><span class="default">false</span><span class="keyword">);<br>if (</span><span class="default">$havePHP </span><span class="keyword">&amp;&amp; </span><span class="default">$haveAPC</span><span class="keyword">) {<br>&nbsp; &nbsp; </span><span class="comment">// if APC and upload tracking is enabled<br>&nbsp; &nbsp; </span><span class="keyword">if (</span><span class="default">ini_get</span><span class="keyword">(</span><span class="string">'apc.enabled'</span><span class="keyword">) &amp;&amp; </span><span class="default">ini_get</span><span class="keyword">(</span><span class="string">'apc.rfc1867'</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// get the stats<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$key </span><span class="keyword">= </span><span class="default">ini_get</span><span class="keyword">(</span><span class="string">'apc.rfc1867_prefix'</span><span class="keyword">) . </span><span class="default">$_REQUEST</span><span class="keyword">[</span><span class="string">'apcid'</span><span class="keyword">];<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$stats </span><span class="keyword">= </span><span class="default">apc_fetch</span><span class="keyword">(</span><span class="default">$key</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>}<br><br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="112393">  
+  <a class="name">
+  <strong class="user"><em>klaus at hax dot at</em></strong></a><div class="date" title="2013-06-11 01:02"><strong>1 year ago</strong></div>
+  <div class="text" id="Hcom112393">
+<div class="phpcode"><code><span class="html">
+Note: If you want to run a script on Windows with apc.enabled=1 as a scheduled task whilst another instance of php is running (like on a webserver) apparently you have to disable apc for this scheduled task, otherwise it will not run and you will have something in your error log like: PHP Fatal error: PHP Startup: apc_shm_create: shmget(0, 33554432, 658) failed: No such file or directory.<br><br>So simply execute your scheduled task with:<br><br>c:\php\php.exe -d apc.enabled=0 and all will be fine.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="95659">  
+  <a class="name">
+  <strong class="user"><em>fusionstream [a](t) gmail.com</em></strong></a><div class="date" title="2010-01-14 02:25"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom95659">
+<div class="phpcode"><code><span class="html">
+If you are getting 0kb out of 0kb for your upload progress with large files, make sure that upload_max_filesize and post_max_size are larger than the file you are uploading. As far as I can tell, apc.max_file_size does not affect it.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="96330">  
+  <a class="name">
+  <strong class="user"><em>d_inkubus at yahoo dot com</em></strong></a><div class="date" title="2010-02-20 11:49"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom96330">
+<div class="phpcode"><code><span class="html">
+apc.include_once_override=1 can cause more problems than it solves.&nbsp; If you're running into weird errors regarding relative paths, make sure this setting is off.&nbsp; PHP 5.3 already implements most of the speed ups in these calls anyway.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="95981">  
+  <a class="name">
+  <strong class="user"><em>amir w of colnect dot com TIPS</em></strong></a><div class="date" title="2010-02-01 05:30"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom95981">
+<div class="phpcode"><code><span class="html">
+apc.stat is an extremely important setting for a production server, especially if many files are accessed on every request, which is quite normal on complicated web applications.<br><br>Always aspire to use:<br>apc.stat="0"<br>so that APC does not try to check that each and every file exists on every request you make. It also means you can update files on your server without crashing incoming requests on that time fragment. Whenever you wish to force APC to re-read all the files, simply clear the cache or restart your server.</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/apc.configuration.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 16:10:30 GMT -->
+
+
+</body></html>

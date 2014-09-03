@@ -1,0 +1,775 @@
+<html><!-- Mirrored from php.net/manual/en/mysqlnd.plugin.architecture.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 17:07:06 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>MySQL Native Driver Plugin Architecture</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="mysqlnd.plugin.architecture.html">
+ <link rel="shorturl" href="mysqlnd.plugin.architecture.html">
+ <link rel="alternate" href="mysqlnd.plugin.architecture.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="mysqlnd.plugin.html">
+ <link rel="prev" href="mysqlnd.plugin.obtaining.html">
+ <link rel="next" href="mysqlnd.plugin.api.html">
+
+ <link rel="alternate" href="mysqlnd.plugin.architecture.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/mysqlnd.plugin.architecture.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/mysqlnd.plugin.architecture.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/mysqlnd.plugin.architecture.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/mysqlnd.plugin.architecture.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/mysqlnd.plugin.architecture.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/mysqlnd.plugin.architecture.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/mysqlnd.plugin.architecture.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/mysqlnd.plugin.architecture.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/mysqlnd.plugin.architecture.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/mysqlnd.plugin.architecture.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.database.html">Database Extensions</a></li>      <li><a href="refs.database.vendors.html">Vendor Specific Database Extensions</a></li>      <li><a href="set.mysqlinfo.html">MySQL</a></li>      <li><a href="book.mysqlnd.html">Mysqlnd</a></li>      <li><a href="mysqlnd.plugin.html">MySQL Native Driver Plugin API</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="mysqlnd.plugin.architecture" class="section">
+  <h2 class="title">MySQL Native Driver Plugin Architecture</h2>
+  <p class="para">
+   This section provides an overview of the <em>mysqlnd</em>
+   plugin architecture.
+  </p>
+  <p class="para">
+   <em class="emphasis"> MySQL Native Driver Overview </em>
+  </p>
+  <p class="para">
+   Before developing <em>mysqlnd</em> plugins, it is useful to
+   know a little of how <em>mysqlnd</em> itself is organized.
+   <em>Mysqlnd</em> consists of the following modules:
+  </p>
+  <table class="doctable table">
+   <caption><strong>The mysqlnd organization chart, per module</strong></caption>
+   
+    <tbody class="tbody">
+     <tr>
+      <td>Modules Statistics</td>
+      <td>mysqlnd_statistics.c</td>
+     </tr>
+
+     <tr>
+      <td>Connection</td>
+      <td>mysqlnd.c</td>
+     </tr>
+
+     <tr>
+      <td>Resultset</td>
+      <td>mysqlnd_result.c</td>
+     </tr>
+
+     <tr>
+      <td>Resultset Metadata</td>
+      <td>mysqlnd_result_meta.c</td>
+     </tr>
+
+     <tr>
+      <td>Statement</td>
+      <td>mysqlnd_ps.c</td>
+     </tr>
+
+     <tr>
+      <td>Network</td>
+      <td>mysqlnd_net.c</td>
+     </tr>
+
+     <tr>
+      <td>Wire protocol</td>
+      <td>mysqlnd_wireprotocol.c</td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  <p class="para">
+   <em class="emphasis">C Object Oriented Paradigm</em>
+  </p>
+  <p class="para">
+   At the code level, <em>mysqlnd</em> uses a C pattern for
+   implementing object orientation.
+  </p>
+  <p class="para">
+   In C you use a <em>struct</em> to represent an object.
+   Members of the struct represent object properties. Struct members
+   pointing to functions represent methods.
+  </p>
+  <p class="para">
+   Unlike with other languages such as C++ or Java, there are no fixed
+   rules on inheritance in the C object oriented paradigm. However,
+   there are some conventions that need to be followed that will be
+   discussed later.
+  </p>
+  <p class="para">
+   <em class="emphasis">The PHP Life Cycle</em>
+  </p>
+  <p class="para">
+   When considering the PHP life cycle there are two basic cycles:
+  </p>
+  <ul class="itemizedlist">
+   <li class="listitem">
+    <p class="para">
+     PHP engine startup and shutdown cycle
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     Request cycle
+    </p>
+   </li>
+  </ul>
+  <p class="para">
+   When the PHP engine starts up it will call the module initialization
+   (MINIT) function of each registered extension. This allows each
+   module to setup variables and allocate resources that will exist for
+   the lifetime of the PHP engine process. When the PHP engine shuts
+   down it will call the module shutdown (MSHUTDOWN) function of each
+   extension.
+  </p>
+  <p class="para">
+   During the lifetime of the PHP engine it will receive a number of
+   requests. Each request constitutes another life cycle. On each
+   request the PHP engine will call the request initialization function
+   of each extension. The extension can perform any variable setup and
+   resource allocation required for request processing. As the request
+   cycle ends the engine calls the request shutdown (RSHUTDOWN) function
+   of each extension so the extension can perform any cleanup required.
+  </p>
+  <p class="para">
+   <em class="emphasis">How a plugin works</em>
+  </p>
+  <p class="para">
+   A <em>mysqlnd</em> plugin works by intercepting calls made
+   to <em>mysqlnd</em> by extensions that use
+   <em>mysqlnd</em>. This is achieved by obtaining the
+   <em>mysqlnd</em> function table, backing it up, and
+   replacing it by a custom function table, which calls the functions of
+   the plugin as required.
+  </p>
+  <p class="para">
+   The following code shows how the <em>mysqlnd</em> function
+   table is replaced:
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre>/* a place to store original function table */
+struct st_mysqlnd_conn_methods org_methods;
+
+void minit_register_hooks(TSRMLS_D) {
+  /* active function table */
+  struct st_mysqlnd_conn_methods * current_methods
+    = mysqlnd_conn_get_methods();
+
+  /* backup original function table */
+  memcpy(&amp;org_methods, current_methods,
+    sizeof(struct st_mysqlnd_conn_methods);
+
+  /* install new methods */
+  current_methods-&gt;query = MYSQLND_METHOD(my_conn_class, query);
+}
+</pre></div>
+</div>
+
+  <p class="para">
+   Connection function table manipulations must be done during Module
+   Initialization (MINIT). The function table is a global shared
+   resource. In an multi-threaded environment, with a TSRM build, the
+   manipulation of a global shared resource during the request
+   processing will almost certainly result in conflicts.
+  </p>
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   </p><p class="para">
+    Do not use any fixed-size logic when manipulating the
+    <em>mysqlnd</em> function table: new methods may be added
+    at the end of the function table. The function table may change at
+    any time in the future.
+   </p>
+  <p></p></blockquote>
+  <p class="para">
+   <em class="emphasis">Calling parent methods</em>
+  </p>
+  <p class="para">
+   If the original function table entries are backed up, it is still
+   possible to call the original function table entries - the parent
+   methods.
+  </p>
+  <p class="para">
+   In some cases, such as for
+   <em>Connection::stmt_init()</em>, it is vital to call the
+   parent method prior to any other activity in the derived method.
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre>MYSQLND_METHOD(my_conn_class, query)(MYSQLND *conn,
+  const char *query, unsigned int query_len TSRMLS_DC) {
+
+  php_printf("my_conn_class::query(query = %s)\n", query);
+
+  query = "SELECT 'query rewritten' FROM DUAL";
+  query_len = strlen(query);
+
+  return org_methods.query(conn, query, query_len); /* return with call to parent */
+}
+</pre></div>
+</div>
+
+  <p class="para">
+   <em class="emphasis"> Extending properties </em>
+  </p>
+  <p class="para">
+   A <em>mysqlnd</em> object is represented by a C struct. It
+   is not possible to add a member to a C struct at run time. Users of
+   <em>mysqlnd</em> objects cannot simply add properties to
+   the objects.
+  </p>
+  <p class="para">
+   Arbitrary data (properties) can be added to a
+   <em>mysqlnd</em> objects using an appropriate function of
+   the
+   <em>mysqlnd_plugin_get_plugin_&lt;object&gt;_data()</em>
+   family. When allocating an object <em>mysqlnd</em> reserves
+   space at the end of the object to hold a <em>void *</em>
+   pointer to arbitrary data. <em>mysqlnd</em> reserves space
+   for one <em>void *</em> pointer per plugin.
+  </p>
+  <p class="para">
+   The following table shows how to calculate the position of the
+   pointer for a specific plugin:
+  </p>
+  <table class="doctable table">
+   <caption><strong>Pointer calculations for mysqlnd</strong></caption>
+   
+    <tbody class="tbody">
+     <tr>
+      <td>Memory address</td>
+      <td>Contents</td>
+     </tr>
+
+     <tr>
+      <td>0</td>
+      <td>Beginning of the mysqlnd object C struct</td>
+     </tr>
+
+     <tr>
+      <td>n</td>
+      <td>End of the mysqlnd object C struct</td>
+     </tr>
+
+     <tr>
+      <td>n + (m x sizeof(void*))</td>
+      <td>void* to object data of the m-th plugin</td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  <p class="para">
+   If you plan to subclass any of the <em>mysqlnd</em> object
+   constructors, which is allowed, you must keep this in mind!
+  </p>
+  <p class="para">
+   The following code shows extending properties:
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre>/* any data we want to associate */
+typedef struct my_conn_properties {
+  unsigned long query_counter;
+} MY_CONN_PROPERTIES;
+
+/* plugin id */
+unsigned int my_plugin_id;
+
+void minit_register_hooks(TSRMLS_D) {
+  /* obtain unique plugin ID */
+  my_plugin_id = mysqlnd_plugin_register();
+  /* snip - see Extending Connection: methods */
+}
+
+static MY_CONN_PROPERTIES** get_conn_properties(const MYSQLND *conn TSRMLS_DC) {
+  MY_CONN_PROPERTIES** props;
+  props = (MY_CONN_PROPERTIES**)mysqlnd_plugin_get_plugin_connection_data(
+    conn, my_plugin_id);
+  if (!props || !(*props)) {
+    *props = mnd_pecalloc(1, sizeof(MY_CONN_PROPERTIES), conn-&gt;persistent);
+    (*props)-&gt;query_counter = 0;
+  }
+  return props;
+}
+</pre></div>
+</div>
+
+  <p class="para">
+   The plugin developer is responsible for the management of plugin data
+   memory.
+  </p>
+  <p class="para">
+   Use of the <em>mysqlnd</em> memory allocator is recommended
+   for plugin data. These functions are named using the convention:
+   <em>mnd_*loc()</em>. The <em>mysqlnd</em>
+   allocator has some useful features, such as the ability to use a
+   debug allocator in a non-debug build.
+  </p>
+  <table class="doctable table">
+   <caption><strong>When and how to subclass</strong></caption>
+   
+    <tbody class="tbody">
+     <tr>
+      <td class="empty">&nbsp;</td>
+      <td>When to subclass?</td>
+      <td>Each instance has its own private function table?</td>
+      <td>How to subclass?</td>
+     </tr>
+
+     <tr>
+      <td>Connection (MYSQLND)</td>
+      <td>MINIT</td>
+      <td>No</td>
+      <td>mysqlnd_conn_get_methods()</td>
+     </tr>
+
+     <tr>
+      <td>Resultset (MYSQLND_RES)</td>
+      <td>MINIT or later</td>
+      <td>Yes</td>
+      <td>mysqlnd_result_get_methods() or object method function table
+       manipulation</td>
+     </tr>
+
+     <tr>
+      <td>Resultset Meta (MYSQLND_RES_METADATA)</td>
+      <td>MINIT</td>
+      <td>No</td>
+      <td>mysqlnd_result_metadata_get_methods()</td>
+     </tr>
+
+     <tr>
+      <td>Statement (MYSQLND_STMT)</td>
+      <td>MINIT</td>
+      <td>No</td>
+      <td>mysqlnd_stmt_get_methods()</td>
+     </tr>
+
+     <tr>
+      <td>Network (MYSQLND_NET)</td>
+      <td>MINIT or later</td>
+      <td>Yes</td>
+      <td>mysqlnd_net_get_methods() or object method function table manipulation</td>
+     </tr>
+
+     <tr>
+      <td>Wire protocol (MYSQLND_PROTOCOL)</td>
+      <td>MINIT or later</td>
+      <td>Yes</td>
+      <td>mysqlnd_protocol_get_methods() or object method function table
+       manipulation</td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  <p class="para">
+   You must not manipulate function tables at any time later than MINIT
+   if it is not allowed according to the above table.
+  </p>
+  <p class="para">
+   Some classes contain a pointer to the method function table. All
+   instances of such a class will share the same function table. To
+   avoid chaos, in particular in threaded environments, such function
+   tables must only be manipulated during MINIT.
+  </p>
+  <p class="para">
+   Other classes use copies of a globally shared function table. The
+   class function table copy is created together with the object. Each
+   object uses its own function table. This gives you two options: you
+   can manipulate the default function table of an object at MINIT, and
+   you can additionally refine methods of an object without impacting
+   other instances of the same class.
+  </p>
+  <p class="para">
+   The advantage of the shared function table approach is performance.
+   There is no need to copy a function table for each and every object.
+  </p>
+  <table class="doctable table">
+   <caption><strong>Constructor status</strong></caption>
+   
+    <tbody class="tbody">
+     <tr>
+      <td class="empty">&nbsp;</td>
+      <td>Allocation, construction, reset</td>
+      <td>Can be modified?</td>
+      <td>Caller</td>
+     </tr>
+
+     <tr>
+      <td>Connection (MYSQLND)</td>
+      <td>mysqlnd_init()</td>
+      <td>No</td>
+      <td>mysqlnd_connect()</td>
+     </tr>
+
+     <tr>
+      <td>Resultset(MYSQLND_RES)</td>
+      <td><p class="para">
+        Allocation:
+       </p>
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <p class="para">
+          Connection::result_init()
+         </p>
+        </li>
+       </ul>
+       <p class="para">
+        Reset and re-initialized during:
+       </p>
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <p class="para">
+          Result::use_result()
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          Result::store_result
+         </p>
+        </li>
+       </ul></td>
+      <td>Yes, but call parent!</td>
+      <td><ul class="itemizedlist">
+        <li class="listitem">
+         <p class="para">
+          Connection::list_fields()
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          Statement::get_result()
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          Statement::prepare() (Metadata only)
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          Statement::resultMetaData()
+         </p>
+        </li>
+       </ul></td>
+     </tr>
+
+     <tr>
+      <td>Resultset Meta (MYSQLND_RES_METADATA)</td>
+      <td>Connection::result_meta_init()</td>
+      <td>Yes, but call parent!</td>
+      <td>Result::read_result_metadata()</td>
+     </tr>
+
+     <tr>
+      <td>Statement (MYSQLND_STMT)</td>
+      <td>Connection::stmt_init()</td>
+      <td>Yes, but call parent!</td>
+      <td>Connection::stmt_init()</td>
+     </tr>
+
+     <tr>
+      <td>Network (MYSQLND_NET)</td>
+      <td>mysqlnd_net_init()</td>
+      <td>No</td>
+      <td>Connection::init()</td>
+     </tr>
+
+     <tr>
+      <td>Wire protocol (MYSQLND_PROTOCOL)</td>
+      <td>mysqlnd_protocol_init()</td>
+      <td>No</td>
+      <td>Connection::init()</td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  <p class="para">
+   It is strongly recommended that you do not entirely replace a
+   constructor. The constructors perform memory allocations. The memory
+   allocations are vital for the <em>mysqlnd</em> plugin API
+   and the object logic of <em>mysqlnd</em>. If you do not
+   care about warnings and insist on hooking the constructors, you
+   should at least call the parent constructor before doing anything in
+   your constructor.
+  </p>
+  <p class="para">
+   Regardless of all warnings, it can be useful to subclass
+   constructors. Constructors are the perfect place for modifying the
+   function tables of objects with non-shared object tables, such as
+   Resultset, Network, Wire Protocol.
+  </p>
+  <table class="doctable table">
+   <caption><strong>Destruction status</strong></caption>
+   
+    <tbody class="tbody">
+     <tr>
+      <td class="empty">&nbsp;</td>
+      <td>Derived method must call parent?</td>
+      <td>Destructor</td>
+     </tr>
+
+     <tr>
+      <td>Connection</td>
+      <td>yes, after method execution</td>
+      <td>free_contents(), end_psession()</td>
+     </tr>
+
+     <tr>
+      <td>Resultset</td>
+      <td>yes, after method execution</td>
+      <td>free_result()</td>
+     </tr>
+
+     <tr>
+      <td>Resultset Meta</td>
+      <td>yes, after method execution</td>
+      <td>free()</td>
+     </tr>
+
+     <tr>
+      <td>Statement</td>
+      <td>yes, after method execution</td>
+      <td>dtor(), free_stmt_content()</td>
+     </tr>
+
+     <tr>
+      <td>Network</td>
+      <td>yes, after method execution</td>
+      <td>free()</td>
+     </tr>
+
+     <tr>
+      <td>Wire protocol</td>
+      <td>yes, after method execution</td>
+      <td>free()</td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  <p class="para">
+   The destructors are the appropriate place to free properties,
+   <em>mysqlnd_plugin_get_plugin_<span class="replaceable">&lt;object&gt;</span>_data()</em>.
+  </p>
+  <p class="para">
+   The listed destructors may not be equivalent to the actual
+   <em>mysqlnd</em> method freeing the object itself. However,
+   they are the best possible place for you to hook in and free your
+   plugin data. As with constructors you may replace the methods
+   entirely but this is not recommended. If multiple methods are listed
+   in the above table you will need to hook all of the listed methods
+   and free your plugin data in whichever method is called first by
+   <em>mysqlnd</em>.
+  </p>
+  <p class="para">
+   The recommended method for plugins is to simply hook the methods,
+   free your memory and call the parent implementation immediately
+   following this.
+  </p>
+  <div class="caution"><strong class="caution">Caution</strong>
+   <p class="para">
+    Due to a bug in PHP versions 5.3.0 to 5.3.3, plugins do not
+    associate plugin data with a persistent connection. This is because
+    <em>ext/mysql</em> and <em>ext/mysqli</em> do
+    not trigger all the necessary <em>mysqlnd</em>
+    <em>end_psession()</em> method calls and the plugin may
+    therefore leak memory. This has been fixed in PHP 5.3.4.
+   </p>
+  </div>
+ </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div>
+ <div class="note">There are no user contributed notes for this page.</div></section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/mysqlnd.plugin.architecture.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 17:07:07 GMT -->
+
+
+</body></html>

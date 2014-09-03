@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>設定ファイル</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="configuration.html">≪ 実行時設定</a></li>
+      <li style="float: right;"><a href="configuration.file.per-user.html">.user.ini ファイル ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="configuration.html">実行時設定</a></li>
+    <li>設定ファイル</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="configuration.file" class="sect1">
+   <h2 class="title">設定ファイル</h2>
+
+   <p class="simpara">
+    設定ファイル (<var class="filename">php.ini</var>) は PHP の起動時に読み込まれます。
+    PHP のサーバーモジュール版では、Web サーバーの起動時に
+    一度だけ読み込まれます。<acronym title="Common Gateway Interface">CGI</acronym> 版と
+    <acronym title="Command Line Interpreter/Interface">CLI</acronym> 版では、スクリプトが呼び出される度に読み込まれます。
+   </p>
+   <p class="para">
+    読み込む <var class="filename">php.ini</var> は、これらの場所を順に探します。
+    <ul class="itemizedlist">
+     <li class="listitem">
+      <span class="simpara">
+       SAPI モジュール特有の場所 (Apache 2 における
+       <em>PHPIniDir</em> ディレクティブ、
+       CGI/CLI 版における <em>-c</em> コマンドラインオプション、
+       NSAPI における <em>php_ini</em> パラメータ、
+       THTTPD における <em>PHP_INI_PATH</em> 環境変数)
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       <var class="varname"><var class="varname">PHPRC</var></var> 環境変数。PHP 5.2.0 より前では、
+       これは、次に挙げるレジストリキーの後にチェックされていました。
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       PHP 5.2.0 以降では、PHP のバージョンごとに別の場所の <em>php.ini</em>
+       を使用することができます。以下のレジストリキーを順に調べて使用します。
+       <em>[HKEY_LOCAL_MACHINE\SOFTWARE\PHP\x.y.z]</em>、
+       <em>[HKEY_LOCAL_MACHINE\SOFTWARE\PHP\x.y]</em> および
+       <em>[HKEY_LOCAL_MACHINE\SOFTWARE\PHP\x]</em>。
+       x、y および z はそれぞれ PHP のメジャーバージョン、マイナーバージョン、
+       リリース番号を表します。これらのキーに <em>IniFilePath</em>
+       の値が設定されていれば、最初に見つかった場所の <em>php.ini</em>
+       を使用します (Windows のみ)。
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       <em>[HKEY_LOCAL_MACHINE\SOFTWARE\PHP]</em> にある
+       <em>IniFilePath</em> の値 (Windows のみ)。
+      </span>
+     </li>
+     <li class="listitem">
+      <p class="para">
+       現在の作業ディレクトリ (CLI を除く)
+      </p>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       Web サーバーのディレクトリ (SAPI モジュールの場合)、
+       もしくは PHP ディレクトリ (そうでない Windows の場合)
+      </span>
+     </li>
+     <li class="listitem">
+      <span class="simpara">
+       Windows ディレクトリ (<var class="filename">C:\windows</var>
+       もしくは <var class="filename">C:\winnt</var>))
+       (Windows の場合) 、もしくはコンパイル時のオプション
+       <em>--with-config-file-path</em>
+      </span>
+     </li>
+    </ul>
+   </p>
+   <p class="para">
+    <var class="filename">php-SAPI.ini</var> (ここで SAPI は使用する SAPI 名。
+    たとえば <var class="filename">php-cli.ini</var> や <var class="filename">php-apache.ini</var>)
+    が存在する場合、
+    <var class="filename">php.ini</var> の代わりに使用されます。
+    SAPI 名は <span class="function"><a href="function.php-sapi-name.html" class="function">php_sapi_name()</a></span> によって決定されます。
+   </p>
+   <blockquote class="note"><p><strong class="note">注意</strong>: 
+    <p class="para">
+     Apache web サーバーは、スタート時にディレクトリをルート
+     に変更するので、ファイルシステムのルートに <var class="filename">php.ini</var>
+     が存在する場合、PHP はそれを読もうとします。
+    </p>
+   </p></blockquote>
+  <p class="para">
+   <var class="filename">php.ini</var> の中で環境変数を使うには、次のようにします。
+  </p>
+  <p class="para">
+   <div class="example" id="example-76">
+    <p><strong>例1 <var class="filename">php.ini</var> での環境変数</strong></p>
+     <div class="example-contents">
+<div class="inicode"><pre class="inicode">; 環境変数 PHP_MEMORY_LIMIT を利用します
+memory_limit = ${PHP_MEMORY_LIMIT}</pre>
+</div>
+     </div>
+
+    </div>
+  </p>
+   <p class="para">
+    拡張モジュールに対する <var class="filename">php.ini</var> ディレクティブは、
+    各拡張モジュールのドキュメントで解説されています。
+    <a href="ini.html" class="link">コア ディレクティブ</a>
+    （PHP 本体に対するディレクティブ）のリストは付録にまとめられています。
+    ただし、（更新の都合上）すべての PHP ディレクティブが
+    本マニュアル中で解説されている訳ではありません。
+    使っているバージョンの PHP で指定可能なすべてのディレクティブについては、
+    <var class="filename">php.ini</var> ファイル内に詳細なコメントが記されていますので、参照してください。
+    もしくは、Git から入手可能な <a href="http://git.php.net/?p=php-src.git;a=blob;f=php.ini-production;hb=HEAD" class="link external" title="Link : http://git.php.net/?p=php-src.git;a=blob;f=php.ini-production;hb=HEAD">&raquo;&nbsp;
+    最新の <var class="filename">php.ini</var></a> も有用でしょう。
+   </p>
+   <p class="para">
+    <div class="example" id="example-77">
+     <p><strong>例2 <var class="filename">php.ini</var> の例</strong></p>
+     <div class="example-contents">
+<div class="inicode"><pre class="inicode">; 引用符をつけないセミコロン(;)の後のテキストは、すべて無視されます
+[php] ; セクションマーカ (角括弧の中のテキスト) は無視されます
+; 論理値は、次のいずれかで指定します
+;    true, on, yes
+; または false, off, no, none
+register_globals = off
+magic_quotes_gpc = yes
+
+; 文字列を二重引用符で括ることも可能です
+include_path = &quot;.:/usr/local/lib/php&quot;
+
+; バックスラッシュは他の文字と同様に処理されます
+include_path = &quot;.;c:\php\lib&quot;</pre>
+</div>
+</div>
+
+
+    </div>
+   </p>
+   <p class="para">
+    PHP 5.1.0 以降、ini ファイル内で既存の ini 変数を参照することが可能です。
+    例: <em>open_basedir = ${open_basedir}
+    &quot;:/new/dir&quot;</em>
+   </p>
+  </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="115610""></a>
+  <div class="note">
+   <strong class="user">Nacho Esviza - ignacio at esviza dot com</strong>
+   <a href="#115610" class="date">25-Aug-2014 01:06</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This solution works for me when I needed to force two diferent versions of PHP on a Windows Server 2012 r2 &amp; IIS:<br />
+<br />
+For one application, map *.php extension to a CgiModule adding the "-c" option to the executable path, like this: "C:\php53\php-cgi.exe -c C:\php53\php.ini"<br />
+<br />
+For the other application, map *.php extension to a CgiModule adding the "-c" option to the executable path, like this: "C:\php54\php-cgi.exe -c C:\php54\php.ini"<br />
+<br />
+I think that way is the cleanest, because there is no need to work with PATH variable or Registry or Windows directory. <br />
+<br />
+Note: for some reason, this didn't work on FastCGI module, related to the way that IIS set the executable tab not allowing command line options.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="115508""></a>
+  <div class="note">
+   <strong class="user">pajoye at php dot net</strong>
+   <a href="#115508" class="date">06-Aug-2014 09:04</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Also a nice feature is the ability to use PHP's contants:<br />
+For example:<br />
+extension_dir=""PHP_MAJOR_VERSION"."PHP_MINOR_VERSION"/ext"</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="113609""></a>
+  <div class="note">
+   <strong class="user">emil at ncube dot ca</strong>
+   <a href="#113609" class="date">05-Nov-2013 08:19</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note that the CLI version of PHP does not appear to take into account any php.ini configuration file. As such, something like a max_execution_time limit setting you may think is being applied is actually not being used, and instead defaulting to 0 (which is unlimited).</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="112344""></a>
+  <div class="note">
+   <strong class="user">Greg Robson</strong>
+   <a href="#112344" class="date">04-Jun-2013 08:18</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you are on Windows and the<br />
+<br />
+php --ini<br />
+<br />
+command is showing the path you do not want, check the PATH environment variable.<br />
+<br />
+The command line was looking for php.ini in the folder where it found php.exe. In my case this meant it was looking in<br />
+c:\Program Files (x86)\php\5.2.6<br />
+and not<br />
+c:\PHP\5.4.7<br />
+<br />
+Might easily be overlooked when adding new versions to your computer.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

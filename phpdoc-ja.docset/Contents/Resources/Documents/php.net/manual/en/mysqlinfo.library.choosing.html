@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>どのライブラリを選ぶか</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="mysqlinfo.api.choosing.html">≪ どの API を使うか</a></li>
+      <li style="float: right;"><a href="mysqlinfo.concepts.html">コンセプト ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="mysql.html">MySQL 用 PHP ドライバの概要</a></li>
+    <li>どのライブラリを選ぶか</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="mysqlinfo.library.choosing" class="chapter">
+   <h1>どのライブラリを選ぶか</h1>
+
+   <p class="para">
+    mysqli、PDO_MySQL、そして mysql といった PHP 拡張モジュールは、
+    どれも C クライアントライブラリの軽量なラッパーです。これらの拡張モジュールは、
+    <a href="book.mysqlnd.html" class="link">mysqlnd</a> ライブラリあるいは <em>libmysqlclient</em>
+    ライブラリのいずれかを使えます。どちらを使うのかを決めるのは、コンパイル時です。
+   </p>
+   <p class="para">
+    mysqlnd ライブラリは、PHP 5.3.0 以降に組み込まれています。
+    遅延接続やクエリのキャッシュなど、libmysqlclient にはない機能も搭載されているので、
+    この mysqlnd ライブラリを使うことを強くおすすめします。
+    <a href="book.mysqlnd.html" class="link">mysqlnd のドキュメント</a>
+    には、さらなる詳細情報や機能一覧があります。
+   </p>
+   <p class="para">
+    <div class="example" id="example-1633">
+     <p><strong>例1 mysqlnd あるいは libmysqlclient を使う場合の configure コマンド</strong></p>
+     <div class="example-contents">
+<div class="shellcode"><pre class="shellcode">// おすすめの方法。mysqlnd を使ってコンパイルします。
+$ ./configure --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-mysql=mysqlnd
+
+// おすすめしない方法。libmysqlclient を使ってコンパイルします。
+$ ./configure --with-mysqli=/path/to/mysql_config --with-pdo-mysql=/path/to/mysql_config --with-mysql=/path/to/mysql_config</pre>
+</div>
+     </div>
+
+    </div>
+   </p>
+   <p class="para">
+    <em class="emphasis">ライブラリの機能比較</em>
+   </p>
+   <p class="para">
+    <a href="book.mysqlnd.html" class="link">mysqlnd</a> を使うほうが、
+    MySQL Client Server library (libmysqlclient) よりもおすすめです。
+    どちらのライブラリも、開発が続いています。
+   </p>
+   <table class="doctable informaltable">
+    
+     <thead>
+      <tr>
+       <th class="empty">&nbsp;</th>
+       <th>MySQL ネイティブドライバ (<a href="book.mysqlnd.html" class="link">mysqlnd</a>)</th>
+       <th>MySQL クライアントサーバーライブラリ (<em>libmysqlclient</em>)</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>PHP の配布物に同梱</td>
+       <td>Yes</td>
+       <td>No</td>
+      </tr>
+
+      <tr>
+       <td>どのバージョンの PHP から使えるか</td>
+       <td>5.3.0</td>
+       <td>N/A</td>
+      </tr>
+
+      <tr>
+       <td>ライセンス</td>
+       <td>PHP License 3.01</td>
+       <td>デュアルライセンス</td>
+      </tr>
+
+      <tr>
+       <td>開発状況</td>
+       <td>進行中</td>
+       <td>進行中</td>
+      </tr>
+
+      <tr>
+       <td>ライフサイクル</td>
+       <td>終了予定なし</td>
+       <td>終了予定なし</td>
+      </tr>
+
+      <tr>
+       <td>PHP 5.4 でのコンパイルのデフォルト (すべての MySQL 拡張モジュール)</td>
+       <td>Yes</td>
+       <td>No</td>
+      </tr>
+
+      <tr>
+       <td>PHP 5.3 でのコンパイルのデフォルト (すべての MySQL 拡張モジュール)</td>
+       <td>No</td>
+       <td>Yes</td>
+      </tr>
+
+      <tr>
+       <td>圧縮プロトコルへの対応</td>
+       <td>Yes (5.3.1+)</td>
+       <td>Yes</td>
+      </tr>
+
+      <tr>
+       <td>SSL への対応</td>
+       <td>Yes (5.3.3+)</td>
+       <td>Yes</td>
+      </tr>
+
+      <tr>
+       <td>名前付きパイプへの対応</td>
+       <td>Yes (5.3.4+)</td>
+       <td>Yes</td>
+      </tr>
+
+      <tr>
+       <td>ノンブロッキングの非同期クエリ</td>
+       <td>Yes</td>
+       <td>No</td>
+      </tr>
+
+      <tr>
+       <td>パフォーマンス統計</td>
+       <td>Yes</td>
+       <td>No</td>
+      </tr>
+
+      <tr>
+       <td>LOAD LOCAL INFILE での <a href="ini.core.html#ini.open-basedir" class="link">open_basedir</a> の反映</td>
+       <td>Yes</td>
+       <td>No</td>
+      </tr>
+
+      <tr>
+       <td>PHP ネイティブのメモリ管理システムを使う (PHP のメモリ制限などに従う)</td>
+       <td>Yes</td>
+       <td>No</td>
+      </tr>
+
+      <tr>
+       <td>数値型のカラムを double 型で返す (COM_QUERY)</td>
+       <td>Yes</td>
+       <td>No</td>
+      </tr>
+
+      <tr>
+       <td>数値型のカラムを string 型で返す (COM_QUERY)</td>
+       <td>Yes</td>
+       <td>Yes</td>
+      </tr>
+
+      <tr>
+       <td>プラグイン API</td>
+       <td>Yes</td>
+       <td>Limited</td>
+      </tr>
+
+      <tr>
+       <td>MySQL Replication での読み書きの分離</td>
+       <td>Yes, with plugin</td>
+       <td>No</td>
+      </tr>
+
+      <tr>
+       <td>ロードバランシング</td>
+       <td>Yes, with plugin</td>
+       <td>No</td>
+      </tr>
+
+      <tr>
+       <td>フェイルオーバー</td>
+       <td>Yes, with plugin</td>
+       <td>No</td>
+      </tr>
+
+      <tr>
+       <td>遅延接続</td>
+       <td>Yes, with plugin</td>
+       <td>No</td>
+      </tr>
+
+      <tr>
+       <td>クエリキャッシュ</td>
+       <td>Yes, with plugin</td>
+       <td>No</td>
+      </tr>
+
+      <tr>
+       <td>透過的なクエリ操作 (自動 EXPLAIN あるいはモニタリングなど)</td>
+       <td>Yes, with plugin</td>
+       <td>No</td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

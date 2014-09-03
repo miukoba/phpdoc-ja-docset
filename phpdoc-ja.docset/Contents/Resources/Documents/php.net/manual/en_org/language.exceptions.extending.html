@@ -1,0 +1,380 @@
+<html><!-- Mirrored from php.net/manual/en/language.exceptions.extending.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:28:08 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Extending Exceptions</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="language.exceptions.extending.html">
+ <link rel="shorturl" href="http://php.net/exceptions.extending">
+ <link rel="alternate" href="http://php.net/exceptions.extending" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="language.exceptions.html">
+ <link rel="prev" href="language.exceptions.html">
+ <link rel="next" href="language.generators.html">
+
+ <link rel="alternate" href="language.exceptions.extending.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/language.exceptions.extending.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/language.exceptions.extending.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/language.exceptions.extending.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/language.exceptions.extending.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/language.exceptions.extending.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/language.exceptions.extending.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/language.exceptions.extending.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/language.exceptions.extending.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/language.exceptions.extending.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/language.exceptions.extending.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="langref.html">Language Reference</a></li>      <li><a href="language.exceptions.html">Exceptions</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="language.exceptions.extending" class="sect1">
+   <h2 class="title">Extending Exceptions</h2>
+   <p class="para">
+    A User defined Exception class can be defined by extending the built-in
+    Exception class. The members and properties below, show what is accessible
+    within the child class that derives from the built-in Exception class.
+   </p>
+   <div class="example" id="example-291">
+    <p><strong>Example #1 The Built in Exception class</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">Exception<br></span><span style="color: #007700">{<br>&nbsp;&nbsp;&nbsp;&nbsp;protected&nbsp;</span><span style="color: #0000BB">$message&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'Unknown&nbsp;exception'</span><span style="color: #007700">;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;exception&nbsp;message<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">private&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$string</span><span style="color: #007700">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;__toString&nbsp;cache<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">protected&nbsp;</span><span style="color: #0000BB">$code&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;user&nbsp;defined&nbsp;exception&nbsp;code<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">protected&nbsp;</span><span style="color: #0000BB">$file</span><span style="color: #007700">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;source&nbsp;filename&nbsp;of&nbsp;exception<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">protected&nbsp;</span><span style="color: #0000BB">$line</span><span style="color: #007700">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;source&nbsp;line&nbsp;of&nbsp;exception<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">private&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$trace</span><span style="color: #007700">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;backtrace<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">private&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$previous</span><span style="color: #007700">;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;previous&nbsp;exception&nbsp;if&nbsp;nested&nbsp;exception<br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">public&nbsp;function&nbsp;</span><span style="color: #0000BB">__construct</span><span style="color: #007700">(</span><span style="color: #0000BB">$message&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$code&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">Exception&nbsp;$previous&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;final&nbsp;private&nbsp;function&nbsp;</span><span style="color: #0000BB">__clone</span><span style="color: #007700">();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;Inhibits&nbsp;cloning&nbsp;of&nbsp;exceptions.<br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">final&nbsp;public&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">getMessage</span><span style="color: #007700">();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;message&nbsp;of&nbsp;exception<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">final&nbsp;public&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">getCode</span><span style="color: #007700">();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;code&nbsp;of&nbsp;exception<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">final&nbsp;public&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">getFile</span><span style="color: #007700">();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;source&nbsp;filename<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">final&nbsp;public&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">getLine</span><span style="color: #007700">();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;source&nbsp;line<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">final&nbsp;public&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">getTrace</span><span style="color: #007700">();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;an&nbsp;array&nbsp;of&nbsp;the&nbsp;backtrace()<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">final&nbsp;public&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">getPrevious</span><span style="color: #007700">();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;previous&nbsp;exception<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">final&nbsp;public&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">getTraceAsString</span><span style="color: #007700">();&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;formatted&nbsp;string&nbsp;of&nbsp;trace<br><br>&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Overrideable<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">public&nbsp;function&nbsp;</span><span style="color: #0000BB">__toString</span><span style="color: #007700">();&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;formatted&nbsp;string&nbsp;for&nbsp;display<br></span><span style="color: #007700">}<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   <p class="para">
+    If a class extends the built-in Exception class and re-defines the <a href="language.oop5.decon.html" class="link">constructor</a>, it is highly recommended
+    that it also call <a href="language.oop5.paamayim-nekudotayim.html" class="link">parent::__construct()</a> 
+    to ensure all available data has been properly assigned. The <a href="language.oop5.magic.html" class="link">__toString()</a> method can be overridden
+    to provide a custom output when the object is presented as a string.
+   </p>
+   <blockquote class="note"><p><strong class="note">Note</strong>: 
+    </p><p class="para">
+     Exceptions cannot be cloned. Attempting to <a href="language.oop5.cloning.html" class="link">clone</a> an Exception will result in a
+     fatal <strong><code>E_ERROR</code></strong> error.
+    </p>
+   <p></p></blockquote>
+   <div class="example" id="example-292">
+    <p><strong>Example #2 Extending the Exception class (PHP 5.3.0+)</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #FF8000">/**<br>&nbsp;*&nbsp;Define&nbsp;a&nbsp;custom&nbsp;exception&nbsp;class<br>&nbsp;*/<br></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">MyException&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">Exception<br></span><span style="color: #007700">{<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;Redefine&nbsp;the&nbsp;exception&nbsp;so&nbsp;message&nbsp;isn't&nbsp;optional<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">public&nbsp;function&nbsp;</span><span style="color: #0000BB">__construct</span><span style="color: #007700">(</span><span style="color: #0000BB">$message</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$code&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">Exception&nbsp;$previous&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;some&nbsp;code<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;make&nbsp;sure&nbsp;everything&nbsp;is&nbsp;assigned&nbsp;properly<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">parent</span><span style="color: #007700">::</span><span style="color: #0000BB">__construct</span><span style="color: #007700">(</span><span style="color: #0000BB">$message</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$code</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$previous</span><span style="color: #007700">);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;custom&nbsp;string&nbsp;representation&nbsp;of&nbsp;object<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">public&nbsp;function&nbsp;</span><span style="color: #0000BB">__toString</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">__CLASS__&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">":&nbsp;[</span><span style="color: #007700">{</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">code</span><span style="color: #007700">}</span><span style="color: #DD0000">]:&nbsp;</span><span style="color: #007700">{</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">message</span><span style="color: #007700">}</span><span style="color: #DD0000">\n"</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">customFunction</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"A&nbsp;custom&nbsp;function&nbsp;for&nbsp;this&nbsp;type&nbsp;of&nbsp;exception\n"</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br><br></span><span style="color: #FF8000">/**<br>&nbsp;*&nbsp;Create&nbsp;a&nbsp;class&nbsp;to&nbsp;test&nbsp;the&nbsp;exception<br>&nbsp;*/<br></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">TestException<br></span><span style="color: #007700">{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;</span><span style="color: #0000BB">$var</span><span style="color: #007700">;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;</span><span style="color: #0000BB">THROW_NONE&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;</span><span style="color: #0000BB">THROW_CUSTOM&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;</span><span style="color: #0000BB">THROW_DEFAULT&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">__construct</span><span style="color: #007700">(</span><span style="color: #0000BB">$avalue&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">self</span><span style="color: #007700">::</span><span style="color: #0000BB">THROW_NONE</span><span style="color: #007700">)&nbsp;{<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switch&nbsp;(</span><span style="color: #0000BB">$avalue</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #0000BB">self</span><span style="color: #007700">::</span><span style="color: #0000BB">THROW_CUSTOM</span><span style="color: #007700">:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;throw&nbsp;custom&nbsp;exception<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">throw&nbsp;new&nbsp;</span><span style="color: #0000BB">MyException</span><span style="color: #007700">(</span><span style="color: #DD0000">'1&nbsp;is&nbsp;an&nbsp;invalid&nbsp;parameter'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;</span><span style="color: #0000BB">self</span><span style="color: #007700">::</span><span style="color: #0000BB">THROW_DEFAULT</span><span style="color: #007700">:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;throw&nbsp;default&nbsp;one.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">throw&nbsp;new&nbsp;</span><span style="color: #0000BB">Exception</span><span style="color: #007700">(</span><span style="color: #DD0000">'2&nbsp;is&nbsp;not&nbsp;allowed&nbsp;as&nbsp;a&nbsp;parameter'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">6</span><span style="color: #007700">);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default:&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;No&nbsp;exception,&nbsp;object&nbsp;will&nbsp;be&nbsp;created.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">var&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$avalue</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br><br></span><span style="color: #FF8000">//&nbsp;Example&nbsp;1<br></span><span style="color: #007700">try&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$o&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">TestException</span><span style="color: #007700">(</span><span style="color: #0000BB">TestException</span><span style="color: #007700">::</span><span style="color: #0000BB">THROW_CUSTOM</span><span style="color: #007700">);<br>}&nbsp;catch&nbsp;(</span><span style="color: #0000BB">MyException&nbsp;$e</span><span style="color: #007700">)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;Will&nbsp;be&nbsp;caught<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"Caught&nbsp;my&nbsp;exception\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">customFunction</span><span style="color: #007700">();<br>}&nbsp;catch&nbsp;(</span><span style="color: #0000BB">Exception&nbsp;$e</span><span style="color: #007700">)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;Skipped<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"Caught&nbsp;Default&nbsp;Exception\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">;<br>}<br><br></span><span style="color: #FF8000">//&nbsp;Continue&nbsp;execution<br></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$o</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;Null<br></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"\n\n"</span><span style="color: #007700">;<br><br><br></span><span style="color: #FF8000">//&nbsp;Example&nbsp;2<br></span><span style="color: #007700">try&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$o&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">TestException</span><span style="color: #007700">(</span><span style="color: #0000BB">TestException</span><span style="color: #007700">::</span><span style="color: #0000BB">THROW_DEFAULT</span><span style="color: #007700">);<br>}&nbsp;catch&nbsp;(</span><span style="color: #0000BB">MyException&nbsp;$e</span><span style="color: #007700">)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;Doesn't&nbsp;match&nbsp;this&nbsp;type<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"Caught&nbsp;my&nbsp;exception\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">customFunction</span><span style="color: #007700">();<br>}&nbsp;catch&nbsp;(</span><span style="color: #0000BB">Exception&nbsp;$e</span><span style="color: #007700">)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;Will&nbsp;be&nbsp;caught<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"Caught&nbsp;Default&nbsp;Exception\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">;<br>}<br><br></span><span style="color: #FF8000">//&nbsp;Continue&nbsp;execution<br></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$o</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;Null<br></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"\n\n"</span><span style="color: #007700">;<br><br><br></span><span style="color: #FF8000">//&nbsp;Example&nbsp;3<br></span><span style="color: #007700">try&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$o&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">TestException</span><span style="color: #007700">(</span><span style="color: #0000BB">TestException</span><span style="color: #007700">::</span><span style="color: #0000BB">THROW_CUSTOM</span><span style="color: #007700">);<br>}&nbsp;catch&nbsp;(</span><span style="color: #0000BB">Exception&nbsp;$e</span><span style="color: #007700">)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;Will&nbsp;be&nbsp;caught<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"Default&nbsp;Exception&nbsp;caught\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">;<br>}<br><br></span><span style="color: #FF8000">//&nbsp;Continue&nbsp;execution<br></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$o</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;Null<br></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"\n\n"</span><span style="color: #007700">;<br><br><br></span><span style="color: #FF8000">//&nbsp;Example&nbsp;4<br></span><span style="color: #007700">try&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$o&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">TestException</span><span style="color: #007700">();<br>}&nbsp;catch&nbsp;(</span><span style="color: #0000BB">Exception&nbsp;$e</span><span style="color: #007700">)&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;Skipped,&nbsp;no&nbsp;exception<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"Default&nbsp;Exception&nbsp;caught\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">;<br>}<br><br></span><span style="color: #FF8000">//&nbsp;Continue&nbsp;execution<br></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$o</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;TestException<br></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">"\n\n"</span><span style="color: #007700">;<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <blockquote class="note"><p><strong class="note">Note</strong>: 
+     </p><p class="para">
+      Versions of PHP 5, prior to PHP 5.3.0 do not support nesting of exceptions.
+      The following code fragment can be used as a replacement MyException class
+      if you wish to run this example.
+     </p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #FF8000">/**<br>&nbsp;*&nbsp;Define&nbsp;a&nbsp;custom&nbsp;exception&nbsp;class<br>&nbsp;*/<br></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">MyException&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">Exception<br></span><span style="color: #007700">{<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;Redefine&nbsp;the&nbsp;exception&nbsp;so&nbsp;message&nbsp;isn't&nbsp;optional<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">public&nbsp;function&nbsp;</span><span style="color: #0000BB">__construct</span><span style="color: #007700">(</span><span style="color: #0000BB">$message</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$code&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;some&nbsp;code<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;make&nbsp;sure&nbsp;everything&nbsp;is&nbsp;assigned&nbsp;properly<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">parent</span><span style="color: #007700">::</span><span style="color: #0000BB">__construct</span><span style="color: #007700">(</span><span style="color: #0000BB">$message</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$code</span><span style="color: #007700">);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;custom&nbsp;string&nbsp;representation&nbsp;of&nbsp;object<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">public&nbsp;function&nbsp;</span><span style="color: #0000BB">__toString</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">__CLASS__&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">":&nbsp;[</span><span style="color: #007700">{</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">code</span><span style="color: #007700">}</span><span style="color: #DD0000">]:&nbsp;</span><span style="color: #007700">{</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">message</span><span style="color: #007700">}</span><span style="color: #DD0000">\n"</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">customFunction</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"A&nbsp;custom&nbsp;function&nbsp;for&nbsp;this&nbsp;type&nbsp;of&nbsp;exception\n"</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    <p></p></blockquote>
+   </div>
+  </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="95403">  
+  <a class="name">
+  <strong class="user"><em>iamhiddensomewhere at gmail dot com</em></strong></a><div class="date" title="2009-12-31 03:17"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom95403">
+<div class="phpcode"><code><span class="html">
+As previously noted exception linking was recently added (and what a god-send it is, it certainly makes layer abstraction (and, by association, exception tracking) easier).<br><br>Since &lt;5.3 was lacking this useful feature I took some initiative and creating a custom exception class that all of my exceptions inherit from:<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">class </span><span class="default">SystemException </span><span class="keyword">extends </span><span class="default">Exception<br></span><span class="keyword">{<br>&nbsp; &nbsp; private </span><span class="default">$previous</span><span class="keyword">;<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$message</span><span class="keyword">, </span><span class="default">$code </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">, </span><span class="default">Exception $previous </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">parent</span><span class="keyword">::</span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$message</span><span class="keyword">, </span><span class="default">$code</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; if (!</span><span class="default">is_null</span><span class="keyword">(</span><span class="default">$previous</span><span class="keyword">))<br>&nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this </span><span class="keyword">-&gt; </span><span class="default">previous </span><span class="keyword">= </span><span class="default">$previous</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; public function </span><span class="default">getPrevious</span><span class="keyword">()<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$this </span><span class="keyword">-&gt; </span><span class="default">previous</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>}<br><br></span><span class="default">?&gt;<br></span><br>Hope you find it useful.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="94780">  
+  <a class="name">
+  <strong class="user"><em>sapphirepaw.org</em></strong></a><div class="date" title="2009-11-24 07:37"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom94780">
+<div class="phpcode"><code><span class="html">
+Support for exception linking was added in PHP 5.3.0. The getPrevious() method and the $previous argument to the constructor are not available on any built-in exceptions in older versions of PHP.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="110356">  
+  <a class="name">
+  <strong class="user"><em>michaelrfairhurst at gmail dot com</em></strong></a><div class="date" title="2012-10-15 04:55"><strong>1 year ago</strong></div>
+  <div class="text" id="Hcom110356">
+<div class="phpcode"><code><span class="html">
+Custom exception classes can allow you to write tests that prove your exceptions<br>are meaningful. Usually testing exceptions, you either assert the message equals<br>something in which case you can't change the message format without refactoring,<br>or not make any assertions at all in which case you can get misleading messages<br>later down the line. Especially if your $e-&gt;getMessage is something complicated<br>like a var_dump'ed context array.<br><br>The solution is to abstract the error information from the Exception class into<br>properties that can be tested everywhere except the one test for your formatting.<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">class </span><span class="default">TestableException </span><span class="keyword">extends </span><span class="default">Exception </span><span class="keyword">{<br><br>&nbsp; &nbsp; &nbsp; &nbsp; private </span><span class="default">$property</span><span class="keyword">;<br><br>&nbsp; &nbsp; &nbsp; &nbsp; function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$property</span><span class="keyword">) {<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">property </span><span class="keyword">= </span><span class="default">$property</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">parent</span><span class="keyword">::</span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">format</span><span class="keyword">(</span><span class="default">$property</span><span class="keyword">));<br><br>&nbsp; &nbsp; &nbsp; &nbsp; }<br><br>&nbsp; &nbsp; &nbsp; &nbsp; function </span><span class="default">format</span><span class="keyword">(</span><span class="default">$property</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="string">"I have formatted: " </span><span class="keyword">. </span><span class="default">$property </span><span class="keyword">. </span><span class="string">"!!"</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br><br>&nbsp; &nbsp; &nbsp; &nbsp; function </span><span class="default">getProperty</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">property</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br><br>}<br><br>function </span><span class="default">testSomethingThrowsTestableException</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; try {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; throw new </span><span class="default">TestableException</span><span class="keyword">(</span><span class="string">'Property'</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; } Catch (</span><span class="default">TestableException $e</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">assertEquals</span><span class="keyword">(</span><span class="string">'Property'</span><span class="keyword">, </span><span class="default">$e</span><span class="keyword">-&gt;</span><span class="default">getProperty</span><span class="keyword">());<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>}<br><br>function </span><span class="default">testExceptionFormattingOnlyOnce</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$e </span><span class="keyword">= new </span><span class="default">TestableException</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">assertEquals</span><span class="keyword">(</span><span class="string">'I have formatted: properly for the only required test!!'</span><span class="keyword">,<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$e</span><span class="keyword">-&gt;</span><span class="default">format</span><span class="keyword">(</span><span class="string">'properly for the only required test'</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; );<br>}<br><br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="106168">  
+  <a class="name">
+  <strong class="user"><em>Dor</em></strong></a><div class="date" title="2011-10-15 02:30"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom106168">
+<div class="phpcode"><code><span class="html">
+It's important to note that subclasses of the Exception class will be caught by the default Exception handler<br><br><span class="default">&lt;?php<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="comment">/**<br>&nbsp; &nbsp;&nbsp; * NewException<br>&nbsp; &nbsp;&nbsp; * Extends the Exception class so that the $message parameter is now mendatory.<br>&nbsp; &nbsp;&nbsp; * <br>&nbsp; &nbsp;&nbsp; */<br>&nbsp; &nbsp; </span><span class="keyword">class </span><span class="default">NewException </span><span class="keyword">extends </span><span class="default">Exception </span><span class="keyword">{<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">//$message is now not optional, just for the extension.<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$message</span><span class="keyword">, </span><span class="default">$code </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">, </span><span class="default">Exception $previous </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">parent</span><span class="keyword">::</span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$message</span><span class="keyword">, </span><span class="default">$code</span><span class="keyword">, </span><span class="default">$previous</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="comment">/**<br>&nbsp; &nbsp;&nbsp; * TestException<br>&nbsp; &nbsp;&nbsp; * Tests and throws Exceptions.<br>&nbsp; &nbsp;&nbsp; */<br>&nbsp; &nbsp; </span><span class="keyword">class </span><span class="default">TestException </span><span class="keyword">{<br>&nbsp; &nbsp; &nbsp; &nbsp; const </span><span class="default">NONE </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; const </span><span class="default">NORMAL </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; const </span><span class="default">CUSTOM </span><span class="keyword">= </span><span class="default">2</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$type </span><span class="keyword">= </span><span class="default">self</span><span class="keyword">::</span><span class="default">NONE</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; switch (</span><span class="default">$type</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; case </span><span class="default">1</span><span class="keyword">: <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="string">'Normal Exception'</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; break;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; case </span><span class="default">2</span><span class="keyword">:<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; throw new </span><span class="default">NewException</span><span class="keyword">(</span><span class="string">'Custom Exception'</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; break;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; default:<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">0</span><span class="keyword">; </span><span class="comment">//No exception is thrown.<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">}<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; try {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$t </span><span class="keyword">= new </span><span class="default">TestException</span><span class="keyword">(</span><span class="default">TestException</span><span class="keyword">::</span><span class="default">CUSTOM</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; catch (</span><span class="default">Exception $e</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$e</span><span class="keyword">); </span><span class="comment">//Exception Caught<br>&nbsp; &nbsp; </span><span class="keyword">}<br>&nbsp; &nbsp; <br></span><span class="default">?&gt;<br></span><br>Note that if an Exception is caught once, it won't be caught again (even for a more specific handler).</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="115100">  
+  <a class="name">
+  <strong class="user"><em>hollodotme</em></strong></a><div class="date" title="2014-05-25 06:57"><strong>3 months ago</strong></div>
+  <div class="text" id="Hcom115100">
+<div class="phpcode"><code><span class="html">
+Not mentioned in the class structure on top of this site are the following members:<br><br><span class="default">&lt;?php<br></span><span class="comment">/**<br> * @var string<br> */<br></span><span class="keyword">protected </span><span class="default">$string</span><span class="keyword">;<br><br></span><span class="comment">/**<br> * @var array<br> */<br></span><span class="keyword">protected </span><span class="default">$trace</span><span class="keyword">;<br><br></span><span class="comment">/**<br> * @var Exception<br> */<br></span><span class="keyword">protected </span><span class="default">$previous</span><span class="keyword">;<br></span><span class="default">?&gt;<br></span><br>... and these methods:<br><br><span class="default">&lt;?php<br></span><span class="comment">/**<br> * @return Exception|null<br> */<br></span><span class="keyword">final public function </span><span class="default">getPrevious</span><span class="keyword">();<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="88253">  
+  <a class="name">
+  <strong class="user"><em>paragdiwan at gmail dot com</em></strong></a><div class="date" title="2009-01-17 01:32"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom88253">
+<div class="phpcode"><code><span class="html">
+I have written similar simple custom exception class. Helpful for newbie.
+<br><span class="default">&lt;?php
+<br>&nbsp; &nbsp; </span><span class="comment">/*
+<br>&nbsp; &nbsp; &nbsp; &nbsp; This is written for overriding the exceptions.
+<br>&nbsp; &nbsp; &nbsp; &nbsp; custom exception class
+<br>&nbsp; &nbsp; */
+<br>&nbsp; &nbsp; </span><span class="default">error_reporting</span><span class="keyword">(</span><span class="default">E_ALL</span><span class="keyword">-</span><span class="default">E_NOTICE</span><span class="keyword">);
+<br>&nbsp; &nbsp; class </span><span class="default">myCustomException </span><span class="keyword">extends </span><span class="default">Exception 
+<br>&nbsp; &nbsp; </span><span class="keyword">{
+<br>&nbsp; &nbsp; &nbsp; &nbsp; 
+<br>&nbsp; &nbsp; &nbsp; &nbsp; public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$message</span><span class="keyword">, </span><span class="default">$code</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">)
+<br>&nbsp; &nbsp; &nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">parent</span><span class="keyword">::</span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$message</span><span class="keyword">,</span><span class="default">$code</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; }&nbsp; &nbsp; 
+<br>
+<br>&nbsp; &nbsp; &nbsp; &nbsp; public function </span><span class="default">__toString</span><span class="keyword">()
+<br>&nbsp; &nbsp; &nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="string">"&lt;b style='color:red'&gt;"</span><span class="keyword">.</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">message</span><span class="keyword">.</span><span class="string">"&lt;/b&gt;"</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; 
+<br>&nbsp; &nbsp; &nbsp; &nbsp; 
+<br>&nbsp; &nbsp; }
+<br>
+<br>&nbsp; &nbsp; class </span><span class="default">testException 
+<br>&nbsp; &nbsp; </span><span class="keyword">{
+<br>&nbsp; &nbsp; &nbsp; &nbsp; 
+<br>&nbsp; &nbsp; &nbsp; &nbsp; public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$x</span><span class="keyword">)
+<br>&nbsp; &nbsp; &nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; 
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">x</span><span class="keyword">=</span><span class="default">$x</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+<br>&nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; 
+<br>&nbsp; &nbsp; &nbsp; &nbsp; function </span><span class="default">see</span><span class="keyword">() 
+<br>&nbsp; &nbsp; &nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+<br>
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">x</span><span class="keyword">==</span><span class="default">9 </span><span class="keyword">)
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; throw new </span><span class="default">myCustomException</span><span class="keyword">(</span><span class="string">"i didnt like it"</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; }
+<br>
+<br>&nbsp; &nbsp; </span><span class="default">$obj </span><span class="keyword">= new </span><span class="default">testException</span><span class="keyword">(</span><span class="default">9</span><span class="keyword">);
+<br>&nbsp; &nbsp; try{
+<br>&nbsp; &nbsp; 
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$obj</span><span class="keyword">-&gt;</span><span class="default">see</span><span class="keyword">();
+<br>&nbsp; &nbsp; }
+<br>&nbsp; &nbsp; catch(</span><span class="default">myCustomException $e</span><span class="keyword">)
+<br>&nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; echo </span><span class="default">$e</span><span class="keyword">;
+<br>&nbsp; &nbsp; }
+<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/language.exceptions.extending.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:28:08 GMT -->
+
+
+</body></html>

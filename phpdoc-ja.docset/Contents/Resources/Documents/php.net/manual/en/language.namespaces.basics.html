@@ -1,0 +1,429 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>名前空間の使用法: 基本編</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="language.namespaces.definitionmultiple.html">≪ 同一ファイル内での複数の名前空間の定義</a></li>
+      <li style="float: right;"><a href="language.namespaces.dynamic.html">名前空間と動的言語機能 ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="language.namespaces.html">名前空間</a></li>
+    <li>名前空間の使用法: 基本編</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="language.namespaces.basics" class="sect1">
+  <h2 class="title">名前空間の使用法: 基本編</h2>
+  <p class="verinfo">(PHP 5 &gt;= 5.3.0)</p>
+  <p class="para">
+   名前空間の使い方についてあれこれ言う前に、まずは
+   PHP がどのようにしてコード中の要素の名前空間を知るのかを理解しておくことが重要です。
+   PHP の名前空間は、ファイルシステムにたとえて考えることができます。
+   たとえば、ファイルシステム内のファイルにアクセスするには次の 3 つの方法があります。
+   <ol type="1">
+    <li class="listitem">
+     <span class="simpara">
+      <em>foo.txt</em> のような相対ファイル名を使う。これは
+      <em>currentdirectory/foo.txt</em> と解釈されます。ここで、
+      currentdirectory は現在いるディレクトリを表します。したがって、カレントディレクトリが
+      <em>/home/foo</em> であった場合はこれは <em>/home/foo/foo.txt</em>
+      となります。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <em>subdirectory/foo.txt</em> のような相対パス名を使う。これは
+      <em>currentdirectory/subdirectory/foo.txt</em> と解釈されます。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <em>/main/foo.txt</em> のような絶対パス名を使う。これは
+      <em>/main/foo.txt</em> と解釈されます。
+     </span>
+    </li>
+   </ol>
+   PHP の名前空間内の要素についても同じ理屈があてはまります。
+   たとえば、クラス名を参照するには次の 3 つの方法があります。
+   <ol type="1">
+    <li class="listitem">
+     <span class="simpara">
+      <em>$a = new foo();</em> あるいは
+      <em>foo::staticmethod();</em> のような非修飾名
+      あるいはプレフィックスなしのクラス名。
+      現在の名前空間が <em>currentnamespace</em> である場合、これは
+      <em>currentnamespace\foo</em> と解釈されます。
+      名前空間に属さないグローバルなコードにおいては、これは
+      <em>foo</em> と解釈されます。
+     </span>
+     <span class="simpara">
+      注意: 修飾されていない関数や定数は、名前空間内にその関数や定数がなければ
+      グローバルな関数あるいは変数とみなされます。詳細は
+      <a href="language.namespaces.fallback.html" class="link">名前空間の使用法:
+      グローバルな関数/定数への移行</a> を参照ください。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <em>$a = new subnamespace\foo();</em> あるいは
+      <em>subnamespace\foo::staticmethod();</em> のような修飾名
+      あるいはプレフィックスつきクラス名。
+      現在の名前空間が <em>currentnamespace</em> である場合、これは
+      <em>currentnamespace\subnamespace\foo</em> と解釈されます。
+      名前空間に属さないグローバルなコードにおいては、これは
+      <em>subnamespace\foo</em> と解釈されます。
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <em>$a = new \currentnamespace\foo();</em> あるいは
+      <em>\currentnamespace\foo::staticmethod();</em> のような完全修飾名
+      あるいはグローバルプレフィックス演算子つきのクラス名。
+      これは、常にコードで記述されたとおりの名前である
+      <em>currentnamespace\foo</em> と解釈されます。
+     </span>
+    </li>
+   </ol>
+  </p>
+  <p class="para">
+   これら 3 つの構文を実際のコードで使う例を次に示します。
+   <div class="informalexample">
+    <p class="simpara">file1.php</p>
+    <div class="example-contents">
+     <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">Foo</span><span style="color: #007700">\</span><span style="color: #0000BB">Bar</span><span style="color: #007700">\</span><span style="color: #0000BB">subnamespace</span><span style="color: #007700">;<br /><br />const&nbsp;</span><span style="color: #0000BB">FOO&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br />function&nbsp;</span><span style="color: #0000BB">foo</span><span style="color: #007700">()&nbsp;{}<br />class&nbsp;</span><span style="color: #0000BB">foo<br /></span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">staticmethod</span><span style="color: #007700">()&nbsp;{}<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <p class="simpara">file2.php</p>
+    <div class="example-contents">
+     <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">Foo</span><span style="color: #007700">\</span><span style="color: #0000BB">Bar</span><span style="color: #007700">;<br />include&nbsp;</span><span style="color: #DD0000">'file1.php'</span><span style="color: #007700">;<br /><br />const&nbsp;</span><span style="color: #0000BB">FOO&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">;<br />function&nbsp;</span><span style="color: #0000BB">foo</span><span style="color: #007700">()&nbsp;{}<br />class&nbsp;</span><span style="color: #0000BB">foo<br /></span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">staticmethod</span><span style="color: #007700">()&nbsp;{}<br />}<br /><br /></span><span style="color: #FF8000">/*&nbsp;非修飾名&nbsp;*/<br /></span><span style="color: #0000BB">foo</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;Foo\Bar\foo&nbsp;関数と解釈されます<br /></span><span style="color: #0000BB">foo</span><span style="color: #007700">::</span><span style="color: #0000BB">staticmethod</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;Foo\Bar\foo&nbsp;クラスの&nbsp;staticmethod&nbsp;メソッドと解釈されます<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">FOO</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;定数&nbsp;Foo\Bar\FOO&nbsp;と解釈されます<br /><br />/*&nbsp;修飾名&nbsp;*/<br /></span><span style="color: #0000BB">subnamespace</span><span style="color: #007700">\</span><span style="color: #0000BB">foo</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;Foo\Bar\subnamespace\foo&nbsp;関数と解釈されます<br /></span><span style="color: #0000BB">subnamespace</span><span style="color: #007700">\</span><span style="color: #0000BB">foo</span><span style="color: #007700">::</span><span style="color: #0000BB">staticmethod</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;Foo\Bar\subnamespace\foo&nbsp;クラスの<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;staticmethod&nbsp;メソッドと解釈されます<br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #0000BB">subnamespace</span><span style="color: #007700">\</span><span style="color: #0000BB">FOO</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;定数&nbsp;Foo\Bar\subnamespace\FOO&nbsp;と解釈されます<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />/*&nbsp;完全修飾名&nbsp;*/<br /></span><span style="color: #007700">\</span><span style="color: #0000BB">Foo</span><span style="color: #007700">\</span><span style="color: #0000BB">Bar</span><span style="color: #007700">\</span><span style="color: #0000BB">foo</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;Foo\Bar\foo&nbsp;関数と解釈されます<br /></span><span style="color: #007700">\</span><span style="color: #0000BB">Foo</span><span style="color: #007700">\</span><span style="color: #0000BB">Bar</span><span style="color: #007700">\</span><span style="color: #0000BB">foo</span><span style="color: #007700">::</span><span style="color: #0000BB">staticmethod</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;Foo\Bar\foo&nbsp;クラスの&nbsp;staticmethod&nbsp;メソッドと解釈されます<br /></span><span style="color: #007700">echo&nbsp;\</span><span style="color: #0000BB">Foo</span><span style="color: #007700">\</span><span style="color: #0000BB">Bar</span><span style="color: #007700">\</span><span style="color: #0000BB">FOO</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;定数&nbsp;Foo\Bar\FOO&nbsp;と解釈されます<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   グローバルなクラス、関数あるいは定数にアクセスするには、完全修飾名を使用して
+   <span class="function"><strong>\strlen()</strong></span>、<strong class="classname">\Exception</strong> あるいは
+   <em>\INI_ALL</em> などとすることができます。
+   <div class="example" id="example-259">
+    <p><strong>例1 グローバルなクラス、関数および定数への名前空間内からのアクセス</strong></p>
+    <div class="example-contents">
+     <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">Foo</span><span style="color: #007700">;<br /><br />function&nbsp;</span><span style="color: #0000BB">strlen</span><span style="color: #007700">()&nbsp;{}<br />const&nbsp;</span><span style="color: #0000BB">INI_ALL&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">;<br />class&nbsp;</span><span style="color: #0000BB">Exception&nbsp;</span><span style="color: #007700">{}<br /><br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;\</span><span style="color: #0000BB">strlen</span><span style="color: #007700">(</span><span style="color: #DD0000">'hi'</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;グローバル関数&nbsp;strlen&nbsp;をコールします<br /></span><span style="color: #0000BB">$b&nbsp;</span><span style="color: #007700">=&nbsp;\</span><span style="color: #0000BB">INI_ALL</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;グローバル定数&nbsp;INI_ALL&nbsp;にアクセスします<br /></span><span style="color: #0000BB">$c&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;\</span><span style="color: #0000BB">Exception</span><span style="color: #007700">(</span><span style="color: #DD0000">'error'</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;グローバルクラス&nbsp;Exception&nbsp;のインスタンスを作成します<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="114266""></a>
+  <div class="note">
+   <strong class="user">anon</strong>
+   <a href="#114266" class="date">31-Jan-2014 06:47</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+The namespace hierarchy will normally mirror the directory hierarchy where the class files are located, but this is not a strict requirement. You could, for example, have several class flles with different namespaces in the same directory.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="107684""></a>
+  <div class="note">
+   <strong class="user">tom at tomwardrop dot com</strong>
+   <a href="#107684" class="date">26-Feb-2012 07:06</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+It seems the file system analogy only goes so far. One thing that's missing that would be very useful is relative navigation up the namespace chain, e.g.<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">namespace </span><span class="default">MyProject </span><span class="keyword">{<br />
+&nbsp;&nbsp; class </span><span class="default">Person </span><span class="keyword">{}<br />
+}<br />
+<br />
+namespace </span><span class="default">MyProject</span><span class="keyword">\</span><span class="default">People </span><span class="keyword">{<br />
+&nbsp;&nbsp;&nbsp; class </span><span class="default">Adult </span><span class="keyword">extends ..\</span><span class="default">Person </span><span class="keyword">{}<br />
+}<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+That would be really nice, especially if you had really deep namespaces. It would save you having to type out the full namespace just to reference a resource one level up.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="106777""></a>
+  <div class="note">
+   <strong class="user">Lukas Z</strong>
+   <a href="#106777" class="date">06-Dec-2011 12:25</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Well variables inside namespaces do not override others since variables are never affected by namespace but always global:<br />
+"Although any valid PHP code can be contained within a namespace, only four types of code are affected by namespaces: classes, interfaces, functions and constants. "<br />
+<br />
+Source: "Defining Namespaces"<br />
+<a href="http://www.php.net/manual/en/language.namespaces.definition.php" rel="nofollow" target="_blank">http://www.php.net/manual/en/language.namespaces.definition.php</a></span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="104411""></a>
+  <div class="note">
+   <strong class="user">philip dot preisser at arcor dot de</strong>
+   <a href="#104411" class="date">14-Jun-2011 11:34</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Working with variables can overwrite equal variables in other namespaces<br />
+<br />
+<span class="default">&lt;?php </span><span class="comment">// php5 - package-version : 5.3.5-1ubuntu7.2<br />
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">namespace<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">main<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">{}<br />
+<br />
+&nbsp;&nbsp;&nbsp; namespace<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">main</span><span class="keyword">\</span><span class="default">sub1<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">{<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$data </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp; namespace<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">main</span><span class="keyword">\</span><span class="default">sub2<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">{<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="default">$data</span><span class="keyword">;</span><span class="comment">// 1<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$data </span><span class="keyword">= </span><span class="default">2</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp; namespace<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">main</span><span class="keyword">\</span><span class="default">sub1<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">{<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="default">$data</span><span class="keyword">;</span><span class="comment">// 2<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$data </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+<br />
+&nbsp;&nbsp;&nbsp; namespace<br />
+&nbsp;&nbsp;&nbsp; {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="default">$data</span><span class="keyword">;</span><span class="comment">// 1<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">}<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="101520""></a>
+  <div class="note">
+   <strong class="user">Franois Vespa</strong>
+   <a href="#101520" class="date">22-Dec-2010 02:42</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+It seems you cannot nest a constant declaration within a if statement<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="keyword">namespace </span><span class="default">FOO</span><span class="keyword">;<br />
+<br />
+if(eval)<br />
+const </span><span class="default">BAR</span><span class="keyword">=</span><span class="default">true</span><span class="keyword">; <br />
+<br />
+</span><span class="comment">// will throw the following error:<br />
+// PHP Parse error:&nbsp; syntax error, unexpected T_CONST<br />
+<br />
+// instead use:<br />
+<br />
+</span><span class="keyword">if(eval)<br />
+</span><span class="default">define</span><span class="keyword">(</span><span class="string">'FOO\BAR'</span><span class="keyword">,</span><span class="default">true</span><span class="keyword">);<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="86420""></a>
+  <div class="note">
+   <strong class="user">kukoman at pobox dot sk</strong>
+   <a href="#86420" class="date">17-Oct-2008 08:20</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+PHP 5.3.0alpha2 (cli)
+<br />
+<span class="default">&lt;?php
+<br />
+</span><span class="comment">//&nbsp; namespace MyProject\DB;
+<br />
+</span><span class="keyword">require </span><span class="string">'db.php'</span><span class="keyword">;
+<br />
+
+<br />
+use </span><span class="default">MyProject</span><span class="keyword">\</span><span class="default">DB</span><span class="keyword">; </span><span class="comment">// fine; same as DB\
+<br />
+</span><span class="keyword">use </span><span class="default">MyProject</span><span class="keyword">\</span><span class="default">DB</span><span class="keyword">\</span><span class="default">Connection </span><span class="keyword">as </span><span class="default">DBC</span><span class="keyword">; </span><span class="comment">// fine
+<br />
+</span><span class="keyword">use </span><span class="default">MyProject</span><span class="keyword">\</span><span class="default">DB </span><span class="keyword">as </span><span class="default">HM</span><span class="keyword">; </span><span class="comment">// fine
+<br />
+</span><span class="keyword">use </span><span class="default">HM</span><span class="keyword">\</span><span class="default">Connection </span><span class="keyword">as </span><span class="default">DBC2</span><span class="keyword">; </span><span class="comment">// class call ends with FATAL!!!
+<br />
+
+<br />
+</span><span class="default">$x </span><span class="keyword">= new </span><span class="default">DBC</span><span class="keyword">(); </span><span class="comment">// fine
+<br />
+</span><span class="default">$y </span><span class="keyword">= new </span><span class="default">HM</span><span class="keyword">\</span><span class="default">Connection</span><span class="keyword">(); </span><span class="comment">// fine
+<br />
+</span><span class="default">$z </span><span class="keyword">= new </span><span class="default">DBC2</span><span class="keyword">(); </span><span class="comment">// Fatal error: Class 'HM\Connection' not found
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="82088""></a>
+  <div class="note">
+   <strong class="user">richard at richard-sumilang dot com</strong>
+   <a href="#82088" class="date">27-Mar-2008 10:36</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Syntax for extending classes in namespaces is still the same.
+<br />
+
+<br />
+Lets call this Object.php:
+<br />
+
+<br />
+<span class="default">&lt;?php
+<br />
+
+<br />
+</span><span class="keyword">namespace </span><span class="default">com</span><span class="keyword">\</span><span class="default">rsumilang</span><span class="keyword">\</span><span class="default">common</span><span class="keyword">;
+<br />
+
+<br />
+class </span><span class="default">Object</span><span class="keyword">{
+<br />
+&nbsp;&nbsp; </span><span class="comment">// ... code ...
+<br />
+</span><span class="keyword">}
+<br />
+
+<br />
+</span><span class="default">?&gt;
+<br />
+</span>
+<br />
+And now lets create a class called String that extends object in String.php:
+<br />
+
+<br />
+<span class="default">&lt;?php
+<br />
+
+<br />
+</span><span class="keyword">class </span><span class="default">String </span><span class="keyword">extends </span><span class="default">com</span><span class="keyword">\</span><span class="default">rsumilang</span><span class="keyword">\</span><span class="default">common</span><span class="keyword">\</span><span class="default">Object</span><span class="keyword">{
+<br />
+&nbsp;&nbsp; </span><span class="comment">// ... code ...
+<br />
+</span><span class="keyword">}
+<br />
+
+<br />
+</span><span class="default">?&gt;
+<br />
+</span>
+<br />
+Now if you class String was defined in the same namespace as Object then you don't have to specify a full namespace path:
+<br />
+
+<br />
+<span class="default">&lt;?php
+<br />
+
+<br />
+</span><span class="keyword">namespace </span><span class="default">com</span><span class="keyword">\</span><span class="default">rsumilang</span><span class="keyword">\</span><span class="default">common</span><span class="keyword">;
+<br />
+
+<br />
+class </span><span class="default">String </span><span class="keyword">extends </span><span class="default">Object
+<br />
+</span><span class="keyword">{
+<br />
+&nbsp;&nbsp; </span><span class="comment">// ... code ...
+<br />
+</span><span class="keyword">}
+<br />
+
+<br />
+</span><span class="default">?&gt;
+<br />
+</span>
+<br />
+Lastly, you can also alias a namespace name to use a shorter name for the class you are extending incase your class is in seperate namespace:
+<br />
+
+<br />
+<span class="default">&lt;?php
+<br />
+
+<br />
+</span><span class="keyword">namespace </span><span class="default">com</span><span class="keyword">\</span><span class="default">rsumilang</span><span class="keyword">\</span><span class="default">util</span><span class="keyword">;
+<br />
+use </span><span class="default">com</span><span class="keyword">\</span><span class="default">rsumlang</span><span class="keyword">\</span><span class="default">common </span><span class="keyword">as </span><span class="default">Common</span><span class="keyword">;
+<br />
+
+<br />
+class </span><span class="default">String </span><span class="keyword">extends </span><span class="default">Common</span><span class="keyword">\</span><span class="default">Object
+<br />
+</span><span class="keyword">{
+<br />
+&nbsp;&nbsp; </span><span class="comment">// ... code ...
+<br />
+</span><span class="keyword">}
+<br />
+
+<br />
+</span><span class="default">?&gt;
+<br />
+</span>
+<br />
+- Richard Sumilang</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

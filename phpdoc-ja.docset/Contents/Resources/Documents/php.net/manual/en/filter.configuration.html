@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>実行時設定</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="filter.installation.html">≪ インストール手順</a></li>
+      <li style="float: right;"><a href="filter.resources.html">リソース型 ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="filter.setup.html">インストール/設定</a></li>
+    <li>実行時設定</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="filter.configuration" class="section">
+ <h2 class="title">実行時設定</h2>
+ <p class="simpara">
+<var class="filename">php.ini</var> の設定により動作が変化します。
+</p>
+ <p class="para">
+  <table class="doctable table">
+   <caption><strong>フィルタ設定オプション</strong></caption>
+   
+    <thead>
+     <tr>
+      <th>名前</th>
+      <th>デフォルト</th>
+      <th>変更可能</th>
+      <th>変更履歴</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+     <tr>
+      <td><a href="filter.configuration.html#ini.filter.default" class="link">filter.default</a></td>
+      <td>&quot;unsafe_raw&quot;</td>
+      <td>PHP_INI_PERDIR</td>
+      <td>filter &lt;= 0.9.4 では PHP_INI_ALL。PHP 5.2.0 以降で使用可能です。</td>
+     </tr>
+
+     <tr>
+      <td><a href="filter.configuration.html#ini.filter.default-flags" class="link">filter.default_flags</a></td>
+      <td>NULL</td>
+      <td>PHP_INI_PERDIR</td>
+      <td>filter &lt;= 0.9.4 では PHP_INI_ALL。PHP 5.2.0 以降で使用可能です。</td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  PHP_INI_* モードの詳細および定義については
+<a href="configuration.changes.modes.html" class="xref">どこで設定を行うのか</a> を参照してください。
+</p>
+
+<p class="para">以下に設定ディレクティブに関する
+簡単な説明を示します。</p>
+
+<p class="para">
+ <dl>
+
+  
+   <dt id="ini.filter.default">
+    <code class="parameter">filter.default</code>
+    <span class="type"><a href="language.types.string.html" class="type string">string</a></span>
+   </dt>
+
+   <dd>
+
+    <p class="para">
+     このフィルタで
+     <var class="varname"><var class="varname"><a href="reserved.variables.get.html" class="classname">$_GET</a></var></var>, <var class="varname"><var class="varname"><a href="reserved.variables.post.html" class="classname">$_POST</a></var></var>,
+     <var class="varname"><var class="varname"><a href="reserved.variables.cookies.html" class="classname">$_COOKIE</a></var></var>, <var class="varname"><var class="varname"><a href="reserved.variables.request.html" class="classname">$_REQUEST</a></var></var>
+     および <var class="varname"><var class="varname"><a href="reserved.variables.server.html" class="classname">$_SERVER</a></var></var>
+     のすべてのデータをフィルタリングします。
+     もとのデータへは <span class="function"><a href="function.filter-input.html" class="function">filter_input()</a></span>
+     でアクセスが可能です。
+    </p>
+    <p class="para">
+     デフォルトで使用するフィルタの名前を指定することができます。
+     既存の<a href="filter.filters.html" class="link">フィルタの一覧</a>を参照し、フィルタ名を指定してください。
+    </p>
+    <blockquote class="note"><p><strong class="note">注意</strong>: 
+      <p class="para">
+        デフォルトフィルタのデフォルトのフラグ設定には注意しましょう。
+        意識して、明示的に望みの値に設定しなければなりません。
+        たとえば、デフォルトフィルタの設定を
+        <span class="function"><a href="function.htmlspecialchars.html" class="function">htmlspecialchars()</a></span> とまったく同様にするには
+        デフォルトのフラグを以下のように 0 にしなければなりません。
+      </p>
+      <p class="para">
+        <div class="example" id="example-5194">
+          <p><strong>例1 デフォルトフィルタを htmlspecialchars と同様の挙動にする設定</strong></p>
+          <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+filter.default&nbsp;=&nbsp;full_special_chars<br />filter.default_flags&nbsp;=&nbsp;0</span>
+</code></div>
+          </div>
+
+        </div>
+      </p>
+   </p></blockquote>
+   </dd>
+
+  
+  
+  
+   <dt id="ini.filter.default-flags">
+    <code class="parameter">filter.default_flags</code>
+    <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span>
+   </dt>
+
+   <dd>
+
+    <p class="para">
+     デフォルトのフラグ。デフォルトフィルタが設定されたときに適用されます。
+     過去との互換性を保つため、デフォルトは
+     <strong><code>FILTER_FLAG_NO_ENCODE_QUOTES</code></strong>
+     となっています。
+     <a href="filter.filters.flags.html" class="link">フラグの一覧</a>で、フラグ名を参照ください。
+    </p>
+   </dd>
+
+  
+  
+ </dl>
+
+ </p>
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="101403""></a>
+  <div class="note">
+   <strong class="user">warbaby67 at gmail dot com</strong>
+   <a href="#101403" class="date">15-Dec-2010 07:04</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+filter.default sets the default FILTER by name. <br />
+filter.default_flags sets default FLAGS for the default filter.<br />
+<br />
+The values for filter.default should be a string "name" of a valid FILTER:&nbsp; <br />
+<br />
+"int"&nbsp; &nbsp; &nbsp; FILTER_VALIDATE_INT<br />
+"boolean"&nbsp; FILTER_VALIDATE_BOOLEAN&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <br />
+<br />
+The irony of the entire list I typed being blocked by the SPAM filter is not lost on me.&nbsp; Perhaps I'm not the first.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>tables フィールドの名前あるいは oid を返す</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="function.pg-field-size.html">≪ pg_field_size</a></li>
+      <li style="float: right;"><a href="function.pg-field-type-oid.html">pg_field_type_oid ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="ref.pgsql.html">PostgreSQL 関数</a></li>
+    <li>tables フィールドの名前あるいは oid を返す</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="function.pg-field-table" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">pg_field_table</h1> 
+  <p class="verinfo">(PHP 5 &gt;= 5.2.0)</p><p class="refpurpose"><span class="refname">pg_field_table</span> &mdash; <span class="dc-title">tables フィールドの名前あるいは oid を返す</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-function.pg-field-table-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <span class="methodname"><strong>pg_field_table</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$result</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$field_number</code></span>
+   [, <span class="methodparam"><span class="type">bool</span> <code class="parameter">$oid_only</code><span class="initializer"> = false</span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+   <span class="function"><strong>pg_field_table()</strong></span> は、フィールドが属するテーブルの名前か
+   あるいは <code class="parameter">oid_only</code> が <strong><code>TRUE</code></strong> の場合にテーブルの oid
+   を返します。
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 parameters" id="refsect1-function.pg-field-table-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+<code class="parameter">result</code></dt>
+
+     <dd>
+
+      <p class="para">
+       <span class="function"><a href="function.pg-query.html" class="function">pg_query()</a></span>、<span class="function"><a href="function.pg-query-params.html" class="function">pg_query_params()</a></span>
+       あるいは <span class="function"><a href="function.pg-execute.html" class="function">pg_execute()</a></span>
+       (その他も含む) から返された、PostgreSQL クエリ結果リソース。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">field_number</code></dt>
+
+      <dd>
+
+       <p class="para">
+        0 から始まるフィールド番号。
+       </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">oid_only</code></dt>
+
+      <dd>
+
+       <p class="para">
+        デフォルトでは、フィールドが属するテーブルの名前が返されます。
+        しかし <code class="parameter">oid_only</code> を<strong><code>TRUE</code></strong> に設定すると、
+        その代わりに oid が返されます。
+       </p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.pg-field-table-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合にフィールドのテーブル名あるいは oid、
+   あるいは失敗した場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 examples" id="refsect1-function.pg-field-table-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-2165">
+    <p><strong>例1 フィールドについてのテーブル情報の取得</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$dbconn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">pg_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">"dbname=publisher"</span><span style="color: #007700">)&nbsp;or&nbsp;die(</span><span style="color: #DD0000">"接続できません"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$res&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">pg_query</span><span style="color: #007700">(</span><span style="color: #0000BB">$dbconn</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;bar&nbsp;FROM&nbsp;foo"</span><span style="color: #007700">);<br /><br />echo&nbsp;</span><span style="color: #0000BB">pg_field_table</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #0000BB">pg_field_table</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$res&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">pg_query</span><span style="color: #007700">(</span><span style="color: #0000BB">$dbconn</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;version()"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">pg_field_table</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+foo
+14379580
+
+bool(false)
+</pre></div>
+    </div>
+   </div> 
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes" id="refsect1-function.pg-field-table-notes">
+  <h3 class="title">注意</h3>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    テーブル名を返すよりも oid を返すほうがずっと高速です。
+    なぜなら、テーブル名を取得するには、
+    データベースのシステムテーブルにクエリを発行しなければならないからです。
+   </p>
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.pg-field-table-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><span class="function"><a href="function.pg-field-name.html" class="function" rel="rdfs-seeAlso">pg_field_name()</a> - フィールドの名前を返す</span></li>
+    <li class="member"><span class="function"><a href="function.pg-field-type.html" class="function" rel="rdfs-seeAlso">pg_field_type()</a> - フィールド番号に対応する型名を返す</span></li>
+   </ul>
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="90912""></a>
+  <div class="note">
+   <strong class="user">strata_ranger at hotmail dot com</strong>
+   <a href="#90912" class="date">16-May-2009 08:11</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+pg_field_table is primarily useful for queries that involve joins between multiple tables, e.g:<br />
+<br />
+<span class="default">&lt;?php<br />
+$res </span><span class="keyword">= </span><span class="default">pg_query</span><span class="keyword">(</span><span class="string">"SELECT table1.foo, table2.bar FROM table1 JOIN table2"</span><span class="keyword">);<br />
+echo </span><span class="default">pg_field_table</span><span class="keyword">(</span><span class="default">$res</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">); </span><span class="comment">// Outputs 'table1'<br />
+</span><span class="keyword">echo </span><span class="default">pg_field_table</span><span class="keyword">(</span><span class="default">$res</span><span class="keyword">, </span><span class="default">1</span><span class="keyword">); </span><span class="comment">// Outputs 'table2'<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+However, be aware of a few easy 'gotchas':<br />
+<br />
+1- If your query contains static values in its select-list, pg_field_table() will yield FALSE for those fields (because it was a static value, not one fetched from a table):<br />
+<br />
+<span class="default">&lt;?php<br />
+$res </span><span class="keyword">= </span><span class="default">pg_query</span><span class="keyword">(</span><span class="string">"SELECT 'foo', bar FROM table"</span><span class="keyword">);<br />
+echo </span><span class="default">pg_field_table</span><span class="keyword">(</span><span class="default">$res</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">); </span><span class="comment">// FALSE<br />
+</span><span class="keyword">echo </span><span class="default">pg_field_table</span><span class="keyword">(</span><span class="default">$res</span><span class="keyword">, </span><span class="default">1</span><span class="keyword">); </span><span class="comment">// Outputs 'table'<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+2- If you UNION two queries together from different tables, pg_field_table() will return FALSE for all fields:<br />
+<br />
+<span class="default">&lt;?php<br />
+$res </span><span class="keyword">= </span><span class="default">pg_query</span><span class="keyword">(</span><span class="string">"(Select foo, bar from table1) UNION (Select foo, bar from table2)"</span><span class="keyword">);<br />
+echo </span><span class="default">pg_field_table</span><span class="keyword">(</span><span class="default">$res</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">); </span><span class="comment">// FALSE<br />
+</span><span class="keyword">echo </span><span class="default">pg_field_table</span><span class="keyword">(</span><span class="default">$res</span><span class="keyword">, </span><span class="default">1</span><span class="keyword">); </span><span class="comment">// FALSE<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

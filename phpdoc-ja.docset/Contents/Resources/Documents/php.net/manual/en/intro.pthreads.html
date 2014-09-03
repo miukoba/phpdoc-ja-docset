@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>導入</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="book.pthreads.html">≪ pthreads</a></li>
+      <li style="float: right;"><a href="pthreads.setup.html">インストール/設定 ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="book.pthreads.html">pthreads</a></li>
+    <li>導入</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="intro.pthreads" class="preface">
+  <h1 class="title">導入</h1>
+  <p class="para">
+ pthreads はオブジェクト指向の API で、ユーザーランドでのマルチスレッド処理を PHP で行うためのものです。
+ ウェブやコンソールをターゲットにしたマルチスレッドアプリケーションを作るのに必要な、あらゆるツールが含まれています。
+ PHP アプリケーションで、Thread や Worker そして Threaded を作ったり読み書きしたり実行したりできるようになります。
+  </p>
+  <p class="para">
+ A Threaded Object:
+ A Threaded Object forms the basis of the functionality that allows pthreads to operate. It exposes synchronization methods and some useful interfaces for the programmer.
+  </p>
+  <p class="para">
+ Thread オブジェクト:
+ ユーザーがスレッドを実装するには、pthreads が用意した Thread の宣言を継承して run メソッドを実装します。
+ Thread を参照すれば、あらゆるコンテキストから任意のメンバーの読み書きができ、
+ すべての public メソッドおよび protected メソッドを任意のコンテキストで実行できます。
+ run メソッドは、この実装オブジェクトの start メソッドを呼んだコンテキスト
+ (Thread あるいは Process) とは別のスレッドで実行されます。
+ スレッドを作ったコンテキストだけが、スレッドの start や join を行えます。
+  </p>
+  <p class="para">
+ Worker オブジェクト:
+ ワーカースレッドは永続的な状態を保持し、start を呼んだ時点からオブジェクトがスコープ外に消えるまで
+ (あるいは明示的に shutdown するまで) 使えます。
+ このオブジェクトを参照する任意のコンテキストから、
+ オブジェクトを Worker に渡せます。これを、Worker が別スレッドで実行します。
+ Worker の run メソッドは、あらゆるオブジェクトがスタックに積まれる前に実行されます。
+ そのため、オブジェクトで必要となるリソースの初期化に使えます。
+  </p>
+  <p class="para">
+ プール:
+ ワーカースレッドのプールを使って、プログラマーが宣言したワーカークラス群の間で Threaded オブジェクトを分散させることができます。
+ Pool クラスがこの機能を実装しており、きちんと参照を管理してくれます。
+ これは v1.0.0 で導入されました。複数スレッドを扱う際に最も簡単かつ効率的な方法です。
+  </p>
+  <div class="caution"><strong class="caution">警告</strong>
+  <p class="para">
+ プールは通常の PHP オブジェクトなので、そのインスタンスをコンテキスト間で共有してはいけません。
+  </p>
+  </div>
+  <p class="para">
+ 同期処理:
+ pthreds が用意するすべてのオブジェクトには、
+ (Java プログラマーならおなじみの) ::wait と ::notify による同期処理が組み込まれています。
+ あるオブジェクトの ::wait を呼ぶと、別のコンテキストから同じオブジェクトの ::notify
+ が呼ばれるのを待つようになります。
+ これを使えば、PHP 内のスレッド化されたオブジェクト (Threaded Object) どうしで強力な同期処理ができるようになります。
+  </p>
+  <div class="caution"><strong class="caution">警告</strong>
+  <p class="para">
+ Any objects that are intended for use in the multi-threaded parts of your application should extend Threaded.
+  </p> 
+  </div>
+  <p class="para">
+ メソッドの修飾子:
+ スレッド化されたオブジェクトの protected メソッドは、pthreads がプロテクトします。
+ そしてこのメソッドは、同時に複数のコンテキストからは呼べなくなります。
+ スレッド化されたオブジェクトの private メソッドは、
+ 実行中のそのオブジェクトの中からしか呼べません。
+  </p>
+  <p class="para">
+ データストレージ:
+ 目安として、シリアライズ可能なデータ型なら何でも、スレッド化されたオブジェクトのメンバーとして使えます。
+ そのオブジェクトへの参照を持つあらゆるコンテキストから、メンバーの読み書きができます。
+ すべてのデータ型がシリアライズされるわけではなく、基本型はそのままの形式で格納されます。
+ それ以外の複雑な型や配列、スレッド化されていないオブジェクトは、シリアライズして格納されます。
+ これらは、参照を持つ任意のコンテキストから、スレッド化されたオブジェクトへの読み書きができます。
+ スレッド化されたオブジェクトを例外として、
+ あるスレッド化されたオブジェクトのメンバーを設定するために使うあらゆる参照は、
+ そのスレッド化されたオブジェクト内の参照とは区別されます。
+ 同じデータを、いつでもどのコンテキストからでも、
+ スレッド化されたオブジェクトから直接読み込めます。
+  </p>
+  <p class="para">
+ 静的メンバー:
+ 新しいコンテキスト (Thread あるいは Worker) を作るときには、
+ 単純型の静的メンバーだけがコピーされます。
+ リソースやオブジェクトは、静的なクラスメンバーからスレッドのコンテキストにはコピーされません。
+ これを、一種のスレッドローカルストレージとして使えます。
+ たとえば、データベースサーバーへの接続情報と接続そのものを静的メンバーとして持つクラスがあるとします。
+ コンテキストを開始するときには接続情報だけがコピーされ、接続自体はコピーされません。
+ 新しいコンテキスト上ではそのコンテキストを作ったオブジェクトと同じ方法で接続を立ち上げることができ、
+ その接続を同じ場所に格納しても元のコンテキストには何も影響を及ぼしません。
+  </p>
+  <div class="caution"><strong class="caution">警告</strong>
+  <p class="para">
+ print_r や var_dump などのオブジェクトのデバッグ用関数を実行するきには、
+ 再帰の制限には含まれません。
+  </p>
+  </div>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+ リソース:
+ PHP のリソースを定義している拡張モジュールは、この手の環境で扱うには不十分です。
+ pthreads はリソースをコンテキスト間で共有するための対策を用意していますが、
+ 大半のリソース型は安全には扱えません。
+ コンテキスト間でリソースを共有するときには、いくら注意してもしすぎることはありません。
+   </p>
+  </p></blockquote>
+  <div class="caution"><strong class="caution">警告</strong>
+   <p class="para">
+ pthreads の実行環境を安定させるには、いくつかの制限は必要になるのです。
+   </p>
+  </div>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

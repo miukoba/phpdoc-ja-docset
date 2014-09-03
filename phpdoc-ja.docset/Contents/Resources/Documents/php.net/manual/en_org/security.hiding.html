@@ -1,0 +1,574 @@
+<html><!-- Mirrored from php.net/manual/en/security.hiding.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:20:56 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Hiding PHP</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="security.hiding.html">
+ <link rel="shorturl" href="security.hiding.html">
+ <link rel="alternate" href="security.hiding.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="security.html">
+ <link rel="prev" href="security.magicquotes.disabling.html">
+ <link rel="next" href="security.current.html">
+
+ <link rel="alternate" href="security.hiding.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/security.hiding.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/security.hiding.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/security.hiding.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/security.hiding.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/security.hiding.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/security.hiding.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/security.hiding.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/security.hiding.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/security.hiding.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/security.hiding.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="security.html">Security</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="security.hiding" class="chapter">
+   <h1>Hiding PHP</h1>
+
+   <p class="para">
+    In general, security by obscurity is one of the weakest forms of security.
+    But in some cases, every little bit of extra security is desirable.
+   </p>
+   <p class="para">
+    A few simple techniques can help to hide <acronym title="PHP: Hypertext Preprocessor">PHP</acronym>, possibly slowing
+    down an attacker who is attempting to discover weaknesses in your
+    system. By setting expose_php to <em>off</em> in your 
+    <var class="filename">php.ini</var> file, you reduce the amount of information available to them.
+   </p>
+   <p class="para">
+    Another tactic is to configure web servers such as apache to
+    parse different filetypes through <acronym title="PHP: Hypertext Preprocessor">PHP</acronym>, either with an <var class="filename">.htaccess</var>
+    directive, or in the apache configuration file itself. You can
+    then use misleading file extensions:
+    </p><div class="example" id="example-367">
+     <p><strong>Example #1 Hiding PHP as another language</strong></p>
+     <div class="example-contents">
+<div class="apache-confcode"><pre class="apache-confcode"># Make PHP code look like other code types
+AddType application/x-httpd-php .asp .py .pl</pre>
+</div>
+     </div>
+
+    </div>
+    Or obscure it completely:
+    <div class="example" id="example-368">
+     <p><strong>Example #2 Using unknown types for PHP extensions</strong></p>
+     <div class="example-contents">
+<div class="apache-confcode"><pre class="apache-confcode"># Make PHP code look like unknown types
+AddType application/x-httpd-php .bop .foo .133t</pre>
+</div>
+     </div>
+
+    </div>
+    Or hide it as <acronym title="Hyper Text Markup Language">HTML</acronym> code, which has a slight performance hit because
+    all <acronym title="Hyper Text Markup Language">HTML</acronym> will be parsed through the <acronym title="PHP: Hypertext Preprocessor">PHP</acronym> engine:
+    <div class="example" id="example-369">
+     <p><strong>Example #3 Using <acronym title="Hyper Text Markup Language">HTML</acronym> types for PHP extensions</strong></p>
+     <div class="example-contents">
+<div class="apache-confcode"><pre class="apache-confcode"># Make all PHP code look like HTML
+AddType application/x-httpd-php .htm .html</pre>
+</div>
+     </div>
+
+    </div>
+    For this to work effectively, you must rename your <acronym title="PHP: Hypertext Preprocessor">PHP</acronym> files with
+    the above extensions. While it is a form of security through
+    obscurity, it's a minor preventative measure with few drawbacks.
+   <p></p>
+  </div>
+
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="64278">  
+  <a class="name">
+  <strong class="user"><em>marpetr at NOSPAM dot gmail dot com</em></strong></a><div class="date" title="2006-04-11 05:18"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom64278">
+<div class="phpcode"><code><span class="html">
+I think the best way to hide PHP on Apache and Apache itself is this:<br><br>httpd.conf<br>-------------<br># ...<br># Minimize 'Server' header information<br>ServerTokens Prod<br># Disable server signature on server generated pages<br>ServerSignature Off<br># ...<br># Set default file type to PHP<br>DefaultType application/x-httpd-php<br># ...<br><br>php.ini<br>------------<br>; ...<br>expose_php = Off<br>; ...<br><br>Now the URLs will look like this:<br><a rel="nofollow" target="_blank">http://my.server.com/forums/post?forumid=15</a><br><br>Now hacker knows only that you are using Apache.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="113970">  
+  <a class="name">
+  <strong class="user"><em>anon at example dot com</em></strong></a><div class="date" title="2013-12-23 10:48"><strong>8 months ago</strong></div>
+  <div class="text" id="Hcom113970">
+<div class="phpcode"><code><span class="html">
+The session name defaults to PHPSESSID.&nbsp; This is used as the name of the session cookie that is sent to the user's web browser / client. (Example: PHPSESSID=kqjqper294faui343o98ts8k77).<br><br>To hide this, call session_name() with the $name parameter set to a generic name, before calling session_start().&nbsp; Example:<br><br>session_name("id");<br>session_start();<br><br>Cheers.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="99001">  
+  <a class="name">
+  <strong class="user"><em>CD001</em></strong></a><div class="date" title="2010-07-21 09:03"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom99001">
+<div class="phpcode"><code><span class="html">
+It's a good idea to "hide" PHP anyway so you can write a RESTful web application.<br><br>Using Apache Mod Rewrite:<br><br>RewriteEngine On<br>RewriteRule ^control/([^/]+)/(.*)$ sitecontroller.php?control=$1&amp;query=$2<br><br>You then use a function like the following as a way to retrieve data (in a zero indexed fashion) from the $_GET superglobal.<br><br><span class="default">&lt;?php<br></span><span class="keyword">function </span><span class="default">myGET</span><span class="keyword">() {<br>&nbsp; </span><span class="default">$aGet </span><span class="keyword">= array();<br><br>&nbsp; if(isset(</span><span class="default">$_GET</span><span class="keyword">[</span><span class="string">'query'</span><span class="keyword">])) {<br>&nbsp; &nbsp; </span><span class="default">$aGet </span><span class="keyword">= </span><span class="default">explode</span><span class="keyword">(</span><span class="string">'/'</span><span class="keyword">, </span><span class="default">$_GET</span><span class="keyword">[</span><span class="string">'query'</span><span class="keyword">]);<br>&nbsp; }<br><br>&nbsp; return </span><span class="default">$aGet</span><span class="keyword">;<br>}<br></span><span class="default">?&gt;<br></span><br>This is only a really basic example of course - you can do a lot with Mod Rewrite and a custom 'GET' function.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="40772">  
+  <a class="name">
+  <strong class="user"><em>mmj</em></strong></a><div class="date" title="2004-03-14 05:58"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom40772">
+<div class="phpcode"><code><span class="html">
+You can see if somebody's using PHP just by adding the following to the end of the URL:<br>?=PHPB8B5F2A0-3C92-11d3-A3A9-4C7B08C10000<br>If the page is using PHP, this will show the PHP credits.<br><br>Setting expose_php to Off in php.ini prevents this.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="72630">  
+  <a class="name">
+  <strong class="user"><em>rustamabd at google mail</em></strong></a><div class="date" title="2007-01-26 12:05"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom72630">
+<div class="phpcode"><code><span class="html">
+So far I haven't seen a working rewriter of /foo/bar into /foo/bar.php, so I created my own. It does work in top-level directory AND subdirectories and it doesn't need hardcoding the RewriteBase.<br><br>.htaccess:<br><br>RewriteEngine on<br><br># Rewrite /foo/bar to /foo/bar.php<br>RewriteRule ^([^.?]+)$ %{REQUEST_URI}.php [L]<br><br># Return 404 if original request is /foo/bar.php<br>RewriteCond %{THE_REQUEST} "^[^ ]* .*?\.php[? ].*$"<br>RewriteRule .* - [L,R=404]<br><br># NOTE! FOR APACHE ON WINDOWS: Add [NC] to RewriteCond like this:<br># RewriteCond %{THE_REQUEST} "^[^ ]* .*?\.php[? ].*$" [NC]</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="106359">  
+  <a class="name">
+  <strong class="user"><em>Ryan</em></strong></a><div class="date" title="2011-10-30 06:22"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom106359">
+<div class="phpcode"><code><span class="html">
+Another way to hide php is by removing the extension completely, like so:<br><br>Options +FollowSymlinks<br>RewriteEngine On<br>RewriteBase /<br>RewriteCond %{REQUEST_FILENAME} !-f<br>RewriteCond %{REQUEST_FILENAME} !-d<br>RewriteCond %{REQUEST_FILENAME}.php -f<br>RewriteRule ^(.+)$ /$1.php [L,QSA]<br><br>Hope this helps!</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="43240">  
+  <a class="name">
+  <strong class="user"><em>php at vfmedia dot de</em></strong></a><div class="date" title="2004-06-15 06:21"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom43240">
+<div class="phpcode"><code><span class="html">
+I�ve found an easy way to hide php code and the uri is searchable by google and others...(only for unix or linux)<br><br>At first I have some rules in my hide.conf (i made an extra .conf for it (apache 2.0))<br><br>For example when I want to mask the index.php<br><br>&lt;Files index&gt;<br> ForceType application/x-httpd-php<br> &lt;/Files&gt;<br><br>My problem is, that my code should be readable...<br><br>so I made an extra folder for example srv/www/htdocs/static_output<br><br>My phpcode is in the includefolder....(for ex. mnt/source/index.php)<br><br>Then I made a link in the shell&nbsp; &gt; ln mnt/source/index.php srv/www/htdocs/static_output/index<br><br>So the code is readable (with .php extension) in my includefolder and there is only the link in the srv folder without extension(which is called by the browser...).</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="42332">  
+  <a class="name"><strong class="user"><em>Anonymous</em></strong></a><div class="date" title="2004-05-12 08:20"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom42332">
+<div class="phpcode"><code><span class="html">
+Keep in mind, if your really freaked out over hiding PHP, GD will expose you.<br><br>Go ahead - make an image with GD and open with a text editor.. Somewhere in there you'll see a comment with gd &amp; php all over it.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="86623">  
+  <a class="name">
+  <strong class="user"><em>sandaimespaceman at gmail dot com</em></strong></a><div class="date" title="2008-10-26 04:51"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom86623">
+<div class="phpcode"><code><span class="html">
+Set INI directive "expose_php" to "off" will also help.<br>You can spoof your PHP to ASP.NET by using:<br><span class="default">&lt;?php<br>error_reporting</span><span class="keyword">(</span><span class="default">0</span><span class="keyword">);<br></span><span class="default">header</span><span class="keyword">(</span><span class="string">"X-Powered-By: ASP.NET"</span><span class="keyword">);<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="78013">  
+  <a class="name">
+  <strong class="user"><em>Raz</em></strong></a><div class="date" title="2007-09-24 03:07"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom78013">
+<div class="phpcode"><code><span class="html">
+May some servers not allow you to put this line (i.e this not work)<br><br>AddType application/x-httpd-php .asp .py .pl<br>or<br>DefaultType application/x-httpd-php<br><br>so, the alternative method that really a good one is:<br><br>1- In your .htaccess file write:<br><br>RewriteEngine&nbsp; on<br>RewriteBase&nbsp; /dire/ or just /<br>RewriteRule&nbsp; securename&nbsp;&nbsp; yourfile\.php&nbsp; [T=application/x-httpd-php]<br><br>example: all url like<br>www.example.com/securename&nbsp; parsed as <br>www.example.com/yourfile.php<br><br>2- but here the $_GET not work, but $_POST work, so for dynamic pages like <br>www.example.com/yourfile.php?page=1 you use<br>www.example.com/securename?page=1<br><br>now: instead of using $_GET use <br><span class="default">&lt;?php<br>$uri&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">= </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'REQUEST_URI'</span><span class="keyword">];<br></span><span class="default">$page&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">strstr</span><span class="keyword">(</span><span class="default">$uri</span><span class="keyword">, </span><span class="string">'='</span><span class="keyword">);<br></span><span class="default">$page&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">substr</span><span class="keyword">(</span><span class="default">$page</span><span class="keyword">, </span><span class="default">1</span><span class="keyword">);<br></span><span class="default">$valid_pages </span><span class="keyword">= array(</span><span class="string">'1'</span><span class="keyword">, </span><span class="string">'2'</span><span class="keyword">,</span><span class="string">'...'</span><span class="keyword">);<br></span><span class="default">$page&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">= </span><span class="default">in_array</span><span class="keyword">(</span><span class="default">$page</span><span class="keyword">, </span><span class="default">$valid_pages</span><span class="keyword">) ? </span><span class="default">$page </span><span class="keyword">: </span><span class="string">'1'</span><span class="keyword">;<br></span><span class="comment">//....<br></span><span class="default">?&gt;<br></span><br>and for bad URL you can add this code to .htaccess file<br>of coarse below the first code in .htaccess<br>#-- <br>RewriteCond %{REQUEST_FILENAME} !-f<br>RewriteCond %{REQUEST_FILENAME} !-d<br>RewriteRule ^.*$ <a rel="nofollow" target="_blank">http://www.example.com/securename</a> [L]</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="68777">  
+  <a class="name">
+  <strong class="user"><em>simon at carbontwelevedesign dot co dot uk</em></strong></a><div class="date" title="2006-08-10 05:31"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom68777">
+<div class="phpcode"><code><span class="html">
+I use the following in the .htaccess document<br><br>&lt;IfModule mod_rewrite.c&gt;<br>RewriteEngine On<br>RewriteBase /<br>RewriteCond %{REQUEST_FILENAME} !-f<br>RewriteCond %{REQUEST_FILENAME} !-d<br>RewriteRule . /index.php [L]<br>&lt;/IfModule&gt;<br><br>then the following simple code<br><br><span class="default">&lt;?php<br><br>$permalinks </span><span class="keyword">= </span><span class="default">explode</span><span class="keyword">(</span><span class="string">"/"</span><span class="keyword">,</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'REQUEST_URI'</span><span class="keyword">]);<br><br></span><span class="default">$varone </span><span class="keyword">= </span><span class="default">$permalinks</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">];<br></span><span class="default">$vartwo </span><span class="keyword">= </span><span class="default">$permalinks</span><span class="keyword">[</span><span class="default">2</span><span class="keyword">];<br><br>...<br><br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="36936">  
+  <a class="name">
+  <strong class="user"><em>ldemailly at qualysNOSPAM dot com</em></strong></a><div class="date" title="2003-10-27 08:17"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom36936">
+<div class="phpcode"><code><span class="html">
+adding MultiViews to your apache Options config<br>lets you hide/omit .php in the url without any rewriting, etc...</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="30751">  
+  <a class="name">
+  <strong class="user"><em>Bryce Nesbitt at Obviously.COM</em></strong></a><div class="date" title="2003-03-27 08:24"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom30751">
+<div class="phpcode"><code><span class="html">
+Using the .php extension for all your scripts is not necessary, and in fact can be harmful (by exposing too much information about your server, and by limiting what you can do in the future without breaking links). There are several ways to hide your .php script extension:<br><br>(1) Don't hard code file types at all.&nbsp; Don't specify any dots, and most web servers will automatically find your .php, .html, .pdf, .gif or other matching file. This is called canonical URL format:<br>&nbsp; &nbsp;&nbsp; www.xxxxxx.com/page<br>&nbsp; &nbsp; www.xxxxxx.com/directory/<br>This gives you great flexibility to change your mind in the future, and prevents Windows browsers from making improper assumptions about the file type.<br><br>(2) In an Apache .htaccess file use:<br>&nbsp; &nbsp; RewriteEngine on<br>&nbsp; &nbsp; RewriteRule page.html page.php<br><br>(3) Force the webserver to interpret ALL .html files as .php:<br>&nbsp; &nbsp; AddType application/x-httpd-php .php3 .php .html</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="28980">  
+  <a class="name"><strong class="user"><em>Anonymous</em></strong></a><div class="date" title="2003-01-29 10:53"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom28980">
+<div class="phpcode"><code><span class="html">
+PS. If you want to use pretty URLs (i.e. hide your .php extensions) AND you have safe-mode=on, the previous example (ForceType) won't work for you.&nbsp; The problem is that safe-mode forces Apache to honor trailing characters in a requested URL.&nbsp; This means that:
+<br>
+<br><a rel="nofollow" target="_blank">http://www.example.com/home</a> 
+<br>
+<br>would still be processed by the home script in our doc root, but for:
+<br>
+<br><a rel="nofollow" target="_blank">http://www.example.com/home/contact_us.html</a>
+<br>
+<br>apache would actually look for the /home/contact_us.html file in our doc root.
+<br>
+<br>The best solution I've found is to set up a virtual host (which I do for everything, even the default doc root) and override the trailing characters handling within the virtual host.&nbsp; So, for a virtual host listening on port 8080, the apache directives would look like this:
+<br>
+<br>&lt;VirtualHost *:8080&gt;
+<br>&nbsp; &nbsp; DocumentRoot /web/doc_root
+<br>&nbsp; &nbsp; Alias /home "/web/doc_root/home.php"
+<br>&nbsp; &nbsp; AcceptPathInfo On
+<br>&lt;/VirtualHost&gt;
+<br>
+<br>Some people might question why we are overriding the trailing characters handling (with the AcceptPathInfo directive) instead of just turning safe-mode=off.&nbsp; The reason is that safe mode sets global limitations on the entire server, which can then be turned on or left off for each specific virtual host.&nbsp; This is the equivilent of blocking all connections on a firewall, and then opening up only the ones you want, which is a lot safer than leaving everything open globally, and assuming your programmers will never overlook a possible security hole.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="17872">  
+  <a class="name">
+  <strong class="user"><em>istvan dot takacsNOSPAM at hungax dot com</em></strong></a><div class="date" title="2001-12-30 09:42"><strong>12 years ago</strong></div>
+  <div class="text" id="Hcom17872">
+<div class="phpcode"><code><span class="html">
+And use the
+<br>ServerTokens min
+<br>directive in your httpd.conf to hide installed PHP modules in apache.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="54313">  
+  <a class="name">
+  <strong class="user"><em>jtw90210</em></strong></a><div class="date" title="2005-06-30 01:19"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom54313">
+<div class="phpcode"><code><span class="html">
+In order to get the PATH_INFO to work in order to pass parameters using a hidden program/trailing slash/"pretty url" in more recent versions of PHP you MUST add "AcceptPathInfo On" to your httpd.conf. 
+<br>
+<br>AddType application/x-httpd-php .php .html
+<br>AcceptPathInfo On
+<br>
+<br>Try it out with your phpinfo page and you'll be able to search for PATH_INFO. 
+<br>
+<br><a rel="nofollow" target="_blank">http://example.com/myphpinfo.php/showmetheway</a>
+<br>
+<br>If you want to drop the .php use one or both of these:
+<br>DefaultType application/x-httpd-php
+<br>ForceType application/x-httpd-php</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="34285">  
+  <a class="name">
+  <strong class="user"><em>l0rdphi1 at liquefyr dot com</em></strong></a><div class="date" title="2003-07-21 04:02"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom34285">
+<div class="phpcode"><code><span class="html">
+More fun includes files without file extensions.
+<br>
+<br>Simply add that ForceType application/x-httpd-php bit to an Apache .htaccess and you're set.
+<br>
+<br>Oh yea, it gets even better when you play with stuff like the following:
+<br>
+<br><span class="default">&lt;?php
+<br>substr</span><span class="keyword">(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'PATH_INFO'</span><span class="keyword">],</span><span class="default">1</span><span class="keyword">);
+<br></span><span class="default">?&gt;
+<br></span>
+<br>e.g. www.example.com/somepage/55
+<br>
+<br>And:
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">foreach ( </span><span class="default">explode</span><span class="keyword">(</span><span class="string">'/'</span><span class="keyword">,</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'PATH_INFO'</span><span class="keyword">]) as </span><span class="default">$pair </span><span class="keyword">) {
+<br>&nbsp; &nbsp; list(</span><span class="default">$key</span><span class="keyword">,</span><span class="default">$value</span><span class="keyword">) = </span><span class="default">split</span><span class="keyword">(</span><span class="string">'='</span><span class="keyword">,</span><span class="default">$pair</span><span class="keyword">,</span><span class="default">2</span><span class="keyword">);
+<br>&nbsp; &nbsp; </span><span class="default">$param</span><span class="keyword">[</span><span class="default">$key</span><span class="keyword">] = </span><span class="default">stripslashes</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">);
+<br>}
+<br></span><span class="default">?&gt;
+<br></span>
+<br>e.g. www.example.com/somepage/param1=value1/param2=value2/etc=etc
+<br>
+<br>Enjoy =)</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="18520">  
+  <a class="name">
+  <strong class="user"><em>yasuo_ohgaki at yahoo dot com</em></strong></a><div class="date" title="2002-01-26 03:59"><strong>12 years ago</strong></div>
+  <div class="text" id="Hcom18520">
+<div class="phpcode"><code><span class="html">
+To hide PHP, you need following php.ini settings<br><br>expose_php=Off <br>display_errors=Off<br><br>and in httpd.conf<br><br>ServerSignature Off<br>(min works, but I prefer off)</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="86286">  
+  <a class="name">
+  <strong class="user"><em>Pyornide</em></strong></a><div class="date" title="2008-10-10 05:57"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom86286">
+<div class="phpcode"><code><span class="html">
+The idea of hiding the X-Powered-By in PHP is a flawed attempt at establishing security. As the manual indicates, obscurity is not security. If I were exploiting a site, I wouldn't check what scripting language the site runs on, because all that would matter to me is exploiting it. Hiding the fact that you use [x] language isn't going to prevent me from bypassing poor security.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="29887">  
+  <a class="name">
+  <strong class="user"><em>bminton at efn dot org</em></strong></a><div class="date" title="2003-02-27 12:05"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom29887">
+<div class="phpcode"><code><span class="html">
+Another technique is to have every file be named index.php and be in it's own directory.&nbsp; Then instead of using for instance <a rel="nofollow" target="_blank">http://example.com/foo.php</a> you could use <a rel="nofollow" target="_blank">http://example.com/foo/</a> where foo is a directory with a file called index.php in it.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="24027">  
+  <a class="name">
+  <strong class="user"><em>sth at panix dot com</em></strong></a><div class="date" title="2002-08-04 12:45"><strong>12 years ago</strong></div>
+  <div class="text" id="Hcom24027">
+<div class="phpcode"><code><span class="html">
+The flipside to this is, if you're running a version of <br>PHP/Apache which is not known to have exploitable bugs (usually the latest stable version at the time), and an attacker sees this, they may give up before even trying. If they don't, they may continue to attempt their exploit(s).<br><br>It really depends on the type of attacker. The educated, security advisory reading attacker vs. script kiddie on the street.<br><br>If you're keeping up on patches, version exposition should not be a problem for you.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="28768">  
+  <a class="name">
+  <strong class="user"><em>Kevin Vincent</em></strong></a><div class="date" title="2003-01-23 05:43"><strong>11 years ago</strong></div>
+  <div class="text" id="Hcom28768">
+<div class="phpcode"><code><span class="html">
+Just a thought but if you have changed the extensions that php interprets I would assume you've also changed header.php and footer.php files to the new extension.<br><br>EG:<br><br>index.php, somefile.php, header.php, footer.php...<br><br>Change the Apache directive so PHP interprets .kev files and rename your files:<br><br>index.kev, somefile.kev, header.kev, footer.kev<br><br>If you leave header and footer as PHP files then it won't understand how to interpret them.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="41458">  
+  <a class="name">
+  <strong class="user"><em>php at user dot net</em></strong></a><div class="date" title="2004-04-10 06:36"><strong>10 years ago</strong></div>
+  <div class="text" id="Hcom41458">
+<div class="phpcode"><code><span class="html">
+What about this in a .htaccess file :<br><br>RewriteEngine on<br>RewriteRule&nbsp; &nbsp; ^$&nbsp; &nbsp; /index.php&nbsp; &nbsp; [L]<br>RewriteRule&nbsp; &nbsp; ^([a-zA-Z0-9\-\_/]*)/$&nbsp; &nbsp; /$1/index.php&nbsp; &nbsp; [L]<br>RewriteRule&nbsp; &nbsp; ^([a-zA-Z0-9\-\_/]*)\.(html|htm)$&nbsp; &nbsp; /$1.php&nbsp; &nbsp; [L]<br>RewriteRule&nbsp; &nbsp; ^([a-zA-Z0-9\-\_/]*)$&nbsp; &nbsp; /$1.php&nbsp; &nbsp; [L]<br><br>Typing "sub.domain.foo/anything" loads "/anything/index.php" if 'anything' is a directory, else it loads "/anything.php".<br><br>I'm sure you can find mutch better, but it works great on my site :)</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="94690">  
+  <a class="name">
+  <strong class="user"><em>altan at javam dot org</em></strong></a><div class="date" title="2009-11-18 09:42"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom94690">
+<div class="phpcode"><code><span class="html">
+You can use this trick for non-direct used PHP files, eg. setting, class, ajax-related ones.
+<br>
+<br>For abcde.php:
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">if (</span><span class="string">'abcde.php' </span><span class="keyword">== </span><span class="default">basename</span><span class="keyword">(</span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'SCRIPT_FILENAME'</span><span class="keyword">])) die (</span><span class="string">'What?'</span><span class="keyword">);
+<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="53144">  
+  <a class="name">
+  <strong class="user"><em>benjamin at sonntag dot fr</em></strong></a><div class="date" title="2005-05-24 09:14"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom53144">
+<div class="phpcode"><code><span class="html">
+In response to the previous messages, for apache, there is a easier way to set files without "." to be executed by PHP, just put this in a ".htaccess" file : <br><br>DefaultType&nbsp; application/x-httpd-php</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="23561">  
+  <a class="name">
+  <strong class="user"><em>m1tk4 at hotmail dot com</em></strong></a><div class="date" title="2002-07-22 05:53"><strong>12 years ago</strong></div>
+  <div class="text" id="Hcom23561">
+<div class="phpcode"><code><span class="html">
+I usually do:<br><br>&lt;code&gt;<br>RewriteEngine on&lt;br&gt;<br>RewriteOptions inherit&lt;br&gt;<br>RewriteRule (.*)\.htm[l]?(.*) $1.php$2 [nocase]&lt;br&gt;<br>&lt;/code&gt;<br><br>in .htaccess. You'll need mod_rewrite installed for this .</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="45896">  
+  <a class="name">
+  <strong class="user"><em>Nikolai-Zujev-(at)-Gmail-dot-Com</em></strong></a><div class="date" title="2004-09-22 12:22"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom45896">
+<div class="phpcode"><code><span class="html">
+Assign files w/o extension to php interpreter<br>without using ReWrite module<br><br>[clip httpd.conf]<br><br>&lt;Files ~ "^[^\.]+$"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; ForceType application/x-httpd-php<br>&lt;/Files&gt;<br><br>[/clip]</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/security.hiding.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:20:57 GMT -->
+
+
+</body></html>

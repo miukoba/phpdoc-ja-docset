@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>名前空間の概要</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="language.namespaces.html">≪ 名前空間</a></li>
+      <li style="float: right;"><a href="language.namespaces.definition.html">名前空間の定義 ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="language.namespaces.html">名前空間</a></li>
+    <li>名前空間の概要</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="language.namespaces.rationale" class="sect1">
+  <h2 class="title">名前空間の概要</h2>
+  <p class="verinfo">(PHP 5 &gt;= 5.3.0)</p>
+  <p class="simpara">
+   名前空間とは何でしょう? 広義の「名前空間」とは、項目をカプセル化するもののことです。
+   これは多くの場面で見られる抽象概念です。
+   たとえば、たいていの OS はディレクトリでファイルをグループ化します。
+   この場合、ディレクトリがその中のファイルの名前空間として機能しています。
+   具体的に言うと、<em>foo.txt</em> というファイルは
+   <em>/home/greg</em> と <em>/home/other</em>
+   の両方に存在することが可能ですが、それらふたつの
+   <em>foo.txt</em> を同じディレクトリに配置することはできません。
+   さらに、<em>/home/greg</em> ディレクトリの外から
+   <em>foo.txt</em> にアクセスするには、ディレクトリ名をファイル名の前につけて
+   <em>/home/greg/foo.txt</em> としなければなりません。
+   プログラミングの世界における名前空間も、この延長線上にあります。
+  </p>
+  <p class="simpara">
+   PHP の世界では、名前空間は次のふたつの問題を解決するための手段として用意されています。
+   ライブラリやアプリケーションの作者が、
+   クラスや関数といった再利用可能なコード部品を作ろうとするときにこれらの問題にぶちあたることになります。
+  </p>
+  <p class="para">
+   <ol type="1">
+    <li class="listitem">
+     <span class="simpara">
+      あなたが作成したコードと PHP の組み込みのクラス/関数/定数
+      あるいはサードパーティのクラス/関数/定数の名前が衝突する
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      最初の問題を解決するためには、Extra_Long_Names のような長い名前をつけなければならない
+     </span>
+    </li>
+   </ol>
+  </p>
+  <p class="simpara">
+   PHP の名前空間は、関連するクラスやインターフェイス、関数、そして定数をひとまとめにして扱うものです。
+   PHP の名前空間構文の例を見てみましょう。
+  </p>
+  <div class="example" id="example-251">
+   <p><strong>例1 名前空間構文の例</strong></p>
+   <div class="example-contents">
+   <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">my</span><span style="color: #007700">\</span><span style="color: #0000BB">name</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;"名前空間の定義"&nbsp;を参照ください<br /><br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">MyClass&nbsp;</span><span style="color: #007700">{}<br />function&nbsp;</span><span style="color: #0000BB">myfunction</span><span style="color: #007700">()&nbsp;{}<br />const&nbsp;</span><span style="color: #0000BB">MYCONST&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MyClass</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$c&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;\</span><span style="color: #0000BB">my</span><span style="color: #007700">\</span><span style="color: #0000BB">name</span><span style="color: #007700">\</span><span style="color: #0000BB">MyClass</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;"グローバル空間"&nbsp;を参照ください<br /><br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">strlen</span><span style="color: #007700">(</span><span style="color: #DD0000">'hi'</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;"名前空間の使用法:&nbsp;グローバル関数/定数への<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;移行"&nbsp;を参照ください<br /><br /></span><span style="color: #0000BB">$d&nbsp;</span><span style="color: #007700">=&nbsp;namespace\</span><span style="color: #0000BB">MYCONST</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;"namespace&nbsp;演算子および&nbsp;__NAMESPACE__&nbsp;定数"<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;を参照ください<br /></span><span style="color: #0000BB">$d&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">__NAMESPACE__&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">'\MYCONST'</span><span style="color: #007700">;<br />echo&nbsp;</span><span style="color: #0000BB">constant</span><span style="color: #007700">(</span><span style="color: #0000BB">$d</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;"名前空間および動的言語機能"&nbsp;を参照ください<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    名前空間の名前として <em>PHP</em> や <em>php</em> は使えません。これらで始まる名前
+    (<em>PHP\Classes</em> など) も同様です。
+    これらの名前は言語の内部で使うために予約されており、ユーザーのコードで使うことはできません。
+   </p>
+  </p></blockquote>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113597""></a>
+  <div class="note">
+   <strong class="user">php dot net at e-z dot name</strong>
+   <a href="#113597" class="date">03-Nov-2013 02:32</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+php namespaces are case-insensitive:<br />
+<br />
+file1.php:<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">namespace </span><span class="default">foo</span><span class="keyword">;<br />
+<br />
+function </span><span class="default">bar</span><span class="keyword">()<br />
+{<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="string">'from bar'</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+file2.php:<br />
+<span class="default">&lt;?php<br />
+<br />
+fOo</span><span class="keyword">\</span><span class="default">bar</span><span class="keyword">() </span><span class="comment">// output: from bar<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="104196""></a>
+  <div class="note">
+   <strong class="user">Dmitry Snytkine</strong>
+   <a href="#104196" class="date">31-May-2011 03:54</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Just a note: namespace (even nested or sub-namespace) cannot be just a number, it must start with a letter.<br />
+For example, lets say you want to use namespace for versioning of your packages or versioning of your API:<br />
+<br />
+namespace Mynamespace\1;&nbsp; // Illegal<br />
+Instead use this:<br />
+namespace Mynamespace\v1; // OK</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="102662""></a>
+  <div class="note">
+   <strong class="user">SteveWa</strong>
+   <a href="#102662" class="date">27-Feb-2011 05:45</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Thought this might help other newbies like me...<br />
+<br />
+Name collisions means: <br />
+you create a function named db_connect, and somebody elses code that you use in your file (i.e. an include) has the same function with the same name.<br />
+<br />
+To get around that problem, you rename your function SteveWa_db_connect&nbsp; which makes your code longer and harder to read.<br />
+<br />
+Now you can use namespaces to keep your function name separate from anyone else's function name, and you won't have to make extra_long_named functions to get around the name collision problem.<br />
+<br />
+So a namespace is like a pointer to a file path where you can find the source of the function you are working with</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

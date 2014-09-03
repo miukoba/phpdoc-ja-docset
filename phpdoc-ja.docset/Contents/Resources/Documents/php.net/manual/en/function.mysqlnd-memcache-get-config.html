@@ -1,0 +1,297 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>プラグインの設定情報を返す</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="ref.mysqlnd-memcache.html">≪ Mysqlnd_memcache 関数</a></li>
+      <li style="float: right;"><a href="function.mysqlnd-memcache-set.html">mysqlnd_memcache_set ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="ref.mysqlnd-memcache.html">Mysqlnd_memcache 関数</a></li>
+    <li>プラグインの設定情報を返す</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="function.mysqlnd-memcache-get-config" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">mysqlnd_memcache_get_config</h1>
+  <p class="verinfo">(PECL mysqlnd_memcache &gt;= 1.0.0)</p><p class="refpurpose"><span class="refname">mysqlnd_memcache_get_config</span> &mdash; <span class="dc-title">プラグインの設定情報を返す</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-function.mysqlnd-memcache-get-config-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">array</span> 
+   <span class="methodname"><strong>mysqlnd_memcache_get_config</strong></span>
+    ( <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter">$connection</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   この関数は、MySQL 接続にアタッチされた mysqlnd_memcache 関連のすべての設定情報を配列で返します。
+   MySQL、<span class="function"><a href="function.mysqlnd-memcache-set.html" class="function">mysqlnd_memcache_set()</a></span> で渡した Memache オブジェクト、
+   自動的に MySQL サーバーから取得したテーブルマッピング情報などが含まれます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.mysqlnd-memcache-get-config-parameters">
+  <h3 class="title">パラメータ</h3>
+  <dl>
+
+   
+    <dt>
+<code class="parameter">connection</code></dt>
+
+    <dd>
+
+     <p class="para">
+      MySQL サーバーへのハンドル。
+      <a href="ref.pdo-mysql.html" class="link">PDO_MYSQL</a>、<a href="book.mysqli.html" class="link">mysqli</a> あるいは
+      <a href="book.mysql.html" class="link">ext/mysql</a> のいずれかの MySQL API 拡張モジュールを利用するもの。
+     </p>
+    </dd>
+
+   
+  </dl>
+
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.mysqlnd-memcache-get-config-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に mysqlnd_memcache の設定情報の配列、それ以外の場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+  <p class="para">
+   返される配列にはこれらの要素が含まれます。
+  </p>
+  <p class="para">
+   <table class="doctable table">
+    <caption><strong><span class="function"><strong>mysqlnd_memcache_get_config()</strong></span> が返す配列の構造</strong></caption>
+     
+     <thead>
+      <tr>
+       <th>配列のキー</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody"> 
+      <tr>
+       <td>memcached</td>
+       <td>
+        この MySQL 接続に
+        <span class="methodname"><a href="function.mysqlnd-memcache-set.html" class="methodname">mysqlnd_memcache_set()</a></span> で関連づけた Memcached のインスタンス。
+        これを使って memcache 接続の設定を変更することもできるし、
+        この接続上のサーバーに直接問い合わせて設定を変更することもできます。
+       </td>
+      </tr>
+
+      <tr>
+       <td>pattern</td>
+       <td>
+        サーバーに送信された SQL クエリーにマッチさせるための PCRE 正規表現。
+        このパターンにマッチするクエリーをさらに分析し、
+        そのクエリーを横取りして memcache インターフェイスに送るのか
+        普通の MySQL プロトコルでサーバーに送るのかを判断します。
+        デフォルトのパターン (<em>MYSQLND_MEMCACHE_DEFAULT_REGEXP</em>)
+        を使うか、あるいは <span class="function"><a href="function.mysqlnd-memcache-set.html" class="function">mysqlnd_memcache_set()</a></span> でパターンを設定します。
+       </td>
+      </tr>
+
+      <tr>
+       <td>mappings</td>
+       <td>
+        プラグイン側から探す、すべての設定済みコンテナの一覧を含む連想配列。
+        要素のキーが、MySQL の設定内のコンテナ名になります。
+        その値については後で説明します。このフィールドの中身を作るには、
+        <span class="methodname"><a href="function.mysqlnd-memcache-set.html" class="methodname">mysqlnd_memcache_set()</a></span>
+        で MySQL と memcache の接続を関連づけるときに
+        MySQL Server に問い合わせます。
+       </td>
+      </tr>
+
+      <tr>
+       <td>mapping_query</td>
+       <td>
+        <span class="methodname"><a href="function.mysqlnd-memcache-set.html" class="methodname">mysqlnd_memcache_set()</a></span>
+        で、利用可能なコンテナとマッピングを識別するときに使う SQL クエリー。
+        このクエリーの結果を mappings 要素に渡します。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+   <table class="doctable table">
+    <caption><strong>mappings エントリの構造</strong></caption>
+    
+     <thead>
+      <tr>
+       <th>配列のキー</th>
+       <th>説明</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr>
+       <td>prefix</td>
+       <td>
+        memcache 経由でデータにアクセスするときに使うプレフィックス。
+        MySQL InnoDB Memcache Deamon プラグインの場合、通常は @@
+        で始まって、最後は変更可能なセパレータになります。
+        このプレフィックスは、memcache プロトコルを使うときにキーの値の前に置かれます。
+       </td>
+      </tr>
+
+      <tr>
+       <td>schema_name</td>
+       <td>
+        アクセスするテーブルを含むスキーマ (データベース) の名前。
+       </td>
+      </tr>
+
+      <tr>
+       <td>table_name</td>
+       <td>
+        memcache プロトコルでアクセス可能なデータを含むテーブルの名前。
+       </td>
+      </tr>
+
+      <tr>
+       <td>id_field_name</td>
+       <td>
+        memcache 経由でテーブルにアクセスするときに、キーとして使う id が含まれるフィールド
+        (カラム) の名前。たいていは、主キーが設定されているフィールドとなります。
+       </td>
+      </tr>
+
+      <tr>
+       <td>separator</td>
+       <td>
+        フィールドの値を分割するときに使うセパレータ。
+        memcache が単一の値にしかアクセスできないのに対して
+        MySQL は複数のカラムをこの値に押し込めることができるので、
+        このセパレータが必要になります。
+        <blockquote class="note"><p><strong class="note">注意</strong>: 
+         <p class="para">
+          セパレータは MySQL Server で設定できますが、
+          memcache 経由できる値を使ってはいけません。
+          そんなことをしたら、きちんとしたマッピングが保証できなくなるからです。
+         </p>
+        </p></blockquote>
+       </td>
+      </tr>
+
+      <tr>
+       <td>fields</td>
+       <td>
+        このマッピングで利用可能なすべてのフィールド名の配列。
+       </td>
+      </tr>
+
+     </tbody>
+    
+   </table>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.mysqlnd-memcache-get-config-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-2025">
+    <p><strong>例1 <span class="function"><strong>mysqlnd_memcache_get_config()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$mysqli&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">mysqli</span><span style="color: #007700">(</span><span style="color: #DD0000">"host"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"user"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"passwd"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"database"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$memc&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Memcached</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$memc</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">addServer</span><span style="color: #007700">(</span><span style="color: #DD0000">"host"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">11211</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">mysqlnd_memcache_set</span><span style="color: #007700">(</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$memc</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">mysqlnd_memcache_get_config</span><span style="color: #007700">(</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+array(4) {
+  [&quot;memcached&quot;]=&gt;
+  object(Memcached)#2 (0) {
+  }
+  [&quot;pattern&quot;]=&gt;
+  string(125) &quot;/^\s*SELECT\s*(.+?)\s*FROM\s*`?([a-z0-9_]+)`?\s*WHERE\s*`?([a-z0-9_]+)`?\s*=\s*(?(?=[&quot;&#039;])[&quot;&#039;]([^&quot;&#039;]*)[&quot;&#039;]|([0-9e\.]*))\s*$/is&quot;
+  [&quot;mappings&quot;]=&gt;
+  array(1) {
+    [&quot;mymem_test&quot;]=&gt;
+    array(6) {
+      [&quot;prefix&quot;]=&gt;
+      string(13) &quot;@@mymem_test.&quot;
+      [&quot;schema_name&quot;]=&gt;
+      string(4) &quot;test&quot;
+      [&quot;table_name&quot;]=&gt;
+      string(10) &quot;mymem_test&quot;
+      [&quot;id_field_name&quot;]=&gt;
+      string(2) &quot;id&quot;
+      [&quot;separator&quot;]=&gt;
+      string(1) &quot;|&quot;
+      [&quot;fields&quot;]=&gt;
+      array(3) {
+        [0]=&gt;
+        string(2) &quot;f1&quot;
+        [1]=&gt;
+        string(2) &quot;f2&quot;
+        [2]=&gt;
+        string(2) &quot;f3&quot;
+      }
+    }
+  }
+  [&quot;mapping_query&quot;]=&gt;
+  string(209) &quot;    SELECT c.name,
+                          CONCAT(&#039;@@&#039;, c.name, (SELECT value FROM innodb_memcache.config_options WHERE name = &#039;table_map_delimiter&#039;)) AS key_prefix, 
+                          c.db_schema, 
+                          c.db_table, 
+                          c.key_columns, 
+                          c.value_columns, 
+                          (SELECT value FROM innodb_memcache.config_options WHERE name = &#039;separator&#039;) AS sep 
+                     FROM innodb_memcache.containers c&quot;
+}
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.mysqlnd-memcache-get-config-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member">
+     <span class="methodname"><a href="function.mysqlnd-memcache-set.html" class="methodname" rel="rdfs-seeAlso">mysqlnd_memcache_set()</a> - MySQL の接続を Memcache の接続と関連づける</span>
+    </li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

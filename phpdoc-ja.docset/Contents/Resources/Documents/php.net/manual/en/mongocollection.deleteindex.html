@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>コレクションからインデックスを削除する</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="mongocollection.createindex.html">≪ MongoCollection::createIndex</a></li>
+      <li style="float: right;"><a href="mongocollection.deleteindexes.html">MongoCollection::deleteIndexes ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="class.mongocollection.html">MongoCollection</a></li>
+    <li>コレクションからインデックスを削除する</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="mongocollection.deleteindex" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">MongoCollection::deleteIndex</h1>
+  <p class="verinfo">(PECL mongo &gt;=0.9.0)</p><p class="refpurpose"><span class="refname">MongoCollection::deleteIndex</span> &mdash; <span class="dc-title">コレクションからインデックスを削除する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-mongocollection.deleteindex-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">array</span> <span class="methodname"><strong>MongoCollection::deleteIndex</strong></span>
+    ( <span class="methodparam"><span class="type"><span class="type string|array">string|array</span></span> <code class="parameter">$keys</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   このメソッドは、以下と同等です。
+  </p>
+  <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #007700">public&nbsp;function&nbsp;</span><span style="color: #0000BB">deleteIndexes</span><span style="color: #007700">(</span><span style="color: #0000BB">$keys</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;</span><span style="color: #0000BB">$indexName&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">toIndexString</span><span style="color: #007700">(</span><span style="color: #0000BB">$keys</span><span style="color: #007700">);<br /><br />&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">db</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">command</span><span style="color: #007700">(array(<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"deleteIndexes"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getName</span><span style="color: #007700">(),<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"index"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$indexName</span><span style="color: #007700">,<br />&nbsp;&nbsp;));<br />}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+  </div>
+
+  <p class="para">
+   インデックスの作成時に、一意な名前が与えられます。この名前は一般に、
+   キーの名前や方向の組み合わせからドライバが自動生成します。しかし自分で名前をつけることも可能で、
+   その場合は <span class="function"><a href="mongocollection.createindex.html" class="function">MongoCollection::createIndex()</a></span> の
+   <em>&quot;name&quot;</em> オプションを利用します。
+  </p>
+  <p class="para">
+   残念ながら、<span class="function"><strong>MongoCollection::deleteIndex()</strong></span> は、
+   独自に名前を設定したインデックスを削除できません。過去のバージョンとの互換性の問題があるからです。
+   文字列を指定した場合はフィールド名とみなされ、そのフィールドの昇順と解釈されます。
+   つまり、引数が <em>&quot;x&quot;</em> だった場合は <em>&quot;x_1&quot;</em> という名前を利用します。
+   配列やオブジェクトを指定した場合は、
+   <span class="function"><a href="mongocollection.createindex.html" class="function">MongoCollection::createIndex()</a></span> に同じものを渡した場合と同様にして名前を生成します。
+  </p>
+  <p class="para">
+   自分で名前を設定したインデックスを削除するには、
+   データベースコマンド <em>deleteIndexes</em> を使う必要があります。
+   たとえば、&quot;myIndex&quot; というインデックスを PHP ドライバで削除するには、次のようにします。
+  </p>
+  <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$db</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">command</span><span style="color: #007700">(array(<br />&nbsp;&nbsp;</span><span style="color: #DD0000">"deleteIndexes"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">$collection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getName</span><span style="color: #007700">(),<br />&nbsp;&nbsp;</span><span style="color: #DD0000">"index"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">"myIndex"</span><span style="color: #007700">,<br />));<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+  </div>
+
+  <p class="para">
+   PHP ドライバで使うインデックスの名前を調べるには、データベースの
+   <em>system.indexes</em> コレクションを検索して、結果の
+   <em>&quot;name&quot;</em> フィールドを調べます。
+   <em>&quot;ns&quot;</em> フィールドは、そのインデックスが属するコレクションを表します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-mongocollection.deleteindex-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+
+      <code class="parameter">keys</code>
+     </dt>
+
+     <dd>
+
+      <p class="para">
+       インデックスのフィールドをキーとする配列。
+       各フィールドの値は、インデックスの方向あるいは
+       <a href="http://docs.mongodb.org/manual/core/index-types/" class="link external" title="Link : http://docs.mongodb.org/manual/core/index-types/">&raquo;&nbsp;インデックスの型</a> を表します。
+       方向を指定する場合は、<em>1</em> が昇順で
+       <em>-1</em> が降順を表します。
+      </p>
+      <p class="para">
+       文字列を指定した場合はフィールド名とみなされ、そのフィールドの昇順と解釈されます。
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-mongocollection.deleteindex-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   データベースからの応答を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-mongocollection.deleteindex-examples">
+  <h3 class="title">例</h3>
+  <div class="example" id="example-1498">
+   <p><strong>例1 <span class="function"><strong>MongoCollection::deleteIndex()</strong></span> の例</strong></p>
+   <div class="example-contents"><p>
+    この例は、文字列パラメータおよび配列パラメータを関数に渡します。
+   </p></div>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br />$m&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$c&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$m</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">example</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">indices</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;シンプルなインデックスを作成し、削除します<br /></span><span style="color: #0000BB">$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">createIndex</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"i"</span><span style="color: #007700">=&gt;</span><span style="color: #0000BB">1</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">deleteIndex</span><span style="color: #007700">(</span><span style="color: #DD0000">"i"</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;複数キーのインデックスを作成し、削除します<br /></span><span style="color: #0000BB">$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">ensureIndex</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"j"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"k"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">deleteIndex</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"j"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"k"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">));<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-mongocollection.deleteindex-seealso">
+  <h3 class="title">参考</h3>
+  <ul class="simplelist">
+   <li class="member"><span class="methodname"><a href="mongocollection.createindex.html" class="methodname" rel="rdfs-seeAlso">MongoCollection::createIndex()</a> - Creates an index on the specified field(s) if it does not already exist.</span></li>
+   <li class="member"><span class="methodname"><a href="mongocollection.deleteindexes.html" class="methodname" rel="rdfs-seeAlso">MongoCollection::deleteIndexes()</a> - コレクションのすべてのインデックスを削除する</span></li>
+   <li class="member"><span class="methodname"><a href="mongocollection.toindexstring.html" class="methodname" rel="rdfs-seeAlso">MongoCollection::toIndexString()</a> - インデックスを指定するキーを、インデックスを指す文字列に変換する</span></li>
+   <li class="member">
+    MongoDB コアドキュメントの
+    <a href="http://docs.mongodb.org/manual/indexes/" class="link external" title="Link : http://docs.mongodb.org/manual/indexes/">&raquo;&nbsp;index</a> および
+    <a href="http://docs.mongodb.org/manual/core/index-types/" class="link external" title="Link : http://docs.mongodb.org/manual/core/index-types/">&raquo;&nbsp;index type</a>
+   </li>
+  </ul>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="113396""></a>
+  <div class="note">
+   <strong class="user">nanhe dot kumar at gmail dot com</strong>
+   <a href="#113396" class="date">06-Oct-2013 10:23</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+<span class="default">&lt;?php<br />
+</span><span class="comment">/*<br />
+How can delete Index through Index name.<br />
+*/<br />
+</span><span class="keyword">function </span><span class="default">deleteIndex</span><span class="keyword">(</span><span class="default">$db</span><span class="keyword">, </span><span class="default">$collection</span><span class="keyword">, </span><span class="default">$indexName</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; if (</span><span class="default">class_exists</span><span class="keyword">(</span><span class="string">"MongoClient"</span><span class="keyword">)) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$m </span><span class="keyword">= new </span><span class="default">MongoClient</span><span class="keyword">();<br />
+&nbsp;&nbsp;&nbsp; } else {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$m </span><span class="keyword">= new </span><span class="default">Mongo</span><span class="keyword">();<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$indexes </span><span class="keyword">= </span><span class="default">$m</span><span class="keyword">-&gt;{</span><span class="default">$db</span><span class="keyword">}-&gt;{</span><span class="default">$collection</span><span class="keyword">}-&gt;</span><span class="default">getIndexInfo</span><span class="keyword">();<br />
+&nbsp;&nbsp;&nbsp; foreach (</span><span class="default">$indexes </span><span class="keyword">as </span><span class="default">$index</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if (</span><span class="default">$index</span><span class="keyword">[</span><span class="string">'name'</span><span class="keyword">] === </span><span class="default">$indexName</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">$m</span><span class="keyword">-&gt;{</span><span class="default">$db</span><span class="keyword">}-&gt;</span><span class="default">command</span><span class="keyword">(array(</span><span class="string">"deleteIndexes" </span><span class="keyword">=&gt; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">m</span><span class="keyword">-&gt;{</span><span class="default">$db</span><span class="keyword">}-&gt;{</span><span class="default">$collection</span><span class="keyword">}-&gt;</span><span class="default">getName</span><span class="keyword">(), </span><span class="string">"index" </span><span class="keyword">=&gt;</span><span class="default">$index</span><span class="keyword">[</span><span class="string">'key'</span><span class="keyword">]));<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; break;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; return </span><span class="default">false</span><span class="keyword">;<br />
+}&nbsp; &nbsp; <br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$response</span><span class="keyword">=</span><span class="default">deleteIndex</span><span class="keyword">(</span><span class="string">'student'</span><span class="keyword">,</span><span class="string">'class'</span><span class="keyword">,</span><span class="string">'roll'</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="string">"&lt;pre&gt;;<br />
+&nbsp;&nbsp;&nbsp; print_r(</span><span class="default">$response</span><span class="string">);<br />
+&nbsp;&nbsp;&nbsp; echo "</span><span class="keyword">&lt;/</span><span class="default">pre</span><span class="keyword">&gt;</span><span class="string">";<br />
+<br />
+?&gt;<br />
+<br />
+Array<br />
+(<br />
+&nbsp;&nbsp;&nbsp; [nIndexesWas] =&gt; 2<br />
+&nbsp;&nbsp;&nbsp; [ok] =&gt; 1<br />
+)</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

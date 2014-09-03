@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>結果の行を、連想配列あるいは数値添字配列あるいはその両方で取得する</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="sqlite3result.columntype.html">≪ SQLite3Result::columnType</a></li>
+      <li style="float: right;"><a href="sqlite3result.finalize.html">SQLite3Result::finalize ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="class.sqlite3result.html">SQLite3Result</a></li>
+    <li>結果の行を、連想配列あるいは数値添字配列あるいはその両方で取得する</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="sqlite3result.fetcharray" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">SQLite3Result::fetchArray</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.3.0)</p><p class="refpurpose"><span class="refname">SQLite3Result::fetchArray</span> &mdash; <span class="dc-title">
+   結果の行を、連想配列あるいは数値添字配列あるいはその両方で取得する
+  </span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-sqlite3result.fetcharray-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type">array</span> <span class="methodname"><strong>SQLite3Result::fetchArray</strong></span>
+    ([ <span class="methodparam"><span class="type">int</span> <code class="parameter">$mode</code><span class="initializer"> = SQLITE3_BOTH</span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+   結果の行を、連想配列あるいは数値添字配列あるいはその両方で取得します。
+   デフォルトでは両方で取得します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-sqlite3result.fetcharray-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+<code class="parameter">mode</code></dt>
+
+     <dd>
+
+      <p class="para">
+       次の行をどのように返すかを制御します。値は
+       <em>SQLITE3_ASSOC</em> か
+       <em>SQLITE3_NUM</em>、<em>SQLITE3_BOTH</em>
+       のいずれかでなければなりません。
+       <ul class="itemizedlist">
+        <li class="listitem">
+         <p class="para">
+          <em>SQLITE3_ASSOC</em>:
+          返された結果セットのカラム名をインデックスとする配列を返します。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>SQLITE3_NUM</em>:
+          返された結果セットのカラム番号をインデックスとする配列を返します。
+          カラム番号は 0 から始まります。
+         </p>
+        </li>
+        <li class="listitem">
+         <p class="para">
+          <em>SQLITE3_BOTH</em>:
+          返された結果セットのカラム名とカラム番号の両方をインデックスとする配列を返します。
+          カラム番号は 0 から始まります。
+         </p>
+        </li>
+       </ul>
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-sqlite3result.fetcharray-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   結果の行を、連想配列あるいは数値添字配列あるいはその両方で取得します。
+   行がない場合は <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="99917""></a>
+  <div class="note">
+   <strong class="user">alan at synergymx dot com</strong>
+   <a href="#99917" class="date">15-Sep-2010 01:56</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+To loop through a record set: 
+<br />
+
+<br />
+<span class="default">&lt;?php
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; $db </span><span class="keyword">= new </span><span class="default">SQLite3</span><span class="keyword">(</span><span class="string">'auth.sqlite'</span><span class="keyword">);
+<br />
+
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$sql </span><span class="keyword">= </span><span class="string">"SELECT user_id, username, opt_status FROM tbl_user"</span><span class="keyword">;
+<br />
+
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$result </span><span class="keyword">= </span><span class="default">$db</span><span class="keyword">-&gt;</span><span class="default">query</span><span class="keyword">(</span><span class="default">$sql</span><span class="keyword">);</span><span class="comment">//-&gt;fetchArray(SQLITE3_ASSOC);
+<br />
+
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$row </span><span class="keyword">= array();
+<br />
+
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$i </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;
+<br />
+
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; while(</span><span class="default">$res </span><span class="keyword">= </span><span class="default">$result</span><span class="keyword">-&gt;</span><span class="default">fetchArray</span><span class="keyword">(</span><span class="default">SQLITE3_ASSOC</span><span class="keyword">)){
+<br />
+
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(!isset(</span><span class="default">$res</span><span class="keyword">[</span><span class="string">'user_id'</span><span class="keyword">])) continue;
+<br />
+
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$row</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="string">'user_id'</span><span class="keyword">] = </span><span class="default">$res</span><span class="keyword">[</span><span class="string">'user_id'</span><span class="keyword">];
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$row</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="string">'username'</span><span class="keyword">] = </span><span class="default">$res</span><span class="keyword">[</span><span class="string">'username'</span><span class="keyword">];
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$row</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="string">'opt_status'</span><span class="keyword">] = </span><span class="default">$res</span><span class="keyword">[</span><span class="string">'opt_status'</span><span class="keyword">];
+<br />
+
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$i</span><span class="keyword">++;
+<br />
+
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }
+<br />
+
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$row</span><span class="keyword">);
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

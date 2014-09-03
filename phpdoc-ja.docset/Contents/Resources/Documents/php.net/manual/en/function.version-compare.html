@@ -1,0 +1,537 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>ふたつの &quot;PHP 標準&quot; バージョン番号文字列を比較する</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="function.sys-get-temp-dir.html">≪ sys_get_temp_dir</a></li>
+      <li style="float: right;"><a href="function.zend-logo-guid.html">zend_logo_guid ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="ref.info.html">PHP オプション/情報 関数</a></li>
+    <li>ふたつの &quot;PHP 標準&quot; バージョン番号文字列を比較する</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="function.version-compare" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">version_compare</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.1.0, PHP 5)</p><p class="refpurpose"><span class="refname">version_compare</span> &mdash; <span class="dc-title">ふたつの &quot;PHP 標準&quot; バージョン番号文字列を比較する</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.version-compare-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <span class="methodname"><strong>version_compare</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$version1</code></span>
+   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$version2</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$operator</code></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+   <span class="function"><strong>version_compare()</strong></span>は、ふたつの &quot;PHP 標準&quot; バージョン
+   番号文字列を比較します。
+  </p>
+  <p class="para">
+   この関数はまず、バージョン文字列の
+   <em>_</em>, <em>-</em>,
+   <em>+</em> をドット <em>.</em> で置き換えます。
+   さらに、数値でない部分の前後にドット <em>.</em> を追加します。
+   例えば &#039;4.3.2RC1&#039; は &#039;4.3.2.RC.1&#039; となります。
+   次に、左から右へ
+   各部分を比較していきます。特殊な文字列が含まれている場合は以下の順で
+   並べ替えます:
+   <em>ここにないすべての文字列</em> &lt; 
+   <em>dev</em> &lt; <em>alpha</em> = 
+   <em>a</em> &lt; <em>beta</em> = 
+   <em>b</em> &lt; <em>RC</em> =  
+   <em>rc</em> &lt; <em>#</em> &lt;
+   <em>pl</em> = <em>p</em>
+   この方法により、&#039;4.1&#039; と &#039;4.1.2&#039; のようなバージョンの違いだけではなく
+   PHP 固有の開発ステータスの違いも判断することが可能となります。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.version-compare-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+<code class="parameter">version1</code></dt>
+
+     <dd>
+
+      <p class="para">
+       最初のバージョン番号。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">version2</code></dt>
+
+     <dd>
+
+      <p class="para">
+       ふたつめのバージョン番号。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">operator</code></dt>
+
+     <dd>
+
+      <p class="para">
+       三番目のオプション引数 <code class="parameter">operator</code> を指定した場合、
+       特定の関係を調べることが可能です。指定可能な演算子を以下に示します。
+       <em>&lt;</em>, <em>lt</em>,
+       <em>&lt;=</em>, <em>le</em>, <em>&gt;</em>,
+       <em>gt</em>, <em>&gt;=</em>, <em>ge</em>,
+       <em>==</em>, <em>=</em>, <em>eq</em>,
+       <em>!=</em>, <em>&lt;&gt;</em>, <em>ne</em>
+      </p>
+      <p class="para">
+       このパラメータは大文字小文字を区別するので、すべて小文字で指定しなければなりません。
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.version-compare-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   デフォルトでは、<span class="function"><strong>version_compare()</strong></span> の返り値は
+   最初のバージョンが 2 番目のバージョンより小さい場合に <em>-1</em>、
+   同じ場合に <em>0</em>、そして 2 番目のバージョンのほうが小さい場合に
+   <em>1</em> となります。
+  </p>
+  <p class="para">
+   オプションの引数 <code class="parameter">operator</code> を使用すると、
+   指定した演算子による関係を満たす場合に <strong><code>TRUE</code></strong>、それ以外の場合に
+   <strong><code>FALSE</code></strong> を返すようになります。
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-function.version-compare-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   以下の例では定数 <strong><code>PHP_VERSION</code></strong> を使用しています。
+   この定数には、コードを実行している PHP のバージョンが格納されています。
+  </p>
+  <p class="para">
+   <div class="example" id="example-541">
+    <p><strong>例1 <span class="function"><strong>version_compare()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">if&nbsp;(</span><span style="color: #0000BB">version_compare</span><span style="color: #007700">(</span><span style="color: #0000BB">PHP_VERSION</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'6.0.0'</span><span style="color: #007700">)&nbsp;&gt;=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'6.0.0&nbsp;より新しいバージョンの&nbsp;PHP&nbsp;を使っています。バージョンは&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">PHP_VERSION&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"&nbsp;です。\n"</span><span style="color: #007700">;<br />}<br /><br />if&nbsp;(</span><span style="color: #0000BB">version_compare</span><span style="color: #007700">(</span><span style="color: #0000BB">PHP_VERSION</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'5.3.0'</span><span style="color: #007700">)&nbsp;&gt;=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'5.3.0&nbsp;より新しいバージョンの&nbsp;PHP&nbsp;を使っています。バージョンは&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">PHP_VERSION&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"&nbsp;です。\n"</span><span style="color: #007700">;<br />}<br /><br />if&nbsp;(</span><span style="color: #0000BB">version_compare</span><span style="color: #007700">(</span><span style="color: #0000BB">PHP_VERSION</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'5.0.0'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'&gt;='</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'PHP&nbsp;5&nbsp;を使っています。バージョンは&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">PHP_VERSION&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"&nbsp;です。\n"</span><span style="color: #007700">;<br />}<br /><br />if&nbsp;(</span><span style="color: #0000BB">version_compare</span><span style="color: #007700">(</span><span style="color: #0000BB">PHP_VERSION</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'5.0.0'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'&lt;'</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'PHP&nbsp;4&nbsp;を使っています。バージョンは&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">PHP_VERSION&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">"&nbsp;です。\n"</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div>
+
+
+ <div class="refsect1 notes" id="refsect1-function.version-compare-notes">
+  <h3 class="title">注意</h3>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    <strong><code>PHP_VERSION</code></strong> 定数には現在の
+    PHP のバージョンが格納されます。
+   </p>
+  </p></blockquote>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    プレリリース版 (たとえば 5.3.0-dev など)
+    は、それに対応する正式版 (5.3.0) より小さいとみなされます。
+   </p>
+  </p></blockquote>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    <em>alpha</em> や
+    <em>beta</em> のようなバージョン文字列は、大文字小文字を区別します。
+    したがって、どこかから取得したバージョン文字列を PHP の標準に従わせるなら、
+    まず <span class="function"><a href="function.strtolower.html" class="function">strtolower()</a></span> で小文字化してから
+    <span class="function"><strong>version_compare()</strong></span> を呼ぶ必要があります。
+   </p>
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.version-compare-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><span class="function"><a href="function.phpversion.html" class="function" rel="rdfs-seeAlso">phpversion()</a> - 現在の PHP バージョンを取得する</span></li>
+    <li class="member"><span class="function"><a href="function.php-uname.html" class="function" rel="rdfs-seeAlso">php_uname()</a> - PHP が稼動しているオペレーティングシステムに関する情報を返す</span></li>
+    <li class="member"><span class="function"><a href="function.function-exists.html" class="function" rel="rdfs-seeAlso">function_exists()</a> - 指定した関数が定義されている場合に TRUE を返す</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="109489""></a>
+  <div class="note">
+   <strong class="user">mindplay.dk</strong>
+   <a href="#109489" class="date">21-Jul-2012 12:10</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This little script can perhaps help you understand version comparison a little better - the output is displayed in the comment at the top. Tweak the list of versions if you need more examples...<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="comment">#&nbsp; &nbsp; &nbsp; 1 lt 1.0<br />
+#&nbsp; &nbsp; 1.0 lt 1.01<br />
+#&nbsp;&nbsp; 1.01 eq 1.1<br />
+#&nbsp; &nbsp; 1.1 lt 1.10<br />
+#&nbsp;&nbsp; 1.10 gt 1.10b<br />
+#&nbsp; 1.10b lt 1.10.0<br />
+<br />
+</span><span class="default">header</span><span class="keyword">(</span><span class="string">'Content-type: text/plain'</span><span class="keyword">);<br />
+<br />
+</span><span class="default">$versions </span><span class="keyword">= array(<br />
+&nbsp; </span><span class="string">'1'</span><span class="keyword">,<br />
+&nbsp; </span><span class="string">'1.0'</span><span class="keyword">,<br />
+&nbsp; </span><span class="string">'1.01'</span><span class="keyword">,<br />
+&nbsp; </span><span class="string">'1.1'</span><span class="keyword">,<br />
+&nbsp; </span><span class="string">'1.10'</span><span class="keyword">,<br />
+&nbsp; </span><span class="string">'1.10b'</span><span class="keyword">,<br />
+&nbsp; </span><span class="string">'1.10.0'</span><span class="keyword">,<br />
+);<br />
+<br />
+</span><span class="default">$comps </span><span class="keyword">= array(<br />
+&nbsp;-</span><span class="default">1 </span><span class="keyword">=&gt; </span><span class="string">'lt'</span><span class="keyword">,<br />
+&nbsp; </span><span class="default">0 </span><span class="keyword">=&gt; </span><span class="string">'eq'</span><span class="keyword">,<br />
+&nbsp; </span><span class="default">1 </span><span class="keyword">=&gt; </span><span class="string">'gt'<br />
+</span><span class="keyword">);<br />
+<br />
+foreach (</span><span class="default">$versions </span><span class="keyword">as </span><span class="default">$version</span><span class="keyword">) {<br />
+&nbsp; if (isset(</span><span class="default">$last</span><span class="keyword">)) {<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$comp </span><span class="keyword">= </span><span class="default">version_compare</span><span class="keyword">(</span><span class="default">$last</span><span class="keyword">, </span><span class="default">$version</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="default">str_pad</span><span class="keyword">(</span><span class="default">$last</span><span class="keyword">,</span><span class="default">8</span><span class="keyword">,</span><span class="string">' '</span><span class="keyword">,</span><span class="default">STR_PAD_LEFT</span><span class="keyword">) . </span><span class="string">" </span><span class="keyword">{</span><span class="default">$comps</span><span class="keyword">[</span><span class="default">$comp</span><span class="keyword">]}</span><span class="string"> </span><span class="keyword">{</span><span class="default">$version</span><span class="keyword">}</span><span class="string">\n"</span><span class="keyword">;<br />
+&nbsp; }<br />
+&nbsp; </span><span class="default">$last </span><span class="keyword">= </span><span class="default">$version</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="106715""></a>
+  <div class="note">
+   <strong class="user">rogier</strong>
+   <a href="#106715" class="date">30-Nov-2011 05:43</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Please note that supplying an operator that is not listed (e.g. ===), this function returns NULL instead of false.<br />
+<br />
+Tested on PHP5.3.0, Win32</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="93802""></a>
+  <div class="note">
+   <strong class="user">loaded67 at hotmail dot com</strong>
+   <a href="#93802" class="date">30-Sep-2009 01:53</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+This function is also usefull when working with multiple installations.<br />
+<br />
+As php5.3+ will not have E_STRICT in the error_reporting anymore you can state:<br />
+<br />
+<span class="default">&lt;?php<br />
+ini_set</span><span class="keyword">(</span><span class="string">'error_reporting'</span><span class="keyword">, (</span><span class="default">version_compare</span><span class="keyword">(</span><span class="default">PHP_VERSION</span><span class="keyword">, </span><span class="string">'5.3.0'</span><span class="keyword">, </span><span class="string">'&lt;'</span><span class="keyword">) ? </span><span class="default">E_ALL</span><span class="keyword">|</span><span class="default">E_STRICT </span><span class="keyword">: </span><span class="default">E_ALL</span><span class="keyword">));<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Giving you all the error error reporting you want...</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="89416""></a>
+  <div class="note">
+   <strong class="user">insid0r at yahoo dot com</strong>
+   <a href="#89416" class="date">06-Mar-2009 10:05</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Since this function considers 1 &lt; 1.0 &lt; 1.0.0, others might find this function useful (which considers 1 == 1.0):
+<br />
+
+<br />
+<span class="default">&lt;?php
+<br />
+</span><span class="comment">//Compare two sets of versions, where major/minor/etc. releases are separated by dots.
+<br />
+//Returns 0 if both are equal, 1 if A &gt; B, and -1 if B &lt; A.
+<br />
+</span><span class="keyword">function </span><span class="default">version_compare2</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">, </span><span class="default">$b</span><span class="keyword">)
+<br />
+{
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$a </span><span class="keyword">= </span><span class="default">explode</span><span class="keyword">(</span><span class="string">"."</span><span class="keyword">, </span><span class="default">rtrim</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">, </span><span class="string">".0"</span><span class="keyword">)); </span><span class="comment">//Split version into pieces and remove trailing .0
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$b </span><span class="keyword">= </span><span class="default">explode</span><span class="keyword">(</span><span class="string">"."</span><span class="keyword">, </span><span class="default">rtrim</span><span class="keyword">(</span><span class="default">$b</span><span class="keyword">, </span><span class="string">".0"</span><span class="keyword">)); </span><span class="comment">//Split version into pieces and remove trailing .0
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">foreach (</span><span class="default">$a </span><span class="keyword">as </span><span class="default">$depth </span><span class="keyword">=&gt; </span><span class="default">$aVal</span><span class="keyword">)
+<br />
+&nbsp;&nbsp;&nbsp; { </span><span class="comment">//Iterate over each piece of A
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if (isset(</span><span class="default">$b</span><span class="keyword">[</span><span class="default">$depth</span><span class="keyword">]))
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; { </span><span class="comment">//If B matches A to this depth, compare the values
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if (</span><span class="default">$aVal </span><span class="keyword">&gt; </span><span class="default">$b</span><span class="keyword">[</span><span class="default">$depth</span><span class="keyword">]) return </span><span class="default">1</span><span class="keyword">; </span><span class="comment">//Return A &gt; B
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">else if (</span><span class="default">$aVal </span><span class="keyword">&lt; </span><span class="default">$b</span><span class="keyword">[</span><span class="default">$depth</span><span class="keyword">]) return -</span><span class="default">1</span><span class="keyword">; </span><span class="comment">//Return B &gt; A
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; //An equal result is inconclusive at this point
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">}
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; else
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; { </span><span class="comment">//If B does not match A to this depth, then A comes after B in sort order
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">return </span><span class="default">1</span><span class="keyword">; </span><span class="comment">//so return A &gt; B
+<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">}
+<br />
+&nbsp;&nbsp;&nbsp; }
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="comment">//At this point, we know that to the depth that A and B extend to, they are equivalent.
+<br />
+&nbsp;&nbsp;&nbsp; //Either the loop ended because A is shorter than B, or both are equal.
+<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">return (</span><span class="default">count</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">) &lt; </span><span class="default">count</span><span class="keyword">(</span><span class="default">$b</span><span class="keyword">)) ? -</span><span class="default">1 </span><span class="keyword">: </span><span class="default">0</span><span class="keyword">;
+<br />
+}
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="78838""></a>
+  <div class="note">
+   <strong class="user">Jonathon dot Reinhart at gmail dot com</strong>
+   <a href="#78838" class="date">30-Oct-2007 04:38</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+I know this is somewhat incomplete, but it did a fair enough job for what I needed.&nbsp; I was writing some code that needed done immediately on a server that was to be upgraded some time in the future.&nbsp; Here is a quick replacement for version_compare (without the use of the operator argument). Feel free to add to this / complete it.<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">version_compare2</span><span class="keyword">(</span><span class="default">$version1</span><span class="keyword">, </span><span class="default">$version2</span><span class="keyword">)<br />
+{<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$v1 </span><span class="keyword">= </span><span class="default">explode</span><span class="keyword">(</span><span class="string">'.'</span><span class="keyword">,</span><span class="default">$version1</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$v2 </span><span class="keyword">= </span><span class="default">explode</span><span class="keyword">(</span><span class="string">'.'</span><span class="keyword">,</span><span class="default">$version2</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; if (</span><span class="default">$v1</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">] &gt; </span><span class="default">$v2</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">])<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; else if (</span><span class="default">$v1</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">] &lt; </span><span class="default">$v2</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">])<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">= -</span><span class="default">1</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; else&nbsp; &nbsp; </span><span class="comment">// Major ver are =<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">{<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if (</span><span class="default">$v1</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">] &gt; </span><span class="default">$v2</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">])<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; else if (</span><span class="default">$v1</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">] &lt; </span><span class="default">$v2</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">])<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">= -</span><span class="default">1</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; else&nbsp; </span><span class="comment">// Minor ver are =<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">{<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (</span><span class="default">$v1</span><span class="keyword">[</span><span class="default">2</span><span class="keyword">] &gt; </span><span class="default">$v2</span><span class="keyword">[</span><span class="default">2</span><span class="keyword">])<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; else if (</span><span class="default">$v1</span><span class="keyword">[</span><span class="default">2</span><span class="keyword">] &lt; </span><span class="default">$v2</span><span class="keyword">[</span><span class="default">2</span><span class="keyword">])<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">= -</span><span class="default">1</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; else<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ret </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; return </span><span class="default">$ret</span><span class="keyword">;<br />
+}<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="75656""></a>
+  <div class="note">
+   <strong class="user">opendb at iamvegan dot net</strong>
+   <a href="#75656" class="date">11-Jun-2007 02:01</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Something that may trip some folks up, but is useful to mention is that the following version comparison does not work quite as I expected:<br />
+&nbsp;&nbsp;&nbsp; version_compare('1.0.1', '1.0pl1', '&gt;') <br />
+<br />
+However, its quite easy to get working:<br />
+&nbsp;&nbsp;&nbsp; version_compare('1.0.1', '1.0.0pl1', '&gt;')</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="46094""></a>
+  <div class="note">
+   <strong class="user">arnoud at procurios dot nl</strong>
+   <a href="#46094" class="date">29-Sep-2004 11:28</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+If you're careful, this function actualy works quite nicely for comparing version numbers from programs other than PHP itself. I've used it to compare MySQL version numbers. The only issue is that version_compare doesn't recognize the 'gamma' addition that mysql uses as being later than 'alpha' or 'beta', because the latter two are treated specially. If you keep this in mind though, you should have no problems.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="43710""></a>
+  <div class="note">
+   <strong class="user">mina86 at tlen dot pl</strong>
+   <a href="#43710" class="date">01-Jul-2004 04:40</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Here's a wrapper which is more tolerant as far as order of arguments is considered:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">function </span><span class="default">ver_cmp</span><span class="keyword">(</span><span class="default">$arg1</span><span class="keyword">, </span><span class="default">$arg2 </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">, </span><span class="default">$arg3 </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">) {<br />
+&nbsp; static </span><span class="default">$phpversion </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">;<br />
+&nbsp; if (</span><span class="default">$phpversion</span><span class="keyword">===</span><span class="default">null</span><span class="keyword">) </span><span class="default">$phpversion </span><span class="keyword">= </span><span class="default">phpversion</span><span class="keyword">();<br />
+<br />
+&nbsp; switch (</span><span class="default">func_num_args</span><span class="keyword">()) {<br />
+&nbsp; case </span><span class="default">1</span><span class="keyword">: return </span><span class="default">version_compare</span><span class="keyword">(</span><span class="default">$phpversion</span><span class="keyword">, </span><span class="default">$arg1</span><span class="keyword">);<br />
+&nbsp; case </span><span class="default">2</span><span class="keyword">:<br />
+&nbsp;&nbsp;&nbsp; if (</span><span class="default">preg_match</span><span class="keyword">(</span><span class="string">'/^[lg][te]|[&lt;&gt;]=?|[!=]?=|eq|ne|&lt;&gt;$/i'</span><span class="keyword">, </span><span class="default">$arg1</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp;&nbsp; return </span><span class="default">version_compare</span><span class="keyword">(</span><span class="default">$phpversion</span><span class="keyword">, </span><span class="default">$arg2</span><span class="keyword">, </span><span class="default">$arg1</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; elseif (</span><span class="default">preg_match</span><span class="keyword">(</span><span class="string">'/^[lg][te]|[&lt;&gt;]=?|[!=]?=|eq|ne|&lt;&gt;$/i'</span><span class="keyword">, </span><span class="default">$arg2</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp;&nbsp; return </span><span class="default">version_compare</span><span class="keyword">(</span><span class="default">$phpversion</span><span class="keyword">, </span><span class="default">$arg1</span><span class="keyword">, </span><span class="default">$arg2</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; return </span><span class="default">version_compare</span><span class="keyword">(</span><span class="default">$arg1</span><span class="keyword">, </span><span class="default">$arg2</span><span class="keyword">);<br />
+&nbsp; default:<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$ver1 </span><span class="keyword">= </span><span class="default">$arg1</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; if (</span><span class="default">preg_match</span><span class="keyword">(</span><span class="string">'/^[lg][te]|[&lt;&gt;]=?|[!=]?=|eq|ne|&lt;&gt;$/i'</span><span class="keyword">, </span><span class="default">$arg2</span><span class="keyword">))<br />
+&nbsp;&nbsp; &nbsp;&nbsp; return </span><span class="default">version_compare</span><span class="keyword">(</span><span class="default">$arg1</span><span class="keyword">, </span><span class="default">$arg3</span><span class="keyword">, </span><span class="default">$arg2</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; return </span><span class="default">version_compare</span><span class="keyword">(</span><span class="default">$arg1</span><span class="keyword">, </span><span class="default">$arg2</span><span class="keyword">, </span><span class="default">$arg3</span><span class="keyword">);<br />
+&nbsp; }<br />
+}<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+It also uses phpversion() as a default version if only one string is present. It can make your code look nicer 'cuz you can now write:<br />
+<span class="default">&lt;?php </span><span class="keyword">if (</span><span class="default">ver_cmp</span><span class="keyword">(</span><span class="default">$version1</span><span class="keyword">, </span><span class="string">'&gt;='</span><span class="keyword">, </span><span class="default">$version2</span><span class="keyword">)) </span><span class="default">something</span><span class="keyword">; </span><span class="default">?&gt;<br />
+</span>and to check a version string against the PHP's version you might use:<br />
+<span class="default">&lt;?php </span><span class="keyword">if (</span><span class="default">ver_cmp</span><span class="keyword">(</span><span class="string">'&gt;='</span><span class="keyword">, </span><span class="default">$version</span><span class="keyword">)) </span><span class="default">something</span><span class="keyword">; </span><span class="default">?&gt;<br />
+</span>instead of using phpversion().</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="43452""></a>
+  <div class="note">
+   <strong class="user">eric at themepark dot com</strong>
+   <a href="#43452" class="date">22-Jun-2004 06:50</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+[editors note]
+<br />
+snipbit fixed after comment from Matt Mullenweg
+<br />
+
+<br />
+--jm
+<br />
+[/editors note]
+<br />
+
+<br />
+so in a nutshell... I believe it works best like this:
+<br />
+
+<br />
+<span class="default">&lt;?php
+<br />
+</span><span class="keyword">if (</span><span class="default">version_compare</span><span class="keyword">(</span><span class="default">phpversion</span><span class="keyword">(), </span><span class="string">"4.3.0"</span><span class="keyword">, </span><span class="string">"&gt;="</span><span class="keyword">)) {
+<br />
+&nbsp; </span><span class="comment">// you're on 4.3.0 or later
+<br />
+</span><span class="keyword">} else {
+<br />
+&nbsp; </span><span class="comment">// you're not
+<br />
+</span><span class="keyword">}
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="42608""></a>
+  <div class="note">
+   <strong class="user">sam at wyvern dot non-spammers-remove dot com dot au</strong>
+   <a href="#42608" class="date">23-May-2004 08:18</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Actually, it works to any degree:<br />
+<br />
+<span class="default">&lt;?php<br />
+version_compare</span><span class="keyword">(</span><span class="string">'1.2.3.4RC7.7'</span><span class="keyword">, </span><span class="string">'1.2.3.4RC7.8'</span><span class="keyword">)<br />
+</span><span class="default">version_compare</span><span class="keyword">(</span><span class="string">'8.2.50.4'</span><span class="keyword">, </span><span class="string">'8.2.52.6'</span><span class="keyword">)<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+will both give -1 (ie the left is lower than the right).</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

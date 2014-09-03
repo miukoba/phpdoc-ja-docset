@@ -1,345 +1,0 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
- <head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <title>現在の cURL ハンドルから、サブ接続を実行する</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
- </head>
- <body class="docs"><div class="manualnavbar" style="text-align: center;">
- <div class="prev" style="text-align: left; float: left;"><a href="function.curl-multi-close.html">curl_multi_close</a></div>
- <div class="next" style="text-align: right; float: right;"><a href="function.curl-multi-getcontent.html">curl_multi_getcontent</a></div>
- <div class="up"><a href="ref.curl.html">cURL 関数</a></div>
- <div class="home"><a href="index.html">PHP Manual</a></div>
-</div><hr /><div id="function.curl-multi-exec" class="refentry">
- <div class="refnamediv">
-  <h1 class="refname">curl_multi_exec</h1>
-  <p class="verinfo">(PHP 5)</p><p class="refpurpose"><span class="refname">curl_multi_exec</span> &mdash; <span class="dc-title">現在の cURL ハンドルから、サブ接続を実行する</span></p>
-
- </div>
- 
- <div class="refsect1 description" id="refsect1-function.curl-multi-exec-description">
-  <h3 class="title">説明</h3>
-  <div class="methodsynopsis dc-description">
-   <span class="type">int</span> <span class="methodname"><strong>curl_multi_exec</strong></span>
-    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$mh</code></span>
-   , <span class="methodparam"><span class="type">int</span> <code class="parameter reference">&$still_running</code></span>
-   )</div>
-
-  <p class="para rdfs-comment">
-   スタック内の各ハンドルを処理します。
-   このメソッドは、ハンドルがデータの読み書きを要するかどうかにかかわらずコール可能です。
-  </p> 
- </div>
-
-
- <div class="refsect1 parameters" id="refsect1-function.curl-multi-exec-parameters">
-  <h3 class="title">パラメータ</h3>
-  <p class="para">
-   <dl>
-
-    <dt>
-<span class="term"><em><code class="parameter">mh</code></em>
-</span><dd>
-<p class="para"> <span class="function"><a href="function.curl-multi-init.html" class="function">curl_multi_init()</a></span>
-が返す cURL マルチハンドル。</p></dd>
-</dt>
-
-    <dt>
-
-     <span class="term"><em><code class="parameter">still_running</code></em></span>
-     <dd>
-
-      <p class="para">
-       処理が実行中かどうかを表すフラグへの参照。
-      </p>
-     </dd>
-
-    </dt>
-
-   </dl>
-
-  </p>
- </div>
-
-
- <div class="refsect1 returnvalues" id="refsect1-function.curl-multi-exec-returnvalues">
-  <h3 class="title">返り値</h3>
-  <p class="para">
-   cURL <a href="curl.constants.html" class="link">定義済み定数</a> で定義された
-   cURL コードを返します。
-  </p>
-  <blockquote class="note"><p><strong class="note">注意</strong>: 
-   <p class="para">
-    これは、マルチスタック全体に関するエラーのみを返します。この関数が
-    <strong><code>CURLM_OK</code></strong> を返したとしても、各転送で個別にエラーが発生している可能性があります。
-   </p>
-  </p></blockquote>
- </div>
-
- 
- <div class="refsect1 examples" id="refsect1-function.curl-multi-exec-examples">
-  <h3 class="title">例</h3>
-  <p class="para">
-   <div class="example" id="example-4197">
-    <p><strong>例1  <span class="function"><strong>curl_multi_exec()</strong></span> の例</strong></p>
-    <div class="example-contents"><p>
-     この例は、ふたつの cURL ハンドルを作成し、それをマルチハンドルに追加して並列実行します。
-    </p></div>
-    <div class="example-contents">
-<div class="phpcode"><code><span style="color: #000000">
-<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">//&nbsp;cURL&nbsp;リソースを作成します<br /></span><span style="color: #0000BB">$ch1&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">curl_init</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$ch2&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">curl_init</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;URL&nbsp;およびその他適切なオプションを設定します。<br /></span><span style="color: #0000BB">curl_setopt</span><span style="color: #007700">(</span><span style="color: #0000BB">$ch1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">CURLOPT_URL</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"http://lxr.php.net/"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">curl_setopt</span><span style="color: #007700">(</span><span style="color: #0000BB">$ch1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">CURLOPT_HEADER</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">curl_setopt</span><span style="color: #007700">(</span><span style="color: #0000BB">$ch2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">CURLOPT_URL</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"http://www.php.net/"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">curl_setopt</span><span style="color: #007700">(</span><span style="color: #0000BB">$ch2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">CURLOPT_HEADER</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;マルチ&nbsp;cURL&nbsp;ハンドルを作成します<br /></span><span style="color: #0000BB">$mh&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">curl_multi_init</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;ふたつのハンドルを追加します<br /></span><span style="color: #0000BB">curl_multi_add_handle</span><span style="color: #007700">(</span><span style="color: #0000BB">$mh</span><span style="color: #007700">,</span><span style="color: #0000BB">$ch1</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">curl_multi_add_handle</span><span style="color: #007700">(</span><span style="color: #0000BB">$mh</span><span style="color: #007700">,</span><span style="color: #0000BB">$ch2</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$active&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">;<br /></span><span style="color: #FF8000">//&nbsp;ハンドルを実行します<br /></span><span style="color: #007700">do&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$mrc&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">curl_multi_exec</span><span style="color: #007700">(</span><span style="color: #0000BB">$mh</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$active</span><span style="color: #007700">);<br />}&nbsp;while&nbsp;(</span><span style="color: #0000BB">$mrc&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">CURLM_CALL_MULTI_PERFORM</span><span style="color: #007700">);<br /><br />while&nbsp;(</span><span style="color: #0000BB">$active&nbsp;</span><span style="color: #007700">&amp;&amp;&nbsp;</span><span style="color: #0000BB">$mrc&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">CURLM_OK</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(</span><span style="color: #0000BB">curl_multi_select</span><span style="color: #007700">(</span><span style="color: #0000BB">$mh</span><span style="color: #007700">)&nbsp;!=&nbsp;-</span><span style="color: #0000BB">1</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;do&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$mrc&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">curl_multi_exec</span><span style="color: #007700">(</span><span style="color: #0000BB">$mh</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$active</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;while&nbsp;(</span><span style="color: #0000BB">$mrc&nbsp;</span><span style="color: #007700">==&nbsp;</span><span style="color: #0000BB">CURLM_CALL_MULTI_PERFORM</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;ハンドルを閉じます<br /></span><span style="color: #0000BB">curl_multi_remove_handle</span><span style="color: #007700">(</span><span style="color: #0000BB">$mh</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$ch1</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">curl_multi_remove_handle</span><span style="color: #007700">(</span><span style="color: #0000BB">$mh</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$ch2</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">curl_multi_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$mh</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
-</span>
-</code></div>
-    </div>
-
-   </div>
-  </p>
- </div>
-
- 
- <div class="refsect1 seealso" id="refsect1-function.curl-multi-exec-seealso">
-  <h3 class="title">参考</h3>
-  <p class="para">
-   <ul class="simplelist">
-    <li class="member"> <span class="function"><a href="function.curl-multi-init.html" class="function" rel="rdfs-seeAlso">curl_multi_init()</a> - 新規 cURL マルチハンドルを返す</span></li>
-    <li class="member"> <span class="function"><a href="function.curl-multi-select.html" class="function" rel="rdfs-seeAlso">curl_multi_select()</a> - curl_multi 接続のアクティビティを待つ</span></li>
-    <li class="member"> <span class="function"><a href="function.curl-exec.html" class="function" rel="rdfs-seeAlso">curl_exec()</a> - cURL セッションを実行する</span></li>
-   </ul>
-  </p>
- </div>
-
- 
-</div><div id="usernotes">
- <div class="head">
-  <h3 class="title">User Contributed Notes</h3>
- </div>
-<div id="allnotes">  <a name="113002""></a>
-  <div class="note">
-   <strong class="user">Ren</strong>
-   <a href="#113002" class="date">17-Aug-2013 10:54</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Solve CPU 100% usage, a more simple and right way:<br />
-<br />
-<span class="default">&lt;?php<br />
-<br />
-</span><span class="keyword">do {<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">curl_multi_exec</span><span class="keyword">(</span><span class="default">$mh</span><span class="keyword">, </span><span class="default">$running</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">curl_multi_select</span><span class="keyword">(</span><span class="default">$mh</span><span class="keyword">);<br />
-} while (</span><span class="default">$running </span><span class="keyword">&gt; </span><span class="default">0</span><span class="keyword">);<br />
-<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="109377""></a>
-  <div class="note">
-   <strong class="user">Daniel G Zylberberg</strong>
-   <a href="#109377" class="date">12-Jul-2012 03:00</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-This function wait for the last page, can get a configuration array with curl options to made a post, or pass timeouts, etc.<br />
-Retun the same array but add "error", and "data".Error is the string destription if something fail, data is the response.<br />
-<br />
-<span class="default">&lt;?php<br />
-</span><span class="comment">// author: Daniel G Zylberberg<br />
-// date 11 jul 2012 <br />
-// $res: array with structure 0=&gt;array("url"=&gt;"blah"),1=&gt;array("url"=&gt;"some url")<br />
-// $options (optional): array with curl options (timeout, postfields, etc)<br />
-// return the same array that gets, and add "data" to the current row(html content)<br />
-// and "error", with the string description in the case that something fail.<br />
-<br />
-</span><span class="keyword">function </span><span class="default">multiCurl</span><span class="keyword">(</span><span class="default">$res</span><span class="keyword">,</span><span class="default">$options</span><span class="keyword">=</span><span class="string">""</span><span class="keyword">){<br />
-<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if(</span><span class="default">count</span><span class="keyword">(</span><span class="default">$res</span><span class="keyword">)&lt;=</span><span class="default">0</span><span class="keyword">) return </span><span class="default">False</span><span class="keyword">; <br />
-<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$handles </span><span class="keyword">= array(); <br />
-<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if(!</span><span class="default">$options</span><span class="keyword">) </span><span class="comment">// add default options<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$options </span><span class="keyword">= array(<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">CURLOPT_HEADER</span><span class="keyword">=&gt;</span><span class="default">0</span><span class="keyword">,<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">CURLOPT_RETURNTRANSFER</span><span class="keyword">=&gt;</span><span class="default">1</span><span class="keyword">,<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; );<br />
-<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// add curl options to each handle<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">foreach(</span><span class="default">$res </span><span class="keyword">as </span><span class="default">$k</span><span class="keyword">=&gt;</span><span class="default">$row</span><span class="keyword">){<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$ch</span><span class="keyword">{</span><span class="default">$k</span><span class="keyword">} = </span><span class="default">curl_init</span><span class="keyword">();<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$options</span><span class="keyword">[</span><span class="default">CURLOPT_URL</span><span class="keyword">] = </span><span class="default">$row</span><span class="keyword">[</span><span class="string">'url'</span><span class="keyword">];<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">curl_setopt_array</span><span class="keyword">(</span><span class="default">$ch</span><span class="keyword">{</span><span class="default">$k</span><span class="keyword">}, </span><span class="default">$options</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$handles</span><span class="keyword">[</span><span class="default">$k</span><span class="keyword">] = </span><span class="default">$ch</span><span class="keyword">{</span><span class="default">$k</span><span class="keyword">};<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
-<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$mh </span><span class="keyword">= </span><span class="default">curl_multi_init</span><span class="keyword">(); <br />
-<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; foreach(</span><span class="default">$handles </span><span class="keyword">as </span><span class="default">$k </span><span class="keyword">=&gt; </span><span class="default">$handle</span><span class="keyword">){<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">curl_multi_add_handle</span><span class="keyword">(</span><span class="default">$mh</span><span class="keyword">,</span><span class="default">$handle</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">//echo "&lt;br&gt;adding handle {$k}";<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">}<br />
-<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$running_handles </span><span class="keyword">= </span><span class="default">null</span><span class="keyword">;<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">//execute the handles<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">do {<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$status_cme </span><span class="keyword">= </span><span class="default">curl_multi_exec</span><span class="keyword">(</span><span class="default">$mh</span><span class="keyword">, </span><span class="default">$running_handles</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; } while (</span><span class="default">$cme </span><span class="keyword">== </span><span class="default">CURLM_CALL_MULTI_PERFORM</span><span class="keyword">);<br />
-<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; while (</span><span class="default">$running_handles </span><span class="keyword">&amp;&amp; </span><span class="default">$status_cme </span><span class="keyword">== </span><span class="default">CURLM_OK</span><span class="keyword">) {<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if (</span><span class="default">curl_multi_select</span><span class="keyword">(</span><span class="default">$mh</span><span class="keyword">) != -</span><span class="default">1</span><span class="keyword">) { <br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; do {<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$status_cme </span><span class="keyword">= </span><span class="default">curl_multi_exec</span><span class="keyword">(</span><span class="default">$mh</span><span class="keyword">, </span><span class="default">$running_handles</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// echo "&lt;br&gt;''threads'' running = {$running_handles}";<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">} while (</span><span class="default">$status </span><span class="keyword">== </span><span class="default">CURLM_CALL_MULTI_PERFORM</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; }<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
-<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; foreach(</span><span class="default">$res </span><span class="keyword">as </span><span class="default">$k</span><span class="keyword">=&gt;</span><span class="default">$row</span><span class="keyword">){<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$res</span><span class="keyword">[</span><span class="default">$k</span><span class="keyword">][</span><span class="string">'error'</span><span class="keyword">] = </span><span class="default">curl_error</span><span class="keyword">(</span><span class="default">$handles</span><span class="keyword">[</span><span class="default">$k</span><span class="keyword">]);<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if(!empty(</span><span class="default">$res</span><span class="keyword">[</span><span class="default">$k</span><span class="keyword">][</span><span class="string">'error'</span><span class="keyword">]))<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$res</span><span class="keyword">[</span><span class="default">$k</span><span class="keyword">][</span><span class="string">'data'</span><span class="keyword">]&nbsp; = </span><span class="string">''</span><span class="keyword">;<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; else<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$res</span><span class="keyword">[</span><span class="default">$k</span><span class="keyword">][</span><span class="string">'data'</span><span class="keyword">]&nbsp; = </span><span class="default">curl_multi_getcontent</span><span class="keyword">( </span><span class="default">$handles</span><span class="keyword">[</span><span class="default">$k</span><span class="keyword">] );&nbsp; </span><span class="comment">// get results<br />
-<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; // close current handler<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">curl_multi_remove_handle</span><span class="keyword">(</span><span class="default">$mh</span><span class="keyword">, </span><span class="default">$handles</span><span class="keyword">[</span><span class="default">$k</span><span class="keyword">] );<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; } <br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">curl_multi_close</span><span class="keyword">(</span><span class="default">$mh</span><span class="keyword">);<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">$res</span><span class="keyword">; </span><span class="comment">// return response<br />
-</span><span class="keyword">} <br />
-<br />
-</span><span class="default">$res </span><span class="keyword">= array(<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">"11"</span><span class="keyword">=&gt;array(</span><span class="string">"url"</span><span class="keyword">=&gt;</span><span class="string">"<a href="http://localhost/public_html/test/sleep.php?t=1" rel="nofollow" target="_blank">http://localhost/public_html/test/sleep.php?t=1</a>"</span><span class="keyword">),<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">"13"</span><span class="keyword">=&gt;array(</span><span class="string">"url"</span><span class="keyword">=&gt;</span><span class="string">"<a href="http://localhost/public_html/test/sleep.php?t=3" rel="nofollow" target="_blank">http://localhost/public_html/test/sleep.php?t=3</a>"</span><span class="keyword">),<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="string">"25"</span><span class="keyword">=&gt;array(</span><span class="string">"url"</span><span class="keyword">=&gt;</span><span class="string">"this doesn't exist"</span><span class="keyword">),<br />
-<br />
-);<br />
-</span><span class="default">print_r</span><span class="keyword">( </span><span class="default">multiCurl</span><span class="keyword">(</span><span class="default">$res</span><span class="keyword">));<br />
-</span><span class="default">?&gt;<br />
-</span><br />
----------- sleep.php -------------------------------------<br />
-<span class="default">&lt;?php<br />
-sleep</span><span class="keyword">(</span><span class="default">$_GET</span><span class="keyword">[</span><span class="string">'t'</span><span class="keyword">]);<br />
-echo </span><span class="string">"sleep for </span><span class="keyword">{</span><span class="default">$_GET</span><span class="keyword">[</span><span class="string">'t'</span><span class="keyword">]}</span><span class="string"> seconds and show this."</span><span class="keyword">;<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="109167""></a>
-  <div class="note">
-   <strong class="user">emmet at trovit dot com</strong>
-   <a href="#109167" class="date">26-Jun-2012 01:57</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Here's something that had me pulling my hair out for quite a while. I was trying to download multiple files and save each one in a file. If you want to read the file again in the same script that has downloaded the url, always make sure to close the original filehandle that you opened for the connection BEFORE trying to read from the file again, even if you open a new filehandle to do so. If you don't do this, a file_get_contents() or fread() will cut your file and only return a limited size of it, 40960 characters in my case, without any other explanation or error. The file will exist (and be complete) on your disk, PHP just wont show it.<br />
-<br />
-I (perhaps mistakenly) thought this was a bug so I created a bug report, see it for examples of the code I used to recreate this misterious behavior:<br />
-https://bugs.php.net/bug.php?id=62409</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="85717""></a>
-  <div class="note">
-   <strong class="user">Jimmy Ruska</strong>
-   <a href="#85717" class="date">13-Sep-2008 08:56</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-&gt; replying to viczbk.ru<br />
-<br />
-Just sharing my attempt at it.<br />
-<br />
-&gt; while (($res = curl_multi_select($mh)) === 0) {};<br />
-This worked on my windows computer (php 5.2.5) but when I ran the curl program in my new centOS server (php 5.1.6) the function never updates unless curl_multi_exec() is added to the loop, taking away the point of using it to save cycles. curl_multi_select() also allows you to set a timeout but it doesn't seem to help, then again, don't see why people wouldn't use it anyway.<br />
-<br />
-Even when curl_multi_select($mh) does work there's no way to know which of the sockets updated in status or if they've received partial data, completely finished, or just timed out. It's not reliable if you want to remove / add data as soon as things finish. Try calling just example.com or some other website with very little data. curl_multi_select($mh) can send non 0 value a couple of thousand times before finishing. Lazily adding a usleep(25000) or some minimal amount can also help not waste cycles.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="80977""></a>
-  <div class="note">
-   <strong class="user">viczbk.ru</strong>
-   <a href="#80977" class="date">09-Feb-2008 05:04</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-<a href="http://curl.haxx.se/libcurl/c/libcurl-multi.html" rel="nofollow" target="_blank">http://curl.haxx.se/libcurl/c/libcurl-multi.html</a><br />
-<br />
-"When you've added the handles you have for the moment (you can still add new ones at any time), you start the transfers by call curl_multi_perform(3).<br />
-<br />
-curl_multi_perform(3) is asynchronous. It will only execute as little as possible and then return back control to your program. It is designed to never block. If it returns CURLM_CALL_MULTI_PERFORM you better call it again soon, as that is a signal that it still has local data to send or remote data to receive."<br />
-<br />
-So it seems the loop in sample script should look this way:<br />
-<br />
-<span class="default">&lt;?php<br />
-$running</span><span class="keyword">=</span><span class="default">null</span><span class="keyword">;<br />
-</span><span class="comment">//execute the handles<br />
-</span><span class="keyword">do {<br />
-&nbsp;&nbsp;&nbsp; while (</span><span class="default">CURLM_CALL_MULTI_PERFORM </span><span class="keyword">=== </span><span class="default">curl_multi_exec</span><span class="keyword">(</span><span class="default">$mh</span><span class="keyword">, </span><span class="default">$running</span><span class="keyword">));<br />
-&nbsp;&nbsp;&nbsp; if (!</span><span class="default">$running</span><span class="keyword">) break;<br />
-&nbsp;&nbsp;&nbsp; while ((</span><span class="default">$res </span><span class="keyword">= </span><span class="default">curl_multi_select</span><span class="keyword">(</span><span class="default">$mh</span><span class="keyword">)) === </span><span class="default">0</span><span class="keyword">) {};<br />
-&nbsp;&nbsp;&nbsp; if (</span><span class="default">$res </span><span class="keyword">=== </span><span class="default">false</span><span class="keyword">) {<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; echo </span><span class="string">"&lt;h1&gt;select error&lt;/h1&gt;"</span><span class="keyword">;<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; break;<br />
-&nbsp;&nbsp;&nbsp; }<br />
-} while (</span><span class="default">true</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-This worked fine (PHP 5.2.5 @ FBSD 6.2) without running non-blocked loop and wasting CPU time.<br />
-<br />
-However this seems to be the only use of curl_multi_select, coz there's no simple way to bind it with other PHP wrappers for select syscall.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="78634""></a>
-  <div class="note">
-   <strong class="user">robert dot reichel at boboton dot com</strong>
-   <a href="#78634" class="date">20-Oct-2007 02:54</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-I was testing PHP code provided by dtorop933@gmail.com in curl_multi_exec section of PHP Manual.<br />
-<br />
-The part of the code '$err = curl_error($conn[$i])' should return error message for each cURL session, but it does not.<br />
-The function curl_error() works well with the curl_exec(). Is there any other solution for getting session error message with curl_multi_exec() or there is a bug in cURL library.<br />
-<br />
-The script was tested with Windows XP and PHP-5.2.4</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="76191""></a>
-  <div class="note">
-   <strong class="user">substr(&amp;#34;iscampifriese&amp;#34;,1,11) dot &amp;#34; at beer dot com&amp;#34;</strong>
-   <a href="#76191" class="date">04-Jul-2007 03:10</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-If you are using mulit handles and you wish to re-execute any of them (if they timed out or something), then you need to remove the handles from the mulit-handle and then re-add them in order to get them to re-execute.&nbsp; Otherwise cURL will just give you back the same results again without actually retrying.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-</div>
-</div>
-<hr /><div class="manualnavbar" style="text-align: center;">
- <div class="prev" style="text-align: left; float: left;"><a href="function.curl-multi-close.html">curl_multi_close</a></div>
- <div class="next" style="text-align: right; float: right;"><a href="function.curl-multi-getcontent.html">curl_multi_getcontent</a></div>
- <div class="up"><a href="ref.curl.html">cURL 関数</a></div>
- <div class="home"><a href="index.html">PHP Manual</a></div>
-</div></body></html>

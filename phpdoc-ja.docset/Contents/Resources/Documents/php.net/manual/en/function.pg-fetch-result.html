@@ -1,0 +1,286 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>結果リソースから値を返す</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="function.pg-fetch-object.html">≪ pg_fetch_object</a></li>
+      <li style="float: right;"><a href="function.pg-fetch-row.html">pg_fetch_row ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="ref.pgsql.html">PostgreSQL 関数</a></li>
+    <li>結果リソースから値を返す</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="function.pg-fetch-result" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">pg_fetch_result</h1>
+  <p class="verinfo">(PHP 4 &gt;= 4.2.0, PHP 5)</p><p class="refpurpose"><span class="refname">pg_fetch_result</span> &mdash; <span class="dc-title">結果リソースから値を返す</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-function.pg-fetch-result-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">string</span> <span class="methodname"><strong>pg_fetch_result</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$result</code></span>
+   , <span class="methodparam"><span class="type">int</span> <code class="parameter">$row</code></span>
+   , <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter">$field</code></span>
+   )</div>
+
+  <div class="methodsynopsis dc-description">
+   <span class="type">string</span> <span class="methodname"><strong>pg_fetch_result</strong></span>
+    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$result</code></span>
+   , <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter">$field</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+   <span class="function"><strong>pg_fetch_result()</strong></span> は、PostgreSQL 結果リソースから
+   特定の行とフィールド（カラム）の値を返します。
+  </p>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    この関数は、以前は <span class="function"><strong>pg_result()</strong></span> という名前でした。
+   </p>
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.pg-fetch-result-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+<code class="parameter">result</code></dt>
+
+     <dd>
+
+      <p class="para">
+       <span class="function"><a href="function.pg-query.html" class="function">pg_query()</a></span>, <span class="function"><a href="function.pg-query-params.html" class="function">pg_query_params()</a></span>
+       あるいは <span class="function"><a href="function.pg-execute.html" class="function">pg_execute()</a></span> から返される PostgreSQL の
+       クエリ結果リソース。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">row</code></dt>
+
+     <dd>
+
+      <p class="para">
+       結果から取得する行の番号。行番号は 0 から始まります。指定しなかった
+       場合は、次の行が読み込まれます。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">field</code></dt>
+
+     <dd>
+
+      <p class="para">       
+       取得するフィールド（カラム）の名前を表す文字列、あるいは取得する
+       フィールドの番号。フィールド番号は 0 から始まります。
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.pg-fetch-result-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   論理型の値は &quot;t&quot; あるいは &quot;f&quot; の形式で返します。
+   配列を含むそれ以外の型は、PostgreSQL のやりかたにしたがって文字列として
+   フォーマットされた形式で返します。これは <strong class="command">psql</strong>
+   プログラムの出力と同じ形式です。データベースの <em>NULL</em>
+   値は、<strong><code>NULL</code></strong> として返します。
+  </p>
+  <p class="para">
+   <code class="parameter">row</code> が結果の行数より大きい場合、
+   あるいはそれ以外のエラーが発生した場合は <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 examples" id="refsect1-function.pg-fetch-result-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-2158">
+    <p><strong>例1 <span class="function"><strong>pg_fetch_result()</strong></span> の例</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">pg_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">"dbname=users&nbsp;user=me"</span><span style="color: #007700">)&nbsp;||&nbsp;die();<br /><br /></span><span style="color: #0000BB">$res&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">pg_query</span><span style="color: #007700">(</span><span style="color: #0000BB">$db</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"SELECT&nbsp;1&nbsp;UNION&nbsp;ALL&nbsp;SELECT&nbsp;2"</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$val&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">pg_fetch_result</span><span style="color: #007700">(</span><span style="color: #0000BB">$res</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">);<br /><br />echo&nbsp;</span><span style="color: #DD0000">"First&nbsp;field&nbsp;in&nbsp;the&nbsp;second&nbsp;row&nbsp;is:&nbsp;"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$val</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+First field in the second row is: 2
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 seealso" id="refsect1-function.pg-fetch-result-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><span class="function"><a href="function.pg-query.html" class="function" rel="rdfs-seeAlso">pg_query()</a> - クエリを実行する</span></li>
+    <li class="member"><span class="function"><a href="function.pg-fetch-array.html" class="function" rel="rdfs-seeAlso">pg_fetch_array()</a> - 行を配列として取得する</span></li>
+   </ul>
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="69831""></a>
+  <div class="note">
+   <strong class="user">Alan U. Kennington</strong>
+   <a href="#69831" class="date">22-Sep-2006 03:49</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+See bug #33809 <a href="http://bugs.php.net/bug.php?id=33809" rel="nofollow" target="_blank">http://bugs.php.net/bug.php?id=33809</a><br />
+Whether this really is a bug or a feature is not clear.<br />
+However, it is probably best to always put your column names in extra quotes.<br />
+<br />
+$res = pg_query(...);<br />
+$colname = pg_field_name($res, $j);<br />
+pg_fetch_result($res, $i, "\"$colname\"");</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="69825""></a>
+  <div class="note">
+   <strong class="user">Alan U Kennington</strong>
+   <a href="#69825" class="date">22-Sep-2006 02:16</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+In order to use upper case in pg_fetch_result column names, it is apparently necessary to include explicit quotation marks.<br />
+<br />
+Thus when I do this sort of thing:<br />
+<br />
+$res = pg_query(...);<br />
+$ncols = pg_num_fields($res);<br />
+for ($j = 0; $j &lt; $ncols; ++$j) {<br />
+&nbsp;&nbsp;&nbsp; $colname[$j] = pg_field_name($res, $j);<br />
+&nbsp;&nbsp;&nbsp; $name = htmlspecialchars($colname[$j]);<br />
+&nbsp;&nbsp;&nbsp; print("Column $j name = \"$name\"\n");<br />
+&nbsp;&nbsp;&nbsp; $value = htmlspecialchars(pg_fetch_result($res, 0, $colname[$j]));<br />
+&nbsp;&nbsp;&nbsp; print("Column \"{$colname[$j]}\" value = \"$value\"\n");<br />
+&nbsp;&nbsp;&nbsp; }<br />
+<br />
+I get this sort of thing:<br />
+<br />
+[....]<br />
+Warning: pg_fetch_result() [function.pg-fetch-result]: Bad column offset specified in /.../view.php on line 247<br />
+Column 8 name = "VEC index"<br />
+Column "VEC index" value = ""<br />
+<br />
+But if I change the $value line to this:<br />
+<br />
+$value = htmlspecialchars(pg_fetch_result($res, 0, "\"$colname[$j]\""));<br />
+<br />
+I get this:<br />
+<br />
+[...]<br />
+Column 8 name = "VEC index"<br />
+Column "VEC index" value[0] = "47"<br />
+<br />
+In my opinion, pg_fetch_result(...) should use the quotes already. In other words, this may be a bug in the PHP postgres library. It does not seem to be a documented feature of pg_fetch_result() although the postgresql manual documents it under "SQL syntax", "Lexical structure".<br />
+<br />
+PHP version 5.1.4.<br />
+psql version 8.1.4.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="47817""></a>
+  <div class="note">
+   <strong class="user">Akbar</strong>
+   <a href="#47817" class="date">01-Dec-2004 05:01</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Use can use pg_fetch_result when getting a value (like a smallint as in this example) returned by your stored procedure <br />
+<br />
+<span class="default">&lt;?php<br />
+$pgConnection </span><span class="keyword">= </span><span class="default">pg_connect</span><span class="keyword">(</span><span class="string">"dbname=users user=me"</span><span class="keyword">);<br />
+<br />
+</span><span class="default">$userNameToCheckFor </span><span class="keyword">= </span><span class="string">"metal"</span><span class="keyword">;<br />
+<br />
+</span><span class="default">$result </span><span class="keyword">= </span><span class="default">pg_query</span><span class="keyword">(</span><span class="default">$pgConnection</span><span class="keyword">, </span><span class="string">"SELECT howManyUsersHaveThisName('</span><span class="default">$userNameToCheckFor</span><span class="string">')"</span><span class="keyword">);<br />
+<br />
+</span><span class="default">$count </span><span class="keyword">= </span><span class="default">pg_fetch_result</span><span class="keyword">(</span><span class="default">$result</span><span class="keyword">, </span><span class="default">0</span><span class="keyword">, </span><span class="string">'howManyUsersHaveThisName'</span><span class="keyword">);<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="24903""></a>
+  <div class="note">
+   <strong class="user">newby_AT_nobletec_DOT_com</strong>
+   <a href="#24903" class="date">04-Sep-2002 05:12</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Comment on boolean fields:<br />
+<br />
+If you retrieve a boolean value from the PostgreSQL database, be aware that the value returned will be either the character 't' or the character 'f', not an integer.&nbsp; So, the statement<br />
+<br />
+&nbsp;&nbsp; &nbsp; if (pg_fetch_result($rsRecords,0,'blnTrueFalseField')) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; echo "TRUE";<br />
+&nbsp;&nbsp; &nbsp; } else {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; echo "FALSE";<br />
+&nbsp;&nbsp; &nbsp; }<br />
+<br />
+will echo "TRUE" in either case (True or False stored in the field).&nbsp; In order to work as expected, do this instead:<br />
+<br />
+&nbsp;&nbsp; &nbsp; if (pg_fetch_result($rsRecords,0,'blnTrueFalseField') == 't') {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; echo "TRUE";<br />
+&nbsp;&nbsp; &nbsp; } else {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; echo "FALSE";<br />
+&nbsp;&nbsp; &nbsp; }</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

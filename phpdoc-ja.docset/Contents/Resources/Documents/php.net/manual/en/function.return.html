@@ -1,0 +1,244 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>return</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="control-structures.declare.html">≪ declare</a></li>
+      <li style="float: right;"><a href="function.require.html">require ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="language.control-structures.html">制御構造</a></li>
+    <li>return</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="function.return" class="sect1">
+ <h2 class="title">return</h2>
+ <p class="verinfo">(PHP 4, PHP 5)</p>
+ <p class="simpara">
+  <em>return</em> は、プログラムの制御を呼び出し元に戻します。
+  呼び出し側のモジュールでは、呼び出しの次の文から続行します。
+ </p>
+ <p class="simpara">
+  関数内で呼び出されると、<em>return</em>文は即座に
+  その関数の実行を停止し、引数を関数の値として返します。
+  <em>return</em>はまた、<span class="function"><a href="function.eval.html" class="function">eval()</a></span>文や
+  スクリプト自体の実行を終了させることが出来ます。
+ </p>
+ <p class="simpara">
+  グローバルスコープで呼び出されると、現在実行中のスクリプトが終了
+  します。もしそのスクリプトが
+  <span class="function"><a href="function.include.html" class="function">include</a></span> もしくは
+  <span class="function"><a href="function.require.html" class="function">require</a></span>
+  されたものである場合、制御は呼び出し元
+  のファイルに戻ります。また、そのスクリプトが <span class="function"><a href="function.include.html" class="function">include</a></span>
+  されたものである場合は、<em>return</em>に与えられた引数
+  の値は <span class="function"><a href="function.include.html" class="function">include</a></span> の戻り値となります。
+  <em>return</em>がメインスクリプトで呼び出された場合は
+  スクリプトが終了します。また、<a href="configuration.file.html" class="link">
+  設定ファイル</a>の<a href="ini.core.html#ini.auto-prepend-file" class="link">
+  auto_prepend_file</a> 又は <a href="ini.core.html#ini.auto-append-file" class="link">
+  auto_append_file</a>オプションで指定されたスクリプトの場合も
+  同様にそのスクリプトが終了します。
+ </p>
+ <p class="simpara">
+ さらに詳しい情報に関しては<a href="functions.returning-values.html" class="link">
+ 返り値</a>を参照してください。
+ </p>
+ <p class="para">
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <span class="simpara">
+    <em>return</em> は関数ではなく言語構造であるため、
+    引数を括弧で囲う必要があるのはないことに注意しましょう。
+    括弧で囲わずそのままにしておくのが一般的です。
+    またそのほうが PHP にかかる負荷も低くなります。
+   </span>
+  </p></blockquote>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <span class="simpara">
+    パラメータを省略した場合は括弧も省略する必要があります。この場合の返り値は
+    <strong><code>NULL</code></strong> です。
+    <em>return</em> に括弧をつけてコールしながら何も引数を指定しないと、
+    パースエラーとなります。
+   </span>
+  </p></blockquote>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <span class="simpara">
+    変数をリファレンスで返す場合は、<em class="emphasis">決して</em>引数を
+    括弧で囲ってはいけません。そのようにすると正しく動作しません。
+    <em>return ($a);</em> とすると、変数を返すのではなく
+    <em>($a)</em> を評価した結果を返すことになります
+    (この場合は、もちろん <var class="varname"><var class="varname">$a</var></var> の値です)。
+    </span>
+   </p></blockquote>
+ </p>
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="114304""></a>
+  <div class="note">
+   <strong class="user">Tom</strong>
+   <a href="#114304" class="date">05-Feb-2014 07:35</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Keep in mind that even if PHP allows you to use "return" in the global scope it is very bad design to do so.<br />
+<br />
+Using the return statement in the global scope encourages programmers to use files like functions and treat the include-statement like a function call. Where they initialize the file's "parameters" by setting variables in the global scope and reading them in the included file.<br />
+<br />
+Like so: (WARNING! This code was done by professionals in a controlled environment. Do NOT try this at home!)<br />
+<span class="default">&lt;?php<br />
+$parameter1 </span><span class="keyword">= </span><span class="string">"foo"</span><span class="keyword">;<br />
+</span><span class="default">$parameter2 </span><span class="keyword">= </span><span class="string">"bar"</span><span class="keyword">;<br />
+</span><span class="default">$result </span><span class="keyword">= include </span><span class="string">"voodoo.php"</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+Where "voodoo.php" may be something like:<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">return </span><span class="default">$parameter1 </span><span class="keyword">. </span><span class="string">" " </span><span class="keyword">. </span><span class="default">$parameter2</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+This is one of the worst designs you can implement since there is no function head, no way to understand where $parameter1 and $parameter2 come from by just looking at "voodoo". No explanation in the calling file as of what $parameter1 and -2 are doing or why they are even there. If the names of the parameters ever change in "voodoo" it will break the calling file. No IDE will properly support this very poor "design". And I won't even start on the security issues!<br />
+<br />
+If you find yourself in a situation where a return-statement in global scope is the answer to your problem, then maybe you are asking the wrong questions. Actually you may be better off using a function and throwing an exception where needed.<br />
+<br />
+Files are NOT functions. They should NOT be treated as such and under no circumstances should they "return" anything at all.<br />
+<br />
+Remember: Every time you abuse a return statement God kills a kitten and makes sure you are reborn as a mouse!</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="112515""></a>
+  <div class="note">
+   <strong class="user">J.D. Grimes</strong>
+   <a href="#112515" class="date">26-Jun-2013 05:11</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note that because PHP processes the file before running it, any functions defined in an included file will still be available, even if the file is not executed.
+<br />
+
+<br />
+Example:
+<br />
+
+<br />
+a.php
+<br />
+<span class="default">&lt;?php
+<br />
+</span><span class="keyword">include </span><span class="string">'b.php'</span><span class="keyword">;
+<br />
+
+<br />
+</span><span class="default">foo</span><span class="keyword">();
+<br />
+</span><span class="default">?&gt;
+<br />
+</span>
+<br />
+b.php
+<br />
+<span class="default">&lt;?php
+<br />
+</span><span class="keyword">return;
+<br />
+
+<br />
+function </span><span class="default">foo</span><span class="keyword">() {
+<br />
+&nbsp;&nbsp; &nbsp; echo </span><span class="string">'foo'</span><span class="keyword">;
+<br />
+}
+<br />
+</span><span class="default">?&gt;
+<br />
+</span>
+<br />
+Executing a.php will output "foo".</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="85112""></a>
+  <div class="note">
+   <strong class="user">andrew at neonsurge dot com</strong>
+   <a href="#85112" class="date">15-Aug-2008 10:40</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Response to stoic's message below...<br />
+<br />
+I believe the way you've explained this for people may be a bit confusing, and your verbiage is incorrect.&nbsp; Your script below is technically calling return from a global scope, but as it says right after that in the description above... "If the current script file was include()ed or require()ed, then control is passed back to the calling file".&nbsp; You are in a included file.&nbsp; Just making sure that is clear.<br />
+<br />
+Now, the way php works is before it executes actual code it does what you call "processing" is really just a syntax check.&nbsp; It does this every time per-file that is included before executing that file.&nbsp; This is a GOOD feature, as it makes sure not to run any part of non-functional code.&nbsp; What your example might have also said... is that in doing this syntax check it does not execute code, merely runs through your file (or include) checking for syntax errors before execution.&nbsp; To show that, you should put the echo "b"; and echo "a"; at the start of each file.&nbsp; This will show that "b" is echoed once, and then "a" is echoed only once, because the first time it syntax checked a.php, it was ok.&nbsp; But the second time the syntax check failed and thus it was not executed again and terminated execution of the application due to a syntax error.<br />
+<br />
+Just something to help clarify what you have stated in your comments.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="59866""></a>
+  <div class="note">
+   <strong class="user">warhog at warhog dot net</strong>
+   <a href="#59866" class="date">18-Dec-2005 09:28</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+for those of you who think that using return in a script is the same as using exit note that: using return just exits the execution of the current script, exit the whole execution.<br />
+<br />
+look at that example:<br />
+<br />
+a.php<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">include(</span><span class="string">"b.php"</span><span class="keyword">);<br />
+echo </span><span class="string">"a"</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+b.php<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">echo </span><span class="string">"b"</span><span class="keyword">;<br />
+return;<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+(executing a.php:) will echo "ba".<br />
+<br />
+whereas (b.php modified):<br />
+<br />
+a.php<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">include(</span><span class="string">"b.php"</span><span class="keyword">);<br />
+echo </span><span class="string">"a"</span><span class="keyword">;<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+b.php<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">echo </span><span class="string">"b"</span><span class="keyword">;<br />
+exit;<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+(executing a.php:) will echo "b".</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

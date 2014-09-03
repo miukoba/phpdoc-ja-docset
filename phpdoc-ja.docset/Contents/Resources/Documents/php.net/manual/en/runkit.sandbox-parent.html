@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>Runkit 反サンドボックス（Anti-Sandbox）クラス</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="runkit.sandbox.html">≪ Runkit_Sandbox</a></li>
+      <li style="float: right;"><a href="function.runkit-class-adopt.html">runkit_class_adopt ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="ref.runkit.html">runkit 関数</a></li>
+    <li>Runkit 反サンドボックス（Anti-Sandbox）クラス</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="runkit.sandbox-parent" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">Runkit_Sandbox_Parent</h1>
+  <p class="verinfo">(PECL runkit &gt;= 0.7.0)</p><p class="refpurpose"><span class="refname">Runkit_Sandbox_Parent</span> &mdash; <span class="dc-title">
+   Runkit 反サンドボックス（Anti-Sandbox）クラス
+  </span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-runkit.sandbox-parent-description">
+  <h3 class="title">説明</h3>
+
+  <div class="methodsynopsis dc-description">
+   <span class="type"><span class="type void">void</span></span> <span class="methodname"><strong>Runkit_Sandbox_Parent::__construct</strong></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+
+  <p class="para rdfs-comment">
+   <strong class="classname">Runkit_Sandbox</strong> クラスが作成した
+   サンドボックス環境から <strong class="classname">Runkit_Sandbox_Parent</strong>
+   クラスのインスタンスを作成し、サンドボックスからその親インスタンスに
+   アクセスするための（管理された）手段を提供します。
+  </p>
+
+  <blockquote class="note"><p><strong class="note">注意</strong>: <span class="simpara">
+サンドボックスのサポート
+(<span class="function"><a href="function.runkit-lint.html" class="function">runkit_lint()</a></span>, <span class="function"><a href="function.runkit-lint-file.html" class="function">runkit_lint_file()</a></span>,
+および <strong class="classname">Runkit_Sandbox</strong> クラスで使用)は、
+PHP 5.1.0 以降または特別なパッチを適用した
+PHP 5.0 でのみ利用可能であり、スレッドセーフを有効にしておく必要があります。
+詳細については、runkit パッケージに含まれる <var class="filename">README</var>
+ファイルを参照してください。</span></p></blockquote>
+
+  <p class="para">
+   <strong class="classname">Runkit_Sandbox_Parent</strong> の機能を有効にするには、
+   親のコンテキストから各サンドボックス単位で <em>parent_access</em>
+   フラグを有効にする必要があります。
+  </p>
+
+  <div class="example" id="example-550">
+   <p><strong>例1 サンドボックスから変数を使用する</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$sandbox&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Runkit_Sandbox</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$sandbox</span><span style="color: #007700">[</span><span style="color: #DD0000">'parent_access'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+
+ </div>
+
+
+ <div class="refsect1 variables" id="refsect1-runkit.sandbox-parent-variables">
+  <h3 class="title">親の変数にアクセスする</h3>
+  <p class="para">
+   サンドボックス内の変数へのアクセスと同様、親の変数の読み込みや
+   親の変数への書き込みが可能です。これは
+   <strong class="classname">Runkit_Sandbox_Parent</strong> クラスのプロパティとして
+   扱われます。親の変数の読み込みは、<em>parent_read</em>
+   設定を有効にすることで可能となります（それに加えて、基本となる
+   <em>parent_access</em> の設定も必要です）。
+   一方、書き込みについては <em>parent_write</em> の設定により
+   可能となります。
+  </p>
+
+  <p class="para">
+   サンドボックス内の変数へのアクセスとは異なり、変数のスコープが
+   グローバルに限定されることはありません。<em>parent_scope</em>
+   を適切な整数値に設定することで、アクティブなコールスタック内で
+   他のスコープが使用可能です。0（デフォルト）は、グローバルスコープで
+   変数に直接アクセスします。1 は、サンドボックスのコードが実行された
+   ブロック内のスコープを設定します。それより大きい値を指定した場合、
+   サンドボックスのコードを実行した関数の呼び出し元を順にたどり、
+   そのスコープの変数にアクセスしようと試みます。
+  </p>
+
+  <div class="example" id="example-551">
+   <p><strong>例2 親の変数にアクセスする</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$php&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Runkit_Sandbox</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$php</span><span style="color: #007700">[</span><span style="color: #DD0000">'parent_access'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$php</span><span style="color: #007700">[</span><span style="color: #DD0000">'parent_read'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$test&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"Global"</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$php</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">eval</span><span style="color: #007700">(</span><span style="color: #DD0000">'$PARENT&nbsp;=&nbsp;new&nbsp;Runkit_Sandbox_Parent;'</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$php</span><span style="color: #007700">[</span><span style="color: #DD0000">'parent_scope'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">one</span><span style="color: #007700">();<br /><br /></span><span style="color: #0000BB">$php</span><span style="color: #007700">[</span><span style="color: #DD0000">'parent_scope'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">one</span><span style="color: #007700">();<br /><br /></span><span style="color: #0000BB">$php</span><span style="color: #007700">[</span><span style="color: #DD0000">'parent_scope'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">one</span><span style="color: #007700">();<br /><br /></span><span style="color: #0000BB">$php</span><span style="color: #007700">[</span><span style="color: #DD0000">'parent_scope'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">one</span><span style="color: #007700">();<br /><br /></span><span style="color: #0000BB">$php</span><span style="color: #007700">[</span><span style="color: #DD0000">'parent_scope'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">one</span><span style="color: #007700">();<br /><br /></span><span style="color: #0000BB">$php</span><span style="color: #007700">[</span><span style="color: #DD0000">'parent_scope'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">one</span><span style="color: #007700">();<br /><br />function&nbsp;</span><span style="color: #0000BB">one</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$test&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"one()"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">two</span><span style="color: #007700">();<br />}<br /><br />function&nbsp;</span><span style="color: #0000BB">two</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$test&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"two()"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">three</span><span style="color: #007700">();<br />}<br /><br />function&nbsp;</span><span style="color: #0000BB">three</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$test&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"three()"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$GLOBALS</span><span style="color: #007700">[</span><span style="color: #DD0000">'php'</span><span style="color: #007700">]-&gt;</span><span style="color: #0000BB">eval</span><span style="color: #007700">(</span><span style="color: #DD0000">'var_dump($PARENT-&gt;test);'</span><span style="color: #007700">);<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+  <p class="para">上の例の出力は以下となります。</p>
+  <div class="example-contents screen">
+<div class="cdata"><pre>
+string(6) &quot;Global&quot;
+string(7) &quot;three()&quot;
+string(5) &quot;two()&quot;
+string(5) &quot;one()&quot;
+string(6) &quot;Global&quot;
+string(6) &quot;Global&quot;
+</pre></div>
+  </div>
+ </div>
+
+
+ <div class="refsect1 functions" id="refsect1-runkit.sandbox-parent-functions">
+  <h3 class="title">親の関数をコールする</h3>
+  <p class="para">
+   適切な設定を有効にすることで、サンドボックスはその親の関数に
+   アクセスすることが可能となります。
+   <em>parent_call</em> を有効にすると、サンドボックスから
+   親スコープの全ての関数をコールすることが可能となります。
+   言語構造については、以下のように個々の設定項目で管理されます。
+   <span class="function"><a href="function.print.html" class="function">print</a></span> および <span class="function"><a href="function.echo.html" class="function">echo</a></span> は
+   <em>parent_echo</em> を有効にすると使用可能です。
+   <span class="function"><a href="function.die.html" class="function">die()</a></span> および <span class="function"><a href="function.exit.html" class="function">exit()</a></span> は
+   <em>parent_die</em> を有効にすると使用可能です。
+   <span class="function"><a href="function.eval.html" class="function">eval()</a></span> は <em>parent_eval</em> を
+   有効にすると使用可能です。また
+   while <span class="function"><a href="function.include.html" class="function">include</a></span>、<span class="function"><a href="function.include-once.html" class="function">include_once</a></span>、
+   <span class="function"><a href="function.require.html" class="function">require</a></span> および <span class="function"><a href="function.require-once.html" class="function">require_once</a></span> は
+   <em>parent_include</em> を有効にすると使用可能です。
+  </p>
+
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

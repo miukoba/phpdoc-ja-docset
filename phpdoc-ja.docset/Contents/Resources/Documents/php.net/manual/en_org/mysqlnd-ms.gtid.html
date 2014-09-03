@@ -1,0 +1,391 @@
+<html><!-- Mirrored from php.net/manual/en/mysqlnd-ms.gtid.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 17:07:11 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Global transaction IDs</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="mysqlnd-ms.gtid.html">
+ <link rel="shorturl" href="mysqlnd-ms.gtid.html">
+ <link rel="alternate" href="mysqlnd-ms.gtid.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="mysqlnd-ms.concepts.html">
+ <link rel="prev" href="mysqlnd-ms.qos-consistency.html">
+ <link rel="next" href="mysqlnd-ms.concept_cache.html">
+
+ <link rel="alternate" href="mysqlnd-ms.gtid.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/mysqlnd-ms.gtid.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/mysqlnd-ms.gtid.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/mysqlnd-ms.gtid.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/mysqlnd-ms.gtid.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/mysqlnd-ms.gtid.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/mysqlnd-ms.gtid.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/mysqlnd-ms.gtid.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/mysqlnd-ms.gtid.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/mysqlnd-ms.gtid.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/mysqlnd-ms.gtid.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.database.html">Database Extensions</a></li>      <li><a href="refs.database.vendors.html">Vendor Specific Database Extensions</a></li>      <li><a href="set.mysqlinfo.html">MySQL</a></li>      <li><a href="book.mysqlnd-ms.html">mysqlnd_ms</a></li>      <li><a href="mysqlnd-ms.concepts.html">Concepts</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="mysqlnd-ms.gtid" class="section">
+  <h2 class="title">Global transaction IDs</h2>
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   <strong>Version requirement</strong><br>
+   </p><p class="para">
+    Client side global transaction ID injection exists as of mysqlnd_ms version 1.2.0-alpha.
+    Transaction boundaries are detected by monitoring API calls. This is possible
+    as of PHP 5.4.0. Please, see also <a href="mysqlnd-ms.transaction.html" class="link">Transaction handling</a>.
+   </p>
+   <p class="para">
+    As of MySQL 5.6.5-m8 the MySQL server features built-in global transaction identifiers.
+    The MySQL built-in global transaction ID feature is supported by
+    <em>PECL/mysqlnd_ms</em> 1.3.0-alpha or
+    later. Neither are client-side transaction boundary monitoring nor any setup
+    activities required if using the server feature.
+   </p>
+   <p class="para">
+     Please note, all MySQL 5.6 production versions do not provide
+     clients with enough information to use GTIDs for enforcing session consistency.
+     In the worst case, the plugin will choose the master only.
+   </p>
+  <p></p></blockquote>
+  <p class="para">
+   <em class="emphasis">Idea and client-side emulation</em>
+  </p>
+  <p class="para">
+   <em>PECL/mysqlnd_ms</em> can do client-side transparent global transaction ID injection.
+   In its most basic form, a global transaction identifier is a counter which is
+   incremented for every transaction executed on the master. The counter is held
+   in a table on the master. Slaves replicate the counter table.
+  </p>
+  <p class="para">
+   In case of a master failure a database administrator can easily identify the
+   most recent slave for promiting it as a new master. The most recent slave has
+   the highest transaction identifier.
+  </p>
+  <p class="para">
+   Application developers can ask the plugin for the global transaction identifier
+   (GTID) for their last successful write operation. The plugin will return
+   an identifier that refers to an transaction no older than that of the clients last
+   write operation. Then, the GTID can be passed as a parameter
+   to the quality of service (QoS) filter as an option for session consistency.
+   Session consistency ensures read your writes. The filter ensures that all
+   reads are either directed to a master or a slave which has replicated the write
+   referenced by the GTID.
+  </p>
+  <p class="para">
+   <em class="emphasis">When injection is done</em>
+  </p>
+  <p class="para">
+   The plugin transparently maintains the GTID table on the master.
+   In autocommit mode the plugin injects an <em>UPDATE</em> statement
+   before executing the users statement for every master use. In manual
+   transaction mode, the injection is done before the application calls
+   <em>commit()</em> to close a transaction. The configuration option
+   <em>report_error</em> of the GTID section in the plugins configuration
+   file is used to control whether a failed injection shall abort the current
+   operation or be ignored silently (default).
+  </p>
+  <p class="para">
+   Please note, the
+   PHP version requirements for
+   <a href="mysqlnd-ms.transaction.html" class="link">transaction boundary monitoring</a>
+   and their limits.
+  </p>
+  <p class="para">
+   <em class="emphasis">Limitations</em>
+  </p>
+  <p class="para">
+   Client-side global transaction ID injection has shortcomings. The potential
+   issues are not specific to <em>PECL/mysqlnd_ms</em>
+   but are rather of general nature.
+   </p><ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      Global transaction ID tables must be deployed on all masters and replicas.
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      The GTID can have holes. Only PHP clients using the plugin will
+      maintain the table. Other clients will not.
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      Client-side transaction boundary detection is based on API calls only.
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      Client-side transaction boundary detection does not take implicit
+      commit into account. Some MySQL SQL statements cause an implicit
+      commit and cannot be rolled back.
+     </span>
+    </li>
+   </ul>
+  <p></p>
+  <p class="para">
+    <em class="emphasis">Using server-side global transaction identifier</em>
+  </p>
+  <p class="para">
+   Starting with <em>PECL/mysqlnd_ms</em> 1.3.0-alpha
+   the MySQL 5.6.5-m8 or newer built-in global
+   transaction identifier feature is supported. Use of the server feature lifts
+   all of the above listed limitations. Please, see the MySQL Reference Manual
+   for limitations and preconditions for using server built-in global transaction
+   identifiers.
+  </p>
+  <p class="para">
+   Whether to use the client-side emulation or the server built-in
+   functionality is a question not directly related to the plugin, thus it is not
+   discussed in depth. There are no plans to remove the client-side emulation and
+   you can continue to use it, if the server-side solution is no option. This may
+   be the case in heterogenous environments with old MySQL server or, if any of the
+   server-side solution limitations is not acceptable.
+  </p>
+  <p class="para">
+   From an applications perspective there is hardly a difference in using one or the
+   other approach. The following properties differ.
+   </p><ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      Client-side emulation, as shown in the manual, is using an easy to compare sequence number
+      for global transactions. Multi-master is not handled to keep the manual examples easy.
+     </span>
+     <span class="simpara">
+      Server-side built-in feature is using a combination of a server identifier
+      and a sequence number as a global transaction identifier. Comparison cannot
+      use numeric algebra. Instead a SQL function must be used. Please,
+      see the MySQL Reference Manual for details.
+     </span>
+     <span class="simpara">
+      Server-side built-in feature of MySQL 5.6 cannot be used to ensure session consistency
+      under all circumstances. Do not use it for the quality-of-service feature. Here is a simple
+      example why it will not give reliable results. There are more edge cases that cannot
+      be covered with limited functionality exported by the server. Currently, clients can
+      ask a MySQL replication master for a list of all executed global transaction IDs only.
+      If a slave is configured not to replicate all transactions, for example, because replication
+      filters are set, then the slave will never show the same set of executed global transaction
+      IDs. Albeit the slave may have replicated a clients writes and it may be a candidate
+      for a consistent read, it will never be considered by the plugin. Upon write the plugin
+      learns from the master that the servers complete transaction history consists of GTID=1..3.
+      There is no way for the plugin to ask for the GTID of the write transaction itself, say GTID=3.
+      Assume that a slave does not replicate the transactions GTID=1..2 but only GTID=3 because of
+      a replication feature. Then, the slaves transaction history is GTID=3. However, the plugin tries
+      to find a node which has a transaction history of GITD=1...3. Albeit the slave has replicated
+      the clients write and session consistency may be achieved when reading from the slave, it
+      will not be considered by the plugin. This is not a fault of the plugin implementation but
+      a feature gap on the server side. Please note, this is a trivial case to illustrate the
+      issue there are other issues. In sum you are asked not to attempt  using MySQL 5.6 built-in GTIDs
+      for enforcing session consistency. Sooner or later the load balancing will stop working properly
+      and the plugin will direct all session consistency requests to the master.
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      Plugin global transaction ID statistics are only available with client-side
+      emulation because they monitor the emulation.
+     </span>
+    </li>
+   </ul>
+  <p></p>
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   <strong>Global transaction identifiers in distributed systems</strong><br>
+   </p><p class="para">
+    Global transaction identifiers can serve multiple purposes in the context of distributed
+    systems, such as a database cluster. Global transaction identifiers can
+    be used for, for example, system wide identification of transactions,
+    global ordering of transactions, heartbeat mechanism and
+    for checking the replication status of replicas. <em>PECL/mysqlnd_ms</em>, a clientside
+    driver based software, does focus on using GTIDs for tasks that can be
+    handled at the client, such as checking the replication status of replicas
+    for asynchronous replication setups.
+   </p>
+  <p></p></blockquote>
+ </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div>
+ <div class="note">There are no user contributed notes for this page.</div></section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/mysqlnd-ms.gtid.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 17:07:11 GMT -->
+
+
+</body></html>

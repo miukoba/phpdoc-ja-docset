@@ -1,0 +1,411 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>新機能</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="migration56.incompatible.html">≪ 下位互換性のない変更点</a></li>
+      <li style="float: right;"><a href="migration56.deprecated.html">PHP 5.6.x で推奨されなくなる機能 ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="migration56.html">PHP 5.5.x から PHP 5.6.x への移行</a></li>
+    <li>新機能</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="migration56.new-features" class="sect1">
+ <h2 class="title">新機能</h2>
+
+ <div class="sect2" id="migration56.new-features.const-scalar-exprs">
+  <h3 class="title">定数のスカラー式</h3>
+
+  <p class="para">
+   数値や文字列リテラルと定数を、これまでのバージョンでは静的な値が想定されていた場面
+   (定数やプロパティの宣言、関数のデフォルト引数など)
+   で、スカラー式として扱えるようになりました。
+  </p>
+
+  <div class="informalexample">
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">const&nbsp;</span><span style="color: #0000BB">ONE&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br />const&nbsp;</span><span style="color: #0000BB">TWO&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ONE&nbsp;</span><span style="color: #007700">*&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">;<br /><br />class&nbsp;</span><span style="color: #0000BB">C&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;</span><span style="color: #0000BB">THREE&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">TWO&nbsp;</span><span style="color: #007700">+&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;</span><span style="color: #0000BB">ONE_THIRD&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ONE&nbsp;</span><span style="color: #007700">/&nbsp;</span><span style="color: #0000BB">self</span><span style="color: #007700">::</span><span style="color: #0000BB">THREE</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;</span><span style="color: #0000BB">SENTENCE&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'THREE&nbsp;の値は&nbsp;'</span><span style="color: #007700">.</span><span style="color: #0000BB">self</span><span style="color: #007700">::</span><span style="color: #0000BB">THREE</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">f</span><span style="color: #007700">(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">ONE&nbsp;</span><span style="color: #007700">+&nbsp;</span><span style="color: #0000BB">self</span><span style="color: #007700">::</span><span style="color: #0000BB">THREE</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$a</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br />echo&nbsp;(new&nbsp;</span><span style="color: #0000BB">C</span><span style="color: #007700">)-&gt;</span><span style="color: #0000BB">f</span><span style="color: #007700">().</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />echo&nbsp;</span><span style="color: #0000BB">C</span><span style="color: #007700">::</span><span style="color: #0000BB">SENTENCE</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <p class="para">上の例の出力は以下となります。</p>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+4
+THREE の値は 3
+</pre></div>
+   </div>
+  </div>
+ </div>
+
+ <div class="sect2" id="migration56.new-features.variadics">
+  <h3 class="title"><em>...</em> による可変個引数関数</h3>
+
+  <p class="para">
+   <a href="functions.arguments.html#functions.variable-arg-list" class="link">可変個引数の関数</a>
+   の実装に <em>...</em> 演算子が使えるようになり、
+   <span class="function"><a href="function.func-get-args.html" class="function">func_get_args()</a></span> を使わずに済むようになりました。
+  </p>
+
+  <div class="informalexample">
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">f</span><span style="color: #007700">(</span><span style="color: #0000BB">$req</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$opt&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">,&nbsp;...</span><span style="color: #0000BB">$params</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;$params&nbsp;は配列で、残りのすべての引数が含まれます<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">'$req:&nbsp;%d;&nbsp;$opt:&nbsp;%d;&nbsp;パラメータ数:&nbsp;%d'</span><span style="color: #007700">.</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">,<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$req</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$opt</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">count</span><span style="color: #007700">(</span><span style="color: #0000BB">$params</span><span style="color: #007700">));<br />}<br /><br /></span><span style="color: #0000BB">f</span><span style="color: #007700">(</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">f</span><span style="color: #007700">(</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">f</span><span style="color: #007700">(</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">f</span><span style="color: #007700">(</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">f</span><span style="color: #007700">(</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">4</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">5</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <p class="para">上の例の出力は以下となります。</p>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+$req: 1; $opt: 0; パラメータ数: 0
+$req: 1; $opt: 2; パラメータ数: 0
+$req: 1; $opt: 2; パラメータ数: 1
+$req: 1; $opt: 2; パラメータ数: 2
+$req: 1; $opt: 2; パラメータ数: 3
+</pre></div>
+   </div>
+  </div>
+ </div>
+
+ <div class="sect2" id="migration56.new-features.splat">
+  <h3 class="title"><em>...</em> による引数のアンパック</h3>
+
+  <p class="para">
+   <a href="language.types.array.html" class="link">配列</a> や
+   <span class="interfacename"><a href="class.traversable.html" class="interfacename">Traversable</a></span> オブジェクトを引数リストにアンパックするために、
+   関数の呼び出し時に <em>...</em> 演算子が使えるようになりました。
+   これは、Ruby などの他の言語では splat 演算子と呼ばれることもあります。
+  </p>
+
+  <div class="informalexample">
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">add</span><span style="color: #007700">(</span><span style="color: #0000BB">$a</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$b</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$c</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">+&nbsp;</span><span style="color: #0000BB">$b&nbsp;</span><span style="color: #007700">+&nbsp;</span><span style="color: #0000BB">$c</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #0000BB">$operators&nbsp;</span><span style="color: #007700">=&nbsp;[</span><span style="color: #0000BB">2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">];<br />echo&nbsp;</span><span style="color: #0000BB">add</span><span style="color: #007700">(</span><span style="color: #0000BB">1</span><span style="color: #007700">,&nbsp;...</span><span style="color: #0000BB">$operators</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <p class="para">上の例の出力は以下となります。</p>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+6
+</pre></div>
+   </div>
+  </div>
+ </div>
+
+ <div class="sect2" id="migration56.new-features.exponentiation">
+  <h3 class="title">累乗演算子 <em>**</em></h3>
+
+  <p class="para">
+   右から評価する <em>**</em> 演算子が追加されました。
+   これは累乗をサポートするものです。さらに、短縮代入演算子
+   <em>**=</em> も追加されました。
+  </p>
+
+  <div class="informalexample">
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"2&nbsp;**&nbsp;3&nbsp;==&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%d\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2&nbsp;</span><span style="color: #007700">**&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"2&nbsp;**&nbsp;3&nbsp;**&nbsp;2&nbsp;==&nbsp;%d\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">2&nbsp;</span><span style="color: #007700">**&nbsp;</span><span style="color: #0000BB">3&nbsp;</span><span style="color: #007700">**&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">2</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">**=&nbsp;</span><span style="color: #0000BB">3</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">printf</span><span style="color: #007700">(</span><span style="color: #DD0000">"a&nbsp;==&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;%d\n"</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$a</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  <p class="para">上の例の出力は以下となります。</p>
+  <div class="example-contents screen">
+<div class="cdata"><pre>
+2 ** 3 ==      8
+2 ** 3 ** 2 == 512
+a ==           8
+</pre></div>
+  </div>
+  </div>
+ </div>
+
+ <div class="sect2" id="migration56.new-features.use">
+  <h3 class="title"><em>use function</em> および <em>use const</em></h3>
+
+  <p class="para">
+   The
+   <a href="language.namespaces.importing.html" class="link"><em>use</em></a>
+   演算子を拡張し、クラスだけではなく関数や定数もインポートできるようになりました。
+   それぞれ、言語構造
+   <em>use function</em> および <em>use const</em>
+   を用います。
+  </p>
+
+  <div class="informalexample">
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">Name</span><span style="color: #007700">\</span><span style="color: #0000BB">Space&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;</span><span style="color: #0000BB">FOO&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">42</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">f</span><span style="color: #007700">()&nbsp;{&nbsp;echo&nbsp;</span><span style="color: #0000BB">__FUNCTION__</span><span style="color: #007700">.</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;&nbsp;}<br />}<br /><br />namespace&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;use&nbsp;const&nbsp;</span><span style="color: #0000BB">Name</span><span style="color: #007700">\</span><span style="color: #0000BB">Space</span><span style="color: #007700">\</span><span style="color: #0000BB">FOO</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;use&nbsp;function&nbsp;</span><span style="color: #0000BB">Name</span><span style="color: #007700">\</span><span style="color: #0000BB">Space</span><span style="color: #007700">\</span><span style="color: #0000BB">f</span><span style="color: #007700">;<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">FOO</span><span style="color: #007700">.</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">f</span><span style="color: #007700">();<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <p class="para">上の例の出力は以下となります。</p>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+42
+Name\Space\f
+</pre></div>
+   </div>
+  </div>
+ </div>
+
+ <div class="sect2" id="migration56.new-features.phpdbg">
+  <h3 class="title">phpdbg</h3>
+
+  <p class="para">
+   PHP now includes an interactive debugger called phpdbg implemented as a SAPI module.
+   詳細な情報は
+   <a href="http://phpdbg.com/docs" class="link external" title="Link : http://phpdbg.com/docs">&raquo;&nbsp;phpdbg のドキュメント</a>
+   を参照ください。
+  </p>
+ </div>
+
+ <div class="sect2" id="migration56.new-features.default-encoding">
+  <h3 class="title">デフォルトの文字エンコーディング</h3>
+
+  <p class="para">
+   エンコーディングに依存する関数、たとえば <span class="function"><a href="function.htmlspecialchars.html" class="function">htmlspecialchars()</a></span>
+   などにおけるデフォルトの文字セットとして、
+   <a href="ini.core.html#ini.default-charset" class="link">default_charset</a> を利用するようになりました。
+   iconv (非推奨) や mbstring でのエンコードが設定されている場合は、
+   default_charset よりもそちらのほうが優先されます。
+  </p>
+
+  <p class="para">
+   この設定のデフォルト値は <em>UTF-8</em> です。
+  </p>
+ </div>
+
+ <div class="sect2" id="migration56.new-features.reusable-input">
+  <h3 class="title"><a href="wrappers.php.html#wrappers.php.input" class="link"><em>php://input</em></a> が再利用可能に</h3>
+
+  <p class="para">
+   <a href="wrappers.php.html#wrappers.php.input" class="link"><em>php://input</em></a>
+   が再オープンできるようになり、必要に応じて何度でも読めるようになりました。
+   その結果として、POST されたデータを読むときに必要となるメモリの量が大幅に削減されました。
+  </p>
+ </div>
+
+ <div class="sect2" id="migration56.new-features.large-file">
+  <h3 class="title">巨大なファイルのアップロード</h3>
+
+  <p class="para">
+   2 ギガバイトより大きいサイズのファイルもアップロードできるようになりました。
+  </p>
+ </div>
+
+ <div class="sect2" id="migration56.new-features.gmp">
+  <h3 class="title"><a href="book.gmp.html" class="link">GMP</a> での演算子オーバーロードのサポート</h3>
+
+  <p class="para">
+   <a href="book.gmp.html" class="link">GMP</a> オブジェクトが、
+   演算子のオーバーロードやスカラー型へのキャストに対応するようになりました。
+   GMP を使って、よりわかりやすいコードが書けるようになります。
+  </p>
+
+  <div class="informalexample">
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">gmp_init</span><span style="color: #007700">(</span><span style="color: #0000BB">42</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$b&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">gmp_init</span><span style="color: #007700">(</span><span style="color: #0000BB">17</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;5.6&nbsp;より前のバージョンのコード<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">gmp_add</span><span style="color: #007700">(</span><span style="color: #0000BB">$a</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$b</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">gmp_add</span><span style="color: #007700">(</span><span style="color: #0000BB">$a</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">17</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">gmp_add</span><span style="color: #007700">(</span><span style="color: #0000BB">42</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$b</span><span style="color: #007700">));<br /><br /></span><span style="color: #FF8000">//&nbsp;5.6&nbsp;以降の新しいコード<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">+&nbsp;</span><span style="color: #0000BB">$b</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">+&nbsp;</span><span style="color: #0000BB">17</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">42&nbsp;</span><span style="color: #007700">+&nbsp;</span><span style="color: #0000BB">$b</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </div>
+
+ <div class="sect2" id="migration56.new-features.hash-equals">
+  <h3 class="title"><span class="function"><a href="function.hash-equals.html" class="function">hash_equals()</a></span> による、タイミング攻撃に対応した文字列比較</h3>
+
+  <p class="para">
+   <span class="function"><a href="function.hash-equals.html" class="function">hash_equals()</a></span> 関数が追加されました。
+   この関数は、二つの文字列の比較を一定の時間で行います。
+   タイミング攻撃を防ぐために、文字列の比較にはこの関数を使うべきです。
+   たとえば <span class="function"><a href="function.crypt.html" class="function">crypt()</a></span> のパスワードハッシュをチェックしたりするときに使えます
+   (<span class="function"><a href="function.password-hash.html" class="function">password_hash()</a></span> や
+   <span class="function"><a href="function.password-verify.html" class="function">password_verify()</a></span> が使えない場合を想定。
+   これらの関数は、タイミング攻撃の影響を受けません)。
+  </p>
+
+  
+
+  <div class="informalexample">
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$expected&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">crypt</span><span style="color: #007700">(</span><span style="color: #DD0000">'12345'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'$2a$07$usesomesillystringforsalt$'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$correct&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">crypt</span><span style="color: #007700">(</span><span style="color: #DD0000">'12345'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'$2a$07$usesomesillystringforsalt$'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$incorrect&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">crypt</span><span style="color: #007700">(</span><span style="color: #DD0000">'1234'</span><span style="color: #007700">,&nbsp;&nbsp;</span><span style="color: #DD0000">'$2a$07$usesomesillystringforsalt$'</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">hash_equals</span><span style="color: #007700">(</span><span style="color: #0000BB">$expected</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$correct</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">hash_equals</span><span style="color: #007700">(</span><span style="color: #0000BB">$expected</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$incorrect</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <p class="para">上の例の出力は以下となります。</p>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+bool(true)
+bool(false)
+</pre></div>
+   </div>
+  </div>
+ </div>
+
+ <div class="sect2" id="migration56.new-features.gost">
+  <h3 class="title">gost-crypto ハッシュアルゴリズム</h3>
+
+  <p class="para">
+   ハッシュアルゴリズム <em>gost-crypto</em> が追加されました。
+   これは GOST ハッシュ関数を実装したもので、
+   <a href="http://www.faqs.org/rfcs/rfc4357" class="link external" title="Link : http://www.faqs.org/rfcs/rfc4357">&raquo;&nbsp;RFC 4357, section 11.2</a>
+   に記載されている CryptoPro S-box テーブルを使っています。
+  </p>
+ </div>
+
+ <div class="sect2" id="migration56.new-features.openssl">
+  <h3 class="title">SSL/TLS の改良</h3>
+
+  <p class="para">
+   PHP 5.6 では、SSL/TLS のサポートに幅広い改良が加わりました。
+   <a href="migration56.incompatible.html#migration56.incompatible.peer-verification" class="link">ピア検証にデフォルトで対応</a>したり、
+   証明書のフィンガープリントのマッチングに対応したり、
+   TLS 再ネゴシエーションアタックの対策をしたり、多数の
+   <a href="context.ssl.html" class="link">SSL コンテキストオプション</a>を新たに導入したりしました。
+   これらによって、暗号化されたストリームに関するよりきめ細やかな制御ができるようになりました。
+  </p>
+
+  <p class="para">
+   変更内容の詳細を、
+   <a href="migration56.openssl.html" class="link">PHP 5.6.x における OpenSSL 関連の変更</a>
+   にまとめました。
+  </p>
+ </div>
+
+ <div class="sect2" id="migration56.new-features.postgresql">
+  <h3 class="title"><a href="book.pgsql.html" class="link">pgsql</a> の非同期サポート</h3>
+
+  <p class="para">
+   <a href="book.pgsql.html" class="link">pgsql</a> 拡張モジュールが、
+   非同期の接続や問い合わせに対応しました。
+   PostgreSQL データベースとのやりとりで、ノンブロッキング処理ができるようになります。
+   非同期接続を確立するには、定数
+   <strong><code>PGSQL_CONNECT_ASYNC</code></strong> を利用します。そして、新しい関数
+   <span class="function"><strong>pg_connect_poll()</strong></span>、<span class="function"><strong>pg_socket()</strong></span>、
+   <span class="function"><strong>pg_consume_input()</strong></span>、<span class="function"><strong>pg_flush()</strong></span>
+   を使って、非同期接続や問い合わせを処理します。
+  </p>
+ </div>
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="115377""></a>
+  <div class="note">
+   <strong class="user">Anonymous</strong>
+   <a href="#115377" class="date">15-Jul-2014 09:58</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Remember, that<br />
+<br />
+&nbsp;&nbsp;&nbsp; ($a ** $b) ** $c === $a ** ($b * $c)<br />
+<br />
+Thats why exponent operator** is RIGHT associative.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="114892""></a>
+  <div class="note">
+   <strong class="user">ashnazg at php dot net</strong>
+   <a href="#114892" class="date">22-Apr-2014 12:07</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note the order of operations in that exponentiation operator, as it was opposite of what my first expectation was:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="comment">// what I had expected, <br />
+// evaluating left to right, <br />
+// since no parens were used to guide the order of operations<br />
+</span><span class="default">2 </span><span class="keyword">** </span><span class="default">3 </span><span class="keyword">** </span><span class="default">2 </span><span class="keyword">== </span><span class="default">64</span><span class="keyword">; </span><span class="comment">// (2 ** 3) ** 2 = 8 ** 2 = 64<br />
+<br />
+// the given example, <br />
+// which appears to evaluate right to left<br />
+</span><span class="default">2 </span><span class="keyword">** </span><span class="default">3 </span><span class="keyword">** </span><span class="default">2 </span><span class="keyword">== </span><span class="default">512</span><span class="keyword">; </span><span class="comment">// 2 ** (3 ** 2) = 2 ** 9 = 512<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="114271""></a>
+  <div class="note">
+   <strong class="user">gmblar+php at gmail dot com</strong>
+   <a href="#114271" class="date">31-Jan-2014 11:36</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+<span class="default">&lt;?php<br />
+<br />
+</span><span class="keyword">function </span><span class="default">array_zip</span><span class="keyword">(...</span><span class="default">$arrays</span><span class="keyword">) {<br />
+&nbsp;&nbsp;&nbsp; return </span><span class="default">array_merge</span><span class="keyword">(...</span><span class="default">array_map</span><span class="keyword">(</span><span class="default">NULL</span><span class="keyword">, ...</span><span class="default">$arrays</span><span class="keyword">));<br />
+}<br />
+<br />
+</span><span class="default">$a </span><span class="keyword">= array(</span><span class="default">1</span><span class="keyword">, </span><span class="default">4</span><span class="keyword">, </span><span class="default">7</span><span class="keyword">);<br />
+</span><span class="default">$b </span><span class="keyword">= array(</span><span class="default">2</span><span class="keyword">, </span><span class="default">5</span><span class="keyword">, </span><span class="default">8</span><span class="keyword">);<br />
+</span><span class="default">$c </span><span class="keyword">= array(</span><span class="default">3</span><span class="keyword">, </span><span class="default">6</span><span class="keyword">, </span><span class="default">9</span><span class="keyword">);<br />
+<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">implode</span><span class="keyword">(</span><span class="string">', '</span><span class="keyword">, </span><span class="default">array_zip</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">, </span><span class="default">$b</span><span class="keyword">, </span><span class="default">$c</span><span class="keyword">)));<br />
+<br />
+</span><span class="comment">// Output<br />
+</span><span class="default">string</span><span class="keyword">(</span><span class="default">25</span><span class="keyword">) </span><span class="string">"1, 2, 3, 4, 5, 6, 7, 8, 9"</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="114212""></a>
+  <div class="note">
+   <strong class="user">tr0y</strong>
+   <a href="#114212" class="date">25-Jan-2014 04:02</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+It is also possible ( in 5.6.0alpha ) to typehint the ...-operator<br />
+<br />
+function foo (stdclass ... $inbound) {<br />
+&nbsp;&nbsp; var_dump($inbound);<br />
+}<br />
+<br />
+// ok:<br />
+foo( (object)['foo' =&gt; 'bar'], (object)['bar' =&gt; 'foo'] );<br />
+<br />
+// fails:<br />
+foo( 1, 2, 3, 4 );</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

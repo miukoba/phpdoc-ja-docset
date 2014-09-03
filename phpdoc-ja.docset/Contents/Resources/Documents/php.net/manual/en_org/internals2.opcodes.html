@@ -1,0 +1,557 @@
+<html><!-- Mirrored from php.net/manual/en/internals2.opcodes.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:24:10 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Zend Engine 2 Opcodes</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="internals2.opcodes.html">
+ <link rel="shorturl" href="internals2.opcodes.html">
+ <link rel="alternate" href="internals2.opcodes.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="internals2.html">
+ <link rel="prev" href="internals2.apiref.html">
+ <link rel="next" href="internals2.opcodes.list.html">
+
+ <link rel="alternate" href="internals2.opcodes.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/internals2.opcodes.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/internals2.opcodes.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/internals2.opcodes.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/internals2.opcodes.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/internals2.opcodes.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/internals2.opcodes.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/internals2.opcodes.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/internals2.opcodes.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/internals2.opcodes.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/internals2.opcodes.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="internals2.html">PHP at the Core: A Hacker's Guide</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="internals2.opcodes" class="part">
+  <h1>Zend Engine 2 Opcodes</h1>
+<h2>Table of Contents</h2><ul class="chunklist chunklist_part"><li><a href="internals2.opcodes.list.html">Opcode Descriptions and Examples</a></li></ul>
+
+  <div class="partintro">
+   <p class="para">
+    When parsing PHP files, Zend Engine 2 generates a series of operation
+    codes, commonly known as "opcodes", representing the function of the
+    code. This part of the manual details those opcodes and their behaviour.
+   </p>
+   <p class="para">
+    Opcodes may be dumped for a given PHP file using the vld extension (see
+    <a href="http://pecl.php.net/package/vld" class="link external">»&nbsp;http://pecl.php.net/package/vld</a>).
+   </p>
+   
+   <table class="doctable table">
+    <caption><strong>Opcode List</strong></caption>
+    
+     <thead>
+      <tr>
+       <th>Number</th>
+       <th>Name</th>
+       <th>Has sample code?</th>
+      </tr>
+
+     </thead>
+
+     <tbody class="tbody">
+      <tr><td>0</td><td><a href="internals2.opcodes.nop.html" class="xref">NOP</a></td><td>yes</td></tr>
+
+      <tr><td>1</td><td><a href="internals2.opcodes.add.html" class="xref">ADD</a></td><td>yes</td></tr>
+
+      <tr><td>2</td><td><a href="internals2.opcodes.sub.html" class="xref">SUB</a></td><td>yes</td></tr>
+
+      <tr><td>3</td><td><a href="internals2.opcodes.mul.html" class="xref">MUL</a></td><td>yes</td></tr>
+
+      <tr><td>4</td><td><a href="internals2.opcodes.div.html" class="xref">DIV</a></td><td>yes</td></tr>
+
+      <tr><td>5</td><td><a href="internals2.opcodes.mod.html" class="xref">MOD</a></td><td>yes</td></tr>
+
+      <tr><td>6</td><td><a href="internals2.opcodes.sl.html" class="xref">SL</a></td><td>yes</td></tr>
+
+      <tr><td>7</td><td><a href="internals2.opcodes.sr.html" class="xref">SR</a></td><td>yes</td></tr>
+
+      <tr><td>8</td><td><a href="internals2.opcodes.concat.html" class="xref">CONCAT</a></td><td>yes</td></tr>
+
+      <tr><td>9</td><td><a href="internals2.opcodes.bw-or.html" class="xref">BW_OR</a></td><td>yes</td></tr>
+
+      <tr><td>10</td><td><a href="internals2.opcodes.bw-and.html" class="xref">BW_AND</a></td><td>yes</td></tr>
+
+      <tr><td>11</td><td><a href="internals2.opcodes.bw-xor.html" class="xref">BW_XOR</a></td><td>yes</td></tr>
+
+      <tr><td>12</td><td><a href="internals2.opcodes.bw-not.html" class="xref">BW_NOT</a></td><td>yes</td></tr>
+
+      <tr><td>13</td><td><a href="internals2.opcodes.bool-not.html" class="xref">BOOL_NOT</a></td><td>yes</td></tr>
+
+      <tr><td>14</td><td><a href="internals2.opcodes.bool-xor.html" class="xref">BOOL_XOR</a></td><td>yes</td></tr>
+
+      <tr><td>15</td><td><a href="internals2.opcodes.is-identical.html" class="xref">IS_IDENTICAL</a></td><td>yes</td></tr>
+
+      <tr><td>16</td><td><a href="internals2.opcodes.is-not-identical.html" class="xref">IS_NOT_IDENTICAL</a></td><td>yes</td></tr>
+
+      <tr><td>17</td><td><a href="internals2.opcodes.is-equal.html" class="xref">IS_EQUAL</a></td><td>yes</td></tr>
+
+      <tr><td>18</td><td><a href="internals2.opcodes.is-not-equal.html" class="xref">IS_NOT_EQUAL</a></td><td>yes</td></tr>
+
+      <tr><td>19</td><td><a href="internals2.opcodes.is-smaller.html" class="xref">IS_SMALLER</a></td><td>yes</td></tr>
+
+      <tr><td>20</td><td><a href="internals2.opcodes.is-smaller-or-equal.html" class="xref">IS_SMALLER_OR_EQUAL</a></td><td>yes</td></tr>
+
+      <tr><td>21</td><td><a href="internals2.opcodes.cast.html" class="xref">CAST</a></td><td>yes</td></tr>
+
+      <tr><td>22</td><td><a href="internals2.opcodes.qm-assign.html" class="xref">QM_ASSIGN</a></td><td>yes</td></tr>
+
+      <tr><td>23</td><td><a href="internals2.opcodes.assign-add.html" class="xref">ASSIGN_ADD</a></td><td>yes</td></tr>
+
+      <tr><td>24</td><td><a href="internals2.opcodes.assign-sub.html" class="xref">ASSIGN_SUB</a></td><td>yes</td></tr>
+
+      <tr><td>25</td><td><a href="internals2.opcodes.assign-mul.html" class="xref">ASSIGN_MUL</a></td><td>yes</td></tr>
+
+      <tr><td>26</td><td><a href="internals2.opcodes.assign-div.html" class="xref">ASSIGN_DIV</a></td><td>yes</td></tr>
+
+      <tr><td>27</td><td><a href="internals2.opcodes.assign-mod.html" class="xref">ASSIGN_MOD</a></td><td>yes</td></tr>
+
+      <tr><td>28</td><td><a href="internals2.opcodes.assign-sl.html" class="xref">ASSIGN_SL</a></td><td>yes</td></tr>
+
+      <tr><td>29</td><td><a href="internals2.opcodes.assign-sr.html" class="xref">ASSIGN_SR</a></td><td>yes</td></tr>
+
+      <tr><td>30</td><td><a href="internals2.opcodes.assign-concat.html" class="xref">ASSIGN_CONCAT</a></td><td>yes</td></tr>
+
+      <tr><td>31</td><td><a href="internals2.opcodes.assign-bw-or.html" class="xref">ASSIGN_BW_OR</a></td><td>yes</td></tr>
+
+      <tr><td>32</td><td><a href="internals2.opcodes.assign-bw-and.html" class="xref">ASSIGN_BW_AND</a></td><td>yes</td></tr>
+
+      <tr><td>33</td><td><a href="internals2.opcodes.assign-bw-xor.html" class="xref">ASSIGN_BW_XOR</a></td><td>yes</td></tr>
+
+      <tr><td>34</td><td><a href="internals2.opcodes.pre-inc.html" class="xref">PRE_INC</a></td><td>yes</td></tr>
+
+      <tr><td>35</td><td><a href="internals2.opcodes.pre-dec.html" class="xref">PRE_DEC</a></td><td>yes</td></tr>
+
+      <tr><td>36</td><td><a href="internals2.opcodes.post-inc.html" class="xref">POST_INC</a></td><td>yes</td></tr>
+
+      <tr><td>37</td><td><a href="internals2.opcodes.post-dec.html" class="xref">POST_DEC</a></td><td>yes</td></tr>
+
+      <tr><td>38</td><td><a href="internals2.opcodes.assign.html" class="xref">ASSIGN</a></td><td>yes</td></tr>
+
+      <tr><td>39</td><td><a href="internals2.opcodes.assign-ref.html" class="xref">ASSIGN_REF</a></td><td>yes</td></tr>
+
+      <tr><td>40</td><td><a href="internals2.opcodes.echo.html" class="xref">ECHO</a></td><td>yes</td></tr>
+
+      <tr><td>41</td><td><a href="internals2.opcodes.print.html" class="xref">PRINT</a></td><td>yes</td></tr>
+
+      <tr><td>42</td><td><a href="internals2.opcodes.jmp.html" class="xref">JMP</a></td><td>yes</td></tr>
+
+      <tr><td>43</td><td><a href="internals2.opcodes.jmpz.html" class="xref">JMPZ</a></td><td>yes</td></tr>
+
+      <tr><td>44</td><td><a href="internals2.opcodes.jmpnz.html" class="xref">JMPNZ</a></td><td>yes</td></tr>
+
+      <tr><td>45</td><td><a href="internals2.opcodes.jmpznz.html" class="xref">JMPZNZ</a></td><td>yes</td></tr>
+
+      <tr><td>46</td><td><a href="internals2.opcodes.jmpz-ex.html" class="xref">JMPZ_EX</a></td><td>yes</td></tr>
+
+      <tr><td>47</td><td><a href="internals2.opcodes.jmpnz-ex.html" class="xref">JMPNZ_EX</a></td><td>yes</td></tr>
+
+      <tr><td>48</td><td><a href="internals2.opcodes.case.html" class="xref">CASE</a></td><td>yes</td></tr>
+
+      <tr><td>49</td><td><a href="internals2.opcodes.switch-free.html" class="xref">SWITCH_FREE</a></td><td>yes</td></tr>
+
+      <tr><td>50</td><td><a href="internals2.opcodes.brk.html" class="xref">BRK</a></td><td>yes</td></tr>
+
+      <tr><td>51</td><td><a href="internals2.opcodes.cont.html" class="xref">CONT</a></td><td>yes</td></tr>
+
+      <tr><td>52</td><td><a href="internals2.opcodes.bool.html" class="xref">BOOL</a></td><td>yes</td></tr>
+
+      <tr><td>53</td><td><a href="internals2.opcodes.init-string.html" class="xref">INIT_STRING</a></td><td>yes</td></tr>
+
+      <tr><td>54</td><td><a href="internals2.opcodes.add-char.html" class="xref">ADD_CHAR</a></td><td>yes</td></tr>
+
+      <tr><td>55</td><td><a href="internals2.opcodes.add-string.html" class="xref">ADD_STRING</a></td><td>yes</td></tr>
+
+      <tr><td>56</td><td><a href="internals2.opcodes.add-var.html" class="xref">ADD_VAR</a></td><td>yes</td></tr>
+
+      <tr><td>57</td><td><a href="internals2.opcodes.begin-silence.html" class="xref">BEGIN_SILENCE</a></td><td>yes</td></tr>
+
+      <tr><td>58</td><td><a href="internals2.opcodes.end-silence.html" class="xref">END_SILENCE</a></td><td>yes</td></tr>
+
+      <tr><td>59</td><td><a href="internals2.opcodes.init-fcall-by-name.html" class="xref">INIT_FCALL_BY_NAME</a></td><td>yes</td></tr>
+
+      <tr><td>60</td><td><a href="internals2.opcodes.do-fcall.html" class="xref">DO_FCALL</a></td><td>yes</td></tr>
+
+      <tr><td>61</td><td><a href="internals2.opcodes.do-fcall-by-name.html" class="xref">DO_FCALL_BY_NAME</a></td><td>yes</td></tr>
+
+      <tr><td>62</td><td><a href="internals2.opcodes.return.html" class="xref">RETURN</a></td><td>yes</td></tr>
+
+      <tr><td>63</td><td><a href="internals2.opcodes.recv.html" class="xref">RECV</a></td><td>yes</td></tr>
+
+      <tr><td>64</td><td><a href="internals2.opcodes.recv-init.html" class="xref">RECV_INIT</a></td><td>yes</td></tr>
+
+      <tr><td>65</td><td><a href="internals2.opcodes.send-val.html" class="xref">SEND_VAL</a></td><td>yes</td></tr>
+
+      <tr><td>66</td><td><a href="internals2.opcodes.send-var.html" class="xref">SEND_VAR</a></td><td>yes</td></tr>
+
+      <tr><td>67</td><td><a href="internals2.opcodes.send-ref.html" class="xref">SEND_REF</a></td><td>yes</td></tr>
+
+      <tr><td>68</td><td><a href="internals2.opcodes.new.html" class="xref">NEW</a></td><td>yes</td></tr>
+
+      <tr><td>69</td><td><a href="internals2.opcodes.init-ns-fcall-by-name.html" class="xref">INIT_NS_FCALL_BY_NAME</a></td><td>no</td></tr>
+
+      <tr><td>70</td><td><a href="internals2.opcodes.free.html" class="xref">FREE</a></td><td>yes</td></tr>
+
+      <tr><td>71</td><td><a href="internals2.opcodes.init-array.html" class="xref">INIT_ARRAY</a></td><td>yes</td></tr>
+
+      <tr><td>72</td><td><a href="internals2.opcodes.add-array-element.html" class="xref">ADD_ARRAY_ELEMENT</a></td><td>yes</td></tr>
+
+      <tr><td>73</td><td><a href="internals2.opcodes.include-or-eval.html" class="xref">INCLUDE_OR_EVAL</a></td><td>yes</td></tr>
+
+      <tr><td>74</td><td><a href="internals2.opcodes.unset-var.html" class="xref">UNSET_VAR</a></td><td>yes</td></tr>
+
+      <tr><td>75</td><td><a href="internals2.opcodes.unset-dim.html" class="xref">UNSET_DIM</a></td><td>yes</td></tr>
+
+      <tr><td>76</td><td><a href="internals2.opcodes.unset-obj.html" class="xref">UNSET_OBJ</a></td><td>yes</td></tr>
+
+      <tr><td>77</td><td><a href="internals2.opcodes.fe-reset.html" class="xref">FE_RESET</a></td><td>yes</td></tr>
+
+      <tr><td>78</td><td><a href="internals2.opcodes.fe-fetch.html" class="xref">FE_FETCH</a></td><td>yes</td></tr>
+
+      <tr><td>79</td><td><a href="internals2.opcodes.exit.html" class="xref">EXIT</a></td><td>yes</td></tr>
+
+      <tr><td>80</td><td><a href="internals2.opcodes.fetch-r.html" class="xref">FETCH_R</a></td><td>yes</td></tr>
+
+      <tr><td>81</td><td><a href="internals2.opcodes.fetch-dim-r.html" class="xref">FETCH_DIM_R</a></td><td>yes</td></tr>
+
+      <tr><td>82</td><td><a href="internals2.opcodes.fetch-obj-r.html" class="xref">FETCH_OBJ_R</a></td><td>yes</td></tr>
+
+      <tr><td>83</td><td><a href="internals2.opcodes.fetch-w.html" class="xref">FETCH_W</a></td><td>yes</td></tr>
+
+      <tr><td>84</td><td><a href="internals2.opcodes.fetch-dim-w.html" class="xref">FETCH_DIM_W</a></td><td>yes</td></tr>
+
+      <tr><td>85</td><td><a href="internals2.opcodes.fetch-obj-w.html" class="xref">FETCH_OBJ_W</a></td><td>yes</td></tr>
+
+      <tr><td>86</td><td><a href="internals2.opcodes.fetch-rw.html" class="xref">FETCH_RW</a></td><td>yes</td></tr>
+
+      <tr><td>87</td><td><a href="internals2.opcodes.fetch-dim-rw.html" class="xref">FETCH_DIM_RW</a></td><td>yes</td></tr>
+
+      <tr><td>88</td><td><a href="internals2.opcodes.fetch-obj-rw.html" class="xref">FETCH_OBJ_RW</a></td><td>yes</td></tr>
+
+      <tr><td>89</td><td><a href="internals2.opcodes.fetch-is.html" class="xref">FETCH_IS</a></td><td>yes</td></tr>
+
+      <tr><td>90</td><td><a href="internals2.opcodes.fetch-dim-is.html" class="xref">FETCH_DIM_IS</a></td><td>no</td></tr>
+
+      <tr><td>91</td><td><a href="internals2.opcodes.fetch-obj-is.html" class="xref">FETCH_OBJ_IS</a></td><td>no</td></tr>
+
+      <tr><td>92</td><td><a href="internals2.opcodes.fetch-func-arg.html" class="xref">FETCH_FUNC_ARG</a></td><td>yes</td></tr>
+
+      <tr><td>93</td><td><a href="internals2.opcodes.fetch-dim-func-arg.html" class="xref">FETCH_DIM_FUNC_ARG</a></td><td>yes</td></tr>
+
+      <tr><td>94</td><td><a href="internals2.opcodes.fetch-obj-func-arg.html" class="xref">FETCH_OBJ_FUNC_ARG</a></td><td>yes</td></tr>
+
+      <tr><td>95</td><td><a href="internals2.opcodes.fetch-unset.html" class="xref">FETCH_UNSET</a></td><td>no</td></tr>
+
+      <tr><td>96</td><td><a href="internals2.opcodes.fetch-dim-unset.html" class="xref">FETCH_DIM_UNSET</a></td><td>no</td></tr>
+
+      <tr><td>97</td><td><a href="internals2.opcodes.fetch-obj-unset.html" class="xref">FETCH_OBJ_UNSET</a></td><td>no</td></tr>
+
+      <tr><td>98</td><td><a href="internals2.opcodes.fetch-dim-tmp-var.html" class="xref">FETCH_DIM_TMP_VAR</a></td><td>yes</td></tr>
+
+      <tr><td>99</td><td><a href="internals2.opcodes.fetch-constant.html" class="xref">FETCH_CONSTANT</a></td><td>yes</td></tr>
+
+      <tr><td>100</td><td><a href="internals2.opcodes.goto.html" class="xref">GOTO</a></td><td>no</td></tr>
+
+      <tr><td>101</td><td><a href="internals2.opcodes.ext-stmt.html" class="xref">EXT_STMT</a></td><td>yes</td></tr>
+
+      <tr><td>102</td><td><a href="internals2.opcodes.ext-fcall-begin.html" class="xref">EXT_FCALL_BEGIN</a></td><td>no</td></tr>
+
+      <tr><td>103</td><td><a href="internals2.opcodes.ext-fcall-end.html" class="xref">EXT_FCALL_END</a></td><td>no</td></tr>
+
+      <tr><td>104</td><td><a href="internals2.opcodes.ext-nop.html" class="xref">EXT_NOP</a></td><td>no</td></tr>
+
+      <tr><td>105</td><td><a href="internals2.opcodes.ticks.html" class="xref">TICKS</a></td><td>yes</td></tr>
+
+      <tr><td>106</td><td><a href="internals2.opcodes.send-var-no-ref.html" class="xref">SEND_VAR_NO_REF</a></td><td>no</td></tr>
+
+      <tr><td>107</td><td><a href="internals2.opcodes.catch.html" class="xref">CATCH</a></td><td>yes</td></tr>
+
+      <tr><td>108</td><td><a href="internals2.opcodes.throw.html" class="xref">THROW</a></td><td>yes</td></tr>
+
+      <tr><td>109</td><td><a href="internals2.opcodes.fetch-class.html" class="xref">FETCH_CLASS</a></td><td>yes</td></tr>
+
+      <tr><td>110</td><td><a href="internals2.opcodes.clone.html" class="xref">CLONE</a></td><td>yes</td></tr>
+
+      <tr><td>111</td><td><a href="internals2.opcodes.return-by-ref.html" class="xref">RETURN_BY_REF</a></td><td>no</td></tr>
+
+      <tr><td>112</td><td><a href="internals2.opcodes.init-method-call.html" class="xref">INIT_METHOD_CALL</a></td><td>yes</td></tr>
+
+      <tr><td>113</td><td><a href="internals2.opcodes.init-static-method-call.html" class="xref">INIT_STATIC_METHOD_CALL</a></td><td>yes</td></tr>
+
+      <tr><td>114</td><td><a href="internals2.opcodes.isset-isempty-var.html" class="xref">ISSET_ISEMPTY_VAR</a></td><td>yes</td></tr>
+
+      <tr><td>115</td><td><a href="internals2.opcodes.isset-isempty-dim-obj.html" class="xref">ISSET_ISEMPTY_DIM_OBJ</a></td><td>yes</td></tr>
+
+      <tr><td>116</td><td>not documented</td><td>no</td></tr>
+
+      <tr><td>117</td><td>not documented</td><td>no</td></tr>
+
+      <tr><td>118</td><td>not documented</td><td>no</td></tr>
+
+      <tr><td>119</td><td>not documented</td><td>no</td></tr>
+
+      <tr><td>120</td><td>not documented</td><td>no</td></tr>
+
+      <tr><td>121</td><td>not documented</td><td>no</td></tr>
+
+      <tr><td>122</td><td>not documented</td><td>no</td></tr>
+
+      <tr><td>123</td><td>not documented</td><td>no</td></tr>
+
+      <tr><td>124</td><td>not documented</td><td>no</td></tr>
+
+      <tr><td>125</td><td>not documented</td><td>no</td></tr>
+
+      <tr><td>126</td><td>not documented</td><td>no</td></tr>
+
+      <tr><td>127</td><td>not documented</td><td>no</td></tr>
+
+      <tr><td>128</td><td>not documented</td><td>no</td></tr>
+
+      <tr><td>129</td><td>not documented</td><td>no</td></tr>
+
+      <tr><td>130</td><td>not documented</td><td>no</td></tr>
+
+      <tr><td>131</td><td>not documented</td><td>no</td></tr>
+
+      <tr><td>132</td><td><a href="internals2.opcodes.pre-inc-obj.html" class="xref">PRE_INC_OBJ</a></td><td>yes</td></tr>
+
+      <tr><td>133</td><td><a href="internals2.opcodes.pre-dec-obj.html" class="xref">PRE_DEC_OBJ</a></td><td>yes</td></tr>
+
+      <tr><td>134</td><td><a href="internals2.opcodes.post-inc-obj.html" class="xref">POST_INC_OBJ</a></td><td>yes</td></tr>
+
+      <tr><td>135</td><td><a href="internals2.opcodes.post-dec-obj.html" class="xref">POST_DEC_OBJ</a></td><td>yes</td></tr>
+
+      <tr><td>136</td><td><a href="internals2.opcodes.assign-obj.html" class="xref">ASSIGN_OBJ</a></td><td>yes</td></tr>
+
+      <tr><td>137</td><td>not documented</td><td>no</td></tr>
+
+      <tr><td>138</td><td><a href="internals2.opcodes.instanceof.html" class="xref">INSTANCEOF</a></td><td>yes</td></tr>
+
+      <tr><td>139</td><td><a href="internals2.opcodes.declare-class.html" class="xref">DECLARE_CLASS</a></td><td>yes</td></tr>
+
+      <tr><td>140</td><td><a href="internals2.opcodes.declare-inherited-class.html" class="xref">DECLARE_INHERITED_CLASS</a></td><td>yes</td></tr>
+
+      <tr><td>141</td><td><a href="internals2.opcodes.declare-function.html" class="xref">DECLARE_FUNCTION</a></td><td>yes</td></tr>
+
+      <tr><td>142</td><td><a href="internals2.opcodes.raise-abstract-error.html" class="xref">RAISE_ABSTRACT_ERROR</a></td><td>yes</td></tr>
+
+      <tr><td>143</td><td><a href="internals2.opcodes.declare-const.html" class="xref">DECLARE_CONST</a></td><td>no</td></tr>
+
+      <tr><td>144</td><td><a href="internals2.opcodes.add-interface.html" class="xref">ADD_INTERFACE</a></td><td>no</td></tr>
+
+      <tr><td>145</td><td><a href="internals2.opcodes.declare-inherited-class-delayed.html" class="xref">DECLARE_INHERITED_CLASS_DELAYED</a></td><td>no</td></tr>
+
+      <tr><td>146</td><td><a href="internals2.opcodes.verify-abstract-class.html" class="xref">VERIFY_ABSTRACT_CLASS</a></td><td>no</td></tr>
+
+      <tr><td>147</td><td><a href="internals2.opcodes.assign-dim.html" class="xref">ASSIGN_DIM</a></td><td>yes</td></tr>
+
+      <tr><td>148</td><td><a href="internals2.opcodes.isset-isempty-prop-obj.html" class="xref">ISSET_ISEMPTY_PROP_OBJ</a></td><td>yes</td></tr>
+
+      <tr><td>149</td><td><a href="internals2.opcodes.handle-exception.html" class="xref">HANDLE_EXCEPTION</a></td><td>yes</td></tr>
+
+      <tr><td>150</td><td><a href="internals2.opcodes.user-opcode.html" class="xref">USER_OPCODE</a></td><td>no</td></tr>
+
+      <tr><td>152</td><td><a href="internals2.opcodes.zend-jmp-set.html" class="xref">ZEND_JMP_SET</a></td><td>no</td></tr>
+
+      <tr><td>153</td><td><a href="internals2.opcodes.zend-declare-lambda-function.html" class="xref">ZEND_DECLARE_LAMBDA_FUNCTION</a></td><td>no</td></tr>
+
+     </tbody>
+    
+   </table>
+
+  </div>
+  
+  
+ </div>
+
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div>
+ <div class="note">There are no user contributed notes for this page.</div></section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/internals2.opcodes.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:24:26 GMT -->
+
+
+</body></html>

@@ -1,0 +1,573 @@
+<html><!-- Mirrored from php.net/manual/en/internals2.buildsys.configunix.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:53:25 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Talking to the UNIX build system: config.m4</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="internals2.buildsys.configunix.html">
+ <link rel="shorturl" href="internals2.buildsys.configunix.html">
+ <link rel="alternate" href="internals2.buildsys.configunix.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="internals2.buildsys.html">
+ <link rel="prev" href="internals2.buildsys.skeleton.html">
+ <link rel="next" href="internals2.buildsys.configwin.html">
+
+ <link rel="alternate" href="internals2.buildsys.configunix.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/internals2.buildsys.configunix.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/internals2.buildsys.configunix.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/internals2.buildsys.configunix.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/internals2.buildsys.configunix.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/internals2.buildsys.configunix.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/internals2.buildsys.configunix.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/internals2.buildsys.configunix.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/internals2.buildsys.configunix.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/internals2.buildsys.configunix.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/internals2.buildsys.configunix.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="internals2.html">PHP at the Core: A Hacker's Guide</a></li>      <li><a href="internals2.buildsys.html">The PHP 5 build system</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="internals2.buildsys.configunix" class="sect1">
+  <h2 class="title">Talking to the UNIX build system: config.m4</h2>
+  <p class="para">
+   The <var class="filename">config.m4</var> file for an extension tells the UNIX
+   build system what <var class="filename">configure</var> options your extension
+   supports, what external libraries and includes you require, and what source
+   files are to be compiled as part of it. A reference to all the commonly used
+   autoconf macros, both PHP-specific and those built into autoconf, is given
+   in the <a href="internals2.apiref.html" class="xref">Zend Engine 2 API reference</a> section.
+  </p>
+  
+  <div class="tip"><strong class="tip">Tip</strong>
+   <p class="para">
+    The version of <strong class="command">autoconf</strong> you have installed makes a difference
+    when developing an extension. For PHP 5.3 and earlier, you will have the best results
+    with <strong class="command">autoconf</strong> version 2.13 but versions up to and including 2.59
+    will work. For PHP 5.4 and later the oldest <strong class="command">autoconf</strong> version you can
+    use is 2.59 and you will have better results with later versions. 
+   </p>
+  </div>
+  
+  <div class="example" id="internals2.buildsys.configunix.sample-config">
+   <p><strong>Example #1 An example config.m4 file</strong></p>
+   <div class="example-contents"><div class="autoconfcode"><pre class="autoconfcode">dnl $Id$
+dnl config.m4 for extension example</pre>
+</div><div class="autoconfcode"><pre class="autoconfcode">PHP_ARG_WITH(example, for example support,
+[  --with-example[=FILE]       Include example support. File is the optional path to example-config])
+PHP_ARG_ENABLE(example-debug, whether to enable debugging support in example,
+[  --enable-example-debug        example: Enable debugging support in example], no, no)
+PHP_ARG_WITH(example-extra, for extra libraries for example,
+[  --with-example-extra=DIR      example: Location of extra libraries for example], no, no)
+
+dnl Check whether the extension is enabled at all
+if test "$PHP_EXAMPLE" != "no"; then
+  
+  dnl Check for example-config. First try any path that was given to us, then look in $PATH
+  AC_MSG_CHECKING([for example-config])
+  EXAMPLE_CONFIG="example-config"
+  if test "$PHP_EXAMPLE" != "yes"; then
+    EXAMPLE_PATH=$PHP_EXAMPLE
+  else
+    EXAMPLE_PATH=`$php_shtool path $EXAMPLE_CONFIG`
+  fi
+  
+  dnl If a usable example-config was found, use it
+  if test -f "$EXAMPLE_PATH" &amp;&amp; test -x "$EXAMPLE_PATH" &amp;&amp; $EXAMPLE_PATH --version &gt; /dev/null 2&gt;&amp;1; then
+    AC_MSG_RESULT([$EXAMPLE_PATH])
+    EXAMPLE_LIB_NAME=`$EXAMPLE_PATH --libname`
+    EXAMPLE_INCDIRS=`$EXAMPLE_PATH --incdirs`
+    EXAMPLE_LIBS=`$EXAMPLE_PATH --libs`
+    
+    dnl Check that the library works properly
+    PHP_CHECK_LIBRARY($EXAMPLE_LIB_NAME, example_critical_function,
+    [
+      dnl Add the necessary include dirs
+      PHP_EVAL_INCLINE($EXAMPLE_INCDIRS)
+      dnl Add the necessary libraries and library dirs
+      PHP_EVAL_LIBLINE($EXAMPLE_LIBS, EXAMPLE_SHARED_LIBADD)
+    ],[
+      dnl Bail out
+      AC_MSG_ERROR([example library not found. Check config.log for more information.])
+    ],[$EXAMPLE_LIBS]
+    )
+  else
+    dnl No usable example-config, bail  
+    AC_MSG_RESULT([not found])
+    AC_MSG_ERROR([Please check your example installation.])
+  fi
+  
+  dnl Check whether to enable debugging
+  if test "$PHP_EXAMPLE_DEBUG" != "no"; then
+    dnl Yes, so set the C macro
+    AC_DEFINE(USE_EXAMPLE_DEBUG,1,[Include debugging support in example])
+  fi
+  
+  dnl Check for the extra support
+  if test "$PHP_EXAMPLE_EXTRA" != "no"; then
+    if test "$PHP_EXAMPLE_EXTRA" == "yes"; then
+      AC_MSG_ERROR([You must specify a path when using --with-example-extra])
+    fi
+    
+    PHP_CHECK_LIBRARY(example-extra, example_critical_extra_function,
+    [
+      dnl Add the neccessary paths
+      PHP_ADD_INCLUDE($PHP_EXAMPLE_EXTRA/include)
+      PHP_ADD_LIBRARY_WITH_PATH(example-extra, $PHP_EXAMPLE_EXTRA/lib, EXAMPLE_SHARED_LIBADD)
+      AC_DEFINE(HAVE_EXAMPLEEXTRALIB,1,[Whether example-extra support is present and requested])
+      EXAMPLE_SOURCES="$EXAMPLE_SOURCES example_extra.c"
+    ],[
+      AC_MSG_ERROR([example-extra lib not found. See config.log for more information.])
+    ],[-L$PHP_EXAMPLE_EXTRA/lib]
+    )
+  fi
+  
+  dnl Finally, tell the build system about the extension and what files are needed
+  PHP_NEW_EXTENSION(example, example.c $EXAMPLE_SOURCES, $ext_shared)
+  PHP_SUBST(EXAMPLE_SHARED_LIBADD)
+fi</pre>
+</div>
+   </div>
+
+  </div>
+  
+  <div class="sect2" id="internals2.buildsys.configunix.autoconf">
+   <h3 class="title">A short introduction to autoconf syntax</h3>
+   <p class="para">
+    <var class="filename">config.m4</var> files are written using the GNU
+    <strong class="command">autoconf</strong> syntax. It can be described in a nutshell as
+    shell scripting augmented by a powerful macro language. Comments are
+    delimited by the string <em>dnl</em>, and strings are quoted
+    using left and right brackets (e.g. <em>[</em> and
+    <em>]</em>). Quoting of strings can be nested as many times as
+    needed. A full reference to the syntax can be found in the
+    <strong class="command">autoconf</strong> manual at
+    <a href="http://www.gnu.org/software/autoconf/manual/" class="link external">»&nbsp;http://www.gnu.org/software/autoconf/manual/</a>.
+   </p>
+  </div>
+  
+  <div class="sect2" id="internals2.buildsys.configunix.php-arg">
+   <h3 class="title">PHP_ARG_*: Giving users the option</h3>
+   <p class="para">
+    The very first thing seen in the example <var class="filename">config.m4</var>
+    above, aside from a couple of comments, are three lines using
+    <span class="function"><strong>PHP_ARG_WITH()</strong></span> and <span class="function"><strong>PHP_ARG_ENABLE()</strong></span>.
+    These provide <strong class="command">configure</strong> with the options and help text
+    seen when running <strong class="command">./configure --help</strong>. As the names
+    suggest, the difference between the two is whether they create a
+    <strong class="option configure">--with-*</strong>
+ option or an
+    <strong class="option configure">--enable-*</strong>
+ option. Every extension should
+    provide at least one or the other with the extension name, so that users
+    can choose whether or not to build the extension into PHP. By convention,
+    <span class="function"><strong>PHP_ARG_WITH()</strong></span> is used for an option which takes a
+    parameter, such as the location of a library or program required by an
+    extension, while <span class="function"><strong>PHP_ARG_ENABLE()</strong></span> is used for an option
+    which represents a simple flag.
+   </p>
+   <div class="example" id="internals2.buildsys.configunix.php-arg.configure-out">
+    <p><strong>Example #2 Sample configure output</strong></p>
+    <div class="example-contents screen">
+<div class="cdata"><pre>$ ./configure --help
+...
+  --with-example[=FILE]       Include example support. FILE is the optional path to example-config
+  --enable-example-debug        example: Enable debugging support in example
+  --with-example-extra=DIR      example: Location of extra libraries for example
+...
+
+$ ./configure --with-example=/some/library/path/example-config --disable-example-debug --with-example-extra=/another/library/path
+...
+checking for example support... yes
+checking whether to enable debugging support in example... no
+checking for extra libraries for example... /another/library/path
+...
+</pre></div>
+    </div>
+   </div>
+   <blockquote class="note"><p><strong class="note">Note</strong>: 
+    </p><p class="para">
+     Regardless of the order in which options are specified on the command line
+     when <strong class="command">configure</strong> is called, the checks will be run in the
+     order they are specified in <var class="filename">config.m4</var>.
+    </p>
+   <p></p></blockquote>
+  </div>
+  
+  <div class="sect2" id="internals2.buildsys.configunix.processing">
+   <h3 class="title">Processing the user's choices</h3>
+   <p class="para">
+    Now that <var class="filename">config.m4</var> can provide the user with some
+    choices of what to do, it's time to act upon those choices. In the example
+    above, the obvious default for all three options, if any of them are
+    unspecified, is "no". As a matter of convention, it is best to
+    use this as the default for the option which enables the extension, as it
+    will be overridden by <strong class="command">phpize</strong> for extensions built
+    separately, and should not clutter the extension space by default when
+    being built into PHP. The code to process the three options is by far the
+    most complicated.
+   </p>
+   
+   <div class="sect3" id="internals2.buildsys.configunix.processing.with-example">
+    <h4 class="title">Handling the --with-example[=FILE] option</h4>
+    <p class="para">
+     The first check made of the
+     <strong class="option configure">--with-example[=FILE]</strong>
+ option is whether
+     it was set at all. As this option controls the inclusion of the entire
+     extension, if it was unspecified, given in the negative form
+     (<strong class="option configure">--without-example</strong>
+), or given the value
+     "no", nothing else is done at all. In the example above, it is
+     specified with the value
+     <em>/some/library/path/example-config</em>, so the first test
+     succeeds.
+    </p>
+    
+    <p class="para">
+     Next, the code calls <span class="function"><strong>AC_MSG_CHECKING()</strong></span>, an
+     <strong class="command">autoconf</strong> macro which outputs a standard
+     "checking for something" line, and checks whether the user gave
+     an explicit path to the fictional <strong class="command">example-config</strong>. In
+     this example, <em>PHP_EXAMPLE</em> got the value
+     <em>/some/library/path/example-config</em>, which is now copied
+     into the EXAMPLE_PATH variable. Had the user specified only
+     <strong class="option configure">--with-example</strong>
+, the code would have
+     executed <strong class="command">$php_shtool path $EXAMPLE_CONFIG</strong>, which would
+     try to guess the location of <strong class="command">example-config</strong> using the
+     user's current <em>PATH</em>. Either way, the next step is to
+     check whether the chosen <em>EXAMPLE_PATH</em> is a regular
+     file, is executable, and can be run successfully. If so,
+     <span class="function"><strong>AC_MSG_RESULT()</strong></span> is called, which completes the output
+     line started by <span class="function"><strong>AC_MSG_CHECKING()</strong></span>. Otherwise,
+     <span class="function"><strong>AC_MSG_ERROR()</strong></span> is called, which prints the given
+     message and halts <strong class="command">configure</strong> immediately.
+    </p>
+    
+    <p class="para">
+     The code now determines some site-specific configuration information by
+     running <strong class="command">example-config</strong> several times. The next call is
+     to <span class="function"><strong>PHP_CHECK_LIBRARY()</strong></span>, a macro provided by the PHP
+     buildsystem as a wrapper around <strong class="command">autoconf</strong>'s
+     <span class="function"><strong>AC_CHECK_LIB()</strong></span>. <span class="function"><strong>PHP_CHECK_LIBRARY()</strong></span>
+     attempts to compile, link, and run a program which calls the symbol
+     specified by the second parameter in the library specified by the first,
+     using the string given in the fifth as extra linker options. If the
+     attempt succeeds, the script given in the third parameter is run. This
+     script tells the PHP buildsystem to extract include paths, library paths,
+     and library names from the raw option strings
+     <strong class="command">example-config</strong> provided. If the attempt fails, the
+     script in the fourth parameter is run instead. In this case,
+     <span class="function"><strong>AC_MSG_ERROR()</strong></span> is called to stop processing.
+    </p>
+   </div>
+   
+   <div class="sect3" id="internals2.buildsys.configunix.processing.enable-example-debug">
+    <h4 class="title">Handling the --enable-example-debug option</h4>
+    <p class="para">
+     Processing the <strong class="option configure">--enable-example-debug</strong>
+ is
+     much simpler. A simple check for its truth value is performed. If that
+     check succeeds, <span class="function"><strong>AC_DEFINE()</strong></span> is called to make the C
+     macro <em>USE_EXAMPLE_DEBUG</em> available to the source of the
+     extension. The third parameter is a comment string for
+     <var class="filename">config.h</var>; it is safe to leave this empty, and often is.
+    </p>
+   </div>
+   
+   <div class="sect3" id="internals2.buildsys.configunix.processing.with-example-extra">
+    <h4 class="title">Handling the --with-example-extra=DIR option</h4>
+    <p class="para">
+     For the sake of this example, the fictional "extra"
+     functionality requested by the
+     <strong class="option configure">--with-example-extra=DIR</strong>
+ option does not
+     share the fictional <strong class="command">example-config</strong> program, nor does it
+     have any default paths to search. Therefore, the user is required to
+     provide the installation prefix of the necessary library. This setup is
+     somewhat unlikely in a real-world extension, but is considered
+     illustrative.
+    </p>
+    
+    <p class="para">
+     The code begins in a now-familiar way by checking the truth value of
+     <em>PHP_EXAMPLE_EXTRA</em>. If a negative form was provided, no
+     further processing is done; the user did not request extra functionality.
+     If a positive form was provided without a parameter,
+     <span class="function"><strong>AC_MSG_ERROR()</strong></span> is called to halt processing. The next
+     step is another invocation of <span class="function"><strong>PHP_CHECK_LIBRARY()</strong></span>. This
+     time, since there is no set of predefined compiler options provided,
+     <span class="function"><strong>PHP_ADD_INCLUDE()</strong></span> and
+     <span class="function"><strong>PHP_ADD_LIBRARY_WITH_PATH()</strong></span> are used to construct the
+     necessary include paths, library paths, and library flags for the extra
+     functionality. <span class="function"><strong>AC_DEFINE()</strong></span> is also called to indicate
+     to the code that the extra functionality was both requested and available,
+     and a variable is set to tell later code that there are extra source files
+     to build. If the check fails, the familiar
+     <span class="function"><strong>AC_MSG_ERROR()</strong></span> is called. A different way to handle the
+     failure would have been to call <span class="function"><strong>AC_MSG_WARNING()</strong></span>
+     instead, e.g.:
+    </p>
+    <div class="informalexample">
+     <div class="example-contents">
+<div class="autoconfcode"><pre class="autoconfcode">AC_MSG_WARNING([example-extra lib not found. example will be built without extra functionality.])</pre>
+</div>
+     </div>
+
+    </div>
+    <p class="para">
+     In this case, <strong class="command">configure</strong> would print a warning message
+     rather than an error, and continue processing. Which way such failures are
+     handled is a design decision left to the extension developer.
+    </p>
+   </div>
+  </div>
+  
+  <div class="sect2" id="internals2.buildsys.configunix.finishing">
+   <h3 class="title">Telling the buildsystem what was decided</h3>
+   <p class="para">
+    With all the necessary includes and libraries specified, with all the
+    options processed and macros defined, one more thing remains to be done:
+    The build system must be told to build the extension itself, and which
+    files are to be used for that. To do this, the
+    <span class="function"><strong>PHP_NEW_EXTENSION()</strong></span> macro is called. The first parameter
+    is the name of the extension, which is the same as the name of the
+    directory containing it. The second parameter is the list of all source
+    files which are part of the extension. See
+    <span class="function"><strong>PHP_ADD_BUILD_DIR()</strong></span> for information about adding source
+    files in subdirectories to the build process. The third parameter should
+    always be <em>$ext_shared</em>, a value which was determined by
+    <strong class="command">configure</strong> when <span class="function"><strong>PHP_ARG_WITH()</strong></span> was
+    called for <strong class="option configure">--with-example[=FILE]</strong>
+. The
+    fourth parameter specifies a "SAPI class", and is only useful for
+    extensions which require the CGI or CLI SAPIs specifically. It should be
+    left empty in all other cases. The fifth parameter specifies a list of
+    flags to be added to <em>CFLAGS</em> while building the
+    extension; the sixth is a boolean value which, if "yes", will
+    force the entire extension to be built using <em>$CXX</em>
+    instead of <em>$CC</em>. All parameters after the third are
+    optional. Finally, <span class="function"><strong>PHP_SUBST()</strong></span> is called to enable
+    shared builds of the extension. See <a href="internals2.faq.html" class="xref">Extension FAQs</a> for
+    more information on disabling support for building an extension in shared
+    mode.
+   </p>
+  </div>
+
+  <div class="sect2" id="internals2.buildsys.configunix.counter">
+   <h3 class="title">The counter extension's config.m4 file</h3>
+   <p class="para">
+    The counter extension previously documented has a much simpler
+    <var class="filename">config.m4</var> file than that described above, as it doesn't
+    make use of many buildsystem features. This is a preferred method of
+    operation for any extension that doesn't use an external or bundled library.
+   </p>
+   <div class="example" id="internals2.buildsys.configunix.counter.configunix">
+    <p><strong>Example #3 counter's config.m4 file</strong></p>
+    <div class="example-contents">
+<div class="autoconfcode"><pre class="autoconfcode">dnl</pre>
+</div><div class="autoconfcode"><pre class="autoconfcode">$</pre>
+</div><div class="autoconfcode"><pre class="autoconfcode">Id$
+dnl config.m4 for extension counter
+
+PHP_ARG_ENABLE(counter, for counter support,
+[  --enable-counter            Include counter support])
+
+dnl Check whether the extension is enabled at all
+if test "$PHP_COUNTER" != "no"; then
+  dnl Finally, tell the build system about the extension and what files are needed
+  PHP_NEW_EXTENSION(counter, counter.c counter_util.c, $ext_shared)
+  PHP_SUBST(COUNTER_SHARED_LIBADD)
+fi</pre>
+</div>
+    </div>
+
+   </div>
+  </div>
+
+ </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div>
+ <div class="note">There are no user contributed notes for this page.</div></section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/internals2.buildsys.configunix.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:53:25 GMT -->
+
+
+</body></html>

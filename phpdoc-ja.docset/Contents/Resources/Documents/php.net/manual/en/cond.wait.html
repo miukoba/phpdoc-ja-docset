@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>条件を待つ</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="cond.signal.html">≪ Cond::signal</a></li>
+      <li style="float: right;"><a href="book.sem.html">セマフォ ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="class.cond.html">Cond</a></li>
+    <li>条件を待つ</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="cond.wait" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">Cond::wait</h1>
+  <p class="verinfo">(PECL pthreads &gt;= 2.0.0)</p><p class="refpurpose"><span class="refname">Cond::wait</span> &mdash; <span class="dc-title">条件を待つ</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-cond.wait-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">final</span> 
+   <span class="modifier">public</span> 
+   <span class="modifier">static</span> 
+   <span class="type">boolean</span> 
+   <span class="methodname"><strong>Cond::wait</strong></span>
+    ( <span class="methodparam">
+   <span class="type"><span class="type long">long</span></span>
+    <code class="parameter">$condition</code>
+   </span>
+   , <span class="methodparam">
+   <span class="type"><span class="type long">long</span></span>
+    <code class="parameter">$mutex</code>
+   </span>
+   [, <span class="methodparam">
+   <span class="type"><span class="type long">long</span></span>
+    <code class="parameter">$timeout</code>
+  </span>
+  ] )</div>
+
+  <p class="para rdfs-comment">条件変数上でシグナルを待ちます。オプションで、最大の待ち時間を指定できます。</p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-cond.wait-parameters">
+  <h3 class="title">パラメータ</h3>
+  <dl>
+
+   
+    <dt>
+<code class="parameter">condition</code></dt>
+
+    <dd>
+
+     <p class="para"><span class="function"><a href="cond.create.html" class="function">Cond::create()</a></span> を呼んで取得した条件変数へのハンドル。</p>
+    </dd>
+
+   
+   
+    <dt>
+<code class="parameter">mutex</code></dt>
+
+    <dd>
+
+     <p class="para">呼び出し元が <span class="function"><a href="mutex.create.html" class="function">Mutex::create()</a></span> を呼んで所有 (ロック) しているミューテックスへのハンドル。</p>
+    </dd>
+
+   
+   
+    <dt>
+<code class="parameter">timeout</code></dt>
+
+    <dd>
+
+     <p class="para">オプションのタイムアウト時間。マイクロ秒 (100 万分の 1 秒) 単位。</p>
+    </dd>
+
+   
+  </dl>
+
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-cond.wait-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">成功したかどうかを返します。</p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-cond.wait-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-3821">
+    <p><strong>例1 条件の待機</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #FF8000">/**&nbsp;この例は、プロセスをハングさせることに注意しましょう&nbsp;**/<br /></span><span style="color: #0000BB">$mutex&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Mutex</span><span style="color: #007700">::</span><span style="color: #0000BB">create</span><span style="color: #007700">(</span><span style="color: #0000BB">true</span><span style="color: #007700">);<br /></span><span style="color: #FF8000">/**&nbsp;"new"&nbsp;は使えません。Cond&nbsp;は&nbsp;PHP&nbsp;のオブジェクトではありません&nbsp;**/<br /></span><span style="color: #0000BB">$cond&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Cond</span><span style="color: #007700">::</span><span style="color: #0000BB">create</span><span style="color: #007700">();<br /></span><span style="color: #FF8000">/**&nbsp;呼び出し側は、関連するミューテックスをロックしてからブロードキャストを呼ぶ必要があります&nbsp;**/<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">Cond</span><span style="color: #007700">::</span><span style="color: #0000BB">wait</span><span style="color: #007700">(</span><span style="color: #0000BB">$cond</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$mutex</span><span style="color: #007700">));<br /></span><span style="color: #FF8000">/**&nbsp;自分が作った&nbsp;Cond&nbsp;は常に破棄します&nbsp;**/<br /></span><span style="color: #0000BB">Cond</span><span style="color: #007700">::</span><span style="color: #0000BB">destroy</span><span style="color: #007700">(</span><span style="color: #0000BB">$cond</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">Mutex</span><span style="color: #007700">::</span><span style="color: #0000BB">unlock</span><span style="color: #007700">(</span><span style="color: #0000BB">$mutex</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">Mutex</span><span style="color: #007700">::</span><span style="color: #0000BB">destroy</span><span style="color: #007700">(</span><span style="color: #0000BB">$mutex</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+int(49685473)
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

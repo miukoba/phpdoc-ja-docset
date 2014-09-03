@@ -1,0 +1,951 @@
+<html><!-- Mirrored from php.net/manual/en/language.oop5.autoload.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:27:54 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Autoloading Classes</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="language.oop5.autoload.html">
+ <link rel="shorturl" href="http://php.net/oop5.autoload">
+ <link rel="alternate" href="http://php.net/oop5.autoload" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="language.oop5.html">
+ <link rel="prev" href="language.oop5.constants.html">
+ <link rel="next" href="language.oop5.decon.html">
+
+ <link rel="alternate" href="language.oop5.autoload.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/language.oop5.autoload.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/language.oop5.autoload.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/language.oop5.autoload.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/language.oop5.autoload.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/language.oop5.autoload.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/language.oop5.autoload.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/language.oop5.autoload.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/language.oop5.autoload.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/language.oop5.autoload.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/language.oop5.autoload.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="langref.html">Language Reference</a></li>      <li><a href="language.oop5.html">Classes and Objects</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="language.oop5.autoload" class="sect1">
+  <h2 class="title">Autoloading Classes</h2>
+  <p class="para">
+   Many developers writing object-oriented applications create
+   one PHP source file per class definition. One of the biggest
+   annoyances is having to write a long list of needed includes
+   at the beginning of each script (one for each class).
+  </p>
+  <p class="para">
+   In PHP 5, this is no longer necessary. You may define an
+   <span class="function"><a href="function.autoload.html" class="function">__autoload()</a></span> function which is automatically
+   called in case you are trying to use a class/interface which hasn't been
+   defined yet. By calling this function the scripting engine is given
+   a last chance to load the class before PHP fails with an error.
+  </p>
+  <div class="tip"><strong class="tip">Tip</strong>
+   <p class="para">
+    <span class="function"><a href="function.spl-autoload-register.html" class="function">spl_autoload_register()</a></span> provides a more flexible
+    alternative for autoloading classes. For this reason, using
+    <span class="function"><a href="function.autoload.html" class="function">__autoload()</a></span> is discouraged and may be deprecated or
+    removed in the future.
+   </p>
+  </div>
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   </p><p class="para">
+    Prior to 5.3.0, exceptions thrown in the __autoload function could not be
+    caught in the <a href="language.exceptions.html" class="link">catch</a> block and
+    would result in a fatal error. From 5.3.0+ exceptions thrown in the
+    __autoload function can be caught in the <a href="language.exceptions.html" class="link">
+    catch</a> block, with 1 provision. If throwing a custom exception, then
+    the custom exception class must be available. The __autoload function may
+    be used recursively to autoload the custom exception class.
+   </p>
+  <p></p></blockquote>
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   </p><p class="para">
+    Autoloading is not available if using PHP in CLI
+    <a href="features.commandline.html" class="link">interactive mode</a>.
+   </p>
+  <p></p></blockquote>
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   </p><p class="para">
+    If the class name is used e.g. in <span class="function"><a href="function.call-user-func.html" class="function">call_user_func()</a></span> then
+    it can contain some dangerous characters such as <em>../</em>.
+    It is recommended to not use the user-input in such functions or at least
+    verify the input in <span class="function"><a href="function.autoload.html" class="function">__autoload()</a></span>.
+   </p>
+  <p></p></blockquote>
+  <p class="para">
+   </p><div class="example" id="example-198">
+    <p><strong>Example #1 Autoload example</strong></p>
+    <div class="example-contents"><p>
+     This example attempts to load the classes <em>MyClass1</em>
+     and <em>MyClass2</em> from the files <var class="filename">MyClass1.php</var>
+     and <var class="filename">MyClass2.php</var> respectively.
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">__autoload</span><span style="color: #007700">(</span><span style="color: #0000BB">$class_name</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;include&nbsp;</span><span style="color: #0000BB">$class_name&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">'.php'</span><span style="color: #007700">;<br>}<br><br></span><span style="color: #0000BB">$obj&nbsp;&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MyClass1</span><span style="color: #007700">();<br></span><span style="color: #0000BB">$obj2&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MyClass2</span><span style="color: #007700">();&nbsp;<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   <div class="example" id="example-199">
+    <p><strong>Example #2 Autoload other example</strong></p>
+    <div class="example-contents"><p>
+     This example attempts to load the interface <em>ITest</em>.
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br><br></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">__autoload</span><span style="color: #007700">(</span><span style="color: #0000BB">$name</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$name</span><span style="color: #007700">);<br>}<br><br>class&nbsp;</span><span style="color: #0000BB">Foo&nbsp;</span><span style="color: #007700">implements&nbsp;</span><span style="color: #0000BB">ITest&nbsp;</span><span style="color: #007700">{<br>}<br><br></span><span style="color: #FF8000">/*<br>string(5)&nbsp;"ITest"<br><br>Fatal&nbsp;error:&nbsp;Interface&nbsp;'ITest'&nbsp;not&nbsp;found&nbsp;in&nbsp;...<br>*/<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   <div class="example" id="example-200">
+    <p><strong>Example #3 Autoloading with exception handling for 5.3.0+</strong></p>
+    <div class="example-contents"><p>
+     This example throws an exception and demonstrates the try/catch block.
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">__autoload</span><span style="color: #007700">(</span><span style="color: #0000BB">$name</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Want&nbsp;to&nbsp;load&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #DD0000">.\n"</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;</span><span style="color: #0000BB">Exception</span><span style="color: #007700">(</span><span style="color: #DD0000">"Unable&nbsp;to&nbsp;load&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #DD0000">."</span><span style="color: #007700">);<br>}<br><br>try&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$obj&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">NonLoadableClass</span><span style="color: #007700">();<br>}&nbsp;catch&nbsp;(</span><span style="color: #0000BB">Exception&nbsp;$e</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getMessage</span><span style="color: #007700">(),&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br>}<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>The above example will output:</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>Want to load NonLoadableClass.
+Unable to load NonLoadableClass.
+</pre></div>
+    </div>
+   </div>
+   <div class="example" id="example-201">
+    <p><strong>Example #4 Autoloading with exception handling for 5.3.0+ - Missing custom exception</strong></p>
+    <div class="example-contents"><p>
+     This example throws an exception for a non-loadable, custom exception.
+    </p></div>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">__autoload</span><span style="color: #007700">(</span><span style="color: #0000BB">$name</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"Want&nbsp;to&nbsp;load&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #DD0000">.\n"</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;</span><span style="color: #0000BB">MissingException</span><span style="color: #007700">(</span><span style="color: #DD0000">"Unable&nbsp;to&nbsp;load&nbsp;</span><span style="color: #0000BB">$name</span><span style="color: #DD0000">."</span><span style="color: #007700">);<br>}<br><br>try&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$obj&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">NonLoadableClass</span><span style="color: #007700">();<br>}&nbsp;catch&nbsp;(</span><span style="color: #0000BB">Exception&nbsp;$e</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getMessage</span><span style="color: #007700">(),&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br>}<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>The above example will output:</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>Want to load NonLoadableClass.
+Want to load MissingException.
+
+Fatal error: Class 'MissingException' not found in testMissingException.php on line 4
+</pre></div>
+    </div>
+   </div>
+  <p></p>
+
+  <div class="simplesect">
+   <h3 class="title">See Also</h3>
+   <p class="para">
+    </p><ul class="simplelist">
+     <li class="member"><span class="function"><a href="function.unserialize.html" class="function">unserialize()</a></span></li>
+     <li class="member"><a href="var.configuration.html#unserialize-callback-func" class="link">unserialize_callback_func</a></li>
+     <li class="member"><span class="function"><a href="function.spl-autoload.html" class="function">spl_autoload()</a></span></li>
+     <li class="member"><span class="function"><a href="function.spl-autoload-register.html" class="function">spl_autoload_register()</a></span></li>
+    </ul>
+   <p></p>
+  </div>
+
+ </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="97140">  
+  <a class="name">
+  <strong class="user"><em>ej at campbell dot name</em></strong></a><div class="date" title="2010-04-03 11:21"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom97140">
+<div class="phpcode"><code><span class="html">
+You don't need exceptions to figure out if a class can be autoloaded. This is much simpler.
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="comment">//Define autoloader
+<br></span><span class="keyword">function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$className</span><span class="keyword">) {
+<br>&nbsp; &nbsp; &nbsp; if (</span><span class="default">file_exists</span><span class="keyword">(</span><span class="default">$className </span><span class="keyword">. </span><span class="string">'.php'</span><span class="keyword">)) {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; require_once </span><span class="default">$className </span><span class="keyword">. </span><span class="string">'.php'</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">true</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; return </span><span class="default">false</span><span class="keyword">;
+<br>}
+<br>
+<br>function </span><span class="default">canClassBeAutloaded</span><span class="keyword">(</span><span class="default">$className</span><span class="keyword">) {
+<br>&nbsp; &nbsp; &nbsp; return </span><span class="default">class_exists</span><span class="keyword">(</span><span class="default">$className</span><span class="keyword">);
+<br>}
+<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="89448">  
+  <a class="name">
+  <strong class="user"><em>jarret dot minkler at gmail dot com</em></strong></a><div class="date" title="2009-03-07 10:55"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom89448">
+<div class="phpcode"><code><span class="html">
+You should not have to use require_once inside the autoloader, as if the class is not found it wouldn't be trying to look for it by using the autoloader. <br><br>Just use require(), which will be better on performance as well as it does not have to check if it is unique.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="99173">  
+  <a class="name">
+  <strong class="user"><em>fka at fatihkadirakin dot com</em></strong></a><div class="date" title="2010-07-31 06:16"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom99173">
+<div class="phpcode"><code><span class="html">
+Or you can use this, without using any "require/include":<br><br><span class="default">&lt;?php<br></span><span class="keyword">class </span><span class="default">autoloader </span><span class="keyword">{<br><br>&nbsp; &nbsp; public static </span><span class="default">$loader</span><span class="keyword">;<br><br>&nbsp; &nbsp; public static function </span><span class="default">init</span><span class="keyword">()<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">self</span><span class="keyword">::</span><span class="default">$loader </span><span class="keyword">== </span><span class="default">NULL</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">self</span><span class="keyword">::</span><span class="default">$loader </span><span class="keyword">= new </span><span class="default">self</span><span class="keyword">();<br><br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">self</span><span class="keyword">::</span><span class="default">$loader</span><span class="keyword">;<br>&nbsp; &nbsp; }<br><br>&nbsp; &nbsp; public function </span><span class="default">__construct</span><span class="keyword">()<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">spl_autoload_register</span><span class="keyword">(array(</span><span class="default">$this</span><span class="keyword">,</span><span class="string">'model'</span><span class="keyword">));<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">spl_autoload_register</span><span class="keyword">(array(</span><span class="default">$this</span><span class="keyword">,</span><span class="string">'helper'</span><span class="keyword">));<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">spl_autoload_register</span><span class="keyword">(array(</span><span class="default">$this</span><span class="keyword">,</span><span class="string">'controller'</span><span class="keyword">));<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">spl_autoload_register</span><span class="keyword">(array(</span><span class="default">$this</span><span class="keyword">,</span><span class="string">'library'</span><span class="keyword">));<br>&nbsp; &nbsp; }<br><br>&nbsp; &nbsp; public function </span><span class="default">library</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">set_include_path</span><span class="keyword">(</span><span class="default">get_include_path</span><span class="keyword">().</span><span class="default">PATH_SEPARATOR</span><span class="keyword">.</span><span class="string">'/lib/'</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">spl_autoload_extensions</span><span class="keyword">(</span><span class="string">'.library.php'</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">spl_autoload</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">);<br>&nbsp; &nbsp; }<br><br>&nbsp; &nbsp; public function </span><span class="default">controller</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$class </span><span class="keyword">= </span><span class="default">preg_replace</span><span class="keyword">(</span><span class="string">'/_controller$/ui'</span><span class="keyword">,</span><span class="string">''</span><span class="keyword">,</span><span class="default">$class</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">set_include_path</span><span class="keyword">(</span><span class="default">get_include_path</span><span class="keyword">().</span><span class="default">PATH_SEPARATOR</span><span class="keyword">.</span><span class="string">'/controller/'</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">spl_autoload_extensions</span><span class="keyword">(</span><span class="string">'.controller.php'</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">spl_autoload</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">);<br>&nbsp; &nbsp; }<br><br>&nbsp; &nbsp; public function </span><span class="default">model</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$class </span><span class="keyword">= </span><span class="default">preg_replace</span><span class="keyword">(</span><span class="string">'/_model$/ui'</span><span class="keyword">,</span><span class="string">''</span><span class="keyword">,</span><span class="default">$class</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">set_include_path</span><span class="keyword">(</span><span class="default">get_include_path</span><span class="keyword">().</span><span class="default">PATH_SEPARATOR</span><span class="keyword">.</span><span class="string">'/model/'</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">spl_autoload_extensions</span><span class="keyword">(</span><span class="string">'.model.php'</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">spl_autoload</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">);<br>&nbsp; &nbsp; }<br><br>&nbsp; &nbsp; public function </span><span class="default">helper</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$class </span><span class="keyword">= </span><span class="default">preg_replace</span><span class="keyword">(</span><span class="string">'/_helper$/ui'</span><span class="keyword">,</span><span class="string">''</span><span class="keyword">,</span><span class="default">$class</span><span class="keyword">);<br><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">set_include_path</span><span class="keyword">(</span><span class="default">get_include_path</span><span class="keyword">().</span><span class="default">PATH_SEPARATOR</span><span class="keyword">.</span><span class="string">'/helper/'</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">spl_autoload_extensions</span><span class="keyword">(</span><span class="string">'.helper.php'</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">spl_autoload</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">);<br>&nbsp; &nbsp; }<br><br>}<br><br></span><span class="comment">//call<br></span><span class="default">autoloader</span><span class="keyword">::</span><span class="default">init</span><span class="keyword">();<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="82614">  
+  <a class="name">
+  <strong class="user"><em>james dot dot dot dunmore at gmail dot com</em></strong></a><div class="date" title="2008-04-18 04:43"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom82614">
+<div class="phpcode"><code><span class="html">
+Andrew: 03-Nov-2006 12:26<br><br>That seems a bit messy to me, this is a bit neater:<br><span class="default">&lt;?php<br>&nbsp; &nbsp; </span><span class="keyword">function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$class_name</span><span class="keyword">) <br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">//class directories<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$directorys </span><span class="keyword">= array(<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'classes/'</span><span class="keyword">,<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'classes/otherclasses/'</span><span class="keyword">,<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'classes2/'</span><span class="keyword">,<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'module1/classes/'<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">//for each directory<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">foreach(</span><span class="default">$directorys </span><span class="keyword">as </span><span class="default">$directory</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">//see if the file exsists<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">if(</span><span class="default">file_exists</span><span class="keyword">(</span><span class="default">$directory</span><span class="keyword">.</span><span class="default">$class_name </span><span class="keyword">. </span><span class="string">'.php'</span><span class="keyword">))<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; require_once(</span><span class="default">$directory</span><span class="keyword">.</span><span class="default">$class_name </span><span class="keyword">. </span><span class="string">'.php'</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">//only require the class once, so quit after to save effort (if you got more, then name them something else <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">return;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; }</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="106533">  
+  <a class="name">
+  <strong class="user"><em>qfox at ya dot ru</em></strong></a><div class="date" title="2011-11-16 02:48"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom106533">
+<div class="phpcode"><code><span class="html">
+More simpler example of using spl_autoload_register in 5.3:<br><span class="default">&lt;?php<br>spl_autoload_register</span><span class="keyword">(function(</span><span class="default">$classname</span><span class="keyword">) </span><span class="comment">/* usign $app */ </span><span class="keyword">{<br>&nbsp; </span><span class="comment"># ... your logic to include classes here<br></span><span class="keyword">});<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="93057">  
+  <a class="name">
+  <strong class="user"><em>h762017(at)stud(dot)u-szeged(dot)hu</em></strong></a><div class="date" title="2009-08-20 07:24"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom93057">
+<div class="phpcode"><code><span class="html">
+Hi,<br><br>Because the scripting engine just find the class declaration in the body of the __autoload() function, you also can declare the missing class in the __autoload() function. (No need to include or require a file.)<br><br>Let's see the following code:<br><br>Example 1.:<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$className</span><span class="keyword">){<br>&nbsp; &nbsp; echo </span><span class="string">"Now loading: </span><span class="default">$className</span><span class="string">&lt;br /&gt;"</span><span class="keyword">;<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; class </span><span class="default">SuperClass </span><span class="keyword">{<br>&nbsp; &nbsp; }<br>}<br><br>class </span><span class="default">DerivedClass </span><span class="keyword">extends </span><span class="default">SuperClass </span><span class="keyword">{<br>}<br><br>class </span><span class="default">AnotherDerivedClass </span><span class="keyword">extends </span><span class="default">SuperClass </span><span class="keyword">{<br>}<br><br></span><span class="default">?&gt;<br></span><br>The scripting engine will found the SuperClass class.<br><br>Example 2.:<br><br>You also can do it with the eval function, and if you dinamycally declare the class, you don't get a Fatal Error, and you can do many interesting things with the eval function;)<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$className</span><span class="keyword">){<br>&nbsp; &nbsp; echo </span><span class="string">"Now loading: </span><span class="default">$className</span><span class="string">&lt;br /&gt;"</span><span class="keyword">;<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; eval(</span><span class="string">"class </span><span class="default">$className</span><span class="string"> {}"</span><span class="keyword">);<br>}<br><br>class </span><span class="default">DerivedClass </span><span class="keyword">extends </span><span class="default">SuperClass </span><span class="keyword">{<br>}<br><br>class </span><span class="default">AnotherDerivedClass </span><span class="keyword">extends </span><span class="default">SuperClass </span><span class="keyword">{<br>}<br><br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="77471">  
+  <a class="name">
+  <strong class="user"><em>rlee0001 at sbcglobal dot net</em></strong></a><div class="date" title="2007-08-30 01:16"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom77471">
+<div class="phpcode"><code><span class="html">
+If you would like __autoload to throw an exception when the class cannot be loaded instead of causing a fatal error, consider this:<br><br><span class="default">&lt;?php<br></span><span class="keyword">function </span><span class="default">__autoload </span><span class="keyword">(</span><span class="default">$className</span><span class="keyword">)<br>{<br>&nbsp; &nbsp; </span><span class="default">$fileName </span><span class="keyword">= </span><span class="default">str_replace</span><span class="keyword">(</span><span class="string">'_'</span><span class="keyword">, </span><span class="default">DIRECTORY_SEPARATOR</span><span class="keyword">, </span><span class="default">$className</span><span class="keyword">) . </span><span class="string">'.php'</span><span class="keyword">;<br>&nbsp; &nbsp; </span><span class="default">$status </span><span class="keyword">= (@include_once </span><span class="default">$fileName</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; if (</span><span class="default">$status </span><span class="keyword">=== </span><span class="default">false</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; eval(</span><span class="default">sprintf</span><span class="keyword">(</span><span class="string">'class %s {func' </span><span class="keyword">. </span><span class="string">'tion __construct(){throw new Project_Exception_AutoLoad("%s");}}'</span><span class="keyword">, </span><span class="default">$className</span><span class="keyword">, </span><span class="default">$className</span><span class="keyword">));<br>&nbsp; &nbsp; }&nbsp;&nbsp; <br>}<br><br></span><span class="default">$pageController </span><span class="keyword">= </span><span class="string">'Project_My_Class'</span><span class="keyword">; </span><span class="comment">// "Project/My/Class.php"<br><br></span><span class="keyword">try {<br>&nbsp; </span><span class="default">$obj </span><span class="keyword">= new </span><span class="default">$pageController</span><span class="keyword">();<br>} catch (</span><span class="default">Project_Exception_AutoLoad $e</span><span class="keyword">) {<br>&nbsp; &nbsp; </span><span class="default">header</span><span class="keyword">(</span><span class="string">'HTTP/1.0 404 Not Found'</span><span class="keyword">);<br>&nbsp; &nbsp; </span><span class="default">printf</span><span class="keyword">(</span><span class="string">'&lt;h1&gt;Not Found&lt;/h1&gt;&lt;p&gt;The requested page %s was not found on this server.&lt;/p&gt;&lt;hr /&gt;&lt;em&gt;$id$&lt;/em&gt;'</span><span class="keyword">, </span><span class="default">$_SERVER</span><span class="keyword">[</span><span class="string">'REQUEST_URI'</span><span class="keyword">]);<br>}<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="86195">  
+  <a class="name">
+  <strong class="user"><em>kalkamar at web dot de</em></strong></a><div class="date" title="2008-10-07 10:23"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom86195">
+<div class="phpcode"><code><span class="html">
+Because static classes have no constructor I use this to initialize such classes.
+<br>The function init will (if available) be called when you first use the class.
+<br>The class must not be included before, otherwise the init-function wont be called as autoloading is not used.
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$class_name</span><span class="keyword">)
+<br>{
+<br>&nbsp; &nbsp; require_once(</span><span class="default">CLASSES_PATH</span><span class="keyword">.</span><span class="default">$class_name</span><span class="keyword">.</span><span class="string">'.cls.php'</span><span class="keyword">);
+<br>&nbsp; &nbsp; if(</span><span class="default">method_exists</span><span class="keyword">(</span><span class="default">$class_name</span><span class="keyword">,</span><span class="string">'init'</span><span class="keyword">))
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">call_user_func</span><span class="keyword">(array(</span><span class="default">$class_name</span><span class="keyword">,</span><span class="string">'init'</span><span class="keyword">));
+<br>&nbsp; &nbsp; return </span><span class="default">true</span><span class="keyword">;
+<br>}
+<br></span><span class="default">?&gt;
+<br></span>
+<br>I use it for example to establish the mysql-connection on demand.
+<br>
+<br>It is also possilbe do add a destructor by adding this lines to the function:
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">if(</span><span class="default">method_exists</span><span class="keyword">(</span><span class="default">$class_name</span><span class="keyword">,</span><span class="string">'destruct'</span><span class="keyword">))
+<br>&nbsp; &nbsp; </span><span class="default">register_shutdown_function</span><span class="keyword">(array(</span><span class="default">$class_name</span><span class="keyword">,</span><span class="string">'destruct'</span><span class="keyword">));
+<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="58691">  
+  <a class="name">
+  <strong class="user"><em>me at mydomain dot com</em></strong></a><div class="date" title="2005-11-11 04:07"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom58691">
+<div class="phpcode"><code><span class="html">
+You can enable this behaviour for undefined classes while unserializing objects by setting the .ini-variable 'unserialize_callback_func' to '__autoload'.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="115369">  
+  <a class="name">
+  <strong class="user"><em>oliver dot strevel at gmail dot com</em></strong></a><div class="date" title="2014-07-14 12:50"><strong>1 month ago</strong></div>
+  <div class="text" id="Hcom115369">
+<div class="phpcode"><code><span class="html">
+My autoloader function:<br><br><span class="default">&lt;?php<br><br></span><span class="comment">/**<br> * Funcion de autocarga de clases para php<br> * Se realiza la busqueda directamente sobre la raiz de la carpeta lib con el prefijo '.class.php'<br> */<br></span><span class="keyword">function </span><span class="default">__autoload</span><span class="keyword">( </span><span class="default">$class_name </span><span class="keyword">)<br>{<br>&nbsp; &nbsp; </span><span class="default">$invalidChars </span><span class="keyword">= array(<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'.'</span><span class="keyword">, </span><span class="string">'\\'</span><span class="keyword">, </span><span class="string">'/'</span><span class="keyword">, </span><span class="string">':'</span><span class="keyword">, </span><span class="string">'*'</span><span class="keyword">, </span><span class="string">'?'</span><span class="keyword">, </span><span class="string">'"'</span><span class="keyword">, </span><span class="string">'&lt;'</span><span class="keyword">, </span><span class="string">'&gt;'</span><span class="keyword">, </span><span class="string">"'"</span><span class="keyword">, </span><span class="string">'|'<br>&nbsp; &nbsp; </span><span class="keyword">);<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="default">$class_name </span><span class="keyword">= </span><span class="default">str_replace</span><span class="keyword">(</span><span class="default">$invalidChars</span><span class="keyword">, </span><span class="string">''</span><span class="keyword">, </span><span class="default">$class_name</span><span class="keyword">);<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="default">$extension_prefix </span><span class="keyword">= </span><span class="string">'.class.php'</span><span class="keyword">;<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; if( !@include_once </span><span class="default">$class_name </span><span class="keyword">. </span><span class="default">$extension_prefix </span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$path </span><span class="keyword">= </span><span class="string">'lib'</span><span class="keyword">; </span><span class="comment">// In this dir the function will search<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">foreach( new </span><span class="default">DirectoryIterator</span><span class="keyword">(</span><span class="default">$path</span><span class="keyword">) as </span><span class="default">$file </span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">$file</span><span class="keyword">-&gt;</span><span class="default">isDot</span><span class="keyword">()) { continue; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">$file</span><span class="keyword">-&gt;</span><span class="default">isDir</span><span class="keyword">())<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$file </span><span class="keyword">= </span><span class="default">$path </span><span class="keyword">. </span><span class="default">DIRECTORY_SEPARATOR </span><span class="keyword">. </span><span class="default">$file</span><span class="keyword">-&gt;</span><span class="default">getFilename</span><span class="keyword">() . </span><span class="default">DIRECTORY_SEPARATOR </span><span class="keyword">. </span><span class="default">$class_name </span><span class="keyword">. </span><span class="default">$extension_prefix</span><span class="keyword">;&nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">file_exists</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; include_once </span><span class="default">$file</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; }&nbsp; &nbsp; <br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; if (!</span><span class="default">class_exists</span><span class="keyword">(</span><span class="default">$class_name</span><span class="keyword">, </span><span class="default">false</span><span class="keyword">) || !</span><span class="default">interface_exists</span><span class="keyword">(</span><span class="default">$class_name</span><span class="keyword">, </span><span class="default">false</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// return || Some tracking error task..<br>&nbsp; &nbsp; </span><span class="keyword">}<br>}<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="75832">  
+  <a class="name">
+  <strong class="user"><em>peter dot gooman at gmail dot com</em></strong></a><div class="date" title="2007-06-17 08:33"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom75832">
+<div class="phpcode"><code><span class="html">
+Before you start using __autload, remember that it holds no scope/namespace. This means that if you are depending on third party applications and they have an autoload function defined and so do you, your application will error.<br><br>To remedy this, everyone should look at the spl_autoload functions, eg: spl_autoload_register. This function allows more than one custom functions to be called through the default spl_autoload (default __autoload) handler.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="96679">  
+  <a class="name">
+  <strong class="user"><em>tom at r dot je</em></strong></a><div class="date" title="2010-03-11 03:30"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom96679">
+<div class="phpcode"><code><span class="html">
+To find out whether a class can be autoloaded, you can use autoload in this way:<br><br><span class="default">&lt;?php<br></span><span class="comment">//Define autoloader<br></span><span class="keyword">function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$className</span><span class="keyword">) {<br>&nbsp; &nbsp; if (</span><span class="default">file_exists</span><span class="keyword">(</span><span class="default">$className </span><span class="keyword">. </span><span class="string">'.php'</span><span class="keyword">)) require </span><span class="default">$className </span><span class="keyword">. </span><span class="string">'.php'</span><span class="keyword">;<br>&nbsp; &nbsp; else throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="string">'Class "' </span><span class="keyword">. </span><span class="default">$className </span><span class="keyword">. </span><span class="string">'" could not be autoloaded'</span><span class="keyword">); <br>}<br><br>function </span><span class="default">canClassBeAutloaded</span><span class="keyword">(</span><span class="default">$className</span><span class="keyword">) {<br>&nbsp; &nbsp; try {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">class_exists</span><span class="keyword">(</span><span class="default">$className</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">true</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; catch (</span><span class="default">Exception $e</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">false</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>}<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="96099">  
+  <a class="name">
+  <strong class="user"><em>Anonymous</em></strong></a><div class="date" title="2010-02-08 03:35"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom96099">
+<div class="phpcode"><code><span class="html">
+It's worth to mention, if your operating system is case-sensitive you need to name your file with same case as in source code eg. MyClass.php instead of myclass.php</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="92060">  
+  <a class="name">
+  <strong class="user"><em>Peminator</em></strong></a><div class="date" title="2009-07-07 07:01"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom92060">
+<div class="phpcode"><code><span class="html">
+My idea for autoloading FUNCTIONS however only in a weird way :
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">function </span><span class="default">ex</span><span class="keyword">(</span><span class="default">$parms</span><span class="keyword">)
+<br>{
+<br>&nbsp;&nbsp; </span><span class="default">$argvar </span><span class="keyword">= </span><span class="default">func_get_args</span><span class="keyword">();
+<br>&nbsp;&nbsp; </span><span class="default">$func </span><span class="keyword">= </span><span class="default">$argvar</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">]; 
+<br>&nbsp;&nbsp; </span><span class="default">$funcargs </span><span class="keyword">= </span><span class="default">array_slice</span><span class="keyword">(</span><span class="default">$argvar</span><span class="keyword">,</span><span class="default">1</span><span class="keyword">); 
+<br>&nbsp;&nbsp; 
+<br>if (</span><span class="default">function_exists</span><span class="keyword">(</span><span class="default">$func</span><span class="keyword">))
+<br>&nbsp;&nbsp; {
+<br>&nbsp;&nbsp; </span><span class="default">$returnvalue </span><span class="keyword">= </span><span class="default">call_user_func_array</span><span class="keyword">(</span><span class="default">$func</span><span class="keyword">,</span><span class="default">$funcargs</span><span class="keyword">);
+<br>&nbsp;&nbsp; }
+<br>else
+<br>&nbsp;&nbsp; {
+<br>&nbsp;&nbsp; </span><span class="default">$funcpath </span><span class="keyword">= </span><span class="string">"scripts/"</span><span class="keyword">.</span><span class="default">$func</span><span class="keyword">.</span><span class="string">".php"</span><span class="keyword">;
+<br>&nbsp;&nbsp; require_once(</span><span class="default">$funcpath</span><span class="keyword">);
+<br>&nbsp;&nbsp; 
+<br>&nbsp;&nbsp; if (</span><span class="default">function_exists</span><span class="keyword">(</span><span class="default">$func</span><span class="keyword">))
+<br>&nbsp; &nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; </span><span class="default">$returnvalue </span><span class="keyword">= </span><span class="default">call_user_func_array</span><span class="keyword">(</span><span class="default">$func</span><span class="keyword">,</span><span class="default">$funcargs</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; }&nbsp; 
+<br>&nbsp;&nbsp; else
+<br>&nbsp; &nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; die </span><span class="string">"SORRY&nbsp; </span><span class="default">$func</span><span class="string"> IS NOT USABLE"</span><span class="keyword">;
+<br>&nbsp; &nbsp; &nbsp; }
+<br>&nbsp;&nbsp; }
+<br> 
+<br></span><span class="comment">// return returned value :-)
+<br></span><span class="keyword">return </span><span class="default">$returnvalue</span><span class="keyword">;
+<br>}
+<br></span><span class="default">?&gt;
+<br></span>
+<br>USAGE EXAMPLE:
+<br>must be caled using the X function giving the real function as first parameter, like:
+<br>$result = ex("add",1,2); 
+<br>// returns 3 if add function defined in add.php sums the first and second parameter..</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="87945">  
+  <a class="name">
+  <strong class="user"><em>zachera</em></strong></a><div class="date" title="2008-12-31 04:55"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom87945">
+<div class="phpcode"><code><span class="html">
+I found out a neat way to centralize one single class which will give accessibility to other classes.&nbsp; I also added a parameter to the __construct method which would be an array of classes you want loaded.&nbsp; This isn't completely necessary, but it will stop "excessive memory" if you're loading a bunch of unused classes.
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">class </span><span class="default">Bot </span><span class="keyword">{
+<br>&nbsp; &nbsp; private </span><span class="default">$classes </span><span class="keyword">= array (
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'Socket' </span><span class="keyword">=&gt; </span><span class="string">"connection/class.Socket.php"</span><span class="keyword">,
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'Input'&nbsp; </span><span class="keyword">=&gt; </span><span class="string">"io/class.Input.php"</span><span class="keyword">,
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'Output' </span><span class="keyword">=&gt; </span><span class="string">"io/class.Output.php"</span><span class="keyword">,
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'Parse'&nbsp; </span><span class="keyword">=&gt; </span><span class="string">"io/parse/class.Parse.php"
+<br>&nbsp; &nbsp; </span><span class="keyword">);
+<br>&nbsp; &nbsp; public </span><span class="default">$Socket</span><span class="keyword">, </span><span class="default">$Input</span><span class="keyword">, </span><span class="default">$Output</span><span class="keyword">, </span><span class="default">$Parse</span><span class="keyword">; </span><span class="comment">// Accessible by other classes
+<br>
+<br>&nbsp; &nbsp; </span><span class="keyword">public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$load</span><span class="keyword">=</span><span class="default">false</span><span class="keyword">){
+<br>&nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">is_array</span><span class="keyword">(</span><span class="default">$load</span><span class="keyword">)){
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; foreach(</span><span class="default">$load </span><span class="keyword">as </span><span class="default">$class</span><span class="keyword">){
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(isset(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">classes</span><span class="keyword">[</span><span class="default">$class</span><span class="keyword">])){
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; require(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">classes</span><span class="keyword">[</span><span class="default">$class</span><span class="keyword">]);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">$class </span><span class="keyword">= new </span><span class="default">$class</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; } else {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; foreach(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">classes </span><span class="keyword">as </span><span class="default">$class </span><span class="keyword">=&gt; </span><span class="default">$path</span><span class="keyword">){
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; require(</span><span class="default">$path</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">$class </span><span class="keyword">= new </span><span class="default">$class</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; }
+<br>}
+<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="85779">  
+  <a class="name">
+  <strong class="user"><em>jbarker at erepublic dot com</em></strong></a><div class="date" title="2008-09-17 08:34"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom85779">
+<div class="phpcode"><code><span class="html">
+In a subclass, I was trying to call an overridden parent method with an arbitrary number of arguments:
+<br>
+<br><span class="default">&lt;?php
+<br>call_user_func_array</span><span class="keyword">(array(</span><span class="string">'parent'</span><span class="keyword">, </span><span class="string">'someNonStaticMethod'</span><span class="keyword">), </span><span class="default">$args</span><span class="keyword">);
+<br></span><span class="default">?&gt;
+<br></span>
+<br>It turns out this triggers an E_STRICT level warning. So I changed to this:
+<br>
+<br><span class="default">&lt;?php
+<br>call_user_func_array</span><span class="keyword">(array(</span><span class="default">$this</span><span class="keyword">, </span><span class="string">'parent::someNonStaticMethod'</span><span class="keyword">), </span><span class="default">$args</span><span class="keyword">);
+<br></span><span class="default">?&gt;</span> 
+<br>
+<br>This doesn't trigger any warnings, but it has the undesirable (if not downright buggy) effect of calling my __autoload() function with the argument 'parent'. I had to modify __autoload() to handle this special situation:
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$cls</span><span class="keyword">)
+<br>{
+<br>&nbsp; &nbsp; if (</span><span class="string">'parent' </span><span class="keyword">!= </span><span class="default">$cls</span><span class="keyword">)
+<br>&nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; require(</span><span class="string">"class.</span><span class="default">$cls</span><span class="string">.php"</span><span class="keyword">);
+<br>&nbsp; &nbsp; }
+<br>}
+<br></span><span class="default">?&gt;
+<br></span>
+<br>Tested on Linux with PHP 5.1.6 and 5.2.5.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="84853">  
+  <a class="name">
+  <strong class="user"><em>matias dot cohen at gmail dot com</em></strong></a><div class="date" title="2008-08-01 04:33"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom84853">
+<div class="phpcode"><code><span class="html">
+Another way of throwing exceptions inside an __autoload() function:<br><span class="default">&lt;?php<br><br></span><span class="keyword">function </span><span class="default">myExceptionHandler</span><span class="keyword">(</span><span class="default">$e</span><span class="keyword">) {<br>&nbsp; &nbsp; </span><span class="comment">// Add code here<br></span><span class="keyword">}<br><br></span><span class="default">set_exception_handler</span><span class="keyword">(</span><span class="string">'myExceptionHandler'</span><span class="keyword">);<br><br>function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">) {<br>&nbsp; &nbsp; if (</span><span class="default">class_exists</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">, </span><span class="default">false</span><span class="keyword">) || </span><span class="default">interface_exists</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">, </span><span class="default">false</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; return;&nbsp; &nbsp; <br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; try {<br>&nbsp; &nbsp; &nbsp; &nbsp; @require_once(</span><span class="string">'path/to/' </span><span class="keyword">. </span><span class="default">$class </span><span class="keyword">. </span><span class="string">'.php'</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; if (!</span><span class="default">class_exists</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">, </span><span class="default">false</span><span class="keyword">) || !</span><span class="default">interface_exists</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">, </span><span class="default">false</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="string">'Class ' </span><span class="keyword">. </span><span class="default">$class </span><span class="keyword">. </span><span class="string">' not found'</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; catch (</span><span class="default">Exception $e</span><span class="keyword">) {<br><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">myExceptionHandler</span><span class="keyword">(</span><span class="default">$e</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>}<br><br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="84233">  
+  <a class="name">
+  <strong class="user"><em>chris (at) xeneco (dot) co (dot) uk</em></strong></a><div class="date" title="2008-07-04 06:21"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom84233">
+<div class="phpcode"><code><span class="html">
+I'm very taken with the autoload function, and thought I would share with you my implementation of it:<br><span class="default">&lt;?php<br></span><span class="keyword">function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$class_name</span><span class="keyword">) {<br><br>&nbsp; &nbsp; </span><span class="comment">//my settings class is a singleton instance that has parsed an ini file containing the locations of all classes<br>&nbsp; &nbsp; </span><span class="default">$settings </span><span class="keyword">= </span><span class="default">Settings</span><span class="keyword">::</span><span class="default">Load</span><span class="keyword">();<br>&nbsp; &nbsp; </span><span class="default">$classes </span><span class="keyword">= </span><span class="default">$settings</span><span class="keyword">-&gt;</span><span class="default">getSettings</span><span class="keyword">(</span><span class="string">'classes'</span><span class="keyword">);<br><br>&nbsp; &nbsp; </span><span class="default">$path </span><span class="keyword">= </span><span class="default">$classes</span><span class="keyword">[</span><span class="default">$class_name</span><span class="keyword">];<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; if(</span><span class="default">file_exists</span><span class="keyword">(</span><span class="default">$path</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; require_once(</span><span class="default">$path</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">true</span><span class="keyword">;<br>&nbsp; &nbsp; } else {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">clearstatcache</span><span class="keyword">();<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$classes </span><span class="keyword">= </span><span class="default">$settings</span><span class="keyword">-&gt;</span><span class="default">ReLoadSettings</span><span class="keyword">();<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$path </span><span class="keyword">= </span><span class="default">$classes</span><span class="keyword">[</span><span class="string">'classes'</span><span class="keyword">][</span><span class="default">$class_name</span><span class="keyword">];<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; if(</span><span class="default">file_exists</span><span class="keyword">(</span><span class="default">$path</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; require_once(</span><span class="default">$path</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">true</span><span class="keyword">;<br>&nbsp; &nbsp; } else {<br>&nbsp; &nbsp; &nbsp; &nbsp; die(</span><span class="string">"The requested library,"</span><span class="keyword">.</span><span class="default">$class_name</span><span class="keyword">.</span><span class="string">", could not be found at "</span><span class="keyword">.</span><span class="default">$classes</span><span class="keyword">[</span><span class="default">$class_name</span><span class="keyword">][</span><span class="default">$i</span><span class="keyword">].</span><span class="string">". Please check your ini file"</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>}<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="82860">  
+  <a class="name">
+  <strong class="user"><em>Chris Continanza</em></strong></a><div class="date" title="2008-04-29 11:43"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom82860">
+<div class="phpcode"><code><span class="html">
+Decided to warm up to autoload,<br>but wanted it to use the include_path.<br>Good default behavior.<br><br>function __autoload($class_name) {<br>&nbsp; &nbsp; &nbsp; $include_path = get_include_path();<br>&nbsp; &nbsp; &nbsp; $include_path_tokens = explode(':', $include_path);<br>&nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; foreach($include_path_tokens as $prefix){<br>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; $path = $prefix . '/' . $class_name . '.php';<br>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; if(file_exists($path)){<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; require_once $path;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp;&nbsp; }&nbsp; <br>&nbsp; }</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="80670">  
+  <a class="name">
+  <strong class="user"><em>muratyaman at gmail dot com</em></strong></a><div class="date" title="2008-01-28 07:57"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom80670">
+<div class="phpcode"><code><span class="html">
+__autoload() function can be very useful to optimize your code esp. when you have so many classes.<br><br>Unlike class extensions, optional parameters with class restrictions may not load your class.<br><br><span class="default">&lt;?php<br></span><span class="keyword">class </span><span class="default">bClass</span><span class="keyword">{<br>&nbsp; function </span><span class="default">fun</span><span class="keyword">(</span><span class="default">$p1</span><span class="keyword">, </span><span class="default">aClass $p2</span><span class="keyword">=</span><span class="default">NULL</span><span class="keyword">){<br>&nbsp; &nbsp; </span><span class="comment">//do something<br>&nbsp; </span><span class="keyword">}<br>}<br><br></span><span class="comment">//depending on the usage<br></span><span class="default">$b </span><span class="keyword">= new </span><span class="default">bClass</span><span class="keyword">();<br></span><span class="default">$b</span><span class="keyword">-&gt;</span><span class="default">fun</span><span class="keyword">(</span><span class="string">'No!'</span><span class="keyword">);</span><span class="comment">//this will not load class file for aClass<br></span><span class="default">$b</span><span class="keyword">-&gt;</span><span class="default">fun</span><span class="keyword">(</span><span class="string">'Really?'</span><span class="keyword">, new </span><span class="default">aClass</span><span class="keyword">(</span><span class="string">'Yes!'</span><span class="keyword">));</span><span class="comment">//this will<br><br></span><span class="default">?&gt;<br></span><br>So, it's very encouraging to use classes everywhere!<br>Even encapsulating your functions inside simple classes to use like static modules, will help a lot!<br><br>Let's say, you have &lt;b&gt;50k&lt;/b&gt; lines of code inside &lt;b&gt;100&lt;/b&gt; classes/files.. If you need a simple task to do very quickly, you should not be loading all of those files, except the ones you need.<br><br>Though, it may be dangerous on some cases regarding the dependencies, load order, etc. Carefully design your classes.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="79928">  
+  <a class="name">
+  <strong class="user"><em>ostapk</em></strong></a><div class="date" title="2007-12-19 02:46"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom79928">
+<div class="phpcode"><code><span class="html">
+To sandrejev at gmail dot com below: <br><br>if you create the exception in the __autoload() and serialize it, then when you try to access the same missing class later (in another place in the code), then the exception will contain invalid stack trace.<br><br>Also, here's an excellent blog post that discusses the consequences of using eval() as well as provides an example to handle static method calls and namespaces: <a rel="nofollow" target="_blank">http://www.onphp5.com/article/61</a></span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="79611">  
+  <a class="name">
+  <strong class="user"><em>richard [at ] xanox [dot] net</em></strong></a><div class="date" title="2007-12-05 07:46"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom79611">
+<div class="phpcode"><code><span class="html">
+I've made this little script here which looks in a dir, and loads all the classed, and includes their files.<br><br>$myDirectory = opendir("required/classes");<br><br>// get each entry<br>while($entryName = readdir($myDirectory)) {<br>&nbsp; &nbsp; $dirArray[] = $entryName;<br>}<br><br>// close directory<br>closedir($myDirectory);<br><br>//&nbsp; &nbsp; count elements in array<br>$indexCount&nbsp; &nbsp; = count($dirArray);<br>sort($dirArray);<br><br>for($index=0; $index &lt; $indexCount; $index++) {<br>&nbsp; &nbsp; if($dirArray[$index] != '.' AND $dirArray[$index] != '..') {<br>&nbsp; &nbsp; &nbsp; &nbsp; include("required/classes/$dirArray[$index]");<br>&nbsp; &nbsp; &nbsp; &nbsp; $classname = strtolower($dirArray[$index]);<br>&nbsp; &nbsp; &nbsp; &nbsp; $classname = str_replace('.php','',$classname);<br>&nbsp; &nbsp; &nbsp; &nbsp; $classinit = str_replace('.php','',$dirArray[$index]);<br><br>&nbsp; &nbsp; &nbsp; &nbsp; $$classname = new $classinit;<br>&nbsp; &nbsp; }<br>}</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="78276">  
+  <a class="name">
+  <strong class="user"><em>rojoca</em></strong></a><div class="date" title="2007-10-04 08:38"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom78276">
+<div class="phpcode"><code><span class="html">
+Be careful when using eval (as always) in __autoload. The following:<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">echo </span><span class="string">'Start-&gt;'</span><span class="keyword">;<br><br>function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">) {<br>&nbsp; &nbsp; eval(</span><span class="string">'class ' </span><span class="keyword">. </span><span class="default">$class </span><span class="keyword">. </span><span class="string">' {};'</span><span class="keyword">);<br>}<br><br></span><span class="default">$class </span><span class="keyword">= </span><span class="string">'Class1{}; echo "uh oh"; class Class2'</span><span class="keyword">;<br><br></span><span class="default">$obj </span><span class="keyword">= new </span><span class="default">$class</span><span class="keyword">;<br><br>echo </span><span class="string">'end'</span><span class="keyword">;<br></span><span class="default">?&gt;<br></span><br>outputs:<br><br>Start-&gt;uh oh<br><br>You can use preg_replace to clean up $class to prevent executing abitrary code but in this case you won't be able to throw a catchable exception and your script will end with a fatal error.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="78003">  
+  <a class="name">
+  <strong class="user"><em>christian.reinecke at web.de</em></strong></a><div class="date" title="2007-09-23 09:28"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom78003">
+<div class="phpcode"><code><span class="html">
+do not use is_subclass_of() in your __autoload() function to identify a class type and thereby its path (f.e exceptions). is_subclass_of() needs to know the class, but you want to check BEFORE you include the class.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="74026">  
+  <a class="name">
+  <strong class="user"><em>Andrea Giammarchi</em></strong></a><div class="date" title="2007-03-21 03:54"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom74026">
+<div class="phpcode"><code><span class="html">
+Another workaround for Exception problem (Klaus Schneider style)<br><br><span class="default">&lt;?php<br>define</span><span class="keyword">(</span><span class="string">'CLASS_DIR'</span><span class="keyword">, </span><span class="string">'php/classes/'</span><span class="keyword">);<br>function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$name</span><span class="keyword">) {<br>&nbsp; &nbsp; if(</span><span class="default">$exists </span><span class="keyword">= !</span><span class="default">class_exists</span><span class="keyword">(</span><span class="default">$name</span><span class="keyword">) &amp;&amp; </span><span class="default">file_exists</span><span class="keyword">(</span><span class="default">$class </span><span class="keyword">= </span><span class="default">CLASS_DIR</span><span class="keyword">.</span><span class="default">$name</span><span class="keyword">.</span><span class="string">'.class.php'</span><span class="keyword">))<br>&nbsp; &nbsp; &nbsp; &nbsp; require </span><span class="default">$class</span><span class="keyword">;<br>&nbsp; &nbsp; elseif(!</span><span class="default">$exists</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; eval(</span><span class="string">'class '</span><span class="keyword">.</span><span class="default">$name</span><span class="keyword">.</span><span class="string">' extends Exception {}'</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; throw new </span><span class="default">$name</span><span class="keyword">(</span><span class="string">'[__autoload] this file doesn\'t exists: '</span><span class="keyword">.</span><span class="default">$class</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>}<br><br>try {<br>&nbsp; &nbsp; new </span><span class="default">Undefined</span><span class="keyword">;<br>}<br>catch(</span><span class="default">Undefined $e</span><span class="keyword">) {<br>&nbsp; &nbsp; echo </span><span class="default">$e</span><span class="keyword">-&gt;</span><span class="default">getMessage</span><span class="keyword">();<br>}<br></span><span class="comment">// You should use generic Exception too<br></span><span class="keyword">catch(</span><span class="default">Exception $e</span><span class="keyword">) {<br>&nbsp; &nbsp; echo </span><span class="default">$e</span><span class="keyword">-&gt;</span><span class="default">getMessage</span><span class="keyword">();<br>}<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="73561">  
+  <a class="name">
+  <strong class="user"><em>Klaus Schneider</em></strong></a><div class="date" title="2007-03-01 07:35"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom73561">
+<div class="phpcode"><code><span class="html">
+I just stumbled over one quite nice solution to the __autoload-exception problem.&nbsp; It allows for any kind of exception to be thrown inside __autoload().<br><br>It appears one has to define the requested class (using "eval", which is not nice but inevitable here) and after that can simply throw an exception (and catch it if so desired):<br><br><span class="default">&lt;?php<br></span><span class="keyword">function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$className</span><span class="keyword">)<br>{<br>&nbsp;&nbsp; </span><span class="comment">// Do your stuff to load a class here, set $ok if everything went fine.<br>&nbsp;&nbsp; </span><span class="keyword">if (! </span><span class="default">$ok</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; eval(</span><span class="string">"class </span><span class="default">$className</span><span class="string">{};"</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="string">'My message'</span><span class="keyword">);<br>&nbsp;&nbsp; } </span><span class="comment">// if<br></span><span class="keyword">}<br><br>try {<br>&nbsp;&nbsp; </span><span class="default">UndefinedClass</span><span class="keyword">::</span><span class="default">undefinedFunction</span><span class="keyword">();<br>} catch (</span><span class="default">Exception $ex</span><span class="keyword">) {<br>&nbsp;&nbsp; echo </span><span class="default">$ex</span><span class="keyword">-&gt;</span><span class="default">getMessage</span><span class="keyword">();<br>} </span><span class="comment">// try/catch<br></span><span class="default">?&gt;<br></span><br>Output: "My Message".&nbsp; <br><br>:-)</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="72140">  
+  <a class="name">
+  <strong class="user"><em>Rico</em></strong></a><div class="date" title="2007-01-04 05:00"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom72140">
+<div class="phpcode"><code><span class="html">
+This autoload function searches for the class Location before requiring it. So there's no need of putting the classes all in one folder. <br><br>Requirements:<br> - the subfolders must be at least 3 letters long<br> - the filenames must be in the form CLASSNAME.class.php<br><br>Note:<br> - in this example the main class folder is 'lib'<br><br>define('ROOT_DIR', dirname(__FILE__).'/');<br><br>function __autoload($className) {<br>&nbsp; &nbsp; $folder=classFolder($className);<br>&nbsp; &nbsp; if($folder) require_once($folder.'/'.$className.'.class.php');<br>}<br><br>function classFolder($className,$folder='lib') {<br>&nbsp; &nbsp; $dir=dir(ROOT_DIR.$folder);<br>&nbsp; &nbsp; if($folder=='lib' &amp;&amp; file_exists(ROOT_DIR.$folder.'/'.$className.'.class.php')) return $folder;<br>&nbsp; &nbsp; else {<br>&nbsp; &nbsp; &nbsp; &nbsp; while (false!==($entry=$dir-&gt;read())) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $checkFolder=$folder.'/'.$entry;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(strlen($entry)&gt;2) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(is_dir(ROOT_DIR.$checkFolder)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(file_exists(ROOT_DIR.$checkFolder.'/'.$className.'.class.php')) return $checkFolder;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; else {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $subFolder=classFolder($className,$checkFolder);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if($subFolder) return $subFolder;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; } <br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; $dir-&gt;close();<br>&nbsp; &nbsp; return 0;<br>}</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="71031">  
+  <a class="name">
+  <strong class="user"><em>sandrejev at gmail dot com</em></strong></a><div class="date" title="2006-11-08 11:23"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom71031">
+<div class="phpcode"><code><span class="html">
+Here is the most complete version of __autoload exception i guess.<br>The best thing is that it can throw any exception plus the exception is fully functional.<br><br><span class="default">&lt;?php<br></span><span class="keyword">class </span><span class="default">AutoloadException </span><span class="keyword">extends </span><span class="default">Exception </span><span class="keyword">{ }<br><br>class </span><span class="default">AutoloadExceptionRetranslator </span><span class="keyword">extends </span><span class="default">Exception<br></span><span class="keyword">{<br>&nbsp; &nbsp; public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$serializedException</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; throw </span><span class="default">unserialize</span><span class="keyword">(</span><span class="default">$serializedException</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>}<br><br>function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$classname</span><span class="keyword">)<br>{<br>&nbsp; &nbsp; if(!</span><span class="default">file_exists</span><span class="keyword">(</span><span class="default">$classname</span><span class="keyword">))<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$autoloadException </span><span class="keyword">= </span><span class="default">serialize</span><span class="keyword">(new </span><span class="default">AutoloadException</span><span class="keyword">(</span><span class="string">"Class </span><span class="default">$classname</span><span class="string"> could not be found"</span><span class="keyword">));<br><br>&nbsp; &nbsp; &nbsp; &nbsp; return eval(</span><span class="string">"<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; class </span><span class="default">$classname</span><span class="string"><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; function __construct(\$a=0, \$b=0, \$c=0, \$d=0, \$e=0, \$f=0, \$g=0, \$h=0, \$i=0)<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; throw new AutoloadExceptionRetranslator('</span><span class="default">$autoloadException</span><span class="string">');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; "</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; else<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; require_once </span><span class="default">$classname</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>}<br><br>try<br>{<br>&nbsp; &nbsp; </span><span class="default">$anyObject </span><span class="keyword">= new </span><span class="default">AnyNonExistantClass</span><span class="keyword">();<br>}<br>catch (</span><span class="default">AutoloadException $e</span><span class="keyword">)<br>{<br>&nbsp; &nbsp; </span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$e</span><span class="keyword">-&gt;</span><span class="default">getTrace</span><span class="keyword">());<br>}<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="70898">  
+  <a class="name">
+  <strong class="user"><em>andrew dot delete dot cornes at gmail dot delete dot com</em></strong></a><div class="date" title="2006-11-03 04:26"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom70898">
+<div class="phpcode"><code><span class="html">
+If you'd like '__autoload()' to support multiple class folders, each containing multiple class files (one per class), you may want to try something like this (file '__autoload.php'):<br><br><span class="default">&lt;?php<br><br>define</span><span class="keyword">(</span><span class="string">'CLASS_FILENAME_SUFFIX'</span><span class="keyword">, </span><span class="string">'.class.php'</span><span class="keyword">);<br><br>function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$className</span><span class="keyword">)<br>{<br>&nbsp; &nbsp; </span><span class="default">$__autoloadAbsolutePath </span><span class="keyword">= </span><span class="default">dirname</span><span class="keyword">(</span><span class="default">__FILE__</span><span class="keyword">);<br><br>&nbsp; &nbsp; </span><span class="comment">// 'pathStart' is your web application root folder.<br>&nbsp; &nbsp; // (This may or may not be where '__autoload.php'<br>&nbsp; &nbsp; // resides; let's assume here that it resides one<br>&nbsp; &nbsp; // level 'below' the web app root.)<br>&nbsp; &nbsp; </span><span class="default">$pathStart </span><span class="keyword">= </span><span class="default">$__autoloadAbsolutePath </span><span class="keyword">.<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">DIRECTORY_SEPARATOR </span><span class="keyword">. </span><span class="string">'..' </span><span class="keyword">. </span><span class="default">DIRECTORY_SEPARATOR</span><span class="keyword">;<br><br>&nbsp; &nbsp; </span><span class="comment">// 'classPath' is a list of class folders to look in.<br>&nbsp; &nbsp; // (In this example, there's just one: 'classlibs/lib1'.<br>&nbsp; &nbsp; // To add more, simply append them; start with<br>&nbsp; &nbsp; // 'PATH_SEPARATOR . $pathStart .', and off you go...)<br>&nbsp; &nbsp; </span><span class="default">$classPath </span><span class="keyword">= </span><span class="default">PATH_SEPARATOR </span><span class="keyword">. </span><span class="default">$pathStart </span><span class="keyword">.<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'classlibs' </span><span class="keyword">. </span><span class="default">DIRECTORY_SEPARATOR </span><span class="keyword">. </span><span class="string">'lib1'</span><span class="keyword">;<br><br>&nbsp; &nbsp; </span><span class="comment">// Add list of class folders to 'include_path' for the<br>&nbsp; &nbsp; // forthcoming 'require()' (or similar directive).<br>&nbsp; &nbsp; </span><span class="default">$oldIncludePath </span><span class="keyword">= </span><span class="default">get_include_path</span><span class="keyword">();<br>&nbsp; &nbsp; </span><span class="default">set_include_path</span><span class="keyword">(</span><span class="default">$oldIncludePath </span><span class="keyword">. </span><span class="default">$classPath</span><span class="keyword">);<br><br>&nbsp; &nbsp; require_once(</span><span class="default">$className </span><span class="keyword">. </span><span class="default">CLASS_FILENAME_SUFFIX</span><span class="keyword">);<br><br>&nbsp; &nbsp; </span><span class="comment">// Reinstate initial 'include_path'.<br>&nbsp; &nbsp; </span><span class="default">set_include_path</span><span class="keyword">(</span><span class="default">$oldIncludePath</span><span class="keyword">);<br>}<br><br></span><span class="default">?&gt;<br></span><br>As your web application develops, new paths containing class files can be added into the '$classPath' variable within '__autoload()'. If hard-coding the '$classPath' variable isn't to your taste, you could arrange for its value to come from 'outside' in whatever way you like.<br><br>Any comments gratefully received.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="69514">  
+  <a class="name">
+  <strong class="user"><em>Chris Corbyn (chris AT w3style.co.uk)</em></strong></a><div class="date" title="2006-09-08 06:23"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom69514">
+<div class="phpcode"><code><span class="html">
+I'm sure this is needed by more than me.<br><br>My objective was to allow __autoload() to be easily extended in complex systems/frameworks where specific libraries etc may need loading differently but you don't want to hard-code little adjustments into your working __autoload() to allow this to happen.<br><br>Using a ServiceLocator object with some static methods and properties to allow loosely coupled locators to be attached to it you can swap/change and add to the functionality of your __autoload() at runtime.<br><br>The core stuff:<br><span class="default">&lt;?php<br><br></span><span class="comment">/**<br> * Defines the methods any actual locators must implement<br> * @package ServiceLocator<br> * @author Chris Corbyn<br> */<br></span><span class="keyword">interface </span><span class="default">Locator<br></span><span class="keyword">{<br>&nbsp; &nbsp; </span><span class="comment">/**<br>&nbsp; &nbsp;&nbsp; * Inform of whether or not the given class can be found<br>&nbsp; &nbsp;&nbsp; * @param string class<br>&nbsp; &nbsp;&nbsp; * @return bool<br>&nbsp; &nbsp;&nbsp; */<br>&nbsp; &nbsp; </span><span class="keyword">public function </span><span class="default">canLocate</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">);<br>&nbsp; &nbsp; </span><span class="comment">/**<br>&nbsp; &nbsp;&nbsp; * Get the path to the class<br>&nbsp; &nbsp;&nbsp; * @param string class<br>&nbsp; &nbsp;&nbsp; * @return string<br>&nbsp; &nbsp;&nbsp; */<br>&nbsp; &nbsp; </span><span class="keyword">public function </span><span class="default">getPath</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">);<br>}<br><br></span><span class="comment">/**<br> * The main service locator.<br> * Uses loosely coupled locators in order to operate<br> * @package ServiceLocator<br> * @author Chris Corbyn<br> */<br></span><span class="keyword">class </span><span class="default">ServiceLocator<br></span><span class="keyword">{<br>&nbsp; &nbsp; </span><span class="comment">/**<br>&nbsp; &nbsp;&nbsp; * Contains any attached service locators<br>&nbsp; &nbsp;&nbsp; * @var array Locator<br>&nbsp; &nbsp;&nbsp; */<br>&nbsp; &nbsp; </span><span class="keyword">protected static </span><span class="default">$locators </span><span class="keyword">= array();<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="comment">/**<br>&nbsp; &nbsp;&nbsp; * Attach a new type of locator<br>&nbsp; &nbsp;&nbsp; * @param object Locator<br>&nbsp; &nbsp;&nbsp; * @param string key<br>&nbsp; &nbsp;&nbsp; */<br>&nbsp; &nbsp; </span><span class="keyword">public static function </span><span class="default">attachLocator</span><span class="keyword">(</span><span class="default">Locator $locator</span><span class="keyword">, </span><span class="default">$key</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">self</span><span class="keyword">::</span><span class="default">$locators</span><span class="keyword">[</span><span class="default">$key</span><span class="keyword">] = </span><span class="default">$locator</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; </span><span class="comment">/**<br>&nbsp; &nbsp;&nbsp; * Remove a locator that's been added<br>&nbsp; &nbsp;&nbsp; * @param string key<br>&nbsp; &nbsp;&nbsp; * @return bool<br>&nbsp; &nbsp;&nbsp; */<br>&nbsp; &nbsp; </span><span class="keyword">public static function </span><span class="default">dropLocator</span><span class="keyword">(</span><span class="default">$key</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">self</span><span class="keyword">::</span><span class="default">isActiveLocator</span><span class="keyword">(</span><span class="default">$key</span><span class="keyword">))<br>&nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; unset(</span><span class="default">self</span><span class="keyword">::</span><span class="default">$locators</span><span class="keyword">[</span><span class="default">$key</span><span class="keyword">]);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">true</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; else return </span><span class="default">false</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; </span><span class="comment">/**<br>&nbsp; &nbsp;&nbsp; * Check if a locator is currently loaded<br>&nbsp; &nbsp;&nbsp; * @param string key<br>&nbsp; &nbsp;&nbsp; * @return bool<br>&nbsp; &nbsp;&nbsp; */<br>&nbsp; &nbsp; </span><span class="keyword">public static function </span><span class="default">isActiveLocator</span><span class="keyword">(</span><span class="default">$key</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">array_key_exists</span><span class="keyword">(</span><span class="default">$key</span><span class="keyword">, </span><span class="default">self</span><span class="keyword">::</span><span class="default">$locators</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; </span><span class="comment">/**<br>&nbsp; &nbsp;&nbsp; * Load in the required service by asking all service locators<br>&nbsp; &nbsp;&nbsp; * @param string class<br>&nbsp; &nbsp;&nbsp; */<br>&nbsp; &nbsp; </span><span class="keyword">public function </span><span class="default">load</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; foreach (</span><span class="default">self</span><span class="keyword">::</span><span class="default">$locators </span><span class="keyword">as </span><span class="default">$key </span><span class="keyword">=&gt; </span><span class="default">$obj</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">$obj</span><span class="keyword">-&gt;</span><span class="default">canLocate</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">))<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; require_once </span><span class="default">$obj</span><span class="keyword">-&gt;</span><span class="default">getPath</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">class_exists</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">)) return;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; }<br>}<br><br></span><span class="comment">/**<br> * PHPs default __autload<br> * Grabs an instance of ServiceLocator then runs it<br> * @package ServiceLocator<br> * @author Chris Corbyn<br> * @param string class<br> */<br></span><span class="keyword">function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">)<br>{<br>&nbsp; &nbsp; </span><span class="default">$locator </span><span class="keyword">= new </span><span class="default">ServiceLocator</span><span class="keyword">();<br>&nbsp; &nbsp; </span><span class="default">$locator</span><span class="keyword">-&gt;</span><span class="default">load</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">);<br>}<br><br></span><span class="default">?&gt;<br></span><br>An example Use Case:<br><span class="default">&lt;?php<br><br></span><span class="keyword">require </span><span class="string">'ServiceLocator.php'</span><span class="keyword">;<br><br></span><span class="comment">//Define some sort of service locator to attach...<br></span><span class="keyword">class </span><span class="default">PearLocator </span><span class="keyword">implements </span><span class="default">Locator<br></span><span class="keyword">{<br>&nbsp; &nbsp; protected </span><span class="default">$base </span><span class="keyword">= </span><span class="string">'.'</span><span class="keyword">;<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$directory</span><span class="keyword">=</span><span class="string">'.'</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">base </span><span class="keyword">= (string) </span><span class="default">$directory</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; public function </span><span class="default">canLocate</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$path </span><span class="keyword">= </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">getPath</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">file_exists</span><span class="keyword">(</span><span class="default">$path</span><span class="keyword">)) return </span><span class="default">true</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; else return </span><span class="default">false</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; public function </span><span class="default">getPath</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">base </span><span class="keyword">. </span><span class="string">'/' </span><span class="keyword">. </span><span class="default">str_replace</span><span class="keyword">(</span><span class="string">'_'</span><span class="keyword">, </span><span class="string">'/'</span><span class="keyword">, </span><span class="default">$class</span><span class="keyword">) . </span><span class="string">'.php'</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>}<br><br></span><span class="comment">// ... attach it ...<br></span><span class="default">ServiceLocator</span><span class="keyword">::</span><span class="default">attachLocator</span><span class="keyword">(new </span><span class="default">PearLocator</span><span class="keyword">(), </span><span class="string">'PEAR'</span><span class="keyword">);<br><br></span><span class="comment">// ... and code away....<br></span><span class="default">$foo </span><span class="keyword">= new </span><span class="default">Foo_Test</span><span class="keyword">();<br><br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="68614">  
+  <a class="name">
+  <strong class="user"><em>gonix</em></strong></a><div class="date" title="2006-08-03 06:39"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom68614">
+<div class="phpcode"><code><span class="html">
+in response to alexey at renatasystems dot org:<br><br>You may add ``global $somedata;`` before ``$somedata = 'Some data';`` and it should work as expected.<br><br>file bar.class.php:<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">global </span><span class="default">$somedata</span><span class="keyword">;<br></span><span class="default">$somedata </span><span class="keyword">= </span><span class="string">'Some data'</span><span class="keyword">;&nbsp; &nbsp; </span><span class="comment">/* global scope in common way */<br><br></span><span class="keyword">class </span><span class="default">bar </span><span class="keyword">{<br><br>&nbsp;&nbsp; function </span><span class="default">__construct</span><span class="keyword">()&nbsp;&nbsp; <br>&nbsp;&nbsp; {&nbsp;&nbsp; <br>&nbsp; &nbsp; &nbsp;&nbsp; global </span><span class="default">$somedata</span><span class="keyword">;&nbsp; &nbsp; </span><span class="comment">/* reference to global scope variable */<br>&nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="keyword">if ( isset(</span><span class="default">$somedata</span><span class="keyword">) )<br>&nbsp; &nbsp; &nbsp;&nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$somedata</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp;&nbsp; }<br>&nbsp; &nbsp; &nbsp;&nbsp; else<br>&nbsp; &nbsp; &nbsp;&nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; die(</span><span class="string">'No data!'</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp;&nbsp; }<br>&nbsp;&nbsp; }<br>}<br></span><span class="default">?&gt;<br></span><br>'common way':<br><span class="default">&lt;?php<br><br></span><span class="keyword">require </span><span class="string">'bar.class.php'</span><span class="keyword">;<br><br></span><span class="default">$foo </span><span class="keyword">= new </span><span class="default">bar</span><span class="keyword">();<br><br></span><span class="default">?&gt;<br></span><br>'__autoload way':<br><span class="default">&lt;?php<br><br></span><span class="keyword">function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$classname</span><span class="keyword">)<br>{<br>&nbsp;&nbsp; require </span><span class="default">$classname </span><span class="keyword">. </span><span class="string">'.class.php'</span><span class="keyword">;<br>}<br><br></span><span class="default">$foo </span><span class="keyword">= new </span><span class="default">bar</span><span class="keyword">();<br><br></span><span class="default">?&gt;<br></span><br>Both 'comon way' and '__autoload way' should give same result:<br>string(9) "Some data"</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="62723">  
+  <a class="name">
+  <strong class="user"><em>RQuadling at GMail dot com</em></strong></a><div class="date" title="2006-03-08 12:55"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom62723">
+<div class="phpcode"><code><span class="html">
+An issue I've had with using the __autoload function is getting it into the application.<br><br>You have to have the function included in every topmost script. This is a pain if the entire application is OOP and an "app" can be just a component of another "app".<br><br>A solution I've found is to use php.ini's auto_prepend_file setting.<br><br>Mine is set to ...<br><br>auto_prepend_file = auto_loader.php<br><br>The auto_loader.php script contains a single function. The __autoload() function.<br><br>The include_dir path IS examined to find this file, so you can just put it with the rest of your includable files.<br><br>A useful additional facility here is that you could log which classes are used by a script at runtime. Very useful if you have object factories and can't know the load at design time.<br><br>Also, assigning the uncaught exception handler and the error handlers in this file means your entire site WILL have some global protection without you having to deal with it on a script by script basis.<br><br>If you do not have access to the PHP.INI file, or you are running on a shared server, you may not be able to set this property. In those cases, you may be able to set the value using .htaccess. (NOTE: UNTESTED as I don't use Apache).<br><br>&lt;IfModule mod_php5.c&gt;<br>&nbsp; php_value auto_prepend_file "auto_loader.php"<br>&lt;/IfModule&gt;<br><br>You COULD therefore have a different set of rules per subdomain (if you have multiple subdomains, say, live, test, beta, devel) or whatever takes your fancy.<br><br>For more details on this see the "Description of core php.ini directives" (<a rel="nofollow" target="_blank">http://www.php.net/manual/en/ini.core.php</a>)</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="60206">  
+  <a class="name">
+  <strong class="user"><em>dave60 /at/ gmail /dot/ com</em></strong></a><div class="date" title="2005-12-29 01:25"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom60206">
+<div class="phpcode"><code><span class="html">
+In reply to quetzalcoatl:<br><br>Generally, I would advise for each class to have it's own file, and hold nothing besides that class. Just define __autoload() in a/the infrastructure file -- a/the file that does the behavioral logic, and there should be no need to redefine it in a class' file.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="49576">  
+  <a class="name">
+  <strong class="user"><em>trini0</em></strong></a><div class="date" title="2005-02-01 08:04"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom49576">
+<div class="phpcode"><code><span class="html">
+Be careful with using that eval() trick within __autoload().<br>If you use reflection in your code, the so called trick, <br>*can* provide ill side effects.<br>For example -&gt;<br>$reflection = new reflectionClass('some_class');<br>if (FALSE === $reflection-&gt;isSubClassOf('another_class'))<br>{<br>&nbsp; &nbsp; throw new Exception('Class "some_class" must extend base class "another_class"');<br>}<br><br>If the real class "another_class" doesnt exist at the time, or "some_class" doesn't extend "another_class", with the reflection test, the so called eval() trick, creates a dummy "another_class", <br>thereby making the reflection test useless...</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="49496">  
+  <a class="name">
+  <strong class="user"><em>petyo()architect . bg</em></strong></a><div class="date" title="2005-01-30 01:27"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom49496">
+<div class="phpcode"><code><span class="html">
+The following function may be useful if you want to simulate namespaces and autoloading behavior:<br><br>define ("CLASS_ROOT", '/classes/');<br>function __autoload ($className)<br>{<br>&nbsp; &nbsp; require_once CLASS_ROOT.str_replace('_', '/', $className).'.class.php';<br>}<br><br>Then you will just have to use the folder structure and name the classes accordingly. If you want to have a class named Page, which will be in the pseudo namespace System.Web.UI, create a directory named System in /classes, then create Web, then UI, then name the class System_Web_UI_Page. Kind of long to type if you don't have autocomplete, but at least you will not have to manage the loading of all the classes' definitions.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="49425">  
+  <a class="name">
+  <strong class="user"><em>thomas dot revell at uwe dot ac dot uk</em></strong></a><div class="date" title="2005-01-27 06:31"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom49425">
+<div class="phpcode"><code><span class="html">
+If you want to throw an exception if a class isn't defined yet, use class_exists ():<br><br><span class="default">&lt;?php<br></span><span class="comment">// See if the class is defined<br></span><span class="keyword">if (!</span><span class="default">class_exists </span><span class="keyword">(</span><span class="default">$className</span><span class="keyword">, </span><span class="default">false</span><span class="keyword">)) {<br>&nbsp; &nbsp; throw new </span><span class="default">Exception </span><span class="keyword">(</span><span class="string">"Class </span><span class="default">$className</span><span class="string"> is not defined."</span><span class="keyword">);<br>}<br></span><span class="default">?&gt;<br></span><br>The second parameter indicates whether or not the __autoload () function should be called before checking for the class's existence.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="48099">  
+  <a class="name">
+  <strong class="user"><em>nhartkamp at eljakim dot N0SP4M dot nl</em></strong></a><div class="date" title="2004-12-11 09:14"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom48099">
+<div class="phpcode"><code><span class="html">
+The following might provide a good work-around for throwing exceptions from the __autoload function when a file containing the correct class doesn't exists.<br><br>function __autoload ($class_name) {<br>&nbsp; $file = 'system/objects/' . $class_name . '.inc.php';<br>&nbsp; if (!file_exists ($file)) {<br>&nbsp; &nbsp; return eval ("class $class_name {" .<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; "&nbsp; function $class_name () {" .<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; "&nbsp; &nbsp; throw new Exception ();" .<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; "&nbsp; }" .<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; "}");<br>&nbsp; }<br>&nbsp; require_once ($file);<br>}<br><br>Cheers,<br>Nolan</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="114106">  
+  <a class="name">
+  <strong class="user"><em>norwood at computer dot org</em></strong></a><div class="date" title="2014-01-11 04:12"><strong>7 months ago</strong></div>
+  <div class="text" id="Hcom114106">
+<div class="phpcode"><code><span class="html">
+Autoloaders &amp; Namespaces: The effective namespace of an autoloaded file must match that of its original reference; just&nbsp; finding and loading the file isn't enough. (I know, seems obvious now, but...)<br><br>My namespaces may serve as hints to locations within the file system, and I tried to be cute:<br>&nbsp; &nbsp;&nbsp; If a class (file) wasn't found where it was expected, my autoloader also looked in an alternate location. This worked fine, except that the alternate's own qualified namespace was thus slightly different (reflecting where *it* lived). So although the desired class was ultimately loaded (name and all), the original caller's reference remained unsatisfied because of the namespace discrepancy (as it should, really), but it was subtle.<br><br>Of course, this scheme works fine within the same namespace (explicit or not).<br><br>And kudos to the autoload devs for anticipating what could have been an endless autoload loop.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="72831">  
+  <a class="name">
+  <strong class="user"><em>david dot thalmann at gmail dot com</em></strong></a><div class="date" title="2007-02-02 07:19"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom72831">
+<div class="phpcode"><code><span class="html">
+Note to Ricos posting:<br>A lot of useless Coding. However, I improved the code, so now it will be able to find any folders ("." and ".." will not being tested... oO) and search as deep as possible. Now it will find CLASS_DIR/foo/bar.class.php also like CLASS_DIR/foo/bar/baz/buz/fii/and/so/on/class.php<br><br>Warning: This code will check ALL dirs who're "deeper" / "lower" than the class dir, so prevent deeply hidden files (or use just a few folders).<br><br>Improved Version:<br><span class="default">&lt;?php<br><br></span><span class="comment">// change this, if this code isn't "higher" than ALL classfiles<br></span><span class="default">define</span><span class="keyword">(</span><span class="string">"CLASS_DIR"</span><span class="keyword">, </span><span class="default">dirname</span><span class="keyword">(</span><span class="default">__FILE__</span><span class="keyword">));<br><br></span><span class="comment">/**<br> * autoload classes (no need to include them one by one)<br> *<br> * @uses classFolder()<br> * @param $className string<br> */<br></span><span class="keyword">function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$className</span><span class="keyword">) {<br>&nbsp; &nbsp; </span><span class="default">$folder </span><span class="keyword">= </span><span class="default">classFolder</span><span class="keyword">(</span><span class="default">$className</span><span class="keyword">);<br><br>&nbsp; &nbsp; if(</span><span class="default">$folder</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; require_once(</span><span class="default">$folder</span><span class="keyword">.</span><span class="default">$className</span><span class="keyword">.</span><span class="string">".class.php"</span><span class="keyword">);<br>}<br><br></span><span class="comment">/**<br> * search for folders and subfolders with classes<br> *<br> * @param $className string<br> * @param $sub string[optional]<br> * @return string<br> */<br></span><span class="keyword">function </span><span class="default">classFolder</span><span class="keyword">(</span><span class="default">$className</span><span class="keyword">, </span><span class="default">$sub </span><span class="keyword">= </span><span class="string">"/"</span><span class="keyword">) {<br>&nbsp; &nbsp; </span><span class="default">$dir </span><span class="keyword">= </span><span class="default">dir</span><span class="keyword">(</span><span class="default">CLASS_DIR</span><span class="keyword">.</span><span class="default">$sub</span><span class="keyword">);<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; if(</span><span class="default">file_exists</span><span class="keyword">(</span><span class="default">CLASS_DIR</span><span class="keyword">.</span><span class="default">$sub</span><span class="keyword">.</span><span class="default">$className</span><span class="keyword">.</span><span class="string">".class.php"</span><span class="keyword">))<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">CLASS_DIR</span><span class="keyword">.</span><span class="default">$sub</span><span class="keyword">;<br><br>&nbsp; &nbsp; while(</span><span class="default">false </span><span class="keyword">!== (</span><span class="default">$folder </span><span class="keyword">= </span><span class="default">$dir</span><span class="keyword">-&gt;</span><span class="default">read</span><span class="keyword">())) {<br>&nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">$folder </span><span class="keyword">!= </span><span class="string">"." </span><span class="keyword">&amp;&amp; </span><span class="default">$folder </span><span class="keyword">!= </span><span class="string">".."</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">is_dir</span><span class="keyword">(</span><span class="default">CLASS_DIR</span><span class="keyword">.</span><span class="default">$sub</span><span class="keyword">.</span><span class="default">$folder</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$subFolder </span><span class="keyword">= </span><span class="default">classFolder</span><span class="keyword">(</span><span class="default">$className</span><span class="keyword">, </span><span class="default">$sub</span><span class="keyword">.</span><span class="default">$folder</span><span class="keyword">.</span><span class="string">"/"</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">$subFolder</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$subFolder</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; </span><span class="default">$dir</span><span class="keyword">-&gt;</span><span class="default">close</span><span class="keyword">();<br>&nbsp; &nbsp; return </span><span class="default">false</span><span class="keyword">;<br>}<br><br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="67930">  
+  <a class="name">
+  <strong class="user"><em>alexey at renatasystems dot org</em></strong></a><div class="date" title="2006-07-06 12:15"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom67930">
+<div class="phpcode"><code><span class="html">
+While using an "autoloading" method you should pay attention to variables scope. Because of new file will be included INSIDE of magic function __autoload - all of declared in such file global scope variables will be only available within this function and nowhere else. This will cause strange behaviour in some cases. For example:<br><br>file bar.class.php:<br><br><span class="default">&lt;?php<br><br>$somedata </span><span class="keyword">= </span><span class="string">'Some data'</span><span class="keyword">;&nbsp; &nbsp;&nbsp; </span><span class="comment">/* global scope in common way */<br><br></span><span class="keyword">class </span><span class="default">bar </span><span class="keyword">{<br><br>&nbsp; &nbsp; function </span><span class="default">__construct</span><span class="keyword">()&nbsp; &nbsp; <br>&nbsp; &nbsp; {&nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; global </span><span class="default">$somedata</span><span class="keyword">;&nbsp; &nbsp; </span><span class="comment">/* reference to global scope variable */<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">if ( isset(</span><span class="default">$somedata</span><span class="keyword">) )<br>&nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$somedata</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; else<br>&nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; die(</span><span class="string">'No data!'</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; }<br>}<br></span><span class="default">?&gt;<br></span><br>Attempt to load this file in common way:<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">require </span><span class="string">'bar.class.php'</span><span class="keyword">;<br><br></span><span class="default">$foo </span><span class="keyword">= new </span><span class="default">bar</span><span class="keyword">();<br><br></span><span class="default">?&gt;<br></span><br>this will output (as expected):<br><br>string(9) "Some data"<br><br>But in case of __autoload:<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$classname</span><span class="keyword">)<br>{<br>&nbsp; &nbsp; require </span><span class="default">$classname </span><span class="keyword">. </span><span class="string">'.class.php'</span><span class="keyword">;<br>}<br><br></span><span class="default">$foo </span><span class="keyword">= new </span><span class="default">bar</span><span class="keyword">();<br><br></span><span class="default">?&gt;<br></span><br>you could expect that this script will return the same but no, it will return "No data!", because defenition of $somedata after requiring treats as local within user-defined function __autoload().</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="56974">  
+  <a class="name">
+  <strong class="user"><em>php at kaiundina dot de</em></strong></a><div class="date" title="2005-09-20 11:42"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom56974">
+<div class="phpcode"><code><span class="html">
+The autoload-feature allows to add the behavior of static constructors (like in C#). Static constructors should be called on the first occurence of a class reference - typically a 'new' operator or a static call to a class's operation.<br><br>They can be used used to initialize complex static properties.<br><br>And here is an easy and save way how it can be done:<br><br>Content of MyClass.class.php5:<br><span class="default">&lt;?php<br><br></span><span class="comment">// demo class persisting of a static and a dynamic constructor<br></span><span class="keyword">class </span><span class="default">MyClass<br></span><span class="keyword">{<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="comment">// static constructor operation<br>&nbsp; &nbsp; </span><span class="keyword">public static function </span><span class="default">_construct</span><span class="keyword">()<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// just say hello<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">echo </span><span class="string">'&lt;div&gt;static constructor&lt;/div&gt;'</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="comment">// default dynamic constructor operation<br>&nbsp; &nbsp; </span><span class="keyword">public function </span><span class="default">__construct</span><span class="keyword">()<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// just say hello<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">echo </span><span class="string">'&lt;div&gt;dynamic constructor&lt;/div&gt;'</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>}<br><br></span><span class="default">?&gt;<br></span><br>Content of index.php5:<br><span class="default">&lt;?php<br><br></span><span class="comment">// declare handler for any unknown class request<br></span><span class="keyword">function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$aClassName</span><span class="keyword">)<br>{<br>&nbsp; &nbsp; </span><span class="comment">// load the class<br>&nbsp; &nbsp; </span><span class="keyword">require_once (</span><span class="default">$aClassName </span><span class="keyword">. </span><span class="string">'.class.php5'</span><span class="keyword">);<br><br>&nbsp; &nbsp; </span><span class="comment">// create a reference to the static constructor's operation<br>&nbsp; &nbsp; </span><span class="default">$staticConstructorReference </span><span class="keyword">= array(</span><span class="default">$aClassName</span><span class="keyword">, </span><span class="string">'_construct'</span><span class="keyword">);<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="comment">// if the static constructor was declared properly...<br>&nbsp; &nbsp; </span><span class="keyword">if (</span><span class="default">is_callable</span><span class="keyword">(</span><span class="default">$staticConstructorReference</span><span class="keyword">))<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// call the static constructor<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">call_user_func</span><span class="keyword">(</span><span class="default">$staticConstructorReference</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>}<br><br></span><span class="comment">// create an example object to see both constructors being executed<br></span><span class="default">$article </span><span class="keyword">= new </span><span class="default">MyObject</span><span class="keyword">();<br><br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="76458">  
+  <a class="name">
+  <strong class="user"><em>emcmanus at gmail dot com</em></strong></a><div class="date" title="2007-07-16 06:04"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom76458">
+<div class="phpcode"><code><span class="html">
+Note: if you're experiencing unexpected "failed opening required 'filename.php' (include..." errors:<br><br>If you placed your autoload function in an external file which you're requiring at the head of every script, be cautious of some odd behavior regarding PHP's idea of the current working directory.<br><br>I ran into some unexpected path issues when my include file was placed in a subdirectory directory. The solution to my problems was to make sure that the autoload script being included is in the same directory as the calling script.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="52517">  
+  <a class="name">
+  <strong class="user"><em>scott at webscott dot com</em></strong></a><div class="date" title="2005-05-04 05:40"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom52517">
+<div class="phpcode"><code><span class="html">
+__autoload() seems to work when saving objects as session variables as well:<br><br>classLoader.php<br><span class="default">&lt;?php<br></span><span class="keyword">function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$className</span><span class="keyword">) {<br>&nbsp; require_once(</span><span class="string">"</span><span class="default">$className</span><span class="string">.php"</span><span class="keyword">);<br>}<br></span><span class="default">?&gt;<br></span><br>testClass.php<br><span class="default">&lt;?php<br></span><span class="keyword">class </span><span class="default">testClass </span><span class="keyword">{<br>&nbsp; function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$propValue</span><span class="keyword">) {<br>&nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">prop1 </span><span class="keyword">= </span><span class="default">$propValue</span><span class="keyword">;<br>&nbsp; }<br><br>&nbsp; function </span><span class="default">showProp</span><span class="keyword">() {<br>&nbsp; &nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">prop1</span><span class="keyword">;<br>&nbsp; }<br>}<br></span><span class="default">?&gt;<br></span><br>page1.php<br><span class="default">&lt;?php<br></span><span class="keyword">require_once(</span><span class="string">'classLoader.php'</span><span class="keyword">);<br></span><span class="default">session_start</span><span class="keyword">();<br></span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="string">'testObj'</span><span class="keyword">] = new </span><span class="default">testClass</span><span class="keyword">(</span><span class="string">'foo'</span><span class="keyword">);<br>echo </span><span class="string">'&lt;a href="page2.php"&gt;Go to page 2&lt;/a&gt;'</span><span class="keyword">;<br></span><span class="default">?&gt;<br></span><br>page2.php<br><span class="default">&lt;?php<br></span><span class="keyword">require_once(</span><span class="string">'classLoader.php'</span><span class="keyword">);<br></span><span class="default">session_start</span><span class="keyword">();<br>echo </span><span class="default">$_SESSION</span><span class="keyword">[</span><span class="string">'testObj'</span><span class="keyword">]-&gt;</span><span class="default">showProp</span><span class="keyword">(); </span><span class="comment">// displays foo<br></span><span class="default">?&gt;<br></span><br>Works with multiple session objects as well.&nbsp; Tested on a Win2k/IIS machine.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="87985">  
+  <a class="name">
+  <strong class="user"><em>pinochet dot pl at gmail dot com</em></strong></a><div class="date" title="2009-01-04 01:11"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom87985">
+<div class="phpcode"><code><span class="html">
+To use autoload function with namespaces you should remember to define it in main scope in "\" namespace.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="113901">  
+  <a class="name">
+  <strong class="user"><em>julian at jxmallett dot com</em></strong></a><div class="date" title="2013-12-15 11:41"><strong>8 months ago</strong></div>
+  <div class="text" id="Hcom113901">
+<div class="phpcode"><code><span class="html">
+The tip to use spl_autoload_register() instead of __autoload() should be taken seriously. It seems that __autoload() doesn't always get called when calling an unloaded class within a class, eg:<br><br><span class="default">&lt;?php<br></span><span class="keyword">class </span><span class="default">MyClass </span><span class="keyword">{<br>&nbsp; &nbsp; public static function </span><span class="default">doStuff</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">//do some stuff<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$a </span><span class="keyword">= </span><span class="default">MyOtherClass</span><span class="keyword">::</span><span class="default">otherStuff</span><span class="keyword">();<br>&nbsp; &nbsp; }<br>}<br></span><span class="default">?&gt;<br></span><br>Code similar to that gave me a 'class not found' error when using __autoload(). Using spl_autoload_register() with the exact same autoload function fixed the problem.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="111388">  
+  <a class="name">
+  <strong class="user"><em>tlang at halsoft dot com</em></strong></a><div class="date" title="2013-02-14 09:56"><strong>1 year ago</strong></div>
+  <div class="text" id="Hcom111388">
+<div class="phpcode"><code><span class="html">
+This page states that autoloading does not work when PHP is used in CLI mode but a simple test seems to contradict this.<br><br>Create a file /tmp/Foo.php containing:<br><br><span class="default">&lt;?php<br></span><span class="keyword">class </span><span class="default">Foo </span><span class="keyword">{<br>&nbsp; &nbsp; public function </span><span class="default">__construct</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; echo </span><span class="string">"Inside the Foo constructor\n"</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>}<br></span><span class="default">?&gt;<br></span><br>Create a script (NOT in /tmp) containing:<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">function </span><span class="default">test_autoload</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">) {<br>&nbsp; &nbsp; require_once </span><span class="string">'/tmp/'</span><span class="keyword">.</span><span class="default">$class</span><span class="keyword">.</span><span class="string">'.php'</span><span class="keyword">;<br>}<br><br></span><span class="default">spl_autoload_register</span><span class="keyword">(</span><span class="string">'test_autoload'</span><span class="keyword">);<br></span><span class="default">$foo </span><span class="keyword">= new </span><span class="default">Foo</span><span class="keyword">();<br></span><span class="default">?&gt;<br></span><br>Execute the script on the command line. The echo statement in the constructor produces output to STDOUT.<br><br>This also works with __autoload<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">) {<br>&nbsp; &nbsp; require_once </span><span class="string">'/tmp/'</span><span class="keyword">.</span><span class="default">$class</span><span class="keyword">.</span><span class="string">'.php'</span><span class="keyword">;<br>}<br><br></span><span class="default">$foo </span><span class="keyword">= new </span><span class="default">Foo</span><span class="keyword">();<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="114015">  
+  <a class="name">
+  <strong class="user"><em>pier4r</em></strong></a><div class="date" title="2013-12-31 02:46"><strong>7 months ago</strong></div>
+  <div class="text" id="Hcom114015">
+<div class="phpcode"><code><span class="html">
+Just a small autoload class (that works if you use corretly names, namespaces, uses and so on) found elsewhere with a small modification for linux:<br><br><span class="default">&lt;?php<br></span><span class="comment">//from <a rel="nofollow" target="_blank">http://www.phpfreaks.com</a> / tutorial / oo - php - part - 1 - oop - in - full - effect<br></span><span class="keyword">function </span><span class="default">__autoload</span><span class="keyword">(</span><span class="default">$className</span><span class="keyword">)&nbsp; {<br>&nbsp; </span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$className</span><span class="keyword">);<br>&nbsp; </span><span class="default">$file </span><span class="keyword">= </span><span class="default">str_replace</span><span class="keyword">(</span><span class="string">'\\'</span><span class="keyword">, </span><span class="default">DIRECTORY_SEPARATOR</span><span class="keyword">, </span><span class="default">$className</span><span class="keyword">) . </span><span class="string">'.php'</span><span class="keyword">;<br>&nbsp; </span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">);<br><br>&nbsp; </span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">file_exists</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">));<br>&nbsp; if (!</span><span class="default">file_exists</span><span class="keyword">(</span><span class="default">$file</span><span class="keyword">)) {<br>&nbsp; &nbsp; return </span><span class="default">false</span><span class="keyword">;<br>&nbsp; }<br>&nbsp; else {<br>&nbsp; &nbsp; require </span><span class="default">$file</span><span class="keyword">;<br>&nbsp; &nbsp; return </span><span class="default">true</span><span class="keyword">;<br>&nbsp; }<br>}<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="94441">  
+  <a class="name">
+  <strong class="user"><em>khan at swcombine dot com</em></strong></a><div class="date" title="2009-11-05 05:38"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom94441">
+<div class="phpcode"><code><span class="html">
+As an addendum to #91119 I would suggest adding class_exists() into that solution. I've just implemented autoloading based on the code provided there and ran into a problem where a file had the same name as a class, existed in the directory structure prior to the file that had the actual class and as a result was being included first and resulting in a 'class not found' error.<br><br><span class="default">&lt;?php<br></span><span class="keyword">if(</span><span class="default">file_exists</span><span class="keyword">(</span><span class="default">$path</span><span class="keyword">)) {<br>&nbsp; &nbsp; require_once </span><span class="default">$path</span><span class="keyword">;<br>&nbsp; &nbsp; if(</span><span class="default">class_exists</span><span class="keyword">(</span><span class="default">$class_name</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; return;<br>&nbsp; &nbsp; }<br>}<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="85720">  
+  <a class="name">
+  <strong class="user"><em>andrzeje from wit.edu.pl</em></strong></a><div class="date" title="2008-09-13 08:18"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom85720">
+<div class="phpcode"><code><span class="html">
+Throwing versions of __autoload based on eval will fail if __autoload will be caled with interface name.<br><span class="default">&lt;?php<br></span><span class="comment">/* eval+throw __autoload<br> */<br></span><span class="keyword">class </span><span class="default">Cls </span><span class="keyword">implements </span><span class="default">Iface </span><span class="keyword">{</span><span class="comment">/* ... */</span><span class="keyword">}; </span><span class="comment">// Error<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="90078">  
+  <a class="name">
+  <strong class="user"><em>roman dot drapeko at gmail dot com</em></strong></a><div class="date" title="2009-04-05 04:33"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom90078">
+<div class="phpcode"><code><span class="html">
+Hi there,<br><br>I have developed a small script, that can scan recursively folders and files ang generate array of associations between classes/interfaces and their locations. It accepts several incoming parameters and it's very simple to use. <br><br>An example of generated array is shown bellow.<br><br><span class="default">&lt;?php <br><br>&nbsp; &nbsp; $autoload_list </span><span class="keyword">= array (<br>&nbsp; &nbsp; &nbsp; </span><span class="string">'classes' </span><span class="keyword">=&gt; array (<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'A' </span><span class="keyword">=&gt; array (</span><span class="string">'path' </span><span class="keyword">=&gt; </span><span class="string">'Project/Classes/Children/A.php'</span><span class="keyword">,<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'extends' </span><span class="keyword">=&gt; array (), </span><span class="string">'implements' </span><span class="keyword">=&gt; array (</span><span class="string">'I1'</span><span class="keyword">)),<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'C' </span><span class="keyword">=&gt; array (</span><span class="string">'path' </span><span class="keyword">=&gt; </span><span class="string">'Project/Classes/C.php'</span><span class="keyword">,<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'extends' </span><span class="keyword">=&gt; array (</span><span class="string">'B'</span><span class="keyword">), </span><span class="string">'implements' </span><span class="keyword">=&gt; array (</span><span class="string">'I1'</span><span class="keyword">, </span><span class="string">'I3'</span><span class="keyword">)),<br>&nbsp; &nbsp; &nbsp; ),<br>&nbsp; &nbsp; &nbsp; </span><span class="string">'interfaces' </span><span class="keyword">=&gt; array (<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'I2' </span><span class="keyword">=&gt; array (</span><span class="string">'path' </span><span class="keyword">=&gt; </span><span class="string">'Project/Interfaces/blablabla.php'</span><span class="keyword">, </span><span class="string">'extends' </span><span class="keyword">=&gt; array (</span><span class="string">'I1'</span><span class="keyword">)),<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="string">'I1' </span><span class="keyword">=&gt; array (</span><span class="string">'path' </span><span class="keyword">=&gt; </span><span class="string">'Project/Interfaces/I1.php'</span><span class="keyword">, </span><span class="string">'extends' </span><span class="keyword">=&gt; array ()),<br>&nbsp; &nbsp; &nbsp; ),<br>&nbsp; &nbsp; );<br></span><span class="default">?&gt;<br></span><br>When you know names and their locations, you know everything to load these classes. <br><br>It uses regular expressions to identify if class/interfaces is located in the current file.<br><br>I tried to post the code, but it's very long. You can download the script from <a rel="nofollow" target="_blank">http://wp.drapeko.com/store/php-autoloading-files/.</a></span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="89515">  
+  <a class="name">
+  <strong class="user"><em>claude dot pache at gmail dot com</em></strong></a><div class="date" title="2009-03-11 07:04"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom89515">
+<div class="phpcode"><code><span class="html">
+About static classes that need initialisation before use (problem discussed by adam at greatbigmassive dot net and kalkamar at web dot de below).<br><br>Simple problems have often simple solutions. Here is my approach:<br><br>First, my __autoload function is very simple:<br><span class="default">&lt;?php<br></span><span class="keyword">function </span><span class="default">__autoload </span><span class="keyword">(</span><span class="default">$class_name</span><span class="keyword">)<br>{<br>&nbsp; &nbsp; if (</span><span class="default">preg_match</span><span class="keyword">(</span><span class="string">'|^\w+$|'</span><span class="keyword">, </span><span class="default">$class_name</span><span class="keyword">))<br>&nbsp; &nbsp; &nbsp; &nbsp; include </span><span class="string">"./packages/</span><span class="default">$class_name</span><span class="string">.php"</span><span class="keyword">;<br>}<br></span><span class="default">?&gt;<br></span>(The "if/preg_match" line is just a simple yet robust security check. Moreover I use "include" and not "require"/"require_once", so that if the file is not found, the __autoload function does nothing, and my script dies eventually with a meaningful "Class 'foo' not found"&nbsp; fatal error.)<br><br>Now, when I define a class "foo" which requires initialisation before use, I just write the initialisation code after the definition of the class in the file "packages/foo.php":<br><br><span class="default">&lt;?php<br></span><span class="comment">/** Content of file "packages/foo.php" **/<br></span><span class="keyword">class </span><span class="default">foo<br></span><span class="keyword">{<br>&nbsp; &nbsp; </span><span class="comment">/* definition of the class is found here */<br></span><span class="keyword">}<br><br></span><span class="comment">/* initialisation code of the class is found here. */<br><br>/** End of file "packages/foo.php" **/<br></span><span class="default">?&gt;<br></span><br>That's it. No need for an &lt;? init() ?&gt; or a &lt;? __construct() ?&gt; method.</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/language.oop5.autoload.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:27:54 GMT -->
+
+
+</body></html>

@@ -1,0 +1,399 @@
+<html><!-- Mirrored from php.net/manual/en/mysqlnd-ms.concept_xa_trx.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 17:06:58 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>XA/Distributed transactions</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="mysqlnd-ms.concept_xa_trx.html">
+ <link rel="shorturl" href="mysqlnd-ms.concept_xa_trx.html">
+ <link rel="alternate" href="mysqlnd-ms.concept_xa_trx.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="mysqlnd-ms.concepts.html">
+ <link rel="prev" href="mysqlnd-ms.supportedclusters.html">
+ <link rel="next" href="mysqlnd-ms.setup.html">
+
+ <link rel="alternate" href="mysqlnd-ms.concept_xa_trx.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/mysqlnd-ms.concept_xa_trx.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/mysqlnd-ms.concept_xa_trx.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/mysqlnd-ms.concept_xa_trx.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/mysqlnd-ms.concept_xa_trx.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/mysqlnd-ms.concept_xa_trx.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/mysqlnd-ms.concept_xa_trx.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/mysqlnd-ms.concept_xa_trx.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/mysqlnd-ms.concept_xa_trx.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/mysqlnd-ms.concept_xa_trx.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/mysqlnd-ms.concept_xa_trx.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.database.html">Database Extensions</a></li>      <li><a href="refs.database.vendors.html">Vendor Specific Database Extensions</a></li>      <li><a href="set.mysqlinfo.html">MySQL</a></li>      <li><a href="book.mysqlnd-ms.html">mysqlnd_ms</a></li>      <li><a href="mysqlnd-ms.concepts.html">Concepts</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="mysqlnd-ms.concept_xa_trx" class="section">
+  <h2 class="title">XA/Distributed transactions</h2>
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   <strong>Version requirement</strong><br>
+   </p><p class="para">
+    XA related functions have been introduced in <em>PECL/mysqlnd_ms</em> version 1.6.0-alpha.
+   </p>
+  <p></p></blockquote>
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   <strong>Early adaptors wanted</strong><br>
+   </p><p class="para">
+    The feature is currently under development. There may be issues and/or
+    feature limitations. Do not use in production environments, although
+    early lab tests indicate reasonable quality.
+   </p>
+   <p class="para">
+     Please, contact the development team if you are interested in this feature.
+     We are looking for real life feedback to complement the feature.
+   </p>
+   <p class="para">
+     Below is a list of some feature restrictions.
+     </p><ul class="itemizedlist">
+      <li class="listitem">
+       <p class="para">The feature is not yet compatible with the MySQL Fabric support . This limitation is soon to be lifted.</p>
+       <p class="para">XA transaction identifier are currently restricted to numbers. This limitation will be lifted upon request, it is a simplification used during the initial implementation.</p>
+      </li>
+    </ul>
+   <p></p>
+  <p></p></blockquote>
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   <strong>MySQL server restrictions</strong><br>
+   </p><p class="para">
+    The XA support by the MySQL server has some restrictions. Most noteably,
+    the servers binary log may lack changes made by XA transactions in case
+    of certain errors. Please, see the MySQL manual for details.
+   </p>
+  <p></p></blockquote>
+  <p class="para">
+   XA/Distributed transactions can spawn multiple MySQL servers.
+   Thus, they may seem like a perfect
+   tool for sharded MySQL clusters, for example, clusters managed with MySQL Fabric.
+   <em>PECL/mysqlnd_ms</em> hides most of the SQL commands
+   to control XA transactions and performs automatic administrative tasks in cases
+   of errors, to provide the user with a comprehensive API. Users should
+   setup the plugin carefully and be well aware of server restrictions prior
+   to using the feature.
+  </p>
+  <p class="para">
+   </p><div class="example" id="example-1889">
+    <p><strong>Example #1 General pattern for XA transactions</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>$mysqli&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">mysqli</span><span style="color: #007700">(</span><span style="color: #DD0000">"myapp"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"username"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"password"</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">"database"</span><span style="color: #007700">);<br><br></span><span style="color: #FF8000">/*&nbsp;BEGIN&nbsp;*/<br></span><span style="color: #0000BB">mysqlnd_ms_xa_begin</span><span style="color: #007700">(</span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1&nbsp;</span><span style="color: #FF8000">/*&nbsp;xa&nbsp;id&nbsp;*/</span><span style="color: #007700">);<br><br></span><span style="color: #FF8000">/*&nbsp;run&nbsp;queries&nbsp;on&nbsp;various&nbsp;servers&nbsp;*/<br></span><span style="color: #0000BB">$mysqli</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"UPDATE&nbsp;some_table&nbsp;SET&nbsp;col_a&nbsp;=&nbsp;1"</span><span style="color: #007700">);<br>...<br><br></span><span style="color: #FF8000">/*&nbsp;COMMIT&nbsp;*/<br></span><span style="color: #0000BB">mysqlnd_ms_xa_commit</span><span style="color: #007700">(</span><span style="color: #0000BB">$link</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  <p></p>
+  <p class="para">
+   XA transactions use the two-phase commit protocol. The two-phase commit
+   protocol is a blocking protocol. During the first phase participating servers
+   begin a transaction and the client carries out its work. This phase is followed
+   by a second voting phase. During voting, the servers first make a firm promise
+   that they are ready to commit the work even in case of their possible unexpected
+   failure. Should a server crash in this phase, it will still recall the aborted
+   transaction after recover and wait for the client to decide on whether
+   it shall be committed or rolled back.
+  </p>
+  <p class="para">
+   Should a client that has initiated a global transaction crash after all the
+   participating servers gave their promise to be ready to commit, then the servers
+   must wait for a decision. The servers are not allowed to uniliterally decide on the
+   transaction.
+  </p>
+  <p class="para">
+   A client crash or disconnect from a participant, a server crash or server error
+   during the fist phase of the protocol is uncritical. In most cases, the server
+   will forget about the XA transaction and its work is rolled back. Additionally,
+   the plugin tries to reach out to as many participants as it can to instruct
+   the server to roll back the work immediately. It is not possible to disable this implicit
+   rollback carried out by <em>PECL/mysqlnd_ms</em> in case of errors
+   during the first phase of the protocol. This design decision has been made to
+   keep the implementation simple.
+  </p>
+  <p class="para">
+    An error during the second phase of the commit protocol can develop into a
+    more severe situation. The servers will not forget about
+    prepared but unfinished transactions in all cases. The plugin will not
+    attempt to solve these cases immediately but waits for optional background
+    garbage collection to ensure progress of the commit protocol. It is assumed
+    that a solution will take significant time as it may include waiting
+    for a participating server to recover from a crash. This time span may
+    be longer than a developer and end user expects when trying to commit a
+    global transaction with <span class="function"><a href="function.mysqlnd-ms-xa-commit.html" class="function">mysqlnd_ms_xa_commit()</a></span>. Thus,
+    the function returns with the unfinished global transaction still
+    requiring attention. Please, be warned that at this point, it is not yet
+    clear whether the global transaction will be committed or rolled back later on.
+  </p>
+  <p class="para">
+    Errors during the second phase can be ignored, handled by yourself or solved
+    by the build-int garbage collection logic. Ignoring them is not recommended
+    as you may experience unfinished global transactions on your servers that block
+    resources virtually indefinetly. Handling the errors requires knowing the
+    participants, checking their state and issueing appropriate SQL commands on them.
+    There are no user API calls to expose this very information. You will have to
+    configure a state store and make the plugin record its actions in it to receive
+    the desired facts.
+  </p>
+  <p class="para">
+    Please, see the
+    <a href="mysqlnd-ms.quickstart.xa_transactions.html" class="link">quickstart</a> and
+    related <a href="mysqlnd-ms.plugin-ini-json.html#ini.mysqlnd-ms-plugin-config-v2.xa.state-store" class="link">plugin
+    configuration file settings</a> for an example how to configure a state.
+    In addition to configuring a state store, you have to setup some SQL tables.
+    The table definitions are given in the description of the plugin configuration
+    settings.
+  </p>
+  <p class="para">
+   Setting up and configuring a state store is also a precondition for using the
+   built-in garbage collection for XA transactions that fail during the
+   second commit phase. Recording information about ongoing XA transactions is
+   an unavoidable extra task. The extra task consists of updating the state
+   store after each and every operation that changes the state of the global transaction
+   itself (started, committed, rolled back, errors and aborts), the addition of
+   participants (host, optionally user and password required to connect) and any
+   changes to a participants state. Please note, depending on configuration and your
+   security policies, these recordings may be considered sensitive.
+   It is therefore recommended to restrict access to the state store. Unless the
+   state store itself becomes overloaded, writing the state information may contribute
+   noteworthy to the runtime but should overall be only a minor factor.
+  </p>
+  <p class="para">
+   It is possible that the effort it takes to implement your own routines for handling
+   XA transactions that failed during the second commit phase exceeds the benefits
+   of using the XA feature of <em>PECL/mysqlnd_ms</em> in the first place.
+   Thus, the manual focussed on using the built-on garbage collection only.
+  </p>
+  <p class="para">
+   Garbage collection can be triggered manually or automatically in the background.
+   You may want to call <span class="function"><a href="function.mysqlnd-ms-xa-gc.html" class="function">mysqlnd_ms_xa_gc()</a></span> immediately after
+   a commit failure to attempt to solve any failed but still open global transactions
+   as soon as possible. You may also decide to disable the automatic background
+   garbage collection, implement your own rule set for invoking the built-in
+   garbage collection and trigger it when desired.
+  </p>
+  <p class="para">
+   By default the plugin will start the garbage collection with a certain probability
+   in the extensions internal <em>RSHUTDOWN</em> method. The request
+   shutdown is called after your script finished. Whether the garbage collection
+   will be triggered is determined by computing a random value between
+   <em>1...1000</em> and comparing it with the configuration setting
+   <a href="mysqlnd-ms.plugin-ini-json.html#ini.mysqlnd-ms-plugin-config-v2.xa.gc" class="link"><em>probability</em></a>
+   (default: 5). If the setting is
+   greater or equal to the random value, the garbage collection will be triggered.
+  </p>
+  <p class="para">
+    Once started, the garbage collection acts upon up to
+    <em>max_transactions_per_run</em> (default: 100) global transactions
+    recorded. Records include successfully finished but also unfinished XA
+    transactions. Records for successful transactions are removed and unfinished
+    transactions are attempted to be solved. There are no statistics that help
+    you finding the right balance between keeping garbage collection runs short
+    by limiting the number of transactions considered per run and preventing the garbage
+    collection to fall behind, resulting in many records.
+  </p>
+  <p class="para">
+    For each failed XA transaction the garbage collection makes
+    <em>max_retries</em> (default: 5) attempts to finish it. After that
+    <em>PECL/mysqlnd_ms</em> gives up. There are two possible reasons for this. Either
+    a participating server crashed and has not become accessible again within
+    <em>max_retries</em> invocations of the garbage collection, or there
+    is a situation that the built-in garbage collection cannot cope with. Likely, the
+    latter would be considered a bug. However, you can manually force more
+    garbage collection runs calling <span class="function"><a href="function.mysqlnd-ms-xa-gc.html" class="function">mysqlnd_ms_xa_gc()</a></span> with the
+    appropriate parameter set. Should even those function runs fail to solve
+    the situation, then the problem must be solved by an operator.
+  </p>
+  <p class="para">
+    The function <a href="function.mysqlnd-ms-get-stats.html" class="link"><span class="function"></span></a><a href="function.mysqlnd-ms-get-stats.html" class="function">mysqlnd_ms_get_stats()</a>
+    provides some statistics on how many XA transactions have been started,
+    committed, failed or rolled back.
+  </p>
+
+ </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div>
+ <div class="note">There are no user contributed notes for this page.</div></section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/mysqlnd-ms.concept_xa_trx.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 17:06:58 GMT -->
+
+
+</body></html>

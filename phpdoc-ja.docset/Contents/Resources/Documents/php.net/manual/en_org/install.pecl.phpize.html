@@ -1,0 +1,295 @@
+<html><!-- Mirrored from php.net/manual/en/install.pecl.phpize.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:53:13 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Compiling shared PECL extensions with phpize</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="install.pecl.phpize.html">
+ <link rel="shorturl" href="install.pecl.phpize.html">
+ <link rel="alternate" href="install.pecl.phpize.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="install.pecl.html">
+ <link rel="prev" href="install.pecl.pear.html">
+ <link rel="next" href="install.pecl.php-config.html">
+
+ <link rel="alternate" href="install.pecl.phpize.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/install.pecl.phpize.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/install.pecl.phpize.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/install.pecl.phpize.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/install.pecl.phpize.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/install.pecl.phpize.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/install.pecl.phpize.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/install.pecl.phpize.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/install.pecl.phpize.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/install.pecl.phpize.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/install.pecl.phpize.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="install.html">Installation and Configuration</a></li>      <li><a href="install.pecl.html">Installation of PECL extensions</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="install.pecl.phpize" class="sect1">
+  <h2 class="title">Compiling shared PECL extensions with phpize</h2>
+  <p class="simpara">
+   Sometimes, using the <em>pecl</em> installer is not an option.
+   This could be because you're behind a firewall, or it could be because the
+   extension you want to install is not available as a PECL compatible
+   package, such as unreleased extensions from SVN.  If you need to build such
+   an extension, you can use the lower-level build tools to perform the build
+   manually.
+  </p>
+  <p class="simpara">
+   The <em>phpize</em> command is used to prepare the build
+   environment for a PHP extension.  In the following sample, the sources for
+   an extension are in a directory named <var class="filename">extname</var>:
+  </p>
+  <p class="para">
+   </p><div class="example-contents screen">
+<div class="cdata"><pre>$ cd extname
+$ phpize
+$ ./configure
+$ make
+# make install
+</pre></div>
+   </div>
+  <p></p>
+  <p class="simpara">
+   A successful install will have created <var class="filename">extname.so</var> and put it 
+   into the PHP 
+   <a href="ini.core.html#ini.extension-dir" class="link">extensions directory</a>.  You'll need
+   to and adjust <var class="filename">php.ini</var> and add an <em>extension=extname.so</em>
+   line before you can use the extension.
+  </p>
+  <p class="simpara">
+   If the system is missing the <em>phpize</em> command, and precompiled
+   packages (like RPM's) are used, be sure to also install the appropriate 
+   devel version of the PHP package as they often include the 
+   <em>phpize</em> command along with the appropriate header files to 
+   build PHP and its extensions.
+  </p>
+  <p class="simpara">
+   Execute <strong class="command">phpize --help</strong> to display additional usage information.
+  </p>
+ </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="82914">  
+  <a class="name">
+  <strong class="user"><em>Brian</em></strong></a><div class="date" title="2008-05-01 11:39"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom82914">
+<div class="phpcode"><code><span class="html">
+If you have multiple PHP versions installed, you may be able to specify for which installation you'd like to build by using the --with-php-config option during configuration.<br><br>--with-php-config=[Insert path to proper php-config here]<br><br>For example (my case):<br>./configure --with-php-config=/usr/local/php5/bin/php-config5</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="109089">  
+  <a class="name">
+  <strong class="user"><em>admin at eexit dot net</em></strong></a><div class="date" title="2012-06-19 07:33"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom109089">
+<div class="phpcode"><code><span class="html">
+When compiling an extension for a stack which is 64 bits (for example) and your compiler is configured to compile in 32 bits, you can manually compile your extensions using C flags before your configure.<br><br>Example: my system compiler is 32 bits and my stack is 64 bits. To compile my xdebug:<br><br># phpize<br># CFLAGS=-m64 CPPFLAGS=-m64 CCASFLAGS=-m64 ./configure --enable-xdebug<br># gmake<br># file modules/xdebug.so<br>modules/xdebug.so:&nbsp; &nbsp; &nbsp; ELF 64-bit LSB dynamic lib AMD64 Version 1, dynamically linked, not stripped, no debugging information available</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="75212">  
+  <a class="name">
+  <strong class="user"><em>Glen</em></strong></a><div class="date" title="2007-05-17 04:07"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom75212">
+<div class="phpcode"><code><span class="html">
+When you have multiple installations of PHP, running phpize from a specific installation will not force the module to be compiled with that installation's include files.<br><br>In my case, I had a standard PHP distribution installed, and am evaluating Zend Core / Zend Platform, which installed it's own Apache &amp; PHP in a /usr/local/Zend/.. install path.&nbsp; It was missing the json.so module, so I had to compile my own.<br><br>Running Zend Core's phpize, the output indicates that configuration for that module will occur.&nbsp; But when running ./configure, the standard installation's include files are used.&nbsp; The result json.so being compiled against the wrong PHP would not load when Zend Core's php initializes.<br><br>The only way I could see to correct the situation was to temporarily change the standard PHP include path to point to the Zend Core's include files.&nbsp; In my case, I made a backup copy of /usr/include/php5 and did a "ln -s /usr/local/Zend/Core/include/php/ /usr/include/php5".</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="59344">  
+  <a class="name">
+  <strong class="user"><em>dmytton at php dot net</em></strong></a><div class="date" title="2005-12-03 11:45"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom59344">
+<div class="phpcode"><code><span class="html">
+In some situations (e.g. on a cPanel server), the built extension will not be placed into the correct extensions directory by the make install process. Use your phpinfo() output to determine what the correct extension_dir path is and move the generated .so file into that directory. The extension=extname.so line in php.ini will then find the extension file correctly.</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/install.pecl.phpize.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:53:13 GMT -->
+
+
+</body></html>

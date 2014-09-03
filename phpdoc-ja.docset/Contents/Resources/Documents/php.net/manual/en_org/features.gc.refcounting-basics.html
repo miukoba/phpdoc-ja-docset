@@ -1,0 +1,526 @@
+<html><!-- Mirrored from php.net/manual/en/features.gc.refcounting-basics.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:29:18 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Reference Counting Basics</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="features.gc.refcounting-basics.html">
+ <link rel="shorturl" href="http://php.net/gc.refcounting-basics">
+ <link rel="alternate" href="http://php.net/gc.refcounting-basics" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="features.gc.html">
+ <link rel="prev" href="features.gc.html">
+ <link rel="next" href="features.gc.collecting-cycles.html">
+
+ <link rel="alternate" href="features.gc.refcounting-basics.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/features.gc.refcounting-basics.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/features.gc.refcounting-basics.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/features.gc.refcounting-basics.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/features.gc.refcounting-basics.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/features.gc.refcounting-basics.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/features.gc.refcounting-basics.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/features.gc.refcounting-basics.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/features.gc.refcounting-basics.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/features.gc.refcounting-basics.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/features.gc.refcounting-basics.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="features.html">Features</a></li>      <li><a href="features.gc.html">Garbage Collection</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="features.gc.refcounting-basics" class="sect1">
+   <h2 class="title">Reference Counting Basics</h2>
+   <p class="para">
+    A PHP variable is stored in a container called a "zval". A zval container
+    contains, besides the variable's type and value, two additional bits of
+    information. The first is called "is_ref" and is a boolean value
+    indicating whether or not the variable is part of a "reference set". With
+    this bit, PHP's engine knows how to differentiate between normal variables
+    and references. Since PHP allows user-land references, as created by the
+    &amp; operator, a zval container also has an internal reference counting
+    mechanism to optimize memory usage. This second piece of additional
+    information, called "refcount", contains how many variable names (also
+    called symbols) point to this one zval container. All symbols are stored in
+    a symbol table, of which there is one per scope. There is a scope for the
+    main script (i.e., the one requested through the browser), as well as one
+    for every function or method.
+   </p>
+   <p class="para">
+    A zval container is created when a new variable is created with a constant
+    value, such as:
+    </p><div class="example" id="example-406">
+     <p><strong>Example #1 Creating a new zval container</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"new&nbsp;string"</span><span style="color: #007700">;<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   <p></p>
+   <p class="para">
+    In this case, the new symbol name, <em>a</em>, is created in the current scope,
+    and a new variable container is created with the type <span class="type"><a href="language.types.string.html" class="type string">string</a></span> and the value
+    <em>new string</em>. The "is_ref" bit is by default set to <strong><code>FALSE</code></strong> because no
+    user-land reference has been created. The "refcount" is set to <em>1</em> as
+    there is only one symbol that makes use of this variable container. Note
+    that if "refcount" is <em>1</em>, "is_ref" is always <strong><code>FALSE</code></strong>. If you have <a href="http://xdebug.org/" class="link external">»&nbsp;Xdebug</a> installed, you can display this
+    information by calling <span class="function"><strong>xdebug_debug_zval()</strong></span>.
+   </p>
+   <p class="para">
+    </p><div class="example" id="example-407">
+     <p><strong>Example #2 Displaying zval information</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>xdebug_debug_zval</span><span style="color: #007700">(</span><span style="color: #DD0000">'a'</span><span style="color: #007700">);<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <div class="example-contents"><p>The above example will output:</p></div>
+     <div class="example-contents screen">
+<div class="cdata"><pre>a: (refcount=1, is_ref=0)='new string'
+</pre></div>
+     </div>
+    </div>
+   <p></p>
+   <p class="para">
+    Assigning this variable to another variable name will increase the refcount.
+   </p>
+   <p class="para">
+    </p><div class="example" id="example-408">
+     <p><strong>Example #3 Increasing refcount of a zval</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"new&nbsp;string"</span><span style="color: #007700">;<br></span><span style="color: #0000BB">$b&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$a</span><span style="color: #007700">;<br></span><span style="color: #0000BB">xdebug_debug_zval</span><span style="color: #007700">(&nbsp;</span><span style="color: #DD0000">'a'&nbsp;</span><span style="color: #007700">);<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <div class="example-contents"><p>The above example will output:</p></div>
+     <div class="example-contents screen">
+<div class="cdata"><pre>a: (refcount=2, is_ref=0)='new string'
+</pre></div>
+     </div>
+    </div>
+   <p></p>
+   <p class="para">
+    The refcount is <em>2</em> here, because the same variable container is linked
+    with both <var class="varname"><var class="varname">a</var></var> and <var class="varname"><var class="varname">b</var></var>.
+    PHP is smart enough not to copy the actual variable
+    container when it is not necessary. Variable containers get destroyed when
+    the "refcount" reaches zero. The "refcount" gets decreased by one when any
+    symbol linked to the variable container leaves the scope (e.g. when the
+    function ends) or when <span class="function"><a href="function.unset.html" class="function">unset()</a></span> is called on a symbol.
+    The following example shows this:
+   </p>
+   <p class="para">
+    </p><div class="example" id="example-409">
+     <p><strong>Example #4 Decreasing zval refcount</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"new&nbsp;string"</span><span style="color: #007700">;<br></span><span style="color: #0000BB">$c&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$b&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$a</span><span style="color: #007700">;<br></span><span style="color: #0000BB">xdebug_debug_zval</span><span style="color: #007700">(&nbsp;</span><span style="color: #DD0000">'a'&nbsp;</span><span style="color: #007700">);<br>unset(&nbsp;</span><span style="color: #0000BB">$b</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$c&nbsp;</span><span style="color: #007700">);<br></span><span style="color: #0000BB">xdebug_debug_zval</span><span style="color: #007700">(&nbsp;</span><span style="color: #DD0000">'a'&nbsp;</span><span style="color: #007700">);<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <div class="example-contents"><p>The above example will output:</p></div>
+     <div class="example-contents screen">
+<div class="cdata"><pre>a: (refcount=3, is_ref=0)='new string'
+a: (refcount=1, is_ref=0)='new string'
+</pre></div>
+     </div>
+    </div>
+   <p></p>
+   <p class="para">
+    If we now call <em>unset($a);</em>, the variable container, including the type
+    and value, will be removed from memory.
+   </p>
+
+   <div class="sect2" id="features.gc.compound-types">
+    <h3 class="title">Compound Types</h3>
+
+    <p class="para">
+     Things get a tad more complex with compound types such as <span class="type"><a href="language.types.array.html" class="type array">array</a></span>s and
+     <span class="type"><a href="language.types.object.html" class="type object">object</a></span>s. Instead of a <span class="type"><span class="type scalar">scalar</span></span> value, <span class="type"><a href="language.types.array.html" class="type array">array</a></span>s
+     and <span class="type"><a href="language.types.object.html" class="type object">object</a></span>s store their
+     properties in a symbol table of their own. This means that the following
+     example creates three zval containers:
+    </p>
+    <p class="para">
+     </p><div class="example" id="example-410">
+      <p><strong>Example #5 Creating a <span class="type"><a href="language.types.array.html" class="type array">array</a></span> zval</strong></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>$a&nbsp;</span><span style="color: #007700">=&nbsp;array(&nbsp;</span><span style="color: #DD0000">'meaning'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'life'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'number'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">42&nbsp;</span><span style="color: #007700">);<br></span><span style="color: #0000BB">xdebug_debug_zval</span><span style="color: #007700">(&nbsp;</span><span style="color: #DD0000">'a'&nbsp;</span><span style="color: #007700">);<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+      <div class="example-contents"><p>The above example will output
+something similar to:</p></div>
+      <div class="example-contents screen">
+<div class="cdata"><pre>a: (refcount=1, is_ref=0)=array (
+   'meaning' =&gt; (refcount=1, is_ref=0)='life',
+   'number' =&gt; (refcount=1, is_ref=0)=42
+)
+</pre></div>
+      </div>
+      <div class="example-contents"><p>Or graphically</p></div>
+      <div class="mediaobject">
+       
+       <div class="imageobject">
+        <img src="images/12f37b1c6963c1c5c18f30495416a197-simple-array.png" alt="Zvals for a simple array" width="593" height="143">
+       </div>
+      </div>
+     </div>
+    <p></p>
+    <p class="para">
+     The three zval containers are: <var class="varname"><var class="varname">a</var></var>, <var class="varname"><var class="varname">meaning</var></var>, and <var class="varname"><var class="varname">number</var></var>.
+     Similar rules apply for increasing and decreasing "refcounts". Below, we add another
+     element to the array, and set its value to the contents of an already
+     existing element:
+    </p>
+    <p class="para">
+     </p><div class="example" id="example-411">
+      <p><strong>Example #6 Adding already existing element to an array</strong></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>$a&nbsp;</span><span style="color: #007700">=&nbsp;array(&nbsp;</span><span style="color: #DD0000">'meaning'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'life'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'number'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">42&nbsp;</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$a</span><span style="color: #007700">[</span><span style="color: #DD0000">'life'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">$a</span><span style="color: #007700">[</span><span style="color: #DD0000">'meaning'</span><span style="color: #007700">];<br></span><span style="color: #0000BB">xdebug_debug_zval</span><span style="color: #007700">(&nbsp;</span><span style="color: #DD0000">'a'&nbsp;</span><span style="color: #007700">);<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+      <div class="example-contents"><p>The above example will output
+something similar to:</p></div>
+      <div class="example-contents screen">
+<div class="cdata"><pre>a: (refcount=1, is_ref=0)=array (
+   'meaning' =&gt; (refcount=2, is_ref=0)='life',
+   'number' =&gt; (refcount=1, is_ref=0)=42,
+   'life' =&gt; (refcount=2, is_ref=0)='life'
+)
+</pre></div>
+      </div>
+      <div class="example-contents"><p>Or graphically</p></div>
+      <div class="mediaobject">
+       
+       <div class="imageobject">
+        <img src="images/12f37b1c6963c1c5c18f30495416a197-simple-array2.png" alt="Zvals for a simple array with a reference" width="593" height="143">
+       </div>
+      </div>
+     </div>
+    <p></p>
+    <p class="para">
+     From the above Xdebug output, we see that both the old and new array
+     elements now point to a zval container whose "refcount" is
+     <em>2</em>. Although Xdebug's output shows two zval containers
+     with value <em>'life'</em>, they are the same one. The
+     <span class="function"><strong>xdebug_debug_zval()</strong></span> function does not show this, but
+     you could see it by also displaying the memory pointer.
+    </p>
+    <p class="para">
+     Removing an element from the array is like removing a symbol from a scope.
+     By doing so, the "refcount" of a container that an array element points to
+     is decreased. Again, when the "refcount" reaches zero, the variable
+     container is removed from memory.  Again, an example to show this:
+    </p>
+    <p class="para">
+     </p><div class="example" id="example-412">
+      <p><strong>Example #7 Removing an element from an array</strong></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>$a&nbsp;</span><span style="color: #007700">=&nbsp;array(&nbsp;</span><span style="color: #DD0000">'meaning'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #DD0000">'life'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'number'&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">42&nbsp;</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$a</span><span style="color: #007700">[</span><span style="color: #DD0000">'life'</span><span style="color: #007700">]&nbsp;=&nbsp;</span><span style="color: #0000BB">$a</span><span style="color: #007700">[</span><span style="color: #DD0000">'meaning'</span><span style="color: #007700">];<br>unset(&nbsp;</span><span style="color: #0000BB">$a</span><span style="color: #007700">[</span><span style="color: #DD0000">'meaning'</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">$a</span><span style="color: #007700">[</span><span style="color: #DD0000">'number'</span><span style="color: #007700">]&nbsp;);<br></span><span style="color: #0000BB">xdebug_debug_zval</span><span style="color: #007700">(&nbsp;</span><span style="color: #DD0000">'a'&nbsp;</span><span style="color: #007700">);<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+      <div class="example-contents"><p>The above example will output
+something similar to:</p></div>
+      <div class="example-contents screen">
+<div class="cdata"><pre>a: (refcount=1, is_ref=0)=array (
+   'life' =&gt; (refcount=1, is_ref=0)='life'
+)
+</pre></div>
+      </div>
+     </div>
+    <p></p>
+    <p class="para">
+     Now, things get interesting if we add the array itself as an element of
+     the array, which we do in the next example, in which we also sneak in a
+     reference operator, since otherwise PHP would create a copy:
+    </p>
+    <p class="para">
+     </p><div class="example" id="example-413">
+      <p><strong>Example #8 Adding the array itself as an element of it self</strong></p>
+      <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>$a&nbsp;</span><span style="color: #007700">=&nbsp;array(&nbsp;</span><span style="color: #DD0000">'one'&nbsp;</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$a</span><span style="color: #007700">[]&nbsp;=&amp;&nbsp;</span><span style="color: #0000BB">$a</span><span style="color: #007700">;<br></span><span style="color: #0000BB">xdebug_debug_zval</span><span style="color: #007700">(&nbsp;</span><span style="color: #DD0000">'a'&nbsp;</span><span style="color: #007700">);<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+      </div>
+
+      <div class="example-contents"><p>The above example will output
+something similar to:</p></div>
+      <div class="example-contents screen">
+<div class="cdata"><pre>a: (refcount=2, is_ref=1)=array (
+   0 =&gt; (refcount=1, is_ref=0)='one',
+   1 =&gt; (refcount=2, is_ref=1)=...
+)
+</pre></div>
+      </div>
+      <div class="example-contents"><p>Or graphically</p></div>
+      <div class="mediaobject">
+       
+       <div class="imageobject">
+        <img src="images/12f37b1c6963c1c5c18f30495416a197-loop-array.png" alt="Zvals for an array with a circular reference" width="533" height="144">
+       </div>
+      </div>
+     </div>
+    <p></p>
+    <p class="para">
+     You can see that the array variable (<var class="varname"><var class="varname">a</var></var>) as well as the second element
+     (<var class="varname"><var class="varname">1</var></var>) now point to a variable container that has a "refcount" of <em>2</em>. The
+     "..." in the display above shows that there is recursion involved, which,
+     of course, in this case means that the "..." points back to the original
+     array.
+    </p>
+    <p class="para">
+     Just like before, unsetting a variable removes the symbol, and the
+     reference count of the variable container it points to is decreased by
+     one. So, if we unset variable <var class="varname"><var class="varname">$a</var></var> after running the above code, the
+     reference count of the variable container that <var class="varname"><var class="varname">$a</var></var> and element "1" point to
+     gets decreased by one, from "2" to "1". This can be represented as:
+    </p>
+    <p class="para">
+     </p><div class="example" id="example-414">
+      <p><strong>Example #9 Unsetting <var class="varname"><var class="varname">$a</var></var></strong></p>
+      <div class="example-contents screen">
+<div class="cdata"><pre>(refcount=1, is_ref=1)=array (
+   0 =&gt; (refcount=1, is_ref=0)='one',
+   1 =&gt; (refcount=1, is_ref=1)=...
+)
+</pre></div>
+      </div>
+      <div class="example-contents"><p>Or graphically</p></div>
+      <div class="mediaobject">
+       
+       <div class="imageobject">
+        <img src="images/12f37b1c6963c1c5c18f30495416a197-leak-array.png" alt="Zvals after removal of array with a circular reference demonstrating the memory leak" width="463" height="144">
+       </div>
+      </div>
+     </div>
+    <p></p>
+   </div>
+
+   <div class="sect2" id="features.gc.cleanup-problems">
+    <h3 class="title">Cleanup Problems</h3>
+    <p class="para">
+     Although there is no longer a symbol in any scope pointing to this
+     structure, it cannot be cleaned up because the array element "1" still
+     points to this same array. Because there is no external symbol pointing to
+     it, there is no way for a user to clean up this structure; thus you get a
+     memory leak. Fortunately, PHP will clean up this data structure at the end
+     of the request, but before then, this is taking up valuable space in
+     memory. This situation happens often if you're implementing parsing
+     algorithms or other things where you have a child point back at a "parent"
+     element. The same situation can also happen with objects of course, where
+     it actually is more likely to occur, as objects are always implicitly used
+     by reference.
+    </p>
+    <p class="para">
+     This might not be a problem if this only happens once or twice, but if
+     there are thousands, or even millions, of these memory losses, this
+     obviously starts being a problem. This is especially problematic in long
+     running scripts, such as daemons where the request basically never ends,
+     or in large sets of unit tests. The latter caused problems while
+     running the unit tests for the Template component of the eZ Components
+     library. In some cases, it would require over 2 GB of memory, which the
+     test server didn't quite have.
+    </p>
+   </div>
+  </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div>
+ <div class="note">There are no user contributed notes for this page.</div></section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/features.gc.refcounting-basics.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:29:18 GMT -->
+
+
+</body></html>

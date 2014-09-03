@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>phar のシグネチャのアルゴリズムを設定して適用する</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="phar.setmetadata.html">≪ Phar::setMetadata</a></li>
+      <li style="float: right;"><a href="phar.setstub.html">Phar::setStub ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="class.phar.html">Phar</a></li>
+    <li>phar のシグネチャのアルゴリズムを設定して適用する</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="phar.setsignaturealgorithm" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">Phar::setSignatureAlgorithm</h1>
+  <p class="verinfo">(PHP &gt;= 5.3.0, PECL phar &gt;= 1.1.0)</p><p class="refpurpose"><span class="refname">Phar::setSignatureAlgorithm</span> &mdash; <span class="dc-title">phar のシグネチャのアルゴリズムを設定して適用する</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-phar.setsignaturealgorithm-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type"><span class="type void">void</span></span> <span class="methodname"><a href="phardata.setsignaturealgorithm.html" class="methodname">Phar::setSignatureAlgorithm</a></span>
+    ( <span class="methodparam"><span class="type">int</span> <code class="parameter">$sigtype</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$privatekey</code></span>
+  ] )</div>
+
+  <blockquote class="note"><p><strong class="note">注意</strong>: <p class="para">
+このメソッドは、<var class="filename">php.ini</var> の <em>phar.readonly</em>
+が <em>0</em> でないと <a href="class.phar.html" class="classname">Phar</a>
+オブジェクトで動作しません。それ以外の場合は
+<a href="class.pharexception.html" class="classname">PharException</a> がスローされます。</p></p></blockquote>
+
+  <p class="para">
+   phar のシグネチャのアルゴリズムを設定します。
+   シグネチャのアルゴリズムは <em>Phar::MD5</em>、
+   <em>Phar::SHA1</em>、<em>Phar::SHA256</em>、
+   <em>Phar::SHA512</em> あるいは <em>Phar::OPENSSL</em>
+   のいずれかでなければなりません。
+  </p>
+  <p class="para">
+   実行可能な phar アーカイブについては、
+   <em>SHA1</em> 形式のシグネチャが
+   デフォルトで自動的に作成されることに注意しましょう。
+   データ tar 形式あるいは zip 形式のアーカイブ
+   (<a href="class.phardata.html" class="classname">PharData</a> クラスで作成したアーカイブ)
+   の場合は、
+   <span class="function"><a href="phardata.setsignaturealgorithm.html" class="function">Phar::setSignatureAlgorithm()</a></span>
+   で明示的にシグネチャを作成して設定する必要があります。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-phar.setsignaturealgorithm-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+<code class="parameter">sigtype</code></dt>
+
+     <dd>
+
+      <p class="para">
+       <em>Phar::MD5</em>、
+   <em>Phar::SHA1</em>、<em>Phar::SHA256</em>、
+   <em>Phar::SHA512</em> あるいは <em>Phar::OPENSSL</em>
+       のいずれか。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">privatekey</code></dt>
+
+     <dd>
+
+      <p class="para">
+       OpenSSL 秘密鍵の中身。証明書あるいは OpenSSL 鍵ファイルから取り出したもの。
+       <div class="example-contents">
+        <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$private&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">openssl_get_privatekey</span><span style="color: #007700">(</span><span style="color: #0000BB">file_get_contents</span><span style="color: #007700">(</span><span style="color: #DD0000">'private.pem'</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">$pkey&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">''</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">openssl_pkey_export</span><span style="color: #007700">(</span><span style="color: #0000BB">$private</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$pkey</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$p</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setSignatureAlgorithm</span><span style="color: #007700">(</span><span style="color: #0000BB">Phar</span><span style="color: #007700">::</span><span style="color: #0000BB">OPENSSL</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$pkey</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+       </div>
+
+       公開鍵ファイルの名前や置き場所については
+       <a href="phar.using.html" class="link">phar の導入</a> を参照ください。
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-phar.setsignaturealgorithm-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   値を返しません。
+  </p>
+ </div>
+
+ 
+ <div class="refsect1 errors" id="refsect1-phar.setsignaturealgorithm-errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">
+   さまざまなエラーが発生した場合に
+   <a href="class.unexpectedvalueexception.html" class="classname">UnexpectedValueException</a> をスローします。
+   変更内容をディスクに書き込むときにエラーが発生した場合は
+   <a href="class.pharexception.html" class="classname">PharException</a> をスローします。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-phar.setsignaturealgorithm-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><span class="function"><a href="phar.getsupportedsignatures.html" class="function" rel="rdfs-seeAlso">Phar::getSupportedSignatures()</a> - サポートするシグネチャ型の配列を返す</span></li>
+    <li class="member"><span class="function"><a href="phar.getsignature.html" class="function" rel="rdfs-seeAlso">Phar::getSignature()</a> - Phar アーカイブの MD5/SHA1/SHA256/SHA512/OpenSSL シグネチャを返す</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

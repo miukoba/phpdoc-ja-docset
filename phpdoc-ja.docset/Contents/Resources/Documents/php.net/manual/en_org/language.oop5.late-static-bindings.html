@@ -1,0 +1,756 @@
+<html><!-- Mirrored from php.net/manual/en/language.oop5.late-static-bindings.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:28:01 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Late Static Bindings</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="language.oop5.late-static-bindings.html">
+ <link rel="shorturl" href="http://php.net/oop5.late-static-bindings">
+ <link rel="alternate" href="http://php.net/oop5.late-static-bindings" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="language.oop5.html">
+ <link rel="prev" href="language.oop5.typehinting.html">
+ <link rel="next" href="language.oop5.references.html">
+
+ <link rel="alternate" href="language.oop5.late-static-bindings.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/language.oop5.late-static-bindings.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/language.oop5.late-static-bindings.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/language.oop5.late-static-bindings.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/language.oop5.late-static-bindings.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/language.oop5.late-static-bindings.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/language.oop5.late-static-bindings.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/language.oop5.late-static-bindings.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/language.oop5.late-static-bindings.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/language.oop5.late-static-bindings.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/language.oop5.late-static-bindings.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="langref.html">Language Reference</a></li>      <li><a href="language.oop5.html">Classes and Objects</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="language.oop5.late-static-bindings" class="sect1">
+  <h2 class="title">Late Static Bindings</h2>
+  <p class="para">
+   As of PHP 5.3.0, PHP implements a feature called late static bindings which
+   can be used to reference the called class in a context of static inheritance.
+  </p>
+
+  <p class="para">
+   More precisely, late static bindings work by storing the class named in the
+   last "non-forwarding call". In case of static method calls, this is the
+   class explicitly named (usually the one on the left of the
+   <a href="language.oop5.paamayim-nekudotayim.html" class="link"><em>::</em></a>
+   operator); in case of non static method calls, it is the class of the object. A
+   "forwarding call" is a static one that is introduced by <em>self::</em>,
+   <em>parent::</em>, <em>static::</em>, or, if going
+   up in the class hierarchy, <span class="function"><a href="function.forward-static-call.html" class="function">forward_static_call()</a></span>.
+   
+   
+   The function <span class="function"><a href="function.get-called-class.html" class="function">get_called_class()</a></span> can be used to retrieve
+   a string with the name of the called class and <em>static::</em>
+   introduces its scope.
+  </p>
+  
+  <p class="para">
+   This feature was named "late static bindings" with an internal perspective in
+   mind. "Late binding" comes from the fact that <em>static::</em>
+   will not be resolved using the class where the method is defined but it will
+   rather be computed using runtime information.
+
+   It was also called a "static binding" as it can be used for (but is not
+   limited to) static method calls.
+  </p>
+
+  <div class="sect2" id="language.oop5.late-static-bindings.self">
+   <h3 class="title">Limitations of <em>self::</em></h3>
+   <p class="para">
+    Static references to the current class like <em>self::</em> or
+    <em>__CLASS__</em> are resolved using the class in which the
+    function belongs, as in where it was defined:
+   </p>
+   <div class="example" id="example-247">
+    <p><strong>Example #1 <em>self::</em> usage</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">A&nbsp;</span><span style="color: #007700">{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">who</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">__CLASS__</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">test</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">self</span><span style="color: #007700">::</span><span style="color: #0000BB">who</span><span style="color: #007700">();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br>class&nbsp;</span><span style="color: #0000BB">B&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">A&nbsp;</span><span style="color: #007700">{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">who</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">__CLASS__</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br></span><span style="color: #0000BB">B</span><span style="color: #007700">::</span><span style="color: #0000BB">test</span><span style="color: #007700">();<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>The above example will output:</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>A
+</pre></div>
+    </div>
+   </div>
+
+  </div>
+
+  <div class="sect2" id="language.oop5.late-static-bindings.usage">
+   <h3 class="title">Late Static Bindings' usage</h3>
+
+   <p class="para">
+    Late static bindings tries to solve that limitation by introducing a
+    keyword that references the class that was initially called at runtime.
+    Basically, a keyword that would allow you to reference
+    <em>B</em> from <em>test()</em> in the previous
+    example. It was decided not to introduce a new keyword but rather use
+    <em>static</em> that was already reserved.
+   </p>
+
+   <div class="example" id="example-248">
+    <p><strong>Example #2 <em>static::</em> simple usage</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">A&nbsp;</span><span style="color: #007700">{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">who</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">__CLASS__</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">test</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static::</span><span style="color: #0000BB">who</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;Here&nbsp;comes&nbsp;Late&nbsp;Static&nbsp;Bindings<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">}<br>}<br><br>class&nbsp;</span><span style="color: #0000BB">B&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">A&nbsp;</span><span style="color: #007700">{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">who</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">__CLASS__</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br></span><span style="color: #0000BB">B</span><span style="color: #007700">::</span><span style="color: #0000BB">test</span><span style="color: #007700">();<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>The above example will output:</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>B
+</pre></div>
+    </div>
+   </div>
+   <blockquote class="note"><p><strong class="note">Note</strong>: 
+    </p><p class="para">
+     In non-static contexts, the called class will be the class of the object
+     instance. Since <em>$this-&gt;</em> will try to call private
+     methods from the same scope, using <em>static::</em> may give
+     different results. Another difference is that <em>static::</em>
+     can only refer to static properties.
+    </p>
+   <p></p></blockquote>
+   <div class="example" id="example-249">
+    <p><strong>Example #3 <em>static::</em> usage in a non-static context</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">A&nbsp;</span><span style="color: #007700">{<br>&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;function&nbsp;</span><span style="color: #0000BB">foo</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"success!\n"</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">test</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">foo</span><span style="color: #007700">();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static::</span><span style="color: #0000BB">foo</span><span style="color: #007700">();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br>class&nbsp;</span><span style="color: #0000BB">B&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">A&nbsp;</span><span style="color: #007700">{<br>&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;foo()&nbsp;will&nbsp;be&nbsp;copied&nbsp;to&nbsp;B,&nbsp;hence&nbsp;its&nbsp;scope&nbsp;will&nbsp;still&nbsp;be&nbsp;A&nbsp;and<br>&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;the&nbsp;call&nbsp;be&nbsp;successful&nbsp;*/<br></span><span style="color: #007700">}<br><br>class&nbsp;</span><span style="color: #0000BB">C&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">A&nbsp;</span><span style="color: #007700">{<br>&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;function&nbsp;</span><span style="color: #0000BB">foo</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/*&nbsp;original&nbsp;method&nbsp;is&nbsp;replaced;&nbsp;the&nbsp;scope&nbsp;of&nbsp;the&nbsp;new&nbsp;one&nbsp;is&nbsp;C&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">}<br>}<br><br></span><span style="color: #0000BB">$b&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">B</span><span style="color: #007700">();<br></span><span style="color: #0000BB">$b</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">test</span><span style="color: #007700">();<br></span><span style="color: #0000BB">$c&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">C</span><span style="color: #007700">();<br></span><span style="color: #0000BB">$c</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">test</span><span style="color: #007700">();&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//fails<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>The above example will output:</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>success!
+success!
+success!
+
+
+Fatal error:  Call to private method C::foo() from context 'A' in /tmp/test.php on line 9
+</pre></div>
+    </div>
+   </div>
+   <blockquote class="note"><p><strong class="note">Note</strong>: 
+    </p><p class="para">
+     Late static bindings' resolution will stop at a fully resolved static call
+     with no fallback. On the other hand, static calls using keywords like
+     <em>parent::</em> or <em>self::</em> will forward the
+     calling information.
+    </p>
+    <div class="example" id="example-250">
+     <p><strong>Example #4 Forwarding and non-forwarding calls</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">A&nbsp;</span><span style="color: #007700">{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">foo</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static::</span><span style="color: #0000BB">who</span><span style="color: #007700">();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">who</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">__CLASS__</span><span style="color: #007700">.</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br>class&nbsp;</span><span style="color: #0000BB">B&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">A&nbsp;</span><span style="color: #007700">{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">test</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">A</span><span style="color: #007700">::</span><span style="color: #0000BB">foo</span><span style="color: #007700">();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">parent</span><span style="color: #007700">::</span><span style="color: #0000BB">foo</span><span style="color: #007700">();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">self</span><span style="color: #007700">::</span><span style="color: #0000BB">foo</span><span style="color: #007700">();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">who</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">__CLASS__</span><span style="color: #007700">.</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br>class&nbsp;</span><span style="color: #0000BB">C&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">B&nbsp;</span><span style="color: #007700">{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;function&nbsp;</span><span style="color: #0000BB">who</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #0000BB">__CLASS__</span><span style="color: #007700">.</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br></span><span style="color: #0000BB">C</span><span style="color: #007700">::</span><span style="color: #0000BB">test</span><span style="color: #007700">();<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <div class="example-contents"><p>The above example will output:</p></div>
+     <div class="example-contents screen">
+<div class="cdata"><pre>A
+C
+C
+</pre></div>
+     </div>
+    </div>
+   <p></p></blockquote>
+  </div>
+ </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="83502">  
+  <a class="name">
+  <strong class="user"><em>sergei at 2440media dot com</em></strong></a><div class="date" title="2008-05-28 01:22"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom83502">
+<div class="phpcode"><code><span class="html">
+Finally we can implement some ActiveRecord methods:
+<br>
+<br><span class="default">&lt;?php
+<br>
+<br></span><span class="keyword">class </span><span class="default">Model
+<br></span><span class="keyword">{
+<br>&nbsp; &nbsp; public static function </span><span class="default">find</span><span class="keyword">()
+<br>&nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; echo static::</span><span class="default">$name</span><span class="keyword">;
+<br>&nbsp; &nbsp; }
+<br>}
+<br>
+<br>class </span><span class="default">Product </span><span class="keyword">extends </span><span class="default">Model
+<br></span><span class="keyword">{
+<br>&nbsp; &nbsp; protected static </span><span class="default">$name </span><span class="keyword">= </span><span class="string">'Product'</span><span class="keyword">;
+<br>}
+<br>
+<br></span><span class="default">Product</span><span class="keyword">::</span><span class="default">find</span><span class="keyword">();
+<br>
+<br></span><span class="default">?&gt;
+<br></span>
+<br>Output: 'Product'</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="109788">  
+  <a class="name">
+  <strong class="user"><em>Taai</em></strong></a><div class="date" title="2012-08-21 10:36"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom109788">
+<div class="phpcode"><code><span class="html">
+I discovered an interesting thing. The class name string must be accessed directly from "flat" variable. Late static binding code that get's it's variable from array that is passed by class instance, throws an syntax error. Bug?<br><br><span class="default">&lt;?php<br></span><span class="keyword">class </span><span class="default">A </span><span class="keyword">{<br><br>&nbsp; &nbsp; public </span><span class="default">$metadata </span><span class="keyword">= array(</span><span class="string">'class' </span><span class="keyword">=&gt; </span><span class="string">'A'</span><span class="keyword">);<br><br>&nbsp; &nbsp; public static function </span><span class="default">numbers</span><span class="keyword">()<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">123</span><span class="keyword">;<br>&nbsp; &nbsp; }<br><br>}<br><br></span><span class="default">$instance </span><span class="keyword">= new </span><span class="default">A</span><span class="keyword">();<br><br></span><span class="comment">// This throws an error<br>// Parse error: syntax error, unexpected '::' (T_PAAMAYIM_NEKUDOTAYIM)<br></span><span class="default">var_dump</span><span class="keyword">( </span><span class="default">$instance</span><span class="keyword">-&gt;</span><span class="default">metadata</span><span class="keyword">[</span><span class="string">'class'</span><span class="keyword">]::</span><span class="default">numbers</span><span class="keyword">() );<br><br></span><span class="comment">// Get the class name and store it in "flat" variable and now it's ok<br></span><span class="default">$class_name </span><span class="keyword">= </span><span class="default">$instance</span><span class="keyword">-&gt;</span><span class="default">metadata</span><span class="keyword">[</span><span class="string">'class'</span><span class="keyword">];<br></span><span class="default">var_dump</span><span class="keyword">( </span><span class="default">$class_name</span><span class="keyword">::</span><span class="default">numbers</span><span class="keyword">() );<br><br></span><span class="comment">// Other tests -------------------------------------------<br><br></span><span class="default">$arr </span><span class="keyword">=&nbsp; array(</span><span class="string">'class' </span><span class="keyword">=&gt; </span><span class="string">'A'</span><span class="keyword">);<br><br></span><span class="comment">// This works too.<br></span><span class="default">var_dump</span><span class="keyword">( </span><span class="default">$arr</span><span class="keyword">[</span><span class="string">'class'</span><span class="keyword">]::</span><span class="default">numbers</span><span class="keyword">() );<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="114666">  
+  <a class="name">
+  <strong class="user"><em>tamilps2 at gmail dot com</em></strong></a><div class="date" title="2014-03-20 05:42"><strong>5 months ago</strong></div>
+  <div class="text" id="Hcom114666">
+<div class="phpcode"><code><span class="html">
+I have implemented enum using late static binding.<br><br><span class="default">&lt;?php<br></span><span class="keyword">interface </span><span class="default">IEnum </span><span class="keyword">{<br>&nbsp; </span><span class="comment">/**<br>&nbsp;&nbsp; * Only concrete class should implement this function that should behave as<br>&nbsp;&nbsp; * an enum.<br>&nbsp;&nbsp; * <br>&nbsp;&nbsp; * This method should return the __CLASS__ constant property of that class<br>&nbsp;&nbsp; * <br>&nbsp;&nbsp; * @return string __CLASS__<br>&nbsp;&nbsp; */<br>&nbsp; </span><span class="keyword">public static function </span><span class="default">who</span><span class="keyword">();<br>}<br><br>abstract class </span><span class="default">Enum </span><span class="keyword">{<br><br>&nbsp; </span><span class="comment">/**<br>&nbsp;&nbsp; * The selected value for the enum implementation<br>&nbsp;&nbsp; * <br>&nbsp;&nbsp; * @var mixed<br>&nbsp;&nbsp; */<br>&nbsp; </span><span class="keyword">public </span><span class="default">$value</span><span class="keyword">;<br>&nbsp; <br>&nbsp; public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">) {<br>&nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">value </span><span class="keyword">= </span><span class="default">$value</span><span class="keyword">;<br>&nbsp; }<br>&nbsp; <br>&nbsp; </span><span class="comment">/**<br>&nbsp;&nbsp; * The factory method that creates the corresponding enum class.<br>&nbsp;&nbsp; * <br>&nbsp;&nbsp; * @param integer $type<br>&nbsp;&nbsp; * @return false|\class<br>&nbsp;&nbsp; */<br>&nbsp; </span><span class="keyword">public static function </span><span class="default">Factory</span><span class="keyword">(</span><span class="default">$type</span><span class="keyword">) {<br>&nbsp; &nbsp; if (empty(</span><span class="default">$type</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; return </span><span class="default">false</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="comment">// use of late static binding to get the class.<br>&nbsp; &nbsp; </span><span class="default">$class </span><span class="keyword">= static::</span><span class="default">who</span><span class="keyword">();<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; if (</span><span class="default">array_key_exists</span><span class="keyword">(</span><span class="default">$type</span><span class="keyword">, static::</span><span class="default">$_enums</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; return new </span><span class="default">$class</span><span class="keyword">(</span><span class="default">$type</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; return </span><span class="default">false</span><span class="keyword">;<br>&nbsp; }<br>&nbsp; <br>&nbsp; public function </span><span class="default">getValue</span><span class="keyword">() {<br>&nbsp; &nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">value</span><span class="keyword">;<br>&nbsp; }<br>&nbsp; <br>&nbsp; public static function </span><span class="default">getValues</span><span class="keyword">() {<br>&nbsp; &nbsp; return </span><span class="default">array_keys</span><span class="keyword">(static::</span><span class="default">$_enums</span><span class="keyword">);<br>&nbsp; }<br>&nbsp; <br>&nbsp; public function </span><span class="default">getString</span><span class="keyword">() {<br>&nbsp; &nbsp; return static::</span><span class="default">$_enums</span><span class="keyword">[</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">value</span><span class="keyword">];<br>&nbsp; }<br>&nbsp; <br>&nbsp; public function </span><span class="default">__toString</span><span class="keyword">() {<br>&nbsp; &nbsp; return static::</span><span class="default">$_enums</span><span class="keyword">[</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">value</span><span class="keyword">];<br>&nbsp; }<br><br>}<br><br>class </span><span class="default">Fruits </span><span class="keyword">extends </span><span class="default">Enum </span><span class="keyword">implements </span><span class="default">IEnum </span><span class="keyword">{<br><br>&nbsp; &nbsp; &nbsp; public static </span><span class="default">$_enums </span><span class="keyword">= array(<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">1 </span><span class="keyword">=&gt; </span><span class="string">'Apple'<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">2 </span><span class="keyword">=&gt; </span><span class="string">'Orange'<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">3 </span><span class="keyword">=&gt; </span><span class="string">'Banana'<br>&nbsp; &nbsp; &nbsp; </span><span class="keyword">)<br><br>&nbsp; &nbsp; &nbsp; public static function </span><span class="default">who</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">__CLASS__</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; }<br>}<br><br></span><span class="comment">// Usage<br><br>// user input from dropdown menu of fruits list<br></span><span class="default">$input </span><span class="keyword">= </span><span class="default">3</span><span class="keyword">;<br><br></span><span class="default">$fruit </span><span class="keyword">= </span><span class="default">Fruits</span><span class="keyword">::</span><span class="default">Factory</span><span class="keyword">(</span><span class="default">$input</span><span class="keyword">);<br><br></span><span class="default">$fruit</span><span class="keyword">-&gt;</span><span class="default">getValue</span><span class="keyword">(); </span><span class="comment">// 3<br></span><span class="default">$fruit</span><span class="keyword">-&gt;</span><span class="default">getString</span><span class="keyword">(); </span><span class="comment">// Banana<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="101309">  
+  <a class="name">
+  <strong class="user"><em>jrfish dot x at gmail dot com</em></strong></a><div class="date" title="2010-12-09 04:01"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom101309">
+<div class="phpcode"><code><span class="html">
+consider this:
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">class </span><span class="default">A
+<br></span><span class="keyword">{
+<br>
+<br> </span><span class="comment">// some stuff....
+<br>
+<br>&nbsp; &nbsp; </span><span class="keyword">public static function </span><span class="default">getInstance</span><span class="keyword">()
+<br>&nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; return new </span><span class="default">self</span><span class="keyword">();
+<br>&nbsp; &nbsp; }
+<br>
+<br>}
+<br>
+<br>class </span><span class="default">B </span><span class="keyword">extends </span><span class="default">A
+<br></span><span class="keyword">{
+<br>&nbsp; </span><span class="comment">//stuff...
+<br></span><span class="keyword">}
+<br>
+<br></span><span class="default">$obj </span><span class="keyword">= </span><span class="default">B</span><span class="keyword">::</span><span class="default">getInstance</span><span class="keyword">();
+<br>
+<br></span><span class="comment">//versus
+<br>
+<br></span><span class="keyword">class </span><span class="default">A
+<br></span><span class="keyword">{
+<br>
+<br> </span><span class="comment">// some stuff....
+<br>
+<br>&nbsp; &nbsp; </span><span class="keyword">public static function </span><span class="default">getInstance</span><span class="keyword">()
+<br>&nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; return new static();
+<br>&nbsp; &nbsp; }
+<br>
+<br>}
+<br>
+<br>class </span><span class="default">B </span><span class="keyword">extends </span><span class="default">A
+<br></span><span class="keyword">{
+<br>&nbsp; </span><span class="comment">//stuff...
+<br></span><span class="keyword">}
+<br>
+<br></span><span class="default">$obj </span><span class="keyword">= </span><span class="default">B</span><span class="keyword">::</span><span class="default">getInstance</span><span class="keyword">();
+<br></span><span class="default">?&gt;
+<br></span>
+<br>also works the same way with static variables and constants</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="100812">  
+  <a class="name">
+  <strong class="user"><em>jakub dot lopuszanski at nasza-klasa dot pl</em></strong></a><div class="date" title="2010-11-08 10:12"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom100812">
+<div class="phpcode"><code><span class="html">
+Suprisingly consts are also lazy bound even though you use self instead of static:<br><span class="default">&lt;?php<br></span><span class="keyword">class </span><span class="default">A</span><span class="keyword">{<br>&nbsp; const </span><span class="default">X</span><span class="keyword">=</span><span class="default">1</span><span class="keyword">;<br>&nbsp; const </span><span class="default">Y</span><span class="keyword">=</span><span class="default">self</span><span class="keyword">::</span><span class="default">X</span><span class="keyword">;<br>}<br>class </span><span class="default">B </span><span class="keyword">extends </span><span class="default">A</span><span class="keyword">{<br>&nbsp; const </span><span class="default">X</span><span class="keyword">=</span><span class="default">1.0</span><span class="keyword">;<br>}<br></span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">B</span><span class="keyword">::</span><span class="default">Y</span><span class="keyword">); </span><span class="comment">// float(1.0)<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="100138">  
+  <a class="name">
+  <strong class="user"><em>steven dot karas+nospam at gmail dot com</em></strong></a><div class="date" title="2010-09-27 02:38"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom100138">
+<div class="phpcode"><code><span class="html">
+This function can be used as a workaround for late static binding in PHP &gt;= 5.1.0. There was another similar version of this function elsewhere, but used eval.<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">function &amp; </span><span class="default">static_var</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">, </span><span class="default">$name</span><span class="keyword">)<br>{<br>&nbsp; &nbsp; if (</span><span class="default">is_object</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">))<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$class </span><span class="keyword">= </span><span class="default">get_class</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; elseif ( ! </span><span class="default">is_string</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">))<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="string">'Must be given an object or a class name'</span><span class="keyword">, </span><span class="default">NULL</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="default">$class </span><span class="keyword">= new </span><span class="default">ReflectionClass</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">);<br>&nbsp; &nbsp; return </span><span class="default">$class</span><span class="keyword">-&gt;</span><span class="default">getStaticPropertyValue</span><span class="keyword">(</span><span class="default">$name</span><span class="keyword">);<br>}<br><br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="101310">  
+  <a class="name">
+  <strong class="user"><em>jrfish dot x at gmail dot com</em></strong></a><div class="date" title="2010-12-09 04:05"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom101310">
+<div class="phpcode"><code><span class="html">
+also works the same way with static variables and constants</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="84525">  
+  <a class="name">
+  <strong class="user"><em>sebastien at info-conseil dot fr</em></strong></a><div class="date" title="2008-07-17 07:26"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom84525">
+<div class="phpcode"><code><span class="html">
+Here is a small workaround I made for the static inheritance issue. It's not perfect, but it works.<br><br><span class="default">&lt;?php<br><br></span><span class="comment">// BaseClass class will be extended by any class needing static inheritance workaroud<br></span><span class="keyword">class </span><span class="default">BaseClass </span><span class="keyword">{<br>&nbsp; &nbsp; </span><span class="comment">// Temporarily stores class name for Entry::getStatic() and Entry::setNextStatic()<br>&nbsp; &nbsp; </span><span class="keyword">protected static </span><span class="default">$nextStatic </span><span class="keyword">= </span><span class="default">false</span><span class="keyword">;<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="comment">// Returns the real name of the class calling the method, not the one in which it was declared.<br>&nbsp; &nbsp; </span><span class="keyword">protected static function </span><span class="default">getStatic</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// If already stored<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">if (</span><span class="default">self</span><span class="keyword">::</span><span class="default">$nextStatic</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// Clean and return<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$class </span><span class="keyword">= </span><span class="default">self</span><span class="keyword">::</span><span class="default">$nextStatic</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">self</span><span class="keyword">::</span><span class="default">$nextStatic </span><span class="keyword">= </span><span class="default">false</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$class</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// Init<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$backTrace </span><span class="keyword">= </span><span class="default">debug_backtrace</span><span class="keyword">();<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$class </span><span class="keyword">= </span><span class="default">false</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// Walk through<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">for (</span><span class="default">$i</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">; </span><span class="default">$i</span><span class="keyword">&lt;</span><span class="default">count</span><span class="keyword">(</span><span class="default">$backTrace</span><span class="keyword">); </span><span class="default">$i</span><span class="keyword">++) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// If a class is defined<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">if (isset(</span><span class="default">$backTrace</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="string">'class'</span><span class="keyword">])) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// Check if it is not a basic class<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">if (!</span><span class="default">in_array</span><span class="keyword">(</span><span class="default">$backTrace</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="string">'class'</span><span class="keyword">], array(</span><span class="string">'BaseClass'</span><span class="keyword">, </span><span class="string">'GenericClass'</span><span class="keyword">))) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$backTrace</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="string">'class'</span><span class="keyword">];<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } else {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$class </span><span class="keyword">= </span><span class="default">$backTrace</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="string">'class'</span><span class="keyword">];<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; } else {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// Returns last known class<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">return </span><span class="default">$class</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// Default<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">return </span><span class="default">$class</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="comment">// If a static method is called within global env, the previous method won't work, so we need to tell BaseClass which<br>&nbsp; &nbsp; </span><span class="keyword">public static function </span><span class="default">setNextStatic</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// Save value<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">self</span><span class="keyword">::</span><span class="default">$nextStatic </span><span class="keyword">= </span><span class="default">$class</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>}<br><br></span><span class="comment">// Generic class declaring various static methods<br></span><span class="keyword">class </span><span class="default">GenericClass </span><span class="keyword">extends </span><span class="default">BaseClass </span><span class="keyword">{<br>&nbsp; &nbsp; public static </span><span class="default">$name </span><span class="keyword">= </span><span class="string">'Generic'</span><span class="keyword">;<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; public function </span><span class="default">getName</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$static </span><span class="keyword">= </span><span class="default">get_class_vars</span><span class="keyword">(</span><span class="default">get_class</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">));<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$static</span><span class="keyword">[</span><span class="string">'name'</span><span class="keyword">];<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; public static function </span><span class="default">basicClassName</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">self</span><span class="keyword">::</span><span class="default">$name</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; public static function </span><span class="default">staticClassName</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// Get real name<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$staticName </span><span class="keyword">= </span><span class="default">self</span><span class="keyword">::</span><span class="default">getStatic</span><span class="keyword">();<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// Return final class name<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$static </span><span class="keyword">= </span><span class="default">get_class_vars</span><span class="keyword">(</span><span class="default">$staticName</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$static</span><span class="keyword">[</span><span class="string">'name'</span><span class="keyword">];<br>&nbsp; &nbsp; }<br>}<br><br></span><span class="comment">// Final class<br></span><span class="keyword">class </span><span class="default">SomeClass </span><span class="keyword">extends </span><span class="default">GenericClass </span><span class="keyword">{<br>&nbsp; &nbsp; public static </span><span class="default">$name </span><span class="keyword">= </span><span class="string">'Some'</span><span class="keyword">;<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; public static function </span><span class="default">returnClassNameWith</span><span class="keyword">(</span><span class="default">$string</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$string</span><span class="keyword">.</span><span class="string">' : '</span><span class="keyword">.</span><span class="default">self</span><span class="keyword">::</span><span class="default">staticClassName</span><span class="keyword">();<br>&nbsp; &nbsp; }<br>}<br><br></span><span class="comment">// Instance call<br><br>// Will print 'Some'<br></span><span class="default">$a </span><span class="keyword">= new </span><span class="default">SomeClass</span><span class="keyword">();<br>echo </span><span class="string">'Name of $a : '</span><span class="keyword">.</span><span class="default">$a</span><span class="keyword">-&gt;</span><span class="default">getName</span><span class="keyword">().</span><span class="string">'&lt;br /&gt;'</span><span class="keyword">;<br><br></span><span class="comment">// Static calls<br><br>// Will print 'Generic'<br></span><span class="keyword">echo </span><span class="string">'Basic call to SomeClass::$name : '</span><span class="keyword">.</span><span class="default">SomeClass</span><span class="keyword">::</span><span class="default">basicClassName</span><span class="keyword">().</span><span class="string">'&lt;br /&gt;'</span><span class="keyword">;<br><br></span><span class="comment">// Will print 'Generic'<br></span><span class="keyword">echo </span><span class="string">'Global call to SomeClass::$name : '</span><span class="keyword">.</span><span class="default">SomeClass</span><span class="keyword">::</span><span class="default">staticClassName</span><span class="keyword">().</span><span class="string">'&lt;br /&gt;'</span><span class="keyword">;<br><br></span><span class="comment">// Will print 'Some'<br></span><span class="default">BaseClass</span><span class="keyword">::</span><span class="default">setNextStatic</span><span class="keyword">(</span><span class="string">'SomeClass'</span><span class="keyword">);<br>echo </span><span class="string">'Global call to SomeClass::$name with pre-set : '</span><span class="keyword">.</span><span class="default">SomeClass</span><span class="keyword">::</span><span class="default">staticClassName</span><span class="keyword">().</span><span class="string">'&lt;br /&gt;'</span><span class="keyword">;<br><br></span><span class="comment">// Will print 'Some'<br></span><span class="keyword">echo </span><span class="string">'Internal call to SomeClass::$name : '</span><span class="keyword">.</span><span class="default">SomeClass</span><span class="keyword">::</span><span class="default">returnClassNameWith</span><span class="keyword">(</span><span class="string">'This is a '</span><span class="keyword">).</span><span class="string">'&lt;br /&gt;'</span><span class="keyword">;<br><br></span><span class="default">?&gt;<br></span><br>There are two issues with this workaround :<br>- if you call a static method from global env, you need to declare the name of the class BEFORE calling the method, otherwise the workaround won't work (see 3rd and 4th examples). But I assume good programming makes few calls to static methods from global scope, so this shouldn't be long to fix if you use it.<br>- the workaround fails to access to private or protected static vars, as it uses get_class_vars(). If you find any better solution, let us know.<br><br>With Php 5.3.0, upgrading will be easy : just delete the methods from the basic class, and search/replace any call to getStatic() and setNextStatic() by static:: - or one could use a selector on PHP_VERSION value to include either the BaseClass file with workaround or a BaseClass file using static::</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="84405">  
+  <a class="name">
+  <strong class="user"><em>Anonymous</em></strong></a><div class="date" title="2008-07-12 12:49"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom84405">
+<div class="phpcode"><code><span class="html">
+Trying to recreate an inheritable static part for an object through a singleton pattern.<br><br><span class="default">&lt;?php<br></span><span class="comment">/**<br> * "Inheritable static" for PHP &lt; 5.3<br> * &lt;&lt; Library/Inheritable.php &gt;&gt;<br> */<br><br></span><span class="keyword">abstract class </span><span class="default">Inheritable_Static </span><span class="keyword">extends </span><span class="default">Singleton<br></span><span class="keyword">{<br>}<br><br>abstract class </span><span class="default">Inheritable<br></span><span class="keyword">{<br>&nbsp; &nbsp; public static function </span><span class="default">getStatic</span><span class="keyword">(</span><span class="default">$className</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// Use an abstract Singleton<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">return </span><span class="default">Singleton</span><span class="keyword">::</span><span class="default">getInstance</span><span class="keyword">(</span><span class="default">$className </span><span class="keyword">. </span><span class="string">'_Static'</span><span class="keyword">) ;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; public function </span><span class="default">goStatic</span><span class="keyword">()<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">self</span><span class="keyword">::</span><span class="default">getStatic</span><span class="keyword">(</span><span class="default">get_class</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">)) ;<br>&nbsp; &nbsp; }<br>}<br><br></span><span class="comment">/**<br> * Abstract<br> * &lt;&lt; Library/SayIt/Abstract.php &gt;&gt;<br> */<br><br></span><span class="keyword">abstract class </span><span class="default">SayIt_Abstract_Static </span><span class="keyword">extends </span><span class="default">Inheritable_Static<br></span><span class="keyword">{<br>&nbsp; &nbsp; public </span><span class="default">$format </span><span class="keyword">;<br>}<br><br>abstract class </span><span class="default">SayIt_Abstract </span><span class="keyword">extends </span><span class="default">Inheritable<br></span><span class="keyword">{<br>&nbsp; &nbsp; protected </span><span class="default">$_name </span><span class="keyword">;<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$name</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">_name </span><span class="keyword">= </span><span class="default">$name </span><span class="keyword">;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; final public function </span><span class="default">sayIt</span><span class="keyword">()<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; echo </span><span class="default">sprintf</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">goStatic</span><span class="keyword">()-&gt;</span><span class="default">format</span><span class="keyword">, </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">_name</span><span class="keyword">) . </span><span class="string">"\n" </span><span class="keyword">;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>}<br><br></span><span class="comment">/**<br> * Concrete<br> * &lt;&lt; Library/SayIt/Hello.php &gt;&gt;<br> */<br><br></span><span class="keyword">class </span><span class="default">SayIt_Hello_Static </span><span class="keyword">extends </span><span class="default">SayIt_Abstract_Static<br></span><span class="keyword">{<br>}<br><br>class </span><span class="default">SayIt_Hello </span><span class="keyword">extends </span><span class="default">SayIt_Abstract<br></span><span class="keyword">{<br>&nbsp; &nbsp; public static function </span><span class="default">getStatic</span><span class="keyword">() { return </span><span class="default">parent</span><span class="keyword">::</span><span class="default">getStatic</span><span class="keyword">(</span><span class="default">__CLASS__</span><span class="keyword">) ; }<br>}<br><br></span><span class="comment">/**<br> * Test<br> */<br><br></span><span class="default">SayIt_Hello</span><span class="keyword">::</span><span class="default">getStatic</span><span class="keyword">()-&gt;</span><span class="default">format </span><span class="keyword">= </span><span class="string">'Hello %s' </span><span class="keyword">;<br><br></span><span class="default">$w </span><span class="keyword">= new </span><span class="default">SayIt_Hello</span><span class="keyword">(</span><span class="string">'World'</span><span class="keyword">) ;<br></span><span class="default">$j </span><span class="keyword">= new </span><span class="default">SayIt_Hello</span><span class="keyword">(</span><span class="string">'Joe'</span><span class="keyword">) ;<br><br>echo </span><span class="default">$w</span><span class="keyword">-&gt;</span><span class="default">sayIt</span><span class="keyword">() ; </span><span class="comment">// Hello World<br></span><span class="keyword">echo </span><span class="default">$j</span><span class="keyword">-&gt;</span><span class="default">sayIt</span><span class="keyword">() ; </span><span class="comment">// Hello Joe</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="83978">  
+  <a class="name">
+  <strong class="user"><em>Andrea Giammarchi</em></strong></a><div class="date" title="2008-06-21 01:06"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom83978">
+<div class="phpcode"><code><span class="html">
+About static parameters, these work as expected.<br><span class="default">&lt;?php<br></span><span class="keyword">class </span><span class="default">A </span><span class="keyword">{<br>&nbsp; &nbsp; protected static </span><span class="default">$__CLASS__ </span><span class="keyword">= </span><span class="default">__CLASS__</span><span class="keyword">;<br>&nbsp; &nbsp; public static function </span><span class="default">constructor</span><span class="keyword">(){<br>&nbsp; &nbsp; &nbsp; &nbsp; return&nbsp; static::</span><span class="default">$__CLASS__</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>}<br><br>class </span><span class="default">B </span><span class="keyword">extends </span><span class="default">A </span><span class="keyword">{<br>&nbsp; &nbsp; protected static </span><span class="default">$__CLASS__ </span><span class="keyword">= </span><span class="default">__CLASS__</span><span class="keyword">;<br>}<br><br>echo&nbsp; &nbsp; </span><span class="default">B</span><span class="keyword">::</span><span class="default">constructor</span><span class="keyword">(); </span><span class="comment">// B<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="98382">  
+  <a class="name">
+  <strong class="user"><em>adam dot prall at thinkingman dot com</em></strong></a><div class="date" title="2010-06-11 09:51"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom98382">
+<div class="phpcode"><code><span class="html">
+Just a quick reminder to always check your syntax. While I love LSB, I thought it wasn't working:<br><br>static::$sKey = not set<br><br>…until I realized that I’d completely forgotten to make it a variable variable:<br><br>$sKey = 'testStaticClassVarNameThatExistsInThisClassesScope';<br><br>static::$$sKey = is set<br><br>…of course this applies anywhere in PHP, but because of the (current) newness late static bindings, I’ve seen lots of code with this particular snafu in it from others.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="83917">  
+  <a class="name">
+  <strong class="user"><em>martinpauly [at] google mail [dot] com</em></strong></a><div class="date" title="2008-06-18 05:54"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom83917">
+<div class="phpcode"><code><span class="html">
+will this work for variables as well?<br><br>it would be great, if the following worked:<br><br><span class="default">&lt;?php<br></span><span class="keyword">class </span><span class="default">A </span><span class="keyword">{<br>protected static </span><span class="default">$table </span><span class="keyword">= </span><span class="string">"table"</span><span class="keyword">;<br>public static function </span><span class="default">connect</span><span class="keyword">(){<br>&nbsp; &nbsp;&nbsp; </span><span class="comment">//do some stuff here<br>&nbsp; &nbsp;&nbsp; </span><span class="keyword">echo static::</span><span class="default">$table</span><span class="keyword">;<br>&nbsp; &nbsp;&nbsp; return static::</span><span class="default">getInstance</span><span class="keyword">(); </span><span class="comment">//function getInstance() now can return classes A or B depending on the context it was called<br></span><span class="keyword">}<br>...<br>}<br><br>class </span><span class="default">B </span><span class="keyword">extends </span><span class="default">A </span><span class="keyword">{<br>protected static </span><span class="default">$table </span><span class="keyword">= </span><span class="string">"subtable"</span><span class="keyword">;<br>...<br>}<br><br></span><span class="default">$table </span><span class="keyword">= </span><span class="default">B</span><span class="keyword">::</span><span class="default">connect</span><span class="keyword">(); </span><span class="comment">//hopefully the output will be: subtable<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="83638">  
+  <a class="name">
+  <strong class="user"><em>deadimp at gmail dot com</em></strong></a><div class="date" title="2008-06-05 10:39"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom83638">
+<div class="phpcode"><code><span class="html">
+I think this will be pretty helpful too.<br>My question is, can just 'static' by itself resolve to the late static class?<br>I ask this because it could help in making new instances of the derived class, from a base class, by calling a derived class's static method instead of having to create a new instance of the derived class - or explicitly defining a 'getClass' method for each derived class.<br>Example:<br><span class="default">&lt;?php<br></span><span class="comment">//There isn't really any purpose for this example I posted<br>//Just a random implementation<br></span><span class="keyword">class </span><span class="default">Base </span><span class="keyword">{<br>&nbsp; &nbsp; static function </span><span class="default">useful</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">//Create a list of instances of the derived class<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$list</span><span class="keyword">=array();<br>&nbsp; &nbsp; &nbsp; &nbsp; for (</span><span class="default">$i</span><span class="keyword">=</span><span class="default">0</span><span class="keyword">;</span><span class="default">$i</span><span class="keyword">&lt;</span><span class="default">10</span><span class="keyword">;</span><span class="default">$i</span><span class="keyword">++) </span><span class="default">$list</span><span class="keyword">[]=new static(); </span><span class="comment">//Here's the point in question<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">return </span><span class="default">$list</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>}<br>class </span><span class="default">Derived </span><span class="keyword">extends </span><span class="default">Base </span><span class="keyword">{<br>&nbsp; &nbsp; static function </span><span class="default">somethingElse</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">//...<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$list</span><span class="keyword">=static::</span><span class="default">useful</span><span class="keyword">();<br>&nbsp; &nbsp; }<br>}<br></span><span class="default">?&gt;<br></span>I'm not sure what kind of lexical / whatever-it's-called problems this would make with parsing. I don't think it could really collide with any contexts where you would use static otherwise - variable / method declaration.<br><br>Even more so, is there a way to get the class's name to which the keywords 'self', 'parent', or 'static' refer?<br>Example:<br><span class="default">&lt;?php<br></span><span class="keyword">class </span><span class="default">Base </span><span class="keyword">{<br>&nbsp; &nbsp; static function </span><span class="default">stuff</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; echo </span><span class="string">"Self: "</span><span class="keyword">.</span><span class="default">get_class</span><span class="keyword">(</span><span class="default">self</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; echo </span><span class="string">"Parent: "</span><span class="keyword">.</span><span class="default">get_class</span><span class="keyword">(</span><span class="default">parent</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; echo </span><span class="string">"Derived: "</span><span class="keyword">.</span><span class="default">get_class</span><span class="keyword">(static);<br>&nbsp; &nbsp; }<br>}<br>class </span><span class="default">Derived </span><span class="keyword">extends </span><span class="default">Base </span><span class="keyword">{<br>&nbsp; &nbsp; static function </span><span class="default">stuff</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; static::</span><span class="default">stuff</span><span class="keyword">();<br>&nbsp; &nbsp; }<br>}<br></span><span class="default">?&gt;<br></span><br>I don't think there should be a massive bloat in the PHP core to support all of this, but it would be nice to take advantage of the dynamic nature of PHP.<br><br>And yet another side note:<br>If you're in the instance-level scope in a method of a base, and you want to get a top-level static, here's an ugly workaround (from Thacmus /lib/core.php - see SVN repo):<br><span class="default">&lt;?php<br></span><span class="comment">//Get reference [?] to static from class<br>&nbsp; &nbsp; //$class - Class name OR object (uses get_class())<br>&nbsp; &nbsp; //$var - Not gonna say<br></span><span class="keyword">function&amp; </span><span class="default">get_static</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">,</span><span class="default">$var</span><span class="keyword">) { </span><span class="comment">//'static_get'?<br>&nbsp; &nbsp; </span><span class="keyword">if (!</span><span class="default">is_string</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">)) </span><span class="default">$class</span><span class="keyword">=</span><span class="default">get_class</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">);<br>&nbsp; &nbsp; if (!@</span><span class="default">property_exists</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">,</span><span class="default">$var</span><span class="keyword">)) {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">trigger_error</span><span class="keyword">(</span><span class="string">"Static property does not exist: </span><span class="default">$class</span><span class="string">::\$</span><span class="default">$var</span><span class="string">"</span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">//debug_callstack(); //This is just a wrapper for debug_backtrace() for HTML<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">return </span><span class="default">null</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; </span><span class="comment">//Store a reference so that the base data can be referred to<br>&nbsp; &nbsp; &nbsp; &nbsp; //The code [[ return eval('return &amp;'.$class.'::$'.$var.';') ]] does not work - can not return references...<br>&nbsp; &nbsp; &nbsp; &nbsp; //To establish the reference, use [[ $ref=&amp;get_static(...) ]]<br>&nbsp; &nbsp; </span><span class="keyword">eval(</span><span class="string">'$temp=&amp;'</span><span class="keyword">.</span><span class="default">$class</span><span class="keyword">.</span><span class="string">'::$'</span><span class="keyword">.</span><span class="default">$var</span><span class="keyword">.</span><span class="string">';'</span><span class="keyword">); </span><span class="comment">//using<br>&nbsp; &nbsp; </span><span class="keyword">return </span><span class="default">$temp</span><span class="keyword">;<br>}<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="83627">  
+  <a class="name">
+  <strong class="user"><em>tyler AT canfone [dot] COM</em></strong></a><div class="date" title="2008-06-04 10:48"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom83627">
+<div class="phpcode"><code><span class="html">
+@ php at mikebird <br><br>You can pass arguments to your constructor through your getInstance method, assuming you are running php5.<br><br>&nbsp; &nbsp; &nbsp; &nbsp; public static function getInstance($params = null) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (self::$objInstance == null) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $strClass = static::getClass();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; self::$objInstance = new $strClass($params);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return self::$objInstance;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br><br>This would pass the params to your constructor. Love for php.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="82727">  
+  <a class="name">
+  <strong class="user"><em>php at mikebird dot co dot uk</em></strong></a><div class="date" title="2008-04-23 08:39"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom82727">
+<div class="phpcode"><code><span class="html">
+This should make life easier and neater if you have a project with a lot of singleton classes e.g.<br><br><span class="default">&lt;?php<br><br>&nbsp; &nbsp; </span><span class="keyword">class </span><span class="default">Singleton </span><span class="keyword">{<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; public static </span><span class="default">$objInstance</span><span class="keyword">;<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; public static function &amp;</span><span class="default">getInstance</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">self</span><span class="keyword">::</span><span class="default">$objInstance </span><span class="keyword">== </span><span class="default">null</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$strClass </span><span class="keyword">= static::</span><span class="default">getClass</span><span class="keyword">();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">self</span><span class="keyword">::</span><span class="default">$objInstance </span><span class="keyword">= new </span><span class="default">$strClass</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">self</span><span class="keyword">::</span><span class="default">$objInstance</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; public static function </span><span class="default">getClass</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">__CLASS__</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; }<br><br>&nbsp; &nbsp; class </span><span class="default">Foo </span><span class="keyword">extends </span><span class="default">Singleton </span><span class="keyword">{<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; public </span><span class="default">$intBar</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; public function </span><span class="default">__construct</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">intBar </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; public static function </span><span class="default">getClass</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">__CLASS__</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; <br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="default">$objFooTwo </span><span class="keyword">= </span><span class="default">Foo</span><span class="keyword">::</span><span class="default">getInstance</span><span class="keyword">();<br>&nbsp; &nbsp; </span><span class="default">$objFooTwo</span><span class="keyword">-&gt;</span><span class="default">intBar </span><span class="keyword">= </span><span class="default">2</span><span class="keyword">;<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; </span><span class="default">$objFooOne </span><span class="keyword">= </span><span class="default">Foo</span><span class="keyword">::</span><span class="default">getInstance</span><span class="keyword">();<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; if (</span><span class="default">$objFooOne</span><span class="keyword">-&gt;</span><span class="default">intBar </span><span class="keyword">== </span><span class="default">$objFooTwo</span><span class="keyword">-&gt;</span><span class="default">intBar</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; echo </span><span class="string">'it is a singleton'</span><span class="keyword">;<br>&nbsp; &nbsp; } else {<br>&nbsp; &nbsp; &nbsp; &nbsp; echo </span><span class="string">'it is not a singleton'</span><span class="keyword">;<br>&nbsp; &nbsp; }<br><br></span><span class="default">?&gt;<br></span><br>The above will output 'it is a singleton'. The obvious downfall to this method is not being able to give arguments to the constructor.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="82441">  
+  <a class="name">
+  <strong class="user"><em>max at mastershrimp dot com</em></strong></a><div class="date" title="2008-04-10 03:24"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom82441">
+<div class="phpcode"><code><span class="html">
+If you are using PHP &lt; 5.3.0 you might be interested in the following workaround for late static binding: <a rel="nofollow" target="_blank">http://de2.php.net/manual/de/function.get-class.php#77698</a></span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="93065">  
+  <a class="name">
+  <strong class="user"><em>joost dot t dot hart at planet dot nl</em></strong></a><div class="date" title="2009-08-21 06:34"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom93065">
+<div class="phpcode"><code><span class="html">
+PHP5.3 unavailable, yet in the need for 'static', I did the following.<br><br>Any objections? Personally I hate using the the eval() statement...<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">class </span><span class="default">mother<br></span><span class="keyword">{<br>&nbsp; &nbsp; function </span><span class="default">setStatic</span><span class="keyword">( </span><span class="default">$prop</span><span class="keyword">, </span><span class="default">$val </span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">// After this, self:: refers to mother, yet next $class refers to...<br>&nbsp; &nbsp; &nbsp; &nbsp; //<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$class </span><span class="keyword">= </span><span class="default">get_class</span><span class="keyword">( </span><span class="default">$this </span><span class="keyword">);<br>&nbsp; &nbsp; &nbsp; &nbsp; eval( </span><span class="string">"</span><span class="default">$class</span><span class="string">::\$</span><span class="default">$prop</span><span class="string"> = \$</span><span class="default">$val</span><span class="string">;" </span><span class="keyword">);<br>&nbsp; &nbsp; }<br>}<br><br>class </span><span class="default">child </span><span class="keyword">extends </span><span class="default">mother<br></span><span class="keyword">{<br>&nbsp; &nbsp; protected static </span><span class="default">$sProp</span><span class="keyword">;<br><br>&nbsp; &nbsp; function </span><span class="default">writer</span><span class="keyword">( </span><span class="default">$value </span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">parent</span><span class="keyword">::</span><span class="default">setStatic</span><span class="keyword">( </span><span class="string">'sProp'</span><span class="keyword">, </span><span class="default">$value </span><span class="keyword">);<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; function </span><span class="default">reader</span><span class="keyword">()<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">self</span><span class="keyword">::</span><span class="default">$sProp</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>}<br><br></span><span class="default">$c </span><span class="keyword">= new </span><span class="default">child</span><span class="keyword">();<br></span><span class="default">$c</span><span class="keyword">-&gt;</span><span class="default">writer</span><span class="keyword">( </span><span class="default">3 </span><span class="keyword">);<br>echo </span><span class="default">$c</span><span class="keyword">-&gt;</span><span class="default">reader</span><span class="keyword">(); </span><span class="comment">// 3<br><br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="91980">  
+  <a class="name">
+  <strong class="user"><em>tom</em></strong></a><div class="date" title="2009-07-03 06:28"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom91980">
+<div class="phpcode"><code><span class="html">
+Something you may find useful for passive code-testing:
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">class </span><span class="default">BaseClass </span><span class="keyword">{
+<br>&nbsp; function </span><span class="default">__get</span><span class="keyword">(</span><span class="default">$id</span><span class="keyword">) {
+<br>&nbsp; &nbsp; throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="string">"Trying to access undefined property '</span><span class="default">$id</span><span class="string">'."</span><span class="keyword">);
+<br>&nbsp; }
+<br>&nbsp; function </span><span class="default">__set</span><span class="keyword">(</span><span class="default">$id</span><span class="keyword">) {
+<br>&nbsp; &nbsp; throw new </span><span class="default">Exception</span><span class="keyword">(</span><span class="string">"Trying to access undefined property '</span><span class="default">$id</span><span class="string">'."</span><span class="keyword">);
+<br>&nbsp; }
+<br>}
+<br>
+<br>class </span><span class="default">MyClass </span><span class="keyword">extends </span><span class="default">BaseClass </span><span class="keyword">{
+<br></span><span class="comment">// my implementation
+<br></span><span class="keyword">}
+<br></span><span class="default">?&gt;
+<br></span>
+<br>Using these magic function as described above will help you to find classes that try to access an undefined (and undocumented) class-member. In most cases: this is an error based on misspelled member names.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="85591">  
+  <a class="name">
+  <strong class="user"><em>iamscrumpyjack</em></strong></a><div class="date" title="2008-09-07 09:01"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom85591">
+<div class="phpcode"><code><span class="html">
+I have been dying to see this issue resolved. I'm very much looking forward to the production release of PHP 5.3...<br><br>In my case I have been trying to do the following:<br><br>class A {<br>&nbsp; function __construct() {<br>&nbsp; &nbsp; echo "I was called by " . static::__CLASS__;<br>&nbsp; }<br>}<br><br>class B extends A {<br>&nbsp; function Foo() {<br>&nbsp; &nbsp; echo "I am class " . __CLASS__;<br>&nbsp; }<br>}<br><br>$b = new B; // Should echo "I was called by B"<br>$b-&gt;Foo(); // Should echo "I am class B"<br><br>At the moment I do the following workaround:<br><br>class A {<br>&nbsp; function __construct($child) {<br>&nbsp; &nbsp; echo "I was called by " . $child;<br>&nbsp; }<br>}<br><br>class B extends A {<br>&nbsp; function __construct() {<br>&nbsp; &nbsp; parent::__construct(__CLASS__);<br>&nbsp; }<br><br>&nbsp; function Foo() {<br>&nbsp; &nbsp; echo "I am class " . __CLASS__;<br>&nbsp; }<br>}<br><br>$b = new B; // Echos "I was called by B"<br>$b-&gt;Foo(); // Echo "I am class B"<br><br>As you can see, my current workaround has some overhead and is not as water-tight as the late static binding method.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="85725">  
+  <a class="name">
+  <strong class="user"><em>kx</em></strong></a><div class="date" title="2008-09-14 09:39"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom85725">
+<div class="phpcode"><code><span class="html">
+At least as of PHP 5.3.0a2 there's a function get_called_class(), which returns the class on which the static method is called.<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">class </span><span class="default">a </span><span class="keyword">{<br>&nbsp; static public function </span><span class="default">test</span><span class="keyword">() {<br>&nbsp; &nbsp; print </span><span class="default">get_called_class</span><span class="keyword">();<br>&nbsp; }<br>}<br><br>class </span><span class="default">b </span><span class="keyword">extends </span><span class="default">a </span><span class="keyword">{<br>}<br><br></span><span class="default">a</span><span class="keyword">::</span><span class="default">test</span><span class="keyword">(); </span><span class="comment">// "a"<br></span><span class="default">b</span><span class="keyword">::</span><span class="default">test</span><span class="keyword">(); </span><span class="comment">// "b"<br><br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="114005">  
+  <a class="name">
+  <strong class="user"><em>mhh1422 at hotmail dot com</em></strong></a><div class="date" title="2013-12-29 11:58"><strong>7 months ago</strong></div>
+  <div class="text" id="Hcom114005">
+<div class="phpcode"><code><span class="html">
+For abstract classes with static factory method, you can use the static keyword instead of self like the following:<br><span class="default">&lt;?php<br><br></span><span class="keyword">abstract class </span><span class="default">A</span><span class="keyword">{<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; static function </span><span class="default">create</span><span class="keyword">(){<br><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">//return new self();&nbsp; //Fatal error: Cannot instantiate abstract class A<br><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">return new static(); </span><span class="comment">//this is the correct way<br><br>&nbsp; &nbsp; </span><span class="keyword">}<br>&nbsp; &nbsp; <br>}<br><br>class </span><span class="default">B </span><span class="keyword">extends </span><span class="default">A</span><span class="keyword">{<br>}<br><br></span><span class="default">$obj</span><span class="keyword">=</span><span class="default">B</span><span class="keyword">::</span><span class="default">create</span><span class="keyword">();<br></span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$obj</span><span class="keyword">);<br><br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="101077">  
+  <a class="name">
+  <strong class="user"><em>Anonymous</em></strong></a><div class="date" title="2010-11-24 09:22"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom101077">
+<div class="phpcode"><code><span class="html">
+THIS WORKED GREAT FOR ME:
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">abstract class </span><span class="default">ParentClass
+<br></span><span class="keyword">{
+<br>&nbsp; &nbsp; static function </span><span class="default">parent_method</span><span class="keyword">()
+<br>&nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$child_class_str </span><span class="keyword">= </span><span class="default">self</span><span class="keyword">::</span><span class="default">get_child_class</span><span class="keyword">();
+<br>&nbsp; &nbsp; &nbsp; &nbsp; eval(</span><span class="string">"\$r = "</span><span class="keyword">.</span><span class="default">$child_class_str</span><span class="keyword">.</span><span class="string">"::abstract_static();"</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$r</span><span class="keyword">;
+<br>&nbsp; &nbsp; }</span><span class="comment">// CHILD MUST OVERRIDE TO PUT ITSELF INTO TRACE
+<br>
+<br>&nbsp; &nbsp; </span><span class="keyword">protected abstract static function </span><span class="default">abstract_static</span><span class="keyword">();
+<br>
+<br>&nbsp; &nbsp; private static function </span><span class="default">get_child_class</span><span class="keyword">()
+<br>&nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$backtrace </span><span class="keyword">= </span><span class="default">debug_backtrace</span><span class="keyword">();
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$num </span><span class="keyword">= </span><span class="default">count</span><span class="keyword">(</span><span class="default">$backtrace</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; for(</span><span class="default">$i </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">; </span><span class="default">$i </span><span class="keyword">&lt; </span><span class="default">$num</span><span class="keyword">; </span><span class="default">$i</span><span class="keyword">++)
+<br>&nbsp; &nbsp; &nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">$backtrace</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="string">"class"</span><span class="keyword">] !== </span><span class="default">__CLASS__</span><span class="keyword">)
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$backtrace</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="string">"class"</span><span class="keyword">];
+<br>&nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">null</span><span class="keyword">;
+<br>&nbsp; &nbsp; }
+<br>}
+<br>
+<br>class </span><span class="default">ChildClass </span><span class="keyword">extends </span><span class="default">ParentClass
+<br></span><span class="keyword">{
+<br>&nbsp; &nbsp; static function </span><span class="default">parent_method</span><span class="keyword">(){ return </span><span class="default">parent</span><span class="keyword">::</span><span class="default">parent_method</span><span class="keyword">(); }
+<br>
+<br>&nbsp; &nbsp; protected static function </span><span class="default">abstract_static</span><span class="keyword">()
+<br>&nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">__METHOD__</span><span class="keyword">.</span><span class="string">"()"</span><span class="keyword">;
+<br>&nbsp; &nbsp; }</span><span class="comment">// From ParentClass
+<br></span><span class="keyword">}
+<br>
+<br>print </span><span class="string">"The call was: "</span><span class="keyword">. </span><span class="default">ChildClass</span><span class="keyword">::</span><span class="default">parent_method</span><span class="keyword">();
+<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="85802">  
+  <a class="name">
+  <strong class="user"><em>gern_ at hotmail dot com</em></strong></a><div class="date" title="2008-09-18 07:51"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom85802">
+<div class="phpcode"><code><span class="html">
+get_called_class for PHP &lt; 5.3
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="comment">/**
+<br> * Return called class name
+<br> *
+<br> * @author Michael Grenier
+<br> * @param int $i_level optional
+<br> * @return string
+<br> */
+<br></span><span class="keyword">function </span><span class="default">get_called_class </span><span class="keyword">(</span><span class="default">$i_level </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">)
+<br>{
+<br>&nbsp; &nbsp; </span><span class="default">$a_debug </span><span class="keyword">= </span><span class="default">debug_backtrace</span><span class="keyword">();
+<br>&nbsp; &nbsp; </span><span class="default">$a_called </span><span class="keyword">= array();
+<br>&nbsp; &nbsp; </span><span class="default">$a_called_function </span><span class="keyword">= </span><span class="default">$a_debug</span><span class="keyword">[</span><span class="default">$i_level</span><span class="keyword">][</span><span class="string">'function'</span><span class="keyword">];
+<br>&nbsp; &nbsp; for (</span><span class="default">$i </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">, </span><span class="default">$n </span><span class="keyword">= </span><span class="default">sizeof</span><span class="keyword">(</span><span class="default">$a_debug</span><span class="keyword">); </span><span class="default">$i </span><span class="keyword">&lt; </span><span class="default">$n</span><span class="keyword">; </span><span class="default">$i</span><span class="keyword">++)
+<br>&nbsp; &nbsp; {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">in_array</span><span class="keyword">(</span><span class="default">$a_debug</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="string">'function'</span><span class="keyword">], array(</span><span class="string">'eval'</span><span class="keyword">)) || 
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">strpos</span><span class="keyword">(</span><span class="default">$a_debug</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="string">'function'</span><span class="keyword">], </span><span class="string">'eval()'</span><span class="keyword">) !== </span><span class="default">false</span><span class="keyword">)
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; continue;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">in_array</span><span class="keyword">(</span><span class="default">$a_debug</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="string">'function'</span><span class="keyword">], array(</span><span class="string">'__call'</span><span class="keyword">, </span><span class="string">'__callStatic'</span><span class="keyword">)))
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$a_called_function </span><span class="keyword">= </span><span class="default">$a_debug</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="string">'args'</span><span class="keyword">][</span><span class="default">0</span><span class="keyword">];
+<br>&nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">$a_debug</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">][</span><span class="string">'function'</span><span class="keyword">] == </span><span class="default">$a_called_function</span><span class="keyword">)
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$a_called </span><span class="keyword">= </span><span class="default">$a_debug</span><span class="keyword">[</span><span class="default">$i</span><span class="keyword">];
+<br>&nbsp; &nbsp; }
+<br>&nbsp; &nbsp; if (isset(</span><span class="default">$a_called</span><span class="keyword">[</span><span class="string">'object'</span><span class="keyword">]) &amp;&amp; isset(</span><span class="default">$a_called</span><span class="keyword">[</span><span class="string">'class'</span><span class="keyword">]))
+<br>&nbsp; &nbsp; &nbsp; &nbsp; return (string)</span><span class="default">$a_called</span><span class="keyword">[</span><span class="string">'class'</span><span class="keyword">];
+<br>&nbsp; &nbsp; </span><span class="default">$i_line </span><span class="keyword">= (int)</span><span class="default">$a_called</span><span class="keyword">[</span><span class="string">'line'</span><span class="keyword">] - </span><span class="default">1</span><span class="keyword">;
+<br>&nbsp; &nbsp; </span><span class="default">$a_lines </span><span class="keyword">= </span><span class="default">explode</span><span class="keyword">(</span><span class="string">"\n"</span><span class="keyword">, </span><span class="default">file_get_contents</span><span class="keyword">(</span><span class="default">$a_called</span><span class="keyword">[</span><span class="string">'file'</span><span class="keyword">]));
+<br>&nbsp; &nbsp; </span><span class="default">preg_match</span><span class="keyword">(</span><span class="string">"#([a-zA-Z0-9_]+)</span><span class="keyword">{</span><span class="default">$a_called</span><span class="keyword">[</span><span class="string">'type'</span><span class="keyword">]}</span><span class="string">
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">{</span><span class="default">$a_called</span><span class="keyword">[</span><span class="string">'function'</span><span class="keyword">]}</span><span class="string">( )*\(#"</span><span class="keyword">, </span><span class="default">$a_lines</span><span class="keyword">[</span><span class="default">$i_line</span><span class="keyword">], </span><span class="default">$a_match</span><span class="keyword">);
+<br>&nbsp; &nbsp; unset(</span><span class="default">$a_debug</span><span class="keyword">, </span><span class="default">$a_called</span><span class="keyword">, </span><span class="default">$a_called_function</span><span class="keyword">, </span><span class="default">$i_line</span><span class="keyword">, </span><span class="default">$a_lines</span><span class="keyword">);
+<br>&nbsp; &nbsp; if (</span><span class="default">sizeof</span><span class="keyword">(</span><span class="default">$a_match</span><span class="keyword">) &gt; </span><span class="default">0</span><span class="keyword">)
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$s_class </span><span class="keyword">= (string)</span><span class="default">trim</span><span class="keyword">(</span><span class="default">$a_match</span><span class="keyword">[</span><span class="default">1</span><span class="keyword">]);
+<br>&nbsp; &nbsp; else
+<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$s_class </span><span class="keyword">= (string)</span><span class="default">$a_called</span><span class="keyword">[</span><span class="string">'class'</span><span class="keyword">];
+<br>&nbsp; &nbsp; if (</span><span class="default">$s_class </span><span class="keyword">== </span><span class="string">'self'</span><span class="keyword">)
+<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">get_called_class</span><span class="keyword">(</span><span class="default">$i_level </span><span class="keyword">+ </span><span class="default">2</span><span class="keyword">);
+<br>&nbsp; &nbsp; return </span><span class="default">$s_class</span><span class="keyword">;
+<br>}
+<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="89946">  
+  <a class="name">
+  <strong class="user"><em>kenneth at kennethjorgensen dot com</em></strong></a><div class="date" title="2009-03-30 02:19"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom89946">
+<div class="phpcode"><code><span class="html">
+Simple basic class which uses to get_called_class() to create singleton instances. A previous post by php at mikebird dot co dot uk explain how to do this, but the extended static variables require you to define them in child classes before they work.<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">abstract class </span><span class="default">Singleton </span><span class="keyword">{<br>&nbsp; &nbsp; private static </span><span class="default">$instances </span><span class="keyword">= array();<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; public function </span><span class="default">__construct</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$class </span><span class="keyword">= </span><span class="default">get_called_class</span><span class="keyword">();<br>&nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">array_key_exists</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">, </span><span class="default">self</span><span class="keyword">::</span><span class="default">$instances</span><span class="keyword">))<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">trigger_error</span><span class="keyword">(</span><span class="string">"Tried to construct&nbsp; a second instance of class \"</span><span class="default">$class</span><span class="string">\""</span><span class="keyword">, </span><span class="default">E_USER_WARNING</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; public static function </span><span class="default">getInstance</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$class </span><span class="keyword">= </span><span class="default">get_called_class</span><span class="keyword">();<br>&nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">array_key_exists</span><span class="keyword">(</span><span class="default">$class</span><span class="keyword">, </span><span class="default">self</span><span class="keyword">::</span><span class="default">$instances</span><span class="keyword">) === </span><span class="default">false</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">self</span><span class="keyword">::</span><span class="default">$instances</span><span class="keyword">[</span><span class="default">$class</span><span class="keyword">] = new </span><span class="default">$class</span><span class="keyword">();<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">self</span><span class="keyword">::</span><span class="default">$instances</span><span class="keyword">[</span><span class="default">$class</span><span class="keyword">];<br>&nbsp; &nbsp; }<br>}<br><br>class </span><span class="default">A </span><span class="keyword">extends </span><span class="default">Singleton </span><span class="keyword">{<br>}<br><br>class </span><span class="default">B </span><span class="keyword">extends </span><span class="default">Singleton </span><span class="keyword">{<br>}<br><br></span><span class="default">$a1 </span><span class="keyword">= </span><span class="default">A</span><span class="keyword">::</span><span class="default">getInstance</span><span class="keyword">();<br></span><span class="default">$a2 </span><span class="keyword">= </span><span class="default">A</span><span class="keyword">::</span><span class="default">getInstance</span><span class="keyword">();<br></span><span class="default">$b1 </span><span class="keyword">= </span><span class="default">B</span><span class="keyword">::</span><span class="default">getInstance</span><span class="keyword">();<br></span><span class="default">$b2 </span><span class="keyword">= </span><span class="default">B</span><span class="keyword">::</span><span class="default">getInstance</span><span class="keyword">();<br><br>if (</span><span class="default">get_class</span><span class="keyword">(</span><span class="default">$a1</span><span class="keyword">) == </span><span class="string">"A" </span><span class="keyword">&amp;&amp;<br>&nbsp; &nbsp; </span><span class="default">get_class</span><span class="keyword">(</span><span class="default">$a2</span><span class="keyword">) == </span><span class="string">"A" </span><span class="keyword">&amp;&amp;<br>&nbsp; &nbsp; </span><span class="default">get_class</span><span class="keyword">(</span><span class="default">$b1</span><span class="keyword">) == </span><span class="string">"B" </span><span class="keyword">&amp;&amp;<br>&nbsp; &nbsp; </span><span class="default">get_class</span><span class="keyword">(</span><span class="default">$b2</span><span class="keyword">) == </span><span class="string">"B" </span><span class="keyword">&amp;&amp;<br>&nbsp; &nbsp; </span><span class="default">$a1 </span><span class="keyword">=== </span><span class="default">$a2 </span><span class="keyword">&amp;&amp;<br>&nbsp; &nbsp; </span><span class="default">$b1 </span><span class="keyword">=== </span><span class="default">$b2</span><span class="keyword">)<br>&nbsp; &nbsp; echo </span><span class="string">"All good\n"</span><span class="keyword">;<br>else<br>&nbsp; &nbsp; echo </span><span class="string">"FAIL!\n"</span><span class="keyword">;<br><br></span><span class="default">?&gt;<br></span><br>You probably noticed the use of self:: rather than static::, this is because we want the static variable to be private, and using static:: will not allow us to do that.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="100611">  
+  <a class="name">
+  <strong class="user"><em>tfn dot yldrm at hotmail dot com</em></strong></a><div class="date" title="2010-10-26 12:30"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom100611">
+<div class="phpcode"><code><span class="html">
+example for static binding on 5.2 and real enumaration<br><span class="default">&lt;?php<br>&nbsp; &nbsp; </span><span class="comment">/**<br>&nbsp; &nbsp; * Static Binding On PHP 5.2<br>&nbsp; &nbsp; * @author Tufan Baris YILDIRIM<br>&nbsp; &nbsp; * @since 26.10.2010<br>&nbsp; &nbsp; */<br>&nbsp; &nbsp; </span><span class="keyword">abstract class </span><span class="default">EnumBase<br>&nbsp; &nbsp; </span><span class="keyword">{&nbsp;&nbsp; <br>&nbsp; &nbsp; &nbsp; &nbsp; protected </span><span class="default">$num </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; public </span><span class="default">$toString</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; public </span><span class="default">$toInt</span><span class="keyword">;<br><br>&nbsp; &nbsp; &nbsp; &nbsp; public function </span><span class="default">__construct</span><span class="keyword">(</span><span class="default">$enumKeyOrVal</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; {&nbsp;&nbsp; <br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; unset(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">toString</span><span class="keyword">,</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">toInt</span><span class="keyword">);<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$enums </span><span class="keyword">= </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">enums</span><span class="keyword">();<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; empty(</span><span class="default">$enumKeyOrVal</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ||<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; !(isset(</span><span class="default">$enums</span><span class="keyword">[</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">num </span><span class="keyword">= </span><span class="default">$enumKeyOrVal</span><span class="keyword">]) <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ||<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">num </span><span class="keyword">= </span><span class="default">array_search</span><span class="keyword">(</span><span class="default">$enumKeyOrVal</span><span class="keyword">,</span><span class="default">$enums</span><span class="keyword">)) !== </span><span class="default">false</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; )<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">num </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">/**<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; 5.3 Version<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; */<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; /*<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; *&nbsp; if(<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; empty($enumKeyOrVal)<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ||<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; !(isset(static::$enums[$this-&gt;num = $enumKeyOrVal]) <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ||<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ($this-&gt;num = array_search($enumKeyOrVal,static::$enums)) !== false)<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; )<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $this-&gt;num = 0;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; */<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">}<br><br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">#5.3 e geçilirse gerek kalmaz.<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">public function </span><span class="default">vars</span><span class="keyword">()<br>&nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">get_class_vars</span><span class="keyword">(</span><span class="default">get_class</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">));<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br><br>&nbsp; &nbsp; &nbsp; &nbsp; public function </span><span class="default">enums</span><span class="keyword">()<br>&nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$vars </span><span class="keyword">= </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">vars</span><span class="keyword">();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$vars</span><span class="keyword">[</span><span class="string">'enums'</span><span class="keyword">];<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br><br>&nbsp; &nbsp; &nbsp; &nbsp; public function </span><span class="default">__get</span><span class="keyword">(</span><span class="default">$property</span><span class="keyword">)<br>&nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">method_exists</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">,</span><span class="string">'__'</span><span class="keyword">.</span><span class="default">$property</span><span class="keyword">))<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;{</span><span class="string">'__'</span><span class="keyword">.</span><span class="default">$property</span><span class="keyword">}();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; else<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">__toString</span><span class="keyword">();<br>&nbsp; &nbsp; &nbsp; &nbsp; }&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <br><br>&nbsp; &nbsp; &nbsp; &nbsp; public function </span><span class="default">__toInt</span><span class="keyword">()<br>&nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">num</span><span class="keyword">;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br><br>&nbsp; &nbsp; &nbsp; &nbsp; public function </span><span class="default">__toString</span><span class="keyword">()<br>&nbsp; &nbsp; &nbsp; &nbsp; {<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$enums </span><span class="keyword">= </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">enums</span><span class="keyword">();<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(isset(</span><span class="default">$enums</span><span class="keyword">[</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">num</span><span class="keyword">]))<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$enums</span><span class="keyword">[</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">num</span><span class="keyword">];<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; else<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$enums</span><span class="keyword">[</span><span class="default">0</span><span class="keyword">];<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="comment">/**<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; * 5.3 Version<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; */<br><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; /*<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(isset(static::$enums[$this-&gt;num]))<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return static::$enums[$this-&gt;num];<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; else<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return static::$enums[0];<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; */<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">}<br>&nbsp; &nbsp; }<br><br>&nbsp; &nbsp; class </span><span class="default">Positions </span><span class="keyword">extends </span><span class="default">EnumBase <br>&nbsp; &nbsp; </span><span class="keyword">{<br>&nbsp; &nbsp; &nbsp; &nbsp; public static </span><span class="default">$enums </span><span class="keyword">= array(<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">0 </span><span class="keyword">=&gt; </span><span class="string">'Bilinmiyor'</span><span class="keyword">,<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">1 </span><span class="keyword">=&gt; </span><span class="string">'Kale'</span><span class="keyword">,<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">2 </span><span class="keyword">=&gt; </span><span class="string">'Defans'</span><span class="keyword">,<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">3 </span><span class="keyword">=&gt; </span><span class="string">'Orta Saha'</span><span class="keyword">,<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">4 </span><span class="keyword">=&gt; </span><span class="string">'Forvet'<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="keyword">);&nbsp; <br>&nbsp; &nbsp; }<br><br>&nbsp; &nbsp;&nbsp; <br>&nbsp; &nbsp; </span><span class="default">$a </span><span class="keyword">= new </span><span class="default">Positions</span><span class="keyword">(</span><span class="string">'Orta Saha'</span><span class="keyword">);<br>&nbsp; &nbsp; </span><span class="default">$b </span><span class="keyword">= new </span><span class="default">Positions</span><span class="keyword">(</span><span class="default">4</span><span class="keyword">);<br><br>&nbsp; &nbsp; </span><span class="default">$c </span><span class="keyword">= (string)</span><span class="default">$a</span><span class="keyword">; </span><span class="comment">// Orta Saha<br>&nbsp; &nbsp; </span><span class="default">$d </span><span class="keyword">= (string)</span><span class="default">$b</span><span class="keyword">; </span><span class="comment">// Forvet<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/language.oop5.late-static-bindings.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:28:02 GMT -->
+
+
+</body></html>

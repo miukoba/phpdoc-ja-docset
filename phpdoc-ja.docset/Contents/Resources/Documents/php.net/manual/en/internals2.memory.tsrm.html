@@ -1,0 +1,254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>スレッドセーフなリソースマネージャ</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="internals2.memory.persistence.html">≪ データの永続化</a></li>
+      <li style="float: right;"><a href="internals2.variables.html">変数の作成 ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="internals2.memory.html">メモリ管理</a></li>
+    <li>スレッドセーフなリソースマネージャ</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="internals2.memory.tsrm" class="sect1">
+ <h2 class="title">スレッドセーフなリソースマネージャ</h2>
+ 
+ <p class="simpara">
+  スレッドセーフを有効にして PHP をビルドするときには、エンジン内で個々のコンテキストを分離する方法が必要になります。
+  つまり、プロセス内の各スレッドが、互いに影響を及ぼさずに個別のリクエストを処理できるようにするということです。
+  TSRM は PHP における全能の神です。拡張モジュールの作者は、ほとんど何もしなくても、
+  自作のモジュールをスレッドセーフ環境と非スレッドセーフ環境の両方に対応させることができます。
+ </p>
+ 
+ <div class="example" id="internals2.structure.globals.using.accessor2">
+  <p><strong>例1 モジュールグローバルへのアクセス用マクロ</strong></p>
+  <div class="example-contents">
+<div class="ccode"><pre class="ccode">#ifdef ZTS
+#define COUNTER_G(v) TSRMG(counter_globals_id, zend_counter_globals *, v)
+#else
+#define COUNTER_G(v) (counter_globals.v)
+#endif</pre>
+</div>
+  </div>
+
+ </div>
+ 
+ <p class="simpara">
+  このコード片は、拡張モジュールの作者がグローバルアクセサ&mdash;を定義する方法を示すものです。
+  TSRMG マクロは、識別子と型キャストそして要素名を受け取ります。
+  識別子は、モジュールの初期化時に TSRM が代入します。
+  グローバルアクセサをこのように宣言しておくと、その拡張モジュールは、
+  スレッドセーフと非スレッドセーフのどちらのアーキテクチャでも同じロジックで安全に扱えるようになります。
+ </p>
+ 
+ <p class="simpara">
+  TSRM は、PHP 内部のすべてのグローバル構造 (実行環境のグローバルから拡張モジュールのグローバルまで)
+  の分離や安全性を管理し、隔離したストレージへのポインタをほとんどの API 関数に渡します。
+  TSRMLS_C と TSRMLS_CC の二つのマクロは、それぞれ &quot;thread safe local storage&quot;、&quot;thread safe local storage prefixed with a comma&quot;
+  を表します。
+ </p>
+ 
+ <p class="simpara">
+  関数で TSRM へのポインタが必要な場合は、マクロ TSRMLS_D あるいは TSRMLS_DC を関数のプロトタイプで使います。
+  これらはそれぞれ、&quot;thread safe local storage only&quot; と &quot;thread safe local storage prefixed with a comma&quot; を表します。
+  エンジン内のマクロの多くは TSRM を参照しているので、ほとんどの場合、TSRM を受け付けるようにしておくほうが得策です。
+  そうしておけば、もし TSRM を利用することになったとしても、実行中にポインタを取得する必要がなくなります。
+ </p>
+ 
+ <p class="simpara">
+  TSRM はスレッドローカルであり、中には互換性の関係で TSRM を直接使えない関数もあります。
+  そのため、TSRMLS_FETCH マクロが用意されました。これは、TSRM にスレッドローカルストレージへのポインタを取得させるようリクエストします。
+  可能な限り、このマクロは使わないようにしましょう。スレッドセーフ環境では、実行のコストがかかってしまうからです。
+ </p>
+ 
+ <blockquote class="note"><p><strong class="note">注意</strong>: 
+  <span class="simpara">
+   拡張モジュールを開発していると、&quot;tsrm_ls is undefined&quot; を含むエラーやその影響を受けたエラーが発生することがあります。
+   これは、そのスコープで TSRMLS が定義されていないことに起因するものです。
+   このエラーを修正するには、関数の宣言時に適切なマクロを使って TSRMLS を受け付けるようにします。
+   関数のプロトタイプを変更できない場合は、関数の中で TSRMLS_FETCH を呼ばなければいけません。
+  </span>
+ </p></blockquote>
+ 
+ <p class="simpara">
+  これ以降で説明する機能は、TSRM を高度に使いこなすためのものです。
+  普通は、拡張モジュールが直接 TSRM を操作することはありません。
+  拡張モジュールのプログラマーがは、TSRM の上位にある API (たとえば モジュールグローバル API)
+  を使うべきです。
+ </p>
+ 
+ <table id="internals2.memory.tsrm.iapis" class="doctable table">
+  <caption><strong>TSRM の内部関数</strong></caption>
+  
+   <thead>
+    <tr>
+     <th>プロトタイプ</th>
+     <th>説明</th>
+    </tr>
+
+   </thead>
+
+   <tbody class="tbody">
+    
+    <tr> 
+     <td><code class="code">typedef int ts_rsrc_id</code></td>
+     <td>リソースを数値 ID で表すための型定義。</td>
+    </tr>
+
+    
+    <tr>
+     <td><code class="code">int tsrm_startup(int expected_threads, int expected_resources, int debug_level, char *debug_filename)</code></td>
+     <td>
+      <code class="code">expected_threads</code> と <code class="code">expected_resources</code> は、ハードリミットではありません。
+      <code class="code">debug_level</code> と <code class="code">debug_filename</code> が効果を発揮するのは、
+      Windows 上でデバッグモードの場合か TSRM_DEBUG を定義した場合だけです。
+      サーバーの立ち上げ時に、ZTS モードのプロセスごとに呼ばれます。
+     </td>
+    </tr>
+
+    
+    <tr>
+     <td><code class="code">void tsrm_shutdown(void)</code></td>
+     <td>
+      プロセスの最後に呼ぶ必要があります。
+      ZTS モードのすべての TSRM ストレージを破棄して解放します。
+     </td>
+    </tr>
+
+    
+    <tr>
+     <td><code class="code">ts_rsrc_id ts_allocate_id(ts_rsrc_id *rsrc_id, size_t size, ts_allocate_ctor ctor, ts_allocate_dtor dtor)</code></td>
+     <td>
+      <code class="code">size</code> バイトのスレッドセーフポインタを確保してポインタ上で
+      <code class="code">ctor</code> を呼び、id を割り当てて <code class="code">rsrc_id</code> に代入し、
+      リソースを解放したときには <code class="code">dtor</code> を呼びます。
+      ZTS モードでは、この API を使ってモジュールグローバルを分離します。
+     </td>
+    </tr>
+
+    
+    <tr>
+     <td><code class="code">void *ts_resource_ex(ts_rsrc_id id, THREAD_T *th_id)</code></td>
+     <td>
+      <code class="code">id</code> で割り当てられたリソースを、
+      スレッド <code class="code">th_id</code> が作ったエントリから取得します。
+     </td>
+    </tr>
+
+    
+    <tr>
+     <td>
+      <code class="code">void *ts_resource(ts_rsrc_id id)</code>
+     </td>
+     <td>
+      事前に確保したリソース <code class="code">id</code> を、呼び出し元スレッドが作ったエントリから取得します。
+     </td>
+    </tr>
+
+    
+    <tr>
+     <td><code class="code">void ts_free_thread(void)</code></td>
+     <td>
+      呼び出し元スレッドのエントリを破棄して解放します。
+      現時点では、この API を使うのは ISAPI モジュールだけです。
+     </td>
+    </tr>
+
+    
+    <tr>
+     <td>
+      <code class="code">void ts_free_id(ts_rsrc_id id)</code>
+     </td>
+     <td>
+      事前に確保したリソース <code class="code">id</code> を破棄します。
+      この API を使うと、ZTS モードでのモジュールグローバルの後始末もします。
+     </td>
+    </tr>
+
+   </tbody>
+  
+ </table>
+
+ 
+ <blockquote class="note"><p><strong class="note">注意</strong>: 
+  <span class="simpara">
+   これら以外にも、インタプリタのコンテキストを作ったり破棄したりする TSRM API 関数があります。
+   しかし、これらの機能についてはこのマニュアルで扱う範囲を超えるので、
+   詳細は TSRM/TSRM.h を参照ください。
+  </span>
+ </p></blockquote>
+ 
+ <table id="internals2.memory.tsrm.mapis" class="doctable table">
+  <caption><strong>TSRM ミューテックス API</strong></caption>
+  
+   <thead>
+    <tr>
+     <th>プロトタイプ</th>
+     <th>説明</th>
+    </tr>
+
+   </thead>
+
+   <tbody class="tbody">
+    
+    <tr>
+     <td><code class="code">MUTEX_T tsrm_mutex_alloc(void)</code></td>
+     <td>その環境用の適切な MUTEX_T を確保して、それを返します。</td>
+    </tr>
+
+    
+    <tr>
+     <td><code class="code">int tsrm_mutex_lock(MUTEX_T mutexp)</code></td>
+     <td>
+      <code class="code">mutexp</code> を、呼び出し側スレッド用にロックします。
+     </td>
+    </tr>
+
+    
+    <tr>
+     <td><code class="code">int tsrm_mutex_unlock(MUTEX_T mutexp)</code></td>
+     <td>
+      <code class="code">mutexp</code> の呼び出し側スレッド用のロックを解除します。
+     </td>
+    </tr>
+
+    
+    <tr>
+     <td><code class="code">void tsrm_mutex_free(MUTEX_T mutexp);</code></td>
+     <td>
+      事前に確保して、既にロック解除済みの <code class="code">mutexp</code> を、破棄して解放します。
+     </td>
+    </tr>
+
+   </tbody>
+  
+ </table>
+
+ 
+ <blockquote class="note"><p><strong class="note">注意</strong>: 
+  <span class="simpara">
+   ミューテックス API は、TSRM が公開するものです。
+   しかし、その内部的な利用法は、ここで扱うにはあまりにも幅広すぎます。
+   そのため、基本的な機能とプロトタイプだけの紹介にとどめます。
+  </span>
+ </p></blockquote>
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

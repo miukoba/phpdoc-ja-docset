@@ -1,0 +1,499 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>FAQ: 名前空間について知っておくべきこと</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="language.namespaces.rules.html">≪ 名前解決のルール</a></li>
+      <li style="float: right;"><a href="language.exceptions.html">例外(exceptions) ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="language.namespaces.html">名前空間</a></li>
+    <li>FAQ: 名前空間について知っておくべきこと</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="language.namespaces.faq" class="sect1">
+  <h2 class="title">FAQ: 名前空間について知っておくべきこと</h2>
+  <p class="verinfo">(PHP 5 &gt;= 5.3.0)</p>
+  <p class="para">
+   この FAQ は 2 つに別れています。一般的な質問と、
+   深く理解するために有用な実装に関する質問です。
+  </p>
+  <p class="para">
+   まずは一般的な質問。
+   <ol type="1">
+    <li class="listitem">
+     <span class="simpara">
+      <a href="language.namespaces.faq.html#language.namespaces.faq.shouldicare" class="link">名前空間を使わない場合、
+      何か注意すべきことはありますか?</a>
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <a href="language.namespaces.faq.html#language.namespaces.faq.globalclass" class="link">
+      名前空間内での内部クラスあるいはグローバルクラスの使用法は?</a>
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <a href="language.namespaces.faq.html#language.namespaces.faq.innamespace" class="link">
+      同じ名前空間にあるクラス、関数あるいは定数を使用する方法は?</a>
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <a href="language.namespaces.faq.html#language.namespaces.faq.full" class="link">
+       <em>\my\name</em> や <em>\name</em>
+       のような名前はどのように解決される?
+      </a>
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <a href="language.namespaces.faq.html#language.namespaces.faq.qualified" class="link">
+      <em>my\name</em> のような名前はどのように解決される?</a>
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <a href="language.namespaces.faq.html#language.namespaces.faq.shortname1" class="link">
+      修飾されていない <em>name</em> のようなクラス名はどのように解決される?</a>
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <a href="language.namespaces.faq.html#language.namespaces.faq.shortname2" class="link">
+      修飾されていない <em>name</em> のような関数名/定数名はどのように解決される?</a>
+     </span>
+    </li>
+   </ol>
+  </p>
+  <p class="para">
+   また、名前空間の実装を理解するために有用な実装の詳細は次のとおりです。
+   <ol type="1">
+    <li class="listitem">
+     <span class="simpara">
+      <a href="language.namespaces.faq.html#language.namespaces.faq.conflict" class="link">
+      インポートした名前が同一ファイルで定義されているクラスと衝突しない</a>
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <a href="language.namespaces.faq.html#language.namespaces.faq.nested" class="link">名前空間のネストはできない
+      </a>
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <a href="language.namespaces.faq.html#language.namespaces.faq.nofuncconstantuse" class="link">
+      関数や定数は <em>use</em> 文でインポートできない</a>
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <a href="language.namespaces.faq.html#language.namespaces.faq.quote" class="link">
+      動的な名前空間名 (クォートした名前) ではバックスラッシュのエスケープが必要</a>
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <a href="language.namespaces.faq.html#language.namespaces.faq.constants" class="link">
+      バックスラッシュを含む未定義な定数を参照すると、致命的なエラーが発生する</a>
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      <a href="language.namespaces.faq.html#language.namespaces.faq.builtinconst" class="link">
+      特別な定数 NULL, TRUE, FALSE, ZEND_THREAD_SAFE そして ZEND_DEBUG_BUILD は上書きできない</a>
+     </span>
+    </li>
+   </ol>
+  </p>
+  <div class="sect2" id="language.namespaces.faq.shouldicare">
+   <h3 class="title">名前空間を使わない場合、何か注意すべきことはありますか?</h3>
+   <p class="para">
+    いいえ。これまで書いてきたコード、今後書く名前空間を含まないコードのいずれについても、
+    名前空間が何らかの影響を及ぼすことはありません。
+    お望みなら名前空間を使わないコードを書くこともできます。
+   </p>
+   <p class="para">
+    <div class="example" id="example-276">
+     <p><strong>例1 名前空間の外部にあるグローバルクラスへのアクセス</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$a&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;\</span><span style="color: #0000BB">stdClass</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="para">
+    これは、機能的に次と同等です。
+   </p>
+   <p class="para">
+    <div class="example" id="example-277">
+     <p><strong>例2 名前空間の外部にあるグローバルクラスへのアクセス</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$a&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">stdClass</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+  </div>
+  <div class="sect2" id="language.namespaces.faq.globalclass">
+   <h3 class="title">名前空間内での内部クラスあるいはグローバルクラスの使用法は?</h3>
+   <p class="para">
+    <div class="example" id="example-278">
+     <p><strong>例3 名前空間内からの内部クラスへのアクセス</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">foo</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;\</span><span style="color: #0000BB">stdClass</span><span style="color: #007700">;<br /><br />function&nbsp;</span><span style="color: #0000BB">test</span><span style="color: #007700">(\</span><span style="color: #0000BB">ArrayObject&nbsp;$typehintexample&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">)&nbsp;{}<br /><br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;\</span><span style="color: #0000BB">DirectoryIterator</span><span style="color: #007700">::</span><span style="color: #0000BB">CURRENT_AS_FILEINFO</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;内部クラス/グローバルクラスの継承<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">MyException&nbsp;</span><span style="color: #007700">extends&nbsp;\</span><span style="color: #0000BB">Exception&nbsp;</span><span style="color: #007700">{}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+  </div>
+  <div class="sect2" id="language.namespaces.faq.innamespace">
+   <h3 class="title">
+    同じ名前空間にあるクラス、関数あるいは定数を使用する方法は?
+   </h3>
+   <p class="para">
+    <div class="example" id="example-279">
+     <p><strong>例4 名前空間内のクラス、関数あるいは定数へのアクセス</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">foo</span><span style="color: #007700">;<br /><br />class&nbsp;</span><span style="color: #0000BB">MyClass&nbsp;</span><span style="color: #007700">{}<br /><br /></span><span style="color: #FF8000">//&nbsp;現在の名前空間のクラスをタイプヒントに使用する方法<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">test</span><span style="color: #007700">(</span><span style="color: #0000BB">MyClass&nbsp;$typehintexample&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">)&nbsp;{}<br /></span><span style="color: #FF8000">//&nbsp;現在の名前空間のクラスをタイプヒントに使用するもうひとつの方法<br /></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">test</span><span style="color: #007700">(\</span><span style="color: #0000BB">foo</span><span style="color: #007700">\</span><span style="color: #0000BB">MyClass&nbsp;$typehintexample&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">)&nbsp;{}<br /><br /></span><span style="color: #FF8000">//&nbsp;現在の名前空間のクラスの継承<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">Extended&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">MyClass&nbsp;</span><span style="color: #007700">{}<br /><br /></span><span style="color: #FF8000">//&nbsp;グローバル関数へのアクセス<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;\</span><span style="color: #0000BB">globalfunc</span><span style="color: #007700">();<br /><br /></span><span style="color: #FF8000">//&nbsp;グローバル定数へのアクセス<br /></span><span style="color: #0000BB">$b&nbsp;</span><span style="color: #007700">=&nbsp;\</span><span style="color: #0000BB">INI_ALL</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+  </div>
+  <div class="sect2" id="language.namespaces.faq.full">
+   <h3 class="title">
+     <em>\my\name</em> や <em>\name</em>
+     のような名前はどのように解決される?
+   </h3>
+   <p class="para">
+    <em>\</em> から始まる名前は常に見た目のままに解釈されます。
+    つまり <em>\my\name</em> は <em>my\name</em> であり、
+    <em>\Exception</em> は <em>Exception</em> となります。
+    <div class="example" id="example-280">
+     <p><strong>例5 完全修飾名</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">foo</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;\</span><span style="color: #0000BB">my</span><span style="color: #007700">\</span><span style="color: #0000BB">name</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;"my\name"&nbsp;クラスのインスタンスを作成します<br /></span><span style="color: #007700">echo&nbsp;\</span><span style="color: #0000BB">strlen</span><span style="color: #007700">(</span><span style="color: #DD0000">'hi'</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;"strlen"&nbsp;関数をコールします<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;\</span><span style="color: #0000BB">INI_ALL</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;$a&nbsp;に定数&nbsp;"INI_ALL"&nbsp;の値を設定します<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+  </div>
+  <div class="sect2" id="language.namespaces.faq.qualified">
+   <h3 class="title"><em>my\name</em> のような名前はどのように解決される?</h3>
+   <p class="para">
+    名前にバックスラッシュを含むが先頭はバックスラッシュでない名前、たとえば
+    <em>my\name</em> のような名前は 2 通りの方法で解釈されます。
+   </p>
+   <p class="para">
+    別の名前に <em>my</em> というエイリアスを指定する import
+    文がある場合は、そのエイリアスが <em>my\name</em>
+    の <em>my</em> 部分に適用されます。
+   </p>
+   <p class="para">
+    それ以外の場合は、現在の名前空間が <em>my\name</em> の先頭に付け加えられます。
+   </p>
+   <p class="para">
+    <div class="example" id="example-281">
+     <p><strong>例6 修飾名</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">foo</span><span style="color: #007700">;<br />use&nbsp;</span><span style="color: #0000BB">blah</span><span style="color: #007700">\</span><span style="color: #0000BB">blah&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">foo</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">my</span><span style="color: #007700">\</span><span style="color: #0000BB">name</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;"foo\my\name"&nbsp;クラスのインスタンスを作成します<br /></span><span style="color: #0000BB">foo</span><span style="color: #007700">\</span><span style="color: #0000BB">bar</span><span style="color: #007700">::</span><span style="color: #0000BB">name</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;"blah\blah\bar"&nbsp;の静的メソッド&nbsp;"name"&nbsp;をコールします<br /></span><span style="color: #0000BB">my</span><span style="color: #007700">\</span><span style="color: #0000BB">bar</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;"foo\my\bar"&nbsp;関数をコールします<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">my</span><span style="color: #007700">\</span><span style="color: #0000BB">BAR</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;$a&nbsp;に定数&nbsp;"foo\my\BAR"&nbsp;の値を設定します<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+  </div>
+  <div class="sect2" id="language.namespaces.faq.shortname1">
+   <h3 class="title">修飾されていない <em>name</em> のようなクラス名はどのように解決される?</h3>
+   <p class="para">
+    バックスラッシュを含まない <em>name</em> のようなクラス名は
+    2 通りの方法で解釈されます。
+   </p>
+   <p class="para">
+    別の名前に <em>name</em> というエイリアスを指定する import
+    文がある場合は、そのエイリアスが適用されます。
+   </p>
+   <p class="para">
+    それ以外の場合は、現在の名前空間が <em>name</em> の先頭に付け加えられます。
+   </p>
+   <p class="para">
+    <div class="example" id="example-282">
+     <p><strong>例7 非修飾クラス名</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">foo</span><span style="color: #007700">;<br />use&nbsp;</span><span style="color: #0000BB">blah</span><span style="color: #007700">\</span><span style="color: #0000BB">blah&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">foo</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">name</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;"foo\name"&nbsp;クラスのインスタンスを作成します<br /></span><span style="color: #0000BB">foo</span><span style="color: #007700">::</span><span style="color: #0000BB">name</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;"blah\blah"&nbsp;クラスの静的メソッド&nbsp;"name"&nbsp;をコールします<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+  </div>
+  <div class="sect2" id="language.namespaces.faq.shortname2">
+   <h3 class="title">
+    修飾されていない <em>name</em> のような関数名/定数名はどのように解決される?
+   </h3>
+   <p class="para">
+    バックスラッシュを含まない <em>name</em> のような関数名/定数名は
+    2 通りの方法で解釈されます。
+   </p>
+   <p class="para">
+    まず、現在の名前空間が <em>name</em> の先頭に付け加えられます。
+   </p>
+   <p class="para">
+    現在の名前空間に <em>name</em> という関数あるいは定数がない場合は、
+    グローバル関数あるいは定数に <em>name</em>
+    があればそれを使用します。
+   </p>
+   <p class="para">
+    <div class="example" id="example-283">
+     <p><strong>例8 非修飾関数/定数名</strong></p>
+     <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">foo</span><span style="color: #007700">;<br />use&nbsp;</span><span style="color: #0000BB">blah</span><span style="color: #007700">\</span><span style="color: #0000BB">blah&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">foo</span><span style="color: #007700">;<br /><br />const&nbsp;</span><span style="color: #0000BB">FOO&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">;<br /><br />function&nbsp;</span><span style="color: #0000BB">my</span><span style="color: #007700">()&nbsp;{}<br />function&nbsp;</span><span style="color: #0000BB">foo</span><span style="color: #007700">()&nbsp;{}<br />function&nbsp;</span><span style="color: #0000BB">sort</span><span style="color: #007700">(&amp;</span><span style="color: #0000BB">$a</span><span style="color: #007700">)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;\</span><span style="color: #0000BB">sort</span><span style="color: #007700">(</span><span style="color: #0000BB">$a</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;グローバル関数&nbsp;"sort"&nbsp;をコールします<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">array_flip</span><span style="color: #007700">(</span><span style="color: #0000BB">$a</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$a</span><span style="color: #007700">;<br />}<br /><br /></span><span style="color: #0000BB">my</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;"foo\my"&nbsp;をコールします<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">strlen</span><span style="color: #007700">(</span><span style="color: #DD0000">'hi'</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;"foo\strlen"&nbsp;が存在しないので、グローバル関数&nbsp;"strlen"&nbsp;をコールします<br /></span><span style="color: #0000BB">$arr&nbsp;</span><span style="color: #007700">=&nbsp;array(</span><span style="color: #0000BB">1</span><span style="color: #007700">,</span><span style="color: #0000BB">3</span><span style="color: #007700">,</span><span style="color: #0000BB">2</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$b&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">sort</span><span style="color: #007700">(</span><span style="color: #0000BB">$arr</span><span style="color: #007700">);&nbsp;</span><span style="color: #FF8000">//&nbsp;"foo\sort"&nbsp;関数をコールします<br /></span><span style="color: #0000BB">$c&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">foo</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;calls&nbsp;function&nbsp;"foo\foo"&nbsp;-&nbsp;import&nbsp;is&nbsp;not&nbsp;applied<br /><br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">FOO</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;sets&nbsp;$a&nbsp;to&nbsp;value&nbsp;of&nbsp;constant&nbsp;"foo\FOO"&nbsp;-&nbsp;import&nbsp;is&nbsp;not&nbsp;applied<br /></span><span style="color: #0000BB">$b&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">INI_ALL</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;sets&nbsp;$b&nbsp;to&nbsp;value&nbsp;of&nbsp;global&nbsp;constant&nbsp;"INI_ALL"<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+  </div>
+  <div class="sect2" id="language.namespaces.faq.conflict">
+   <h3 class="title">インポートした名前が同一ファイルで定義されているクラスと衝突しない</h3>
+   <p class="para">
+    次のようなスクリプトの組み合わせは、正当なものです。
+    <div class="informalexample">
+     <p class="simpara">file1.php</p>
+     <div class="example-contents">
+     <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">my</span><span style="color: #007700">\</span><span style="color: #0000BB">stuff</span><span style="color: #007700">;<br />class&nbsp;</span><span style="color: #0000BB">MyClass&nbsp;</span><span style="color: #007700">{}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <p class="simpara">another.php</p>
+     <div class="example-contents">
+     <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">another</span><span style="color: #007700">;<br />class&nbsp;</span><span style="color: #0000BB">thing&nbsp;</span><span style="color: #007700">{}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+     <p class="simpara">file2.php</p>
+     <div class="example-contents">
+     <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">my</span><span style="color: #007700">\</span><span style="color: #0000BB">stuff</span><span style="color: #007700">;<br />include&nbsp;</span><span style="color: #DD0000">'file1.php'</span><span style="color: #007700">;<br />include&nbsp;</span><span style="color: #DD0000">'another.php'</span><span style="color: #007700">;<br /><br />use&nbsp;</span><span style="color: #0000BB">another</span><span style="color: #007700">\</span><span style="color: #0000BB">thing&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">MyClass</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MyClass</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;名前空間&nbsp;another&nbsp;のクラス&nbsp;"thing"&nbsp;のインスタンスを作成します。<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+   <p class="para">
+    <em>MyClass</em> クラスが名前空間
+    <em>my\stuff</em> にあるとはいえ、名前の衝突はありません。
+    MyClass の定義は別のファイルにあるからです。
+    しかし、次の例は名前の衝突による致命的なエラーとなります。
+    MyClass の定義が同じファイル上の use 文で行われているからです。
+    <div class="informalexample">
+     <div class="example-contents">
+     <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">my</span><span style="color: #007700">\</span><span style="color: #0000BB">stuff</span><span style="color: #007700">;<br />use&nbsp;</span><span style="color: #0000BB">another</span><span style="color: #007700">\</span><span style="color: #0000BB">thing&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">MyClass</span><span style="color: #007700">;<br />class&nbsp;</span><span style="color: #0000BB">MyClass&nbsp;</span><span style="color: #007700">{}&nbsp;</span><span style="color: #FF8000">//&nbsp;fatal&nbsp;error:&nbsp;MyClass&nbsp;conflicts&nbsp;with&nbsp;import&nbsp;statement<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MyClass</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+  </div>
+  <div class="sect2" id="language.namespaces.faq.nested">
+   <h3 class="title">名前空間のネストはできない</h3>
+   <p class="para">
+    PHP では名前空間のネストはできません。
+    <div class="informalexample">
+     <div class="example-contents">
+     <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">my</span><span style="color: #007700">\</span><span style="color: #0000BB">stuff&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;namespace&nbsp;</span><span style="color: #0000BB">nested&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class&nbsp;</span><span style="color: #0000BB">foo&nbsp;</span><span style="color: #007700">{}<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+    しかし、それっぽいことをするのは簡単です。次のようにすればいいのです。
+    <div class="informalexample">
+     <div class="example-contents">
+     <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">my</span><span style="color: #007700">\</span><span style="color: #0000BB">stuff</span><span style="color: #007700">\</span><span style="color: #0000BB">nested&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;class&nbsp;</span><span style="color: #0000BB">foo&nbsp;</span><span style="color: #007700">{}<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+  </div>
+  <div class="sect2" id="language.namespaces.faq.nofuncconstantuse">
+   <h3 class="title">関数や定数は <em>use</em> 文でインポートできない</h3>
+   <p class="para">
+    <em>use</em> 文の影響を受けるのは名前空間とクラス名のみです。
+    長い名前の定数や関数を短い名前にするには、それらが含まれる名前空間をインポートします。
+    <div class="informalexample">
+     <div class="example-contents">
+     <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">mine</span><span style="color: #007700">;<br />use&nbsp;</span><span style="color: #0000BB">ultra</span><span style="color: #007700">\</span><span style="color: #0000BB">long</span><span style="color: #007700">\</span><span style="color: #0000BB">ns</span><span style="color: #007700">\</span><span style="color: #0000BB">name</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">name</span><span style="color: #007700">\</span><span style="color: #0000BB">CONSTANT</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">name</span><span style="color: #007700">\</span><span style="color: #0000BB">func</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+  </div>
+  <div class="sect2" id="language.namespaces.faq.quote">
+   <h3 class="title">動的な名前空間名 (クォートした名前) ではバックスラッシュのエスケープが必要</h3>
+   <p class="para">
+    バックスラッシュは文字列のエスケープ文字として使われることに注意しましょう。
+    文字列の中で使う際にはバックスラッシュを二重に書く必要があります。
+    そうしないと、予期せぬ結果を引き起こしてしまいます。
+    <div class="example" id="example-284">
+     <p><strong>例9 ダブルクォートで囲んだ文字列内で名前空間名を扱う際の危険</strong></p>
+     <div class="example-contents">
+      <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">"dangerous\name"</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;ダブルクォートの中では&nbsp;\n&nbsp;が改行文字になってしまいます!<br /></span><span style="color: #0000BB">$obj&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">$a</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'not\at\all\dangerous'</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;これなら大丈夫です<br /></span><span style="color: #0000BB">$obj&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">$a</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+    シングルクォートで囲んだ文字列内では、
+    バックスラッシュによるエスケープシーケンスをより安全に使うことができます。
+    しかし、文字列内では常にバックスラッシュをエスケープする習慣をつけておくことをお勧めします。
+   </p>
+  </div>
+  <div class="sect2" id="language.namespaces.faq.constants">
+   <h3 class="title">バックスラッシュを含む未定義な定数を参照すると、致命的なエラーが発生する</h3>
+   <p class="para">
+    未定義の定数のうち <em>FOO</em> のような修飾されていないものは、
+    PHP が <em>FOO</em> を定数の値と解釈したという notice が発生します。
+    修飾あるいは完全修飾形式の定数、つまりバックスラッシュを含む定数の場合、
+    それが未定義なら致命的なエラーが発生します。
+    <div class="example" id="example-285">
+     <p><strong>例10 未定義の定数</strong></p>
+     <div class="example-contents">
+      <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">bar</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">FOO</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;notice&nbsp;-&nbsp;undefined&nbsp;constants&nbsp;"FOO"&nbsp;assumed&nbsp;"FOO";<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;\</span><span style="color: #0000BB">FOO</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;fatal&nbsp;error,&nbsp;undefined&nbsp;namespace&nbsp;constant&nbsp;FOO<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">Bar</span><span style="color: #007700">\</span><span style="color: #0000BB">FOO</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;fatal&nbsp;error,&nbsp;undefined&nbsp;namespace&nbsp;constant&nbsp;bar\Bar\FOO<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;\</span><span style="color: #0000BB">Bar</span><span style="color: #007700">\</span><span style="color: #0000BB">FOO</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;fatal&nbsp;error,&nbsp;undefined&nbsp;namespace&nbsp;constant&nbsp;Bar\FOO<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+  </div>
+  <div class="sect2" id="language.namespaces.faq.builtinconst">
+   <h3 class="title">特別な定数 NULL, TRUE, FALSE, ZEND_THREAD_SAFE そして ZEND_DEBUG_BUILD は上書きできない</h3>
+   <p class="para">
+    名前空間内で特別な組み込み定数を定義しようとすると、致命的なエラーが発生します。
+    <div class="example" id="example-286">
+     <p><strong>例11 未定義の定数</strong></p>
+     <div class="example-contents">
+      <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">bar</span><span style="color: #007700">;<br />const&nbsp;</span><span style="color: #0000BB">NULL&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;致命的なエラー<br /></span><span style="color: #007700">const&nbsp;</span><span style="color: #0000BB">true&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'stupid'</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;これも、致命的なエラー<br />//&nbsp;etc.<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+     </div>
+
+    </div>
+   </p>
+  </div>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="112807""></a>
+  <div class="note">
+   <strong class="user">okaresz</strong>
+   <a href="#112807" class="date">25-Jul-2013 05:31</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+To correct manolachef's answer: define() ALWAYS defines constants in the GLOBAL namespace.<br />
+<br />
+As nl-x at bita dot nl states in the note at <a href="http://www.php.net/manual/en/function.define.php, the constant " rel="nofollow" target="_blank">http://www.php.net/manual/en/function.define.php, the constant </a>"NULL" can be defined with define() case-sensitively, but can only be retrieved with constant(), leaving the meaning of NULL uppercase keyword as the only value of the type null.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="108236""></a>
+  <div class="note">
+   <strong class="user">manolachef at gmail dot com</strong>
+   <a href="#108236" class="date">10-Apr-2012 11:32</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+There is a way to define a namespaced constant that is a special, built-in constant, using define function and setting the third parameter case_insensitive to false:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">namespace </span><span class="default">foo</span><span class="keyword">;<br />
+</span><span class="default">define</span><span class="keyword">(</span><span class="default">__NAMESPACE__ </span><span class="keyword">. </span><span class="string">'\NULL'</span><span class="keyword">, </span><span class="default">10</span><span class="keyword">); </span><span class="comment">// defines the constant NULL in the current namespace<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">NULL</span><span class="keyword">); </span><span class="comment">// will show 10<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">null</span><span class="keyword">); </span><span class="comment">// will show NULL<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+&nbsp; No need to specify the namespace in your call to define(), like it happens usually<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">namespace </span><span class="default">foo</span><span class="keyword">;<br />
+</span><span class="default">define</span><span class="keyword">(</span><span class="default">INI_ALL</span><span class="keyword">, </span><span class="string">'bar'</span><span class="keyword">); </span><span class="comment">// produces notice - Constant INI_ALL already defined. But:<br />
+<br />
+</span><span class="default">define</span><span class="keyword">(</span><span class="default">__NAMESPACE__ </span><span class="keyword">. </span><span class="string">'\INI_ALL'</span><span class="keyword">, </span><span class="string">'bar'</span><span class="keyword">); </span><span class="comment">// defines the constant INI_ALL in the current namespace<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">INI_ALL</span><span class="keyword">); </span><span class="comment">// will show string(3)"bar". Nothing unespected so far. But:<br />
+<br />
+</span><span class="default">define</span><span class="keyword">(</span><span class="string">'NULL'</span><span class="keyword">, </span><span class="default">10</span><span class="keyword">); </span><span class="comment">// defines the constant NULL in the current namespace...<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">NULL</span><span class="keyword">); </span><span class="comment">// will show 10<br />
+</span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">null</span><span class="keyword">); </span><span class="comment">// will show NULL<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+&nbsp; If the parameter case_insensitive is set to true<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">namespace </span><span class="default">foo</span><span class="keyword">;<br />
+</span><span class="default">define </span><span class="keyword">(</span><span class="default">__NAMESPACE__ </span><span class="keyword">. </span><span class="string">'\NULL'</span><span class="keyword">, </span><span class="default">10</span><span class="keyword">, </span><span class="default">true</span><span class="keyword">); </span><span class="comment">// produces notice - Constant null already defined<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

@@ -1,0 +1,320 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>新しくバインドしたオブジェクトとクラスのスコープで、クロージャを複製する</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="closure.bind.html">≪ Closure::bind</a></li>
+      <li style="float: right;"><a href="class.generator.html">Generator ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="class.closure.html">Closure</a></li>
+    <li>新しくバインドしたオブジェクトとクラスのスコープで、クロージャを複製する</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="closure.bindto" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">Closure::bindTo</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.4.0)</p><p class="refpurpose"><span class="refname">Closure::bindTo</span> &mdash; <span class="dc-title">
+   新しくバインドしたオブジェクトとクラスのスコープで、クロージャを複製する
+  </span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-closure.bindto-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type"><a href="class.closure.html" class="type Closure">Closure</a></span> <span class="methodname"><strong>Closure::bindTo</strong></span>
+    ( <span class="methodparam"><span class="type">object</span> <code class="parameter">$newthis</code></span>
+   [, <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter">$newscope</code>
+   <span class="initializer"> = &quot;static&quot;</span></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+   自身と同じ本体とバインド変数を持つ新しい <a href="functions.anonymous.html" class="link">無名関数</a>
+   を作って返します。しかし、バインドするオブジェクトは変わって新しいクラスのスコープとなります。
+  </p>
+
+  <p class="para">
+   "バインドするオブジェクト" によって、<em>$this</em>
+   が関数本体で持つ値が決まり、"クラスのスコープ"
+   は、無名関数からどのクラスの private メンバーや protected メンバーにアクセスできるのかが決まります。
+   すなわち、無名関数から見えるメンバーは、
+   その無名関数が <code class="parameter">newscope</code>
+   クラスのメソッドであった場合と同じものになります。
+  </p>
+
+  <p class="para">
+   静的なクロージャは何もオブジェクトをバインドできません
+   (<code class="parameter">newthis</code> の値は <strong><code>NULL</code></strong> でなければなりません) が、
+   それでもこの関数を使ってクラスのスコープを変えることができます。
+  </p>
+
+  <p class="para">
+   この関数が静的でないクロージャに関して保証するのは、
+   バインドされたインスタンスを持っていればスコープ内にあるということです。
+   また、その逆も成り立ちます。そのため、静的でないクロージャにスコープとして
+   <strong><code>NULL</code></strong> インスタンスを渡すとそれは静的となり、静的でなくスコープにもないクロージャに
+   <strong><code>NULL</code></strong> でないインスタンスを渡すと、特定されていない何らかのクラスのスコープに入ります。
+  </p>
+
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    単に無名関数を複製したいだけの場合は、
+    <a href="language.oop5.cloning.html" class="link">cloning</a> を使うこともできます。
+   </p>
+  </p></blockquote>
+
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-closure.bindto-parameters">
+  <h3 class="title">パラメータ</h3>
+  <dl>
+
+   
+    <dt>
+<code class="parameter">newthis</code></dt>
+
+    <dd>
+
+     <p class="para">
+      指定した無名関数をバインドするオブジェクト。クロージャのバインドを解除するには
+      <strong><code>NULL</code></strong> を指定します。
+     </p>
+    </dd>
+
+   
+   
+    <dt>
+<code class="parameter">newscope</code></dt>
+
+    <dd>
+
+     <p class="para">
+      クロージャを関連づけるクラススコープ、あるいは &#039;static&#039; で現在のスコープを維持します。
+      オブジェクトを渡した場合は、そのオブジェクトの型をその代わりに使います。
+      これは、バインドしたオブジェクトの protected メソッドや private
+      メソッドの可視性を決めます。
+     </p>
+    </dd>
+
+   
+  </dl>
+
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-closure.bindto-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   新しい <a href="class.closure.html" class="classname">Closure</a> オブジェクトを返します。
+   失敗した場合に <strong><code>FALSE</code></strong> を返します
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-closure.bindto-examples">
+  <h3 class="title">例</h3>
+  <div class="example" id="example-326">
+   <p><strong>例1 <span class="function"><strong>Closure::bindTo()</strong></span> の例</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">A&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">__construct</span><span style="color: #007700">(</span><span style="color: #0000BB">$val</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">val&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$val</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">getClosure</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;このオブジェクトとスコープにバインドしたクロージャを返します。<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">return&nbsp;function()&nbsp;{&nbsp;return&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">val</span><span style="color: #007700">;&nbsp;};<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />}<br /><br /></span><span style="color: #0000BB">$ob1&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">A</span><span style="color: #007700">(</span><span style="color: #0000BB">1</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">$ob2&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">A</span><span style="color: #007700">(</span><span style="color: #0000BB">2</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$cl&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$ob1</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getClosure</span><span style="color: #007700">();<br />echo&nbsp;</span><span style="color: #0000BB">$cl</span><span style="color: #007700">(),&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$cl&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$cl</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">bindTo</span><span style="color: #007700">(</span><span style="color: #0000BB">$ob2</span><span style="color: #007700">);<br />echo&nbsp;</span><span style="color: #0000BB">$cl</span><span style="color: #007700">(),&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>上の例の出力は、
+たとえば以下のようになります。</p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>
+1
+2
+</pre></div>
+   </div>
+  </div>
+ </div>
+
+
+
+ <div class="refsect1 seealso" id="refsect1-closure.bindto-seealso">
+  <h3 class="title">参考</h3>
+  <ul class="simplelist">
+   <li class="member"><a href="functions.anonymous.html" class="link">無名関数</a></li>
+   <li class="member"><span class="methodname"><a href="closure.bind.html" class="methodname" rel="rdfs-seeAlso">Closure::bind()</a> - バインドされたオブジェクトとクラスのスコープでクロージャを複製する</span></li>
+  </ul>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="111379""></a>
+  <div class="note">
+   <strong class="user">tatarynowicz at gmail dot com</strong>
+   <a href="#111379" class="date">14-Feb-2013 06:30</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+You can do pretty Javascript-like things with objects using closure binding:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">trait </span><span class="default">DynamicDefinition </span><span class="keyword">{<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; public function </span><span class="default">__call</span><span class="keyword">(</span><span class="default">$name</span><span class="keyword">, </span><span class="default">$args</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if (</span><span class="default">is_callable</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">$name</span><span class="keyword">)) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">call_user_func</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">$name</span><span class="keyword">, </span><span class="default">$args</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; else {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; throw new \</span><span class="default">RuntimeException</span><span class="keyword">(</span><span class="string">"Method </span><span class="keyword">{</span><span class="default">$name</span><span class="keyword">}</span><span class="string"> does not exist"</span><span class="keyword">);<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; <br />
+&nbsp;&nbsp;&nbsp; public function </span><span class="default">__set</span><span class="keyword">(</span><span class="default">$name</span><span class="keyword">, </span><span class="default">$value</span><span class="keyword">) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">$name </span><span class="keyword">= </span><span class="default">is_callable</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">)? <br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$value</span><span class="keyword">-&gt;</span><span class="default">bindTo</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">, </span><span class="default">$this</span><span class="keyword">): <br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$value</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; }<br />
+}<br />
+<br />
+class </span><span class="default">Foo </span><span class="keyword">{<br />
+&nbsp;&nbsp;&nbsp; use </span><span class="default">DynamicDefinition</span><span class="keyword">;<br />
+&nbsp;&nbsp;&nbsp; private </span><span class="default">$privateValue </span><span class="keyword">= </span><span class="string">'I am private'</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="default">$foo </span><span class="keyword">= new </span><span class="default">Foo</span><span class="keyword">;<br />
+</span><span class="default">$foo</span><span class="keyword">-&gt;</span><span class="default">bar </span><span class="keyword">= function() {<br />
+&nbsp;&nbsp;&nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">privateValue</span><span class="keyword">;<br />
+};<br />
+<br />
+</span><span class="comment">// prints 'I am private'<br />
+</span><span class="keyword">print </span><span class="default">$foo</span><span class="keyword">-&gt;</span><span class="default">bar</span><span class="keyword">();<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="107848""></a>
+  <div class="note">
+   <strong class="user">safakozpinar at gmail dot com</strong>
+   <a href="#107848" class="date">09-Mar-2012 10:35</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Private/protected members are accessible if you set the "newscope" argument (as the manual says).<br />
+<br />
+<span class="default">&lt;?php<br />
+$fn </span><span class="keyword">= function(){<br />
+&nbsp;&nbsp;&nbsp; return ++</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">foo</span><span class="keyword">; </span><span class="comment">// increase the value<br />
+</span><span class="keyword">};<br />
+<br />
+class </span><span class="default">Bar</span><span class="keyword">{<br />
+&nbsp;&nbsp;&nbsp; private </span><span class="default">$foo </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">; </span><span class="comment">// initial value<br />
+</span><span class="keyword">}<br />
+<br />
+</span><span class="default">$bar </span><span class="keyword">= new </span><span class="default">Bar</span><span class="keyword">();<br />
+<br />
+</span><span class="default">$fn1 </span><span class="keyword">= </span><span class="default">$fn</span><span class="keyword">-&gt;</span><span class="default">bindTo</span><span class="keyword">(</span><span class="default">$bar</span><span class="keyword">, </span><span class="string">'Bar'</span><span class="keyword">); </span><span class="comment">// specify class name<br />
+</span><span class="default">$fn2 </span><span class="keyword">= </span><span class="default">$fn</span><span class="keyword">-&gt;</span><span class="default">bindTo</span><span class="keyword">(</span><span class="default">$bar</span><span class="keyword">,&nbsp; </span><span class="default">$bar</span><span class="keyword">); </span><span class="comment">// or object<br />
+<br />
+</span><span class="keyword">echo </span><span class="default">$fn1</span><span class="keyword">(); </span><span class="comment">// 2<br />
+</span><span class="keyword">echo </span><span class="default">$fn2</span><span class="keyword">(); </span><span class="comment">// 3</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="107770""></a>
+  <div class="note">
+   <strong class="user">anthony bishopric</strong>
+   <a href="#107770" class="date">03-Mar-2012 10:00</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Closures can rebind their $this variable, but private/protected methods and functions of $this are not accessible to the closures. <br />
+<br />
+<span class="default">&lt;?php<br />
+$fn </span><span class="keyword">= function(){<br />
+&nbsp;&nbsp;&nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">foo</span><span class="keyword">;<br />
+};<br />
+<br />
+class </span><span class="default">Bar</span><span class="keyword">{<br />
+&nbsp;&nbsp;&nbsp; private </span><span class="default">$foo </span><span class="keyword">= </span><span class="default">3</span><span class="keyword">;<br />
+}<br />
+<br />
+</span><span class="default">$bar </span><span class="keyword">= new </span><span class="default">Bar</span><span class="keyword">();<br />
+<br />
+</span><span class="default">$fn </span><span class="keyword">= </span><span class="default">$fn</span><span class="keyword">-&gt;</span><span class="default">bindTo</span><span class="keyword">(</span><span class="default">$bar</span><span class="keyword">);<br />
+<br />
+echo </span><span class="default">$fn</span><span class="keyword">(); </span><span class="comment">// Fatal error: Cannot access private property Bar::$foo</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="106912""></a>
+  <div class="note">
+   <strong class="user">amica at php-resource dot de</strong>
+   <a href="#106912" class="date">19-Dec-2011 01:23</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+With rebindable $this at hand it's possible to do evil stuff:<br />
+<br />
+<span class="default">&lt;?php<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">class </span><span class="default">A </span><span class="keyword">{<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; private </span><span class="default">$a </span><span class="keyword">= </span><span class="default">12</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; private function </span><span class="default">getA </span><span class="keyword">() {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">a</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; class </span><span class="default">B </span><span class="keyword">{<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; private </span><span class="default">$b </span><span class="keyword">= </span><span class="default">34</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; private function </span><span class="default">getB </span><span class="keyword">() {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">b</span><span class="keyword">;<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$a </span><span class="keyword">= new </span><span class="default">A</span><span class="keyword">();<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$b </span><span class="keyword">= new </span><span class="default">B</span><span class="keyword">();<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$c </span><span class="keyword">= function () {<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if (</span><span class="default">property_exists</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">, </span><span class="string">"a"</span><span class="keyword">) &amp;&amp; </span><span class="default">method_exists</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">, </span><span class="string">"getA"</span><span class="keyword">)) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">a</span><span class="keyword">++;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">getA</span><span class="keyword">();<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if (</span><span class="default">property_exists</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">, </span><span class="string">"b"</span><span class="keyword">) &amp;&amp; </span><span class="default">method_exists</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">, </span><span class="string">"getB"</span><span class="keyword">)) {<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">b</span><span class="keyword">++;<br />
+&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">getB</span><span class="keyword">();<br />
+&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
+&nbsp;&nbsp;&nbsp; };<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$ca </span><span class="keyword">= </span><span class="default">$c</span><span class="keyword">-&gt;</span><span class="default">bindTo</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">, </span><span class="default">$a</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">$cb </span><span class="keyword">= </span><span class="default">$c</span><span class="keyword">-&gt;</span><span class="default">bindTo</span><span class="keyword">(</span><span class="default">$b</span><span class="keyword">, </span><span class="default">$b</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; echo </span><span class="default">$ca</span><span class="keyword">(), </span><span class="string">"\n"</span><span class="keyword">; </span><span class="comment">// =&gt; 13<br />
+&nbsp;&nbsp;&nbsp; </span><span class="keyword">echo </span><span class="default">$cb</span><span class="keyword">(), </span><span class="string">"\n"</span><span class="keyword">; </span><span class="comment">// =&gt; 35<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

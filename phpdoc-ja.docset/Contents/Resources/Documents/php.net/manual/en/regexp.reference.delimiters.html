@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>デリミタ</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="regexp.introduction.html">≪ 導入</a></li>
+      <li style="float: right;"><a href="regexp.reference.meta.html">メタ文字 ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="reference.pcre.pattern.syntax.html">PCRE 正規表現構文</a></li>
+    <li>デリミタ</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="regexp.reference.delimiters" class="section">
+     <h2 class="title">デリミタ</h2>
+     <p class="para">
+      PCRE 関数を使うときには、パターンを
+      <em class="emphasis">delimiters</em> で囲まなければなりません。
+      英数字、バックスラッシュ、空白文字以外の任意の文字をデリミタとして使うことができます。
+     </p>
+     <p class="para">
+      デリミタとしてよく使われる文字は、スラッシュ (<em>/</em>)、
+      ハッシュ記号 (<em>#</em>) およびチルダ (<em>~</em>) です。
+      次に示す例は、どれも正しいデリミタです。
+      <div class="informalexample">
+       <div class="example-contents">
+<div class="cdata"><pre>
+/foo bar/
+#^[^0-9]$#
++php+
+%[a-zA-Z0-9_-]%
+</pre></div>
+       </div>
+
+      </div>
+     </p>
+  <p class="para">
+   角括弧形式のデリミタを使うこともできます。
+   これは、開き角括弧と閉じ角括弧がそれぞれ開始デリミタ、終了デリミタを表す形式です。
+   <em>()</em>、
+   <em>{}</em>、<em>[]</em> そして <em>&lt;&gt;</em>
+   はどれも、角括弧形式のデリミタとして有効です。
+   <div class="informalexample">
+    <div class="example-contents">
+<div class="cdata"><pre>
+(this [is] a (pattern))
+{this [is] a (pattern)}
+[this [is] a (pattern)]
+&lt;this [is] a (pattern)&gt;
+</pre></div>
+    </div>
+
+   </div>
+   角括弧形式のデリミタを使う場合は、パターン内でメタ文字を使うときのエスケープは不要です。
+   しかし、他のデリミタと同様、(メタ文字としてではなく) リテラルとして扱う場合は、
+   エスケープする必要があります。
+  </p>
+     <p class="para">
+      パターンの中でデリミタ文字をマッチさせたい場合は、バックスラッシュでエスケープしなければなりません。
+      パターン内でデリミタが頻繁にあらわれる場合は、
+      デリミタを別の文字に変更したほうが読みやすくなります。
+      <div class="informalexample">
+       <div class="example-contents">
+<div class="cdata"><pre>
+/http:\/\//
+#http://#
+</pre></div>
+       </div>
+
+      </div>
+      <span class="function"><a href="function.preg-quote.html" class="function">preg_quote()</a></span> 関数を使うと、パターンに使う文字列をエスケープすることができます。
+      オプションの二番目のパラメータで、エスケープするデリミタを指定します。
+     </p>
+     <p class="para">
+      終了デリミタの後に <a href="reference.pcre.pattern.modifiers.html" class="link">
+      パターン修飾子</a> を付加することもできます。次の例は、大文字小文字を区別しないマッチを行うものです。
+      <div class="informalexample">
+       <div class="example-contents">
+<div class="cdata"><pre>
+#[a-z]#i
+</pre></div>
+       </div>
+
+      </div>
+     </p>
+    </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="114010""></a>
+  <div class="note">
+   <strong class="user">Yousef Ismaeil Cliprz</strong>
+   <a href="#114010" class="date">30-Dec-2013 05:09</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+You can use (`)<br />
+<br />
+<span class="default">&lt;?php<br />
+<br />
+$str </span><span class="keyword">= </span><span class="string">'php'</span><span class="keyword">;<br />
+<br />
+if (</span><span class="default">preg_match</span><span class="keyword">(</span><span class="string">'`^php$`i'</span><span class="keyword">,</span><span class="default">$str</span><span class="keyword">)) {<br />
+</span><span class="comment">// Outputs<br />
+</span><span class="keyword">}<br />
+<br />
+</span><span class="default">?&gt;</span>
+</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="106371""></a>
+  <div class="note">
+   <strong class="user">Anonymous</strong>
+   <a href="#106371" class="date">31-Oct-2011 11:38</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+other possible delimiters include @,!, &lt;&gt;<br />
+<br />
+using symbols (such as | ) that have meaning inside a regex as delimiters is probably going to be counterproductive.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

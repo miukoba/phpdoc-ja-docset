@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>すでに実行中の COM オブジェクトのインスタンスへのハンドルを返す</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="function.com-event-sink.html">≪ com_event_sink</a></li>
+      <li style="float: right;"><a href="function.com-get.html">com_get ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="ref.com.html">COM関数</a></li>
+    <li>すでに実行中の COM オブジェクトのインスタンスへのハンドルを返す</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="function.com-get-active-object" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">com_get_active_object</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose"><span class="refname">com_get_active_object</span> &mdash; <span class="dc-title">すでに実行中の COM オブジェクトのインスタンスへのハンドルを返す</span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-function.com-get-active-object-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type"><a href="class.variant.html" class="type variant">variant</a></span> <span class="methodname"><strong>com_get_active_object</strong></span>
+    ( <span class="methodparam"><span class="type">string</span> <code class="parameter">$progid</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$code_page</code></span>
+  ] )</div>
+
+  <p class="para rdfs-comment">
+   <span class="function"><strong>com_get_active_object()</strong></span> は、新しい
+   <a href="class.com.html" class="xref">COM</a> オブジェクトのインスタンスを作成することに
+   似ています。しかし、オブジェクトがすでに実行中の場合には
+   そのオブジェクトが返されるという点が違います。
+   OLE アプリケーションは、既知のアプリケーションを一度だけ起動させる
+   ことを許可するために、&quot;<em>Running Object Table</em>&quot; というものを使用します。
+   この関数は、実行中のインスタンスのハンドルを取得するために
+   COM ライブラリ関数 GetActiveObject() を公開します。
+  </p>
+ </div>
+
+ <div class="refsect1 parameters" id="refsect1-function.com-get-active-object-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+<code class="parameter">progid</code></dt>
+
+     <dd>
+
+      <p class="para">
+       <code class="parameter">progid</code> は、アクセスしたいオブジェクトの
+       ProgID あるいは CLSID (たとえば <em>Word.Application</em>)
+       である必要があります。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">code_page</code></dt>
+
+     <dd>
+
+      <p class="para">
+       <a href="class.com.html" class="xref">COM</a> クラスの場合と同様の働きをします。
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+ </div>
+
+ <div class="refsect1 returnvalues" id="refsect1-function.com-get-active-object-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   要求されたオブジェクトが実行中の場合は、他の COM オブジェクトと
+   同様にスクリプトへ返されます。
+  </p>
+ </div>
+
+ <div class="refsect1 errors" id="refsect1-function.com-get-active-object-errors">
+  <h3 class="title">エラー / 例外</h3>
+  <p class="para">
+   この関数が失敗する
+   理由はさまざまなものが考えられますが、最も一般的なのは
+   オブジェクトがまだ起動していないことです。そのような場合、
+   例外のエラーコードは <strong><code>MK_E_UNAVAILABLE</code></strong>
+   となります。例外オブジェクトの <em>getCode</em>
+   メソッドを使用することで、例外コードの内容を調べることが可能です。
+  </p>
+ </div>
+
+ <div class="refsect1 notes" id="refsect1-function.com-get-active-object-notes">
+  <h3 class="title">注意</h3>
+  <div class="warning"><strong class="warning">警告</strong>
+   <p class="para">
+    Web 環境で <span class="function"><strong>com_get_active_object()</strong></span> を使用する
+    ことは、あまり良い考えではありません。ほとんどの COM/OLE
+    アプリケーションは複数のクライアントから同時に利用されることを
+    考慮していないのです。(あの) Microsoft Office でさえもです!
+    この件に関する一般的な問題についての詳細な情報は、<a href="http://support.microsoft.com/kb/257757" class="link external" title="Link : http://support.microsoft.com/kb/257757">&raquo;&nbsp;Considerations for Server-Side
+    Automation of Office</a> を参照ください。
+   </p>
+  </div>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="87981""></a>
+  <div class="note">
+   <strong class="user">gerrit at timingteam dot nl</strong>
+   <a href="#87981" class="date">04-Jan-2009 06:25</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Please note the next behavior (Apache 2.2.8, W2K, WXP)<br />
+<br />
+If Apache runs as a service, com_get_active_object() always returns MK_E_UNAVAILABLE, even when it is definitely sure that the Running Object Table contains a reference to the required object.<br />
+<br />
+If Apache runs in a console, com_get_active_object()&nbsp; returns the object handle as required.<br />
+<br />
+This apparently is a Windows issue.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

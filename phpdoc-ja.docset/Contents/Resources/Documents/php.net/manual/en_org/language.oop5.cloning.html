@@ -1,0 +1,522 @@
+<html><!-- Mirrored from php.net/manual/en/language.oop5.cloning.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:28:00 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Object Cloning</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="language.oop5.cloning.html">
+ <link rel="shorturl" href="http://php.net/oop5.cloning">
+ <link rel="alternate" href="http://php.net/oop5.cloning" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="language.oop5.html">
+ <link rel="prev" href="language.oop5.final.html">
+ <link rel="next" href="language.oop5.object-comparison.html">
+
+ <link rel="alternate" href="language.oop5.cloning.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/language.oop5.cloning.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/language.oop5.cloning.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/language.oop5.cloning.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/language.oop5.cloning.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/language.oop5.cloning.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/language.oop5.cloning.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/language.oop5.cloning.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/language.oop5.cloning.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/language.oop5.cloning.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/language.oop5.cloning.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="langref.html">Language Reference</a></li>      <li><a href="language.oop5.html">Classes and Objects</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="language.oop5.cloning" class="sect1">
+  <h2 class="title">Object Cloning</h2>
+  
+  <p class="para">
+   Creating a copy of an object with fully replicated properties is not
+   always the wanted behavior. A good example of the need for copy
+   constructors, is if you have an object which represents a GTK window and the
+   object holds the resource of this GTK window, when you create a duplicate
+   you might want to create a new window with the same properties and have the
+   new object hold the resource of the new window. Another example is if your
+   object holds a reference to another object which it uses and when you
+   replicate the parent object you want to create a new instance of this other
+   object so that the replica has its own separate copy.
+  </p>
+
+  <p class="para">
+   An object copy is created by using the <em class="emphasis">clone</em> keyword (which calls the
+   object's <a href="language.oop5.cloning.html#object.clone" class="link">__clone()</a> method if possible).
+   An object's <a href="language.oop5.cloning.html#object.clone" class="link">__clone()</a> method
+   cannot be called directly.
+  </p>
+
+  <div class="informalexample">
+   <div class="example-contents">
+<div class="cdata"><pre>$copy_of_object = clone $object;
+</pre></div>
+   </div>
+
+  </div>
+
+  <p class="para">
+   When an object is cloned, PHP 5 will perform a shallow copy of all of the
+   object's properties. Any properties that are references to other variables,
+   will remain references.
+  </p>
+
+  <div class="methodsynopsis dc-description" id="object.clone">
+   <span class="type"><span class="type void">void</span></span> <span class="methodname"><strong>__clone</strong></span>
+    ( <span class="methodparam">void</span>
+   )</div>
+
+
+  <p class="para">
+   Once the cloning is complete, if a <a href="language.oop5.cloning.html#object.clone" class="link">__clone()</a> method is defined, then
+   the newly created object's <a href="language.oop5.cloning.html#object.clone" class="link">__clone()</a> method will be called, to allow any
+   necessary properties that need to be changed.
+  </p>
+
+  <div class="example" id="example-244">
+   <p><strong>Example #1 Cloning an object</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">SubObject<br></span><span style="color: #007700">{<br>&nbsp;&nbsp;&nbsp;&nbsp;static&nbsp;</span><span style="color: #0000BB">$instances&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">0</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;</span><span style="color: #0000BB">$instance</span><span style="color: #007700">;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">__construct</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">instance&nbsp;</span><span style="color: #007700">=&nbsp;++</span><span style="color: #0000BB">self</span><span style="color: #007700">::</span><span style="color: #0000BB">$instances</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">__clone</span><span style="color: #007700">()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">instance&nbsp;</span><span style="color: #007700">=&nbsp;++</span><span style="color: #0000BB">self</span><span style="color: #007700">::</span><span style="color: #0000BB">$instances</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br>class&nbsp;</span><span style="color: #0000BB">MyCloneable<br></span><span style="color: #007700">{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;</span><span style="color: #0000BB">$object1</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;</span><span style="color: #0000BB">$object2</span><span style="color: #007700">;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;</span><span style="color: #0000BB">__clone</span><span style="color: #007700">()<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;Force&nbsp;a&nbsp;copy&nbsp;of&nbsp;this-&gt;object,&nbsp;otherwise<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;it&nbsp;will&nbsp;point&nbsp;to&nbsp;same&nbsp;object.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">object1&nbsp;</span><span style="color: #007700">=&nbsp;clone&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">object1</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br></span><span style="color: #0000BB">$obj&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MyCloneable</span><span style="color: #007700">();<br><br></span><span style="color: #0000BB">$obj</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">object1&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">SubObject</span><span style="color: #007700">();<br></span><span style="color: #0000BB">$obj</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">object2&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">SubObject</span><span style="color: #007700">();<br><br></span><span style="color: #0000BB">$obj2&nbsp;</span><span style="color: #007700">=&nbsp;clone&nbsp;</span><span style="color: #0000BB">$obj</span><span style="color: #007700">;<br><br><br>print(</span><span style="color: #DD0000">"Original&nbsp;Object:\n"</span><span style="color: #007700">);<br></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$obj</span><span style="color: #007700">);<br><br>print(</span><span style="color: #DD0000">"Cloned&nbsp;Object:\n"</span><span style="color: #007700">);<br></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$obj2</span><span style="color: #007700">);<br><br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+   <div class="example-contents"><p>The above example will output:</p></div>
+   <div class="example-contents screen">
+<div class="cdata"><pre>Original Object:
+MyCloneable Object
+(
+    [object1] =&gt; SubObject Object
+        (
+            [instance] =&gt; 1
+        )
+
+    [object2] =&gt; SubObject Object
+        (
+            [instance] =&gt; 2
+        )
+
+)
+Cloned Object:
+MyCloneable Object
+(
+    [object1] =&gt; SubObject Object
+        (
+            [instance] =&gt; 3
+        )
+
+    [object2] =&gt; SubObject Object
+        (
+            [instance] =&gt; 2
+        )
+
+)
+</pre></div>
+
+   </div>
+
+  </div>
+
+ </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="72502">  
+  <a class="name">
+  <strong class="user"><em>MakariVerslund at gmail dot com</em></strong></a><div class="date" title="2007-01-21 04:30"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom72502">
+<div class="phpcode"><code><span class="html">
+I ran into the same problem of an array of objects inside of an object that I wanted to clone all pointing to the same objects. However, I agreed that serializing the data was not the answer. It was relatively simple, really:
+<br>
+<br>public function __clone() {
+<br>&nbsp; &nbsp; foreach ($this-&gt;varName as &amp;$a) {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; foreach ($a as &amp;$b) {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $b = clone $b;
+<br>&nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; }
+<br>}
+<br>
+<br>Note, that I was working with a multi-dimensional array and I was not using the Key=&gt;Value pair system, but basically, the point is that if you use foreach, you need to specify that the copied data is to be accessed by reference.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="98297">  
+  <a class="name">
+  <strong class="user"><em>jojor at gmx dot net</em></strong></a><div class="date" title="2010-06-07 01:47"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom98297">
+<div class="phpcode"><code><span class="html">
+Here is test script i wrote to test the behaviour of clone when i have arrays with primitive values in my class - as an additonal test of the note below by jeffrey at whinger dot nl<br><br>&lt;pre&gt;<br><span class="default">&lt;?php<br><br></span><span class="keyword">class </span><span class="default">MyClass </span><span class="keyword">{<br><br>&nbsp; &nbsp; private </span><span class="default">$myArray </span><span class="keyword">= array();<br>&nbsp; &nbsp; function </span><span class="default">pushSomethingToArray</span><span class="keyword">(</span><span class="default">$var</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">array_push</span><span class="keyword">(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">myArray</span><span class="keyword">, </span><span class="default">$var</span><span class="keyword">);<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; function </span><span class="default">getArray</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; return </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">myArray</span><span class="keyword">;<br>&nbsp; &nbsp; }<br><br>}<br><br></span><span class="comment">//push some values to the myArray of Mainclass<br></span><span class="default">$myObj </span><span class="keyword">= new </span><span class="default">MyClass</span><span class="keyword">();<br></span><span class="default">$myObj</span><span class="keyword">-&gt;</span><span class="default">pushSomethingToArray</span><span class="keyword">(</span><span class="string">'blue'</span><span class="keyword">);<br></span><span class="default">$myObj</span><span class="keyword">-&gt;</span><span class="default">pushSomethingToArray</span><span class="keyword">(</span><span class="string">'orange'</span><span class="keyword">);<br></span><span class="default">$myObjClone </span><span class="keyword">= clone </span><span class="default">$myObj</span><span class="keyword">;<br></span><span class="default">$myObj</span><span class="keyword">-&gt;</span><span class="default">pushSomethingToArray</span><span class="keyword">(</span><span class="string">'pink'</span><span class="keyword">);<br><br></span><span class="comment">//testing<br></span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$myObj</span><span class="keyword">-&gt;</span><span class="default">getArray</span><span class="keyword">());&nbsp; &nbsp;&nbsp; </span><span class="comment">//Array([0] =&gt; blue,[1] =&gt; orange,[2] =&gt; pink)<br></span><span class="default">print_r</span><span class="keyword">(</span><span class="default">$myObjClone</span><span class="keyword">-&gt;</span><span class="default">getArray</span><span class="keyword">());</span><span class="comment">//Array([0] =&gt; blue,[1] =&gt; orange)<br>//so array&nbsp; cloned <br><br></span><span class="default">?&gt;<br></span>&lt;/pre&gt;</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="106135">  
+  <a class="name">
+  <strong class="user"><em>walkman at walkman dot pk</em></strong></a><div class="date" title="2011-10-13 05:11"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom106135">
+<div class="phpcode"><code><span class="html">
+If you want a property that gets the same value in every clone if changed, you can do this simple trick:<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">class </span><span class="default">A<br></span><span class="keyword">{<br>&nbsp; &nbsp; public </span><span class="default">$name </span><span class="keyword">;<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; public function </span><span class="default">__construct</span><span class="keyword">()<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">name </span><span class="keyword">= &amp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">name</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>}<br><br></span><span class="default">$a </span><span class="keyword">= new </span><span class="default">A</span><span class="keyword">;<br></span><span class="default">$a</span><span class="keyword">-&gt;</span><span class="default">name </span><span class="keyword">= </span><span class="string">"George"</span><span class="keyword">;<br><br></span><span class="default">$b </span><span class="keyword">= clone </span><span class="default">$a</span><span class="keyword">;<br></span><span class="default">$b</span><span class="keyword">-&gt;</span><span class="default">name </span><span class="keyword">= </span><span class="string">"Somebody else"</span><span class="keyword">;<br><br></span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">);<br></span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$b</span><span class="keyword">);<br></span><span class="default">?&gt;<br></span><br>this will output:<br><br>object(A)#1 (1) {<br>&nbsp; ["name"]=&gt;<br>&nbsp; &amp;string(13) "Somebody else"<br>}<br>object(A)#2 (1) {<br>&nbsp; ["name"]=&gt;<br>&nbsp; &amp;string(13) "Somebody else"<br>}<br><br>You can change any of the clones property and all of the others will change accordingly.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="91323">  
+  <a class="name">
+  <strong class="user"><em>ben at last dot fm</em></strong></a><div class="date" title="2009-06-05 10:33"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom91323">
+<div class="phpcode"><code><span class="html">
+Here are some cloning and reference gotchas we came up against at Last.fm.<br><br>1. PHP treats variables as either 'values types' or 'reference types', where the difference is supposed to be transparent. Object cloning is one of the few times when it can make a big difference. I know of no programmatic way to tell if a variable is intrinsically a value or reference type. There IS however a non-programmatic ways to tell if an object property is value or reference type:<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">class </span><span class="default">A </span><span class="keyword">{ var </span><span class="default">$p</span><span class="keyword">; }<br><br></span><span class="default">$a </span><span class="keyword">= new </span><span class="default">A</span><span class="keyword">;<br></span><span class="default">$a</span><span class="keyword">-&gt;</span><span class="default">p </span><span class="keyword">= </span><span class="string">'Hello'</span><span class="keyword">; </span><span class="comment">// $a-&gt;p is a value type<br></span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">);<br><br></span><span class="comment">/*<br>object(A)#1 (1) {<br>&nbsp; ["p"]=&gt;<br>&nbsp; string(5) "Hello" // &lt;-- no &amp;<br>}<br>*/<br><br></span><span class="default">$ref </span><span class="keyword">=&amp; </span><span class="default">$a</span><span class="keyword">-&gt;</span><span class="default">p</span><span class="keyword">; </span><span class="comment">// note that this CONVERTS $a-&gt;p into a reference type!!<br></span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">);<br><br></span><span class="comment">/*<br>object(A)#1 (1) {<br>&nbsp; ["p"]=&gt;<br>&nbsp; &amp;string(5) "Hello" // &lt;-- note the &amp;, this indicates it's a reference.<br>}<br>*/<br><br></span><span class="default">?&gt;<br></span><br>2. unsetting all-but-one of the references will convert the remaining reference back into a value. Continuing from the previous example:<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">unset(</span><span class="default">$ref</span><span class="keyword">);<br></span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">);<br><br></span><span class="comment">/*<br>object(A)#1 (1) {<br>&nbsp; ["p"]=&gt;<br>&nbsp; string(5) "Hello"<br>}<br>*/<br><br></span><span class="default">?&gt;<br></span><br>I interpret this as the reference-count jumping from 2 straight to 0. However...<br><br>2. It IS possible to create a reference with a reference count of 1 - i.e. to convert an property from value type to reference type, without any extra references. All you have to do is declare that it refers to itself. This is HIGHLY idiosyncratic, but nevertheless it works. This leads to the observation that although the manual states that 'Any properties that are references to other variables, will remain references,' this is not strictly true. Any variables that are references, even to *themselves* (not necessarily to other variables), will be copied by reference rather than by value. <br><br>Here's an example to demonstrate:<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">class </span><span class="default">ByVal<br></span><span class="keyword">{<br>&nbsp; &nbsp; var </span><span class="default">$prop</span><span class="keyword">;<br>}<br><br>class </span><span class="default">ByRef<br></span><span class="keyword">{<br>&nbsp; &nbsp; var </span><span class="default">$prop</span><span class="keyword">;<br>&nbsp; &nbsp; function </span><span class="default">__construct</span><span class="keyword">() { </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">prop </span><span class="keyword">=&amp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">prop</span><span class="keyword">; }<br>}<br><br></span><span class="default">$a </span><span class="keyword">= new </span><span class="default">ByVal</span><span class="keyword">;<br></span><span class="default">$a</span><span class="keyword">-&gt;</span><span class="default">prop </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br></span><span class="default">$b </span><span class="keyword">= clone </span><span class="default">$a</span><span class="keyword">;<br></span><span class="default">$b</span><span class="keyword">-&gt;</span><span class="default">prop </span><span class="keyword">= </span><span class="default">2</span><span class="keyword">; </span><span class="comment">// $a-&gt;prop remains at 1<br><br></span><span class="default">$a </span><span class="keyword">= new </span><span class="default">ByRef</span><span class="keyword">;<br></span><span class="default">$a</span><span class="keyword">-&gt;</span><span class="default">prop </span><span class="keyword">= </span><span class="default">1</span><span class="keyword">;<br></span><span class="default">$b </span><span class="keyword">= clone </span><span class="default">$a</span><span class="keyword">;<br></span><span class="default">$b</span><span class="keyword">-&gt;</span><span class="default">prop </span><span class="keyword">= </span><span class="default">2</span><span class="keyword">; </span><span class="comment">// $a-&gt;prop is now 2<br><br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="81774">  
+  <a class="name">
+  <strong class="user"><em>crrodriguez at suse dot de</em></strong></a><div class="date" title="2008-03-12 09:52"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom81774">
+<div class="phpcode"><code><span class="html">
+Keep in mind that since PHP 5.2.5, trying to clone a non-object correctly results in a fatal error, this differs from previous versions where only a Warning was thrown.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="79886">  
+  <a class="name">
+  <strong class="user"><em>Hayley Watson</em></strong></a><div class="date" title="2007-12-17 03:51"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom79886">
+<div class="phpcode"><code><span class="html">
+It should go without saying that if you have circular references, where a property of object A refers to object B while a property of B refers to A (or more indirect loops than that), then you'll be glad that clone does NOT automatically make a deep copy!<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">class </span><span class="default">Foo<br></span><span class="keyword">{<br>&nbsp; &nbsp; var </span><span class="default">$that</span><span class="keyword">;<br><br>function </span><span class="default">__clone</span><span class="keyword">()<br>{<br>&nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">that </span><span class="keyword">= clone </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">that</span><span class="keyword">;<br>}<br><br>}<br><br></span><span class="default">$a </span><span class="keyword">= new </span><span class="default">Foo</span><span class="keyword">;<br></span><span class="default">$b </span><span class="keyword">= new </span><span class="default">Foo</span><span class="keyword">;<br></span><span class="default">$a</span><span class="keyword">-&gt;</span><span class="default">that </span><span class="keyword">= </span><span class="default">$b</span><span class="keyword">;<br></span><span class="default">$b</span><span class="keyword">-&gt;</span><span class="default">that </span><span class="keyword">= </span><span class="default">$a</span><span class="keyword">;<br><br></span><span class="default">$c </span><span class="keyword">= clone </span><span class="default">$a</span><span class="keyword">;<br>echo </span><span class="string">'What happened?'</span><span class="keyword">;<br></span><span class="default">var_dump</span><span class="keyword">(</span><span class="default">$c</span><span class="keyword">);</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="51439">  
+  <a class="name">
+  <strong class="user"><em>jorge dot villalobos at gmail dot com</em></strong></a><div class="date" title="2005-03-30 03:29"><strong>9 years ago</strong></div>
+  <div class="text" id="Hcom51439">
+<div class="phpcode"><code><span class="html">
+I think it's relevant to note that __clone is NOT an override. As the example shows, the normal cloning process always occurs, and it's the responsibility of the __clone method to "mend" any "wrong" action performed by it.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="73081">  
+  <a class="name">
+  <strong class="user"><em>Alexey</em></strong></a><div class="date" title="2007-02-08 07:18"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom73081">
+<div class="phpcode"><code><span class="html">
+To implement __clone() method in complex classes I use this simple function:<br><br>function clone_($some)<br>{<br>&nbsp;&nbsp; return (is_object($some)) ? clone $some : $some;<br>}<br><br>In this way I don't need to care about type of my class properties.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="114932">  
+  <a class="name">
+  <strong class="user"><em>obaidmaroof at gmail dot com</em></strong></a><div class="date" title="2014-04-29 02:01"><strong>3 months ago</strong></div>
+  <div class="text" id="Hcom114932">
+<div class="phpcode"><code><span class="html">
+<span class="default">&lt;?php<br></span><span class="keyword">class </span><span class="default">A</span><span class="keyword">{<br>&nbsp; public </span><span class="default">$my_var</span><span class="keyword">;<br>&nbsp; function </span><span class="default">__construct</span><span class="keyword">() { </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">my_var </span><span class="keyword">= </span><span class="string">'aaa'</span><span class="keyword">; }<br>&nbsp; }<br>&nbsp; <br>&nbsp; </span><span class="default">$a </span><span class="keyword">= new </span><span class="default">A</span><span class="keyword">;<br>&nbsp; </span><span class="default">$b </span><span class="keyword">= clone </span><span class="default">$a</span><span class="keyword">;<br>&nbsp; </span><span class="default">$b</span><span class="keyword">-&gt;</span><span class="default">my_var </span><span class="keyword">= </span><span class="string">'bbb'</span><span class="keyword">;<br>&nbsp; <br>&nbsp; echo(</span><span class="default">$a</span><span class="keyword">-&gt;</span><span class="default">my_var</span><span class="keyword">);&nbsp;&nbsp; </span><span class="comment">// 'aaa'<br>&nbsp; </span><span class="keyword">echo(</span><span class="default">$b</span><span class="keyword">-&gt;</span><span class="default">my_var</span><span class="keyword">);&nbsp;&nbsp; </span><span class="comment">// 'bbb'<br> <br>&nbsp; </span><span class="default">$c </span><span class="keyword">= new </span><span class="default">A</span><span class="keyword">;<br>&nbsp; </span><span class="default">$d </span><span class="keyword">= </span><span class="default">$c</span><span class="keyword">;<br>&nbsp; </span><span class="default">$d</span><span class="keyword">-&gt;</span><span class="default">my_var </span><span class="keyword">= </span><span class="string">'bbb'</span><span class="keyword">;<br>&nbsp; <br>&nbsp; echo(</span><span class="default">$c</span><span class="keyword">-&gt;</span><span class="default">my_var</span><span class="keyword">);&nbsp;&nbsp; </span><span class="comment">// 'bbb'<br>&nbsp; </span><span class="keyword">echo(</span><span class="default">$d</span><span class="keyword">-&gt;</span><span class="default">my_var</span><span class="keyword">);&nbsp;&nbsp; </span><span class="comment">// 'bbb'<br></span><span class="default">?&gt;<br></span><br>simple example to understand the basic concept behind clone.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="108938">  
+  <a class="name">
+  <strong class="user"><em>seriously at something dot com</em></strong></a><div class="date" title="2012-06-06 04:58"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom108938">
+<div class="phpcode"><code><span class="html">
+If you want a property that gets the same value in every clone if changed, you can do this simple trick:<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">class </span><span class="default">A<br></span><span class="keyword">{<br>&nbsp; &nbsp; public static </span><span class="default">$name </span><span class="keyword">;<br><br>}<br><br></span><span class="default">$a </span><span class="keyword">= new </span><span class="default">A</span><span class="keyword">;<br></span><span class="default">$a</span><span class="keyword">::</span><span class="default">$name </span><span class="keyword">= </span><span class="string">'George'</span><span class="keyword">;<br><br></span><span class="default">$b </span><span class="keyword">= clone </span><span class="default">$a</span><span class="keyword">;<br></span><span class="default">$b</span><span class="keyword">::</span><span class="default">$name </span><span class="keyword">= </span><span class="string">"Somebody else"</span><span class="keyword">;<br><br>echo </span><span class="string">'a: ' </span><span class="keyword">. </span><span class="default">$a</span><span class="keyword">::</span><span class="default">$name </span><span class="keyword">. </span><span class="string">"\n"</span><span class="keyword">;<br>echo </span><span class="string">'b: ' </span><span class="keyword">. </span><span class="default">$b</span><span class="keyword">::</span><span class="default">$name </span><span class="keyword">. </span><span class="string">"\n"</span><span class="keyword">;<br><br></span><span class="default">?&gt;<br></span><br>this will output:<br><br>a: Somebody else<br>b: Somebody else<br><br>You can change any of the clones property and all of the others will change accordingly.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="97249">  
+  <a class="name">
+  <strong class="user"><em>henke at henke37 dot cjb dot net</em></strong></a><div class="date" title="2010-04-10 03:31"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom97249">
+<div class="phpcode"><code><span class="html">
+Arrays are shallow cloned on assignment, so don't use the clone keyword on them, just assign it to a new variable. That would lead to an error instead.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="96493">  
+  <a class="name">
+  <strong class="user"><em>emile at webflow dot nl</em></strong></a><div class="date" title="2010-03-02 01:27"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom96493">
+<div class="phpcode"><code><span class="html">
+Another gotcha I encountered: like __construct and __desctruct, you must call parent::__clone() yourself from inside a child's __clone() function. The manual kind of got me on the wrong foot here: "An object's __clone() method cannot be called directly."</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="89321">  
+  <a class="name">
+  <strong class="user"><em>koyama</em></strong></a><div class="date" title="2009-03-03 07:28"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom89321">
+<div class="phpcode"><code><span class="html">
+The __clone() method for deep cloning by cheetah at tanabi dot org also works when the object to be cloned contains references to itself. This is not the case for any variation of the __clone() method in edit by danbrown at php dot net.<br><br>We are taking advantage of the fact that one can serialize an object that references itself.<br><br>Example:<br><br><span class="default">&lt;?php<br></span><span class="keyword">class </span><span class="default">Foo<br></span><span class="keyword">{<br>&nbsp; &nbsp; function </span><span class="default">__construct</span><span class="keyword">()<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">_myself </span><span class="keyword">= </span><span class="default">$this</span><span class="keyword">;<br>&nbsp; &nbsp; }<br><br>&nbsp; &nbsp; function </span><span class="default">__clone</span><span class="keyword">() {<br>&nbsp; &nbsp; &nbsp; &nbsp; foreach (</span><span class="default">$this </span><span class="keyword">as </span><span class="default">$key </span><span class="keyword">=&gt; </span><span class="default">$val</span><span class="keyword">) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (</span><span class="default">is_object</span><span class="keyword">(</span><span class="default">$val</span><span class="keyword">) || (</span><span class="default">is_array</span><span class="keyword">(</span><span class="default">$val</span><span class="keyword">))) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;{</span><span class="default">$key</span><span class="keyword">} = </span><span class="default">unserialize</span><span class="keyword">(</span><span class="default">serialize</span><span class="keyword">(</span><span class="default">$val</span><span class="keyword">));<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; }<br>}<br><br></span><span class="comment">// this object references itself<br></span><span class="default">$foo </span><span class="keyword">= new </span><span class="default">Foo</span><span class="keyword">();<br><br></span><span class="comment">// create a deep clone<br></span><span class="default">$bar </span><span class="keyword">= clone </span><span class="default">$foo</span><span class="keyword">;<br><br></span><span class="comment">// check if we reach this point<br></span><span class="keyword">echo </span><span class="string">'Finished cloning!'</span><span class="keyword">;<br></span><span class="default">?&gt;<br></span><br>Replacing the __clone() method with the one shown in edit by danbrown at php dot net we run into an infinite loop, and we never get message 'Finished cloning!'.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="86093">  
+  <a class="name">
+  <strong class="user"><em>wbcarts at juno dot com</em></strong></a><div class="date" title="2008-10-02 11:41"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom86093">
+<div class="phpcode"><code><span class="html">
+CLONED ARMIES? USE STATIC DATA<br><br>When I think of cloning, I always think of Star Wars "Cloned Army"... where the number of clones are in the hundreds of thousands. So far, I have only seen examples of one or two clones with either shallow, deep, or recursive references. My fix is to use the static keyword. With static, you choose the properties your objects share... and makes scaling up the number of so-called "clones" much easier.<br><br><span class="default">&lt;?php<br><br></span><span class="keyword">class </span><span class="default">Soldier </span><span class="keyword">{<br>&nbsp; public static </span><span class="default">$status</span><span class="keyword">;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// this is the property I'm trying to clone<br><br>&nbsp; </span><span class="keyword">protected static </span><span class="default">$idCount </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">;&nbsp;&nbsp; </span><span class="comment">// used to increment ID numbers<br>&nbsp; </span><span class="keyword">protected </span><span class="default">$id</span><span class="keyword">;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// each Soldier will have a unique ID<br><br>&nbsp; </span><span class="keyword">public function </span><span class="default">__construct</span><span class="keyword">() {<br>&nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">id </span><span class="keyword">= ++</span><span class="default">self</span><span class="keyword">::</span><span class="default">$idCount</span><span class="keyword">;<br>&nbsp; }&nbsp; <br><br>&nbsp; public function </span><span class="default">issueCommand</span><span class="keyword">(</span><span class="default">$task</span><span class="keyword">) {<br>&nbsp; &nbsp; switch(</span><span class="default">$task</span><span class="keyword">){<br>&nbsp; &nbsp; &nbsp; case </span><span class="string">'Deploy Troops'</span><span class="keyword">: </span><span class="default">self</span><span class="keyword">::</span><span class="default">$status </span><span class="keyword">= </span><span class="string">'deploying'</span><span class="keyword">; break;<br>&nbsp; &nbsp; &nbsp; case </span><span class="string">'March Forward'</span><span class="keyword">: </span><span class="default">self</span><span class="keyword">::</span><span class="default">$status </span><span class="keyword">= </span><span class="string">'marching forward'</span><span class="keyword">; break;<br>&nbsp; &nbsp; &nbsp; case </span><span class="string">'Fire!'</span><span class="keyword">: </span><span class="default">self</span><span class="keyword">::</span><span class="default">$status </span><span class="keyword">= </span><span class="string">'shot fired'</span><span class="keyword">; break;<br>&nbsp; &nbsp; &nbsp; case </span><span class="string">'Retreat!'</span><span class="keyword">: </span><span class="default">self</span><span class="keyword">::</span><span class="default">$status </span><span class="keyword">= </span><span class="string">'course reversed'</span><span class="keyword">; break;<br>&nbsp; &nbsp; &nbsp; default: </span><span class="default">self</span><span class="keyword">::</span><span class="default">$status </span><span class="keyword">= </span><span class="string">'at ease'</span><span class="keyword">; break;<br>&nbsp; &nbsp; }<br>&nbsp; &nbsp; echo </span><span class="string">'COMMAND ISSUED: ' </span><span class="keyword">. </span><span class="default">$task </span><span class="keyword">. </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br>&nbsp; }<br><br>&nbsp; public function </span><span class="default">__toString</span><span class="keyword">() {<br>&nbsp; &nbsp; return </span><span class="string">"Soldier[id=</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">id</span><span class="string">, status=" </span><span class="keyword">. </span><span class="default">self</span><span class="keyword">::</span><span class="default">$status </span><span class="keyword">. </span><span class="string">']'</span><span class="keyword">;<br>&nbsp; }<br>}<br><br></span><span class="comment"># create the General and the Cloned Army<br></span><span class="default">$general </span><span class="keyword">= new </span><span class="default">Soldier</span><span class="keyword">();<br></span><span class="default">$platoon </span><span class="keyword">= array();<br>&nbsp; for(</span><span class="default">$i </span><span class="keyword">= </span><span class="default">0</span><span class="keyword">; </span><span class="default">$i </span><span class="keyword">&lt; </span><span class="default">250</span><span class="keyword">; </span><span class="default">$i</span><span class="keyword">++) </span><span class="default">$platoon</span><span class="keyword">[] = new </span><span class="default">Soldier</span><span class="keyword">();<br><br></span><span class="comment"># issue commands, then check what soldiers are doing<br></span><span class="default">$general</span><span class="keyword">-&gt;</span><span class="default">issueCommand</span><span class="keyword">(</span><span class="string">'Deploy Troops'</span><span class="keyword">);<br>echo </span><span class="default">$general </span><span class="keyword">. </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br>echo </span><span class="default">$platoon</span><span class="keyword">[</span><span class="default">223</span><span class="keyword">] . </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br>echo </span><span class="default">$platoon</span><span class="keyword">[</span><span class="default">12</span><span class="keyword">] . </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br><br></span><span class="default">$general</span><span class="keyword">-&gt;</span><span class="default">issueCommand</span><span class="keyword">(</span><span class="string">'March Forward'</span><span class="keyword">);<br>echo </span><span class="default">$platoon</span><span class="keyword">[</span><span class="default">47</span><span class="keyword">] . </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br>echo </span><span class="default">$platoon</span><span class="keyword">[</span><span class="default">163</span><span class="keyword">] . </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br><br></span><span class="default">$general</span><span class="keyword">-&gt;</span><span class="default">issueCommand</span><span class="keyword">(</span><span class="string">'Fire!'</span><span class="keyword">);<br>echo </span><span class="default">$platoon</span><span class="keyword">[</span><span class="default">248</span><span class="keyword">] . </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br>echo </span><span class="default">$platoon</span><span class="keyword">[</span><span class="default">68</span><span class="keyword">] . </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br><br></span><span class="default">$general</span><span class="keyword">-&gt;</span><span class="default">issueCommand</span><span class="keyword">(</span><span class="string">'Retreat!'</span><span class="keyword">);<br>echo </span><span class="default">$platoon</span><span class="keyword">[</span><span class="default">26</span><span class="keyword">] . </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br>echo </span><span class="default">$platoon</span><span class="keyword">[</span><span class="default">197</span><span class="keyword">] . </span><span class="string">'&lt;br&gt;'</span><span class="keyword">;<br></span><span class="default">?&gt;<br></span><br>COMMAND ISSUED: Deploy Troops<br>&nbsp; Soldier[id=1, status=deploying]<br>&nbsp; Soldier[id=225, status=deploying]<br>&nbsp; Soldier[id=14, status=deploying]<br><br>COMMAND ISSUED: March Forward<br>&nbsp; Soldier[id=49, status=marching forward]<br>&nbsp; Soldier[id=165, status=marching forward]<br><br>COMMAND ISSUED: Fire!<br>&nbsp; Soldier[id=250, status=shot fired]<br>&nbsp; Soldier[id=70, status=shot fired]<br><br>COMMAND ISSUED: Retreat!<br>&nbsp; Soldier[id=28, status=course reversed]<br>&nbsp; Soldier[id=199, status=course reversed]</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="84575">  
+  <a class="name">
+  <strong class="user"><em>Jim Brown</em></strong></a><div class="date" title="2008-07-19 03:34"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom84575">
+<div class="phpcode"><code><span class="html">
+Regarding the generic deep __clone() example provided by david ashe at metabin:<br><br>If your object has a variable that stores an array of objects, that particular __clone() example will NOT perform a deep copy on your array of objects.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="83286">  
+  <a class="name">
+  <strong class="user"><em>alex dot offshore at gmail dot com</em></strong></a><div class="date" title="2008-05-19 03:23"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom83286">
+<div class="phpcode"><code><span class="html">
+Remember that in PHP 5 ALL objects are assigned BY REFERENCE.<br><br><span class="default">&lt;?php<br><br>&nbsp; </span><span class="keyword">function </span><span class="default">foo</span><span class="keyword">(</span><span class="default">$a</span><span class="keyword">) </span><span class="comment">// notice that '&amp;' near $a is missing<br>&nbsp; </span><span class="keyword">{<br>&nbsp; &nbsp; </span><span class="default">$a</span><span class="keyword">[</span><span class="string">'bar'</span><span class="keyword">] = </span><span class="default">10</span><span class="keyword">;<br>&nbsp; }<br><br>&nbsp; </span><span class="default">$x </span><span class="keyword">= array(</span><span class="string">'bar' </span><span class="keyword">=&gt; </span><span class="default">0</span><span class="keyword">); </span><span class="comment">// built-in array() is not an object<br>&nbsp; </span><span class="default">$y </span><span class="keyword">= new </span><span class="default">ArrayObject</span><span class="keyword">(array(</span><span class="string">'bar' </span><span class="keyword">=&gt; </span><span class="default">0</span><span class="keyword">));<br><br>&nbsp; echo </span><span class="string">"\$x['bar'] == </span><span class="keyword">${</span><span class="default">x</span><span class="keyword">[</span><span class="string">'bar'</span><span class="keyword">]}</span><span class="string">;\n\$y['bar'] == </span><span class="keyword">${</span><span class="default">y</span><span class="keyword">[</span><span class="string">'bar'</span><span class="keyword">]}</span><span class="string">;\n\n"</span><span class="keyword">;<br><br>&nbsp; </span><span class="default">foo</span><span class="keyword">(</span><span class="default">$x</span><span class="keyword">);<br>&nbsp; </span><span class="default">foo</span><span class="keyword">(</span><span class="default">$y</span><span class="keyword">);<br><br>&nbsp; echo </span><span class="string">"\$x['bar'] == </span><span class="keyword">${</span><span class="default">x</span><span class="keyword">[</span><span class="string">'bar'</span><span class="keyword">]}</span><span class="string">;\n\$y['bar'] == </span><span class="keyword">${</span><span class="default">y</span><span class="keyword">[</span><span class="string">'bar'</span><span class="keyword">]}</span><span class="string">;\n"</span><span class="keyword">;<br><br></span><span class="default">?&gt;<br></span><br>Output:<br>$x['bar'] == 0;<br>$y['bar'] == 0;<br><br>$x['bar'] == 0;<br>$y['bar'] == 10;<br><br>Hope this will be useful.<br><br>By the way, to determine whether the variable is compatible with ArrayAccess/ArrayObject see <a rel="nofollow" target="_blank">http://php.net/manual/en/function.is-array.php#48083</a></span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="87066">  
+  <a class="name">
+  <strong class="user"><em>cheetah at tanabi dot org</em></strong></a><div class="date" title="2008-11-18 05:15"><strong>5 years ago</strong></div>
+  <div class="text" id="Hcom87066">
+<div class="phpcode"><code><span class="html">
+Want deep cloning without too much hassle?
+<br>
+<br><span class="default">&lt;?php
+<br></span><span class="keyword">function </span><span class="default">__clone</span><span class="keyword">() {
+<br>&nbsp; &nbsp; foreach(</span><span class="default">$this </span><span class="keyword">as </span><span class="default">$key </span><span class="keyword">=&gt; </span><span class="default">$val</span><span class="keyword">) {
+<br>&nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">is_object</span><span class="keyword">(</span><span class="default">$val</span><span class="keyword">)||(</span><span class="default">is_array</span><span class="keyword">(</span><span class="default">$val</span><span class="keyword">))){
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;{</span><span class="default">$key</span><span class="keyword">} = </span><span class="default">unserialize</span><span class="keyword">(</span><span class="default">serialize</span><span class="keyword">(</span><span class="default">$val</span><span class="keyword">));
+<br>&nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; }
+<br>}
+<br></span><span class="default">?&gt;
+<br></span>
+<br>That will insure any object, or array that may potentially contain objects, will get cloned without using recursion or other support methods.
+<br>
+<br>
+<br>
+<br>[EDIT BY danbrown AT php DOT net: An almost exact function was contributed on 02-DEC-2008-10:18 by (david ashe AT metabin):
+<br>
+<br><span class="default">&lt;?php
+<br>&nbsp; &nbsp; </span><span class="keyword">function </span><span class="default">__clone</span><span class="keyword">(){
+<br>&nbsp; &nbsp; &nbsp; &nbsp; foreach(</span><span class="default">$this </span><span class="keyword">as </span><span class="default">$name </span><span class="keyword">=&gt; </span><span class="default">$value</span><span class="keyword">){
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if(</span><span class="default">gettype</span><span class="keyword">(</span><span class="default">$value</span><span class="keyword">)==</span><span class="string">'object'</span><span class="keyword">){
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">$name</span><span class="keyword">= clone(</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">$name</span><span class="keyword">);
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; &nbsp; &nbsp; }
+<br>&nbsp; &nbsp; }
+<br></span><span class="default">?&gt;
+<br></span>
+<br>Giving credit where it's due.&nbsp; ~DPB]</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="96852">  
+  <a class="name">
+  <strong class="user"><em>olivier dot pons at goo dot without dot oo dot mail dot com</em></strong></a><div class="date" title="2010-03-18 10:14"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom96852">
+<div class="phpcode"><code><span class="html">
+If you think "clone" will create a new instance, thus calling "__constructor", you're wrong. clone seems to only allocate memory for the object cloned, and simply copies the variables memory from the original to the new one (imagine something alike memcpy() in C). Nothing more. Keep in mind you'll have to do all the rest by yourself.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="97348">  
+  <a class="name">
+  <strong class="user"><em>jeffrey at whinger dot nl</em></strong></a><div class="date" title="2010-04-15 05:41"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom97348">
+<div class="phpcode"><code><span class="html">
+For me it wasn't very clear to how this cloning of objects really worked so I made this little bit of code:<br><br><span class="default">&lt;?php<br></span><span class="keyword">class </span><span class="default">foo<br></span><span class="keyword">{<br>&nbsp; &nbsp; public </span><span class="default">$test</span><span class="keyword">;<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; public function </span><span class="default">test</span><span class="keyword">()<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; echo </span><span class="string">'give us a '</span><span class="keyword">.</span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">test</span><span class="keyword">.</span><span class="string">"&lt;br&gt;\n"</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>}<br><br>class </span><span class="default">bar<br></span><span class="keyword">{<br>&nbsp; &nbsp; public </span><span class="default">$foo</span><span class="keyword">;<br>&nbsp; &nbsp; <br>&nbsp; &nbsp; public function </span><span class="default">insertFoo</span><span class="keyword">(</span><span class="default">$foo</span><span class="keyword">)<br>&nbsp; &nbsp; {<br>&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="default">$this</span><span class="keyword">-&gt;</span><span class="default">foo </span><span class="keyword">= </span><span class="default">$foo</span><span class="keyword">;<br>&nbsp; &nbsp; }<br>}<br><br></span><span class="default">$foo </span><span class="keyword">= new </span><span class="default">foo</span><span class="keyword">();<br><br></span><span class="default">$foo</span><span class="keyword">-&gt;</span><span class="default">test </span><span class="keyword">= </span><span class="string">'foo'</span><span class="keyword">;<br><br></span><span class="default">$bar </span><span class="keyword">= new </span><span class="default">bar</span><span class="keyword">();<br><br></span><span class="default">$bar</span><span class="keyword">-&gt;</span><span class="default">insertFoo</span><span class="keyword">(</span><span class="default">$foo</span><span class="keyword">);<br><br></span><span class="default">$foo</span><span class="keyword">-&gt;</span><span class="default">test</span><span class="keyword">();<br><br></span><span class="default">$bar</span><span class="keyword">-&gt;</span><span class="default">foo</span><span class="keyword">-&gt;</span><span class="default">test</span><span class="keyword">();<br><br></span><span class="default">$foo</span><span class="keyword">-&gt;</span><span class="default">test </span><span class="keyword">= </span><span class="string">'bar'</span><span class="keyword">;<br><br></span><span class="default">$foo</span><span class="keyword">-&gt;</span><span class="default">test</span><span class="keyword">();<br><br></span><span class="default">$bar</span><span class="keyword">-&gt;</span><span class="default">foo</span><span class="keyword">-&gt;</span><span class="default">test</span><span class="keyword">();<br><br></span><span class="default">$bar</span><span class="keyword">-&gt;</span><span class="default">foo </span><span class="keyword">= clone </span><span class="default">$foo</span><span class="keyword">;<br><br></span><span class="default">$bar</span><span class="keyword">-&gt;</span><span class="default">foo</span><span class="keyword">-&gt;</span><span class="default">test </span><span class="keyword">= </span><span class="string">'woop woop'</span><span class="keyword">;<br><br></span><span class="default">$foo</span><span class="keyword">-&gt;</span><span class="default">test</span><span class="keyword">();<br><br></span><span class="default">$bar</span><span class="keyword">-&gt;</span><span class="default">foo</span><span class="keyword">-&gt;</span><span class="default">test</span><span class="keyword">();<br><br></span><span class="comment">// result:<br>// give us a foo<br>// give us a foo<br>// give us a bar<br>// give us a bar<br>// give us a bar<br>// give us a woop woop<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/language.oop5.cloning.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:28:00 GMT -->
+
+
+</body></html>

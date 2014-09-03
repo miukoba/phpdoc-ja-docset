@@ -1,0 +1,422 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>関数の作成</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="internals2.variables.objects.html">≪ Working with Objects</a></li>
+      <li style="float: right;"><a href="internals2.classes.html">クラスの作成 ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="internals2.html">PHP のコア: ハッカーの手引き</a></li>
+    <li>関数の作成</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="internals2.funcs" class="chapter">
+  <h1>関数の作成</h1>
+
+  <p class="para">
+   PHP では関数とメソッドはだいたい同じ形式で、メソッドは単にスコープが限定された関数でしかありません。
+   つまり、そのメソッドが属するクラスエントリのスコープになるということです。
+   クラスエントリについては、このマニュアルの別のページで説明します。
+   このセクションの目的は、関数やメソッドの内部構造を紹介することです。
+   関数を定義したり、変数を受け取ったり、PHP プログラマーに値を返したりする方法を説明します。
+  </p>
+
+  <p class="para">
+   関数の内部構造は、それほど単純ではありません。
+  </p>
+  
+  <div class="example-contents screen">
+<div class="cdata"><pre>
+PHP_FUNCTION(hackers_function) {
+  /* 受け取る引数をここで指定します */
+  long number;
+  
+  /* 引数を受け取ります */
+  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, &quot;l&quot;, &amp;number) != SUCCESS) {
+      return;
+  }
+  
+  /* 何かの作業をします */
+  number *= 2;
+  
+  /* 戻り値を設定します */
+  RETURN_LONG(number);
+}</pre></div>
+  </div>
+  
+  <p class="para">
+   プリプロセッサの <code class="code">PHP_FUNCTION(hackers_function)</code> 命令は、
+   次のような宣言に展開されます。
+  </p>
+  
+  <div class="example-contents screen">
+<div class="cdata"><pre>
+void zif_hackers_function(INTERNAL_FUNCTION_PARAMETERS)
+</pre></div>
+  </div>
+  
+  <p class="para">
+   <code class="code">INTERNAL_FUNCTION_PARAMETERS</code> はマクロとして定義されており、
+   次の表のようになります。
+  </p>
+  
+  <table id="internals2.funcs.index.internal-func-params" class="doctable table">
+   <caption><strong>INTERNAL_FUNCTION_PARAMETERS</strong></caption>
+   
+    <thead>
+     <tr>
+      <th>型と名前</th>
+      <th>説明</th>
+      <th>アクセス用マクロ</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+                                                    
+     <tr>
+      <td><code class="code">int ht</code></td>
+      <td>ユーザーから実際に渡されたパラメータの数</td>
+      <td><code class="code">ZEND_NUM_ARGS()</code></td>
+     </tr>
+
+
+     <tr>
+      <td><code class="code">zval *return_value</code></td>
+      <td>
+       PHP 変数へのポインタ。ここに、ユーザーへの戻り値を設定します。
+       デフォルトの型は <code class="code">IS_NULL</code> です。
+      </td>
+      <td><code class="code">RETVAL_*</code>, <code class="code">RETURN_*</code></td>
+     </tr>
+
+
+     <tr>
+      <td><code class="code">zval **return_value_ptr</code></td>
+      <td>
+       PHP に参照を返すときには、ここに変数へのポインタを設定します。
+       参照を返すことはお勧めしません。
+      </td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+
+     <tr>
+      <td><code class="code">zval *this_ptr</code></td>
+      <td>
+       メソッド呼び出しの場合は、<code class="code">$this</code> オブジェクトを保持する PHP 変数を指します。
+      </td>
+      <td><code class="code">getThis()</code></td>
+     </tr>
+
+
+     <tr>
+      <td><code class="code">int return_value_used</code></td>
+      <td>
+       返り値を呼び出し元が使うかどうかを示すフラグ。
+      </td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+
+    </tbody>
+   
+  </table>
+
+  
+  <p class="para">
+   明確にするために、完全に展開した <code class="code">PHP_FUNCTION(hackers_function)</code> のドキュメントを示します。
+  </p>
+  
+  <div class="example-contents screen">
+<div class="cdata"><pre>
+void zif_hackers_function(int ht, zval* return_value, zval** return_value_ptr, zval* this_ptr, int return_value_used)
+</pre></div>
+  </div>
+  
+  <p class="para">
+    <code class="code">this_ptr</code> の存在を奇妙に感じるかもしれません。クラスの詳細は後ほど説明するとして、ここでは
+    <code class="code">PHP_METHOD(MyClass, hackersFunction)</code> の結果が次のような宣言になることを示しておけば十分でしょう。
+  </p>
+  
+  <div class="example-contents screen">
+<div class="cdata"><pre>
+void zim_MyClass_hackersFunction(INTERNAL_FUNCTION_PARAMETERS)
+</pre></div>
+  </div>
+  
+  <p class="para">
+   <code class="code">hackers_function</code> は特に凝ったことをするわけではなく、<code class="code">zend_parse_parameters</code> API
+   を使って受け取った数値を二倍して、それをエンジンに返すだけです。
+   普通は、単に入力を二倍するだけなどではなく、もっと複雑な何かを行うことでしょう。
+   ここでは、説明のために、できるだけシンプルにとどめました。
+   関数に入った際に <code class="code">return_value</code> を確保し、<code class="code">null</code> に初期化されます。
+   これで、PHP の関数のデフォルトの返り値が <code class="code">null</code> となります。
+  </p>
+  
+  <p class="para">
+   <code class="code">Hacker</code> が正しい引数として指定する内容を
+   <code class="code">zend_parse_parameters</code> が受け取れず、受け取った引数を
+   <code class="code">type_spec</code> を満たす形式に変換できなかった場合は、エラーを発生させます。
+   そして、<code class="code">Hacker</code> はその場で <code class="code">return</code> しなければいけません。
+  </p>
+  
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para"><code class="code">Array</code>、<code class="code">Object</code>、そして <code class="code">Resource</code> は変換できません。</p>
+  </p></blockquote>
+  
+  <table id="internals2.funcs.parameters.api" class="doctable table">
+   <caption><strong>パラメータのプロトタイプのパース</strong></caption>
+   
+    <tbody class="tbody">
+     <tr>
+      <td><code class="code">int zend_parse_parameters(int num_args TSRMLS_DC, char *type_spec, ...)</code></td>
+     </tr>
+
+     <tr>
+      <td><code class="code">int zend_parse_parameters_ex(int flags, int num_args TSRMLS_DC, char *type_spec, ...)</code></td>
+     </tr>
+
+     <tr>
+      <td><code class="code">int zend_parse_parameter(int flags, int arg_num TSRMLS_DC, zval **arg, const char *spec, ...)</code></td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    <code class="code">zend_parse_parameter</code> はバージョン 5.5 以降で使用可能で、<code class="code">zend_parse_parameters_ex</code> と同じような挙動です。
+    ただ、引数をスタックから読み込むのではなく、変換対象の zval を受け取って、その場で変換します。
+   </p>
+  </p></blockquote>
+  
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    <code class="code">flags</code> はマスクとして扱うことを想定しています。現時点で有効なフラグは <code class="code">ZEND_PARSE_PARAMS_QUIET</code> だけです (これは、警告を抑制します)。
+   </p>
+  </p></blockquote>
+  
+  <p class="para">
+   これらの API 関数から受け取る可変引数は、C の変数のアドレスであることが期待されています。
+   また、<code class="code">zend_parse_parameters</code> API 関数の出力であると考えなければいけません。
+  </p>
+
+  <table id="internals2.funcs.parameters.types" class="doctable table">
+   <caption><strong>型指定子</strong></caption>
+   
+     <thead>
+     <tr>
+      <th>指定子</th>
+      <th>型</th>
+      <th>ローカル</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+     <tr>
+      <td>a</td>
+      <td><code class="code">array</code></td>
+      <td><code class="code">zval*</code></td>
+     </tr>
+
+     <tr>
+      <td>A</td>
+      <td><code class="code">array</code> あるいは <code class="code">object</code></td>
+      <td><code class="code">zval*</code></td>
+     </tr>
+
+     <tr>
+      <td>b</td>
+      <td><code class="code">boolean</code></td>
+      <td><code class="code">zend_bool</code></td>
+     </tr>
+
+     <tr>
+      <td>C</td>
+      <td><code class="code">class</code></td>
+      <td><code class="code">zend_class_entry*</code></td>
+     </tr>
+
+     <tr>
+      <td>d</td>
+      <td><code class="code">double</code></td>
+      <td><code class="code">double</code></td>
+     </tr>
+
+     <tr>
+      <td>f</td>
+      <td><code class="code">function</code></td>
+      <td><code class="code">zend_fcall_info*</code>, <code class="code">zend_fcall_info_cache*</code></td>
+     </tr>
+
+     <tr>
+      <td>h</td>
+      <td><code class="code">array</code></td>
+      <td><code class="code">HashTable*</code></td>
+     </tr>
+
+     <tr>
+      <td>H</td>
+      <td><code class="code">array</code> あるいは <code class="code">object</code></td>
+      <td><code class="code">HashTable*</code></td>
+     </tr>
+
+     <tr>
+      <td>l</td>
+      <td><code class="code">long</code></td>
+      <td><code class="code">long</code></td>
+     </tr>
+
+     <tr>
+      <td>L</td>
+      <td><code class="code">long</code> (LONG_MAX/LONG_MIN の範囲に収まるもの)</td>
+      <td><code class="code">long</code></td>
+     </tr>
+
+     <tr>
+      <td>o</td>
+      <td><code class="code">object</code></td>
+      <td><code class="code">zval*</code></td>
+     </tr>
+
+     <tr>
+      <td>O</td>
+      <td><code class="code">object</code> (指定した <code class="code">zend_class_entry</code> のもの)</td>
+      <td><code class="code">zval*</code>, <code class="code">zend_class_entry*</code></td>
+     </tr>
+
+     <tr>
+      <td>p</td>
+      <td><code class="code">string</code> (有効なパス)</td>
+      <td><code class="code">char*</code>, <code class="code">int</code></td>
+     </tr>
+
+     <tr>
+      <td>r</td>
+      <td><code class="code">resource</code></td>
+      <td><code class="code">zval*</code></td>
+     </tr>
+
+     <tr>
+      <td>s</td>
+      <td><code class="code">string</code></td>
+      <td><code class="code">char*</code>, <code class="code">int</code></td>
+     </tr>
+
+     <tr>
+      <td>z</td>
+      <td><code class="code">mixed</code></td>
+      <td><code class="code">zval*</code></td>
+     </tr>
+
+     <tr>
+      <td>Z</td>
+      <td><code class="code">mixed</code></td>
+      <td><code class="code">zval**</code></td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    型指定子が <code class="code">O</code> の場合、ローカルの <code class="code">zend_class_entry*</code> は
+    <code class="code">zend_parse_parameter</code> への入力 (型指定子の一部) と見なされます。
+   </p>
+  </p></blockquote>
+  
+  <table id="internals2.funcs.parameters.advanced" class="doctable table">
+   <caption><strong>高度な型指定子</strong></caption>
+   
+     <thead>
+     <tr>
+      <th>指定子</th>
+      <th>説明</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+     <tr>
+      <td>*</td>
+      <td>直前の型の引数が 0 個以上</td>
+     </tr>
+
+     <tr>
+      <td>+</td>
+      <td>直前の型の引数が 1 個以上</td>
+     </tr>
+
+     <tr>
+      <td>|</td>
+      <td>残りのパラメータは任意である</td>
+     </tr>
+
+     <tr>
+      <td>/</td>
+      <td>後に続くパラメータを <code class="code">SEPARATE_ZVAL_IF_NOT_REF</code> します。</td>
+     </tr>
+
+     <tr>
+      <td>!</td>
+      <td>
+       直前のパラメータが、指定した型あるいは <code class="code">null</code> のどちらかになるものとします。
+       &#039;b&#039;、&#039;l&#039;、&#039;d&#039; の場合は、対応する <code class="code">bool*</code>、<code class="code">long*</code>、<code class="code">double*</code>
+       の後に zend_bool* 型の引数を追加する必要があります。<code class="code">null</code>
+       を受け取った場合は、ここに <code class="code">true</code> が設定されます。
+      </td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">パラメータのパースについての詳細は、ソース配布物に含まれる <code class="code">README.PARAMETER_PARSING_API</code> を参照ください。</p>
+  </p></blockquote>
+  
+  <p class="para">
+   一度 <code class="code">Hacker</code> の関数が実行されたら、実行するよう実装されているかどうかにかかわらず、エンジン向けの <code class="code">return_value</code> を設定します。
+   <code class="code">RETURN_</code> マクロと <code class="code">RETVAL_</code> マクロは
+   <code class="code">Z_*_P</code> の単なるラッパーで、<code class="code">return_value</code> と組み合わせて使います。
+  </p>
+  
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    <code class="code">RETURN_</code> マクロはその場で関数の実行を終了します (つまり、<code class="code">return;</code> します) が、
+    <code class="code">RETVAL_</code> は、<code class="code">return_value</code> を設定してからも実行を続けます。
+   </p>
+  </p></blockquote>
+  
+  <p class="para">
+   これで、関数の仕組みについて、それなりに理解できたことでしょう。
+   メソッドの仕組みについても、ある程度は理解できたはずです。
+  </p>
+
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

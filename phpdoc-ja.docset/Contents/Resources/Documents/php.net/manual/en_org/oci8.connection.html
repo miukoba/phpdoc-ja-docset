@@ -1,0 +1,520 @@
+<html><!-- Mirrored from php.net/manual/en/oci8.connection.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 16:18:01 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>OCI8 Connection Handling and Connection Pooling</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="oci8.connection.html">
+ <link rel="shorturl" href="oci8.connection.html">
+ <link rel="alternate" href="oci8.connection.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="book.oci8.html">
+ <link rel="prev" href="oci8.examples.html">
+ <link rel="next" href="oci8.fan.html">
+
+ <link rel="alternate" href="oci8.connection.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/oci8.connection.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/oci8.connection.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/oci8.connection.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/oci8.connection.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/oci8.connection.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/oci8.connection.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/oci8.connection.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/oci8.connection.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/oci8.connection.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/oci8.connection.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.database.html">Database Extensions</a></li>      <li><a href="refs.database.vendors.html">Vendor Specific Database Extensions</a></li>      <li><a href="book.oci8.html">OCI8</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="oci8.connection" class="chapter">
+ <h1>OCI8 Connection Handling and Connection Pooling</h1>
+
+ <div class="section">
+  <h2 class="title">Connection Functions</h2>
+  <p class="para">
+   The OCI8 extension provides three different functions for
+   connecting to Oracle.  The standard connection function
+   is <span class="function"><a href="function.oci-connect.html" class="function">oci_connect()</a></span>.  This creates a connection to
+   an Oracle database and returns a resource used by subsequent
+   database calls.
+  </p>
+  <p class="para">
+   Connecting to an Oracle server is a reasonably expensive operation
+   in terms of the time that it takes to complete.
+   The <span class="function"><a href="function.oci-pconnect.html" class="function">oci_pconnect()</a></span> function uses a persistent
+   cache of connections that can be re-used across different script
+   requests.  This means that the connection overhead will typically
+   only occur once per PHP process (or Apache child).
+  </p>
+  <p class="para">
+   If the application connects to Oracle using a different set of
+   credentials for each web user, the persistent cache employed by
+   <span class="function"><a href="function.oci-pconnect.html" class="function">oci_pconnect()</a></span> will become less useful as the
+   number of concurrent users increases, to the point where it may
+   start to adversely affect the overall performance of the Oracle
+   server due to maintaining too many idle connections. If the
+   application is structured in this way, it is recommended to either
+   tune the application using
+   the <a href="oci8.configuration.html#ini.oci8.max-persistent" class="link">oci8.max_persistent</a>
+   and <a href="oci8.configuration.html#ini.oci8.persistent-timeout" class="link">oci8.persistent_timeout</a>
+   configuration settings (these will give control over the persistent
+   connection cache size and lifetime), use Oracle Database
+   Resident Connection Pooling (in Oracle Database 11g or later), or use
+   <span class="function"><a href="function.oci-connect.html" class="function">oci_connect()</a></span> instead.
+  </p>
+  <p class="para">
+   Both <span class="function"><a href="function.oci-connect.html" class="function">oci_connect()</a></span>
+   and <span class="function"><a href="function.oci-pconnect.html" class="function">oci_pconnect()</a></span> employ a connection cache; if
+   multiple calls to
+   <span class="function"><a href="function.oci-connect.html" class="function">oci_connect()</a></span> use the same parameters in a given
+   script, the second and subsequent calls return the existing
+   connection handle.  The cache used
+   by <span class="function"><a href="function.oci-connect.html" class="function">oci_connect()</a></span> is cleaned up at the end of the
+   script run, or when the connection handle is explicitly closed. The
+   function <span class="function"><a href="function.oci-pconnect.html" class="function">oci_pconnect()</a></span> has similar behavior,
+   although its cache is maintained separately and survives between
+   HTTP requests.  
+  </p>
+  <p class="para">
+   This caching feature means the two handles are not transactionally
+   isolated (they are in fact the same connection handle, so there is
+   no isolation of any kind).  If the application needs two separate,
+   transactionally isolated connections, then
+   use <span class="function"><a href="function.oci-new-connect.html" class="function">oci_new_connect()</a></span>.
+  </p>
+  <p class="para">
+   The <span class="function"><a href="function.oci-pconnect.html" class="function">oci_pconnect()</a></span> cache is cleared and any
+   database connections closed when the PHP process terminates, so
+   effective use of persistent connections requires that PHP be an
+   Apache module or used with FGCI, or similar.  Persistent connections
+   will not have any benefits over <span class="function"><a href="function.oci-connect.html" class="function">oci_connect()</a></span>
+   when PHP is used with CGI or via the command-line.
+  </p>
+  <p class="para">
+   The function <span class="function"><a href="function.oci-new-connect.html" class="function">oci_new_connect()</a></span> always creates a
+   new connection to the Oracle server, regardless of what other
+   connections might already exist.  High traffic web applications
+   should avoid using
+   <span class="function"><a href="function.oci-new-connect.html" class="function">oci_new_connect()</a></span>, especially in the busiest sections of
+   the application.
+  </p>
+ </div>
+ <div class="section">
+  <h2 class="title">DRCP Connection Pooling</h2>
+  <p class="para">
+   PHP from 5.3 (PECL OCI8 1.3) supports Oracle Database Resident
+   Connection Pooling (DRCP).  DRCP allows more efficient use of
+   database machine memory and provides high scalability.  No, or
+   minimal, application changes are needed to use DRCP.
+  </p>
+  <p class="para">
+   DRCP is suited for applications that connect using few database
+   schemas and hold database connections open for a short period of
+   time.  Other applications should use Oracle's
+   default <em>Dedicated</em> database server processes, or
+   use <em>Shared</em> servers.
+  </p>
+  <p class="para">
+   DRCP benefits all three connection functions, but gives the highest
+   scalability when connections are created
+   with <span class="function"><a href="function.oci-pconnect.html" class="function">oci_pconnect()</a></span>.
+  </p>
+  <p class="para">
+   For DRCP to be available in OCI8, Oracle client libraries used by
+   PHP and the version of the Oracle Database must both be 11g or greater.
+  </p>
+  <p class="para">
+   Documentation on DRCP is found in several Oracle manuals. For
+   example,
+   see <a href="http://download.oracle.com/docs/cd/E11882_01/server.112/e25494/manproc004.htm" class="link external">»&nbsp;Configuring
+   Database Resident Connection Pooling</a> in the Oracle
+   documentation for usage information.
+   A <a href="http://www.oracle.com/technetwork/topics/php/whatsnew/php-scalability-ha-twp-128842.pdf" class="link external">»&nbsp;DRCP
+   white paper</a> contains background information on DRCP.
+  </p>
+  <p class="para">
+   To use DRCP, build PHP with the OCI8 1.3 (or later) extension and Oracle 11g (or later)
+   libraries and then follow these steps:
+  </p>
+  <p class="para">
+   </p><ul class="itemizedlist">
+    <li class="listitem">
+     <p class="para">
+      As a privileged database administrator, use a program like
+      SQL*Plus to start the connection pool in the database:
+     </p>
+     <p class="para">
+      </p><div class="informalexample">
+       <div class="example-contents screen">
+<div class="cdata"><pre>    SQL&gt; execute dbms_connection_pool.start_pool;
+</pre></div>
+       </div>
+      </div>
+     <p></p>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      Optionally
+      use <em>dbms_connection_pool.alter_param()</em> to
+      configure DRCP settings.  The current pool settings can be
+      queried from the <em>DBA_CPOOL_INFO</em> view.
+     </p>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      Update the connection strings used.  For PHP applications that
+      currently connect using a Network Connect Name
+      like <em>MYDB</em>:
+     </p>
+     <p class="para">
+      </p><div class="informalexample">
+       <div class="example-contents screen">
+<div class="cdata"><pre>    $c = oci_pconnect("myuser", "mypassword", "MYDB");
+</pre></div>
+       </div>
+      </div>
+     <p></p>
+     <p class="para">
+      modify the tnsnames.ora file and add
+      a <em>(SERVER=POOLED)</em> clause, for example:
+     </p>
+     <p class="para">
+      </p><div class="informalexample">
+       <div class="example-contents screen">
+<div class="cdata"><pre>    MYDB = (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp) (HOST=myhost.dom.com)
+           (PORT=1521))(CONNECT_DATA=(SERVICE_NAME=sales)
+           (SERVER=POOLED)))
+</pre></div>
+       </div>
+      </div>
+     <p></p>
+     <p class="para">
+      Alternatively, modify the Easy Connect syntax in PHP and add
+      <em>:POOLED</em> after the service name:
+     </p>
+     <p class="para">
+      </p><div class="informalexample">
+       <div class="example-contents screen">
+<div class="cdata"><pre>    $c = oci_pconnect("myuser", "mypassword", "myhost.dom.com:1521/sales:POOLED");
+</pre></div>
+       </div>
+      </div>
+     <p></p>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      Edit <var class="filename">php.ini</var> and choose a connection class name.  This name
+      indicates a logical division of the connection pool and can be
+      used to isolate pooling for separate applications.  Any PHP
+      applications with the same user name and connection class value
+      will be able to share connections in the pool, giving greater
+      scalability.
+     </p>
+     <p class="para">
+      </p><div class="informalexample">
+       <div class="example-contents screen">
+<div class="cdata"><pre>    oci8.connection_class = "MY_APPLICATION_NAME"
+</pre></div>
+       </div>
+      </div>
+     <p></p>
+    </li>
+    <li class="listitem">
+     <p class="para">
+      Run the application, connecting to the 11g (or later) database.
+     </p>
+    </li>
+    </ul>
+  <p></p>
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   </p><p class="para">
+    Applications using Oracle 10g that require the performance of
+    persistent connections can reduce the amount of database server
+    memory needed by using Oracle <em>Shared</em> servers
+    (previously known as Multi Threaded Servers).  Refer to Oracle
+    documentation for information.
+   </p>
+  <p></p></blockquote>
+ </div>
+ <div class="section">
+  <h2 class="title">DRCP Recommendations and Known Limitations</h2>
+  <p class="para">
+   Changing a password over DRCP connections will fail with the error
+   <em class="emphasis">ORA-56609: Usage not supported with DRCP</em>.
+   This is a documented restriction of Oracle Database 11g.
+  </p>
+  <p class="para">
+   From OCI8 1.3, persistent connections can be
+   closed by the user, allowing greater control over connection
+   resource usage.  Persistent connections will now also be closed
+   automatically when there is no PHP variable referencing them, such
+   as at the end of scope of a PHP user function.  This will rollback
+   any uncommitted transaction.  These changes to persistent
+   connections make them behave similarly to non-persistent
+   connections, simplifying the interface, allowing for greater
+   application consistency and predictability.
+   Use <a href="oci8.configuration.html#ini.oci8.old-oci-close-semantics" class="link">oci8.old_oci_close_semantics</a>
+   set to
+   <em class="emphasis">On</em> to retain the historical behavior.
+  </p>
+  <p class="para">
+   If the Oracle Database is version 11.1.0.6, then the Oracle
+   database patch for Oracle bug 6474441 must be applied to use DRCP.
+   Without this patch, errors such as <em class="emphasis">ORA-01000: maximum
+   open cursors exceeded</em>, <em class="emphasis">ORA-01001 invalid
+   cursor</em> or <em class="emphasis">ORA-01002 fetch out of
+   sequence</em> may occur.  This bug was fixed in Oracle
+   11.1.0.7 onwards.
+  </p>
+   <p class="para">
+   If the Oracle 11.1.0.6 database patch cannot be applied, one of the
+   following three workarounds can be used instead:
+  </p>
+  <p class="para">
+   </p><ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      Connect using Oracle <em>Dedicated</em>
+      or <em>Shared</em> servers instead of DRCP.
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      Set PHP's <a href="oci8.configuration.html#ini.oci8.statement-cache-size" class="link">oci8.statement_cache_size</a>
+      to 0.
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      Set an event in the database initialization parameter file:
+      <em class="emphasis">event="56699 trace name context forever, level 128"</em>.
+     </span>
+    </li>
+   </ul>
+  <p></p>
+  <p class="para">
+   Oracle Database 11.1.0.7 and the Oracle Database 11.1.0.6 patch for
+   Oracle bug 6474441 allow PHP applications with DRCP connection to
+   use a database <em>LOGON</em> trigger to set session
+   properties at the time of session creation.  Examples of such
+   settings are the NLS language and the date format.
+  </p>
+  <p class="para">
+   If the Oracle 11.1.0.6 database patch cannot be applied, one of the
+   following workarounds can be used instead
+   of using <em>LOGON</em> triggers:
+  </p>
+  <p class="para">
+   </p><ul class="itemizedlist">
+    <li class="listitem">
+     <span class="simpara">
+      After logon, explicitly set the session properties using PHP
+      application code.
+     </span>
+    </li>
+    <li class="listitem">
+     <span class="simpara">
+      Connect using Oracle <em>Dedicated</em>
+      or <em>Shared</em> servers instead of DRCP.
+     </span>
+    </li>
+   </ul>
+  <p></p>
+  <p class="para">
+   The automatic re-establishment of PHP persistent connections after
+   an Apache or FGCI process respawns means <em>LOGON</em>
+   triggers in PHP are only recommended for setting session attributes
+   and not for per-application user connection requests.  This is even
+   more so with DRCP due to the automatic pool sizing and with the
+   way <em>LOGON</em> triggers fire with DRCP
+   authentication.
+  </p>
+ </div>
+</div>
+
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div>
+ <div class="note">There are no user contributed notes for this page.</div></section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/oci8.connection.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 16:18:02 GMT -->
+
+
+</body></html>

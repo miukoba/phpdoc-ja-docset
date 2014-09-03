@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>InterBase データベースへの持続的接続をオープンする</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="function.ibase-param-info.html">≪ ibase_param_info</a></li>
+      <li style="float: right;"><a href="function.ibase-prepare.html">ibase_prepare ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="ref.ibase.html">Firebird/InterBase 関数</a></li>
+    <li>InterBase データベースへの持続的接続をオープンする</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="function.ibase-pconnect" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ibase_pconnect</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose"><span class="refname">ibase_pconnect</span> &mdash; <span class="dc-title">InterBase データベースへの持続的接続をオープンする</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.ibase-pconnect-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">resource</span> <span class="methodname"><strong>ibase_pconnect</strong></span>
+    ([ <span class="methodparam"><span class="type">string</span> <code class="parameter">$database</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$username</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$password</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$charset</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$buffers</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$dialect</code></span>
+   [, <span class="methodparam"><span class="type">string</span> <code class="parameter">$role</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$sync</code></span>
+  ]]]]]]]] )</div>
+
+  <p class="para rdfs-comment">
+   InterBase データベースへの持続的な接続をオープンします。
+  </p>
+  <p class="para">
+   <span class="function"><strong>ibase_pconnect()</strong></span> の動作は
+   <span class="function"><a href="function.ibase-connect.html" class="function">ibase_connect()</a></span> と非常に似ていますが、
+   大きな違いが二つあります。
+  </p>
+  <p class="para">
+   まず、この関数は接続時に同じパラメータで既にオープンされている
+   (持続的)リンクを探します。見つかった場合、新規接続をオープンする
+   代わりにそのリンクの ID が返されます。
+  </p>
+  <p class="para">
+   2 番目の違いとしては、InterBase サーバーへの接続は
+   スクリプト終了時にも閉じられないということです。
+   代わりに、そのリンクは今後使用するためにオープンされたままとなります
+   (<span class="function"><a href="function.ibase-close.html" class="function">ibase_close()</a></span> は <span class="function"><strong>ibase_pconnect()</strong></span>
+   によりオープンされたリンクを閉じません)。
+   このため、この型のリンクは&#039;持続的(persistent)&#039;と呼ばれます。
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.ibase-pconnect-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+<code class="parameter">database</code></dt>
+
+     <dd>
+
+      <p class="para">
+       <code class="parameter">database</code>は接続するサーバー上のデータベース
+       ファイルへの正しいパスである必要があります。ローカルなサーバーへの
+       接続でない場合、使用する接続プロトコルに応じてこの引数の前に&#039;
+       hostname:&#039; (TCP/IP)、&#039;//hostname/&#039; (NetBEUI)、&#039;hostname@&#039;
+       (IPX/SPX)のどれかをつける必要があります。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">username</code></dt>
+
+     <dd>
+
+      <p class="para">
+       ユーザー名。<var class="filename">php.ini</var> ディレクティブ
+       <em>ibase.default_user</em>
+       で設定します。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">password</code></dt>
+
+     <dd>
+
+      <p class="para">
+       <code class="parameter">username</code> のパスワード。
+       <var class="filename">php.ini</var> ディレクティブ
+       <em>ibase.default_password</em>
+       で設定します。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">charset</code></dt>
+
+     <dd>
+
+      <p class="para">
+       <code class="parameter">charset</code>
+       はデータベースに関するデフォルトの文字セットです。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">buffers</code></dt>
+
+     <dd>
+
+      <p class="para">
+       <code class="parameter">buffers</code>
+       はサーバー側のキャッシュに確保されるデータベースバッファの数です。0
+       または省略された場合、サーバーはデフォルト値を用います。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">dialect</code></dt>
+
+     <dd>
+
+      <p class="para">
+       <code class="parameter">dialect</code> は、接続時に実行される全ての命令に
+       関する SQL 方言のデフォルト値を選択し、デフォルトではクライアント
+       ライブラリでサポートされる方言のうち、最高位のものになります。
+       InterBase 6 以降でのみ有効です。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">role</code></dt>
+
+     <dd>
+
+      <p class="para">
+       InterBase 5 以降でのみ有効です。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">sync</code></dt>
+
+     <dd>
+
+      <p class="para">
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.ibase-pconnect-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   成功した場合に InterBase リンク ID、エラー時に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-function.ibase-pconnect-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><span class="function"><a href="function.ibase-close.html" class="function" rel="rdfs-seeAlso">ibase_close()</a> - InterBase データベースへの接続を閉じる</span></li>
+    <li class="member"><span class="function"><a href="function.ibase-connect.html" class="function" rel="rdfs-seeAlso">ibase_connect()</a> - データベースへの接続をオープンする</span></li>
+   </ul>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="64668""></a>
+  <div class="note">
+   <strong class="user">houston_roadrunner at yahoo dot com</strong>
+   <a href="#64668" class="date">19-Apr-2006 05:18</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+To make a connection to a firebird database with pconnect many people like to use the SYSDBA, or database owner. <br />
+example:<br />
+$dbConnection = ibase_pconnect('path to db','SYSDBA','masterkey');<br />
+<br />
+The above is fine unless you want to login in various user that have different permissions. To use permission make roles in the database, either as the database creator (or SYSDBA) and grant the roles to the various users. <br />
+<br />
+If you login with...<br />
+$dbConnection = ibase_pconnect('path to db', 'USERNAME', 'userpassword');<br />
+...interbase will default your user to the PUBLIC role, which is created when the database is create and usualy has select rights on tables only. To get the proper role you will need to use all the parameters, like this...<br />
+$user='USERNAME';<br />
+$password='userpassword';<br />
+$role='MANAGER_HR';<br />
+$dbConnection = ibase_pconnect('path to db', $user, $password, '', 0, 3, $role, 0);<br />
+<br />
+BTW - The "path to db", is formed like this...<br />
+---------------------<br />
+'localhost:c:/firebird/test_db/test.fdb'<br />
+---------------------<br />
+<br />
+reading the interbase material, it states 3 connection methods, PHP appears to have selected the tcp type for us. So you can use localhost, or I suspect(never tested this myself) a ip address.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

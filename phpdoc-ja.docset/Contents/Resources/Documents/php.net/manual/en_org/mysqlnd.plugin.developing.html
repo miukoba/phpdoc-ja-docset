@@ -1,0 +1,522 @@
+<html><!-- Mirrored from php.net/manual/en/mysqlnd.plugin.developing.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 17:07:07 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Getting started building a mysqlnd plugin</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="mysqlnd.plugin.developing.html">
+ <link rel="shorturl" href="mysqlnd.plugin.developing.html">
+ <link rel="alternate" href="mysqlnd.plugin.developing.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="mysqlnd.plugin.html">
+ <link rel="prev" href="mysqlnd.plugin.api.html">
+ <link rel="next" href="book.mysqlnd-ms.html">
+
+ <link rel="alternate" href="mysqlnd.plugin.developing.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/mysqlnd.plugin.developing.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/mysqlnd.plugin.developing.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/mysqlnd.plugin.developing.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/mysqlnd.plugin.developing.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/mysqlnd.plugin.developing.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/mysqlnd.plugin.developing.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/mysqlnd.plugin.developing.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/mysqlnd.plugin.developing.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/mysqlnd.plugin.developing.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/mysqlnd.plugin.developing.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.database.html">Database Extensions</a></li>      <li><a href="refs.database.vendors.html">Vendor Specific Database Extensions</a></li>      <li><a href="set.mysqlinfo.html">MySQL</a></li>      <li><a href="book.mysqlnd.html">Mysqlnd</a></li>      <li><a href="mysqlnd.plugin.html">MySQL Native Driver Plugin API</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="mysqlnd.plugin.developing" class="section">
+  <h2 class="title">Getting started building a mysqlnd plugin</h2>
+  <p class="para">
+   It is important to remember that a <em>mysqlnd</em> plugin
+   is itself a PHP extension.
+  </p>
+  <p class="para">
+   The following code shows the basic structure of the MINIT function
+   that will be used in the typical <em>mysqlnd</em> plugin:
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre>/* my_php_mysqlnd_plugin.c */
+
+ static PHP_MINIT_FUNCTION(mysqlnd_plugin) {
+  /* globals, ini entries, resources, classes */
+
+  /* register mysqlnd plugin */
+  mysqlnd_plugin_id = mysqlnd_plugin_register();
+
+  conn_m = mysqlnd_get_conn_methods();
+  memcpy(org_conn_m, conn_m,
+    sizeof(struct st_mysqlnd_conn_methods));
+
+  conn_m-&gt;query = MYSQLND_METHOD(mysqlnd_plugin_conn, query);
+  conn_m-&gt;connect = MYSQLND_METHOD(mysqlnd_plugin_conn, connect);
+}
+</pre></div>
+</div>
+
+<div class="example-contents">
+<div class="cdata"><pre>/* my_mysqlnd_plugin.c */
+
+ enum_func_status MYSQLND_METHOD(mysqlnd_plugin_conn, query)(/* ... */) {
+  /* ... */
+}
+enum_func_status MYSQLND_METHOD(mysqlnd_plugin_conn, connect)(/* ... */) {
+  /* ... */
+}
+</pre></div>
+</div>
+
+  <p class="para">
+   <em class="emphasis">Task analysis: from C to userspace</em>
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre> class proxy extends mysqlnd_plugin_connection {
+  public function connect($host, ...) { .. }
+}
+mysqlnd_plugin_set_conn_proxy(new proxy());
+</pre></div>
+</div>
+
+  <p class="para">
+   Process:
+  </p>
+  <ol type="1">
+   <li class="listitem">
+    <p class="para">
+     PHP: user registers plugin callback
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     PHP: user calls any PHP MySQL API to connect to MySQL
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     C: ext/*mysql* calls mysqlnd method
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     C: mysqlnd ends up in ext/mysqlnd_plugin
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     C: ext/mysqlnd_plugin
+     </p><ol type="1">
+      <li class="listitem">
+       <p class="para">
+        Calls userspace callback
+       </p>
+      </li>
+      <li class="listitem">
+       <p class="para">
+        Or original <em>mysqlnd</em> method, if userspace
+        callback not set
+       </p>
+      </li>
+     </ol>
+    <p></p>
+   </li>
+  </ol>
+  <p class="para">
+   You need to carry out the following:
+  </p>
+  <ol type="1">
+   <li class="listitem">
+    <p class="para">
+     Write a class "mysqlnd_plugin_connection" in C
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     Accept and register proxy object through
+     "mysqlnd_plugin_set_conn_proxy()"
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     Call userspace proxy methods from C (optimization -
+     zend_interfaces.h)
+    </p>
+   </li>
+  </ol>
+  <p class="para">
+   Userspace object methods can either be called using
+   <em>call_user_function()</em> or you can operate at a level
+   closer to the Zend Engine and use
+   <em>zend_call_method()</em>.
+  </p>
+  <p class="para">
+   <em class="emphasis"> Optimization: calling methods from C using
+   zend_call_method </em>
+  </p>
+  <p class="para">
+   The following code snippet shows the prototype for the
+   <em>zend_call_method</em> function, taken from
+   <var class="filename">zend_interfaces.h</var>.
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre> ZEND_API zval* zend_call_method(
+  zval **object_pp, zend_class_entry *obj_ce,
+  zend_function **fn_proxy, char *function_name,
+  int function_name_len, zval **retval_ptr_ptr,
+  int param_count, zval* arg1, zval* arg2 TSRMLS_DC
+);
+</pre></div>
+</div>
+
+  <p class="para">
+   Zend API supports only two arguments. You may need more, for example:
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre> enum_func_status (*func_mysqlnd_conn__connect)(
+  MYSQLND *conn, const char *host,
+  const char * user, const char * passwd,
+  unsigned int passwd_len, const char * db,
+  unsigned int db_len, unsigned int port,
+  const char * socket, unsigned int mysql_flags TSRMLS_DC
+);
+</pre></div>
+</div>
+
+  <p class="para">
+   To get around this problem you will need to make a copy of
+   <em>zend_call_method()</em> and add a facility for
+   additional parameters. You can do this by creating a set of
+   <em>MY_ZEND_CALL_METHOD_WRAPPER</em> macros.
+  </p>
+  <p class="para">
+   <em class="emphasis"> Calling PHP userspace</em>
+  </p>
+  <p class="para">
+   This code snippet shows the optimized method for calling a userspace
+   function from C:
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre> 
+/* my_mysqlnd_plugin.c */
+
+MYSQLND_METHOD(my_conn_class,connect)(
+  MYSQLND *conn, const char *host /* ... */ TSRMLS_DC) {
+  enum_func_status ret = FAIL;
+  zval * global_user_conn_proxy = fetch_userspace_proxy();
+  if (global_user_conn_proxy) {
+    /* call userspace proxy */
+    ret = MY_ZEND_CALL_METHOD_WRAPPER(global_user_conn_proxy, host, /*...*/);
+  } else {
+    /* or original mysqlnd method = do nothing, be transparent */
+    ret = org_methods.connect(conn, host, user, passwd,
+          passwd_len, db, db_len, port,
+          socket, mysql_flags TSRMLS_CC);
+  }
+  return ret;
+}
+</pre></div>
+</div>
+
+  <p class="para">
+   <em class="emphasis"> Calling userspace: simple arguments
+   </em>
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre>/* my_mysqlnd_plugin.c */
+
+ MYSQLND_METHOD(my_conn_class,connect)(
+  /* ... */, const char *host, /* ...*/) {
+  /* ... */
+  if (global_user_conn_proxy) {
+    /* ... */
+    zval* zv_host;
+    MAKE_STD_ZVAL(zv_host);
+    ZVAL_STRING(zv_host, host, 1);
+    MY_ZEND_CALL_METHOD_WRAPPER(global_user_conn_proxy, zv_retval, zv_host /*, ...*/);
+    zval_ptr_dtor(&amp;zv_host);
+    /* ... */
+  }
+  /* ... */
+}
+</pre></div>
+</div>
+
+  <p class="para">
+   <em class="emphasis"> Calling userspace: structs as arguments
+   </em>
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre>/* my_mysqlnd_plugin.c */
+
+MYSQLND_METHOD(my_conn_class, connect)(
+  MYSQLND *conn, /* ...*/) {
+  /* ... */
+  if (global_user_conn_proxy) {
+    /* ... */
+    zval* zv_conn;
+    ZEND_REGISTER_RESOURCE(zv_conn, (void *)conn, le_mysqlnd_plugin_conn);
+    MY_ZEND_CALL_METHOD_WRAPPER(global_user_conn_proxy, zv_retval, zv_conn, zv_host /*, ...*/);
+    zval_ptr_dtor(&amp;zv_conn);
+    /* ... */
+  }
+  /* ... */
+}
+</pre></div>
+</div>
+
+  <p class="para">
+   The first argument of many <em>mysqlnd</em> methods is a C
+   "object". For example, the first argument of the connect() method is
+   a pointer to <em>MYSQLND</em>. The struct MYSQLND
+   represents a <em>mysqlnd</em> connection object.
+  </p>
+  <p class="para">
+   The <em>mysqlnd</em> connection object pointer can be
+   compared to a standard I/O file handle. Like a standard I/O file
+   handle a <em>mysqlnd</em> connection object shall be linked
+   to the userspace using the PHP resource variable type.
+  </p>
+  <p class="para">
+   <em class="emphasis"> From C to userspace and back </em>
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre> class proxy extends mysqlnd_plugin_connection {
+  public function connect($conn, $host, ...) {
+    /* "pre" hook */
+    printf("Connecting to host = '%s'\n", $host);
+    debug_print_backtrace();
+    return parent::connect($conn);
+  }
+
+  public function query($conn, $query) {
+    /* "post" hook */
+    $ret = parent::query($conn, $query);
+    printf("Query = '%s'\n", $query);
+    return $ret;
+  }
+}
+mysqlnd_plugin_set_conn_proxy(new proxy());
+</pre></div>
+</div>
+
+  <p class="para">
+   PHP users must be able to call the parent implementation of an
+   overwritten method.
+  </p>
+  <p class="para">
+   As a result of subclassing it is possible to refine only selected
+   methods and you can choose to have "pre" or "post" hooks.
+  </p>
+  <p class="para">
+   <em class="emphasis"> Buildin class:
+   mysqlnd_plugin_connection::connect() </em>
+  </p>
+<div class="example-contents">
+<div class="cdata"><pre>/*  my_mysqlnd_plugin_classes.c */
+
+ PHP_METHOD("mysqlnd_plugin_connection", connect) {
+  /* ... simplified! ... */
+  zval* mysqlnd_rsrc;
+  MYSQLND* conn;
+  char* host; int host_len;
+  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "rs",
+    &amp;mysqlnd_rsrc, &amp;host, &amp;host_len) == FAILURE) {
+    RETURN_NULL();
+  }
+  ZEND_FETCH_RESOURCE(conn, MYSQLND* conn, &amp;mysqlnd_rsrc, -1,
+    "Mysqlnd Connection", le_mysqlnd_plugin_conn);
+  if (PASS == org_methods.connect(conn, host, /* simplified! */ TSRMLS_CC))
+    RETVAL_TRUE;
+  else
+    RETVAL_FALSE;
+}
+</pre></div>
+</div>
+
+ </div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div>
+ <div class="note">There are no user contributed notes for this page.</div></section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/mysqlnd.plugin.developing.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 17:07:08 GMT -->
+
+
+</body></html>

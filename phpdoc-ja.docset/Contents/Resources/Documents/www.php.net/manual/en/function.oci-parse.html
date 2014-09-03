@@ -1,321 +1,0 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
- <head>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <title>実行のために Oracle の文をパースする</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
- </head>
- <body class="docs"><div class="manualnavbar" style="text-align: center;">
- <div class="prev" style="text-align: left; float: left;"><a href="function.oci-num-rows.html">oci_num_rows</a></div>
- <div class="next" style="text-align: right; float: right;"><a href="function.oci-password-change.html">oci_password_change</a></div>
- <div class="up"><a href="ref.oci8.html">OCI8 関数</a></div>
- <div class="home"><a href="index.html">PHP Manual</a></div>
-</div><hr /><div id="function.oci-parse" class="refentry">
- <div class="refnamediv">
-  <h1 class="refname">oci_parse</h1>
-  <p class="verinfo">(PHP 5, PECL OCI8 &gt;= 1.1.0)</p><p class="refpurpose"><span class="refname">oci_parse</span> &mdash; <span class="dc-title">実行のために Oracle の文をパースする</span></p>
-
- </div>
- 
- <div class="refsect1 description" id="refsect1-function.oci-parse-description">
-  <h3 class="title">説明</h3>
-  <div class="methodsynopsis dc-description">
-   <span class="type">resource</span> <span class="methodname"><strong>oci_parse</strong></span>
-    ( <span class="methodparam"><span class="type">resource</span> <code class="parameter">$connection</code></span>
-   , <span class="methodparam"><span class="type">string</span> <code class="parameter">$sql_text</code></span>
-   )</div>
-
-  <p class="para rdfs-comment">
-   <em><code class="parameter">connection</code></em>
-   を使って <em><code class="parameter">sql_text</code></em> をパースし、ステートメント ID
-   を返します。この ID は、 <span class="function"><a href="function.oci-bind-by-name.html" class="function">oci_bind_by_name()</a></span>,
-    <span class="function"><a href="function.oci-execute.html" class="function">oci_execute()</a></span> や他の関数で使用されます。
-  </p>
-  <p class="para">
-   ステートメント ID を解放するには、
-    <span class="function"><a href="function.oci-free-statement.html" class="function">oci_free_statement()</a></span> を使うか、あるいは
-   変数に <strong><code>NULL</code></strong> を代入します。
-  </p>
- </div>
-
-
- <div class="refsect1 parameters" id="refsect1-function.oci-parse-parameters">
-  <h3 class="title">パラメータ</h3>
-  <p class="para">
-   <dl>
-
-    <dt>
-
-     <span class="term"><em><code class="parameter">connection</code></em></span>
-     <dd>
-
-      <p class="para">
-        <span class="function"><a href="function.oci-connect.html" class="function">oci_connect()</a></span>、 <span class="function"><a href="function.oci-pconnect.html" class="function">oci_pconnect()</a></span>
-       あるいは  <span class="function"><a href="function.oci-new-connect.html" class="function">oci_new_connect()</a></span>
-       が返す Oracle 接続 ID。
-      </p>
-     </dd>
-
-    </dt>
-
-    <dt>
-
-     <span class="term"><em><code class="parameter">sql_text</code></em></span>
-     <dd>
-
-      <p class="para">
-       SQL あるいは PL/SQL ステートメント。
-      </p>
-      <p class="para">
-       SQL の最後にセミコロン (&quot;;&quot;) をつけては
-       <em class="emphasis">いけません</em>。一方、PL/SQL ステートメントの最後はセミコロン
-       (&quot;;&quot;) を <em class="emphasis">つけなければなりません</em>。
-      </p>
-     </dd>
-
-    </dt>
-
-   </dl>
-
-  </p>
- </div>
-
-
- <div class="refsect1 returnvalues" id="refsect1-function.oci-parse-returnvalues">
-  <h3 class="title">返り値</h3>
-  <p class="para">
-   成功した場合にステートメントハンドル、あるいはエラー時に <strong><code>FALSE</code></strong> を返します。
-  </p>
- </div>
-
-
- <div class="refsect1 examples" id="refsect1-function.oci-parse-examples">
-  <h3 class="title">例</h3>
-  <p class="para">
-   <div class="example" id="example-2008">
-    <p><strong>例1  <span class="function"><strong>oci_parse()</strong></span> での SQL 文の例</strong></p>
-    <div class="example-contents">
-<div class="phpcode"><code><span style="color: #000000">
-<span style="color: #0000BB">&lt;?php<br /><br />$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'hr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'welcome'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'localhost/XE'</span><span style="color: #007700">);<br /><br /></span><span style="color: #FF8000">//&nbsp;パースします。SQL&nbsp;文の最後にはセミコロンがないことに注意しましょう<br /></span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'SELECT&nbsp;*&nbsp;FROM&nbsp;employees'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /><br />echo&nbsp;</span><span style="color: #DD0000">"&lt;table&nbsp;border='1'&gt;\n"</span><span style="color: #007700">;<br />while&nbsp;(</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_fetch_array</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">OCI_ASSOC</span><span style="color: #007700">+</span><span style="color: #0000BB">OCI_RETURN_NULLS</span><span style="color: #007700">))&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&lt;tr&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;(</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">$item</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&nbsp;&nbsp;&nbsp;&nbsp;&lt;td&gt;"&nbsp;</span><span style="color: #007700">.&nbsp;(</span><span style="color: #0000BB">$item&nbsp;</span><span style="color: #007700">!==&nbsp;</span><span style="color: #0000BB">null&nbsp;</span><span style="color: #007700">?&nbsp;</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$item</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">ENT_QUOTES</span><span style="color: #007700">)&nbsp;:&nbsp;</span><span style="color: #DD0000">"&amp;nbsp;"</span><span style="color: #007700">)&nbsp;.&nbsp;</span><span style="color: #DD0000">"&lt;/td&gt;\n"</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">"&lt;/tr&gt;\n"</span><span style="color: #007700">;<br />}<br />echo&nbsp;</span><span style="color: #DD0000">"&lt;/table&gt;\n"</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">?&gt;</span>
-</span>
-</code></div>
-    </div>
-
-   </div>
-  </p>
-  <p class="para">
-   <div class="example" id="example-2009">
-    <p><strong>例2  <span class="function"><strong>oci_parse()</strong></span> での PL/SQL の例</strong></p>
-    <div class="example-contents">
-<div class="phpcode"><code><span style="color: #000000">
-<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #FF8000">/*<br />&nbsp;&nbsp;この&nbsp;PHP&nbsp;プログラムを実行する前に、SQL*Plus&nbsp;や&nbsp;SQL&nbsp;Developer&nbsp;で<br />&nbsp;&nbsp;ストアドプロシージャを作っておきます<br /><br />&nbsp;&nbsp;CREATE&nbsp;OR&nbsp;REPLACE&nbsp;PROCEDURE&nbsp;myproc(p1&nbsp;IN&nbsp;NUMBER,&nbsp;p2&nbsp;OUT&nbsp;NUMBER)&nbsp;AS<br />&nbsp;&nbsp;BEGIN<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p2&nbsp;:=&nbsp;p1&nbsp;*&nbsp;2;<br />&nbsp;&nbsp;END;<br /><br />*/<br /><br /></span><span style="color: #0000BB">$conn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_connect</span><span style="color: #007700">(</span><span style="color: #DD0000">'hr'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'welcome'</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'localhost/XE'</span><span style="color: #007700">);<br />if&nbsp;(!</span><span style="color: #0000BB">$conn</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$e&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_error</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">trigger_error</span><span style="color: #007700">(</span><span style="color: #0000BB">htmlentities</span><span style="color: #007700">(</span><span style="color: #0000BB">$e</span><span style="color: #007700">[</span><span style="color: #DD0000">'message'</span><span style="color: #007700">],&nbsp;</span><span style="color: #0000BB">ENT_QUOTES</span><span style="color: #007700">),&nbsp;</span><span style="color: #0000BB">E_USER_ERROR</span><span style="color: #007700">);<br />}<br /><br /></span><span style="color: #0000BB">$p1&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">8</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">//&nbsp;PL/SQL&nbsp;プログラムをパースするには、文字列の最後にセミコロンが必要です<br /></span><span style="color: #0000BB">$stid&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">oci_parse</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'begin&nbsp;myproc(:p1,&nbsp;:p2);&nbsp;end;'</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">':p1'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$p1</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_bind_by_name</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">':p2'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$p2</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">40</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">oci_execute</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /><br />print&nbsp;</span><span style="color: #DD0000">"</span><span style="color: #0000BB">$p2</span><span style="color: #DD0000">\n"</span><span style="color: #007700">;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">//&nbsp;16&nbsp;と表示します<br /><br /></span><span style="color: #0000BB">oci_free_statement</span><span style="color: #007700">(</span><span style="color: #0000BB">$stid</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">oci_close</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">?&gt;</span>
-</span>
-</code></div>
-    </div>
-
-   </div>
-  </p>
- </div>
-
-
- <div class="refsect1 notes" id="refsect1-function.oci-parse-notes">
-  <h3 class="title">注意</h3>
-  <blockquote class="note"><p><strong class="note">注意</strong>: 
-   <p class="para">
-    この関数は <em><code class="parameter">sql_text</code></em> を検証
-    <em class="emphasis">しません</em>。
-    <em><code class="parameter">sql_text</code></em> が有効な SQL あるいは PL/SQL
-    文かどうかを検証する唯一の方法 - それは実行することです。
-   </p>
-  </p></blockquote>
- </div>
-
-
- <div class="refsect1 seealso" id="refsect1-function.oci-parse-seealso">
-  <h3 class="title">参考</h3>
-  <p class="para">
-   <ul class="simplelist">
-    <li class="member"> <span class="function"><a href="function.oci-execute.html" class="function" rel="rdfs-seeAlso">oci_execute()</a> - 文を実行する</span></li>
-    <li class="member"> <span class="function"><a href="function.oci-free-statement.html" class="function" rel="rdfs-seeAlso">oci_free_statement()</a> - 文やカーソルに関連付けられた全てのリソースを解放する</span></li>
-   </ul>
-  </p>
- </div>
-
-
-</div><div id="usernotes">
- <div class="head">
-  <h3 class="title">User Contributed Notes</h3>
- </div>
-<div id="allnotes">  <a name="102313""></a>
-  <div class="note">
-   <strong class="user">falundir at gmail dot com</strong>
-   <a href="#102313" class="date">08-Feb-2011 02:38</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-When you want to call stored function (and want to read its result) which executes DML queries (insert, update, delete) inside its body you can't use "select your_stored_function(:param1, :param2) from dual" because you will receive "ORA-14551: cannot perform a DML operation inside a query" error.<br />
-<br />
-In order to call such function and get its result you need to wrap it into nested procedure with OUT parameter like this:<br />
-<br />
-DECLARE<br />
-&nbsp; PROCEDURE caller(return_value OUT NUMBER) AS<br />
-&nbsp; BEGIN<br />
-&nbsp;&nbsp;&nbsp; return_value := your_stored_function(:param1, :param2);<br />
-&nbsp; END;<br />
-BEGIN<br />
-&nbsp; caller(:return_value);<br />
-END;<br />
-<br />
-and bind to :return_value variable to get the result of function.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="79584""></a>
-  <div class="note">
-   <strong class="user">michael dot virnstein at brodos dot de</strong>
-   <a href="#79584" class="date">04-Dec-2007 05:43</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-A neat way to parse a query only once per script, if the query is done inside a function:<br />
-<br />
-<span class="default">&lt;?php<br />
-</span><span class="keyword">function </span><span class="default">querySomething</span><span class="keyword">(</span><span class="default">$conn</span><span class="keyword">, </span><span class="default">$id</span><span class="keyword">)<br />
-{<br />
-&nbsp;&nbsp;&nbsp; static </span><span class="default">$stmt</span><span class="keyword">;<br />
-<br />
-&nbsp;&nbsp;&nbsp; if (</span><span class="default">is_null</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">)) {<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$stmt </span><span class="keyword">= </span><span class="default">oci_parse</span><span class="keyword">(</span><span class="default">$conn</span><span class="keyword">, </span><span class="string">'select * from t where pk = :id'</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; }<br />
-<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">oci_bind_by_name</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">, </span><span class="string">':id'</span><span class="keyword">, </span><span class="default">$id</span><span class="keyword">, -</span><span class="default">1</span><span class="keyword">);<br />
-<br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">oci_execute</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">, </span><span class="default">OCI_DEFAULT</span><span class="keyword">);<br />
-<br />
-&nbsp;&nbsp;&nbsp; return </span><span class="default">oci_fetch_array</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">, </span><span class="default">OCI_ASSOC</span><span class="keyword">);<br />
-<br />
-}<br />
-<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-With the static variable, the statment handle isn't closed after the function has terminated. Very nice for functions that are called e.g. in loops. Unfortunately this only works for static sql. If you have dynamic sql, you can do the following:<br />
-<br />
-<span class="default">&lt;?php<br />
-<br />
-</span><span class="keyword">function </span><span class="default">querySomething</span><span class="keyword">(</span><span class="default">$conn</span><span class="keyword">, </span><span class="default">$data</span><span class="keyword">)<br />
-{<br />
-&nbsp;&nbsp;&nbsp; static </span><span class="default">$stmt </span><span class="keyword">= array();<br />
-&nbsp;&nbsp;&nbsp; <br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$first </span><span class="keyword">= </span><span class="default">true</span><span class="keyword">;<br />
-&nbsp;&nbsp;&nbsp; <br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$query </span><span class="keyword">= </span><span class="string">'select * from t'</span><span class="keyword">;<br />
-<br />
-&nbsp;&nbsp;&nbsp; foreach (</span><span class="default">$data </span><span class="keyword">as </span><span class="default">$key </span><span class="keyword">=&gt; </span><span class="default">$value</span><span class="keyword">) {<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; if (</span><span class="default">$first</span><span class="keyword">) {<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$first </span><span class="keyword">= </span><span class="default">false</span><span class="keyword">;<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$query </span><span class="keyword">.= </span><span class="string">' where '</span><span class="keyword">;<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; } else {<br />
-&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$query </span><span class="keyword">.= </span><span class="string">' and '</span><span class="keyword">;<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; }<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; <br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$query </span><span class="keyword">.= </span><span class="string">"</span><span class="default">$key</span><span class="string"> = :b</span><span class="default">$key</span><span class="string">"</span><span class="keyword">;<br />
-&nbsp;&nbsp;&nbsp; }<br />
-&nbsp;&nbsp;&nbsp; <br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">$queryhash </span><span class="keyword">= </span><span class="default">md5</span><span class="keyword">(</span><span class="default">$query</span><span class="keyword">);<br />
-&nbsp;&nbsp; <br />
-&nbsp;&nbsp;&nbsp; if (</span><span class="default">is_null</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">[</span><span class="default">$queryhash</span><span class="keyword">])) {<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">$stmt</span><span class="keyword">[</span><span class="default">$queryhash</span><span class="keyword">] = </span><span class="default">oci_parse</span><span class="keyword">(</span><span class="default">$conn</span><span class="keyword">, </span><span class="default">$query</span><span class="keyword">);&nbsp; &nbsp; <br />
-&nbsp;&nbsp;&nbsp; }<br />
-<br />
-&nbsp;&nbsp;&nbsp; foreach (</span><span class="default">$data </span><span class="keyword">as </span><span class="default">$key </span><span class="keyword">=&gt; </span><span class="default">$value</span><span class="keyword">) {<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="comment">// don't use $value, because we bind memory addresses here.<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; // this would result in every bind pointing at the same value after foreach<br />
-&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; </span><span class="default">oci_bind_by_name</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">[</span><span class="default">$queryhash</span><span class="keyword">], </span><span class="string">":b</span><span class="default">$key</span><span class="string">"</span><span class="keyword">, </span><span class="default">$data</span><span class="keyword">[</span><span class="default">$key</span><span class="keyword">], -</span><span class="default">1</span><span class="keyword">);<br />
-&nbsp;&nbsp;&nbsp; }<br />
-&nbsp;&nbsp;&nbsp; <br />
-&nbsp;&nbsp;&nbsp; </span><span class="default">oci_execute</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">[</span><span class="default">$queryhash</span><span class="keyword">], </span><span class="default">OCI_DEFAULT</span><span class="keyword">);<br />
-<br />
-&nbsp;&nbsp;&nbsp; return </span><span class="default">oci_fetch_array</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">[</span><span class="default">$queryhash</span><span class="keyword">], </span><span class="default">OCI_ASSOC</span><span class="keyword">);<br />
-<br />
-}<br />
-<br />
-</span><span class="default">?&gt;</span>
-</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="42128""></a>
-  <div class="note">
-   <strong class="user">kurt at kovac dot ch</strong>
-   <a href="#42128" class="date">04-May-2004 05:40</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-For those that are having trouble with error checking, i have noticed on a lot of sites that people are trying to check the statement handle for error messages with OCIParse. Since the statement handle ($sth) is not created yet, you need to check the database handle ($dbh) for any errors with OCIParse. For example:<br />
-<br />
-instead of:<br />
-<br />
-<span class="default">&lt;?php<br />
-$stmt </span><span class="keyword">= </span><span class="default">OCIParse</span><span class="keyword">(</span><span class="default">$conn</span><span class="keyword">, </span><span class="default">$query</span><span class="keyword">);<br />
-if (!</span><span class="default">$stmt</span><span class="keyword">) {<br />
-&nbsp;&nbsp; </span><span class="default">$oerr </span><span class="keyword">= </span><span class="default">OCIError</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">);<br />
-&nbsp;&nbsp; echo </span><span class="string">"Fetch Code 1:"</span><span class="keyword">.</span><span class="default">$oerr</span><span class="keyword">[</span><span class="string">"message"</span><span class="keyword">];<br />
-&nbsp;&nbsp; exit;<br />
-} <br />
-</span><span class="default">?&gt;<br />
-</span><br />
-use:<br />
-<br />
-<span class="default">&lt;?php<br />
-$stmt </span><span class="keyword">= </span><span class="default">OCIParse</span><span class="keyword">(</span><span class="default">$conn</span><span class="keyword">, </span><span class="default">$query</span><span class="keyword">);<br />
-if (!</span><span class="default">$stmt</span><span class="keyword">) {<br />
-&nbsp;&nbsp; </span><span class="default">$oerr </span><span class="keyword">= </span><span class="default">OCIError</span><span class="keyword">(</span><span class="default">$conn</span><span class="keyword">);<br />
-&nbsp;&nbsp; echo </span><span class="string">"Fetch Code 1:"</span><span class="keyword">.</span><span class="default">$oerr</span><span class="keyword">[</span><span class="string">"message"</span><span class="keyword">];<br />
-&nbsp;&nbsp; exit;<br />
-} <br />
-</span><span class="default">?&gt;<br />
-</span><br />
-Hope this helps someone.</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-  <a name="36557""></a>
-  <div class="note">
-   <strong class="user">egypt at nmt dot edu</strong>
-   <a href="#36557" class="date">15-Oct-2003 04:31</a>
-   <div class="text">
-    <div class="phpcode">
-<code><span class="html">
-Whereas MySQL doesn't care what kind of quotes are around a LIKE clause, ociexecute gives the error:<br />
-&nbsp;&nbsp;&nbsp; ociexecute(): OCIStmtExecute: ORA-00904: "NM": invalid identifier <br />
-for the following.<br />
-<span class="default">&lt;?php<br />
-$sql&nbsp; </span><span class="keyword">= </span><span class="string">"SELECT * FROM addresses "<br />
-&nbsp;&nbsp; &nbsp;&nbsp; </span><span class="keyword">. </span><span class="string">"WHERE state LIKE \"NM\""</span><span class="keyword">;&nbsp; </span><span class="comment">// error!<br />
-</span><span class="default">$stmt </span><span class="keyword">= </span><span class="default">ociparse</span><span class="keyword">(</span><span class="default">$conn</span><span class="keyword">, </span><span class="default">$sql</span><span class="keyword">);<br />
-</span><span class="default">ociexecute</span><span class="keyword">(</span><span class="default">$stmt</span><span class="keyword">);<br />
-</span><span class="default">?&gt;<br />
-</span><br />
-it's fine if you just use single quotes:<br />
-&nbsp;&nbsp;&nbsp; . "WHERE state LIKE 'NM'";<br />
-but i think it's interesting that ociparse doesn't say anything</span>
-</code>
-    </div>
-   </div>
-  </div>
- <div class="foot"></div>
-</div>
-</div>
-<hr /><div class="manualnavbar" style="text-align: center;">
- <div class="prev" style="text-align: left; float: left;"><a href="function.oci-num-rows.html">oci_num_rows</a></div>
- <div class="next" style="text-align: right; float: right;"><a href="function.oci-password-change.html">oci_password_change</a></div>
- <div class="up"><a href="ref.oci8.html">OCI8 関数</a></div>
- <div class="home"><a href="index.html">PHP Manual</a></div>
-</div></body></html>

@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>トランザクションを開始する</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="function.ibase-set-event-handler.html">≪ ibase_set_event_handler</a></li>
+      <li style="float: right;"><a href="function.ibase-wait-event.html">ibase_wait_event ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="ref.ibase.html">Firebird/InterBase 関数</a></li>
+    <li>トランザクションを開始する</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="function.ibase-trans" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">ibase_trans</h1>
+  <p class="verinfo">(PHP 5)</p><p class="refpurpose"><span class="refname">ibase_trans</span> &mdash; <span class="dc-title">トランザクションを開始する</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.ibase-trans-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">resource</span> <span class="methodname"><strong>ibase_trans</strong></span>
+    ([ <span class="methodparam"><span class="type">int</span> <code class="parameter">$trans_args</code></span>
+   [, <span class="methodparam"><span class="type">resource</span> <code class="parameter">$link_identifier</code></span>
+  ]] )</div>
+
+  <div class="methodsynopsis dc-description">
+   <span class="type">resource</span> <span class="methodname"><strong>ibase_trans</strong></span>
+    ([ <span class="methodparam"><span class="type">resource</span> <code class="parameter">$link_identifier</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$trans_args</code></span>
+  ]] )</div>
+
+  <p class="para rdfs-comment">
+   トランザクションを開始します。
+  </p>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    <span class="function"><strong>ibase_trans()</strong></span> を最初にコールした際には、接続の
+    デフォルトのトランザクションを返しません。<span class="function"><strong>ibase_trans()</strong></span>
+    によって開始されたすべてのトランザクションは、<span class="function"><a href="function.ibase-commit.html" class="function">ibase_commit()</a></span>
+    や <span class="function"><a href="function.ibase-rollback.html" class="function">ibase_rollback()</a></span> を使用してコミットあるいは
+    ロールバックを明示的に行わない限り、スクリプトの終了時に自動的に
+    ロールバックされます。
+   </p>
+  </p></blockquote>
+  <blockquote class="note"><p><strong class="note">注意</strong>: 
+   <p class="para">
+    この関数は複数の <code class="parameter">trans_args</code> および
+    <code class="parameter">link_identifier</code> を指定することが可能です。これにより、
+    複数のデータベース接続にまたがるトランザクションを扱えるようになり、
+    2 フェーズコミット機能を使用したコミットが可能になります。つまり、複数の
+    データベースの更新内容が成功したか失敗したかによる判断ができるということです。
+    これは、ひとつのクエリで異なるデータベースのテーブルを同時に使用できるという
+    ことではありません!
+   </p>
+   <p class="para">
+    複数データベースにまたがるトランザクションを使用する場合、
+    <span class="function"><a href="function.ibase-query.html" class="function">ibase_query()</a></span> および <span class="function"><a href="function.ibase-prepare.html" class="function">ibase_prepare()</a></span>
+    をコールする際には <code class="parameter">link_id</code> および
+    <code class="parameter">transaction_id</code> の両方を指定する必要があります。
+   </p>
+  </p></blockquote>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-function.ibase-trans-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+     <dt>
+<code class="parameter">trans_args</code></dt>
+
+     <dd>
+
+      <p class="para">
+       <code class="parameter">trans_args</code> は、以下の
+       <strong><code>IBASE_READ</code></strong>、
+       <strong><code>IBASE_WRITE</code></strong>、
+       <strong><code>IBASE_COMMITTED</code></strong>、
+       <strong><code>IBASE_CONSISTENCY</code></strong>、
+       <strong><code>IBASE_CONCURRENCY</code></strong>、
+       <strong><code>IBASE_REC_VERSION</code></strong>、
+       <strong><code>IBASE_REC_NO_VERSION</code></strong>、
+       <strong><code>IBASE_WAIT</code></strong> および
+       <strong><code>IBASE_NOWAIT</code></strong>
+       の組み合わせとなります。
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">link_identifier</code></dt>
+
+     <dd>
+
+      <p class="para">
+       InterBase リンク ID。省略した場合は、
+       最後にオープンしたリンクを使用します。
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  </p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-function.ibase-trans-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   トランザクションハンドル、あるいはエラー時に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="106892""></a>
+  <div class="note">
+   <strong class="user">chAlx</strong>
+   <a href="#106892" class="date">16-Dec-2011 10:42</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Note that on some platforms ibase_trans($dbh), ibase_trans(IBASE_DEFAULT, $dbh) and ibase_trans($dbh, IBASE_DEFAULT) are not the same, but will run without errors in most cases.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+  <a name="23221""></a>
+  <div class="note">
+   <strong class="user">jon at tgpsolutions dot com</strong>
+   <a href="#23221" class="date">12-Jul-2002 03:56</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+When using transactions, you must execute queries using the transaction identifier as the link_identifier in ibase_query.&nbsp; <br />
+<br />
+Example:<br />
+<br />
+$db = ibase_connect( ... );<br />
+$tr = ibase_trans();<br />
+$result = ibase_query($tr, $sql1);<br />
+$result = ibase_query($tr, $sql2);<br />
+ibase_rollback($tr);<br />
+<br />
+You must use ibase_query($tr, $sql1).&nbsp; Calling ibase_query($db, $sql1) will not allow you to roll back - it will be commited when the script finishes executing.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

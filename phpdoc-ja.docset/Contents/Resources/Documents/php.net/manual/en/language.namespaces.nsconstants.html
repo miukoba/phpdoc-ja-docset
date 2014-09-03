@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>namespace キーワードおよび __NAMESPACE__ 定数</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="language.namespaces.dynamic.html">≪ 名前空間と動的言語機能</a></li>
+      <li style="float: right;"><a href="language.namespaces.importing.html">名前空間の使用法: エイリアス/インポート ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="language.namespaces.html">名前空間</a></li>
+    <li>namespace キーワードおよび __NAMESPACE__ 定数</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="language.namespaces.nsconstants" class="sect1">
+  <h2 class="title">namespace キーワードおよび __NAMESPACE__ 定数</h2>
+  <p class="verinfo">(PHP 5 &gt;= 5.3.0)</p>
+  <p class="para">
+   PHP には、現在の名前空間内の要素へのアクセスを抽象化するための方法が 2 通りあります。
+   マジック定数 <strong><code>__NAMESPACE__</code></strong> および <em>namespace</em>
+   キーワードがそれです。
+  </p>
+  <p class="para">
+   <strong><code>__NAMESPACE__</code></strong> の値は文字列で、現在の名前空間の名前が格納されます。
+   名前空間に属さないグローバルなコードでは、この中身は空文字列となります。
+   <div class="example" id="example-262">
+    <p><strong>例1 名前空間内のコードでの __NAMESPACE__ の例</strong></p>
+    <div class="example-contents">
+     <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">MyProject</span><span style="color: #007700">;<br /><br />echo&nbsp;</span><span style="color: #DD0000">'"'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">__NAMESPACE__</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'"'</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;"MyProject"&nbsp;と出力します<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   <div class="example" id="example-263">
+    <p><strong>例2 グローバルなコードでの __NAMESPACE__ の例</strong></p>
+    <div class="example-contents">
+     <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #007700">echo&nbsp;</span><span style="color: #DD0000">'"'</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">__NAMESPACE__</span><span style="color: #007700">,&nbsp;</span><span style="color: #DD0000">'"'</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;""&nbsp;と出力します<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   <strong><code>__NAMESPACE__</code></strong> 定数は、動的に名前を作成する場合に便利です。
+   たとえば次のようになります。
+   <div class="example" id="example-264">
+    <p><strong>例3 __NAMESPACE__ による動的な名前の作成</strong></p>
+    <div class="example-contents">
+     <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">MyProject</span><span style="color: #007700">;<br /><br />function&nbsp;</span><span style="color: #0000BB">get</span><span style="color: #007700">(</span><span style="color: #0000BB">$classname</span><span style="color: #007700">)<br />{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">__NAMESPACE__&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #DD0000">'\\'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$classname</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;new&nbsp;</span><span style="color: #0000BB">$a</span><span style="color: #007700">;<br />}<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+  <p class="para">
+   <em>namespace</em> キーワードを使用すると、
+   現在の名前空間あるいはサブ名前空間内の要素を明示的に指定することができます。
+   これは、クラスにおける <em>self</em>
+   演算子と同じ意味合いのものです。
+   <div class="example" id="example-265">
+    <p><strong>例4 名前空間内での namespace 演算子</strong></p>
+    <div class="example-contents">
+     <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">namespace&nbsp;</span><span style="color: #0000BB">MyProject</span><span style="color: #007700">;<br /><br />use&nbsp;</span><span style="color: #0000BB">blah</span><span style="color: #007700">\</span><span style="color: #0000BB">blah&nbsp;</span><span style="color: #007700">as&nbsp;</span><span style="color: #0000BB">mine</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;"名前空間の使用法:&nbsp;インポート/エイリアス"&nbsp;を参照ください<br /><br /></span><span style="color: #0000BB">blah</span><span style="color: #007700">\</span><span style="color: #0000BB">mine</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;MyProject\blah\mine()&nbsp;関数をコールします<br /></span><span style="color: #007700">namespace\</span><span style="color: #0000BB">blah</span><span style="color: #007700">\</span><span style="color: #0000BB">mine</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;MyProject\blah\mine()&nbsp;関数をコールします<br /><br /></span><span style="color: #007700">namespace\</span><span style="color: #0000BB">func</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;MyProject\func()&nbsp;関数をコールします<br /></span><span style="color: #007700">namespace\</span><span style="color: #0000BB">sub</span><span style="color: #007700">\</span><span style="color: #0000BB">func</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;MyProject\sub\func()&nbsp;関数をコールします<br /></span><span style="color: #007700">namespace\</span><span style="color: #0000BB">cname</span><span style="color: #007700">::</span><span style="color: #0000BB">method</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;MyProject\cname&nbsp;クラスの静的メソッド&nbsp;"method"&nbsp;をコールします<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;namespace\</span><span style="color: #0000BB">sub</span><span style="color: #007700">\</span><span style="color: #0000BB">cname</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;MyProject\sub\cname&nbsp;クラスのオブジェクトのインスタンスを作成します<br /></span><span style="color: #0000BB">$b&nbsp;</span><span style="color: #007700">=&nbsp;namespace\</span><span style="color: #0000BB">CONSTANT</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;定数&nbsp;MyProject\CONSTANT&nbsp;の値を&nbsp;$b&nbsp;に代入します<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   <div class="example" id="example-266">
+    <p><strong>例5 グローバルコードでの namespace 演算子</strong></p>
+    <div class="example-contents">
+     <div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /><br /></span><span style="color: #007700">namespace\</span><span style="color: #0000BB">func</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;func()&nbsp;関数をコールします<br /></span><span style="color: #007700">namespace\</span><span style="color: #0000BB">sub</span><span style="color: #007700">\</span><span style="color: #0000BB">func</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;sub\func()&nbsp;関数をコールします<br /></span><span style="color: #007700">namespace\</span><span style="color: #0000BB">cname</span><span style="color: #007700">::</span><span style="color: #0000BB">method</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;cname&nbsp;クラスの静的メソッド&nbsp;"method"&nbsp;をコールします<br /></span><span style="color: #0000BB">$a&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;namespace\</span><span style="color: #0000BB">sub</span><span style="color: #007700">\</span><span style="color: #0000BB">cname</span><span style="color: #007700">();&nbsp;</span><span style="color: #FF8000">//&nbsp;sub\cname&nbsp;クラスのオブジェクトのインスタンスを作成します<br /></span><span style="color: #0000BB">$b&nbsp;</span><span style="color: #007700">=&nbsp;namespace\</span><span style="color: #0000BB">CONSTANT</span><span style="color: #007700">;&nbsp;</span><span style="color: #FF8000">//&nbsp;定数&nbsp;CONSTANT&nbsp;の値を&nbsp;$b&nbsp;に代入します<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+  </p>
+ </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="96010""></a>
+  <div class="note">
+   <strong class="user">a dot schaffhirt at sedna-soft dot de</strong>
+   <a href="#96010" class="date">03-Feb-2010 03:24</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Just in case you wonder what the practical use of the namespace keyword is...<br />
+<br />
+It can explicitly refer to classes from the current namespace regardless of possibly "use"d classes with the same name from other namespaces. However, this does not apply for functions.<br />
+<br />
+Example:<br />
+<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">namespace </span><span class="default">foo</span><span class="keyword">;<br />
+class </span><span class="default">Xyz </span><span class="keyword">{}<br />
+function </span><span class="default">abc </span><span class="keyword">() {}<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">namespace </span><span class="default">bar</span><span class="keyword">;<br />
+class </span><span class="default">Xyz </span><span class="keyword">{}<br />
+function </span><span class="default">abc </span><span class="keyword">() {}<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">namespace </span><span class="default">bar</span><span class="keyword">;<br />
+use </span><span class="default">foo</span><span class="keyword">|</span><span class="default">Xyz</span><span class="keyword">;<br />
+use </span><span class="default">foo</span><span class="keyword">|</span><span class="default">abc</span><span class="keyword">;<br />
+new </span><span class="default">Xyz</span><span class="keyword">(); </span><span class="comment">// instantiates \foo\Xyz<br />
+</span><span class="keyword">new namespace|</span><span class="default">Xyz</span><span class="keyword">(); </span><span class="comment">// instantiates \bar\Xyz<br />
+</span><span class="default">abc</span><span class="keyword">(); </span><span class="comment">// invokes \bar\abc regardless of the second use statement<br />
+</span><span class="keyword">|</span><span class="default">foo</span><span class="keyword">|</span><span class="default">abc</span><span class="keyword">(); </span><span class="comment">// it has to be invoked using the fully qualified name<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+(Sorry, I had to use "|" instead of "\", as it was always discarded in the preview, except within a comment.)<br />
+<br />
+Hope, this can save someone from some trouble.<br />
+<br />
+Best regards.</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

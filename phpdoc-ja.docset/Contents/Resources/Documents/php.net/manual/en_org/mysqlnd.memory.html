@@ -1,0 +1,349 @@
+<html><!-- Mirrored from php.net/manual/en/mysqlnd.memory.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 16:59:58 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Memory management</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="mysqlnd.memory.html">
+ <link rel="shorturl" href="mysqlnd.memory.html">
+ <link rel="alternate" href="mysqlnd.memory.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="book.mysqlnd.html">
+ <link rel="prev" href="mysqlnd.notes.html">
+ <link rel="next" href="mysqlnd.plugin.html">
+
+ <link rel="alternate" href="mysqlnd.memory.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/mysqlnd.memory.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/mysqlnd.memory.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/mysqlnd.memory.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/mysqlnd.memory.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/mysqlnd.memory.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/mysqlnd.memory.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/mysqlnd.memory.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/mysqlnd.memory.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/mysqlnd.memory.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/mysqlnd.memory.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.database.html">Database Extensions</a></li>      <li><a href="refs.database.vendors.html">Vendor Specific Database Extensions</a></li>      <li><a href="set.mysqlinfo.html">MySQL</a></li>      <li><a href="book.mysqlnd.html">Mysqlnd</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="mysqlnd.memory" class="chapter">
+ <h1>Memory management</h1>
+
+ <p class="para">
+  <em class="emphasis">Introduction</em>
+ </p>
+ <p class="para">
+  The MySQL Native Driver manages memory different than the MySQL Client Library.
+  The libraries differ in the way memory is allocated and released,
+  how memory is allocated in chunks while reading results from MySQL, which debug
+  and development options exist, and how results read from MySQL are linked to
+  PHP user variables.
+ </p>
+ <p class="para">
+  The following notes are intended as an introduction and summary to users
+  interested at understanding the MySQL Native Driver at the C code level.
+ </p>
+ <p class="para">
+  <em class="emphasis">Memory management functions used</em>
+ </p>
+ <p class="para">
+  All memory allocation and deallocation is done using the PHP memory management
+  functions. Therefore, the memory consumption of mysqlnd can be tracked
+  using PHP API calls, such as <span class="function"><a href="function.memory-get-usage.html" class="function">memory_get_usage()</a></span>. Because memory is
+  allocated and released using the PHP memory management, the changes may not
+  immediately become visible at the operating system level. The PHP
+  memory management acts as a proxy which may delay releasing memory towards
+  the system. Due to this, comparing the memory usage of the MySQL Native Driver
+  and the MySQL Client Library is difficult. The MySQL Client Library
+  is using the operating system memory management calls directly, hence the effects
+  can be observed immediately at the operating system level.
+ </p>
+ <p class="para">
+  Any memory limit enforced by PHP also affects the MySQL Native Driver. This
+  may cause out of memory errors when fetching large result sets that exceed
+  the size of the remaining memory made available by PHP. Because the MySQL
+  Client Library is not using PHP memory management functions, it does not comply
+  to any PHP memory limit set. If using the MySQL Client Library, depending on the
+  deployment model, the memory footprint of the PHP process may grow
+  beyond the PHP memory limit. But also PHP scripts may be able to process larger
+  result sets as parts of the memory allocated to hold the result sets are beyond
+  the control of the PHP engine.
+ </p>
+ <p class="para">
+   PHP memory management functions are invoked by the MySQL Native Driver through
+   a lightweight wrapper. Among others, the wrapper makes debugging easier.
+ </p>
+ <p class="para">
+   <em class="emphasis">Handling of result sets</em>
+ </p>
+ <p class="para">
+  The various MySQL Server and the various client APIs differentiate
+  between <a href="mysqli.quickstart.statements.html" class="link">buffered and unbuffered</a>
+  result sets. Unbuffered result sets are transferred row-by-row from MySQL to the client
+  as the client iterates over the results. Buffered results are fetched
+  in their entirety by the client library before passing them on to the client.
+ </p>
+ <p class="para">
+  The MySQL Native Driver is using PHP Streams for the network communication
+  with the MySQL Server. Results sent by MySQL are fetched from the PHP Streams
+  network buffers into the result buffer of mysqlnd. The result buffer is
+  made of zvals. In a second step the results are made available to the PHP script.
+  This final transfer from the result buffer into PHP variables impacts the memory
+  consumption and is mostly noticible when using buffered result sets.
+ </p>
+ <p class="para">
+  By default the MySQL Native Driver tries to avoid holding
+  buffered results twice in memory. Results are kept only once in the internal
+  result buffers and their zvals. When results are fetched into PHP variables
+  by the PHP script, the variables will reference the internal result buffers.
+  Database query results are not copied and kept in memory only once.
+  Should the user modify the contents of a variable holding the database results a
+  copy-on-write must be performed to avoid changing the referenced internal result
+  buffer. The contents of the buffer must not be modified because the user
+  may decide to read the result set a second time. The copy-on-write
+  mechanism is implemented using an additional reference
+  management list and the use of standard zval reference counters.
+  Copy-on-write must also be done if the user reads a result set into PHP variables and
+  frees a result set before the variables are unset.
+ </p>
+ <p class="para">
+  Generally speaking, this pattern works well for scripts that read a
+  result set once and do not modify variables holding results. Its major drawback
+  is the memory overhead caused by the additional reference management which
+  comes primarily from the fact that user variables holding results
+  cannot be entirely released until the mysqlnd reference management
+  stops referencing them. The MySQL Native driver removes the reference to the
+  user variables when the result set is freed or a copy-on-write is performed.
+  An observer will see the total memory consumption grow until the result set
+  is released. Use the <a href="mysqlnd.stats.html" class="link">statistics</a> to check whether
+  a script does release result sets explicitly or the driver is does implicit
+  releases and thus memory is used for a time longer than necessary. Statistics
+  also help to see how many copy-on-write operations happened.
+ </p>
+ <p class="para">
+  A PHP script reading many small rows of a buffered result set using a code snippet
+  equal or equivalent to <em>while ($row = $res-&gt;fetch_assoc()) { ... }</em>
+  may optimize memory consumption by requesting copies instead of references.
+  Albeit requesting copies means keeping results twice in memory, it allows
+  PHP to free the copy contained in <em>$row</em> as the result set
+  is being iterated and prior to releasing the result set itself. On a loaded server
+  optimizing peak memory usage may help improving the overall system performace
+  although for an individual script the copy approach may be slower due to
+  additional allocations and memory copy operations.
+ </p>
+ <p class="para">
+  The copy mode can be enforced by setting
+  <a href="mysqlnd.config.html#ini.mysqlnd.fetch_data_copy" class="link">mysqlnd.fetch_data_copy</a>=1.
+ </p>
+ <p class="para">
+   <em class="emphasis">Monitoring and debugging</em>
+ </p>
+ <p class="para">
+  There are multiple ways of tracking the memory usage of the MySQL Native Driver.
+  If the goal is to get a quick high level overview or to verify the memory efficiency
+  of PHP scripts, then check the <a href="mysqlnd.stats.html" class="link">statistics</a>
+  collected by the library. The statistics allow you, for example, to catch
+  SQL statements which generate more results than are processed by a PHP script.
+ </p>
+ <p class="para">
+  The <a href="mysqlnd.config.html#ini.mysqlnd.debug" class="link">debug</a> trace log can be configured to
+  record memory management calls. This helps to see when memory is allocated
+  or free'd. However, the size of the requested memory chunks may not be listed.
+ </p>
+ <p class="para">
+  Some, recent versions of the MySQL Native Driver feature the emulation of
+  random out of memory situations. This feature is meant to be used by the
+  C developers of the library or mysqlnd <a href="mysqlnd.plugin.html" class="link">plugin</a>
+  authors only. Please, search the source code for corresponding PHP configuration
+  settings and further details. The feature is considered private and may be
+  modified at any time without prior notice.
+ </p>
+
+</div>
+
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div>
+ <div class="note">There are no user contributed notes for this page.</div></section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/mysqlnd.memory.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 16:59:58 GMT -->
+
+
+</body></html>

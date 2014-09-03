@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>ファイル記述子が対話型端末であるかどうかを定義する</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="function.posix-initgroups.html">≪ posix_initgroups</a></li>
+      <li style="float: right;"><a href="function.posix-kill.html">posix_kill ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="ref.posix.html">POSIX 関数</a></li>
+    <li>ファイル記述子が対話型端末であるかどうかを定義する</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="function.posix-isatty" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">posix_isatty</h1>
+  <p class="verinfo">(PHP 4, PHP 5)</p><p class="refpurpose"><span class="refname">posix_isatty</span> &mdash; <span class="dc-title">ファイル記述子が対話型端末であるかどうかを定義する</span></p>
+
+ </div>
+ 
+ <div class="refsect1 description" id="refsect1-function.posix-isatty-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="type">bool</span> <span class="methodname"><strong>posix_isatty</strong></span>
+    ( <span class="methodparam"><span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <code class="parameter">$fd</code></span>
+   )</div>
+
+   <p class="para rdfs-comment">
+    ファイル記述子 <code class="parameter">fd</code> が、
+    有効な端末デバイスを指しているかどうかを調べます。
+  </p>
+ </div>
+
+    
+ <div class="refsect1 parameters" id="refsect1-function.posix-isatty-parameters">
+  <h3 class="title">パラメータ</h3>
+  <p class="para">
+   <dl>
+
+    
+ <dt>
+<code class="parameter">fd</code></dt>
+
+ <dd>
+
+  <p class="para">
+   ファイル記述子。ファイルリソースか、あるいは <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span> で指定します。
+   <span class="type"><a href="language.types.integer.html" class="type integer">integer</a></span> を指定した場合は、システムコールにそのまま渡せるファイル記述子だとみなします。
+  </p>
+  <p class="para">
+   たいていの場合は、ファイルリソースで指定することになるでしょう。
+  </p>
+ </dd>
+
+
+   </dl>
+
+  </p>
+ </div>
+
+       
+ <div class="refsect1 returnvalues" id="refsect1-function.posix-isatty-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+   <code class="parameter">fd</code> がオープンされており、
+   かつ端末に接続されている場合に <strong><code>TRUE</code></strong>、
+   それ以外の場合に <strong><code>FALSE</code></strong> を返します。
+  </p>
+ </div>
+
+       
+ <div class="refsect1 seealso" id="refsect1-function.posix-isatty-seealso">
+  <h3 class="title">参考</h3>
+  <p class="para">
+   <ul class="simplelist">
+    <li class="member"><span class="function"><a href="function.posix-ttyname.html" class="function" rel="rdfs-seeAlso">posix_ttyname()</a> - 端末のデバイス名を調べる</span></li>
+   </ul>
+  </p>
+ </div>
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+<div id="allnotes">  <a name="42194""></a>
+  <div class="note">
+   <strong class="user">hfuecks at phppatterns dot com</strong>
+   <a href="#42194" class="date">07-May-2004 11:12</a>
+   <div class="text">
+    <div class="phpcode">
+<code><span class="html">
+Can be useful to determine whether output is being piped elsewhere, for PHP shell scripts, for example;<br />
+<br />
+#!/usr/local/bin/php<br />
+<span class="default">&lt;?php<br />
+</span><span class="keyword">if ( !</span><span class="default">posix_isatty</span><span class="keyword">(</span><span class="default">STDOUT</span><span class="keyword">) ) {<br />
+&nbsp;&nbsp;&nbsp; </span><span class="default">fwrite</span><span class="keyword">(</span><span class="default">STDOUT</span><span class="keyword">, </span><span class="string">"Invalid TTY\n"</span><span class="keyword">);<br />
+&nbsp;&nbsp;&nbsp; exit(</span><span class="default">2</span><span class="keyword">);<br />
+}<br />
+</span><span class="default">fwrite</span><span class="keyword">(</span><span class="default">STDOUT</span><span class="keyword">, </span><span class="string">"Enter you name\n"</span><span class="keyword">);<br />
+</span><span class="default">$name </span><span class="keyword">= </span><span class="default">fgets</span><span class="keyword">(</span><span class="default">STDIN</span><span class="keyword">);<br />
+</span><span class="default">fwrite</span><span class="keyword">(</span><span class="default">STDOUT</span><span class="keyword">,</span><span class="string">"Hello </span><span class="default">$name</span><span class="string">\n"</span><span class="keyword">);<br />
+exit(</span><span class="default">0</span><span class="keyword">);<br />
+</span><span class="default">?&gt;<br />
+</span><br />
+If this script is like:<br />
+<br />
+script.php &gt; outfile<br />
+<br />
+outfile will contain "Invalid TTY"</span>
+</code>
+    </div>
+   </div>
+  </div>
+ <div class="foot"></div>
+</div>
+</div>
+</div></div></body></html>

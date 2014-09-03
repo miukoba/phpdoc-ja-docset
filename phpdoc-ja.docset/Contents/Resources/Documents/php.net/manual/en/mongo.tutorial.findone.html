@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>MongoCollection::findOne によるドキュメントの検索</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="mongo.tutorial.insert.html">≪ ドキュメントの追加</a></li>
+      <li style="float: right;"><a href="mongo.tutorial.insert.multiple.html">複数のドキュメントの追加 ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="mongo.tutorial.html">チュートリアル</a></li>
+    <li>MongoCollection::findOne によるドキュメントの検索</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="mongo.tutorial.findone" class="section">
+   <h2 class="title">
+    <span class="function"><a href="mongocollection.findone.html" class="function">MongoCollection::findOne()</a></span> によるドキュメントの検索
+   </h2>
+   <p class="para">
+    先ほどの例で追加したドキュメントを表示するには、
+    シンプルに <span class="function"><a href="mongocollection.findone.html" class="function">MongoCollection::findOne()</a></span>
+    を実行してコレクションからドキュメントをひとつ取得します。
+    このメソッドは、クエリにマッチするドキュメントがひとつだけしかないときや
+    一件の結果にだけしか興味がない場合に便利です。
+   </p>
+   <div class="example" id="mongo.tutorial.findone-example">
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$connection&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$collection&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$connection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">database</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">collectionName</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$document&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$collection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">findOne</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(&nbsp;</span><span style="color: #0000BB">$document&nbsp;</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+array(6) {
+  [&quot;_id&quot;]=&gt;
+  object(MongoId)#8 (1) {
+    [&quot;$id&quot;]=&gt;
+    string(24) &quot;4e2995576803fab768000000&quot;
+  }
+  [&quot;name&quot;]=&gt;
+  string(7) &quot;MongoDB&quot;
+  [&quot;type&quot;]=&gt;
+  string(8) &quot;database&quot;
+  [&quot;count&quot;]=&gt;
+  int(1)
+  [&quot;info&quot;]=&gt;
+  array(2) {
+    [&quot;x&quot;]=&gt;
+    int(203)
+    [&quot;y&quot;]=&gt;
+    int(102)
+  }
+  [&quot;versions&quot;]=&gt;
+  array(3) {
+    [0]=&gt;
+    string(5) &quot;0.9.7&quot;
+    [1]=&gt;
+    string(5) &quot;0.9.8&quot;
+    [2]=&gt;
+    string(5) &quot;0.9.9&quot;
+  }
+}
+</pre></div>
+    </div>
+   </div>
+   <p class="para">
+    <em>_id</em> フィールドが
+    自動的にドキュメントに追加されていることに注目しましょう。
+    <em>_id</em> は、いわゆる「主キー」フィールドです。
+    ドキュメントにキーがなければ、ドライバが自動的に追加します。
+   </p>
+   <p class="para">
+    自前で <em>_id</em> フィールドを指定する場合は、
+    コレクション内で一意になるようにしなければなりません。
+    例をごらんください。
+   </p>
+   <div class="example" id="mongo.tutorial.findone-example-2">
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$connection&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">MongoClient</span><span style="color: #007700">();<br /></span><span style="color: #0000BB">$db&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$connection</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">database</span><span style="color: #007700">;<br /><br /></span><span style="color: #0000BB">$db</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">foo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"_id"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">));<br /></span><span style="color: #FF8000">//&nbsp;これは例外が発生します<br /></span><span style="color: #0000BB">$db</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">foo</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"_id"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">));<br /><br /></span><span style="color: #FF8000">//&nbsp;こちらは別のコレクションなので大丈夫です<br /></span><span style="color: #0000BB">$db</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">bar</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">insert</span><span style="color: #007700">(array(</span><span style="color: #DD0000">"_id"&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">1</span><span style="color: #007700">));<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+   </div>
+   <p class="para">
+    ドライバはデフォルトで、サーバーが書き込みを受け付けてから結果を返すことを保証します。
+    オプションでこの挙動をオフにすることもできます。その場合は、
+    <em>array(&quot;w&quot; =&gt; 0)</em> を二番目の引数で渡します。
+    これは、データベース側での書き込み完了をドライバに待たせないことを意味します。
+    つまり、<em>_id</em> が重複していてもドライバは例外をスローしません。
+   </p>
+   <div class="section" id="mongo.tutorial.findone.seealso">
+    <h2 class="title">参考</h2>
+    <p class="para">
+     <span class="function"><a href="mongocollection.findone.html" class="function">MongoCollection::findOne()</a></span> に、
+     データの検索に関する詳細な情報があります。
+    </p>
+    <p class="para">
+     <a href="class.mongoid.html" class="classname">MongoId</a> には、一意な ID に関する詳細な説明があります。
+    </p>
+    <p class="para">
+     <a href="mongo.writes.html" class="link">書き込み</a>のページでは、
+     安全な書き込みについてより詳しく扱っています。
+     また <a href="mongo.writeconcerns.html" class="xref">書き込み確認</a>
+     では、さまざまな Write Concern オプションについて解説します。
+    </p>
+   </div>
+  </div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

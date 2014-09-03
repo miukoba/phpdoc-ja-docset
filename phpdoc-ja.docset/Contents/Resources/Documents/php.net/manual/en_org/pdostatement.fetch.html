@@ -1,0 +1,656 @@
+<html><!-- Mirrored from php.net/manual/en/pdostatement.fetch.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 16:57:34 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>PDOStatement::fetch</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="pdostatement.fetch.html">
+ <link rel="shorturl" href="pdostatement.fetch.html">
+ <link rel="alternate" href="pdostatement.fetch.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="class.pdostatement.html">
+ <link rel="prev" href="pdostatement.execute.html">
+ <link rel="next" href="pdostatement.fetchall.html">
+
+ <link rel="alternate" href="pdostatement.fetch.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/pdostatement.fetch.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/pdostatement.fetch.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/pdostatement.fetch.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/pdostatement.fetch.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/pdostatement.fetch.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/pdostatement.fetch.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/pdostatement.fetch.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/pdostatement.fetch.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/pdostatement.fetch.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/pdostatement.fetch.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="funcref.html">Function Reference</a></li>      <li><a href="refs.database.html">Database Extensions</a></li>      <li><a href="refs.database.abstract.html">Abstraction Layers</a></li>      <li><a href="book.pdo.html">PDO</a></li>      <li><a href="class.pdostatement.html">PDOStatement</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="pdostatement.fetch" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">PDOStatement::fetch</h1>
+  <p class="verinfo">(PHP 5 &gt;= 5.1.0, PECL pdo &gt;= 0.1.0)</p><p class="refpurpose"><span class="refname">PDOStatement::fetch</span> — <span class="dc-title">
+   Fetches the next row from a result set
+  </span></p>
+
+ </div>
+ <div class="refsect1 description" id="refsect1-pdostatement.fetch-description">
+  <h3 class="title">Description</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type"><a href="language.pseudo-types.html#language.types.mixed" class="type mixed">mixed</a></span> <span class="methodname"><strong>PDOStatement::fetch</strong></span>
+    ([ <span class="methodparam"><span class="type">int</span> <code class="parameter">$fetch_style</code></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$cursor_orientation</code><span class="initializer"> = PDO::FETCH_ORI_NEXT</span></span>
+   [, <span class="methodparam"><span class="type">int</span> <code class="parameter">$cursor_offset</code><span class="initializer"> = 0</span></span>
+  ]]] )</div>
+
+
+  <p class="para rdfs-comment">
+   Fetches a row from a result set associated with a PDOStatement object. The
+   <code class="parameter">fetch_style</code> parameter determines how PDO returns
+   the row.
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-pdostatement.fetch-parameters">
+  <h3 class="title">Parameters</h3>
+  <p class="para">
+   </p><dl>
+
+    
+     <dt>
+<code class="parameter">fetch_style</code></dt>
+
+     <dd>
+
+      <p class="para">
+       Controls how the next row will be returned to the caller. This value
+       must be one of the <em>PDO::FETCH_*</em> constants,
+       defaulting to value of <em>PDO::ATTR_DEFAULT_FETCH_MODE</em>
+       (which defaults to <em>PDO::FETCH_BOTH</em>).
+       </p><ul class="itemizedlist">
+        <li class="listitem"><p class="para">
+         <em>PDO::FETCH_ASSOC</em>: returns an array indexed by column
+         name as returned in your result set
+        </p></li>
+        <li class="listitem"><p class="para">
+         <em>PDO::FETCH_BOTH</em> (default): returns an array indexed by
+         both column name and 0-indexed column number as returned in your
+         result set
+        </p></li>
+        <li class="listitem"><p class="para">
+         <em>PDO::FETCH_BOUND</em>: returns <strong><code>TRUE</code></strong> and assigns the
+         values of the columns in your result set to the PHP variables to which
+         they were bound with the <span class="function"><a href="pdostatement.bindcolumn.html" class="function">PDOStatement::bindColumn()</a></span>
+         method
+        </p></li>
+        <li class="listitem"><p class="para">
+         <em>PDO::FETCH_CLASS</em>: returns a new instance of the
+         requested class, mapping the columns of the result set to named
+         properties in the class. If <code class="parameter">fetch_style</code>
+         includes PDO::FETCH_CLASSTYPE (e.g. <em>PDO::FETCH_CLASS |
+         PDO::FETCH_CLASSTYPE</em>) then the name of the class is
+         determined from a value of the first column.
+        </p></li>
+        <li class="listitem"><p class="para">
+         <em>PDO::FETCH_INTO</em>: updates an existing instance
+         of the requested class, mapping the columns of the result set to
+         named properties in the class
+        </p></li>
+        <li class="listitem"><p class="para">
+         <em>PDO::FETCH_LAZY</em>: combines
+         <em>PDO::FETCH_BOTH</em> and <em>PDO::FETCH_OBJ</em>,
+         creating the object variable names as they are accessed
+        </p></li>
+        <li class="listitem"><p class="para">
+         <em>PDO::FETCH_NAMED</em>: returns an array with the same
+         form as <em>PDO::FETCH_ASSOC</em>, except that if there are
+         multiple columns with the same name, the value referred to by that
+         key will be an array of all the values in the row that had that
+         column name
+        </p></li>
+        <li class="listitem"><p class="para">
+         <em>PDO::FETCH_NUM</em>: returns an array indexed by column
+         number as returned in your result set, starting at column 0
+        </p></li>
+        <li class="listitem"><p class="para">
+         <em>PDO::FETCH_OBJ</em>: returns an anonymous object with
+         property names that correspond to the column names returned in your
+         result set
+        </p></li>
+       </ul>
+      <p></p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">cursor_orientation</code></dt>
+
+     <dd>
+
+      <p class="para">
+       For a PDOStatement object representing a scrollable cursor, this
+       value determines which row will be returned to the caller. This value
+       must be one of the <em>PDO::FETCH_ORI_*</em> constants,
+       defaulting to <em>PDO::FETCH_ORI_NEXT</em>. To request a
+       scrollable cursor for your PDOStatement object, you must set the
+       <em>PDO::ATTR_CURSOR</em> attribute to
+       <em>PDO::CURSOR_SCROLL</em> when you prepare the SQL
+       statement with <span class="function"><a href="pdo.prepare.html" class="function">PDO::prepare()</a></span>.
+      </p>
+     </dd>
+
+    
+    
+     <dt>
+<code class="parameter">offset</code></dt>
+
+     <dd>
+
+      <p class="para"> 
+       For a PDOStatement object representing a scrollable cursor for which
+       the <em>cursor_orientation</em> parameter is set to
+       <em>PDO::FETCH_ORI_ABS</em>, this value specifies the
+       absolute number of the row in the result set that shall be fetched.
+      </p>
+      <p class="para">
+       For a PDOStatement object representing a scrollable cursor for which
+       the <em>cursor_orientation</em> parameter is set to
+       <em>PDO::FETCH_ORI_REL</em>, this value specifies the
+       row to fetch relative to the cursor position before
+       <span class="function"><strong>PDOStatement::fetch()</strong></span> was called.
+      </p>
+     </dd>
+
+    
+   </dl>
+
+  <p></p>
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-pdostatement.fetch-returnvalues">
+  <h3 class="title">Return Values</h3>
+  <p class="para">
+   The return value of this function on success depends on the fetch type. In
+   all cases, <strong><code>FALSE</code></strong> is returned on failure.
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-pdostatement.fetch-examples">
+  <h3 class="title">Examples</h3>
+  <p class="para">
+   </p><div class="example" id="example-998"><p><strong>Example #1 Fetching rows using different fetch styles</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br>$sth&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$dbh</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">prepare</span><span style="color: #007700">(</span><span style="color: #DD0000">"SELECT&nbsp;name,&nbsp;colour&nbsp;FROM&nbsp;fruit"</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$sth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">execute</span><span style="color: #007700">();<br><br></span><span style="color: #FF8000">/*&nbsp;Exercise&nbsp;PDOStatement::fetch&nbsp;styles&nbsp;*/<br></span><span style="color: #007700">print(</span><span style="color: #DD0000">"PDO::FETCH_ASSOC:&nbsp;"</span><span style="color: #007700">);<br>print(</span><span style="color: #DD0000">"Return&nbsp;next&nbsp;row&nbsp;as&nbsp;an&nbsp;array&nbsp;indexed&nbsp;by&nbsp;column&nbsp;name\n"</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$sth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetch</span><span style="color: #007700">(</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">FETCH_ASSOC</span><span style="color: #007700">);<br></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">);<br>print(</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">);<br><br>print(</span><span style="color: #DD0000">"PDO::FETCH_BOTH:&nbsp;"</span><span style="color: #007700">);<br>print(</span><span style="color: #DD0000">"Return&nbsp;next&nbsp;row&nbsp;as&nbsp;an&nbsp;array&nbsp;indexed&nbsp;by&nbsp;both&nbsp;column&nbsp;name&nbsp;and&nbsp;number\n"</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$sth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetch</span><span style="color: #007700">(</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">FETCH_BOTH</span><span style="color: #007700">);<br></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">);<br>print(</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">);<br><br>print(</span><span style="color: #DD0000">"PDO::FETCH_LAZY:&nbsp;"</span><span style="color: #007700">);<br>print(</span><span style="color: #DD0000">"Return&nbsp;next&nbsp;row&nbsp;as&nbsp;an&nbsp;anonymous&nbsp;object&nbsp;with&nbsp;column&nbsp;names&nbsp;as&nbsp;properties\n"</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$sth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetch</span><span style="color: #007700">(</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">FETCH_LAZY</span><span style="color: #007700">);<br></span><span style="color: #0000BB">print_r</span><span style="color: #007700">(</span><span style="color: #0000BB">$result</span><span style="color: #007700">);<br>print(</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">);<br><br>print(</span><span style="color: #DD0000">"PDO::FETCH_OBJ:&nbsp;"</span><span style="color: #007700">);<br>print(</span><span style="color: #DD0000">"Return&nbsp;next&nbsp;row&nbsp;as&nbsp;an&nbsp;anonymous&nbsp;object&nbsp;with&nbsp;column&nbsp;names&nbsp;as&nbsp;properties\n"</span><span style="color: #007700">);<br></span><span style="color: #0000BB">$result&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$sth</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetch</span><span style="color: #007700">(</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">FETCH_OBJ</span><span style="color: #007700">);<br>print&nbsp;</span><span style="color: #0000BB">$result</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">NAME</span><span style="color: #007700">;<br>print(</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">);<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>The above example will output:</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>PDO::FETCH_ASSOC: Return next row as an array indexed by column name
+Array
+(
+    [NAME] =&gt; apple
+    [COLOUR] =&gt; red
+)
+
+PDO::FETCH_BOTH: Return next row as an array indexed by both column name and number
+Array
+(
+    [NAME] =&gt; banana
+    [0] =&gt; banana
+    [COLOUR] =&gt; yellow
+    [1] =&gt; yellow
+)
+
+PDO::FETCH_LAZY: Return next row as an anonymous object with column names as properties
+PDORow Object
+(
+    [NAME] =&gt; orange
+    [COLOUR] =&gt; orange
+)
+
+PDO::FETCH_OBJ: Return next row as an anonymous object with column names as properties
+kiwi
+</pre></div>
+    </div>
+   </div>
+   <div class="example" id="example-999"><p><strong>Example #2 Fetching rows with a scrollable cursor</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br></span><span style="color: #007700">function&nbsp;</span><span style="color: #0000BB">readDataForwards</span><span style="color: #007700">(</span><span style="color: #0000BB">$dbh</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;</span><span style="color: #0000BB">$sql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'SELECT&nbsp;hand,&nbsp;won,&nbsp;bet&nbsp;FROM&nbsp;mynumbers&nbsp;ORDER&nbsp;BY&nbsp;BET'</span><span style="color: #007700">;<br>&nbsp;&nbsp;try&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stmt&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$dbh</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">prepare</span><span style="color: #007700">(</span><span style="color: #0000BB">$sql</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">ATTR_CURSOR&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">CURSOR_SCROLL</span><span style="color: #007700">));<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">execute</span><span style="color: #007700">();<br>&nbsp;&nbsp;&nbsp;&nbsp;while&nbsp;(</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetch</span><span style="color: #007700">(</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">FETCH_NUM</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">FETCH_ORI_NEXT</span><span style="color: #007700">))&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"\t"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #0000BB">1</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"\t"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #0000BB">2</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #0000BB">$data</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stmt&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">;<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;catch&nbsp;(</span><span style="color: #0000BB">PDOException&nbsp;$e</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getMessage</span><span style="color: #007700">();<br>&nbsp;&nbsp;}<br>}<br>function&nbsp;</span><span style="color: #0000BB">readDataBackwards</span><span style="color: #007700">(</span><span style="color: #0000BB">$dbh</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;</span><span style="color: #0000BB">$sql&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'SELECT&nbsp;hand,&nbsp;won,&nbsp;bet&nbsp;FROM&nbsp;mynumbers&nbsp;ORDER&nbsp;BY&nbsp;bet'</span><span style="color: #007700">;<br>&nbsp;&nbsp;try&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stmt&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$dbh</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">prepare</span><span style="color: #007700">(</span><span style="color: #0000BB">$sql</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">ATTR_CURSOR&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">CURSOR_SCROLL</span><span style="color: #007700">));<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">execute</span><span style="color: #007700">();<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetch</span><span style="color: #007700">(</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">FETCH_NUM</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">FETCH_ORI_LAST</span><span style="color: #007700">);<br>&nbsp;&nbsp;&nbsp;&nbsp;do&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$data&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #0000BB">0</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"\t"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #0000BB">1</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"\t"&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$row</span><span style="color: #007700">[</span><span style="color: #0000BB">2</span><span style="color: #007700">]&nbsp;.&nbsp;</span><span style="color: #DD0000">"\n"</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #0000BB">$data</span><span style="color: #007700">;<br>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;while&nbsp;(</span><span style="color: #0000BB">$row&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$stmt</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">fetch</span><span style="color: #007700">(</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">FETCH_NUM</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">FETCH_ORI_PRIOR</span><span style="color: #007700">));<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$stmt&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">null</span><span style="color: #007700">;<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;catch&nbsp;(</span><span style="color: #0000BB">PDOException&nbsp;$e</span><span style="color: #007700">)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getMessage</span><span style="color: #007700">();<br>&nbsp;&nbsp;}<br>}<br><br>print&nbsp;</span><span style="color: #DD0000">"Reading&nbsp;forwards:\n"</span><span style="color: #007700">;<br></span><span style="color: #0000BB">readDataForwards</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br><br>print&nbsp;</span><span style="color: #DD0000">"Reading&nbsp;backwards:\n"</span><span style="color: #007700">;<br></span><span style="color: #0000BB">readDataBackwards</span><span style="color: #007700">(</span><span style="color: #0000BB">$conn</span><span style="color: #007700">);<br></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>The above example will output:</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>Reading forwards:
+21    10    5
+16    0     5
+19    20    10
+
+Reading backwards:
+19    20    10
+16    0     5
+21    10    5
+</pre></div>
+    </div>
+   </div>
+
+  <p></p>
+ </div>
+
+
+ <div class="refsect1 seealso" id="refsect1-pdostatement.fetch-seealso">
+  <h3 class="title">See Also</h3>
+  <p class="para">
+   </p><ul class="simplelist">
+    <li class="member"><span class="function"><a href="pdo.prepare.html" class="function" rel="rdfs-seeAlso">PDO::prepare()</a> - Prepares a statement for execution and returns a statement object</span></li>
+    <li class="member"><span class="function"><a href="pdostatement.execute.html" class="function" rel="rdfs-seeAlso">PDOStatement::execute()</a> - Executes a prepared statement</span></li>
+    <li class="member"><span class="function"><a href="pdostatement.fetchall.html" class="function" rel="rdfs-seeAlso">PDOStatement::fetchAll()</a> - Returns an array containing all of the result set rows</span></li>
+    <li class="member"><span class="function"><a href="pdostatement.fetchcolumn.html" class="function" rel="rdfs-seeAlso">PDOStatement::fetchColumn()</a> - Returns a single column from the next row of a result set</span></li>
+    <li class="member"><span class="function"><a href="pdostatement.fetchobject.html" class="function" rel="rdfs-seeAlso">PDOStatement::fetchObject()</a> - Fetches the next row and returns it as an object.</span></li>
+    <li class="member"><span class="function"><a href="pdostatement.setfetchmode.html" class="function" rel="rdfs-seeAlso">PDOStatement::setFetchMode()</a> - Set the default fetch mode for this statement</span></li>
+   </ul>
+  <p></p>
+ </div>
+
+</div>
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div><div id="allnotes">
+  <div class="note" id="62536">  
+  <a class="name">
+  <strong class="user"><em>terry at bitsoup dot com</em></strong></a><div class="date" title="2006-03-02 12:46"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom62536">
+<div class="phpcode"><code><span class="html">
+WARNING:<br>fetch() does NOT adhere to SQL-92 SQLSTATE standard when dealing with empty datasets.<br><br>Instead of setting the errorcode class to 20 to indicate "no data found", it returns a class of 00 indicating success, and returns NULL to the caller.<br><br>This also prevents the exception mechainsm from firing.<br><br>Programmers will need to explicitly code tests for empty resultsets after any fetch*() instead of relying on the default behavior of the RDBMS.<br><br>I tried logging this as a bug, but it was dismissed as "working as intended". Just a head's up.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="105277">  
+  <a class="name">
+  <strong class="user"><em>henry at henrysmith dot org</em></strong></a><div class="date" title="2011-08-06 09:24"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom105277">
+<div class="phpcode"><code><span class="html">
+Someone's already pointed out that PDO::CURSOR_SCROLL isn't supported by the SQLite driver. It's also worth noting that it's not supported by the MySQL driver either.<br><br>In fact, if you try to use scrollable cursors with a MySQL statement, the PDO::FETCH_ORI_ABS parameter and the offset given to fetch() will be silently ignored. fetch() will behave as normal, returning rows in the order in which they came out of the database.<br><br>It's actually pretty confusing behaviour at first. Definitely worth documenting even if only as a user-added note on this page.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="84495">  
+  <a class="name">
+  <strong class="user"><em>lod</em></strong></a><div class="date" title="2008-07-16 09:33"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom84495">
+<div class="phpcode"><code><span class="html">
+A quick one liner to get the first entry returned.&nbsp; This is nice for very basic queries.<br><br><span class="default">&lt;?php<br>$count </span><span class="keyword">= </span><span class="default">current</span><span class="keyword">(</span><span class="default">$db</span><span class="keyword">-&gt;</span><span class="default">query</span><span class="keyword">(</span><span class="string">"select count(*) from table"</span><span class="keyword">)-&gt;</span><span class="default">fetch</span><span class="keyword">());<br></span><span class="default">?&gt;</span>php</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="78794">  
+  <a class="name">
+  <strong class="user"><em>Gerard van Beek</em></strong></a><div class="date" title="2007-10-28 01:42"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom78794">
+<div class="phpcode"><code><span class="html">
+If you to use a new instance of a class for a record you can use:<br><br><span class="default">&lt;?php<br></span><span class="keyword">include_once(</span><span class="string">"user.class"</span><span class="keyword">);<br></span><span class="default">$sth </span><span class="keyword">= </span><span class="default">$db</span><span class="keyword">-&gt;</span><span class="default">prepare</span><span class="keyword">(</span><span class="string">"SELECT * FROM user WHERE id = 1"</span><span class="keyword">);<br><br></span><span class="comment">/* create instance automatically */<br></span><span class="default">$sth</span><span class="keyword">-&gt;</span><span class="default">setFetchMode</span><span class="keyword">( </span><span class="default">PDO</span><span class="keyword">::</span><span class="default">FETCH_CLASS</span><span class="keyword">, </span><span class="string">'user'</span><span class="keyword">);<br></span><span class="default">$sth</span><span class="keyword">-&gt;</span><span class="default">execute</span><span class="keyword">();<br></span><span class="default">$user </span><span class="keyword">= </span><span class="default">$sth</span><span class="keyword">-&gt;</span><span class="default">fetch</span><span class="keyword">( </span><span class="default">PDO</span><span class="keyword">::</span><span class="default">FETCH_CLASS </span><span class="keyword">);<br></span><span class="default">$sth</span><span class="keyword">-&gt;</span><span class="default">closeCursor</span><span class="keyword">();<br>print (</span><span class="default">$user</span><span class="keyword">-&gt;</span><span class="default">id</span><span class="keyword">);<br><br></span><span class="comment">/* or create an instance yourself and use it */<br></span><span class="default">$user</span><span class="keyword">= new </span><span class="default">user</span><span class="keyword">();<br></span><span class="default">$sth</span><span class="keyword">-&gt;</span><span class="default">setFetchMode</span><span class="keyword">( </span><span class="default">PDO</span><span class="keyword">::</span><span class="default">FETCH_INTO</span><span class="keyword">, </span><span class="default">$user</span><span class="keyword">);<br></span><span class="default">$sth</span><span class="keyword">-&gt;</span><span class="default">execute</span><span class="keyword">();<br></span><span class="default">$user</span><span class="keyword">= </span><span class="default">$sth</span><span class="keyword">-&gt;</span><span class="default">fetch</span><span class="keyword">( </span><span class="default">PDO</span><span class="keyword">::</span><span class="default">FETCH_INTO </span><span class="keyword">);<br></span><span class="default">$sth</span><span class="keyword">-&gt;</span><span class="default">closeCursor</span><span class="keyword">();<br>print (</span><span class="default">$user</span><span class="keyword">-&gt;</span><span class="default">id</span><span class="keyword">);<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="111362">  
+  <a class="name">
+  <strong class="user"><em>gergo at gergoerdosi dot com</em></strong></a><div class="date" title="2013-02-11 04:07"><strong>1 year ago</strong></div>
+  <div class="text" id="Hcom111362">
+<div class="phpcode"><code><span class="html">
+When using PDO::FETCH_COLUMN in a while loop, it's not enough to just use the value in the while statement as many examples show:<br><br><span class="default">&lt;?php<br></span><span class="keyword">while (</span><span class="default">$row </span><span class="keyword">= </span><span class="default">$stmt</span><span class="keyword">-&gt;</span><span class="default">fetch</span><span class="keyword">(</span><span class="default">PDO</span><span class="keyword">::</span><span class="default">FETCH_COLUMN</span><span class="keyword">)) {<br>&nbsp; &nbsp; print </span><span class="default">$row</span><span class="keyword">;<br>}<br></span><span class="default">?&gt;<br></span><br>If there are 5 rows with values 1 2 0 4 5, then the while loop above will stop at the third row printing only 1 2. The solution is to either explicitly test for false:<br><br><span class="default">&lt;?php<br></span><span class="keyword">while ((</span><span class="default">$row </span><span class="keyword">= </span><span class="default">$stmt</span><span class="keyword">-&gt;</span><span class="default">fetch</span><span class="keyword">(</span><span class="default">PDO</span><span class="keyword">::</span><span class="default">FETCH_COLUMN</span><span class="keyword">)) !== </span><span class="default">false</span><span class="keyword">) {<br>&nbsp; &nbsp; print </span><span class="default">$row</span><span class="keyword">;<br>}<br></span><span class="default">?&gt;<br></span><br>Or use foreach with fetchAll():<br><br><span class="default">&lt;?php<br></span><span class="keyword">foreach (</span><span class="default">$stmt</span><span class="keyword">-&gt;</span><span class="default">fetchAll</span><span class="keyword">(</span><span class="default">PDO</span><span class="keyword">::</span><span class="default">FETCH_COLUMN</span><span class="keyword">) as </span><span class="default">$row</span><span class="keyword">) {<br>&nbsp; &nbsp; print </span><span class="default">$row</span><span class="keyword">;<br>}<br></span><span class="default">?&gt;<br></span><br>Both will correctly print 1 2 0 4 5.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="112298">  
+  <a class="name">
+  <strong class="user"><em>sumariva at gmail dot com</em></strong></a><div class="date" title="2013-05-29 06:02"><strong>1 year ago</strong></div>
+  <div class="text" id="Hcom112298">
+<div class="phpcode"><code><span class="html">
+I got problems during fetch of stored procedures with mssql following PDOException:<br><br>SQLSTATE[IMSSP]: The active result for the query contains no fields<br><br>with a a prepared statement like:<br> EXEC [mydb].[stored_procedure_that_returns_select] ?;<br><br>The solution was to supress the count of records<br>SET NOCOUNT ON; EXEC [mydb].[stored_procedure_that_returns_select] ?;<br><br>Hope it helps!</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="101081">  
+  <a class="name">
+  <strong class="user"><em>public at grik dot net</em></strong></a><div class="date" title="2010-11-24 03:10"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom101081">
+<div class="phpcode"><code><span class="html">
+When fetching an object, the constructor of the class is called after the fields are populated by default.
+<br>
+<br>PDO::FETCH_PROPS_LATE is used to change the behaviour and make it work as expected - constructor be called _before_ the object fields will be populated with the data.
+<br>
+<br>sample:
+<br>
+<br><span class="default">&lt;?php
+<br>$a </span><span class="keyword">= </span><span class="default">$PDO</span><span class="keyword">-&gt;</span><span class="default">query</span><span class="keyword">(</span><span class="string">'select id from table'</span><span class="keyword">);
+<br></span><span class="default">$a</span><span class="keyword">-&gt;</span><span class="default">setFetchMode</span><span class="keyword">(</span><span class="default">PDO</span><span class="keyword">::</span><span class="default">FETCH_CLASS</span><span class="keyword">|</span><span class="default">PDO</span><span class="keyword">::</span><span class="default">FETCH_PROPS_LATE</span><span class="keyword">, </span><span class="string">'ClassName'</span><span class="keyword">);
+<br></span><span class="default">$obj </span><span class="keyword">= </span><span class="default">$a</span><span class="keyword">-&gt;</span><span class="default">fetch</span><span class="keyword">();
+<br></span><span class="default">?&gt;
+<br></span>
+<br><a rel="nofollow" target="_blank">http://bugs.php.net/bug.php?id=53394</a></span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="113844">  
+  <a class="name">
+  <strong class="user"><em>yarco dot wang at gmail dot com</em></strong></a><div class="date" title="2013-12-07 11:30"><strong>8 months ago</strong></div>
+  <div class="text" id="Hcom113844">
+<div class="phpcode"><code><span class="html">
+If no record, this function will also return false.<br>I think that is not very good...</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="95991">  
+  <a class="name">
+  <strong class="user"><em>Typer85 at gmail dot com</em></strong></a><div class="date" title="2010-02-01 03:03"><strong>4 years ago</strong></div>
+  <div class="text" id="Hcom95991">
+<div class="phpcode"><code><span class="html">
+Here is quick note for developers that use the PDO SQLite Driver:<br><br>The PDO SQLite driver does not support cursors, so using the PDO::CURSOR_SCROLL Attribute, will not work when using the PDO SQLite driver. For example:<br><br><span class="default">&lt;?php<br><br></span><span class="comment">// Assuming $Handle Is a PDO Handle.<br></span><span class="default">$Statement </span><span class="keyword">= </span><span class="default">$Handle</span><span class="keyword">-&gt;</span><span class="default">query</span><span class="keyword">( </span><span class="default">$sqlStatement </span><span class="keyword">, array( </span><span class="default">PDO</span><span class="keyword">::</span><span class="default">ATTR_CURSOR </span><span class="keyword">=&gt; </span><span class="default">PDO</span><span class="keyword">::</span><span class="default">CURSOR_SCROLL </span><span class="keyword">) );<br><br></span><span class="default">?&gt;<br></span><br>What is even worse is that PDO::prepare will NOT throw an Exception when it fails to prepare the query, even when the error mode is set to throw Exceptions, and will instead return a Boolean False!<br><br>Not only do I consider this a poor design choice, but also its a real shame that this is not documented anywhere in the manual -- in fact the manual is not clear on what Attributes are supported by which drivers and which are not so developers are left to play a classic game of guess.<br><br>I hope this saves some developers some headaches.<br><br>Good Luck,</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="84321">  
+  <a class="name">
+  <strong class="user"><em>lozitskiys at gmail dot com</em></strong></a><div class="date" title="2008-07-09 05:21"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom84321">
+<div class="phpcode"><code><span class="html">
+I spent some hours trying to find out how to manipulate with BLOB fields using PDO.<br><br>Remember that you can't retreive BLOB data using something like this :<br><br><span class="default">&lt;?php<br>$sql </span><span class="keyword">= </span><span class="string">'SELECT * FROM sometable LIMIT 1'</span><span class="keyword">;<br></span><span class="default">$stmt </span><span class="keyword">= </span><span class="default">$dbh</span><span class="keyword">-&gt;</span><span class="default">prepare</span><span class="keyword">(</span><span class="default">$sql</span><span class="keyword">);<br></span><span class="default">$stmt</span><span class="keyword">-&gt;</span><span class="default">execute</span><span class="keyword">();<br></span><span class="default">$stmt</span><span class="keyword">-&gt;</span><span class="default">setAttribute</span><span class="keyword">(</span><span class="default">PDO</span><span class="keyword">::</span><span class="default">FETCH_ASSOC</span><span class="keyword">);<br></span><span class="default">$row </span><span class="keyword">= </span><span class="default">$stmt</span><span class="keyword">-&gt;</span><span class="default">fetch</span><span class="keyword">();<br><br></span><span class="default">$myFile </span><span class="keyword">= </span><span class="default">$row</span><span class="keyword">[</span><span class="string">'file'</span><span class="keyword">];<br></span><span class="default">?&gt;<br></span><br>Instead of this you should try following approach:<br><br><span class="default">&lt;?php<br>$sql </span><span class="keyword">= </span><span class="string">"SELECT mime, file FROM sometable LIMIT 1"</span><span class="keyword">; <br></span><span class="default">$stmt </span><span class="keyword">= </span><span class="default">$dbh</span><span class="keyword">-&gt;</span><span class="default">prepare</span><span class="keyword">(</span><span class="default">$sql</span><span class="keyword">); <br></span><span class="default">$stmt</span><span class="keyword">-&gt;</span><span class="default">execute</span><span class="keyword">(); <br><br></span><span class="default">$stmt</span><span class="keyword">-&gt;</span><span class="default">bindColumn</span><span class="keyword">(</span><span class="default">1</span><span class="keyword">, </span><span class="default">$mime</span><span class="keyword">,); <br></span><span class="default">$stmt</span><span class="keyword">-&gt;</span><span class="default">bindColumn</span><span class="keyword">(</span><span class="default">2</span><span class="keyword">, </span><span class="default">$file</span><span class="keyword">, </span><span class="default">PDO</span><span class="keyword">::</span><span class="default">PARAM_LOB</span><span class="keyword">); <br><br></span><span class="default">$stmt</span><span class="keyword">-&gt;</span><span class="default">fetch</span><span class="keyword">(); <br><br></span><span class="default">header</span><span class="keyword">(</span><span class="string">'Content-type: '</span><span class="keyword">.</span><span class="default">$mime</span><span class="keyword">);<br>print </span><span class="default">$file</span><span class="keyword">; <br><br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="74262">  
+  <a class="name">
+  <strong class="user"><em>marcini</em></strong></a><div class="date" title="2007-04-02 04:41"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom74262">
+<div class="phpcode"><code><span class="html">
+Be careful with fetch() when you use prepared statements and MySQL (I don`t know how it is with other databases). Fetch won`t close cursor and won`t let you send any other query, even if your result set has only one row, . <br>If you use $statement-&gt;fetch(), you will also have to use $statement-&gt;closeCursor() afterwards, to be albe to execute another query.<br>Alternatively you can use $statement-&gt;fetchAll() without $statement-&gt;closeCursor().</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="114458">  
+  <a class="name">
+  <strong class="user"><em>lenz_kappov at yahoo dot co dot uk</em></strong></a><div class="date" title="2014-02-23 10:30"><strong>6 months ago</strong></div>
+  <div class="text" id="Hcom114458">
+<div class="phpcode"><code><span class="html">
+Because MySQL does not currently support the use of cursors, the $cursor_offset feature cannot work when using PDO to access a MySQL database.<br><br>If you are tring to arbitrarily access a specific record or group of records in a MySQL database recordset, you might want to consider using the LIMIT clause of the SELECT statement to achieve this e.g. LIMIT 5,3 to return just the 6th,7th &amp; 8th records - 3 records starting at index 5 (which is the 6th record).</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="109304">  
+  <a class="name">
+  <strong class="user"><em>sumariva at gmail dot com</em></strong></a><div class="date" title="2012-07-04 04:17"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom109304">
+<div class="phpcode"><code><span class="html">
+I could use PDO::FETCH_COLUMN to retrieve the first column from result.<br>$ps-&gt;fetch( PDO::FETCH_COLUMN );<br>Worked on Postgresql with PHP 5.3.10.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="82846">  
+  <a class="name">
+  <strong class="user"><em>josh</em></strong></a><div class="date" title="2008-04-29 12:02"><strong>6 years ago</strong></div>
+  <div class="text" id="Hcom82846">
+<div class="phpcode"><code><span class="html">
+Note that PDO::ATTR_STRINGIFY_FETCHES will NOT work for the MySQL driver. MySQL will always return strings because that is the behaviour of the core mysql PHP extension. See <a rel="nofollow" target="_blank">http://bugs.php.net/bug.php?id=44341</a></span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="77146">  
+  <a class="name">
+  <strong class="user"><em>BaBna</em></strong></a><div class="date" title="2007-08-16 12:52"><strong>7 years ago</strong></div>
+  <div class="text" id="Hcom77146">
+<div class="phpcode"><code><span class="html">
+When you do a SELECT query for one row, and want to check if it's there, you don't need to count the fetchAll() result, you can just check if $result-&gt;fetch() is true:<br><span class="default">&lt;?php<br>$bbnq </span><span class="keyword">= </span><span class="default">sprintf</span><span class="keyword">(</span><span class="string">"SELECT login<br>FROM users<br>WHERE id = %u"</span><span class="keyword">,</span><span class="default">27</span><span class="keyword">);<br>try<br>&nbsp; &nbsp; { </span><span class="default">$req </span><span class="keyword">= </span><span class="default">$db_bbn</span><span class="keyword">-&gt;</span><span class="default">query</span><span class="keyword">(</span><span class="default">$bbnq</span><span class="keyword">); }<br>catch (</span><span class="default">Exception $e</span><span class="keyword">)<br>&nbsp; &nbsp; { </span><span class="default">bbnf_pdo_error</span><span class="keyword">(</span><span class="default">$e</span><span class="keyword">,</span><span class="default">__FILE__</span><span class="keyword">,</span><span class="default">__LINE__</span><span class="keyword">); }<br>if ( </span><span class="default">$r </span><span class="keyword">= </span><span class="default">$req</span><span class="keyword">-&gt;</span><span class="default">fetch</span><span class="keyword">() )<br>&nbsp; &nbsp; { echo </span><span class="string">"This query has a row result"</span><span class="keyword">; }<br>else<br>&nbsp; &nbsp; { echo </span><span class="string">"This query has an empty result"</span><span class="keyword">; }<br></span><span class="default">?&gt;</span>
+</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="60905">  
+  <a class="name">
+  <strong class="user"><em>avinoamr at gmail dot com</em></strong></a><div class="date" title="2006-01-19 02:48"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom60905">
+<div class="phpcode"><code><span class="html">
+Note that using the FETCH_CLASS mechanism does NOT trigger the class's constructor! You must explicity instantiate the class to use it's constructor behavior.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="59057">  
+  <a class="name">
+  <strong class="user"><em>fh at ez dot no</em></strong></a><div class="date" title="2005-11-25 12:13"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom59057">
+<div class="phpcode"><code><span class="html">
+I can also add that the constructor is run _after_ the data is set on the object if yo use PDO::FETCH_CLASS.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="59056">  
+  <a class="name">
+  <strong class="user"><em>fh at ez dot no</em></strong></a><div class="date" title="2005-11-24 11:58"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom59056">
+<div class="phpcode"><code><span class="html">
+If you want to use PDO::FETCH_CLASS you need to set it up with setFetchMode first like so:<br>&nbsp; &nbsp; &nbsp; &nbsp; $stmt-&gt;setFetchMode( PDO::FETCH_CLASS, 'classType', array( 'parameters to constructor' );<br>&nbsp; &nbsp; &nbsp; &nbsp; $object = $stmt-&gt;fetch( PDO::FETCH_CLASS );<br>If you ommit this PHP will segfault.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="58021">  
+  <a class="name">
+  <strong class="user"><em>aledmb at gmail dot com</em></strong></a><div class="date" title="2005-10-21 10:22"><strong>8 years ago</strong></div>
+  <div class="text" id="Hcom58021">
+<div class="phpcode"><code><span class="html">
+note that fetch constants are not included in the PDO class for PHP versions prior to 5.1</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="105682">  
+  <a class="name">
+  <strong class="user"><em>Alex</em></strong></a><div class="date" title="2011-09-07 02:32"><strong>2 years ago</strong></div>
+  <div class="text" id="Hcom105682">
+<div class="phpcode"><code><span class="html">
+It seems that if you do a $statement-&gt;query() with an INSERT statement and after that a $statement-&gt;fetch() you will get an exception saying: SQLSTATE[HY000]: General error.</span>
+</code></div>
+  </div>
+ </div>
+  <div class="note" id="104521">  
+  <a class="name">
+  <strong class="user"><em>Ome Ko</em></strong></a><div class="date" title="2011-06-20 04:46"><strong>3 years ago</strong></div>
+  <div class="text" id="Hcom104521">
+<div class="phpcode"><code><span class="html">
+Don't do <br>if($objStatement-&gt;fetch()) return $objStatement-&gt;fetch(); <br><br>You want&nbsp;&nbsp; <br>if($blah=$objStatement-&gt;fetch()) return $blah;<br><br>Trust me on this one.</span>
+</code></div>
+  </div>
+ </div></div>
+
+ 
+</section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/pdostatement.fetch.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 16:57:35 GMT -->
+
+
+</body></html>

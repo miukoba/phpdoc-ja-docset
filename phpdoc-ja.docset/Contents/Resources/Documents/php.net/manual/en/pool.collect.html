@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>Collect references to completed tasks</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="class.pool.html">≪ Pool</a></li>
+      <li style="float: right;"><a href="pool.construct.html">Pool::__construct ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="class.pool.html">Pool</a></li>
+    <li>Collect references to completed tasks</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="pool.collect" class="refentry">
+ <div class="refnamediv">
+  <h1 class="refname">Pool::collect</h1>
+  <p class="verinfo">(PECL pthreads &gt;= 2.0.0)</p><p class="refpurpose"><span class="refname">Pool::collect</span> &mdash; <span class="dc-title">Collect references to completed tasks</span></p>
+
+ </div>
+
+ <div class="refsect1 description" id="refsect1-pool.collect-description">
+  <h3 class="title">説明</h3>
+  <div class="methodsynopsis dc-description">
+   <span class="modifier">public</span> <span class="type"><span class="type void">void</span></span> <span class="methodname"><strong>Pool::collect</strong></span>
+    ( <span class="methodparam"><span class="type"><a href="language.types.callable.html" class="type Callable">Callable</a></span> <code class="parameter">$collector</code></span>
+   )</div>
+
+  <p class="para rdfs-comment">
+  Allows the Pool to collect references determined to be garbage by the given collector
+  </p>
+ </div>
+
+
+ <div class="refsect1 parameters" id="refsect1-pool.collect-parameters">
+  <h3 class="title">パラメータ</h3>
+  <dl>
+
+   
+    <dt>
+<code class="parameter">collector</code></dt>
+
+    <dd>
+
+     <p class="para">
+  A Callable collector
+     </p>
+    </dd>
+
+   
+  </dl>
+
+ </div>
+
+
+ <div class="refsect1 returnvalues" id="refsect1-pool.collect-returnvalues">
+  <h3 class="title">返り値</h3>
+  <p class="para">
+ void
+  </p>
+ </div>
+
+
+ <div class="refsect1 examples" id="refsect1-pool.collect-examples">
+  <h3 class="title">例</h3>
+  <p class="para">
+   <div class="example" id="example-3808">
+    <p><strong>例1 Creating Pools</strong></p>
+    <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br /></span><span style="color: #007700">class&nbsp;</span><span style="color: #0000BB">MyWork&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">Stackable&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">__construct</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">complete&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">false</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">run</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">printf</span><span style="color: #007700">(<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #DD0000">"Hello&nbsp;from&nbsp;%s&nbsp;in&nbsp;Thread&nbsp;#%lu\n"</span><span style="color: #007700">,&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">__CLASS__</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">worker</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getThreadId</span><span style="color: #007700">());<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">complete&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">true</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">isComplete</span><span style="color: #007700">()&nbsp;{&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">complete</span><span style="color: #007700">;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br /><br />&nbsp;&nbsp;&nbsp;&nbsp;protected&nbsp;</span><span style="color: #0000BB">$complete</span><span style="color: #007700">;<br />}<br /><br />class&nbsp;</span><span style="color: #0000BB">MyWorker&nbsp;</span><span style="color: #007700">extends&nbsp;</span><span style="color: #0000BB">Worker&nbsp;</span><span style="color: #007700">{<br />&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">__construct</span><span style="color: #007700">(</span><span style="color: #0000BB">Something&nbsp;$something</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$this</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">something&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #0000BB">$something</span><span style="color: #007700">;<br />&nbsp;&nbsp;&nbsp;&nbsp;}<br />&nbsp;&nbsp;&nbsp;&nbsp;<br />&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: #0000BB">run</span><span style="color: #007700">()&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #FF8000">/**&nbsp;...&nbsp;**/<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #007700">}<br />}<br /><br /></span><span style="color: #0000BB">$pool&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">Pool</span><span style="color: #007700">(</span><span style="color: #0000BB">8</span><span style="color: #007700">,&nbsp;\</span><span style="color: #0000BB">MyWorker</span><span style="color: #007700">::class,&nbsp;[new&nbsp;</span><span style="color: #0000BB">Something</span><span style="color: #007700">()]);<br /></span><span style="color: #0000BB">$pool</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">submit</span><span style="color: #007700">(new&nbsp;</span><span style="color: #0000BB">MyWork</span><span style="color: #007700">());<br /><br /></span><span style="color: #0000BB">usleep</span><span style="color: #007700">(</span><span style="color: #0000BB">1000</span><span style="color: #007700">);<br /><br /></span><span style="color: #0000BB">$pool</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">collect</span><span style="color: #007700">(function(</span><span style="color: #0000BB">$work</span><span style="color: #007700">){<br />&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: #0000BB">$work</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">isComplete</span><span style="color: #007700">();<br />});<br /></span><span style="color: #0000BB">var_dump</span><span style="color: #007700">(</span><span style="color: #0000BB">$pool</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+    </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+Hello from MyWork in Thread #140222468777728
+object(Pool)#1 (6) {
+  [&quot;size&quot;:protected]=&gt;
+  int(8)
+  [&quot;class&quot;:protected]=&gt;
+  string(8) &quot;MyWorker&quot;
+  [&quot;workers&quot;:protected]=&gt;
+  array(1) {
+    [0]=&gt;
+    object(MyWorker)#4 (1) {
+      [&quot;something&quot;]=&gt;
+      object(Something)#5 (0) {
+      }
+    }
+  }
+  [&quot;work&quot;:protected]=&gt;
+  array(0) {
+  }
+  [&quot;ctor&quot;:protected]=&gt;
+  array(1) {
+    [0]=&gt;
+    object(Something)#2 (0) {
+    }
+  }
+  [&quot;last&quot;:protected]=&gt;
+  int(1)
+}
+</pre></div>
+    </div>
+   </div>
+  </p>
+ </div>
+
+
+</div><div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>

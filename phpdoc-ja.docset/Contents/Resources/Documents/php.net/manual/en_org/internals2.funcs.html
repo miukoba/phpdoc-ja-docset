@@ -1,0 +1,587 @@
+<html><!-- Mirrored from php.net/manual/en/internals2.funcs.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:24:05 GMT --><!-- Added by HTTrack --><head><meta http-equiv="content-type" content="text/html;charset=utf-8"><!-- /Added by HTTrack -->
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+  <title>Writing Functions</title>
+
+ <link rel="shortcut icon" href="../../favicon.ico">
+ <link rel="search" type="application/opensearchdescription+xml" href="http://php.net/phpnetimprovedsearch.src" title="Add PHP.net search">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/releases/feed.php" title="PHP Release feed">
+ <link rel="alternate" type="application/atom+xml" href="http://php.net/feed.atom" title="PHP: Hypertext Preprocessor">
+
+ <link rel="canonical" href="internals2.funcs.html">
+ <link rel="shorturl" href="internals2.funcs.html">
+ <link rel="alternate" href="internals2.funcs.html" hreflang="x-default">
+
+ <link rel="contents" href="index-2.html">
+ <link rel="index" href="internals2.html">
+ <link rel="prev" href="internals2.variables.objects.html">
+ <link rel="next" href="internals2.classes.html">
+
+ <link rel="alternate" href="internals2.funcs.html" hreflang="en">
+ <link rel="alternate" href="http://php.net/manual/pt_BR/internals2.funcs.php" hreflang="pt_BR">
+ <link rel="alternate" href="http://php.net/manual/zh/internals2.funcs.php" hreflang="zh">
+ <link rel="alternate" href="http://php.net/manual/fr/internals2.funcs.php" hreflang="fr">
+ <link rel="alternate" href="http://php.net/manual/de/internals2.funcs.php" hreflang="de">
+ <link rel="alternate" href="http://php.net/manual/it/internals2.funcs.php" hreflang="it">
+ <link rel="alternate" href="http://php.net/manual/ja/internals2.funcs.php" hreflang="ja">
+ <link rel="alternate" href="http://php.net/manual/ro/internals2.funcs.php" hreflang="ro">
+ <link rel="alternate" href="http://php.net/manual/ru/internals2.funcs.php" hreflang="ru">
+ <link rel="alternate" href="http://php.net/manual/es/internals2.funcs.php" hreflang="es">
+ <link rel="alternate" href="http://php.net/manual/tr/internals2.funcs.php" hreflang="tr">
+
+<link rel="stylesheet" type="text/css" href="../../cached8fe1.css?t=1401250819&amp;f=/fonts/Fira/fira.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached4b8d.css?t=1404368420&amp;f=/fonts/Font-Awesome/css/fontello.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cached5065.css?t=1403329232&amp;f=/styles/theme-base.css" media="screen">
+<link rel="stylesheet" type="text/css" href="../../cachedc78d.css?t=1401249623&amp;f=/styles/theme-medium.css" media="screen">
+
+ <!--[if lte IE 7]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie7.css" media="screen">
+ <![endif]-->
+
+ <!--[if lte IE 8]>
+ <script type="text/javascript">
+  window.brokenIE = true;
+ </script>
+ <![endif]-->
+
+ <!--[if lte IE 9]>
+ <link rel="stylesheet" type="text/css" href="http://php.net/styles/workarounds.ie9.css" media="screen">
+ <![endif]-->
+
+ <!--[if IE]>
+ <script type="text/javascript" src="http://php.net/js/ext/html5.js"></script>
+ <![endif]-->
+
+ <base>
+
+</head>
+<body class="docs " style="">
+
+
+<div class="headsup"><a href="http://php.net/index.php#id2014-08-28-1">PHP 5.6.0 released</a></div>
+<nav id="trick"><div><dl>
+<dt><a href="getting-started.html">Getting Started</a></dt>
+	<dd><a href="introduction.html">Introduction</a></dd>
+	<dd><a href="tutorial.html">A simple tutorial</a></dd>
+<dt><a href="langref.html">Language Reference</a></dt>
+	<dd><a href="language.basic-syntax.html">Basic syntax</a></dd>
+	<dd><a href="language.types.html">Types</a></dd>
+	<dd><a href="language.variables.html">Variables</a></dd>
+	<dd><a href="language.constants.html">Constants</a></dd>
+	<dd><a href="language.expressions.html">Expressions</a></dd>
+	<dd><a href="language.operators.html">Operators</a></dd>
+	<dd><a href="language.control-structures.html">Control Structures</a></dd>
+	<dd><a href="language.functions.html">Functions</a></dd>
+	<dd><a href="language.oop5.html">Classes and Objects</a></dd>
+	<dd><a href="language.namespaces.html">Namespaces</a></dd>
+	<dd><a href="language.exceptions.html">Exceptions</a></dd>
+	<dd><a href="language.generators.html">Generators</a></dd>
+	<dd><a href="language.references.html">References Explained</a></dd>
+	<dd><a href="reserved.variables.html">Predefined Variables</a></dd>
+	<dd><a href="reserved.exceptions.html">Predefined Exceptions</a></dd>
+	<dd><a href="reserved.interfaces.html">Predefined Interfaces and Classes</a></dd>
+	<dd><a href="context.html">Context options and parameters</a></dd>
+	<dd><a href="wrappers.html">Supported Protocols and Wrappers</a></dd>
+</dl>
+<dl>
+<dt><a href="security.html">Security</a></dt>
+	<dd><a href="security.intro.html">Introduction</a></dd>
+	<dd><a href="security.general.html">General considerations</a></dd>
+	<dd><a href="security.cgi-bin.html">Installed as CGI binary</a></dd>
+	<dd><a href="security.apache.html">Installed as an Apache module</a></dd>
+	<dd><a href="security.filesystem.html">Filesystem Security</a></dd>
+	<dd><a href="security.database.html">Database Security</a></dd>
+	<dd><a href="security.errors.html">Error Reporting</a></dd>
+	<dd><a href="security.globals.html">Using Register Globals</a></dd>
+	<dd><a href="security.variables.html">User Submitted Data</a></dd>
+	<dd><a href="security.magicquotes.html">Magic Quotes</a></dd>
+	<dd><a href="security.hiding.html">Hiding PHP</a></dd>
+	<dd><a href="security.current.html">Keeping Current</a></dd>
+<dt><a href="features.html">Features</a></dt>
+	<dd><a href="features.http-auth.html">HTTP authentication with PHP</a></dd>
+	<dd><a href="features.cookies.html">Cookies</a></dd>
+	<dd><a href="features.sessions.html">Sessions</a></dd>
+	<dd><a href="features.xforms.html">Dealing with XForms</a></dd>
+	<dd><a href="features.file-upload.html">Handling file uploads</a></dd>
+	<dd><a href="features.remote-files.html">Using remote files</a></dd>
+	<dd><a href="features.connection-handling.html">Connection handling</a></dd>
+	<dd><a href="features.persistent-connections.html">Persistent Database Connections</a></dd>
+	<dd><a href="features.safe-mode.html">Safe Mode</a></dd>
+	<dd><a href="features.commandline.html">Command line usage</a></dd>
+	<dd><a href="features.gc.html">Garbage Collection</a></dd>
+	<dd><a href="features.dtrace.html">DTrace Dynamic Tracing</a></dd>
+</dl>
+<dl>
+<dt><a href="funcref.html">Function Reference</a></dt>
+	<dd><a href="refs.basic.php.html">Affecting PHP's Behaviour</a></dd>
+	<dd><a href="refs.utilspec.audio.html">Audio Formats Manipulation</a></dd>
+	<dd><a href="refs.remote.auth.html">Authentication Services</a></dd>
+	<dd><a href="refs.utilspec.cmdline.html">Command Line Specific Extensions</a></dd>
+	<dd><a href="refs.compression.html">Compression and Archive Extensions</a></dd>
+	<dd><a href="refs.creditcard.html">Credit Card Processing</a></dd>
+	<dd><a href="refs.crypto.html">Cryptography Extensions</a></dd>
+	<dd><a href="refs.database.html">Database Extensions</a></dd>
+	<dd><a href="refs.calendar.html">Date and Time Related Extensions</a></dd>
+	<dd><a href="refs.fileprocess.file.html">File System Related Extensions</a></dd>
+	<dd><a href="refs.international.html">Human Language and Character Encoding Support</a></dd>
+	<dd><a href="refs.utilspec.image.html">Image Processing and Generation</a></dd>
+	<dd><a href="refs.remote.mail.html">Mail Related Extensions</a></dd>
+	<dd><a href="refs.math.html">Mathematical Extensions</a></dd>
+	<dd><a href="refs.utilspec.nontext.html">Non-Text MIME Output</a></dd>
+	<dd><a href="refs.fileprocess.process.html">Process Control Extensions</a></dd>
+	<dd><a href="refs.basic.other.html">Other Basic Extensions</a></dd>
+	<dd><a href="refs.remote.other.html">Other Services</a></dd>
+	<dd><a href="refs.search.html">Search Engine Extensions</a></dd>
+	<dd><a href="refs.utilspec.server.html">Server Specific Extensions</a></dd>
+	<dd><a href="refs.basic.session.html">Session Extensions</a></dd>
+	<dd><a href="refs.basic.text.html">Text Processing</a></dd>
+	<dd><a href="refs.basic.vartype.html">Variable and Type Related Extensions</a></dd>
+	<dd><a href="refs.webservice.html">Web Services</a></dd>
+	<dd><a href="refs.utilspec.windows.html">Windows Only Extensions</a></dd>
+	<dd><a href="refs.xml.html">XML Manipulation</a></dd>
+</dl>
+<dl>
+<dt>Keyboard Shortcuts</dt><dt>?</dt>
+<dd>This help</dd>
+<dt>j</dt>
+<dd>Next menu item</dd>
+<dt>k</dt>
+<dd>Previous menu item</dd>
+<dt>g p</dt>
+<dd>Previous man page</dd>
+<dt>g n</dt>
+<dd>Next man page</dd>
+<dt>G</dt>
+<dd>Scroll to bottom</dd>
+<dt>g g</dt>
+<dd>Scroll to top</dd>
+<dt>g h</dt>
+<dd>Goto homepage</dd>
+<dt>g s</dt>
+<dd>Goto search<br>(current page)</dd>
+<dt>/</dt>
+<dd>Focus search box</dd>
+</dl></div></nav>
+<div id="goto">
+    <div class="search">
+         <div class="text"></div>
+         <div class="results"><ul></ul></div>
+   </div>
+</div>
+
+  <div id="breadcrumbs" class="row-fluid">
+          
+              
+        <ul class="breadcrumbs-container">
+            <li><a href="index-2.html">PHP Manual</a></li>      <li><a href="internals2.html">PHP at the Core: A Hacker's Guide</a></li>    </ul>
+  </div>
+
+
+
+
+<div id="layout">
+  <section id="layout-content">
+  <div id="internals2.funcs" class="chapter">
+  <h1>Writing Functions</h1>
+
+  <p class="para">
+   Functions and Methods in PHP take much the same form, a method is simply a function with a specific scope; the scope of their class entry.
+   The <code class="code">Hacker</code> will read about class entries in other sections of the <code class="code">Hacker's</code> guide.
+   The purpose of this section is to introduce the <code class="code">Hacker</code> to the anatomy of a function or method; 
+   the <code class="code">Hacker</code> will learn how to define functions, how to accept variables and how to return variables to the programmer of PHP.
+  </p>
+
+  <p class="para">
+   The anatomy of a function could not be simpler:
+  </p>
+  
+  <div class="example-contents screen">
+<div class="cdata"><pre>PHP_FUNCTION(hackers_function) {
+  /* your accepted arguments here */
+  long number;
+  
+  /* accepting arguments */
+  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &amp;number) != SUCCESS) {
+      return;
+  }
+  
+  /* do some work on the input */
+  number *= 2;
+  
+  /* set return value */
+  RETURN_LONG(number);
+}</pre></div>
+  </div>
+  
+  <p class="para">
+   The <code class="code">PHP_FUNCTION(hackers_function)</code> preprocessor instruction will result in the following declaration:
+  </p>
+  
+  <div class="example-contents screen">
+<div class="cdata"><pre>void zif_hackers_function(INTERNAL_FUNCTION_PARAMETERS)
+</pre></div>
+  </div>
+  
+  <p class="para">
+   <code class="code">INTERNAL_FUNCTION_PARAMETERS</code> is defined as a macro and explained in the following table:
+  </p>
+  
+  <table id="internals2.funcs.index.internal-func-params" class="doctable table">
+   <caption><strong>INTERNAL_FUNCTION_PARAMETERS</strong></caption>
+   
+    <thead>
+     <tr>
+      <th>Name and type</th>
+      <th>Description</th>
+      <th>Access macros</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+                                                    
+     <tr>
+      <td><code class="code">int ht</code></td>
+      <td>Number of actual parameters passed by user</td>
+      <td><code class="code">ZEND_NUM_ARGS()</code></td>
+     </tr>
+
+
+     <tr>
+      <td><code class="code">zval *return_value</code></td>
+      <td>
+       Pointer to a PHP variable that can be filled with the return value
+       passed to the user. The default type is <code class="code">IS_NULL</code>.
+      </td>
+      <td><code class="code">RETVAL_*</code>, <code class="code">RETURN_*</code></td>
+     </tr>
+
+
+     <tr>
+      <td><code class="code">zval **return_value_ptr</code></td>
+      <td>When returning references to PHP set this to a pointer to
+       your variable. It is not suggested to return references.</td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+
+     <tr>
+      <td><code class="code">zval *this_ptr</code></td>
+      <td>
+       If this is a method call, points to the PHP variable
+       holding the <code class="code">$this</code> object.
+      </td>
+      <td><code class="code">getThis()</code></td>
+     </tr>
+
+
+     <tr>
+      <td><code class="code">int return_value_used</code></td>
+      <td>
+       Flag indicating whether the returned value will be used by the
+       caller.
+      </td>
+      <td class="empty">&nbsp;</td>
+     </tr>
+
+
+    </tbody>
+   
+  </table>
+
+  
+  <p class="para">
+   For clarity, the fully expanded declaration for <code class="code">PHP_FUNCTION(hackers_function)</code> looks like:
+  </p>
+  
+  <div class="example-contents screen">
+<div class="cdata"><pre>void zif_hackers_function(int ht, zval* return_value, zval** return_value_ptr, zval* this_ptr, int return_value_used)
+</pre></div>
+  </div>
+  
+  <p class="para">
+    The presence of <code class="code">this_ptr</code> may be confusing, classes are covered in detail in later sections, 
+    suffice to say that <code class="code">PHP_METHOD(MyClass, hackersFunction)</code> would result in the following declaration:
+  </p>
+  
+  <div class="example-contents screen">
+<div class="cdata"><pre>void zim_MyClass_hackersFunction(INTERNAL_FUNCTION_PARAMETERS)
+</pre></div>
+  </div>
+  
+  <p class="para">
+   <code class="code">hackers_function</code> doesn't do anything useful, it accepts a number using the <code class="code">zend_parse_parameters</code> API, doubles it, and returns it to the engine.
+   It is obvious that a normal function would have to do something more complex than double the input, for the purposes of education we are keeping it simple. 
+   On entry to the function <code class="code">return_value</code> is allocated and initialized to <code class="code">null</code>, making <code class="code">null</code> the default return value of any function in PHP.
+  </p>
+  
+  <p class="para">
+   If <code class="code">zend_parse_parameters</code> does not recieve what is specified by the <code class="code">Hacker</code> as the correct arguments, and the arguments recieved cannot be converted
+   to conform with <code class="code">type_spec</code> an error will be raised, and by convention, the <code class="code">Hacker</code> should <code class="code">return</code> immediately.
+  </p>
+  
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   </p><p class="para"><code class="code">Arrays</code>, <code class="code">Objects</code>, and <code class="code">Resources</code> cannot be converted.</p>
+  <p></p></blockquote>
+  
+  <table id="internals2.funcs.parameters.api" class="doctable table">
+   <caption><strong>Parsing Parameters Prototypes</strong></caption>
+   
+    <tbody class="tbody">
+     <tr>
+      <td><code class="code">int zend_parse_parameters(int num_args TSRMLS_DC, char *type_spec, ...)</code></td>
+     </tr>
+
+     <tr>
+      <td><code class="code">int zend_parse_parameters_ex(int flags, int num_args TSRMLS_DC, char *type_spec, ...)</code></td>
+     </tr>
+
+     <tr>
+      <td><code class="code">int zend_parse_parameter(int flags, int arg_num TSRMLS_DC, zval **arg, const char *spec, ...)</code></td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   </p><p class="para">
+    <code class="code">zend_parse_parameter</code> is available from version 5.5, it behaves like <code class="code">zend_parse_parameters_ex</code> 
+    except that instead of reading the arguments from the stack, it receives a single zval to convert, which may be changed in place.
+   </p>
+  <p></p></blockquote>
+  
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   </p><p class="para">
+    <code class="code">flags</code> is intended to be a mask, currently only <code class="code">ZEND_PARSE_PARAMS_QUIET</code> will have any impact (supress warnings)
+   </p>
+  <p></p></blockquote>
+  
+  <p class="para">
+   The variable arguments recieved by these API functions are expected to be the address of C variables, and should be considered the output of the <code class="code">zend_parse_parameters</code> API functions.
+  </p>
+
+  <table id="internals2.funcs.parameters.types" class="doctable table">
+   <caption><strong>Type Specifiers</strong></caption>
+   
+     <thead>
+     <tr>
+      <th>Spec</th>
+      <th>Type</th>
+      <th>Locals</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+     <tr>
+      <td>a</td>
+      <td><code class="code">array</code></td>
+      <td><code class="code">zval*</code></td>
+     </tr>
+
+     <tr>
+      <td>A</td>
+      <td><code class="code">array</code> or <code class="code">object</code></td>
+      <td><code class="code">zval*</code></td>
+     </tr>
+
+     <tr>
+      <td>b</td>
+      <td><code class="code">boolean</code></td>
+      <td><code class="code">zend_bool</code></td>
+     </tr>
+
+     <tr>
+      <td>C</td>
+      <td><code class="code">class</code></td>
+      <td><code class="code">zend_class_entry*</code></td>
+     </tr>
+
+     <tr>
+      <td>d</td>
+      <td><code class="code">double</code></td>
+      <td><code class="code">double</code></td>
+     </tr>
+
+     <tr>
+      <td>f</td>
+      <td><code class="code">function</code></td>
+      <td><code class="code">zend_fcall_info*</code>, <code class="code">zend_fcall_info_cache*</code></td>
+     </tr>
+
+     <tr>
+      <td>h</td>
+      <td><code class="code">array</code></td>
+      <td><code class="code">HashTable*</code></td>
+     </tr>
+
+     <tr>
+      <td>H</td>
+      <td><code class="code">array</code> or <code class="code">object</code></td>
+      <td><code class="code">HashTable*</code></td>
+     </tr>
+
+     <tr>
+      <td>l</td>
+      <td><code class="code">long</code></td>
+      <td><code class="code">long</code></td>
+     </tr>
+
+     <tr>
+      <td>L</td>
+      <td><code class="code">long</code> (limits out-of-range LONG_MAX/LONG_MIN)</td>
+      <td><code class="code">long</code></td>
+     </tr>
+
+     <tr>
+      <td>o</td>
+      <td><code class="code">object</code></td>
+      <td><code class="code">zval*</code></td>
+     </tr>
+
+     <tr>
+      <td>O</td>
+      <td><code class="code">object</code> (of specified <code class="code">zend_class_entry</code>)</td>
+      <td><code class="code">zval*</code>, <code class="code">zend_class_entry*</code></td>
+     </tr>
+
+     <tr>
+      <td>p</td>
+      <td><code class="code">string</code> (a valid path)</td>
+      <td><code class="code">char*</code>, <code class="code">int</code></td>
+     </tr>
+
+     <tr>
+      <td>r</td>
+      <td><code class="code">resource</code></td>
+      <td><code class="code">zval*</code></td>
+     </tr>
+
+     <tr>
+      <td>s</td>
+      <td><code class="code">string</code></td>
+      <td><code class="code">char*</code>, <code class="code">int</code></td>
+     </tr>
+
+     <tr>
+      <td>z</td>
+      <td><code class="code">mixed</code></td>
+      <td><code class="code">zval*</code></td>
+     </tr>
+
+     <tr>
+      <td>Z</td>
+      <td><code class="code">mixed</code></td>
+      <td><code class="code">zval**</code></td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   </p><p class="para">
+    Where the type specifier is <code class="code">O</code>, the local <code class="code">zend_class_entry*</code> is to be 
+    considered input (part of the type spec) to <code class="code">zend_parse_parameter</code>
+   </p>
+  <p></p></blockquote>
+  
+  <table id="internals2.funcs.parameters.advanced" class="doctable table">
+   <caption><strong>Advanced Type Specifiers</strong></caption>
+   
+     <thead>
+     <tr>
+      <th>Spec</th>
+      <th>Description</th>
+     </tr>
+
+    </thead>
+
+    <tbody class="tbody">
+     <tr>
+      <td>*</td>
+      <td>a variable number of argument of the preceeding type, 0 or more</td>
+     </tr>
+
+     <tr>
+      <td>+</td>
+      <td>a variable number of argument of the preceeding type, 1 or more</td>
+     </tr>
+
+     <tr>
+      <td>|</td>
+      <td>indicates that the remaining parameters are optional</td>
+     </tr>
+
+     <tr>
+      <td>/</td>
+      <td><code class="code">SEPARATE_ZVAL_IF_NOT_REF</code> on the parameter it follows</td>
+     </tr>
+
+     <tr>
+      <td>!</td>
+      <td>
+       the preceeding parameter can be of the specified type or <code class="code">null</code>
+       For 'b', 'l' and 'd', an extra argument of type zend_bool* must be passed after 
+       the corresponding <code class="code">bool*</code>, <code class="code">long*</code> or <code class="code">double*</code> 
+       addresses which will be set <code class="code">true</code> if <code class="code">null</code> is recieved.
+      </td>
+     </tr>
+
+    </tbody>
+   
+  </table>
+
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   </p><p class="para">Consult <code class="code">README.PARAMETER_PARSING_API</code> included in source distributions for more information on parsing parameters</p>
+  <p></p></blockquote>
+  
+  <p class="para">
+   Once the <code class="code">Hacker's</code> function has executed whatever it was implemented to execute, it is time to set the <code class="code">return_value</code> for the engine. 
+   The <code class="code">RETURN_</code> and <code class="code">RETVAL_</code> macros are just wrappers around <code class="code">Z_*_P</code> macros that work with <code class="code">return_value</code>. 
+  </p>
+  
+  <blockquote class="note"><p><strong class="note">Note</strong>: 
+   </p><p class="para"><code class="code">RETURN_</code> macros cause execution to leave the function immediately (ie: <code class="code">return;</code>), while <code class="code">RETVAL_</code> macros allow execution to continue after <code class="code">return_value</code> has been set.</p>
+  <p></p></blockquote>
+  
+  <p class="para">
+   The <code class="code">Hacker</code> should now have a reasonable understanding of the anatomy of a function, and to some degree, the anatomy of a method.
+  </p>
+
+</div>
+
+<section id="usernotes">
+ <div class="head"><h3 class="title">User Contributed Notes</h3></div>
+ <div class="note">There are no user contributed notes for this page.</div></section>    </section><!-- layout-content -->
+        
+
+
+  </div><!-- layout -->
+         
+  
+
+    
+ <!-- External and third party libraries. -->
+ 
+
+
+
+
+
+
+
+<a id="toTop" href="javascript:;"><span id="toTopHover"></span><img width="40" height="40" alt="To Top" src="../../images/to-top%402x.png"></a>
+
+
+
+<!-- Mirrored from php.net/manual/en/internals2.funcs.php by HTTrack Website Copier/3.x [XR&CO'2013], Thu, 28 Aug 2014 15:24:06 GMT -->
+
+
+</body></html>

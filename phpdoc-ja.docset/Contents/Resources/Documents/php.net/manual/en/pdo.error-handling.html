@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; CHARSET=shift-jis">
+  <title>エラーおよびエラー処理</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link media="all" rel="stylesheet" type="text/css" href="style.css"/>
+ </head>
+ <body class="docs" class="docs"><div class="navbar navbar-fixed-top">
+  <div class="navbar-inner clearfix">
+    <ul class="nav" style="width: 100%">
+      <li style="float: left;"><a href="pdo.prepared-statements.html">≪ プリペアドステートメントおよびストアドプロシージャ</a></li>
+      <li style="float: right;"><a href="pdo.lobs.html">ラージオブジェクト (LOB) ≫</a></li>
+    </ul>
+  </div>
+</div>
+<div id="breadcrumbs" class="clearfix">
+  <ul class="breadcrumbs-container">
+    <li><a href="index.html">PHP Manual</a></li>
+    <li><a href="book.pdo.html">PDO</a></li>
+    <li>エラーおよびエラー処理</li>
+  </ul>
+</div>
+<div id="layout">
+  <div id="layout-content"><div id="pdo.error-handling" class="chapter">
+ <h1>エラーおよびエラー処理</h1>
+
+ <p class="para">
+  PDO が提供するエラー処理方法は 3 通り存在し、
+  アプリケーションの開発形態によって使い分けることができます。
+ </p>
+ <ul class="itemizedlist">
+  <li class="listitem">
+   <p class="para">
+    <strong><code>PDO::ERRMODE_SILENT</code></strong>
+   </p>
+   <p class="para">
+     デフォルトのモードです。ステートメントおよびデータベースオブジェクトの
+     エラーについて、PDO は単にそのエラーコードのみを設定します。
+     これを取得するには <span class="function"><a href="pdo.errorcode.html" class="function">PDO::errorCode()</a></span> および
+     <span class="function"><a href="pdo.errorinfo.html" class="function">PDO::errorInfo()</a></span> メソッドを使用します。
+     ステートメントオブジェクトへのコールによってエラーが発生した場合は、
+     そのオブジェクトの
+     <span class="function"><a href="pdostatement.errorcode.html" class="function">PDOStatement::errorCode()</a></span> あるいは
+     <span class="function"><a href="pdostatement.errorinfo.html" class="function">PDOStatement::errorInfo()</a></span> メソッドを呼び出します。
+     データベースオブジェクトへのコールによってエラーが発生した場合は、
+     その代わりにデータベースオブジェクト上の同じメソッドを呼び出します。
+    </p>
+  </li>
+  <li class="listitem">
+   <p class="para">
+    <strong><code>PDO::ERRMODE_WARNING</code></strong>
+   </p>
+   <p class="para">
+     エラーコードを設定することに加え、PDO は 伝統的な E_WARNING
+     メッセージも出力します。この設定はデバッグ/テストの際に有用で、
+     アプリケーションの動作を妨げることなしに問題点を確認できるように
+     なります。
+    </p>
+   </li>
+   <li class="listitem">
+    <p class="para">
+     <strong><code>PDO::ERRMODE_EXCEPTION</code></strong>
+    </p>
+    <p class="para">
+     エラーコードを設定することに加え、PDO は
+     <a href="class.pdoexception.html" class="classname">PDOException</a> をスローします。エラーコードや
+     関連情報が、クラスのプロパティとして設定されます。
+     この設定もまたデバッグ時に有用で、エラーが発生した時点で
+     スクリプトの実行を停止させることによりコード内の問題点を
+     見つけやすくなります
+     (例外によりスクリプトが終了した際には、トランザクションは自動的に
+     ロールバックされることを覚えておきましょう)。
+    </p>
+    <p class="para">
+     このモードが有用である理由のひとつとして、伝統的な PHP 形式の警告よりも
+     より明確にエラー処理コードが書けることがあります。例外を発生させず、
+     データベースへのコールのたびに毎回明示的に返り値をチェックすることに
+     比べると、コードの量やネストを減らすことができます。
+    </p>
+    <p class="para">
+     PHP の例外についての詳細な情報は、
+     <a href="language.exceptions.html" class="link">例外</a>
+     を参照ください。
+    </p>
+   </li>
+ </ul>
+ <p class="para">
+  PDO のエラーコードは、SQL-92 の SQLSTATE エラーコード文字列に
+  標準化されています。
+  ネイティブのコードを適切な SQLSTATE コードに変換するのは、個々の PDO
+  ドライバの仕事となります。
+  <span class="function"><a href="pdo.errorcode.html" class="function">PDO::errorCode()</a></span> メソッドは SQLSTATE コードを返します。
+  エラーについての詳細な銃尾法が知りたい場合、PDO では
+  <span class="function"><a href="pdo.errorinfo.html" class="function">PDO::errorInfo()</a></span> メソッドも提供しており、
+  これは SQLSTATE コード、ドライバ固有のエラーコードおよびドライバ固有の
+  エラーメッセージを含む配列を返します。
+ </p>
+ 
+ <p class="para">
+  <div class="example" id="example-956">
+   <p><strong>例1 PDO インスタンスの作成およびエラーモードの設定</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$dsn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'mysql:dbname=testdb;host=127.0.0.1'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$user&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'dbuser'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$password&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'dbpass'</span><span style="color: #007700">;<br /><br />try&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$dbh&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">(</span><span style="color: #0000BB">$dsn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$user</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$password</span><span style="color: #007700">);<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$dbh</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">setAttribute</span><span style="color: #007700">(</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">ATTR_ERRMODE</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">ERRMODE_EXCEPTION</span><span style="color: #007700">);<br />}&nbsp;catch&nbsp;(</span><span style="color: #0000BB">PDOException&nbsp;$e</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'Connection&nbsp;failed:&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getMessage</span><span style="color: #007700">();<br />}<br /><br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+  </div>
+ </p>
+ <blockquote class="note"><p><strong class="note">注意</strong>: 
+  <p class="para">
+   <span class="function"><a href="pdo.construct.html" class="function">PDO::__construct()</a></span> は、接続に失敗した場合は常に
+   <a href="class.pdoexception.html" class="classname">PDOException</a> をスローします。
+   これは、現在設定されている <strong><code>PDO::ATTR_ERRMODE</code></strong>
+   が何であっても同じです。例外を処理しないと、fatal エラーとなります。
+  </p>
+ </p></blockquote>
+ <p class="para">
+  <div class="example" id="example-957">
+   <p><strong>例2 PDO インスタンスの作成およびコンストラクタでのエラーモードの設定</strong></p>
+   <div class="example-contents">
+<div class="phpcode"><code><span style="color: #000000">
+<span style="color: #0000BB">&lt;?php<br />$dsn&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'mysql:dbname=test;host=127.0.0.1'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$user&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'googleguy'</span><span style="color: #007700">;<br /></span><span style="color: #0000BB">$password&nbsp;</span><span style="color: #007700">=&nbsp;</span><span style="color: #DD0000">'googleguy'</span><span style="color: #007700">;<br /><br /></span><span style="color: #FF8000">/*<br />&nbsp;&nbsp;&nbsp;&nbsp;ERRMODE&nbsp;を&nbsp;WARNING&nbsp;にした場合でも、コンストラクタを&nbsp;try/catch&nbsp;で囲むのは有効です。<br />&nbsp;&nbsp;&nbsp;&nbsp;接続に失敗した場合、ERRMODE&nbsp;が何であろうが&nbsp;PDO::__construct&nbsp;が&nbsp;PDOException&nbsp;をスローするからです。<br />*/<br /></span><span style="color: #007700">try&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #0000BB">$dbh&nbsp;</span><span style="color: #007700">=&nbsp;new&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">(</span><span style="color: #0000BB">$dsn</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$user</span><span style="color: #007700">,&nbsp;</span><span style="color: #0000BB">$password</span><span style="color: #007700">,&nbsp;array(</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">ATTR_ERRMODE&nbsp;</span><span style="color: #007700">=&gt;&nbsp;</span><span style="color: #0000BB">PDO</span><span style="color: #007700">::</span><span style="color: #0000BB">ERRMODE_WARNING</span><span style="color: #007700">));<br />}&nbsp;catch&nbsp;(</span><span style="color: #0000BB">PDOException&nbsp;$e</span><span style="color: #007700">)&nbsp;{<br />&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: #DD0000">'Connection&nbsp;failed:&nbsp;'&nbsp;</span><span style="color: #007700">.&nbsp;</span><span style="color: #0000BB">$e</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">getMessage</span><span style="color: #007700">();<br />&nbsp;&nbsp;&nbsp;&nbsp;exit;<br />}<br /><br /></span><span style="color: #FF8000">//&nbsp;このテーブルが存在しないとして、このコードを実行すると&nbsp;E_WARNING&nbsp;レベルのエラーになります。例外にはなりません。<br /></span><span style="color: #0000BB">$dbh</span><span style="color: #007700">-&gt;</span><span style="color: #0000BB">query</span><span style="color: #007700">(</span><span style="color: #DD0000">"SELECT&nbsp;wrongcolumn&nbsp;FROM&nbsp;wrongtable"</span><span style="color: #007700">);<br /></span><span style="color: #0000BB">?&gt;</span>
+</span>
+</code></div>
+   </div>
+
+    <div class="example-contents"><p>上の例の出力は以下となります。</p></div>
+    <div class="example-contents screen">
+<div class="cdata"><pre>
+Warning: PDO::query(): SQLSTATE[42S02]: Base table or view not found: 1146 Table &#039;test.wrongtable&#039; doesn&#039;t exist in
+/tmp/pdo_test.php on line 18
+</pre></div>
+    </div>
+  </div>
+ </p>
+</div>
+<div id="usernotes">
+ <div class="head">
+  <h3 class="title">User Contributed Notes</h3>
+ </div>
+ <div class="note">There are no user contributed notes for this page.</div>
+</div>
+</div></div></body></html>
